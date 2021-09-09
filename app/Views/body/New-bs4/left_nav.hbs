@@ -1,0 +1,122 @@
+<!--
+            sidebar-mini
+            Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+            Tip 2: you can also add an image using data-image tag
+            -->
+            
+<div  class="sidebar" data-color="rose" data-background-color="black"  data-image="http://localhost/public/vnapp/assets/img/bg-cosmos.jpg">
+    <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-mini">
+            <img src="http://localhost/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png" class="">
+        </a>
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+            Ventas Nube
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <div class="user">
+            <div class="photo">
+                <img src="/public/vnapp/assets/img/faces/avatar.jpg" />
+            </div>
+            <div class="user-info">
+                <a data-toggle="collapse" href="#collapseExample" class="username">
+                    <span>
+                        Tania Andrew
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sidebar-mini"> MP </span>
+                                <span class="sidebar-normal"> My Profile </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sidebar-mini"> EP </span>
+                                <span class="sidebar-normal"> Edit Profile </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sidebar-mini"> S </span>
+                                <span class="sidebar-normal"> Settings </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            {{#each m as |m_t|}}
+            <li class="nav-item ">
+                <a class="nav-link l_nav_m" data-toggle="collapse" m_id="{{{m_id}}}" s_url_t_m="{{{m_url}}}" href="#">
+                    <i class="material-icons">{{m_icon}}</i>
+                    <p> {{m_name}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="pagesExamples">
+                    <ul class="nav">
+                        {{#each ../m_t}}
+                        {{#ifEquals m_id m_t.m_id}}
+                        <li class="nav-item ">
+                            <a class="nav-link" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{../m_url}}}"
+                                href="#">
+                                <span class="sidebar-mini"> <span class="material-icons">{{m_t_icon}}</span></span>
+                                <span class="sidebar-normal this_m_t_name">{{m_t_name}} </span>
+                            </a>
+                        </li>
+                        {{/ifEquals}}
+                        {{/each}}
+                    </ul>
+
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+</div>
+
+    <script>
+    //// BOTON SEARCH ///
+    function search_open() {
+        $('#searchBox').fadeIn();
+        $('#searchInput').focus();
+        $('body').addClass('search-active');
+    }
+
+    function search_close() {
+        $('#searchBox').fadeOut();
+        $('#searchInput').focus();
+        $('body').removeClass('search-active');
+    }
+
+
+    $(".search_button_dell").click(function () {
+        $('#searchInput').val('');
+        $('#searchInput').focus();
+    });
+
+    $(document).on('click', '.search_open', function (event) {
+        // get_search_module(textobuscar);
+        //  load_product_cart();
+        search_open();
+    });
+
+    // $(".search_close").click(function () {
+
+    $(document).on('click', '.search_close', function (event) {
+
+        search_close();
+    });
+
+    get_search_module("algo", 1, 10);
+
+   // load_product_cart();
+
+    //load_product_store_cart();
+
+</script>

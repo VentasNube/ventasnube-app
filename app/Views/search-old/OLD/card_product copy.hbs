@@ -1,0 +1,304 @@
+{{#each search_product }}
+<div class="card-content">
+
+    <div class="card">
+        <form class="card-product card_product_form" product_id="{{{item.doc._id}}}">
+            <!--input type="checkbox" id="card-visitors-indicator" /-->
+            <div class="header">
+                <!-- Indicadr -->
+                <p class="cat ">
+                    {{#each item.doc.tags }}
+                    <span class="s-card-cat pull-left">#{{this}}</span>
+                    {{/each}}
+                </p>
+                <div class="img_card"><img class="card_img_url" src="{{{item.doc.picture_min}}}" alt="200x200"></div>
+                <div class="indicator" product_id="{{{item.doc._id}}}">
+                    <div class="open_detail" width="18" height="27">
+                        <span class=" material-icons">add</span>
+                        <span class="quantity">9999</span>
+                    </div>
+                </div>
+                <div class="card_product_details">
+                    <div>
+                        <span class=" material-icons">monetization_on</span>
+                        <input name="card_prduct_val" class="card_product_val form-control" type="number"
+                            placeholder="valor" value="{{item.doc.price}}">
+
+                    </div>
+                    <div>
+                        <span class=" material-icons">local_offer</span>
+                        <input name="card_prduct_discount" class="card_product_discount form-control" type="number"
+                            placeholder="Descuento" value="0">
+
+                    </div>
+                    <div>
+                        <span class=" material-icons">superscript</span>
+
+                        <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                            placeholder="Cantidad" value="1">
+
+
+                    </div>
+                    <div class="card_product_footer">
+                        <button class="btn_submit btn btn-default">
+                            <span class="material-icons">favorite</span>.
+                        </button>
+                        <button type="submit" class="btn_submit btn btn-default">
+                            <span class="material-icons">add_shopping_cart</span>.
+                        </button>
+                    </div>
+                </div>
+                <div class="content ripple_div ripple_efect_close "> </div>
+                <div class="ripple-efect-div success"></div>
+            </div>
+
+        </form>
+
+
+        <div class="info">
+            <p class="card_product_name">{{item.doc.name}} </p>
+
+
+
+            <div class="text-left">
+                <div class="btn-group dropright">
+                    <button type="button"
+                        class="card_item_selected_price btn btn-round lx dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="round-icon pr"><span> {{item.doc.currency}} </span></div>
+                        <!--label class="counter">{{item.doc.currency}}{{item.doc.price.value}} -->
+
+                        <label class="counter">
+                            {{item.doc.price}}
+
+                        </label>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="header">Precios</li>
+                        {{#each item.doc.price_list as | price_list_p |}}
+                        <li>
+                            <a class="card_item_select_price" href="#">
+                                {{#with (lookup ../../price_list [id])~}}
+                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{{value}}}" data-original-title="{{{value}}}">
+                                    <span></span> <!--{{trimString value}}-->
+                                    {{value}}
+                                    </span>
+                                </div>
+                                {{/with}}
+                                <span>{{../item.doc.currency}}</span> <label class="counter">{{value}}</label>
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+
+
+                <div class="text-center">
+                    <div class="btn-group dropright">
+                        <button type="button" class="" data-toggle="dropdown" aria-expanded="true">
+                            <span bg-color="" id="bg-select-color" class="btn btn-default">
+                                <span id="bg-select-color" class="material-icons">
+                                    palette
+                                </span>
+                                <span id="bg-select-text"> Variante</span>
+                                <span class="material-icons">arrow_drop_down</span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu mini">
+                            <!--
+                              {{#each item.doc.price_list as | price_list_p |}}
+                        <li>
+                            <a class="card_item_select_price" href="#">
+                                {{#with (lookup ../../price_list [id])~}}
+                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{{value}}}" data-original-title="{{{value}}}">
+                                    <span></span> {{trimString value}}
+                                    </span>
+                                </div>
+                                {{/with}}
+                                <span>{{../item.doc.currency}}</span> <label class="counter">{{value}}</label>
+                            </a>
+                        </li>
+                        {{/each}}
+                        
+                            <li class="header">Talle</li> 
+
+                             {{#each item.doc.attribute_combinations as | attribute_combinations |}}
+                                        <li bg-color="btn-primary" class="btn btn-primary">
+                                            <span class="">{{this.value_name}}</span>
+                                        </li>
+
+                              {{#with (lookup ../attribute_combinations [id])~}}
+                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{{value}}}" data-original-title="{{{value}}}">
+                                    <span></span> {{trimString value}}
+                                    </span>
+                                </div>
+
+                                     <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                        class="material-icons">panorama_fish_eye</span></li>
+
+                                {{/with}}
+
+                            <li class="header">Color</li>
+                        
+
+                                <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                          
+                       {{/each}}
+-->
+                        {{#each variations}}
+
+                            {{#each pictures}}
+                                    {{max}} 
+                            {{/each}}
+
+                            {{#each attribute_combinations as | ac |}}
+                                    {{value_name}} 
+                            {{/each}}
+                            {{#with stock_invetary}}
+                                    {{#each this}}
+                                        {{sum quantity}} 
+                                    {{/each}}
+                                {{/with}}
+                                {{#with (lookup stock_invetary [quantity])~}}
+                                        {{sum quantity}} 
+                            {{/with}}
+                        
+                        {{/each}}
+
+
+
+                        </ul>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+
+
+</div>
+</div>
+{{/each}}
+<!--script src="https://unpkg.com/idb@5/build/iife/index-min.js"></script-->
+<script>
+
+
+    $(".card_item_select_price").click(function () {
+        var card_item_price = $(this).html();
+        var card_product_val = $(this).find('label').html();
+        $(this).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
+        $(this).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
+
+        //    alert(card_product_val);
+    });
+    function validaForm(card_product_val, card_product_discount, card_product_quantity) {
+        // Campos de texto
+        if (card_product_val == 0) {
+            alert("El valor del producto no puede estar vacío.");
+            $(this).parents('.card-product').find(".card_product_val").focus();       // Esta función coloca el foco de escritura del usuario en el campo Nombre directamente.
+            return false;
+        }
+        if (card_product_discount >= 20) {
+            alert("El valor descuento no puede superar el 20%.");
+            $(this).parents('.card-product').find(".card_product_discount").focus();
+            return false;
+        }
+        if (card_product_quantity == 0) {
+            alert("El cantidad de productos ser 0");
+            $(this).parents('.card-product').find(".card_product_quantity").focus();
+            return false;
+        }
+        else {
+            // alert("El producto se agrego con exito!");
+            return true; // Si todo está correcto
+        }
+
+    }
+
+    // Esta parte del código se ejecutará automáticamente cuando la página esté lista.
+
+    $(".card_product_form").submit(function (event) {
+        event.preventDefault();
+        //var btn = $(this).find("input[type=submit]:focus" );
+        var card_product_id = $(this).attr("product_id");
+        var card_product_img_url = $(this).find(".card_img_url").attr('src');
+        var card_product_name = $(this).parent().find(".card_product_name").html();
+        var card_product_val = $(this).find(".card_product_val").val();
+        var card_product_discount = $(this).find(".card_product_discount").val();
+        var card_product_quantity = $(this).find(".card_product_quantity").val();
+        var card_product_list = $(this).find(".card_product_list").val();
+
+        if (validaForm(card_product_val, card_product_discount, card_product_quantity)) {   // Primero validará el formulario.
+            $(this).find(".ripple_div").addClass('add');
+            $(this).find(".content").addClass('ripple_efect');
+
+            add_product(card_product_id, card_product_img_url, card_product_name, card_product_val, card_product_discount, card_product_quantity, card_product_list);//Envio los datos a la DB
+        }
+        return false;
+    });
+
+    // $(document).on('click', '.indicator', function (event) {
+
+    $(".indicator").click(function () {
+        var buton_state = $('.open_detail .material-icons', this).html();
+        var product_id = $(this).attr('product_id');
+        if (buton_state == 'add') {
+            $(this).addClass('open');
+            //Efecto ripple
+            $(this).parent().find(".content").addClass('ripple_efect');
+            $(this).parent().find(".content").removeClass('ripple_efect_close');
+            //Efecto in de los input
+            $(this).parent().find(".card_product_details").addClass('fade-in');
+            $(this).parent().find(".card_product_details").removeClass('fade-out');
+
+            $(this).parent().parent().parent().find(".info").addClass('out');//Oculto el div info
+            //Cabio los valores  input 
+            $(this).parent().find(".card_product_val").val();
+            $(this).parent().find(".card_product_discount").val();
+            $(this).parent().find(".card_product_quantity").focus().select();
+            //Cambio el icono
+            $(".material-icons", this).html('arrow_back');
+
+
+        }
+        else if (buton_state == 'arrow_back') {
+
+            // $(".material-icons", this).html('add').addClass('chekin-icon');
+            $(".material-icons", this).html('add');//Cambio el icono del boto
+            $(this).parent().parent().parent().find(".info").removeClass('out');//Muestro el div info
+
+            $(this).removeClass('open');//Efecto de boton 
+
+            $(this).parent().find(".card_product_details").addClass('fade-out');
+            $(this).parent().find(".card_product_details").removeClass('fade-in');
+            $(this).parent().find(".content").addClass('ripple_efect_close');
+            $(this).parent().find(".content").removeClass('ripple_efect');
+        }
+    });
+
+
+
+    $("li.bg-color").click(function () {
+
+        var bgColor = $(this).attr('bg-color');
+
+
+        $("#bg-select-color").removeClass();
+        $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+        $("#bg-select").val(bgColor);
+        $("#bg-select-color").attr('bg-color', bgColor);
+        // $("#bg-select-color").attr('bg-color').html(bgColor);
+    })
+
+        .mouseout(function () {
+            $("span", this).first().text("panorama_fish_eye");
+            // $("p", this).last().text(++i);
+        })
+        .mouseover(function () {
+            $("span", this).first().text("check_circle");
+        });
+</script>

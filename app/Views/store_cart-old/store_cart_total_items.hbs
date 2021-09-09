@@ -1,0 +1,55 @@
+{{#with store_cart_total_items}}
+<div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <div class="row">
+                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                            <span class="material-icons">
+                                arrow_drop_down_circle
+                            </span>
+                            Total a cobrar
+                        </h3>
+                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+                            {{total_cart_neto}}
+
+                        </h3>
+                    </div>
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <div class="row">
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">Total Servicios: </h4>
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">${{total_neto_service}}</h4>
+                </div>
+                <div class="row ">
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">Total Productos: </h4>
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">${{total_neto_prod}}</h4>
+                </div>
+                <div class="row text-red">
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">Total Descuentos: </h4>
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">${{total_neto_discount}}</h4>
+                </div>
+                <div class="row text-red">
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">Total impuestos: </h4>
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">(%21) ${{total_neto_tax}}</h4>
+                </div>
+                <div class="row text-green">
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">Total abonado: </h4>
+                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+                        {{#if total_neto_pay}}
+                        {{total_neto_pay}}
+                        {{else}}
+                        0
+                        {{/if}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/with }}

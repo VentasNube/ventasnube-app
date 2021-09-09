@@ -1,0 +1,1023 @@
+<div class="row board-group ">
+    <div class=" row board">
+        {{#each board_group as |orders|}}
+        <div class="board-column">
+            <div class="board-column-header {{{board_group_color}}}">
+                <div class="board-column-header-tittle"> <span data-toggle="tooltip" data-placement="right"
+                        data-original-title="Cantidad de Ordenes"> {{counter @index}}</span> {{board_group_name}}</div>
+                <div class="board-column-header-button">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-round xl text-white dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <span class="material-icons">more_horiz</span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a id="edit_board_group_btn" m_s_id="{{{board_group_id}}}" href="#master_popup" role="button" title="Retirar efectivo">
+                                    <i class="material-icons">settings</i> Editar grupo
+                                </a>
+                            </li>
+                             <li><a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_s_id="{{{board_group_id}}}"href="#"
+                                    role="button"><i class="material-icons">group_add</i> Agregar Miembro</a></li>
+                            <li>
+                            <li class="divider"></li>
+                            <li><a href="#" data-toggle="modal" role="button"><i
+                                        class="material-icons">picture_as_pdf</i> Descargar listado</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="board-column-content-wrapper">
+                <div id="board_card_group_compiled" class="board-column-content" group-id="1">
+                    {{#each ../orders}}
+                    {{#ifEquals orders.board_group_id board_group_id}}
+
+                    <div class="board-item" id="22" order="410">
+                        <div class="board-item-content">
+                            <div class="s-card ">
+                                <!--s-card-body--->
+                                <div class="s-card-body br-primary ">
+                                    <!-- s-card-header--->
+                                    <div class="s-card-header  col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <span class="left">
+                                            <div class="btn-group dopdown">
+                                                <!-- Con dopdown baja el poper-->
+                                                <button class="btn xs btn-more  dropdown-toggle" type="button"
+                                                    data-toggle="dropdown">
+                                                    <h5>
+                                                        <div class="round-icon pr xd"><span> P </span></div>
+                                                        <!--div class="round-icon client xs">E</div-->
+                                                        {{contact_name}}
+                                                    </h5>
+                                                </button>
+                                                <ul class="dropdown-menu card pull-left">
+                                                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                    <div class="body">
+                                                        <li class="header">
+                                                            Contacto
+                                                        </li>
+                                                        <li>
+                                                            <h4 class="">
+                                                                <span class="material-icons">
+                                                                    account_circle
+                                                                </span> {{contact_name}}</h4>
+                                                        </li>
+                                                        {{#if contact_email}}
+                                                        <li>
+                                                            <h4 class="">
+                                                                <span class="material-icons">
+                                                                    email
+                                                                </span> {{contact_email}}
+                                                            </h4>
+                                                        </li>
+                                                        {{/if}}
+                                                        {{#if contact_phone}}
+                                                        <li>
+                                                            <h4 class="">
+                                                                <span class="material-icons">
+                                                                    phone
+                                                                </span> {{contact_phone}} </h4>
+                                                        </li>
+                                                        {{/if}}
+                                                        {{#if contact_phone}}
+                                                        <li>
+                                                            <h4 class="">
+                                                                <span class="material-icons">mobile_screen_share</span>
+                                                                {{contact_movil}}
+                                                            </h4>
+                                                        </li>
+                                                        <li>
+                                                            <a class="btn btn-success md" target="_blank" rel="nofollow"
+                                                                href="https://api.whatsapp.com/send?phone=54{{contact_movil}}&text= Hola te contactamos ">
+                                                                <span class="material-icons">mobile_screen_share</span>
+                                                                Enviar whatsapp
+                                                            </a>
+                                                        </li>
+                                                        {{/if}}
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>
+                                                            <h4 class="">
+                                                                <span class="material-icons">
+                                                                    home
+                                                                </span>
+                                                                {{contact_street}} {{contact_number}} <br>
+                                                                {{contact_floor}},
+                                                                {{contact_district}},{{contact_city}},
+                                                                {{contact_state}}
+                                                            </h4>
+                                                        </li>
+                                                    </div>
+                                                    <li class="">
+                                                        <a class="btn btn-primary md" target="_blank"
+                                                            href="https://www.google.com/maps/search/?api=1&query={{contact_street}}+{{contact_number}}+{{contact_city}}+{{contact_state}}">
+
+                                                            <span class="material-icons">directions</span>
+                                                            Indicaciones
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                        <!--s-detail--->
+                                        <div class="right">
+                                            <div class="btn-group dopdown">
+                                                <!-- Prioridad -->
+                                                <button class="btn btn-round md pull-right  dropdown-toggle"
+                                                    type="button" data-toggle="dropdown">
+                                                    <div class="round-icon primary">
+                                                        <span class="material-icons">sentiment_satisfied_alt</span>
+                                                    </div>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                    <li class="header">
+                                                        Prioridad
+                                                    </li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#" class=""><span
+                                                                class="material-icons">sentiment_very_satisfied</span>
+                                                            <small>Normal</small></a></li>
+                                                    <li><a href="#" class=""><span
+                                                                class="material-icons">sentiment_satisfied</span>
+                                                            <small>Apurado</small></a></li>
+                                                    <li><a href="#" class=""><span
+                                                                class="material-icons">sentiment_dissatisfied</span>
+                                                            <small>Urgente</small></a></li>
+                                                    <li><a href="#" class=""><span
+                                                                class="material-icons">sentiment_very_dissatisfied</span>
+                                                            <small>Enojado</small></a></li>
+                                                    <li><a href="#" class=""><span
+                                                                class="material-icons">bug_report</span>
+                                                            <small>Garantia</small></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group dopdown">
+                                                <!-- Prometido -->
+                                                <!-- Con dopdown baja el poper-->
+                                                <button class="btn xs btn-more  dropdown-toggle" type="button"
+                                                    data-toggle="dropdown">
+                                                    <h5>
+                                                        <!--span class="material-icons">update</span-->
+                                                        5 Dias
+                                                    </h5>
+                                                </button>
+
+                                                <ul class="dropdown-menu card pull-right">
+                                                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                    <div class="body">
+                                                        <li>
+                                                            <label>Fecha limite</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">
+                                                                    <span class="material-icons">event</span>
+                                                                </div>
+                                                                <input type="text"
+                                                                    class="s-card-actv-input datetimepicker"
+                                                                    type="datetime" placeholder="Fecha limite" value="">
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <label>Fecha de ingreso</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon pull-left">
+                                                                    <span class="material-icons">today</span>
+                                                                    <span class="margin-t-10">10 Marzo 2020
+                                                                        18:00hs</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>
+                                                            <h5 class="">Faltan: </h5>
+                                                            <span class="material-icons">
+                                                                update
+                                                            </span> 10 Dias 18:00hs
+                                                        </li>
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!--s-card-content--->
+                                    </div>
+                                    <!-- s-card-main--->
+                                    <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <!--s-card-order--->
+                                        <div
+                                            class="btn btn-default md s-card-order col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <h4>
+                                                ORDEN
+                                            </h4>
+                                            <span> {{number_or}}</span>
+                                        </div>
+                                        <!--s-card-content--->
+                                        <div class="s-card-content col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <div or-id="1" class="equip-btn margin-b-5" data-toggle="tooltip"
+                                                data-placement="bottom">
+                                                <span class="btn btn-default md">
+                                                    Notebook
+                                                </span>
+                                            </div>
+                                            <div data-toggle="tooltip" data-placement="bottom">
+                                                <button or-id="1" class="presu-btn btn btn-primary md s-card-number"
+                                                    type="button">
+                                                    $ {{gross_price}}
+                                                </button>
+                                                <!--button or-id="2" type="button" class="presu-btn btn btn-primary-2 btn-round lg" data-toggle="dropdown" aria-expanded="true">
+                                                                        <span class="material-icons"> print </span>
+                                                                    </button-->
+                                            </div>
+                                        </div>
+                                        <!-- s-card-main--->
+                                    </div>
+                                    <!--tabs-main--->
+                                    <div hidden="" class="tabs-main blue col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <ul class="nav nav-tabs">
+                                            <!--li class=""><a data-toggle="tab" href="#tab-1"><span class="material-icons">monetization_on</span> <span></span></a></li-->
+                                            <!--li class=""><a data-toggle="tab" href="#tab-2"><span class="material-icons">event_available</span> </a></li-->
+                                            <li class=""><a data-toggle="tab" href="#tab-3"><span
+                                                        class="material-icons">notifications</span> <span></span></a>
+                                            </li>
+                                            <li class=""><a data-toggle="tab" href="#tab-4"><span
+                                                        class="material-icons">chat</span> <span></span></a></li>
+                                        </ul>
+                                        <!--tab-content--->
+                                        <div class="tab-content">
+                                            <!--tab--->
+                                            <div id="tab-1" class="tab-pane fade ">
+                                                <div class="s-card-activ-tittle">Pagos</div>
+                                                <!--s-card-activ-cont--->
+                                                <div class="s-card-activ-cont ">
+                                                    <!--s-card-actv-item--->
+                                                    <div class="s-card-actv-item padd">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <span class="material-icons"> check_circle </span>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            Hay que comprar un SSD y intalar windows
+                                                            <a class="presu-btn" or-id="2" type="button">
+                                                                $1500
+                                                            </a>
+                                                        </div>
+                                                        <div
+                                                            class="text-right padding-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                            <button or-id="2" type="button"
+                                                                class="btn btn-round lx padding-0">
+                                                                <span class="material-icons">receipt </span>
+                                                            </button>
+                                                            <button or-id="2" type="button"
+                                                                class="presu-btn btn btn-round lx padding-0">
+                                                                <span class="material-icons">create </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--s-card-actv-item--->
+                                                    <!--s-card-actv-item--->
+                                                    <div class="s-card-actv-item padd">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <span class="material-icons"> panorama_fish_eye</span>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            Hay que comprar un SSD y intalar windows
+                                                            <a class="presu-btn" or-id="2" type="button">
+                                                                $1500
+                                                            </a>
+                                                        </div>
+                                                        <div
+                                                            class="text-right padding-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">receipt </span>
+                                                            </button>
+                                                            <button or-id="2" type="button"
+                                                                class="presu-btn btn btn-round lx">
+                                                                <span class="material-icons">create </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--s-card-actv-item--->
+                                                    <!--s-card-actv-item--->
+                                                    <div class="s-card-actv-item padd">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <span class="material-icons"> panorama_fish_eye</span>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            Hay que comprar un SSD y intalar windows
+                                                            <a class="presu-btn" or-id="2" type="button">
+                                                                $1500
+                                                            </a>
+                                                        </div>
+                                                        <div
+                                                            class="text-right padding-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">receipt </span>
+                                                            </button>
+                                                            <button or-id="2" type="button"
+                                                                class="presu-btn btn btn-round lx">
+                                                                <span class="material-icons">create </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--s-card-actv-item--->
+                                                </div>
+                                            </div>
+                                            <!--tab
+                                                    <div id="tab-2" class="tab-pane fade">
+                                                        <div class="s-card-activ-tittle">Tareas</div>
+                                                        <div class="s-card-activ-cont">
+                                                            <div class="s-card-actv-item  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                <div class="inputGroup">
+                                                                    <input checked id="option1" name="option1" type="checkbox" />
+                                                                    <label for="option1">
+                                                                        <a target="_blank" rel="nofollow">
+                                                                            <div class="round-icon xs"><span> A </span></div>
+                                                                        </a>
+                                                                        Hay que cambiar el disco hdd por un ssdd necesitamos comprarlo</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="s-card-actv-item col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                <div class="inputGroup">
+                                                                    <input checked id="option2" name="option1" type="checkbox" />
+                                                                    <label for="option2">
+                                                                        <a target="_blank" rel="nofollow">
+                                                                            <div class="round-icon xs"><span> A </span></div>
+                                                                        </a>
+                                                                        Hay que cambiar el disco hdd por un ssdd necesitamos comprarlo</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="s-card-actv-item col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                <div class="inputGroup">
+                                                                    <input checked id="option3" name="option2" type="checkbox" />
+                                                                    <label for="option3">
+                                                                        <a target="_blank" rel="nofollow">
+                                                                            <div class="round-icon xs"><span> A </span></div>
+                                                                        </a>
+                                                                        Hay que cambiar el disco hdd por un ssdd necesitamos comprarlo</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="s-card-activ-footer">
+                                                            <form class="save-new-task" action="post">
+                                                                <div class="margin-t-10 padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                                    <div class="btn-group dropright">
+                                                                        <button class="btn xs btn-more  dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                            <h5>
+                                                                                <div class="round-icon user xs"> A </div>
+                                                                            </h5>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu card pull-left">
+                                                                            <div class="body">
+                                                                                <li class="header">
+                                                                                    Colaboradores
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="round-icon user md" data-toggle="tooltip" data-placement="bottom" data-original-title="Antonio Puglia">M </div>
+                                                                                    <span>mariano@ventasnube.com</span>
+                                                                                    <button type="button" class="btn btn-round xs push-r-15">
+                                                                                        <span class="material-icons">cancel </span>
+                                                                                    </button>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="round-icon user md" data-toggle="tooltip" data-placement="bottom" data-original-title="Antonio Puglia">A </div>
+                                                                                    <span>antonio@ventasnube.com</span>
+                                                                                    <button type="button" class="btn btn-round xs push-r-15">
+                                                                                        <span class="material-icons">cancel </span>
+                                                                                    </button>
+                                                                                </li>
+                                                                            </div>
+                                                                            <li role="separator" class="divider"></li>
+                                                                            <form action="">
+                                                                                <li>
+                                                                                    <input class="form-control" type="text" placeholder="Buscar nuevo colaborador">
+                                                                                </li>
+                                                                                <li class="footer">
+                                                                                    <button type="submit" class="btn btn-primary xs">
+                                                                                        <span class="material-icons">group_add</span>
+                                                                                        Agregar
+                                                                                    </button>
+                                                                                </li>
+                                                                            </form>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                                    <input class="s-card-actv-input" type="text" placeholder="Agregar nueva tarea">
+                                                                </div>
+                                                                <div class="margin-t-10 padding-0 pull-right col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                                    <button type="submit" class="btn btn-round lx pull-right">
+                                                                        <span class="material-icons">playlist_add </span>
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    tab--->
+                                            <div id="tab-3" class="tab-pane fade">
+                                                <div class="s-card-activ-tittle">Actividad</div>
+                                                <div class="s-card-activ-cont">
+                                                    <div class="s-card-actv-item padding-10">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <div class="round-icon xs"><span> A </span></div>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                            Creo la orden
+                                                            <h5 class="direct-chat-timestamp  margin-0 text-right">23
+                                                                Mar 2:05 pm</h5>
+                                                        </div>
+                                                        <div
+                                                            class="padding-0 pull-right col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">create_new_folder</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="s-card-actv-item padding-10">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <div class="round-icon xs"><span> A </span></div>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                            Creo el presupuesto
+                                                            <h5 class="direct-chat-timestamp  margin-0 text-right">23
+                                                                Mar 2:05 pm</h5>
+                                                        </div>
+                                                        <div
+                                                            class="padding-0 pull-right col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">receipt </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="s-card-actv-item padding-10">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <div class="round-icon xs"><span> A </span></div>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                            Envio un msj al cliente
+                                                            <h5 class="direct-chat-timestamp  margin-0 text-right">23
+                                                                Mar 2:05 pm</h5>
+                                                        </div>
+                                                        <div
+                                                            class="padding-0 pull-right col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">message</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="s-card-actv-item padding-10">
+                                                        <div
+                                                            class="padding-0 pull-left col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button type="button" class="btn btn-round lx pull-left">
+                                                                <div class="round-icon xs"><span> m </span></div>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                            Asigno una tarea nueva
+                                                            <h5 class="direct-chat-timestamp  margin-0 text-right">23
+                                                                Mar 2:05 pm</h5>
+                                                        </div>
+                                                        <div
+                                                            class="padding-0 pull-right col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                                            <button or-id="2" type="button" class="btn btn-round lx">
+                                                                <span class="material-icons">event_available</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="s-card-activ-footer">
+                                                    <form class="save-new-task" action="post">
+
+                                                        <div
+                                                            class="s-card-actv-item-text col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                                            <input class="s-card-actv-input" type="text"
+                                                                placeholder="Agregar nueva tarea">
+                                                        </div>
+
+                                                        <div
+                                                            class="margin-t-10 padding-0 pull-right col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                            <div class="btn-group dropright">
+                                                                <button class="btn xs btn-more  dropdown-toggle "
+                                                                    type="button" data-toggle="dropdown">
+                                                                    <h5>
+                                                                        <div class="round-icon pr xd"> A </div>
+                                                                    </h5>
+                                                                </button>
+                                                                <ul class="dropdown-menu card pull-left">
+                                                                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                                    <div class="body">
+                                                                        <li class="header">
+                                                                            Colaboradores
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="round-icon user md"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                data-original-title="Antonio Puglia">M
+                                                                            </div>
+                                                                            <span>mariano@ventasnube.com</span>
+                                                                            <button type="button"
+                                                                                class="btn btn-round xs push-r-15">
+                                                                                <span class="material-icons">cancel
+                                                                                </span>
+                                                                            </button>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="round-icon user md"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                data-original-title="Antonio Puglia">A
+                                                                            </div>
+                                                                            <span>antonio@ventasnube.com</span>
+                                                                            <button type="button"
+                                                                                class="btn btn-round xs push-r-15">
+                                                                                <span class="material-icons">cancel
+                                                                                </span>
+                                                                            </button>
+                                                                        </li>
+                                                                    </div>
+                                                                    <li role="separator" class="divider"></li>
+                                                                    <form action="">
+                                                                        <li>
+                                                                            <input class="form-control" type="text"
+                                                                                placeholder="Buscar nuevo colaborador">
+                                                                        </li>
+                                                                        <li class="footer">
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary xs">
+                                                                                <span
+                                                                                    class="material-icons">group_add</span>
+                                                                                Agregar
+                                                                            </button>
+                                                                        </li>
+                                                                    </form>
+                                                                </ul>
+                                                            </div>
+                                                            <button class="btn btn-round md dropdown-toggle"
+                                                                type="button" data-toggle="dropdown">
+                                                                <div class="round-icon primary">
+                                                                    <span
+                                                                        class="material-icons">sentiment_satisfied_alt</span>
+                                                                </div>
+                                                            </button>
+                                                            <ul class="dropdown-menu pull-left">
+                                                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                                <li class="header">
+                                                                    Estado
+                                                                </li>
+                                                                <li role="separator" class="divider"></li>
+                                                                <li><a href="#"><i class="far fa-smile"></i>
+                                                                        <small>Normal</small></a></li>
+                                                                <li><a href="#"><i class="far fa-flushed"></i>
+                                                                        <small>Apurado</small></a></li>
+                                                                <li><a href="#"><i class="far fa-frown-open"></i>
+                                                                        <small>Urgente</small></a></li>
+                                                                <li><a href="#"><i class="far fa-angry"></i>
+                                                                        <small>Enojado</small></a></li>
+                                                                <li role="separator" class="divider"></li>
+                                                                <li><a href="#"><i class="fas fa-poo"></i>
+                                                                        <small>Problema</small></a></li>
+                                                                <li><a href="#"><i class="fas fa-phone-volume"></i>
+                                                                        <small>Llamada</small></a></li>
+                                                                <li><a href="#"><i class="fas fa-award"></i>
+                                                                        <small>Garantia</small></a></li>
+                                                                <li><a href="#"><i class="fas fa-box-open"></i>
+                                                                        <small>Sin stock</small></a></li>
+
+                                                            </ul>
+                                                            <!--button type="submit" class="btn btn-round md">
+                                                                        <div class="round-icon primary"> 
+                                                                        <span class="material-icons">add_circle</span>
+                                                                        </div>
+                                                                    </button-->
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!--tab--->
+                                            <div id="tab-4" class="tab-pane fade">
+                                                <div class="s-card-activ-tittle">Mensajes</div>
+                                                <div class="direct-chat direct-chat-primary">
+                                                    <!-- /.box-header -->
+                                                    <!-- Conversations are loaded here -->
+                                                    <div class="s-card-activ-cont direct-chat-messages">
+                                                        <!-- Message. Default to the left -->
+                                                        <div class="direct-chat-msg">
+                                                            <div class="direct-chat-info clearfix">
+                                                                <span class="direct-chat-name pull-left">Antonio</span>
+                                                                <span class="direct-chat-timestamp pull-right">23 Jan
+                                                                    2:00 pm</span>
+                                                            </div>
+                                                            <!-- /.direct-chat-info -->
+                                                            <span class="direct-chat-img round-icon pr"> A </span>
+                                                            <!--img class="direct-chat-img" src="http://servernet.ventasnube.com//public/dist/img/avatar5.png" alt="Message User Image"-->
+                                                            <!-- /.direct-chat-img -->
+                                                            <div class="direct-chat-text">
+                                                                Hola que tal si me gustaria saber en que podemos
+                                                                ayudarte la oreden de servicio esta en reparacion y
+                                                                vamos a terne unos dias hasta que terminemos
+                                                            </div>
+                                                            <!-- /.direct-chat-text -->
+                                                        </div>
+                                                        <!-- /.direct-chat-msg -->
+                                                        <!-- Message to the right -->
+                                                        <div class="direct-chat-msg right">
+                                                            <div class="direct-chat-info clearfix">
+                                                                <span class="direct-chat-name pull-right">Cristian
+                                                                    Monges
+
+                                                                </span>
+                                                                <span class="direct-chat-timestamp pull-left">23 Jan
+                                                                    2:05 pm</span>
+                                                            </div>
+                                                            <!-- /.direct-chat-info -->
+                                                            <span class="direct-chat-img round-icon pr"> C </span>
+                                                            <div class="direct-chat-text">
+                                                                Ok estoy esperando que me digas cuando va a estar la
+                                                                ordern de reparacion lista
+                                                            </div>
+                                                            <!-- /.direct-chat-text -->
+                                                        </div>
+                                                        <!-- /.direct-chat-msg -->
+                                                        <div class="direct-chat-msg">
+                                                            <div class="direct-chat-info clearfix">
+                                                                <span class="direct-chat-name pull-left">Antonio</span>
+                                                                <span class="direct-chat-timestamp pull-right">23 Jan
+                                                                    2:00 pm</span>
+                                                            </div>
+                                                            <!-- /.direct-chat-info -->
+                                                            <span class="direct-chat-img round-icon pr"> A </span>
+                                                            <div class="direct-chat-text">
+                                                                Hola que tal si me gustaria saber en que podemos
+                                                                ayudarte la oreden de servicio esta en reparacion y
+                                                                vamos a terne unos dias hasta que terminemos
+                                                            </div>
+                                                            <!-- /.direct-chat-text -->
+                                                        </div>
+                                                        <!-- /.direct-chat-msg -->
+                                                        <!-- Message to the right -->
+                                                        <div class="direct-chat-msg right">
+                                                            <div class="direct-chat-info clearfix">
+                                                                <span class="direct-chat-name pull-right">Cristian
+                                                                    Monges
+
+                                                                </span>
+                                                                <span class="direct-chat-timestamp pull-left">23 Jan
+                                                                    2:05 pm</span>
+                                                            </div>
+                                                            <!-- /.direct-chat-info -->
+                                                            <span class="direct-chat-img round-icon pr"> C </span>
+                                                            <div class="direct-chat-text">
+                                                                Ok estoy esperando que me digas cuando va a estar la
+                                                                ordern de reparacion lista
+                                                            </div>
+                                                            <!-- /.direct-chat-text -->
+                                                        </div>
+                                                        <!-- /.direct-chat-msg -->
+                                                    </div>
+                                                    <!--/.direct-chat-messages-->
+                                                    <!-- /.box-body -->
+                                                    <div class="s-card-activ-footer">
+                                                        <form class="save-new-task" action="post">
+                                                            <div
+                                                                class="s-card-actv-item-text col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                                <input class="s-card-actv-input" type="text"
+                                                                    placeholder="Escribir mensaje">
+                                                            </div>
+                                                            <div
+                                                                class="margin-t-10 padding-0 pull-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                                <button type="submit"
+                                                                    class="btn btn-primary btn-round rot ">
+                                                                    <span class="material-icons">send </span>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--tab-content--->
+                                    </div>
+                                    <!--s-card-footer--->
+                                    <div class="s-card-footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <!-- Con dopdown baja el poper-->
+                                        <div class="btn-group dopdown pull-left" data-toggle="tooltip"
+                                            data-placement="top" data-original-title="Agregar colaborador">
+                                            <button class="btn xs btn-more  dropdown-toggle  margin-t-10" type="button"
+                                                data-toggle="dropdown">
+                                                <h5>
+                                                    <span class="material-icons"> group_add</span>
+                                                </h5>
+                                            </button>
+                                            <ul class="dropdown-menu card ">
+                                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                                <div class="body">
+                                                    <li class="header">
+                                                        Agregar colaborador
+                                                    </li>
+                                                    <form action="">
+                                                        <li>
+                                                            <input class="form-control" type="text"
+                                                                placeholder="Buscar nuevo usuario">
+                                                        </li>
+                                                    </form>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li>
+                                                        <div class="round-icon user md" data-toggle="tooltip"
+                                                            data-placement="bottom"
+                                                            data-original-title="Antonio Puglia">M </div>
+                                                        <small>mariano@ventasnube.com</small>
+                                                        <button type="button" class="btn btn-round xs push-r-15">
+                                                            <span class="material-icons">cancel </span>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <div class="round-icon user md" data-toggle="tooltip"
+                                                            data-placement="bottom"
+                                                            data-original-title="Antonio Puglia">A </div>
+                                                        <small>antonio@ventasnube.com</small>
+                                                        <button type="button" class="btn btn-round xs push-r-15">
+                                                            <span class="material-icons">cancel </span>
+                                                        </button>
+                                                    </li>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <button type="button" class="btn btn-primary text margin-t-10"
+                                            data-toggle="dropdown" aria-expanded="true">
+                                            <span class="material-icons"> chevron_right </span> Nuevo
+                                        </button>
+                                        <ul
+                                            class="dropdown-menu card  pull-right  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                            <li class="header">
+                                                Etapa
+                                            </li>
+                                            <div class="status">
+
+                                                <li><a href="#" class="btn-status btn btn-dark text"> <span
+                                                            class="material-icons"> chevron_right
+                                                        </span><small>Nuevo</small></a></li>
+                                                <li><a href="#" class="btn-status btn btn-warning text"> <span
+                                                            class="material-icons"> chevron_right
+                                                        </span><small>Presupuesto</small></a></li>
+                                                <li><a href="#" class="btn-status btn btn-success  text"> <span
+                                                            class="material-icons"> chevron_right
+                                                        </span><small>Aceptado</small></a></li>
+                                                <li><a href="#" class="btn-status btn btn-danger text"> <span
+                                                            class="material-icons"> chevron_right
+                                                        </span><small>Rechazado</small></a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="#" class="btn-status btn btn-secondary text"> <span
+                                                            class="material-icons"> chevron_right </span><small>En
+                                                            reparacion</small></a></li>
+                                                <li><a href="#" class="btn-status btn btn-warning text"> <span
+                                                            class="material-icons"> chevron_right
+                                                        </span><small>Test</small></a></li>
+
+                                            </div>
+
+                                        </ul>
+
+                                        <button or-id="1" type="button"
+                                            class="cobrar-btn btn btn-default pull-right  margin-t-10">
+                                            <span class="material-icons">monetization_on</span>
+                                            Cobrar
+                                        </button>
+                                        <!--footer left--->
+                                    </div>
+                                    <!--s-card-body--->
+                                </div>
+                                <!--s-card --->
+                            </div>
+                        </div>
+                    </div>
+
+                    {{/ifEquals}}
+                    {{/each}}
+
+                </div>
+                <div class="board-new-item">
+                    <div class="icon">
+                        <span class="material-icons">
+                            add_circle_outline
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<!-- Bootstrap.min.JS -->
+<!-- VentasNubeSkin.css -->
+<link rel="stylesheet" href="/public/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
+
+<script type="text/javascript" src="/public/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script>
+
+ $(document).on('click', '#edit_board_group_btn', function (event) {
+        //  alert('holaaaa');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        var m_s_id = $(this).attr('m_s_id'); //Trae modulo id
+
+       // alert(m_s_id);
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'edit_board_group_template_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+              m_id: m_id,
+              m_t_id: m_t_id,
+              m_s_id:m_s_id,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+
+ // CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
+    function get_board_group_size() {
+
+        var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
+        var board_column_size =  $('.board-column').first('.board-group').width();//Tomo el ancho de los grupos de ordenes
+        var number_column =  $('.board-column').length;//Tomo la cantidad de grupos que hay
+        var colum_size = board_column_size + 20;
+        var board_new_group_size = colum_size * number_column;
+        $('.board-group').width(board_new_group_size);
+         console.log(board_new_group_size);
+        //    var divs = document.getElementsByClassName(".board-column").length;
+        //  console.log("Hay " + divs + " Etapas");
+        //   alert(board_new_group_size);
+    }
+    /*
+  // BOARD VISTA  CONFIGURO LOS PARAMETROS DEL MODULO Y LO ENVIO AL COMPILADOR
+  function get_board_card_group( m_id,m_t_id) {
+          var url_now = getUrl();
+          var m_id = url_now.m_id;
+          var m_t_id = url_now.m_t_id;
+          var pacht = 'board'; //CONTROLADOR PRINCIPAL
+          var controler_data = 'board_card_data'; //NOMBRE DE CONTROLADOR DATA
+          var controler_template = 'board_card_template'; //NOMBRE CONTROLADOR TEMPLATE      
+          var id_copiled = '#board_card_group_compiled'; // ID DE COMPILACION //  
+          var data = {
+              m_id: m_id,
+              m_t_id:  m_t_id,
+          }
+          console.log(data);
+          get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+      };
+  
+  get_board_card_group();
+      */
+    function board_shortable_show() {
+        // Logica de Muui 
+        var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
+        var columnGrids = [];
+        var boardGrid;
+        // Defina las cuadrículas de columnas para que podamos arrastrarlas
+        // artículos alrededor.
+        itemContainers.forEach(function (container) {
+            // Instanciar cuadrícula de columna.
+            var grid = new Muuri(container, {
+                items: '.board-item',
+                //card: '.s-card',
+                layoutDuration: 400,
+                layoutEasing: 'ease',
+                itemPlaceholderClass: 'board-item-placeholder',
+                dragEnabled: true,
+                dragSort: function () {
+                    return columnGrids;
+                },
+                dragStartPredicate: function (item, e) {
+                    // Start moving the item after the item has been dragged for one second.
+                    if (e.deltaTime > 100) {
+                        return true;
+                    }
+                },
+                //  threshold: 90,
+                //     action: 'swap',
+                dragSortInterval: 0,
+                dragContainer: document.body,
+                dragReleaseDuration: 400,
+                dragReleaseEasing: 'ease'
+                //  dragReleaseEasing: 'ease-out'
+
+            })
+                //Lo que pasa cuando se inicia el movimiento
+                .on('dragStart', function (item) {
+                    // Establezcamos widht / height fijo al elemento arrastrado
+                    // para que no se estire involuntariamente cuando
+                    // se adjunta al cuerpo del documento para
+                    // duración del arrastre.
+                    item.getElement().style.width = item.getWidth() + 'px';
+                    item.getElement().style.height = item.getHeight() + 'px';
+                })
+                //Lo que pasa cuando el elemento fue movido a la posicion
+                .on('dragReleaseEnd', function (item) {
+                    // Eliminemos el ancho / alto fijo del
+                    // elemento arrastrado ahora que está de vuelta en una cuadrícula
+                    // columna y puede ajustarse libremente a su
+                    // alrededores.
+                    item.getElement().style.width = '';
+                    item.getElement().style.height = '';
+                    // Por si acaso, vamos a actualizar las dimensiones de todos los elementos.
+                    // en caso de que arrastrar el elemento causara que otros elementos
+                    // ser de diferente tamaño.
+                    columnGrids.forEach(function (grid) {
+                        grid.refreshItems();
+                    });
+                    //traigo el id del elemto que muevo
+                    // alert('Voy '+  itemB.getElement().id);
+                    /*    var aId = parseInt(item.getElement().getAttribute('order'));
+            var groupId = parseInt(grid.getElement().getAttribute('group-id'));
+            // var position = item.getPosition();
+            var position = parseInt(item.getPosition().top);
+            var elem = item.getElement();
+            var indice = item.getElement().fromIndex;
+            alert('Id de la orden:' + aId);
+            alert('Id Del grupo nuevo:' + groupId);
+            alert('pixeles del grid:' + position);
+            alert('indice:' + indice);
+            alert(items);
+*/
+                })
+                .on('layoutStart', function () {
+                    // Mantengamos la cuadrícula del tablero actualizada con
+                    // cambios de dimensiones de cuadrículas de columnas.
+                    boardGrid.refreshItems().layout();
+                });
+            grid.on('sort', function (currentOrder, previousOrder) {
+                alert(currentOrder);
+                alert(previousOrder);
+            });
+            // Agregue la referencia de cuadrícula de columna a las cuadrículas de columna
+            // array, para que podamos acceder a él más adelante.
+            columnGrids.push(grid);
+            //var aId = parseInt(itemB.getElement().getAttribute());
+            //  var bId = parseInt(itemA.getElement().getAttribute());
+            //   alert(aId + bId);
+        });
+        //  Crea una instancia de la cuadrícula del tablero para que podamos arrastrarlos
+        //  columnas alrededor.
+        boardGrid = new Muuri('.board', {
+            layoutDuration: 400,
+            layoutEasing: 'ease',
+            dragEnabled: false,
+            dragSortInterval: 0,
+            dragStartPredicate: {
+                handle: '.board-column-header'
+            },
+            dragReleaseDuration: 400,
+            dragReleaseEasing: 'ease'
+        });
+    };
+
+    function datetimePiker() {
+        $('.datetimepicker').bootstrapMaterialDatePicker({
+            format: 'YYYY/MM/DD HH:mm',
+            //   format: 'DD/MM/YYYY HH:mm',
+            // Y-m-d H:i:s
+            lang: 'es',
+            weekStart: 1,
+            nowText: 'HOY',
+            cancelText: 'CANCELAR',
+            shortTime: true,
+            nowButton: true,
+            switchOnClick: true
+        });
+    }
+    datetimePiker();
+
+    get_board_group_size(); //Agranda el div para las etapas
+    scrollerMove();// Movimiento orizontal
+    board_shortable_show(); //constructor de vista de las etapas
+ 
+//get_board_group();
+</script>

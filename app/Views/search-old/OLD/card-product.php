@@ -1,0 +1,76 @@
+
+
+   <!--s-card Producto--->
+   <div class="s-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <!--s-card-body--->
+                <div class="s-card-body col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- s-card-header--->
+                    <div class="s-card-header col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        Nombre completo del producto
+                        <!-- s-card-header--->
+                    </div>
+                    <!-- s-card-main--->
+                    <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!--s-card-img--->
+                        <div class="s-card-img col-xs-3 col-sm-4 col-md-4 col-lg-4">
+                            <a href="#" class="">
+                                <img src="https://cnet4.cbsistatic.com/img/HguPRi2Rkr0ZAqXIIPegboHNUfg=/1092x0/2019/05/31/a7fd03cc-e072-43fa-bdb3-a4e910099053/samsung-notebook-7-force.jpg" alt="200x200">
+                            </a>
+                            <!--s-card-img--->
+                        </div>
+                        <!--s-card-content--->
+                        <div class="s-card-content col-xs-9 col-sm-8 col-md-8 col-lg-8">
+                            <div class="s-card-tittle" data-toggle="tooltip" data-placement="bottom">
+                                <span class="s-card-cat pull-left">#gaseosas</span>
+                            </div>
+                            <!--s-card-price--->
+                            <div class="s-card-price" data-toggle="tooltip" data-placement="bottom" data-original-title="Precio al publico $1000">
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-more dropdown-toggle " data-toggle="dropdown" aria-expanded="true">
+                                        <div class="round-icon pr bg-sucess">
+                                            p
+                                        </div>
+                                        <span class="s-card-number">$1000</span>
+                                    </button>
+                                    <ul class="dropdown-menu  text-left">
+                                        <li>
+                                            <a href="#" title="Detalles de Venta">
+                                                Tienda: $500</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" title="Detalles de Venta">
+                                                Mayorista: $300</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--s-card-price--->
+                            </div>
+                            <!--s-card-footer--->
+                            <div class="s-card-footer">
+                                <span class="s-card-more ">
+                                    <div class="dropup">
+                                        <button type="button" class="btn btn-round xl" class="btn btn-more dropdown-toggle " data-toggle="dropdown" aria-expanded="true">
+                                            <span class="material-icons"> more_horiz </span>
+                                        </button>
+                                        <ul class="dropdown-menu text-left">
+                                            <li>
+                                                <a target="_blank" rel="nofollow" href="https://api.whatsapp.com/send?phone=541162588776&text= Hola te contactamos ">
+                                                    <i class="fab fa-whatsapp"></i> Enviar Whatsapp</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" title="Editar">
+                                                    <i class="material-icons">create</i> Editar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </span>
+                                <!--s-card-footer--->
+                            </div>
+                            <!--s-card-content--->
+                        </div>
+                        <!-- s-card-main--->
+                    </div>
+                    <!--s-card-body--->
+                </div>
+                <!--s-card --->
+            </div>

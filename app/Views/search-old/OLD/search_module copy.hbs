@@ -1,0 +1,387 @@
+<!--searchBox -->
+<div id="searchBox" class="search-content ">
+    <!--search-header -->
+    <div class="search-header">
+        <div class="search-nav">
+            <button type="button" class="search_close">
+                <span class="material-icons">arrow_back</span>
+            </button>
+            <div class="group">
+                <!--span class="badge round xs">Productos <button>
+                        <span class="material-icons">cancel</span></button>
+                </span-->
+                <div class="search_cat_btn">
+                    <span class="material-icons">widgets</span>
+                    <span class="hidden-xs hidden-sm">Productos</span>
+
+                </div>
+                <input class="search-input s-card-actv-input" type="text" id="searchInput" name="searchInput"
+                    placeholder="Buscar.." />
+            </div>
+
+            <button type="button" class="search_button_dell search-close"><span class="material-icons">cancel</span>
+            </button>
+
+            <button type="button" class="cart_button search-close">
+                <span class="material-icons">shopping_cart</span>
+                <span id="cart-number-1" class="cart-number">0</span>
+            </button>
+
+        </div>
+        <!--search-header -->
+    </div>
+    <!--search-body -->
+    <div id="search-body" class="search-body ">
+        <!--search-title -->
+        <!--search-result -->
+        <div class="search-title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <button type="button" search_cat="search_serice"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">widgets</i>
+                <span search_m_t_name="product" class="hidden-xs hidden-sm">Productos</span>
+            </button>
+            <button type="button" search_cat="search_serice"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">home_repair_service</i>
+                <span search_m_t_name="service" class="hidden-xs hidden-sm">Servicios</span>
+            </button>
+            <button type="button" search_cat="search_contact"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">people_alt</i>
+                <span search_m_t_name="contact" class="hidden-xs hidden-sm">Contactos</span>
+            </button>
+            <div class="btn-group dopdown">
+                {{#each m_now}}
+                <button search_cat="search_board" id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" type="button"
+                    class="search_button_cat search_button_board  dropdown-toggle  select-btn dropdown-toggle btn xl btn-more  btn-primary line"
+                    data-toggle="dropdown" aria-expanded="true">
+                    <span class="material-icons">{{m_t_icon}}</span>
+                    <span class="hidden-xs hidden-sm this_m_t_name">{{m_t_name}}</span>
+                    <i class="hidden-xs hidden-sm material-icons">expand_more</i>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    {{#each ../m_t}}
+                    <li class="margin-5">
+                        <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{m_url}}}"
+                            class="search_button_board_li btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                            data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                            <span class="material-icons">{{m_t_icon}}</span>
+                            <span class="">{{m_t_name}}</span>
+                        </a>
+                        <span class="search_m_t hidden">
+                            <i class="material-icons">{{m_t_icon}}</i>
+                            <span search_m_t_name="{{m_t_name}}"
+                                class="hidden-xs hidden-sm search_m_t_name">{{m_t_name}}</span>
+                        </span>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/each}}
+            </div>
+
+
+
+
+        </div>
+        <div class="search-result col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div id="card_order_result_items"> </div>
+            <div id="card_contact_result_items"> </div>
+            <div id="card_product_result_items"> </div>
+        </div>
+
+        <!--search-body -->
+    </div>
+    <!--searchBox -->
+</div>
+<script>
+/*
+    selectorDefine un selector para filtrar los resultados. Necesario.
+    ___________________________________________________________________
+    $lt Coincide con los campos "menos que" este.
+    $gt Coincidir con los campos "mayor que" este.
+    $lte Haga coincidir los campos "menor o igual que" este.
+    $gte Coincidir con los campos "mayor o igual que" este.
+    $eq Coincidir con campos iguales a este.
+    $ne Los campos coincidentes no son iguales a este.
+    $exists Verdadero si el campo debería existir, falso en caso contrario.
+    $type Uno de: "nulo", "booleano", "número", "cadena", "matriz" u "objeto".
+    $in El campo del documento debe existir en la lista proporcionada.
+    $and Coincide si todos los selectores de la matriz coinciden.
+    $nin El campo del documento no debe existir en la lista proporcionada.
+    $all Coincide con un valor de matriz si contiene todos los elementos de la matriz de argumentos.
+    $size Condición especial para igualar la longitud de un campo de matriz en un documento.
+    $or Coincide si alguno de los selectores de la matriz coincide. Todos los selectores deben utilizar el mismo índice.
+    $nor Coincide si ninguno de los selectores de la matriz coincide.
+    $not Coincide si el selector dado no coincide.
+    $mod Coincide con documentos donde (campo% Divisor == resto) es verdadero, y solo cuando el campo del documento es un número entero.
+    $regex Un patrón de expresión regular para compararlo con el campo del documento.
+    $elemMatch Coincide con todos los documentos que contienen un campo de matriz con al menos un elemento que coincide con todos los criterios de consulta especificados.
+    */
+
+
+    /
+
+    //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
+    /*function get_search_items_ajax_db(pacht, controler_data, controler_template, id_copiled, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
+         // ID DE COMPILACION //      
+         var id_copiled = $(id_copiled);
+         //// VARIABLES de URLS /// 
+         var url_now = getUrl();
+         var domain = url_now.domain_m_url;
+         var domain_pacht = url_now.domain_pacht;
+         //// CONTRUCTOR de URLS /// 
+         //   var url_data = 'https://' + domain + '/' + pacht + '/' + controler_data;
+         // var url_template = 'https://' + domain + '/' + pacht + '/' + controler_template;
+         var url_data = '/' + pacht + '/' + controler_data;
+         var url_template = '/' + pacht + '/' + controler_template;
+         // console.log('GET MODULO DOMAIN: ' + domain_pacht);
+         $.ajax({
+             url: url_data, //Trae todos los modulos de usuario de la secion
+             data: data,
+             type: "POST",
+             dataType: "json",
+             success: function (response) {
+                 if (response) { ///// IMPRIME ////     
+                     charge_all_docs_local(response);
+                     get_search_items_local_db(url_template, id_copiled, data);
+                     // console.log(response);
+                     //  console.log(response);
+                     // renderHandlebarsTemplate(url_template, id_copiled, response);
+                 } else {
+                     return response, // Devulevo el array resultado    
+                         Snackbar.show({
+                             text: 'No hay resultados',
+                             actionText: 'ok',
+                             actionTextColor: "#0575e6",
+                         });
+                 };
+             }
+         });
+     };
+ 
+ */
+
+    //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
+    function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
+        // ID DE COMPILACION //      
+        var id_copiled = $(id_copiled);
+        var search_m_input = '*';
+        //// CONTRUCTOR de URLS /// 
+        var controler_data = 'search/search_item_data_sql'; //NOMBRE DE CONTROLADOR DATA
+        //  var controler_template = 'search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#card_product_result_items'; // ID DE COMPILACION //  
+        // console.log('GET MODULO DOMAIN: ' + domain_pacht);
+        var data = search_m_input;
+        $.ajax({
+            url: 'search/search_item_data_sql', //Trae todos los modulos de usuario de la secion
+            data: data,
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                if (response) { ///// IMPRIME ////     
+                    charge_all_docs_local(response);
+                    console.log(response);
+                } else {
+                    return response, // Devulevo el array resultado    
+                        Snackbar.show({
+                            text: 'No hay resultados',
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                        });
+                };
+            }
+        });
+    };
+
+    //get_items_sql_db();
+
+    ///----(Busco los datos en la PouncDB y compilo la vista)-----/
+    function get_search_items(data) {
+        var pacht = 'search'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'search_card_product_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#card_product_result_items'; // ID DE COMPILACION //  
+        //var data = search_m_input;
+        console.log(data);
+        get_search_items_ajax_db(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+    };
+    /*
+        function get_search_punchDb_ok(data) {
+            //var controler_data = 'search/search_card_product_data'; //NOMBRE DE CONTROLADOR DATA
+            var url_template = 'search/search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+            var id_copiled = '#card_product_result_items'; // ID DE COMPILACION // 
+            db.allDocs({
+                include_docs: true,
+                // attachments: true,
+                startkey: data,
+                endkey: data + '\ufff0',
+                // limit: 18,
+                // key:data
+                //inclusive_end:data
+                // endkey: RegExp(data, 'i')
+            }).then(function (result) {
+                var search_result = {
+                    search_product: result.rows
+                }
+                renderHandlebarsTemplate(url_template, id_copiled, search_result);
+                console.log(result);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        };
+    */
+    /*
+        // Metodo de busqueda por id funcionando ok
+ function get_search_punchDb(data) {
+            //var controler_data = 'search/search_card_product_data'; //NOMBRE DE CONTROLADOR DATA
+            var url_template = 'search/search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+            var id_copiled = '#card_product_result_items'; // ID DE COMPILACION // 
+            db.allDocs({
+                include_docs: true,
+                // attachments: true,
+                startkey: data,
+                endkey: data + '\ufff0',
+                limit: 18,
+                // key:data
+                //inclusive_end:data
+                // endkey: RegExp(data, 'i')
+            }).then(function (result) {
+                var search_result = {
+                    search_product: result.rows
+                }
+                renderHandlebarsTemplate(url_template, id_copiled, search_result);
+                console.log(result);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        };
+    */
+    documents = 'No hay documentos'
+    fuse = '';
+    //Tomo los datos de pouch y creo un array personalizado y lo cargo en la variable global documents
+    function get_all_item_punchDb() {
+        db.allDocs({
+            include_docs: true,
+            // attachments: true,
+            //   startkey: data,
+            //  endkey: data + '\ufff0',
+            //limit: 18,
+            // key:data
+            //inclusive_end:data
+            // endkey: RegExp(data, 'i')
+        }).then(function (result) {
+            new_array = [];
+            items = result.rows;
+            //   console.log(items)
+            for (i = 0; i < items.length; i++) {
+                // hacer algo con a[i];
+                var new_item = {
+                    name: items[i].doc.descricao,
+                    cat: items[i].doc.cat,
+                    doc: items[i].doc
+                }
+                new_array.push(new_item);
+            }
+            documents = new_array;//Array Formateado
+            var options = {
+                // isCaseSensitive: false,
+                // includeScore: false,
+                // shouldSort: true,
+                // includeMatches: false,
+                // findAllMatches: false,
+                // minMatchCharLength: 1,
+                // location: 0,
+                // threshold: 0.6,
+                // distance: 100,
+                // useExtendedSearch: false,
+                // ignoreLocation: false,
+                // ignoreFieldNorm: false,
+                keys: [
+                    "name",
+                    "cat"
+                ]
+            };
+            // var options = { keys: ['title', 'author.firstName'] }
+            //Create the Fuse index
+            var myIndex = Fuse.createIndex(options.keys, documents);
+            // initialize Fuse with the index
+            fuse = new Fuse(documents, options, myIndex);
+            //fuse = new Fuse(documents, options);
+            //console.log(fuse);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+    //tomo el array documents y los recorro con fuse.js y compilo la vista
+    function search_item_js(search_val) {
+        //console.log(fuse);
+        var url_template = 'search/search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#card_product_result_items'; // ID DE COMPILACION // 
+        // console.log('cargo fuse' + fuse);
+        var result = fuse.search(search_val, { limit: 18 });
+        //fuse.search(this.itemTitle, {limit: 20});
+        var search_result = {
+            search_product: result
+        }
+        if (result.length > 0) {
+            renderHandlebarsTemplate(url_template, id_copiled, search_result);
+         //   console.log(result);
+        }
+        else {
+            $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>')
+        }
+    }
+
+    //  console.log(documents);
+    //Input de busqueda 
+    $("input[name=searchInput]").focusin(function (documents) {
+        event.preventDefault();
+        console.log('Creo el array con los items de PounchDb');
+        get_all_item_punchDb();
+    });
+    $("input[name=searchInput]").keyup(function () {
+        event.preventDefault();
+        search_m_input = $(this).val();
+        btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+        search_item_js(search_m_input);
+    });
+
+    //Botones de tipos de busqueda 
+    $(document).on('click', '.search_button_cat', function (event) {
+        var search_cat_selected_btn = $(this).html();
+        var search_cat_selected = $(this).attr('search_cat');
+        var search_cat_input = $('.search_cat_btn').html();
+
+        $('.search-title').find('.search_button_cat').removeClass('active');
+        $(this).addClass('active');
+
+        //alert(search_cat_selected_btn);
+        $('.search_cat_btn').html(search_cat_selected_btn);
+        //$('#searchInput').val('');
+        $('#searchInput').focus();
+    });
+
+    $(document).on('click', '.search_button_board_li', function (event) {
+        var search_cat_selected_btn = $(this).html();
+
+        var search_cat_selected_btn_print = $(this).parent().find('.search_m_t').html();
+
+        var search_cat_selected = $(this).attr('search_cat');
+
+        var search_cat_input = $('.search_cat_btn').html();
+        var search_cat_btn = $('.search_cat_btn').html();
+
+        $('.search-title').find('.search_button_board').removeClass('active');
+        $('.search-title').find('.search_button_board').addClass('active');
+        // $(this).addClass('active');
+        // alert(search_cat_selected_btn);
+        $('.search_button_board').html(search_cat_selected_btn_print + ' <i class="hidden-xs hidden-sm material-icons">expand_more</i>');
+        $('.search_cat_btn').html(search_cat_selected_btn_print);
+        // $('#searchInput').val('');
+        $('#searchInput').focus();
+    });
+
+   // get_items_sql_db();
+
+   //load_product_cart();
+</script>

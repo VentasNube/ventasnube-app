@@ -1,0 +1,218 @@
+<div id="right_main" class="right_main col-xs-12 col-sm-12">
+    <!--div id="right_main" class="right_main col-xs-12 col-sm-12 move-right"-->
+    <!--tabs-main--->
+    <div class="righ_nav_header col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <!--span class="material-icons">receipt</span>Nueva -->
+        <div class="btn-group dopdown">
+            {{#each m_now}}
+            <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
+                class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+                data-toggle="dropdown" aria-expanded="true">
+                <span class="material-icons">{{m_t_icon}}</span>
+                <span class="this_m_t_name">Ventas</span>
+                <i class="material-icons">expand_more</i>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                {{#each ../m_t}}
+                <li class="margin-5">
+                    <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{m_url}}}"
+                        class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                        data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                        <span class="material-icons">{{m_t_icon}}</span>
+                        <span class="this_m_t_name">{{m_t_name}}</span>
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+            {{/each}}
+        </div>
+        <button id="" type="button" class="btn btn-default cart_button_close right_nav_close pull-right">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+
+    <div class="righ_nav_users col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <form class="save-new-task" action="post">
+            <div class="margin-t-10 pull-left col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                <div class="btn-group dropright">
+                    <button type="button" class="btn btn-round lx dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="round-icon pr"><span> m </span></div>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="header">Listas de precios</li>
+                        <li>
+                            <a href="#">
+                                <div class="round-icon pr"><span> P </span></div> Lista Pubico
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="round-icon pr"><span> m </span></div> Lista Mayorista
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="s-card-actv-item-text col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="search-box">
+                    <input id="cart_user_input" class="form-control" type="text" placeholder="Buscar contacto..">
+                    <div class="subjet">
+                        <!--s-card-actv-item--->
+                        <div class="s-card-actv-item padd">
+                            <div class="s-card-actv-item-body">
+                                <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="/public/dist/img/product/min/arroz.jpg" alt="">
+                                </div>
+                                <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="s-card-actv-item-name">
+                                        Smart phone samsung s20 ultra completo con toda la descripcion
+                                    </div>
+                                    <span class="s-card-actv-item-price-left">
+                                        <!--span class="">COD:100</span-->
+                                        <span class="s-card-actv-item-cat">#gaseosa</span>
+                                    </span>
+                                    <span class="s-card-actv-item-price-right">
+                                        <span>x100</span>
+                                        <span class="tot"> $1000</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="margin-t-10 col-xs-9 col-sm-2 col-md-2 col-lg-2">
+                <button class="btn btn-primary md">
+                    <span class="material-icons">person_add</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="tabs-main default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
+            <li class="ripple  active">
+                <a data-toggle="tab" href="#t1">
+                    <span class="cart_n cart-number">0</span>
+                    <?= lang("Body.t_cart") ?>
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#t2">
+                    <span class="fav_n">0</span>
+                    <?= lang("Body.t_fav") ?>
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="t1" class="tab-pane fade in active">
+                <!--s-card-activ-cont--->
+                <div id="product_cart_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="t2" class="tab-pane fade in">
+                <div id="product_fav_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
+    </div>
+
+    <div class="s-card-activ-footer b-tiket">
+        <div id="cart_total_items">
+            <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                <div class="row">
+                                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        <span class="material-icons">
+                                            arrow_drop_down_circle
+                                        </span>
+                                        <?= lang("Body.total") ?>
+                                    </h3>
+                                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+                                        <span id="total_cart_neto">
+                                            0
+                                        </span>
+                                    </h3>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="row">
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                    <?= lang("Body.t_service") ?>:
+                                </h4>
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+                                    <span id="total_neto_service">0</span>
+                                </h4>
+                            </div>
+                            <div class="row ">
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                    <?= lang("Body.t_product") ?>:
+                                </h4>
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+
+
+                                    <span iid="total_neto_prod">0</span>
+                                </h4>
+                            </div>
+                            <div class="row text-red">
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                    <?= lang("Body.t_dicount") ?>:
+                                </h4>
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                    $
+                                    <span id="total_neto_discount">0</span>
+                                </h4>
+                            </div>
+                            <div class="row text-red">
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                    <?= lang("Body.t_tax") ?>:
+                                </h4>
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">(%21)
+                                    <span id="total_neto_tax">0</span>
+                                </h4>
+                            </div>
+                            <div class="row text-green">
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                    <?= lang("Body.t_pay") ?>:
+                                </h4>
+                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">$
+                                    <span id="total_neto_pay">0</span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="btn-group margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
+            <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
+    </div-->
+
+    <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
+        <button or-id="2" type="button" class="cobrar-btn btn btn-primary">
+            <span class="material-icons">monetization_on</span>
+            <?= lang("Body.b_add_order") ?>
+        </button>
+    </div>
+
+</div>
+<script>
+    //#### EJECUTO EL CODIGO DEL CART APRA Q INICIALICE CUANDO LO CARGO///
+    get_cart();
+</script>

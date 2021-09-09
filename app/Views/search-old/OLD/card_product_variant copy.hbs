@@ -1,0 +1,45 @@
+
+{{#each variations}}
+<li>
+    <a class="text-left card_item_select_price" href="#">
+    {{#each pictures}}
+
+        <div class="s-card-mini-img ">
+            <img src="{{{this.min}}}" alt="">
+        </div>
+        
+    {{/each}}
+    
+    {{#each attribute_combinations as | ac |}}
+        <!--div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{value}}}"
+                data-original-title="{{{value}}}">
+            <span>
+                    {{trimString value_name}}
+            </span>
+        </div-->
+
+        <label >{{value_name}}</label>
+   
+    {{/each}}
+
+    
+ <label > Stock:
+    {{#stock stock_invetary}}
+     
+    {{/stock}}
+</label>
+    {{!--#stock stock_invetary}}
+        <label> Stock:({{quantity}})</label>
+    {{/stock--}}
+
+    {{!--#list stock_invetary}}
+      {{@index}}.<label> Stock:({{quantity}})</label>
+    {{/list--}}
+
+    {{!--#with (lookup stock_invetary [quantity])~}}
+        {{quantity}}
+    {{/with--}}
+
+    </a>
+</li>
+{{/each}}

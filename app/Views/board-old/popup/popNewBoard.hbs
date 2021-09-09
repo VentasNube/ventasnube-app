@@ -1,0 +1,830 @@
+<div class="modal-dialog modal-xl" role="document">
+
+    <div class="modal-content">
+        <form class="">
+            <div class="modal-header">
+                <div class="modal-nav">
+                    <span class="back-arrow btn-previus">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                        Crear un nuevo tablero
+                    </span>
+                </div>
+            </div>
+            <div id="modal-body" class="">
+                <div id="step-1" class="modal-body text-left col-sm-12 col-md-12 col-xs-12" style="
+                                        background-image: url(/public/dist/img/tuto/new-board-01.svg)!important;
+                                        background-repeat: no-repeat!important;
+                                        background-size: 230px 230px!important;
+                                        background-position: 94% 15% !important; ">
+                    <div class="text-left ">
+                        <h3 class="margin-20">Te vamos a guiar en unos simples pasos para crear tu nuevo tablero Kanban.
+                        </h3>
+                        <h4 class="margin-20"><strong> Que tipo de actividad vas a organizar en este tablero?</strong>
+                        </h4>
+                        <div class="margin-l-30">
+                            <p>
+                                <input icon="local_shipping" bg-color="btn-danger" type="radio" name="board-type"
+                                    value="purchase" class="radio-chek" id="radio-1">
+                                <label for="radio-1"><strong> Comprar</strong> <small> productos para mi catalogo a mis
+                                        contactos.</small></label>
+                            </p>
+                            <p>
+                                <input icon="shopping_cart" bg-color="btn-primary" type="radio" name="board-type"
+                                    value="sell" class="radio-chek" id="radio-2">
+                                <label for="radio-2"> <strong>Vender</strong> <small>productos del catalogo a mis
+                                        contactos.</small></label>
+                            </p>
+                            <p>
+                                <input icon="airline_seat_flat" bg-color="btn-success" type="radio" name="board-type"
+                                    value="service-contact" class="radio-chek" id="radio-4">
+                                <label for="radio-4"> <strong>Atencion con servicios</strong> <small> a mis
+                                        contactos.</small></label>
+                            </p>
+                            <p>
+                                <input icon="devices_other" bg-color="btn-secondary" type="radio" name="board-type"
+                                    value="service-objet" class="radio-chek" id="radio-5">
+                                <label for="radio-5"> <strong>Atencion con servicios</strong><small> a los objetos o
+                                        pacientes que traen mis contactos. </small></label>
+                            </p>
+                        </div>
+                        <div id="new-board-step-1">
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong> Como lo vas a llamar?</strong>
+                                </label>
+                                <input id="new-board-name" class="form-control" type="text"
+                                    placeholder="Compras, ventas etc.. " name="board-name" value="" />
+                            </div>
+                            <div id="board-type-icon" class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong> Elije un icono</strong>
+                                </label>
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span id="bt-text-icon" class="btn btn-default">
+                                        Seleccionar
+                                        <span class="material-icons">arrow_drop_down</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_shipping </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">add_shopping_cart </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">store </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_basket </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_cart</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_bag</span></li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">handyman</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">design_services</span></li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">cleaning_services</span></li>
+
+
+
+                                    <li board-icon="btn-primary" class=" board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">devices_other </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">computer</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">desktop_mac</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">tablet_mac</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">phone_iphone</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">videogame_asset</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">speaker</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">linked_camera</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">watch </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">kitchen </span></li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">monetization_on</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">headset_mic</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_activity</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_bike</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">two_wheeler</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_car</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_boat</span></li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">airport_shuttle</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">room_service</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">business_center</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">whatshot</span></li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_florist</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">cake</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">flash_on</span></li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">restaurant </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">fastfood </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_pizza </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_bar</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_cafe</span></li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_offer </span></li>
+
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">weekend </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">extension </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">domain </span></li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">airline_seat_flat </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">hot_tub</span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">pets </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">content_cut </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">fitness_center </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">sentiment_very_dissatisfied </span></li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">school </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">local_laundry_service </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">book_online </span></li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">biotech </span></li>
+                                </ul>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong> Selecciona un color</strong>
+                                </label>
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <span bg-color="" id="bg-select-color" class="btn btn-default">
+                                        <span id="bg-select-color" class="material-icons">
+                                            palette
+                                        </span>
+                                        <span id="bg-select-text"> Seleccionar</span>
+                                        <span class="material-icons">arrow_drop_down</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-danger" class="bg-color btn-status btn btn-danger"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="step-2" class="modal-body text-left col-sm-12 col-md-12 col-xs-12">
+                    <h3 class="margin-20 text-left">
+                        Algunas opciones de seguridad...<p>
+                        </p>
+                        <small>Si no estas seguro, siempre podras modificar estas opciones. </small>
+                        </p>
+                    </h3>
+
+                    <div class="margin-l-10">
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4><strong>Quienes van a ingresen las ordenes?</strong></h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input type="radio" checked="" name="board_mode" value="1" class="radio-chek"
+                                        id="radio-6">
+                                    <label for="radio-6">
+                                        <strong>Los usuarios</strong> <small data-toggle="tooltip" data-html="true"
+                                            data-placement="bottom"
+                                            data-original-title="<em> Las ordenes son creadas por un usuario autorizado del sistema</em><b> ( Obligatorio ) </b> ">
+                                            autorizados en la primer etapa.</small>
+                                    </label>
+                                </p>
+                                <p>
+                                    <input type="radio" name="board_mode" value="2" class="radio-chek" id="radio-7">
+                                    <label for="radio-7" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Las ordenes son creadas por tus contacto que ser registran por mi tienda en VentasNube.</em><b> ( Obligatorio ) </b> ">
+                                        <strong>Mi tienda web</strong> <small>las personas que se
+                                            registren.</small></label>
+                                </p>
+                                <p>
+                                    <input type="radio" name="board_mode" value="3" class="radio-chek" id="radio-8">
+                                    <label for="radio-8" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Las ordenes pueden ser creadas por un usuario autorizado del sistema, o por tus contactos registrados por mi tienda en VentasNube.</em><b> ( Opcional )  </b> ">
+                                        <strong> Las dos formas.</strong> <small>mis usuarios y mi tienda.</small>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4><strong>Cuando se pueden entregar y cerrar las ordenes?</strong></h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input type="radio" name="board_collect_and_deliver" value="1" class="radio-chek"
+                                        id="radio-12">
+                                    <label for="radio-12" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Para entregar y cerrar la orden, hay q saldar el total</em><br><b> ( Obligatorio ) </b> ">
+                                        <strong>Al saldar el total</strong>
+                                        <small> Se puede entregar y cerrar la orden.</small>
+                                    </label>
+                                </p>
+                                <p>
+                                    <input checked="" type="radio" name="board_collect_and_deliver" value="2"
+                                        class="radio-chek" id="radio-13">
+                                    <label for="radio-13" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Se puede entregar o recivir el pedido, pero queda la orden abierta hasta saldar el total.</em><br><b> ( Opcional ) </b> ">
+                                        <strong>Con cuenta corriente</strong>
+                                        <small>Se pueden entregar, pero no se puede cerrar hasta saldar el
+                                            total.</small>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                    data-original-title="<em> Los pedidos se van a retirar o entregar el el domicilio del contacto</em><br><b> ( Opcional )  </b> ">
+                                    <input checked id="switch-9" name="board_delivery_place" type="checkbox" />
+                                    <label for="switch-9" class="label-primary"></label>
+                                </div>
+                                <strong>Habilitar delibery </strong><small> Habilita el seguimiento de la
+                                    entrega.</small>
+                            </h4>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch">
+                                    <input checked id="switch-16" name="board_control_cash_close_box" value="0"
+                                        type="checkbox" />
+                                    <label for="switch-16" class="label-primary"></label>
+                                </div>
+
+                                <strong>Habilitar el controlor de stock?</strong>
+                            </h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input type="radio" checked="" name="board_control_stock" value="1"
+                                        class="radio-chek" id="radio-16">
+                                    <label for="radio-16" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em>Confirmar stock antes de hacer el movimiento.</em><br><b> ( Obligatorio ) </b> ">
+                                        <strong>Si </strong><small>Bloquear la orden si no hay stock
+                                            suficiente.</small></label>
+                                </p>
+                                <p>
+                                    <input type="radio" name="board_control_stock" value="3" class="radio-chek"
+                                        id="radio-17">
+                                    <label for="radio-17" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em>Realiza los movimientos de stock en negativo o positivo sin confirmarlo.</em><br><b> ( Opcional ) </b> ">
+                                        <strong>No </strong><small>Solo avisar si no hay stock suficiente. (Mover en
+                                            negativo).</small>
+                                    </label>
+                                </p>
+
+                                <br>
+                            </div>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch">
+                                    <input checked="" id="switch-18" name="board_control_cash_close_box" value="0"
+                                        type="checkbox" />
+                                    <label for="switch-18" class="label-primary"></label>
+                                </div>
+                                <strong>Habilitar la apertura y cierre de la caja?</strong>
+                            </h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input checked="" type="radio" name="board_control_cash_close_box" value="1"
+                                        class="radio-chek" id="radio-19">
+                                    <label for="radio-19" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Se tiene q abrir la caja antes de cobrar y cerrar la caja cuando se rinde el efectivo. </em><br><b> ( Obligatorio ) </b> ">
+                                        <strong> Si es obligatorio.</strong></label>
+                                </p>
+                                <p>
+                                    <input type="radio" name="board_control_cash_close_box" value="2" class="radio-chek"
+                                        id="radio-20">
+                                    <label for="radio-20" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> No realizar control se puede vender si tener que abrir ni cerrar la caja. </em><br><b> ( Opcional ) </b> ">
+                                        <strong>No es opcional. </strong></label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch">
+                                    <input checked="" id="switch-19" name="board_control_cash" type="checkbox" />
+                                    <label for="switch-19" class="label-primary"></label>
+                                </div>
+                                <strong>Habilitar movimientos de caja.</strong>
+                            </h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input checked="" type="checkbox" name="board_control_cash_out" value="1"
+                                        class="control_cash radio-chek" id="radio-22">
+                                    <label for="radio-22" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Pueden ingresar gastos solo los usuarios autorizados en la ultima etapa.. </em><br><b> ( Obligatorio ) </b> ">
+                                        <strong> Gastos. </strong>
+                                    </label>
+                                </p>
+                                <p>
+                                    <input checked="" type="checkbox" name="board_control_cash_in" value="2"
+                                        class="control_cash radio-chek" id="radio-23">
+                                    <label for="radio-23" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Pueden ingresar dinero solo los usuarios autorizados en la ultima etapa.</em><br><b> ( Opcional ) </b> ">
+                                        <strong> Ingreso de cambio. </strong>
+                                    </label>
+                                </p>
+                                <p>
+                                    <input checked="" type="checkbox" name="board_control_cash_out_box" value="3"
+                                        class="control_cash radio-chek" id="radio-24">
+                                    <label for="radio-24" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                                        data-original-title="<em> Solo los usuarios autorizados en la ultima etapa. </em><br><b> ( Opcional ) </b> ">
+                                        <strong> Retiros parciales de efectivo. </strong>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="step-3" class="modal-body text-left col-sm-12 col-md-12 col-xs-12">
+                    <h3 class="margin-20 text-left">
+                        <strong> Configura los nombres de los comprobantes.</strong>
+                    </h3>
+                    <div class="margin-l-10">
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                            <p>
+                            <h4 class="margin-0"> <strong>Comprobante de (Cobro)</strong> </h4>
+                            <input type="text" placeholder="Recibo..." name="or_board_receipt_voucher" value="Recibo"
+                                class="s-card-actv-input" id="">
+                            </p>
+                            <p>
+                            <h4 class="margin-0"> <strong>Comprobante de (pago)</strong> </h4>
+
+                            <input type="text" placeholder="Remito.." name="or_board_payment_voucher" value="Remito"
+                                class="s-card-actv-input" id="">
+
+                            </p>
+                            <p>
+                            <h4 class="margin-0"> <strong>Comprobante de (entrega).</strong> </h4>
+                            <input type="text" placeholder="Nota de Entrega de Mercadería, Equipo..."
+                                name="or_board_delivery_voucher" value="Entrega" class="s-card-actv-input" id="">
+
+                            </p>
+                        </div>
+
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <p>
+                            <h4 class="margin-0"><strong>Nota de credito de (Devolucion)</strong></h4>
+                            <input type="text" placeholder="Recibo..." name="or_board_credit_voucher"
+                                value="Nota de credito" class="s-card-actv-input" id="">
+                            </p>
+                            <p>
+                            <h4 class="margin-0"> <strong>Comprobante de (Devolucion)</strong> </h4>
+
+                            <input type="text" placeholder="Remito.." name="or_board_return_voucher"
+                                value="Remito devolucion" class="s-card-actv-input" id="">
+
+                            </p>
+                        </div>
+
+
+                        <!--
+                            <div class="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4><strong>Cuando vas a emitir la factura?</strong></h4>
+                                <p>
+                                    <input type="radio" name="board_bill_of_sale_voucher" value="1" class="radio-chek"
+                                        id="radio-14">
+                                    <label for="radio-14"> Emitir factura despues saldar el total. <small>(La fecha es
+                                            al dia y se cierra la orden).</small></label>
+                                </p>
+                                <p>
+                                    <input type="radio" name="board_collect_and_deliver" value="2" class="radio-chek"
+                                        id="radio-15">
+                                    <label for="radio-15"> Emitir factura sin saldar el total <small></small>(Agrega
+                                        fecha de vencimiento y no cierra la orden).</small></label>
+                                </p>
+                            </div>
+                            -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+                <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
+                    aria-label="Close">
+                    <span class="">Cancelar</span>
+                </button>
+                <button disabled="" id="btn-next" step="1" type="button" class="btn btn-primary ">
+                    <span class="">Siguiente</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<link href="/public/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $('[data-toggle="tooltip"]').tooltip()
+    $('.radio-chek').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        handle: '',
+        increaseArea: '20%' // optional
+    });
+
+    $("#new-board-step-1").hide();
+    $("#board-type-radio-4").hide();
+    $("#board-type-radio-5").hide();
+    $("#board-type-icon").hide();
+    $("#step-2").hide();
+    $("#step-3").hide();
+
+    $('input').on('ifChecked', function (event) {
+        var select = $(this);
+        var id = select.attr('id');
+        $("#new-board-detail-1").show();
+        $("#new-board-name").focus();
+        var board_type = $('input:radio[name=board-type]:checked').val();
+        var board_icon = $(this).attr('icon');
+        var board_bg = $(this).attr('bg-color');
+        console.log(board_icon + board_bg)
+        if (board_type) {
+            $("#board-type-icon").show();
+            $("#new-board-step-1").show();
+            $("#new-board-name").focus();
+            $("#bt-text-icon").attr('icon', board_icon);
+            $("#bt-text-icon").children('.material-icons:first').text(board_icon);
+            $("#bg-select-color").children('.material-icons:first').text(board_icon);
+            $("#bg-select-color").attr('bg-color', board_bg);
+            $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
+        } else {
+            $("#board-type-radio-5").hide();
+        }
+    });
+
+    $(".board-icon").click(function () {
+        var bgColor = $(this).attr('board-icon');
+        var bgText = $(this).html();
+        var icon = $(this).children(':first').text();
+        $("#bt-text-icon").html(bgText);
+        $("#bt-text-icon").removeClass();
+        $("#bt-text-icon").addClass('btn round  ' + bgColor + ' line');
+        $("#bt-text-icon").addClass('btn round  ' + bgColor + ' line');
+        $("#bt-text-icon").attr('icon', icon);
+        $("#input-select-icon").val(bgColor);
+        $("#bg-select-color").children('.material-icons:first').text(icon);
+    });
+
+    $(".board-type").click(function () {
+        var bgColor = $(this).attr('board-type');
+        var bgText = $(this).html();
+        var icon = $(this).children('.material-icons:first').text();
+        $("#bt-select-type").html(bgText);
+        $("#bg-select-icon").html(icon);
+        $("#bg-select-color").children('.material-icons:first').text(icon);
+        $("#bt-select-type").removeClass();
+        $("#bt-select-type").addClass('btn ' + bgColor + ' line');
+        $("#bt-select-type").val(bgColor);
+        if (bgColor == "btn-primary") {
+            $("#new-board-step-objects").show();
+            $("#new-board-step-patients").hide();
+        } else {
+            $("#new-board-step-patients").show();
+            $("#new-board-step-objects").hide();
+        }
+    });
+
+    $(".board-type-2").click(function () {
+        var bgColor = $(this).attr('board-type');
+        var bgText = $(this).html();
+        var icon = $(this).children(':first').text();
+        $("#bt-select-type-2").html(bgText);
+        $("#bg-select-icon").html(icon);
+
+        $("#bg-select-color").children('.material-icons:first').text(icon);
+
+        $("#bt-select-type-2").removeClass();
+        $("#bt-select-type-2").addClass('btn ' + bgColor + ' line');
+        $("#bt-select-type-2").val(bgColor);
+
+        if (bgColor == "btn-primary") {
+            $("#new-board-step-objects").show();
+            $("#new-board-step-patients").hide();
+        } else {
+            $("#new-board-step-patients").show();
+            $("#new-board-step-objects").hide();
+        }
+    });
+
+    $("li.bg-color").click(function () {
+        var bgColor = $(this).attr('bg-color');
+        $("#bg-select-color").removeClass();
+        $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+        $("#bg-select").val(bgColor);
+        $("#bg-select-color").attr('bg-color', bgColor);
+        // $("#bg-select-color").attr('bg-color').html(bgColor);
+    })
+        .mouseout(function () {
+            $("span", this).first().text("panorama_fish_eye");
+            // $("p", this).last().text(++i);
+        })
+        .mouseover(function () {
+            $("span", this).first().text("check_circle");
+        });
+
+    $("#new-board-name").keyup(function () {
+        var board_name = $(this).val();
+        $("#bg-select-text").html(board_name);
+
+        if (board_name.length >= 3) {
+            $("#btn-next").removeAttr('disabled');
+        } else {
+            $("#btn-next").attr('disabled', '');
+        }
+        //  $("#btn-next").attr('disabled','');
+    });
+
+    $(".item-select").click(function () {
+        var bgColor = $(this).attr('item-select');
+        var bgText = $(this).html();
+        $("#btn-select-3").html(bgText);
+        $("#btn-select-3").removeClass();
+        $("#btn-select-3").addClass('btn ' + bgColor + ' line');
+        $("#bg-select-lis").attr(bgColor);
+
+        // $("#input-select-3").val(bgColor);    
+    });
+
+    $('#switch-9').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input:radio[name=board_delivery_place]').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input:radio[name=board_delivery_place]').iCheck('uncheck');
+            $('input:radio[name=board_delivery_place]').iCheck('disable');
+        }
+    });
+    $('#switch-16').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input:radio[name=board_control_stock]').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input:radio[name=board_control_stock]').iCheck('uncheck');
+            $('input:radio[name=board_control_stock]').iCheck('disable');
+        }
+    });
+    $('#switch-18').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input:radio[name=board_control_cash_close_box]').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input:radio[name=board_control_cash_close_box]').iCheck('uncheck');
+            $('input:radio[name=board_control_cash_close_box]').iCheck('disable');
+        }
+    });
+    $('#switch-19').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+
+    $("#btn-next").click(function () {
+
+        //VALORES SELECCIONADOS DEL FOMULARIO    
+        //STEP 1
+        var board_type = $('input:radio[name=board-type]:checked').val();
+        var board_name = $('input[name=board-name]').val();
+        var board_icon = $("#bt-text-icon").children(':first').text();
+        var board_color = $("#bg-select-color").attr('bg-color');
+        //  STEP 2   
+        var board_mode = $('input:radio[name=board_mode]:checked').val();
+        var board_collect_and_deliver = $('input:radio[name=board_collect_and_deliver]:checked').val();
+        var board_delivery_place = $('input:radio[name=board_delivery_place]:checked').val();
+        var board_control_cash_close_box = $('input:radio[name=board_control_cash_close_box]:checked').val();
+        var board_control_stock = $('input:radio[name=board_control_stock]:checked').val();
+        var board_control_cash = $('input:radio[name=board_control_cash]:checked').val();
+        // STEP 3
+        var board_receipt_voucher = $('input[name=or_board_receipt_vouche]').val();
+        var board_payment_voucher = $('input[name=or_board_payment_voucher]').val();
+        var board_delivery_voucher = $('input[name=or_board_delivery_voucher]').val();
+        var board_credit_voucher = $('input[name=or_board_credit_voucher]').val();
+        var board_return_voucher = $('input[name=or_board_return_voucher]').val();
+
+        var step = $("#btn-previus").attr('step');
+        console.log(board_type + board_name + board_icon + board_color + step);
+        if (board_type != null || board_name != null || board_icon != null || board_color != null) {
+            //alert(step);
+            if (step == 1) {
+                $("#btn-next").text('Continuar');
+                $("#btn-previus").attr('step', '2');
+                $("#btn-previus").text('Volver');
+                $(".btn-previus").removeAttr('data-dismiss');
+                $(".btn-previus").removeAttr('aria-label');
+                $("#step-1").hide();
+                $("#step-2").show();
+            } else if (step == 2) {
+                $("#btn-previus").attr('step', '3');
+                $("#btn-next").text('Finalizar');
+                $("#step-2").hide();
+                $("#step-3").show();
+
+            }
+
+            else if (step == 3) {
+                $("#btn-previus").attr('step', '3');
+                $("#btn-next").text('Crear');
+                $("#step-2").hide();
+                $("#step-3").show();
+
+                var url_now = getUrl();
+                var m_id = url_now.m_id;
+                //var m_t_id = url_now.m_t_id;
+                var pacht = 'board'; //CONTROLADOR PRINCIPAL
+                var controler_data = 'new_board_data_post'; //NOMBRE DE CONTROLADOR DATA
+                var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+                var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+                var data = {
+                    //STEP 1
+                    m_id: m_id,
+                    m_t_type_action: board_type,
+                    m_t_name: board_name,
+                    m_t_icon: board_icon,
+                    m_t_color: board_color,
+                    m_t_url: board_name,
+                    //  STEP 2   
+                    board_mode: board_mode,
+                    board_collect_and_deliver: board_collect_and_deliver,
+                    board_delivery_place: board_delivery_place,
+                    board_control_cash_close_box: board_control_cash_close_box,
+                    board_control_stock: board_control_stock,
+                    board_control_cash: board_control_cash,
+                    // STEP 3
+                    board_receipt_voucher: board_receipt_voucher,
+                    board_payment_voucher: board_payment_voucher,
+                    board_delivery_voucher: board_delivery_voucher,
+                    board_credit_voucher: board_credit_voucher,
+                    board_return_voucher: board_return_voucher,
+
+                };
+                //console.log(data);
+                var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+
+
+                //   console.log(url_now);
+                //return url_now;
+                // var url_now = getUrl();
+                var m_id = url_now.m_id;
+                // var m_t_id = new_module.m_t_id;
+                alert(new_module);
+                console.log(new_module);
+                get_board_group(m_id);
+                get_nav_bar(); // Recargo los datos del modulos al copilador handelbars del modulo.
+                //   get_board_group(m_id, m_t_id);
+                $('#master_popup').modal('hide');
+                Snackbar.show({
+                    text: 'Se creo el nuevo tablero con exito!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+
+            }
+            else {
+                Snackbar.show({
+                    text: 'Falta completar los datos',
+                    actionText: 'Falta completar',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        };
+    });
+
+    $(".btn-previus").click(function () {
+        var step = $("#btn-previus").attr('step');
+        if (step == 1) {
+            $("#btn-next").text('Siguiente');
+            $("#btn-previus").text('Cancelar');
+            $(".btn-previus").attr('data-dismiss', 'modal');
+            $(".btn-previus").attr('aria-label', 'Close');
+        }
+        else if (step == 2) {
+            $("#btn-previus").attr('step', '1');
+            $("#btn-previus").text('Volver');
+            $("#step-1").show();
+            $("#step-2").hide();
+        }
+        else if (step == 3) {
+            $("#btn-next").text('Continuar');
+            $("#btn-previus").attr('step', '2');
+            $("#step-2").show();
+            $("#step-3").hide();
+        }
+    });
+
+    $("#btn-submit").click(function () {
+        //VALORES SELECCIONADOS DEL FOMULARIO    
+        var board_type = $('input:radio[name=board-type]:checked').val();
+        var board_name = $('input[name=board-name]').val();
+        var board_icon = $("#bt-text-icon").children(':first').text();
+        var board_color = $("#bg-select-color").attr('bg-color');
+
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        //var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'new_board_data_post'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_type_action: board_type,
+            m_t_name: board_name,
+            m_t_icon: board_icon,
+            m_t_color: board_color,
+            m_t_url: board_name,
+            //  m_position: m_position,
+            /* or_board_finality:or_board_finality,
+             or_board_type:or_board_type,
+             or_board_color:or_board_color,
+             or_board_icon:or_board_icon,
+             */
+            //  or_board_mode:or_board_mode,
+            //  or_board_delivery_place:or_board_delivery_place,
+            //  or_board_collect_and_deliver:or_board_collect_and_deliver,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        alert(data);
+    });
+
+</script>

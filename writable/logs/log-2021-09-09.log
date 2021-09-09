@@ -1,0 +1,48 @@
+CRITICAL - 2021-09-09 02:06:34 --> Unable to connect to the database.
+Main connection [MySQLi]: php_network_getaddresses: getaddrinfo failed: Name or service not known
+#0 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseConnection.php(570): CodeIgniter\Database\BaseConnection->initialize()
+#1 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseBuilder.php(1428): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Model.php(210): CodeIgniter\Database\BaseBuilder->get()
+#3 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/BaseModel.php(622): CodeIgniter\Model->doFirst()
+#4 /var/www/html/codeigniter4/app/Models/OwnerModel.php(13): CodeIgniter\BaseModel->first()
+#5 /var/www/html/codeigniter4/app/Controllers/Home.php(21): App\Models\Ownermodel->getOwner()
+#6 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(802): App\Controllers\Home->index()
+#7 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#8 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /var/www/html/codeigniter4/public/index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2021-09-09 02:06:46 --> Unable to connect to the database.
+Main connection [MySQLi]: php_network_getaddresses: getaddrinfo failed: Name or service not known
+#0 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseConnection.php(570): CodeIgniter\Database\BaseConnection->initialize()
+#1 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseBuilder.php(1428): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Model.php(210): CodeIgniter\Database\BaseBuilder->get()
+#3 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/BaseModel.php(622): CodeIgniter\Model->doFirst()
+#4 /var/www/html/codeigniter4/app/Models/OwnerModel.php(13): CodeIgniter\BaseModel->first()
+#5 /var/www/html/codeigniter4/app/Controllers/Home.php(21): App\Models\Ownermodel->getOwner()
+#6 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(802): App\Controllers\Home->index()
+#7 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#8 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /var/www/html/codeigniter4/public/index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2021-09-09 02:10:31 --> Unable to connect to the database.
+Main connection [MySQLi]: php_network_getaddresses: getaddrinfo failed: Name or service not known
+#0 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseConnection.php(570): CodeIgniter\Database\BaseConnection->initialize()
+#1 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Database/BaseBuilder.php(1428): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/Model.php(210): CodeIgniter\Database\BaseBuilder->get()
+#3 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/BaseModel.php(622): CodeIgniter\Model->doFirst()
+#4 /var/www/html/codeigniter4/app/Models/OwnerModel.php(13): CodeIgniter\BaseModel->first()
+#5 /var/www/html/codeigniter4/app/Controllers/Home.php(21): App\Models\Ownermodel->getOwner()
+#6 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(802): App\Controllers\Home->index()
+#7 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#8 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /var/www/html/codeigniter4/public/index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2021-09-09 02:11:37 --> Call to a member function getFirstRow() on bool
+#0 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/BaseModel.php(622): CodeIgniter\Model->doFirst()
+#1 /var/www/html/codeigniter4/app/Models/OwnerModel.php(13): CodeIgniter\BaseModel->first()
+#2 /var/www/html/codeigniter4/app/Controllers/Home.php(21): App\Models\Ownermodel->getOwner()
+#3 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(802): App\Controllers\Home->index()
+#4 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#5 /var/www/html/codeigniter4/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /var/www/html/codeigniter4/public/index.php(45): CodeIgniter\CodeIgniter->run()
+#7 {main}

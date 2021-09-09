@@ -1,0 +1,162 @@
+<!--searchBox -->
+<div id="searchBox" class="search-content ">
+    <!--search-header -->
+    <div class="search-header">
+        <div class="search-nav">
+            <button type="button" class="search_close">
+                <span class="material-icons">arrow_back</span>
+            </button>
+            <div class="group">
+                <!--span class="badge round xs">Productos <button>
+                        <span class="material-icons">cancel</span></button>
+                </span-->
+                <div class="search_cat_btn">
+                    <span class="material-icons">widgets</span>
+                    <span class="hidden-xs hidden-sm">Productos</span>
+                </div>
+                <input class="search-input s-card-actv-input" autocomplete="off" type="text" id="searchInput" name="searchInput" placeholder="Buscar.." />
+            </div>
+
+            <button type="button" class="search_button_dell search-delete  search-close"><span class="material-icons">cancel</span>
+            </button>
+
+            <button type="button" class="cart_button search-close">
+                <span class="material-icons">shopping_cart</span>
+                <span id="cart-number-1" class="cart_n cart-number">0</span>
+            </button>
+
+        </div>
+        <!--search-header -->
+    </div>
+    <!--search-body -->
+    <div id="search-body" class="search-body ">
+        <!--search-title -->
+        <!--search-result -->
+        <div class="search-title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <button type="button" search_cat="search_serice"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">widgets</i>
+                <span search_m_t_name="product" class="hidden-xs hidden-sm">Productos</span>
+            </button>
+            <button type="button" search_cat="search_serice"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">home_repair_service</i>
+                <span search_m_t_name="service" class="hidden-xs hidden-sm">Servicios</span>
+            </button>
+            <button type="button" search_cat="search_contact"
+                class="search_button_cat btn xl btn-more  btn-primary line">
+                <i class="material-icons">people_alt</i>
+                <span search_m_t_name="contact" class="hidden-xs hidden-sm">Contactos</span>
+            </button>
+            <div class="btn-group dopdown">
+                {{#each m_now}}
+                <button search_cat="search_board" id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" type="button"
+                    class="search_button_cat search_button_board  dropdown-toggle  select-btn dropdown-toggle btn xl btn-more  btn-primary line"
+                    data-toggle="dropdown" aria-expanded="true">
+                    <span class="material-icons">{{m_t_icon}}</span>
+                    <span class="hidden-xs hidden-sm this_m_t_name">{{m_t_name}}</span>
+                    <i class="hidden-xs hidden-sm material-icons">expand_more</i>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    {{#each ../m_t}}
+                    <li class="margin-5">
+                        <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{m_url}}}"
+                            class="search_button_board_li btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                            data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                            <span class="material-icons">{{m_t_icon}}</span>
+                            <span class="">{{m_t_name}}</span>
+                        </a>
+                        <span class="search_m_t hidden">
+                            <i class="material-icons">{{m_t_icon}}</i>
+                            <span search_m_t_name="{{m_t_name}}"
+                                class="hidden-xs hidden-sm search_m_t_name">{{m_t_name}}</span>
+                        </span>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/each}}
+            </div>
+        </div>
+        <div class="search-result col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div id="card_order_result_items"> </div>
+            <div id="card_contact_result_items"> </div>
+            <div id="card_product_result_items"> </div>
+        </div>
+
+        <!--search-body -->
+    </div>
+    <!--searchBox -->
+</div>
+
+<script>
+
+    //Input de busqueda 
+    $("input[name=searchInput]").focusin(function (documents) {
+        //  alert('Input');
+        event.preventDefault();
+        console.log('Creo el array con los items de PounchDb');
+        get_all_item_punchDb();
+    });
+    $("input[name=searchInput]").keyup(function () {
+        event.preventDefault();
+        var search_m_input = $(this).val();
+        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+        // alert(search_m_input);
+        console.log(search_m_input);
+        search_item_js(search_m_input);
+    });
+
+    //Botones de tipos de busqueda 
+    $(document).on('click', '.search_button_cat', function (event) {
+        var search_cat_selected_btn = $(this).html();
+        var search_cat_selected = $(this).attr('search_cat');
+        var search_cat_input = $('.search_cat_btn').html();
+
+        $('.search-title').find('.search_button_cat').removeClass('active');
+        $(this).addClass('active');
+
+        //alert(search_cat_selected_btn);
+        $('.search_cat_btn').html(search_cat_selected_btn);
+        //$('#searchInput').val('');
+        $('#searchInput').focus();
+    });
+    $(document).on('click', '.search_button_board_li', function (event) {
+        var search_cat_selected_btn = $(this).html();
+        var search_cat_selected_btn_print = $(this).parent().find('.search_m_t').html();
+        var search_cat_selected = $(this).attr('search_cat');
+        var search_cat_input = $('.search_cat_btn').html();
+        var search_cat_btn = $('.search_cat_btn').html();
+
+        $('.search-title').find('.search_button_board').removeClass('active');
+        $('.search-title').find('.search_button_board').addClass('active');
+        // $(this).addClass('active');
+        // alert(search_cat_selected_btn);
+        $('.search_button_board').html(search_cat_selected_btn_print + ' <i class="hidden-xs hidden-sm material-icons">expand_more</i>');
+        $('.search_cat_btn').html(search_cat_selected_btn_print);
+        // $('#searchInput').val('');
+        $('#searchInput').focus();
+    });
+
+    //Boton select animaciones
+    /*  $("li.bg-color").click(function () {
+          var bgColor = $(this).attr('bg-color');
+          $("#bg-select-color").removeClass();
+          $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+          $("#bg-select").val(bgColor);
+          $("#bg-select-color").attr('bg-color', bgColor);
+          // $("#bg-select-color").attr('bg-color').html(bgColor);
+      })
+          //Efecto eye paleta de colores
+          .mouseout(function () {
+              $("span", this).first().text("panorama_fish_eye");
+              // $("p", this).last().text(++i);
+          })
+          .mouseover(function () {
+              $("span", this).first().text("check_circle");
+          });
+  */
+
+   
+      
+
+</script>
