@@ -136,18 +136,18 @@
   <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
  --->
 <!--   Core JS Files   -->
-<script src="/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
-<script src="/public/assets/js/plugins/moment.min.js"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/plugins/moment.min.js"></script>
 <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<script src="/public/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="/public/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 <!--  Validate    -->
-<script src="/public/plugins/validate/validate.js"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/plugins/validate/validate.js"></script>
 <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-<script src="/public/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="https://ventasnube.com/public/app/v4.0/public/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
 <script>
   //$(document).ready(function() { $('.carousel').carousel(); $('body').bootstrapMaterialDesign(); });
 </script>
