@@ -1,5 +1,5 @@
 
-<body class="login" style="background-image: url(https://ventasnube.com/public/assets/img/banner--ventas-Nube.png)">
+<body class="login" style="background-image: url(<?php echo base_url();?>/public/app/v4.0/assets/img/banner--ventas-Nube.png)">
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
 
@@ -8,7 +8,7 @@
 
             <!--form class="form-signin col-10 col-sm-8 col-md-6 col-xl-4 text-center" id="formLogin"-->
                 <a href="<?php echo site_url(); ?>">
-                    <img class="mb-4 mt-2" src="https://ventasnube.com<?php echo $owner['owner_img']; ?>" width="auto" height="120px">
+                    <img class="mb-4 mt-2" src="<?php echo base_url(); echo $owner['owner_img']; ?>" width="auto" height="120px">
                 </a>
                 <h3 class="text-muted"><?=lang('Auth.login')?></h3>
                 <?=view('home/login/_message_block')?>
@@ -38,14 +38,14 @@
     </div>
 
 <!-- Jquery-3.1.1.min.js -->
-<script type="text/javascript" src="https://ventasnube.com/public/plugins/jQuery/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
 
 <!-- login script auth -->
-<script src="https://ventasnube.com/public/plugins/pouchdb/js/pouchdb.authentication.min.js"></script>
+<script src="<?php echo base_url();?>/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js"></script>
 
 <!-- snack-bar.JS -->
-<script src="https://ventasnube.com/public/plugins/snackbar-master/dist/snackbar.min.js"></script>
+<script src="<?php echo base_url();?>/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.js"></script>
 <script>
 
 function validaForm(){
@@ -114,7 +114,7 @@ $("#formLogin" ).submit(function( event ) {
 
 
 var url = "<?=site_url('login');?>";
-var db_url = "http://localhost:5984";
+var db_url = "<?php echo base_url();?>:5984";
 
 var L_user_db = new PouchDB(db_url, {skip_setup: true});
 

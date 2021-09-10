@@ -1,8 +1,8 @@
 
-<link rel="stylesheet" href="https://ventasnube.com/public/plugins/intl-tel-input-master/build/css/intlTelInput.css">
+<link rel="stylesheet" href="<?php echo base_url();?>/public/app/v4.0/plugins/intl-tel-input-master/build/css/intlTelInput.css">
 
 
-<body class="body-singup" style="background-image: url('https://ventasnube.com/public/assets/img/footer.png');">
+<body class="body-singup" style="background-image: url('<?php echo base_url();?>/public/app/v4.0/assets/img/footer.png');">
 
 	<main class="main-singup">
 		<div class="row d-flex justify-content-center main-singup">
@@ -98,12 +98,12 @@
 </body>
 
 <!-- Use as a Vanilla JS plugin -->
-<script src="https://ventasnube.com/public/plugins/intl-tel-input-master/build/js/intlTelInput.min.js"></script>
+<script src="<?php echo base_url();?>/public/app/v4.0/plugins/intl-tel-input-master/build/js/intlTelInput.min.js"></script>
 
 <!-- Use as a jQuery plugin -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
-<script src="https://ventasnube.com/public/plugins/intl-tel-input-master/build/js/intlTelInput-jquery.min.js"></script>
+<script src="<?php echo base_url();?>/public/app/v4.0/plugins/intl-tel-input-master/build/js/intlTelInput-jquery.min.js"></script>
 
 
 <script>

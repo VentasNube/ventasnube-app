@@ -13,6 +13,7 @@ class Home extends BaseController
         $this->session = service('session');
     }
 
+	
 	//Logica del index de la app cuenta como home y home de landingpage
 	public function  index()
 	{	

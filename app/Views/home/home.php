@@ -220,7 +220,7 @@
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-/*padding:5px;*/
+  /*padding:5px;*/
 }
 
 .btn-liquid .inner {
@@ -246,7 +246,7 @@
 
 <main class="">
   <!-- main content -->
-  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/assets/img/banner--ventas-Nube.png');">
+  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('<?php echo base_url();?>/public/app/v4.0/assets/img/banner--ventas-Nube.png');">
     <div class="jumbo-main">
 
 
@@ -355,7 +355,7 @@
       <!--img class="mx-auto d-block" src="/public/assets/img/cohete.png" alt=""--->
 
       </div>
-      <img class="mx-auto d-block img-fluid" src="/public/assets/img/nuves-landigpage.png" alt="">
+      <img class="mx-auto d-block img-fluid" src="<?php echo base_url();?>/public/app/v4.0/assets/img/nuves-landigpage.png" alt="">
 
     </div>
   </div>
@@ -376,7 +376,7 @@
         <p>Tu sistema en la nube de google, lo mas veloz y disponible 24/365</p>
         <!--p><a class="btn btn-secondary" href="#" role="button">ver mas</a></p-->
         <a href="https://cloud.google.com/" target="_blanck">
-          <img src="/public/assets/img/G-cloud.png" alt="">
+          <img src="<?php echo base_url();?>/public/app/v4.0/assets/img/G-cloud.png" alt="">
         </a>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
@@ -399,7 +399,7 @@
           y gastos, tene el historial de precios y mucho mas!</p>
       </div>
       <div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/public/assets/img/Imagenes-web-1.png" data-holder-rendered="true">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="<?php echo base_url();?>/public/app/v4.0/assets/img/Imagenes-web-1.png" data-holder-rendered="true">
       </div>
     </div>
 
@@ -414,7 +414,7 @@
           facil y en un solo lugar. ver mas</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-2.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="<?php echo base_url();?>/public/app/v4.0/assets/img/Imagenes-web-2.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
 
@@ -429,7 +429,7 @@
           envia los comprobantes por whatsaap en PDF, ver mas</p>
       </div>
       <div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-3.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="<?php echo base_url();?>/public/app/v4.0/assets/img/Imagenes-web-3.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
 
@@ -444,7 +444,7 @@
           tipos de movimientos y formas de pago. ver mas</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-4.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="<?php echo base_url();?>/public/app/v4.0/assets/img/Imagenes-web-4.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
     <hr class="featurette-divider">
@@ -707,7 +707,7 @@
         </form>
       </div>
       <div class="col-md-4">
-        <img class="featurette-image float-right" src="/public/assets/img/footer.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image float-right" src="<?php echo base_url();?>/public/app/v4.0/assets/img/footer.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
   </div>

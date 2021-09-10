@@ -1,4 +1,4 @@
-<body class="body-singup" style="background-image: url('https://ventasnube.com/public/assets/img/footer.png');">
+<body class="body-singup" style="background-image: url('<?php echo base_url();?>/public/app/v4.0/assets/img/footer.png');">
 
     <main class="main-singup">
         <div class="row d-flex justify-content-center main-singup">

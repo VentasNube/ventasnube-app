@@ -11,9 +11,9 @@
     <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">  
     <!-- Your custom styles (optional) -->    
-    <link href="https://ventasnube.com/public/app/v4.0/public/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link href="<?php echo base_url();?>/public/app/v4.0/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="https://ventasnube.com/public/app/v4.0/public/assets/css/VentasNubeStyle.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>/public/app/v4.0/assets/css/VentasNubeStyle.css" rel="stylesheet">
 </head>
 <body class="profile-page sidebar-collapse">
 	<!-- Navbar -->
@@ -61,7 +61,7 @@
             </a>
           </li-->
           <li class="nav-item">
-            <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="/shop" target="_blank" data-original-title="Ir a la tienda">
+            <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="<?php echo base_url();?>/shop" target="_blank" data-original-title="Ir a la tienda">
               <i class="fas fa-2x fa-shopping-cart"></i>
             </a>
           </li>

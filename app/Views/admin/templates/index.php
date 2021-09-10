@@ -89,8 +89,8 @@
     </div>
 
     <!-- Bootstrap core JavaScript  vendor/twbs/bootstrap/dist  -->
-    <script src="<?=base_url();?>/public/vnadmin/assets/jquery/jquery.min.js"></script>
-    <script src="<?=base_url();?>/public/vnadmin/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -99,13 +99,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.js" integrity="sha512-pF+DNRwavWMukUv/LyzDyDMn8U2uvqYQdJN0Zvilr6DDo/56xPDZdDoyPDYZRSL4aOKO/FGKXTpzDyQJ8je8Qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="<?=base_url();?>/public/vnadmin/assets/app/js/users.js"></script>
+    <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/app/js/users.js"></script>
 
 
     <!-- Core plugin JavaScript-->
     <!--script src="<?=base_url();?>/public/vendor/jquery-easing/jquery.easing.min.js"></script-->
     <!-- Custom scripts for all pages-->
-    <script src="<?=base_url();?>/public/vnadmin/assets/app/js/sb-admin-2.min.js"></script>
+    <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/app/js/sb-admin-2.min.js"></script>
 
 
     <script>
