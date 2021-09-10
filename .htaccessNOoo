@@ -1,0 +1,48 @@
+# Deshabilitar la exploración de directorios
+Options All -Indexes
+# Options All 
+#
+# ------------------------------------------------- ---------------------
+# Motor de reescritura
+# ------------------------------------------------- ---------------------
+
+# Es necesario encender el motor de reescritura para las siguientes reglas y características.
+# FollowSymLinks debe estar habilitado para que esto funcione.
+<IfModule mod_rewrite.c>
+	Options +FollowSymlinks
+	RewriteEngine On
+
+	# Si instaló CodeIgniter en una subcarpeta, necesitará
+	# cambie la siguiente línea para que coincida con la subcarpeta que necesita.
+	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
+	# RewriteBase /
+
+	# Redirigir barras finales ...
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} (.+)/$
+	RewriteRule ^ %1 [L,R=301]
+	# Vuelva a escribir "www.example.com -> example.com"
+	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+# Comprueba si el usuario está intentando acceder a un archivo válido,
+# como una imagen o un documento css, si esto no es cierto, envía el
+# solicitud al controlador frontal, index.php
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
+
+	# Ensure Authorization header is passed along
+	RewriteCond %{HTTP:Authorization} .
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+	# Si no tenemos mod_rewrite instalado, todos los 404
+# se puede enviar a index.php, y todo funciona normalmente.
+	ErrorDocument 404 index.php
+</IfModule>
+# Deshabilitar el inicio de la firma del servidor
+	ServerSignature Off
+# Deshabilitar el final de la firma del servidor
