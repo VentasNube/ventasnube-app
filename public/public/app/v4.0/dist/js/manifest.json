@@ -3,12 +3,12 @@
     "name": "Vende en la nube",
     "description": "Sistema de ventas Online",
     "icons": [{
-            "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
+            "src": "/public/app/v4.0/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
             "type": "image/png",
             "sizes": "313x313"
         },
         {
-            "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
+            "src": "/public/app/v4.0/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
             "type": "image/png",
             "sizes": "313x313"
         }
@@ -23,7 +23,7 @@
             "short_name": "Ventas Nube",
             "description": "Sistema de ventas Online",
             "url": "/admin",
-            "icons": [{ "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png", "sizes": "313x313" }]
+            "icons": [{ "src": "/public/app/v4.0/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png", "sizes": "313x313" }]
         },
         {
             "name": "How's weather tomorrow?",

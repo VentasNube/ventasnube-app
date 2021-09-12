@@ -268,7 +268,7 @@ async function get_top_bar(ws_info, ws_lang_data) {
     console.log('ws_lang_data')
     console.log(ws_top_bar)
         // console.log(ws_top_bar);
-    renderHandlebarsTemplate('/public/dist/hbs/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
 };
 
 ////----(3 LEFT NAV CART)---/////
@@ -277,7 +277,7 @@ async function get_nav_cart(ws_info, ws_lang_data) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
     }
-    renderHandlebarsTemplate('/public/dist/hbs/cart/cart_main.hbs', '#right_main_compiled', ws_cart);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/cart/cart_main.hbs', '#right_main_compiled', ws_cart);
     // $('#cart_user_input').focus();
 };
 
@@ -288,7 +288,7 @@ function get_left_nav(ws_left_nav) {
          ws_left_nav: ws_left_nav_doc,
          ws_lang_data: ws_lang_data
      }*/
-    renderHandlebarsTemplate('/public/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 
 ////----(4 Search Module)---/////
@@ -299,7 +299,7 @@ async function get_search_module(ws_info, ws_lang_data) {
     }
     console.log('search');
     console.log(ws_search_data);
-    renderHandlebarsTemplate('/public/dist/hbs/search/search_module.hbs', '#search_module_compiled', ws_search_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/search/search_module.hbs', '#search_module_compiled', ws_search_data);
 };
 
 //// BOTON SELECT MODULO LEFT BAR //

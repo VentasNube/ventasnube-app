@@ -86,7 +86,7 @@ async function all_cart_item(todos) {
             items_product: array_cart_items,
         };
         // Imprimo todos los items en un solo render asi es mas rapido
-        renderHandlebarsTemplate('/public/dist/hbs/cart/cart_item.hbs', '#product_cart_items', cart_items);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/cart/cart_item.hbs', '#product_cart_items', cart_items);
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (ex) {
         console.error('inner', ex.message);
@@ -378,7 +378,7 @@ async function all_fav_item(todos) {
             items_product: array_cart_items,
         };
         // Imprimo todos los items en un solo render asi es mas rapido
-        renderHandlebarsTemplate('/public/dist/hbs/cart/fav_item.hbs', '#product_fav_items', cart_items);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/cart/fav_item.hbs', '#product_fav_items', cart_items);
         //Limpio la animacion del tab cart
 
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));

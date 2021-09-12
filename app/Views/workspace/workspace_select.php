@@ -11,14 +11,14 @@
     <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <!-- Your custom styles (optional) -->
-    <link href="/public/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link href="/public/app/v4.0/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="/public/assets/css/VentasNubeStyle.css" rel="stylesheet">
+    <link href="/public/app/v4.0/assets/css/VentasNubeStyle.css" rel="stylesheet">
 
-<link href="/public/plugins/iCheck/square/blue.css" rel="stylesheet">
+<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 
     <!-- snack-bar.ccs -->
-    <link rel="stylesheet" href="/public/plugins/snackbar-master/dist/snackbar.min.css">
+    <link rel="stylesheet" href="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css">
 <style>
   svg:not(:root) {
     margin: 0 auto;
@@ -280,7 +280,7 @@
 
     <main class="ws_config_tuto_main">
         <!-- main content -->
-        <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/assets/img/banner--ventas-Nube.png');">
+        <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/app/v4.0/assets/img/banner--ventas-Nube.png');">
             <div class="jumbo-main">
 
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 375 390" style="    margin: -100px auto; max-width:500px;" xml:space="preserve">
@@ -374,7 +374,7 @@
 
         </div>
         <div>
-        <img style="margin: -11% 0 0 0;" class="mx-auto d-block img-fluid" src="/public/assets/img/nuves-landigpage.png" alt="">
+        <img style="margin: -11% 0 0 0;" class="mx-auto d-block img-fluid" src="/public/app/v4.0/assets/img/nuves-landigpage.png" alt="">
         <form id="ws_new_form" method="POST" action="/workspace/ws_new" accept-charset="UTF-8">
 
             <div id="ws_step_1" step_porcent_attr="33" step_id="1" class="ws_step ws_in container">
@@ -518,7 +518,7 @@
 
             <div id="ws_step_3" step_porcent_attr="100" step_id="3" class="ws_step ws_out container ">
                 <div class="row featurette">
-                <div class="col-md-12 align-self-center" style="background-image: url(/public/dist/img/tuto/board-edit-group.svg)!important;      background-repeat: no-repeat!important;    background-size: 230px 230px!important;  background-position: 94% 15% !important; " >
+                <div class="col-md-12 align-self-center" style="background-image: url(/public/app/v4.0/dist/img/tuto/board-edit-group.svg)!important;      background-repeat: no-repeat!important;    background-size: 230px 230px!important;  background-position: 94% 15% !important; " >
                     <h2 class="mb-0 featurette-heading"><?=lang('Ws_setup.ws_config_step_3_tittle')?></h2>
                     <h3 class="m-0 text-muted"><?=lang('Ws_setup.ws_config_step_3_sub_tittle')?></h3>
                     </br>
@@ -719,21 +719,21 @@
 <!--div class="btn purple-gradient text-white btn-float-up " id="irarriba"><i class="fas fa-chevron-up"></i> SUBIR</div-->
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <!--   Core JS Files   -->
-<script src="/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
-<script src="/public/plugins/iCheck/icheck.min.js"></script>
-<script src="/public/assets/js/plugins/moment.min.js"></script>
+<script src="/public/app/v4.0/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+<script src="/public/app/v4.0/assets/js/plugins/moment.min.js"></script>
 <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<script src="/public/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="/public/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 <!-- snack-bar.JS -->
-<script src="/public/plugins/snackbar-master/dist/snackbar.min.js"></script>
+<script src="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.js"></script>
 <!--  Validate    -->
-<script src="/public/plugins/validate/validate.js"></script>
+<script src="/public/app/v4.0/plugins/validate/validate.js"></script>
 <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-<script src="/public/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
 <script>
  //$(document).ready(function() {
 

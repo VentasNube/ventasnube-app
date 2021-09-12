@@ -286,7 +286,7 @@
 
 <main class="">
   <!-- main content -->
-  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/app/v4.0/app/v4.0/assets/img/banner--ventas-Nube.png');">
+  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/app/v4.0/assets/img/banner--ventas-Nube.png');">
     <div class="jumbo-main">
     
 
@@ -387,7 +387,7 @@
       <!--img class="mx-auto d-block" src="/public/app/v4.0/app/v4.0/assets/img/cohete.png" alt=""--->
 
 
-      <img class="mx-auto d-block img-fluid" src="/public/app/v4.0/app/v4.0/assets/img/nuves-landigpage.png" alt="">
+      <img class="mx-auto d-block img-fluid" src="/public/app/v4.0/assets/img/nuves-landigpage.png" alt="">
 
     </div>
   </div>
@@ -408,7 +408,7 @@
         <p>Tu sistema en la nube de google, lo mas veloz y disponible 24/365</p>
         <!--p><a class="btn btn-secondary" href="#" role="button">ver mas</a></p-->
         <a href="https://cloud.google.com/" target="_blanck">
-          <img src="/public/app/v4.0/app/v4.0/assets/img/G-cloud.png" alt="">
+          <img src="/public/app/v4.0/assets/img/G-cloud.png" alt="">
         </a>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
