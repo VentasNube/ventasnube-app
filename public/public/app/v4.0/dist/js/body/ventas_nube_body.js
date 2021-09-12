@@ -28,8 +28,7 @@
     };
     //  alert(data);
     try {
-
-        var response = await fetch('/body/left_nav', init); //Busca los permisos
+        var response = await fetch('/body/left_nav', init); //Busca los permisos de los modulos
         var datos = await response.json();
 
         if (datos.result == true) {
