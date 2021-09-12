@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Igor Herson Aquino
+N:Igor;Herson;Aquino;;
+EMAIL;TYPE=INTERNET:igorhaf@gmail.com
+EMAIL;TYPE=INTERNET;TYPE=HOME:ihaf@ig.com.br
+EMAIL;TYPE=INTERNET;TYPE=HOME:ihaf@hotmail.com
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+FN:Jenner Portela Chagas
+N:Jenner;Portela;Chagas;;
+EMAIL;TYPE=INTERNET:gtr_portela@hotmail.com
+EMAIL;TYPE=INTERNET;TYPE=HOME:jenner.gtr@gmail.com
+END:VCARD
