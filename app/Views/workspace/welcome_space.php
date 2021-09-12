@@ -11,9 +11,9 @@
     <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">  
     <!-- Your custom styles (optional) -->    
-    <link href="/public/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link href="/public/app/v4.0/app/v4.0/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="/public/assets/css/VentasNubeStyle.css" rel="stylesheet">
+    <link href="/public/app/v4.0/app/v4.0/assets/css/VentasNubeStyle.css" rel="stylesheet">
 </head>
 <body class="profile-page sidebar-collapse">
 	<!-- Navbar -->
@@ -286,7 +286,7 @@
 
 <main class="">
   <!-- main content -->
-  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/assets/img/banner--ventas-Nube.png');">
+  <div class="jumbotron pd-vn paral mb-0 " style="background-image: url('/public/app/v4.0/app/v4.0/assets/img/banner--ventas-Nube.png');">
     <div class="jumbo-main">
     
 
@@ -384,10 +384,10 @@
         <h2> <?= lang('Auth.homesubtittle') ?></h2>
         <p class="lead"><a class="btn btn-info btn-lg btn-md purple-gradient text-white" id="irasignup" href="#" role="button"> <?= lang('Auth.homesubmit') ?></a></p>
       </div>
-      <!--img class="mx-auto d-block" src="/public/assets/img/cohete.png" alt=""--->
+      <!--img class="mx-auto d-block" src="/public/app/v4.0/app/v4.0/assets/img/cohete.png" alt=""--->
 
 
-      <img class="mx-auto d-block img-fluid" src="/public/assets/img/nuves-landigpage.png" alt="">
+      <img class="mx-auto d-block img-fluid" src="/public/app/v4.0/app/v4.0/assets/img/nuves-landigpage.png" alt="">
 
     </div>
   </div>
@@ -408,7 +408,7 @@
         <p>Tu sistema en la nube de google, lo mas veloz y disponible 24/365</p>
         <!--p><a class="btn btn-secondary" href="#" role="button">ver mas</a></p-->
         <a href="https://cloud.google.com/" target="_blanck">
-          <img src="/public/assets/img/G-cloud.png" alt="">
+          <img src="/public/app/v4.0/app/v4.0/assets/img/G-cloud.png" alt="">
         </a>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
@@ -431,7 +431,7 @@
           y gastos, tene el historial de precios y mucho mas!</p>
       </div>
       <div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/public/assets/img/Imagenes-web-1.png" data-holder-rendered="true">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/public/app/v4.0/assets/img/Imagenes-web-1.png" data-holder-rendered="true">
       </div>
     </div>
 
@@ -446,7 +446,7 @@
           facil y en un solo lugar. ver mas</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-2.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/app/v4.0/assets/img/Imagenes-web-2.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
 
@@ -461,7 +461,7 @@
           envia los comprobantes por whatsaap en PDF, ver mas</p>
       </div>
       <div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-3.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/app/v4.0/assets/img/Imagenes-web-3.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
 
@@ -476,7 +476,7 @@
           tipos de movimientos y formas de pago. ver mas</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/assets/img/Imagenes-web-4.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" src="/public/app/v4.0/assets/img/Imagenes-web-4.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
     <hr class="featurette-divider">
@@ -739,7 +739,7 @@
         </form>
       </div>
       <div class="col-md-4">
-        <img class="featurette-image float-right" src="/public/assets/img/footer.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
+        <img class="featurette-image float-right" src="/public/app/v4.0/assets/img/footer.png" data-holder-rendered="true" style="width: 500px; height: 500px;">
       </div>
     </div>
   </div>
@@ -930,18 +930,18 @@
   <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
  --->
 <!--   Core JS Files   -->
-<script src="/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
-<script src="/public/assets/js/plugins/moment.min.js"></script>
+<script src="/public/app/v4.0/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/moment.min.js"></script>
 <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<script src="/public/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="/public/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 <!--  Validate    -->
-<script src="/public/plugins/validate/validate.js"></script>
+<script src="/public/app/v4.0/plugins/validate/validate.js"></script>
 <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-<script src="/public/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
 <script>
   //$(document).ready(function() { $('.carousel').carousel(); $('body').bootstrapMaterialDesign(); });
 </script>

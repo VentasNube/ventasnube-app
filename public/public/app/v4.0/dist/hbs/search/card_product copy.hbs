@@ -1,0 +1,137 @@
+{{#each search_product }}
+<div id="card_id_{{{item.doc._id}}}" class="card-content">
+
+    <div id="card_var_id_{{{item.doc._id}}}" variant_id="{{item.doc.variant_id}}" class="card">
+        <form class="card-product card_product_form" product_id="{{{item.doc._id}}}">
+            <!--input type="checkbox" id="card-visitors-indicator" /-->
+            <div class="header">
+                <!-- Indicadr -->
+                <p class="cat">
+                    {{#each item.doc.tags }}
+                    <span id="cat-{{{item.doc._id}}}" class="s-card-cat pull-left">#{{this}}</span>
+                    {{/each}}
+                </p>
+                <div class="img_card"><img class="card_img_url" src="{{{item.doc.picture_min}}}" alt="200x200"></div>
+                <div class="indicator" product_id="{{{item.doc._id}}}">
+                    <div class="open_detail" width="18" height="27">
+                        <span class=" material-icons">add</span>
+                        <span class="quantity">9999</span>
+                    </div>
+                </div>
+                <div class="card_product_details">
+                    <div>
+                        <span class=" material-icons">monetization_on</span>
+                        <input name="card_prduct_val" class="card_product_val form-control" type="number"
+                            placeholder="valor" value="{{item.doc.price}}">
+
+                    </div>
+                    <div>
+                        <span class=" material-icons">local_offer</span>
+                        <input name="card_prduct_discount" class="card_product_discount form-control" type="number"
+                            placeholder="Descuento" value="0">
+
+                    </div>
+                    <div>
+                        <span class=" material-icons">superscript</span>
+
+                        <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                            placeholder="Cantidad" value="1">
+
+
+                    </div>
+                    <div class="card_product_footer">
+                        <button class="btn_submit btn btn-default">
+                            <span class="material-icons">favorite</span>.
+                        </button>
+                        <button type="submit" class="btn_submit btn btn-default">
+                            <span class="material-icons">add_shopping_cart</span>.
+                        </button>
+                    </div>
+                </div>
+                <div class="content ripple_div ripple_efect_close "> </div>
+                <div class="ripple-efect-div success"></div>
+            </div>
+
+        </form>
+        <div class="info">
+            <p class="card_product_name">{{item.doc.name}} </p>
+            <div class="text-left">
+                <div class="btn-group dropright">
+                    <button type="button"
+                        class="card_item_selected_price btn btn-round lx dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="round-icon pr"><span> {{item.doc.currency}} </span></div>
+                        <!--label class="counter">{{item.doc.currency}}{{item.doc.price.value}} -->
+
+                        <label class="counter">
+                            {{item.doc.price}}
+
+                        </label>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="header">Precios</li>
+                        {{#each item.doc.price_list as | price_list_p |}}
+                        <li>
+                            <a class="card_item_select_price" href="#">
+                                {{#with (lookup ../../price_list [id])~}}
+                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{{value}}}" data-original-title="{{{value}}}">
+                                    <span></span>
+                                    <!--{{trimString value}}-->
+                                    {{trimString value}}
+                                    </span>
+                                </div>
+                                {{/with}}
+                                <span>{{../item.doc.currency}}</span> <label class="counter">{{value}}</label>
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="btn-group dropright">
+                    <button type="button" class="" data-toggle="dropdown" aria-expanded="true">
+                        <span product_id="{{{item.doc._id}}}" product_rev="{{{item.doc._rev}}}" id="bg-select-color"
+                            class="variations-get btn btn-default">
+                            <span id="bg-select-color" class="material-icons">
+                                category
+                            </span>
+                            <span id="bg-select-text"> Variante</span>
+                            <span class="material-icons">arrow_drop_down</span>
+                        </span>
+                    </button>
+                    <ul class="card-loader dropdown-menu mini ">
+                        <div id="variant_{{{item.doc._id}}}"  >
+
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+{{/each}}
+<!--script src="https://unpkg.com/idb@5/build/iife/index-min.js"></script-->
+<script>
+
+ //card_butons();
+ 
+    
+     //   variations_select(),
+   //     console.log('card_prodct run 2'),
+    $(document).ready(function () {
+        //Cargo las funciones de los modulos para inciar primer Vista
+      card_butons();
+      variations_get();
+   });
+   // variations_btn()
+        //  $("#bg-select-color").removeClass();
+        //   $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+        //   $("#bg-select").val(bgColor);
+        //   $("#bg-select-color").attr('bg-color', bgColor);
+        // $("#bg-select-color").attr('bg-color').html(bgColor);
+
+</script>

@@ -1,0 +1,643 @@
+<html lang="es" xml:lang="es" xmlns="https://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ventas Nube</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Ventas Nube">
+    <link rel="apple-touch-icon" href="/public/dist/img/favicon.ico">
+
+    <!-- favicon.ico -->
+    <link rel="shortcut icon" href="/public/dist/img/favicon.ico" type="image/x-icon">
+    <!-- favicon.ico -->
+    <link rel="icon" href="/public/dist/img/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap.min.css  -->
+    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.css">
+    <!-- VentasNubeSkin.css -->
+    <link rel="stylesheet" href="/public/dist/css/skins/skin-ventas-nube.css">
+    <!-- VentasNubeSkin.css -->
+    <link rel="stylesheet" href="/public/dist/css/VentasNubeSkin.css">
+    <!-- snack-bar.ccs -->
+    <link rel="stylesheet" href="/public/plugins/snackbar-master/dist/snackbar.min.css">
+    <!-- Font-awesome.min.css 5.8-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Manifest JSON-->
+    <link rel="manifest" href="/public/dist/js/manifest.json">
+</head>
+
+
+<script>
+    /*
+    // Check that service workers are supported
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+
+            navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+                .then(function (registration) {
+                    console.log('VNAPP 4.4 Service Worker Registered');
+                    //alert('');
+                    Snackbar.show({
+                        text: 'Nueva actualizacion registrada!',
+                        width: '475px',
+                        pos: 'top-left',
+                        actionText: 'Refrezcar',
+                        actionTextColor: "#dd4b39",
+                        onActionClick: function (element) {
+                            //Set opacity of element to 0 to close Snackbar
+                            $(element).css('opacity', 0);
+                            //alert('Clicked Called!');
+                            // self.skipWaiting();
+                            //  navigator.serviceWorker.skipWaiting();
+                            location.reload();
+                        }
+                    });
+
+                });
+
+            navigator.serviceWorker.ready.then(function (registration) {
+                console.log('VNAPP 4.4 Service Worker Ready');
+                // alert('El service worker esta  Ready');
+                Snackbar.show({
+                    text: 'Modo offline is ready!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-center'
+                });
+            });
+
+
+        });
+
+        window.addEventListener('install', e => {
+            window.skipWaiting();
+        });
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'SKIP_WAITING') {
+                skipWaiting();
+            }
+        });
+
+    }
+    */
+</script>
+
+<div id="search_module_compiled"></div>
+<div id="right_main_compiled"></div>
+
+<body class="hold-transition skin-ventas-nube sidebar-mini sidebar-collapse fixed">
+
+    <div class="btnContenedor">
+        <button class="botonF1">
+            <span class="btnSpan">+</span>
+        </button>
+        <button class="btnFloat botonF2">
+            <a href="<?php echo site_url('os/adicionar') ?>"><span class="btnSpan"><i class="fa fa-wrench"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF3">
+            <a href="<?php echo site_url('vendas/adicionar') ?>"><span class="btnSpan"><i class="fa fa-cart-plus"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF4">
+            <a href="<?php echo site_url('home') ?>"><span class="btnSpan"><i class="fa fa-inbox"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF5">
+            <a href="#"><span class="btnSpan"><i class="fa fa-ticket" aria-hidden="true"></i></i></span></a>
+        </button>
+    </div>
+    <div class="wrapper">
+        <!-- TOP NAV -->
+        <header id="top_nav_compiled" class="main-header">
+        </header>
+        <!-- LEFT NAV-->
+        <aside id="left_nav_compiled" class="main-sidebar">
+        </aside>
+        <div class="content-wrapper">
+            <section class="content" id="content">
+                <div id="nav_bar_compiled"></div>
+                <!--MODULE NAV BAR COPILED-->
+                <div id="content_compiled">
+
+                </div>
+                <!--MODULE CONTENT COPILED-->
+            </section>
+        </div>
+    </div>
+    <!-- Footer-->
+    <footer class="main-footer">
+        <button onclick="showNotification();" value="Show sample notification" class="btn btn-primary md">Ver
+            Notificacion</button>
+        <strong>Copyright &copy; 2017-2021 <a href="www.ventasnube.com">Ventas Nube</a>
+        
+         <span id="sw-version">3 </span>
+         </strong>
+    </footer>
+
+</body>
+
+<div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
+    aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
+</div>
+
+
+
+<!--- COMPONENTES PRIMARIOS -->
+<!-- Jquery-3.1.1.min.js -->
+<script type="text/javascript" src="/public/plugins/jQuery/jquery-3.1.1.min.js"></script>
+<!-- moments.js -->
+<!--script type="text/javascript" src="/public/plugins/moments/moments.js"></script-->
+<!-- Bootstrap.min.JS -->
+<script src="/public/dist/bootstrap/js/bootstrap.min.js"></script>
+<!-- snack-bar.JS -->
+<script src="/public/plugins/snackbar-master/dist/snackbar.min.js"></script>
+<!-- Handlebars -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
+<!-- MUURI drop efect Script -->
+<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+<!-- login script auth -->
+<script src="/public/plugins/pouchdb/js/pouchdb.authentication.min.js"></script>
+
+<!-- Jquery.validate.js -->
+<script src="public/plugins/validate/jquery.validate.js"></script>
+<!--script src="https://unpkg.com/web-animations-js@2.3.2/web-animations.min.js"></script-->
+<!-- script src="https://unpkg.com/muuri@0.8.0/dist/muuri.min.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js"></script>
+<!-- Search Motor plugin -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.3"></script>
+
+<!--script type="module" src="https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"></script-->
+<!---############### Vistas con seguridad de login #######################--->
+<!--- LOGICA MOTOR AJAX COMPILADOR PLANTILLA NAVEGACION -->
+<!--script src="/public/dist/js/ventas_nube_compilator.js"></script -->
+<script src="/public/dist/js/app/ventas_nube_compilator.js"></script>
+
+<!--- PLANTILLA FUNCIONES BODY -->
+<script src="/public/dist/js/app/ventas_nube_app.js"></script>
+
+<script type="text/javascript" src="/public/dist/js/plugin/WebNotifications.js"></script>
+
+<script type="text/javascript">
+    var n = 1;
+
+    function showNotification() {
+        //Se usan los siguientes parametros 
+        // title, msg, icon, tag, timeout
+        var notif = showWebNotification(
+            'Nueva notificacion' + n,
+            'Se actualizo con exito!' + n,
+            '/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png',
+            null,
+            3000
+        );
+        // Segun si tiene permisos y el usuario presiona sobre las distintas
+        // funciones y re envia los siguientes parametros
+        notif.addEventListener("show", Notification_OnEvent);
+        notif.addEventListener("click", Notification_OnEvent);
+        notif.addEventListener("close", Notification_OnEvent);
+        n++;
+    }
+
+    function Notification_OnEvent(event) {
+        //A reference to the Notification object
+        var notif = event.currentTarget;
+        //document.getElementById("msgs").innerHTML += "<br>Notification <strong>'" + notif.title + "'</strong> received event '" + event.type + "' at " + new Date().toLocaleString();
+    }
+
+</script>
+
+<script>
+   /* if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(function (reg) {
+                // registration worked
+                Snackbar.show({
+                    text: 'Nueva actualizacion registrada!',
+                    width: '475px',
+                    pos: 'botton-left',
+                    actionText: 'Refrezcar',
+                    actionTextColor: "#dd4b39",
+                    onActionClick: function (element) {
+                       // $(element).css('opacity', 0);
+                        location.reload();
+                    }
+                    
+                })
+                alert('Se actualizo a la ultima version!');
+            }).catch(function (error) {
+                // registration failed
+                console.log('Registration failed with ' + error);
+            });
+    }
+*/
+/*    navigator.serviceWorker.register('/service-worker.js')
+         .then(
+             reg => console.log('Service Worker registrado!', reg),
+             Snackbar.show({
+                 text: 'Nueva actualizacion registrada!',
+                 width: '475px',
+                 pos: 'top-left',
+                 actionText: 'Refrezcar',
+                 actionTextColor: "#dd4b39",
+                 onActionClick: function (element) {
+                     $(element).css('opacity', 0);
+                     location.reload();
+                 }
+             })
+         )
+         .catch(err => console.log('Boo!', err));
+
+
+         const wb = new Workbox('/sw.js');
+
+wb.addEventListener('activated', (event) => {
+  // `event.isUpdate` will be true if another version of the service
+  // worker was controlling the page when this version was registered.
+  if (!event.isUpdate) {
+    console.log('Service worker activated for the first time!');
+
+    // If your service worker is configured to precache assets, those
+    // assets should all be available now.
+  }
+});
+
+// Register the service worker after event listeners have been added.
+wb.register();
+ */
+</script>
+
+<script type="module">
+
+navigator.serviceWorker.register('/service-worker.js').then(reg => {
+  reg.installing; // the installing worker, or undefined
+  reg.waiting; // the waiting worker, or undefined
+  reg.active; // the active worker, or undefined
+  //  reg.update(); 
+    reg.addEventListener('updatefound', () => {
+    // A wild service worker has appeared in reg.installing!
+    const newWorker = reg.installing;
+    alert('Ventasnube se actualizo!');
+    newWorker.state;
+    // "installing" - the install event has fired, but not yet complete
+    // "installed"  - install complete
+    // "activating" - the activate event has fired, but not yet complete
+    // "activated"  - fully active
+    // "redundant"  - discarded. Either failed install, or it's been
+    //                replaced by a newer version
+    newWorker.addEventListener('statechange', () => {
+         $('#sw-version').html("Hay una nueva vesion instalada!!!");
+        // newWorker.state has changed
+        location.reload();
+        // alert('statechange');
+    });
+  });
+});
+
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  // This fires when the service worker controlling this page
+  // changes, eg a new worker has skipped waiting and become
+  // the new active worker.
+ // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
+ // alert('controllerchange');
+});
+
+</script>
+
+<script>
+    // CARGO LAS VISTAS UNA VEZ SE CARGUE LOS MODULOS
+    //###########################################################
+    //Creo la variable global con el objeto de la secion 
+    //###########################################################
+    //Limpio las variables globales si hay un error de pantalla asi no falla el APP
+    var ws_id = '<?php echo session('ws_id'); ?>';
+    var u_email = '<?php echo session('ws_email'); ?>';
+    var u_name = '<?php echo session('u_name'); ?>';
+    //###########################################################
+    var u_db = 'userdb-' + nocodelog(u_email);
+    var offline_mode = false;
+/*
+    async function user_session() {
+        try {
+            //Cambio el L_user_db x R_user_db para usar las db locales
+            //   L_user_db = new PouchDB(u_db);
+            //    L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: true });
+            if (offline_mode) {
+                R_user_db = new PouchDB(u_db);
+                L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: false });
+                L_user_db.sync(R_user_db, { live: true, retry: true, }); //sincronizo
+
+                Snackbar.show({
+                    text: 'Cart OFFLINE Activado!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-left'
+                });
+            } else {
+                L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: true })
+                .on('error', function (err) {
+                        if (err) {
+                            if (err.name === 'unauthorized' || err.name === 'forbidden') {
+                            // name or password incorrect
+                                Snackbar.show({
+                                    text: err.name,
+                                    actionText: 'ok',
+                                    actionTextColor: "#0575e6",
+                                });
+                                
+                            } else {
+                            // cosmic rays, a meteor, etc.
+                                Snackbar.show({
+                                    text: err.name,
+                                    actionText: 'ok',
+                                    actionTextColor: "#0575e6",
+                                });
+                            }
+                        }
+                      //  location.reload();
+                        // handle error
+                    });
+
+                   
+                Snackbar.show({
+                    text: 'Cart OFFLINE Desactivado!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-left'
+                });
+                //  R_search_db.sync(L_search_db, { live: true, retry: true, }); //sincronizo
+            }
+            // R_user_db.sync(L_user_db, { live: true, retry: true, }); //sincronizo
+            /*
+                L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: true, cache: false })
+                    .on('change', function (info) {
+                        // handle change
+                        Snackbar.show({
+                            text: 'Hay cambios en la db!' + err,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                            pos: 'bottom-center'
+                        });
+    
+                    })
+                    .on('paused', function (err) {
+                        // replication paused (e.g. replication up to date, user went offline)
+                        if (err) {
+                            Snackbar.show({
+                                text: 'Replicación actualizada',
+                                actionText: 'ok',
+                                actionTextColor: "#0575e6",
+                                pos: 'bottom-center'
+                            });
+                        }
+                    }).on('active', function () {
+                        // replicate resumed (e.g. new changes replicating, user went back online)
+                        Snackbar.show({
+                            text: 'Se actualizo db remota!',
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                            pos: 'bottom-center'
+                        });
+                    }).on('denied', function (err) {
+                        // a document failed to replicate (e.g. due to permissions)
+                        Snackbar.show({
+                            text: 'No se pudo syncronizar! ' + err,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                            pos: 'bottom-center'
+                        });
+                    }).on('complete', function (info) {
+                        Snackbar.show({
+                            text: 'Se completo la sync ' + info,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                            pos: 'bottom-center'
+                        });
+                        // handle complete
+                    }).on('error', function (err) {
+                        Snackbar.show({
+                            text: 'Hay un error en la sincronizacion! ' + err,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                            pos: 'bottom-center'
+                        });
+                        // handle error
+                    });
+    
+    
+    */
+            //  var doc = await db.get('mydoc');
+            /*R_user_db.sync(L_user_db, { live: true, retry: true, cache: false })
+            .on('change', function (info) {
+                // handle change
+                Snackbar.show({
+                    text: 'Se sincronizaron los cambios!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-center'
+                });
+
+            })
+            .on('paused', function (err) {
+                // replication paused (e.g. replication up to date, user went offline)
+                if (err) {
+                    Snackbar.show({
+                        text: 'Replicación actualizada, la usuario se desconectó',
+                        actionText: 'ok',
+                        actionTextColor: "#0575e6",
+                        pos: 'bottom-center'
+                    });
+                }
+            }).on('active', function () {
+                // replicate resumed (e.g. new changes replicating, user went back online)
+                Snackbar.show({
+                    text: 'Estas en modo offline sin Internet!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-center'
+                });
+            }).on('denied', function (err) {
+                // a document failed to replicate (e.g. due to permissions)
+                Snackbar.show({
+                    text: 'No se tienes permiso para sincronizar! ',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-center'
+                });
+            }).on('complete', function (info) {
+                Snackbar.show({
+                    text: 'Se completo la sincronizarcion',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-center'
+                });
+                // handle complete
+            }).on('error', function (err) {
+                Snackbar.show({
+                    text: 'Hay un error en la sincronizacion! ',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-center'
+                });
+                // handle error
+            })
+            ; //sincronizo
+            */
+       /*
+            this.user_data = {
+                user_db: u_db,
+                user_name: u_email,
+                //user_roll: g_session.userCtx.roles,
+                url_db: 'http://localhost:5984/' + u_db,
+                user_ws: ws_id
+            }
+            Snackbar.show({
+                text: 'Bienvenido ' + u_name + '!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-center'
+            });
+        } catch (err) {
+            Snackbar.show({
+                text: 'Estas sin conexion a internet! ' + err,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-center'
+            });
+            // console.log(err);
+        }
+    }
+    user_session();
+*/
+
+function user_session() {
+        try {
+            //Cambio el L_user_db x R_user_db para usar las db locales
+            if (offline_mode) {
+                R_user_db = new PouchDB(u_db);
+                L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: false });
+                L_user_db.sync(R_user_db, { live: true, retry: true, }); //sincronizo
+                Snackbar.show({
+                    text: 'Cart OFFLINE Activado!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-left'
+                });
+            } else {
+                L_user_db = new PouchDB('http://localhost:5984/' + u_db, { skip_setup: true })
+                .on('error', function (err) {
+                        if (err) {
+                            if (err.name === 'unauthorized' || err.name === 'forbidden') {
+                            // name or password incorrect
+                                Snackbar.show({
+                                    text: err.name,
+                                    actionText: 'ok',
+                                    actionTextColor: "#0575e6",
+                                });
+                                
+                            } else {
+                            // cosmic rays, a meteor, etc.
+                                Snackbar.show({
+                                    text: err.name,
+                                    actionText: 'ok',
+                                    actionTextColor: "#0575e6",
+                                });
+                            }
+                        }
+                            //  location.reload();
+                            // handle error
+                    });
+                  
+                Snackbar.show({
+                    text: 'Cart OFFLINE Desactivado!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                    pos: 'top-left'
+                });
+                //  R_search_db.sync(L_search_db, { live: true, retry: true, }); //sincronizo
+            }
+       
+            this.user_data = {
+                user_db: u_db,
+                user_name: u_email,
+                //user_roll: g_session.userCtx.roles,
+                url_db: 'http://localhost:5984/' + u_db,
+                user_ws: ws_id
+            }
+            Snackbar.show({
+                text: 'Bienvenido ' + u_name + '!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-center'
+            });
+        } catch (err) {
+            Snackbar.show({
+                text: 'Estas sin conexion a internet LPTM! ' + err,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-center'
+            });
+            // console.log(err);
+        }
+    }
+    user_session();
+
+    //###########################################################################################
+    // Creo una variable global con el objeto [ user_data:{} ]
+    // Donde guardo los datos de la sesion para poder usar los datos en toda la app
+    // El user_DB y el user_ws[ID] lo guardo con la la cokie con php 1 vez para traer los datos
+    //############################################################################################
+    //Uso this.a = 0; para declarar variables globales
+
+  //#############################################################################################
+</script>
+<!--- PLANTILLA  BODY NAVEGACION -->
+<!--script src="/public/dist/js/ventas_nube_body.js"></script-->
+<!--script src="/body/ventas_nube_body"></script-->
+
+<!--- Conexion al la db user traigo los modulos de todos los usuarios --->
+<script src="/public/dist/js/body/ventas_nube_body.js"></script>
+<!--- Conexion al la db user traigo los modulos de todos los usuarios --->
+<script src="/public/dist/js/cart/ventas_nube_cart.js"></script>
+<!--- Conexion al la db search traigo los modulos de todos los usuarios --->
+<script src="/public/dist/js/search/ventas_nube_search.js"></script>
+<!--- PLANTILLA FUNCIONES CATALOGO PounchDB-->
+<!--script src="/public/dist/js/ventas_nube_catalog.js"></script-->
+<!---script src="/public/plugins/pouchdb/js/app.js"></script-->
+</html>
+<script>
+    //#############################################################
+    // Esta funcion captura los errores de promesas no capturados para que el codigo no la app no se bloquee
+    /*  window.addEventListener('unhandledrejection', function (event) {
+          // the event object has two special properties:
+          // alert(event.promise); // [object Promise] - the promise that generated the error
+          // alert(event.reason); // Error: Whoops! - the unhandled error object
+          Snackbar.show({
+              text: 'Hay un error grabe sin recuperacion',
+              width: '475px',
+              pos: 'bottom-left',
+              actionText: 'Refrezcar',
+              actionTextColor: "#dd4b39",
+             onActionClick: function(element) {
+                 //Set opacity of element to 0 to close Snackbar
+                 $(element).css('opacity', 0);
+                 //alert('Clicked Called!');
+                  location.reload();
+             }
+          });
+  
+          //location.reload();//Con esta FUNCION LA USO PARA INSTAR EL Service worker la primer vez q se ejecuta refrezco la pagiga para q se vuelva a cargar
+      });
+    */
+    $(document).ready(function () {
+        //Cargo las funciones de los modulos para inciar primer Vista
+        window.onload =
+            get_top_bar(),
+            get_left_nav(),
+            get_nav_cart()
+    });
+</script>

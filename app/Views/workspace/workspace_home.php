@@ -11,14 +11,14 @@
     <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <!-- Your custom styles (optional) -->
-    <link href="/public/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <link href="/public/app/v4.0/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="/public/assets/css/VentasNubeStyle.css" rel="stylesheet">
+    <link href="/public/app/v4.0/assets/css/VentasNubeStyle.css" rel="stylesheet">
 
-    <!--link href="/public/plugins/iCheck/square/blue.css" rel="stylesheet"-->
+    <!--link href="/public/app/v4.0/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet"-->
 
     <!-- snack-bar.ccs -->
-    <link rel="stylesheet" href="/public/plugins/snackbar-master/dist/snackbar.min.css">
+    <link rel="stylesheet" href="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css">
 <style>
   svg:not(:root) {
     margin: 0 auto;
@@ -215,7 +215,7 @@
 
 </head>
 
-<body class="ws_config_tuto_body profile-page sidebar-collapse landing-page body-singup"  style="background-image: url('/public/assets/img/footer.png');">
+<body class="ws_config_tuto_body profile-page sidebar-collapse landing-page body-singup"  style="background-image: url('/public/app/v4.0/assets/img/footer.png');">
     <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
         <div class="container">
         <div class="navbar-translate">
@@ -251,7 +251,7 @@
         </div>
     </nav>
 
-    <!--main class="menu-body " style="background-image: url('/public/assets/img/banner--ventas-Nube.png');"-->
+    <!--main class="menu-body " style="background-image: url('/public/app/v4.0/app/v4.0/assets/img/banner--ventas-Nube.png');"-->
     <main class="menu-body  menu-body-text ">
         <!-- main content -->
         <div class='align-items-center'>
@@ -294,25 +294,25 @@
 <!--script src="https://code.jquery.com/jquery-1.11.1.min.js"></script-->
 
 <!-- Jquery-3.1.1.min.js -->
-<script type="text/javascript" src="/public/plugins/jQuery/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
 
 <!--   Core JS Files   -->
-<script src="/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
-<!--script src="/public/plugins/iCheck/icheck.min.js"></script>
-<script src="/public/assets/js/plugins/moment.min.js"></script-->
+<script src="/public/app/v4.0/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
+<!--script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+<script src="/public/app/v4.0/assets/js/plugins/moment.min.js"></script-->
 <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<!--script src="/public/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script-->
+<!--script src="/public/app/v4.0/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script-->
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="/public/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 <!-- snack-bar.JS -->
-<script src="/public/plugins/snackbar-master/dist/snackbar.min.js"></script>
+<script src="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.js"></script>
 <!--  Validate    -->
-<script src="/public/plugins/validate/validate.js"></script>
+<script src="/public/app/v4.0/plugins/validate/validate.js"></script>
 <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-<script src="/public/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
+<script src="/public/app/v4.0/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
 <script>
 
 

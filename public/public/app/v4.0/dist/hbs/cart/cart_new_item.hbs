@@ -1,0 +1,37 @@
+                
+       
+                {{#each item_product}}
+                    <div id="{{_id}}" class="s-card-actv-item padd ">
+                        <div class="s-card-actv-item-body">
+                            <div class="s-card-mini-img ">
+                                <img src="{{card_product_img_url}}" alt="">
+                            </div>
+                            <div class="s-card-actv-item-prod">
+                                <div class="s-card-actv-item-name">
+                                   {{card_product_name}}
+                                    <div class="s-card-actv-item-dell">
+                                        <button type="button"class="btn-dell-item-cart btn btn-round pull-right" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}" >
+                                            <span class="material-icons">cancel </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span class="s-card-actv-item-price-left ">
+                                    <span class="hidden-xs" data-toggle="tooltip" data-placement="top" data-original-title="Valor del impuesto">IVA(21%)</span>
+                                    <span class="text-red" data-toggle="tooltip" data-placement="top" data-original-title="Descuento Unitario">Des:(%{{card_product_discount}})=($-{{card_product_discount_tot_val}})</span>
+                                </span>
+                                <span class="s-card-actv-item-price-right">
+                                    <small>
+                                        <div class="round-icon pr xs" data-toggle="tooltip" data-placement="top" data-original-title="Precio Mayorista"><span> M </span></div>
+                                        ${{card_product_val}}
+                                    </small>
+                                    x
+                                    <small class="card_product_quantity" data-toggle="tooltip" data-placement="top" data-original-title="Cantidad de productos">{{card_product_quantity}}</small>
+                                    <span class="tot"> ${{card_product_val_sub_tot_des}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}     
+     
+
+      

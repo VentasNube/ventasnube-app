@@ -6,7 +6,7 @@
 function get_top_bar() {
     var pacht = 'body'; //CONTROLADOR PRINCIPAL
     var controler_data = 'top_bar'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = '/public/dist/hbs/top_bar_template'; //NOMBRE CONTROLADOR TEMPLATE
+    var controler_template = '/public/app/v4.0/dist/hbs/top_bar_template'; //NOMBRE CONTROLADOR TEMPLATE
     // ID DE COMPILACION //      
     var id_copiled = '#top_nav_compiled';
     get_module(pacht, controler_data, controler_template, id_copiled);
@@ -22,7 +22,7 @@ function get_left_nav(m_id) {
     //var m_t_id = url_now.m_t_id;
     var pacht = 'body'; //CONTROLADOR PRINCIPAL
     var controler_data = 'left_nav'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = '/public/dist/hbs/left_nav_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var controler_template = '/public/app/v4.0/dist/hbs/left_nav_template'; //NOMBRE CONTROLADOR TEMPLATE      
     var id_copiled = '#left_nav_compiled'; // ID DE COMPILACION //      
     var data = {
         m_id: m_id,
@@ -40,7 +40,7 @@ function get_nav_cart(pacht, controler_data, controler_template, id_copiled, dat
     var m_t_id = url_now.m_t_id;
     var pacht = 'cart'; //CONTROLADOR PRINCIPAL
     var controler_data = 'cart_nav_data'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = '/public/dist/hbs/cart_nav_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var controler_template = '/public/app/v4.0/dist/hbs/cart_nav_template'; //NOMBRE CONTROLADOR TEMPLATE      
     var id_copiled = '#right_main_compiled'; // ID DE COMPILACION //  
     var data = {
         m_id: m_id,
@@ -60,7 +60,7 @@ function get_search_module(search_m_input, m_id) {
     var m_t_id = url_now.m_t_id;
     var pacht = 'search'; //CONTROLADOR PRINCIPAL
     var controler_data = 'search_m_data'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = '/public/dist/hbs/search_m_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var controler_template = '/public/app/v4.0/dist/hbs/search_m_template'; //NOMBRE CONTROLADOR TEMPLATE      
     var id_copiled = '#search_module_compiled'; // ID DE COMPILACION //  
     var data = {
             m_id: m_id,

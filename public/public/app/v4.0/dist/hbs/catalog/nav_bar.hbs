@@ -1,0 +1,181 @@
+<div class="box">
+    <div class="box-header">
+        <div class="nav-header">
+            <div class="padding-0 col-xs-9 col-sm-8 col-md-8 ">
+                <div class="btn-group dopdown">
+                    {{#each m_now}}
+                    <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
+                        class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+                        data-toggle="dropdown" aria-expanded="true">
+                        <span class="material-icons">{{m_t_icon}}</span>
+                        <span class="this_m_t_name">{{m_t_name}}</span>
+                        <!--span class="material-icons">widgets</span>
+                        <span class="this_m_t_name">Productos</span-->
+                        <i class="material-icons">expand_more</i>
+                    </button>
+
+                    <ul class="dropdown-menu pull-right">
+                        {{#each ../m_t}}
+                        <li class="margin-5">
+                            <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{m_url}}}"
+                                class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                                data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                                <span class="material-icons">{{m_t_icon}}</span>
+                                <span class="this_m_t_name">{{m_t_name}}</span>
+                                <!--span class="material-icons">home_repair_service</span>
+                                <span class="this_m_t_name">Servicios</span-->
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{/each}}
+                </div>
+                <div class="btn-group dopdown">
+                    <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text"
+                        data-toggle="dropdown" aria-expanded="true">
+                        Filtrar
+                        <span class="material-icons"> filter_list </span>
+                    </button>
+                    <ul class="dropdown-menu xl pull-left">
+                        <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                        <div class="body">
+                            <li class="header">Filtrar ordenes</li>
+                            <li class="divider"></li>
+                            <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
+                                <li>
+                                    <label>Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">account_circle</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
+                                            value="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Colaborador</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">group</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
+                                            value="">
+                                    </div>
+                                </li>
+                            </div>
+                            <div class="padding-10  col-xs-12 col-sm-6 col-md-6">
+                                <li>
+                                    <label>Prioridad</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">low_priority</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
+                                            value="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Estado</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">mood</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
+                                            value="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Equipo</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">devices_other</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
+                                            value="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Fecha limite</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">event</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input datetimepicker"
+                                            placeholder="Fecha limite" value="">
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Fecha de ingreso</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="material-icons">today</span>
+                                        </div>
+                                        <input type="text" class="s-card-actv-input datetimepicker"
+                                            placeholder="Fecha limite" value="">
+                                    </div>
+                                </li>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+                <span class="badge round xs">Fecha <button><span class="material-icons">cancel</span></button> </span>
+            </div>
+            <div class="nav-link col-xs-3 col-sm-4 col-md-4 text-right">
+                {{#each m_now}}
+                {{#ifMe p_id '3'}}
+                    <div class="btn-group ">
+                        <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle "
+                            data-toggle="dropdown" aria-expanded="true">
+                            <span class="material-icons">add_circle_outline</span> <span
+                                class="hidden-xs hidden-sm">Nuevo</span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li class="header">Operaciones</li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="catalog_new_item" href="#catalog_new_item" data-toggle="modal" role="button"
+                                    title="Crear nuevo articulo"><i class="material-icons">widgets</i> Nuevo articulo </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#cajaRetiro" data-toggle="modal" role="button" title="Retirar efectivo"><i
+                                        class="material-icons">article</i> Lista de productos </a></li>
+                        </ul>
+                    </div>
+                {{/ifMe}}
+                {{#ifMe p_id '1'}}
+                <div class="btn-group ">
+                    <button type="button" class="btn btn-round xl dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="true">
+                        <span class="material-icons">settings</span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a id="edit_board-btn" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" role="button">
+                                <i class="material-icons">create</i>
+                                Editar tablero
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i
+                                    class="material-icons">view_carousel</i> Nueva etapa</a></li>
+                        <li><a id="new_board-btn" href="#new-board" data-toggle="modal" role="button"><i
+                                    class="material-icons">table_chart</i> Nuevo tablero</a></li>
+                    </ul>
+                </div>
+                {{/ifMe}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+   /* $(document).on('click', '.catalog_new_item', function (event) {
+        $('#master_popup').modal('show');
+        get_catalog_new_item();
+        alert('Modal');
+    });
+*/
+
+
+</script>

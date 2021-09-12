@@ -1,0 +1,36 @@
+{
+    "short_name": "Ventas Nube",
+    "name": "Vende en la nube",
+    "description": "Sistema de ventas Online",
+    "icons": [{
+            "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
+            "type": "image/png",
+            "sizes": "313x313"
+        },
+        {
+            "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png",
+            "type": "image/png",
+            "sizes": "313x313"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#3367D6",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#3367D6",
+    "shortcuts": [{
+            "name": "Vende en la nube",
+            "short_name": "Ventas Nube",
+            "description": "Sistema de ventas Online",
+            "url": "/admin",
+            "icons": [{ "src": "/public/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png", "sizes": "313x313" }]
+        },
+        {
+            "name": "How's weather tomorrow?",
+            "short_name": "Tomorrow",
+            "description": "View weather information for tomorrow",
+            "url": "/admin",
+            "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
+        }
+    ]
+}
