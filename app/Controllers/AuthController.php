@@ -14,7 +14,6 @@ class AuthController extends MythAuthController
 	 * @var Auth
 	 */
 	protected $config;
-
 	/**
 	 * @var \CodeIgniter\Session\Session
 	 */
@@ -186,7 +185,7 @@ class AuthController extends MythAuthController
 		// Tomo los datos del form para crear el usuario en CouchDB	
 		helper('date');
 			$client = \Config\Services::curlrequest();
-			$url = 'http://admin:Cou6942233Cou@localhost:5984/_users/org.couchdb.user:'.$this->request->getPost("email");
+			$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/_users/org.couchdb.user:'.$this->request->getPost("email");
 			$data = [
 				'name' => $this->request->getPost("email"),
 				'firstname' => $this->request->getPost('username'),				
@@ -477,7 +476,7 @@ class AuthController extends MythAuthController
 		//Hago un get a couchdb para traer el id y el rev del user
 		$client = \Config\Services::curlrequest();
 		helper('date');
-		$url = 'http://admin:Cou6942233Cou@localhost:5984/_users/org.couchdb.user:'.$this->request->getPost("email");
+		$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/_users/org.couchdb.user:'.$this->request->getPost("email");
 		$query = $client->request('GET', $url);
 		//convierto el json en un objeto
 		$json = json_decode($query->getBody());
