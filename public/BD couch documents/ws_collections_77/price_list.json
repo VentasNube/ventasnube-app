@@ -1,0 +1,48 @@
+{
+    "_id": "price_list",
+    "_rev": "16-e14ea4be987c9cd073a8598dfefea9e4",
+    "type": "price_list",
+    "status": "active",
+    "price_list": [
+      {
+        "id": "1",
+        "value": "Consumidor Final",
+        "currency": {
+          "id": "ARS",
+          "value": "$"
+        }
+      },
+      {
+        "id": "2",
+        "value": "Gremio",
+        "currency": {
+          "id": "ARS",
+          "value": "$"
+        }
+      },
+      {
+        "id": "3",
+        "value": "Mayorista",
+        "currency": {
+          "id": "ARS",
+          "value": "$"
+        }
+      },
+      {
+        "id": "4",
+        "value": "Mercado Libre",
+        "currency": {
+          "id": "ARS",
+          "value": "$"
+        }
+      },
+      {
+        "id": "5",
+        "value": "Web",
+        "currency": {
+          "id": "ARS",
+          "value": "$"
+        }
+      }
+    ]
+  }

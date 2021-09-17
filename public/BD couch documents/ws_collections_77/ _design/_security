@@ -1,0 +1,1 @@
+{"_id":"_design/_security","_rev":"1-03b0f7e3fdf681d850845f35ea8c96fa","admins":{"names":["smartmobile.com.ar@gmail.com"],"roles":["_admin"]},"members":{"names":[],"roles":["p_edit","p_save","p_reed"]}}

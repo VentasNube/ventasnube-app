@@ -1,0 +1,222 @@
+{
+  "_id": "producto-12",
+  "_rev": "9-875b212bec43b29b809dd9c02f9c725d",
+  "name": "Cerveza Corona",
+  "type": "product",
+  "tags": [
+    "Cerveza",
+    "Corona",
+    "botella"
+  ],
+  "currency": {
+    "id": "ARS",
+    "value": "$"
+  },
+  "available_quantity": 10,
+  "sold_quantity": 0,
+  "limit_discount": 0,
+  "permalink": "http://loalhost/shop/servenet/red-boll-free",
+  "catalog_product_id": null,
+  "category_id": 1,
+  "sub_category_id": 1,
+  "workspace_id": 77,
+  "condition": "not_specified",
+  "status": "active",
+  "author": "smartmobile.com.ar@gmail.com",
+  "descriptions": [
+    "Cerveza corona"
+  ],
+  "variations": [
+    {
+      "id": 1,
+      "tittle": "Por unidad",
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/corona.jpeg",
+          "min": "/public/img/catalog/product/max/corona.jpeg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "PACK",
+          "id_name": "Por unidad",
+          "name": "Por unidad",
+          "value": 1
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 350
+        },
+        {
+          "id": 2,
+          "value": 250
+        },
+        {
+          "id": 3,
+          "value": 150
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 6,
+          "sold_quantity": 2,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 6,
+          "sold_quantity": 2,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    },
+    {
+      "id": 2,
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/corona_pack.jpg",
+          "min": "/public/img/catalog/product/max/corona_pack.jpg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "PACK",
+          "id_name": "Por 6 unidades",
+          "name": "Pack de 6",
+          "value": 6
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 150
+        },
+        {
+          "id": 2,
+          "value": 200
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 4,
+          "quantity_": 4,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    },
+    {
+      "id": 3,
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/corona_pack_2.jpg",
+          "min": "/public/img/catalog/product/max/corona_pack_2.jpg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "PACK",
+          "id_name": "Promo heladera",
+          "name": "Pack de 6 mas Heladera",
+          "value": 1
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 3500
+        },
+        {
+          "id": 2,
+          "value": 3900
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "sold_quantity": 0,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "sold_quantity": 0,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    }
+  ],
+  "last_update_at": [
+    {
+      "username": "smartmobile.com.ar@gmail.com",
+      "datetime": "18/3/2021 18:45:10"
+    },
+    {
+      "username": "otrousuario@gmail.com",
+      "datetime": "18/3/2021 18:45:10"
+    }
+  ],
+  "start_time": "2017-03-10T21:18:09.588Z",
+  "stop_time": "2037-03-05T21:18:09.588Z",
+  "end_time": "2037-03-05T21:18:09.588Z",
+  "expiration_time": "2017-05-29T21:18:09.651Z",
+  "shipping": {
+    "mode": "not_specified",
+    "local_pick_up": false,
+    "free_shipping": false,
+    "methods": [],
+    "dimensions": null,
+    "tags": [
+      "me2_available"
+    ],
+    "logistic_type": "not_specified"
+  }
+}

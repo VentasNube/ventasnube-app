@@ -55,7 +55,7 @@ class Body extends BaseController
                         'm_t' => $workspace_modules_type,   //Traigo todos los tipos de modulos segun los permisos de usuario
                         'user_id' => $user_id,
                         'ws_id' => $ws_id,
-                        //'ws_plan_id' =>$ws_plan['ws_plan_id'],
+                       // 'ws_plan_id' =>$ws_plan['ws_plan_id'],
                         'ws_plan' =>  $ws_plan,
                         'ws_plan_name' =>  $ws_plan['workspace_id'],
                         'workspace_plan_expiration' =>  $ws_plan['workspace_plan_expiration'],
@@ -82,6 +82,7 @@ class Body extends BaseController
             
           }
     }
+
 
     //Json con los datos del user
     public function user_data()

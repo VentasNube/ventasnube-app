@@ -1,0 +1,148 @@
+{
+    "_id": "ws_colections_conf",
+    "_rev": "2-dd37a8300cb0ac1888d6101159a5cb37",
+    "type_items": [
+      {
+        "id": "1",
+        "value": "item-product",
+        "value_name": "Productos"
+      },
+      {
+        "id": "2",
+        "value": "item-service",
+        "value_name": "Servicios"
+      }
+    ],
+    "category_list": [
+      {
+        "id": "1",
+        "value": "Gaseosas"
+      },
+      {
+        "id": "2",
+        "value": "Energizante"
+      },
+      {
+        "id": "3",
+        "value": "Agua sin gas"
+      }
+    ],
+    "sub_category_list": [
+      {
+        "id": "1",
+        "value": "Gaseosas"
+      },
+      {
+        "id": "2",
+        "value": "Energizante"
+      },
+      {
+        "id": "3",
+        "value": "Agua sin gas"
+      }
+    ],
+    "stock_location": {
+      "id": "1",
+      "value_name": "Local ServerNet",
+      "address": [
+        {
+          "comment": "",
+          "address_line": "santa fe 1000",
+          "zip_code": "1641",
+          "city": {
+            "id": "",
+            "name": "Acassuso"
+          },
+          "state": {
+            "id": "AR-B",
+            "name": "Buenos Aires"
+          },
+          "country": {
+            "id": "AR",
+            "name": "Argentina"
+          },
+          "latitude": -34.4817565,
+          "longitude": -58.5056779
+        }
+      ]
+    },
+    "price_list": [
+      {
+        "id": "1",
+        "value": "Mostrador"
+      },
+      {
+        "id": "2",
+        "value": "Mayorista"
+      },
+      {
+        "id": "3",
+        "value": "Revendedores"
+      }
+    ],
+    "brand_list": [
+      {
+        "id": "1",
+        "value_name": "Coca Cola"
+      },
+      {
+        "id": "2",
+        "value_name": "Speed Unlimit"
+      },
+      {
+        "id": "3",
+        "value_name": "Villa del sur"
+      }
+    ],
+    "currency_id": {
+      "id": "ARS",
+      "value": "$"
+    },
+    "tax_id": [
+      {
+        "id": "1",
+        "value": "21",
+        "value_name": "IVA 21"
+      },
+      {
+        "id": "2",
+        "value": "10",
+        "value_%": "10",
+        "value_name": "IVA 10"
+      }
+    ],
+    "seller_address": {
+      "id": 189626559,
+      "comment": "",
+      "address_line": "santa fe 1000",
+      "zip_code": "1641",
+      "city": {
+        "id": "",
+        "name": "Acassuso"
+      },
+      "state": {
+        "id": "AR-B",
+        "name": "Buenos Aires"
+      },
+      "country": {
+        "id": "AR",
+        "name": "Argentina"
+      },
+      "latitude": -34.4817565,
+      "longitude": -58.5056779,
+      "search_location": {
+        "neighborhood": {
+          "id": "TUxBQkFDQTMyNzNa",
+          "name": "Acassuso"
+        },
+        "city": {
+          "id": "TUxBQ1NBTjg4ZmJk",
+          "name": "San Isidro"
+        },
+        "state": {
+          "id": "TUxBUEdSQWU4ZDkz",
+          "name": "Bs.As. G.B.A. Norte"
+        }
+      }
+    }
+  }

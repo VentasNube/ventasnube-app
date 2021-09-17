@@ -1,0 +1,54 @@
+{
+  "_id": "ws-config-77",
+  "_rev": "9-ba97ef3d6eb7c5cf95a1275500af69f2",
+  "offline_mode": "0",
+  "module": [
+    {
+      "m_id": "Account",
+      "m_name": "Mi cuenta",
+      "m_icon": "dashboard",
+      "m_color": "primary",
+      "m_url": "board",
+      "status": 1,
+      "m_position": 1,
+      "module_type": [
+        {
+          "m_t_id": "Mis compras",
+          "m_t_name": "Mis compras",
+          "m_t_icon": "dashboard",
+          "m_t_color": "primary",
+          "m_t_url": "board",
+          "status": 1,
+          "m_t_position": 1
+        },
+        {
+          "m_t_id": "Mis datos",
+          "m_t_name": "Mis datos",
+          "m_t_icon": "dashboard",
+          "m_t_color": "primary",
+          "m_t_url": "board",
+          "status": 1,
+          "m_t_position": 1
+        },
+        {
+          "m_t_id": "Mis favoritos",
+          "m_t_name": "Mis datos",
+          "m_t_icon": "dashboard",
+          "m_t_color": "primary",
+          "m_t_url": "board",
+          "status": 1,
+          "m_t_position": 1
+        },
+        {
+          "m_t_id": "Mis espacios de trabajo",
+          "m_t_name": "Mis datos",
+          "m_t_icon": "dashboard",
+          "m_t_color": "primary",
+          "m_t_url": "board",
+          "status": 1,
+          "m_t_position": 1
+        }
+      ]
+    }
+  ]
+}

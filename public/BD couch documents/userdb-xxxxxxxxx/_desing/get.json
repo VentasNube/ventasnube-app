@@ -1,0 +1,19 @@
+{
+  "_id": "_design/get",
+  "_rev": "6-95e0694afa2544f4d0ffb2573dcaedf1",
+  "views": {
+    "type": {
+      "map": "function(doc) {\n//if(doc.type === 'cart-item') {\nif(doc.type === req.query.type) {\n        emit(doc.type,{\n          \"tipo\": doc.type,\n          \"price\": 150,\n          \"stock\": 1,\n          \"discount\": 0,\n          \"tax\": 150\n        });\n    }\n}"
+    },
+    "cart-item": {
+      "map": "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          \"tipo\": doc.type,\n          \"price\": 150,\n          \"stock\": 1,\n          \"discount\": 0,\n          \"tax\": 150\n        });\n    }\n}"
+    },
+    "new-view": {
+      "map": "function(doc) {\nif(doc.type === 'box-item') {\n        emit(doc.type,{\n          \"tipo\": doc.type,\n          \"price\": 150,\n          \"stock\": 1,\n          \"discount\": 0,\n          \"tax\": 150\n        });\n    }\n}"
+    },
+    "fav-item": {
+      "map": "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          \"tipo\": doc.type,\n          \"price\": 150,\n          \"stock\": 1,\n          \"discount\": 0,\n          \"tax\": 150\n        });\n    }\n}"
+    }
+  },
+  "language": "javascript"
+}

@@ -223,8 +223,8 @@ class BodyModel extends Model//Crea el nombre de el modelo
 
           //Uno los modulos con los id module de user permission 
           // $module_db->join('module', 'module.m_id = module_plan.module_id');
+
           //Uno los modulos con los id module de user permission
-          
           $module_db->join('module', 'module.m_id = users_workspace_permission.module_id');
 
           //Uno los modulos con los id module de user permission 
@@ -235,10 +235,10 @@ class BodyModel extends Model//Crea el nombre de el modelo
 
           //Uno los espacios de trabajos y sus planes id para filtrar los modulos que devuelve
           
-          
           $module_db->where('user_id', $user_id);
           $module_db->where('ws_id', $ws_id);
-          $module_db->where('plan_id', $ws_plan_id);
+         //comento el plan por qno es el id
+          //$module_db->where('plan_id', $ws_plan_id);
           $module_db->orderBy('m_position','ASC');
           //$module_db->where('module_type_id >=', 0);
           //$query = $plans_db->get()->getResult();
@@ -265,7 +265,8 @@ class BodyModel extends Model//Crea el nombre de el modelo
           }
     }
 
-
+     ///  TRAE TODOS LOS MODULOS AUTORIZADOS DEL USUARIO EN UN ARRAY (Se usa para la navegacion lateral)
+    
     ///  TRAE TODOS LOS MODULOS AUTORIZADOS DEL USUARIO EN UN ARRAY (Se usa para la navegacion lateral)
     public function get_m_OKOLd($user_id = false, $ws_id = false, $ws_plan_id = false)
     {

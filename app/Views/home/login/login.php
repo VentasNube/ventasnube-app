@@ -158,7 +158,7 @@ L_user_db.getSession(function (err, response) {
         } else {
             // response.userCtx.name is the current user
             $.ajax({
-            url: "/user_data",
+            url: "/body/user_data",
             // dataType: "html",
             //data: data,
             type: "POST",
@@ -175,7 +175,7 @@ L_user_db.getSession(function (err, response) {
                 if (jqXHR.status == 404) {
                    // setTimeout(function () { window.location = "/account"; }, 2000);
                     Snackbar.show({
-                        text: 'Error 404 La pagina no existe',
+                        text: 'Debes iniciar secion',
                         actionText: 'ok',
                         actionTextColor: "#0575e6",
                     });
