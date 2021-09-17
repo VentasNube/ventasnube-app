@@ -38,14 +38,10 @@ $routes->setAutoRoute(true);
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     //$routes->get('App', 'App::index', ['filter' => 'role:plan-starter-free']);
-    
- 
     //$routes->get('/', 'workspace::index',['filter' => 'login']);
     $routes->get('/', 'Home::index');
-
     //$routes->get('/myapp', 'Home::app');
-
-    //  $routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
+    //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.
     //$routes->get('/account', 'Account::index', ['filter' => 'role:plan-starter-free']);
     // SHOP
@@ -53,11 +49,10 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     // Forgot/register cliente
     $routes->get('/shop/register', 'shop::register');
     $routes->post('/shop/register', 'AuthController::attemptRegisterShop');
+
     // ADMIN MODULO
     //Filtro las rutas por grupo de usuarios
-    
     /*$routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes) {
-      
     $routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     //$routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
@@ -69,7 +64,6 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     // $routes->get('/client', 'Admin::index', ['filter' => 'role:client']);
     // $routes->get('/assets/ventas_nube_body', 'Body::ventas_nube_body',['filter' => 'login']);
-
     $routes->get('login', 'home::login');
     // $routes->get('login', 'AuthVn::login');
     $routes->post('login', 'AuthController::attemptLogin');
