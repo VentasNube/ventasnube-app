@@ -239,7 +239,7 @@ get_ws_module_db(ws_db_name);
 
 //Nueva funcion de Left nav
 
-function get_left_nav(ws_left_nav) {
+function get_left_nav() {
         /* var ws_left_nav_array = {
             ws_left_nav: ws_left_nav_doc,
             ws_lang_data: ws_lang_data
@@ -250,8 +250,8 @@ function get_left_nav(ws_left_nav) {
             //data: data,
             type: "POST",
             dataType: "json",
-            success: function (left_nav_doc) {
-                if (left_nav_doc.result == true) { ///// IMPRIME ////
+            success: function (ws_left_nav) {
+                if (ws_left_nav.result == true) { ///// IMPRIME ////
                     // window.location = "/account";
                     console.log ('CONTENIDO DE LEFT');
                    // console.log (left_nav_doc);
@@ -261,25 +261,36 @@ function get_left_nav(ws_left_nav) {
                         console.log ('No se encuentra el documento');
                         L_user_db.put({
                             _id: 'ws_left_nav_' + ws_id, 
-                            ws_left_nav: left_nav_doc
+                            ws_left_nav: ws_left_nav
                           }, function(err, response) {
                             if (err) { return console.log(err); }
 
                             console.log ('Creo un doc nuevo');
+                           
+                            var ws_left_nav_doc = {
+                                ws_left_nav: ws_left_nav
+                            }
+
+                            console.log (ws_left_nav_doc);
+                              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+
                             // handle response
                           });
-                        
+
                         return console.log(err);
-                    
                     }
                     
                   });
-
-                  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', left_nav_doc);
+                  //creo un array para los datos del documento y lo imprimo en el left bar
+                  var ws_left_nav_doc = {
+                    ws_left_nav: ws_left_nav
+                    }
+                    console.log(ws_left_nav_doc);
+                  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
 
                 }else{
 
-               //     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+                   renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
                     //   logout()
                     //setTimeout(function () { window.location = "/account"; }, 2000);
                 }
@@ -292,7 +303,7 @@ function get_left_nav(ws_left_nav) {
                         actionText: 'ok',
                         actionTextColor: "#0575e6",
                     });
-                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', left_nav_doc);
+                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
                 }
         });
 
@@ -330,10 +341,10 @@ function get_nav_cart(ws_info, ws_lang_data) {
 
 // Imprimo en pantalla los el array con los modulos
 function get_left_nav_OLD(ws_left_nav) {
-    /* var ws_left_nav_array = {
+/* var ws_left_nav_array = {
          ws_left_nav: ws_left_nav_doc,
          ws_lang_data: ws_lang_data
-     }*/
+     }*/    
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 

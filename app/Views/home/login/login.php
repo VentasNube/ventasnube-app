@@ -149,6 +149,7 @@ function logout() {
     };
 
 //Funcion chek _session
+/*
 L_user_db.getSession(function (err, response) {
         if (err) {
             // network error
@@ -184,7 +185,7 @@ L_user_db.getSession(function (err, response) {
 
         }
 });
-
+*/
 
 
     // Esta parte del código se ejecutará automáticamente cuando la página esté lista.
