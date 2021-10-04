@@ -146,7 +146,7 @@ function logout() {
                 }
             }
         });
-    };
+};
 
 //Funcion chek _session
 /*
@@ -198,7 +198,24 @@ var formData = $("#formLogin").serialize();
         if(validaForm()){
             // login(email, password);
             L_user_db.logIn(email, password, function (err, response) {
-                if(response.ok){
+               if (err) {
+                    if (err.name === 'unauthorized' || err.name === 'forbidden') {
+                    // name or password incorrect
+                    Snackbar.show({
+                        text: err.name,
+                        actionText: 'ok',
+                        actionTextColor: "#0575e6",
+                    });
+                    } else {
+                    // cosmic rays, a meteor, etc.
+                        Snackbar.show({
+                            text: err.name,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                        });
+                    }
+                }
+                else if(response.ok){
                             Snackbar.show({
                                 text: 'Bienvenido! '+response.name,
                                 actionText: 'ok',
@@ -218,23 +235,6 @@ var formData = $("#formLogin").serialize();
                                 }
 
                             });
-                }
-                else  if (err) {
-                    if (err.name === 'unauthorized' || err.name === 'forbidden') {
-                    // name or password incorrect
-                    Snackbar.show({
-                        text: err.name,
-                        actionText: 'ok',
-                        actionTextColor: "#0575e6",
-                    });
-                    } else {
-                    // cosmic rays, a meteor, etc.
-                        Snackbar.show({
-                            text: err.name,
-                            actionText: 'ok',
-                            actionTextColor: "#0575e6",
-                        });
-                    }
                 }
                 });
             // Primero validará el formulario.

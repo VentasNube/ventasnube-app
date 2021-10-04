@@ -21,7 +21,7 @@
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart() {
     // Traigo los resultados de una vista
-    let response = await L_user_db.query('get/cart-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
+    let response = await user_db.query('get/cart-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
     return all_cart_item(response.rows);
 }
 
@@ -109,7 +109,7 @@ async function all_cart_item(todos) {
 // Traer los item leyendo de la pounchDB
 async function get_cart_change() {
     //  Escucho Los cambios en tiempo real
-    await L_user_db.changes({
+    await user_db.changes({
         // filter: '_view',
         //view: 'get/cart-item',
         since: 'now',
@@ -213,7 +213,7 @@ function validaForm(card_product_val, card_product_discount, card_product_quanti
 async function add_cart_item(data) {
     console.log(data);
     try {
-        var response = await L_user_db.put({
+        var response = await user_db.put({
             _id: new Date().toISOString(),
             type: 'cart-item',
             update: new Date().toISOString(),
@@ -263,7 +263,7 @@ async function dell_cart_item(element) {
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
                onActionClick: async function(element) {    
-                L_user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);      
                 //    alert('Clicked Called!');
@@ -312,7 +312,7 @@ $(document).on('click', '.cart_button_close', function(event) {
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_fav() {
     // Traigo los resultados de una vista
-    let response = await L_user_db.query('get/fav-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
+    let response = await user_db.query('get/fav-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
     // Renderizo todos los resultados 
     console.log(response)
     return all_fav_item(response.rows);
@@ -407,7 +407,7 @@ async function all_fav_item(todos) {
 // Traer los item leyendo de la pounchDB
 async function get_fav_change() {
     //  Escucho Los cambios en tiempo real
-    await L_user_db.changes({
+    await user_db.changes({
         // filter: '_view',
         //view: 'get/cart-item',
         since: 'now',
@@ -480,7 +480,7 @@ function variations_add_fav(element) {
 async function add_fav_item(data) {
     console.log(data);
     try {
-        var response = await L_user_db.put({
+        var response = await user_db.put({
             _id: new Date().toISOString(),
             type: 'fav-item',
             update: new Date().toISOString(),
@@ -535,7 +535,7 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
             actionText: '<?= lang("Body.b_dell") ?>',
             actionTextColor: "#dd4b39",
                onActionClick: async function(element) {    
-                L_user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);      
                 //    alert('Clicked Called!');

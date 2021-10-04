@@ -56,7 +56,7 @@ async function search_db() {
 }
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function load_product_seach() {
+/*async function load_product_seach() {
     // Traigo los resultados de una vista
     let response = await L_user_db.query('get/seach', { include_docs: false, descending: true }); //Conceto con la vista de diseno
     // Renderizo todos los resultados 
@@ -64,6 +64,7 @@ async function load_product_seach() {
     // all_cart_item(response.rows);
     return readCartItemSearch(response.rows);
 }
+*/
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
 function get_all_item_punchDb() {

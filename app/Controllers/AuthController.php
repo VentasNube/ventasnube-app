@@ -185,7 +185,13 @@ class AuthController extends MythAuthController
 		// Tomo los datos del form para crear el usuario en CouchDB	
 		helper('date');
 			$client = \Config\Services::curlrequest();
-			$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/_users/org.couchdb.user:'.$this->request->getPost("email");
+
+			$user_email = $this->request->getPost("email");
+			$binary = $user_email;
+            $hex = bin2hex($binary);
+            $db_user = 'userdb-' . $hex;
+
+			$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/_users/org.couchdb.user:'.$user_email;
 			$data = [
 				'name' => $this->request->getPost("email"),
 				'firstname' => $this->request->getPost('username'),				
@@ -198,8 +204,32 @@ class AuthController extends MythAuthController
 				'active' => 0,
 				'roles' => ['client']
 			];
+
+
 			//Envio el put con los datos del nuevo cliente
 			$client->request('PUT', $url, ['json' => $data]);
+			//Documento de diseno que trae todos los productos del cart
+                $user_desing_get = [
+                    '_id' => '_design/get',
+                    'views' => [
+                        'cart-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ]
+                    ],
+                ];
+			
+			//	$client = \Config\Services::curlrequest();
+			//	$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+			//	$response = $client->request('PUT', $url, ['json' => $ws_db_data]);
+			//return $response;	
+			 
+			$userDb = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/'. $db_user .'/_design/get';
+			//Envio el put con los datos del nuevo cliente
+			$client->request('PUT', $userDb, ['json' => $user_desing_get]);
+
 			//return $response;
 
 		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();

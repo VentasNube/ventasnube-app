@@ -187,6 +187,7 @@ class WorkspaceModel extends Model
             return $response;
         }
     }
+    
     //Modelo de elimiar Bases de datos en CouchDB
     public function curl_delete_db($ws_db_name = false, $ws_db_data = false)
     {

@@ -221,8 +221,8 @@ class Admin extends BaseController
         } else {
             $db = \Config\Database::connect();
             $workspace_id = $this->request->getPost("ws_id");
-            $user_id = user_id(); //Usuario
-            $Workspace = $this->WorkspaceModel->get_ws_id_user_id($user_id, $workspace_id);            
+            // $user_id = user_id(); //Usuario
+            //   $Workspace = $this->WorkspaceModel->get_ws_id_user_id($user_id, $workspace_id);            
             $ws_db = $db->table('workspace');
             $ws_user = $db->table('users_workspace');
             $db->transBegin();

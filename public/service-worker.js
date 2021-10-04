@@ -1,11 +1,10 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 311112585;
+const version = 11111212;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
     console.log('La version:[' + version + '] fue instalada!');
-
     //getElementById("sw-version").innerHTML = 'La version:[' + version + '] fue instalada!';
     // don't wait
     self.skipWaiting();
@@ -48,9 +47,12 @@ workbox.precaching.precacheAndRoute([
     { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
     { url: '/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js', revision: version },
     { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js', revision: version },
-    { url: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js', revision: version },
-    { url: 'https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js', revision: version },
+
+    { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
+
+    { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
     { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
+   
     { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
     { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js', revision: version },
     { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },
@@ -58,12 +60,17 @@ workbox.precaching.precacheAndRoute([
     { url: '/public/app/v4.0/dist/js/app/ventas_nube_compilator.js', revision: version },
     { url: '/public/app/v4.0/dist/js/app/ventas_nube_app.js', revision: version },
     { url: '/public/app/v4.0/dist/js/app/ventas_nube_session.js', revision: version },
+
+    //MODULOS
     //Funciones body
     { url: '/public/app/v4.0/dist/js/body/ventas_nube_body.js', revision: version },
     //Funciones Cart
     { url: '/public/app/v4.0/dist/js/cart/ventas_nube_cart.js', revision: version },
     //Funciones Search
     { url: '/public/app/v4.0/dist/js/search/ventas_nube_search.js', revision: version },
+    //Acccount 
+    { url: '/public/app/v4.0/dist/js/account/ventas_nube_account.js ', revision: version },
+
     //Templates body de Top bar y left bar
     { url: '/public/app/v4.0/dist/hbs/body/top_bar.hbs', revision: version },
     { url: '/public/app/v4.0/dist/hbs/body/left_nav.hbs', revision: version },

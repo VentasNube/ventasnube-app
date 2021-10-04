@@ -111,6 +111,39 @@ class Workspace extends BaseController
         }
     }
 
+      //Vista para probar arrays en el navegador
+      public function ws_view()
+      {
+  
+          if (!logged_in()) {
+              return redirect()->to(base_url('/login'));
+          } else {
+            $ws_get_type_doc = [
+                '_id' => '_design/get',
+                'views' => [
+                    'type' => [
+                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150\n        });\n    }\n}",
+                    ], 
+                    'sku' => [
+                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service' ) {\n        emit(doc.sku,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150,\n          \'SKU\':doc.variations[0].sku.value_name\n        });\n    }\n} ",
+                    ],
+                    'status' => [
+                        "map" => "function(doc) {if(doc.status === 'active' ) {\n        emit(doc.status,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150\n        });\n    }\n}",
+                    ],
+                    'seach' => [
+                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                    'items' => [
+                        "map" => "function(doc) {\n  \n for(var i=0, length=doc.variations.length; i<length; i++){\n                   emit(\n                      [doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
+                        ] ,
+                    'variations' => [
+                        "map" => "function (doc) {\n  emit(doc._id, 1);\n}"]
+                ],
+            ];
+          return json_encode($ws_get_type_doc);
+          }
+      }
+
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -218,14 +251,14 @@ class Workspace extends BaseController
                 // $ws_user = $this->WorkspaceModel->new_user_ws($ws_user_data); //Asigno el usuario propietario para ese nuevo workspace
                 $ws_user = $this->WorkspaceModel->insert('users_workspace', $ws_user_data);
                 //Modulos del sistema del (plan-starter)( BASICO)
-
-                $ws_boards =  true;
+           
                 $ws_info = true; //Todas las configuracinoes del workspace
                 $ws_collections = true; //Catalogo de productos y servicios
-                $ws_collections_img = false; //Base de datos de imagenes en formato blob o base64
-                $ws_contact = true; //Catalogo de contactos
-                $ws_mov = true; //Control de movimientos cajas diario
-                $ws_local_sell = true; //Ventas del local
+
+                $ws_contact = false; //Catalogo de contactos
+                $ws_boards =  false;
+                $ws_mov = false; //Control de movimientos cajas diario
+                $ws_local_sell = false; //Ventas del local
 
                 //Movimientos de caja (plan-professional) (SUMO LOS MODULOS)
                 //Ordenes (plan-business)  //Activar dependiendo el modulo seleccionado  Maximo (3)
@@ -254,15 +287,10 @@ class Workspace extends BaseController
                     ],
                     'members' => [
                         'names' => [],
-                        'roles' => [],
-                    ],
-                ];
-
-                //Creo el doc de diseno para hacer las consultas por tipo de doc a la nueva db
-                $ws_get_type_doc = [
-                    '_id' => '_design/get-type',
-                    'filters' => [
-                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
+                        'roles' => [
+                            'p_edit',
+                            'p_save',
+                            'p_reed'],
                     ],
                 ];
 
@@ -303,13 +331,7 @@ class Workspace extends BaseController
 
                 //Creo los documentos por defecto para crear un WS
 
-                $ws_get_type_doc = [
-                    '_id' => '_design/get-type',
-                    'filters' => [
-                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
-                    ],
-                ];
-
+              
                 $ws_validate_doc_admin = [
                     "_id" => "_design/_admin_edit",
                     "filters" => [
@@ -475,8 +497,8 @@ class Workspace extends BaseController
                 ];
 
                 $ws_setting = [
-                    [
-                        '_id' => 'ws_setting_' . $workspace_id,
+                    '_id' => 'ws_setting_' . $workspace_id,
+                    'ws_setting' =>[
                         'offline_mode' => 'true',
                     ],
                 ];
@@ -551,6 +573,51 @@ class Workspace extends BaseController
                     ],
                 ];
 
+                $ws_get_type = [
+                    '_id' => '_design/get-type',
+                    'filters' => [
+                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
+                    ],
+                ];
+
+                //Documento de diseno que trae todos los productos del cart
+                $user_desing_get = [
+                    '_id' => '_design/get-type',
+                    'views' => [
+                        'cart-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ]
+                    ],
+                ];
+
+
+                $ws_get_type_doc = [
+                    '_id' => '_design/get',
+                    'filters' => [
+                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
+                    ],
+                ];
+                //DOCUMENTO GET DE DISEno
+             /*   $ws_get_type_doc = [
+                    '_id' => '_design/get',
+                    'views' => [
+                        "seach" => [
+                            "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ],
+                        'items' => [
+                            "map" => "function(doc) {\n  \n for(var i=0, length=doc.variations.length; i<length; i++){\n                   emit(\n                      [doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
+                            ] ,
+                        'variations' => [
+                            "map" => "function (doc) {\n  emit(doc._id, 1);\n}",
+                        ],
+                        
+                    ], 
+
+                ];
+                */
                 // Hago las comprobaciones y creo las bases de datos
                 //Creo al dB info con sus documentos de diseno y seguridad
                 //Modulos del sistema del (plan-starter)
@@ -559,18 +626,23 @@ class Workspace extends BaseController
                 $hex = bin2hex($binary);
                 $db_user = 'userdb-' . $hex;
                 $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id, $ws_body); //Creo el doc
+
+                //$this->WorkspaceModel->curl_put($db_user . "/_design/get-type", $user_desing_get); 
+
+                $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
                 // $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
 
-                // $this->WorkspaceModel->curl_put( $db_user . "_design/get". $workspace_id, $user_get_type); //Creo el doc
+                //   $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_desing_get ); 
+                // $this->WorkspaceModel->curl_put( $db_user . "_design/get". $workspace_id, $ws_get_type_doc); //Creo el doc
+
                 if ($ws_info) {
                     $db_name = "ws_info_" . $workspace_id;
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                    //    $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                         $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
                 }
-
                 // Catalogo de productos
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id;
@@ -585,7 +657,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                         $this->WorkspaceModel->curl_put($db_name . "/price_list", $price_list); //Creo un doc con la informacion del workspace
                         $this->WorkspaceModel->curl_put($db_name . "/category_list", $category_list); //Creo un doc con la informacion del workspace
@@ -608,7 +680,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
@@ -617,14 +689,10 @@ class Workspace extends BaseController
                     $db_name = "ws_mov_" . $workspace_id;
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     
                 }
-
-
-
-
 
                 if ($ws_boards) {
                     $ws_user_workspace_permission = [
@@ -670,7 +738,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
@@ -708,7 +776,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
@@ -727,7 +795,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
@@ -746,14 +814,14 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
 
                         //Order colection
                         $db_name = "ws_order_app_collections_" . $workspace_id;
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
@@ -773,7 +841,7 @@ class Workspace extends BaseController
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
 
