@@ -182,14 +182,13 @@ class AuthController extends MythAuthController
 			$this->request->getPost($allowedPostFields)		
 		);
 		
-		// Tomo los datos del form para crear el usuario en CouchDB	
-		helper('date');
+			// Tomo los datos del form para crear el usuario en CouchDB	
+			helper('date');
 			$client = \Config\Services::curlrequest();
 
 			$user_email = $this->request->getPost("email");
-			$binary = $user_email;
-            $hex = bin2hex($binary);
-            $db_user = 'userdb-' . $hex;
+            $hex = bin2hex($user_email);//codifico el nombre de usuario en hexadecimal
+            $db_user = 'userdb-' . $hex;//codifico el nombre de usuario en hexadecimal
 
 			$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/_users/org.couchdb.user:'.$user_email;
 			$data = [
@@ -204,12 +203,13 @@ class AuthController extends MythAuthController
 				'active' => 0,
 				'roles' => ['client']
 			];
-
-
 			//Envio el put con los datos del nuevo cliente
-			$client->request('PUT', $url, ['json' => $data]);
-			//Documento de diseno que trae todos los productos del cart
-                $user_desing_get = [
+			$response = $client->request('PUT', $url, ['json' => $data,'http_errors' => false]);
+			$code = $response->getStatusCode(); 
+			//Toma la respuesta y si es ok envia un documento de diseno para los get del userdb
+			if($code === '200'){
+				//Documento de diseno get que trae todos los productos del cart
+			$user_desing_get = [
                     '_id' => '_design/get',
                     'views' => [
                         'cart-item' => [
@@ -219,17 +219,13 @@ class AuthController extends MythAuthController
                             "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
                             ]
                     ],
-                ];
-			
-			//	$client = \Config\Services::curlrequest();
-			//	$url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
-			//	$response = $client->request('PUT', $url, ['json' => $ws_db_data]);
-			//return $response;	
-			 
+           
+			];
 			$userDb = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/'. $db_user .'/_design/get';
 			//Envio el put con los datos del nuevo cliente
 			$client->request('PUT', $userDb, ['json' => $user_desing_get]);
-
+				
+			}
 			//return $response;
 
 		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();
@@ -250,15 +246,13 @@ class AuthController extends MythAuthController
 			$activator = service('activator');
 			$sent = $activator->send($user);
 
-			if (! $sent)
+			if (!$sent)
 			{
 				return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
 			}
-
 			// Success!
 			return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
 		}
-
 		// Success!
 		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
 	}
