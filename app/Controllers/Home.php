@@ -126,14 +126,6 @@ class Home extends BaseController
 		//echo view('login/login', $data);
 		return view('home/login/reset-pasword', $data);
 	}
-	//Vista del shop
-	public function shop()
-	{
-		$model = new OwnerModel(); //traigo al modelo		
-		$data['owner'] = $model->getOwner(); //cargo la data en un array
-		echo view('home/nav', $data);
-		echo view('shop/shop', $data);
-		return view('home/footer', $data);
-	}
+
 
 }
