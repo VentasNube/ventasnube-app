@@ -76,6 +76,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     //New Activation
     $routes->get('activate-account', 'AuthController::activateAccount', ['as' => 'activate-account']);
+    
     //Resend Activation
     $routes->get('resend-activate-account', 'AuthController::resendActivateAccount', ['as' => 'resend-activate-account']);
   

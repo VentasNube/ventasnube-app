@@ -225,8 +225,8 @@ $(document).on('click', 'a.l_nav_t_m', function(event) {
     var s_url_t_m = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
     var m_url = s_url_t_m + '?m=' + m_id + '&?t=' + m_t_id + '&?type=' + m_t_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
-        //get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-        // get_board_group(m_id, m_t_id);
+    get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+    // get_board_group(m_id, m_t_id);
     get_content_module();
 });
 
