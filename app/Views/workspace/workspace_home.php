@@ -444,7 +444,7 @@ function createCookie(name,value,days) {
 		var expires = "; expires="+date.toGMTString();
 	}
 	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/account";
+	document.cookie = name+"="+value+expires+"; path=/workspace";
 }
 
 $(".ws_select").click( function() {
@@ -463,7 +463,7 @@ $(".ws_select").click( function() {
                         // window.location = "/account";
                         // alert('Estas logeado!');
                         createCookie (name,ws_select);
-                        $(location).attr('href','/account');
+                        $(location).attr('href','/workspace');
 
                         Snackbar.show({
                             text: ' <span class="material-icons">sentiment_very_satisfied</span> Hola ' + response.user_name.username + ' Bienvenido!',

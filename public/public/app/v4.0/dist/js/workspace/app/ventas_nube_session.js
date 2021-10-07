@@ -14,7 +14,7 @@ function createCookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         var expires = "; expires=" + date.toGMTString();
     } else var expires = "";
-    document.cookie = name + "=" + value + expires + "; path=/account";
+    document.cookie = name + "=" + value + expires + "; path=/workspace";
 }
 //Limpiamos la cookie por una nueva
 function eraseCookie(name) {

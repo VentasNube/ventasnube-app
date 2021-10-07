@@ -220,7 +220,7 @@ var formData = $("#formLogin").serialize();
                                 text: 'Bienvenido! '+response.name,
                                 actionText: 'ok',
                                 actionTextColor: "#0575e6",
-                                pos: 'top-center'
+                                pos: 'bottom-center'
                             });
                                 $.ajax({
                                 type: "POST",
@@ -231,7 +231,7 @@ var formData = $("#formLogin").serialize();
                                     //location.reload().delay(5000);
                                     },
                                 success:  function (data) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                                    window.location = "/workspace";
+                                    window.location = "/workspace/home";
                                 }
 
                             });

@@ -1,0 +1,267 @@
+<html lang="es" xml:lang="es" xmlns="https://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ventas Nube</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Ventas Nube">
+    <link rel="apple-touch-icon" href="/public/dist/img/favicon.ico">
+
+    <!-- favicon.ico -->
+    <link rel="shortcut icon" href="/public/dist/img/favicon.ico" type="image/x-icon">
+    <!-- favicon.ico -->
+    <link rel="icon" href="/public/dist/img/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap.min.css  -->
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <!-- Your custom styles (optional) -->
+    <link href="/public/assets/css/material-kit.css?v=2.0.6" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="/public/assets/css/VentasNubeStyle.css" rel="stylesheet">
+
+      <link rel="stylesheet" href="/public/dist/css/skins/skin-ventas-nube.css">
+
+<!--
+    <link href="/public/plugins/iCheck/square/blue.css" rel="stylesheet">
+
+     snack-bar.ccs
+    <link rel="stylesheet" href="/public/plugins/snackbar-master/dist/snackbar.min.css">
+
+ -->
+<!-- 
+    <link rel="stylesheet" href="/public/dist/bootstrap/css/bootstrap.css">
+    <!-- VentasNubeSkin.css
+    <link rel="stylesheet" href="/public/dist/css/skins/skin-ventas-nube.css">
+   -->
+    <!-- VentasNubeSkin.css 
+    <link rel="stylesheet" href="/public/dist/css/VentasNubeSkin.css">
+    -->
+    <!-- snack-bar.ccs -->
+    <link rel="stylesheet" href="/public/plugins/snackbar-master/dist/snackbar.min.css">
+    <!-- Font-awesome.min.css 5.8-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Manifest JSON-->
+    <link rel="manifest" href="/public/dist/js/manifest.json">
+
+    <!--link rel="stylesheet" href="<?php echo base_url() ?>public/plugins/fontawesome-free-5.13.0-web\css/all.css"-->
+
+    <!-- Bootstrap Data tables-->
+    <!--link rel="stylesheet" href="<?php echo base_url() ?>public/plugins/datatables/file/css/dataTables.bootstrap.min.css"-->
+    <!-- AutoFill.bootstrap.min.css-->
+    <!--link rel="stylesheet" href="<?php echo base_url() ?>public/plugins/datatables/file/css/autoFill.bootstrap.min.css"-->
+    <!-- jquery-ui-1.12.1.css -->
+    <!--link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/jquery-ui-1.12.1/jquery-ui.css"-->
+    <!-- Skin.css Colores Personalizados-->
+    <!-- VentasNubeSkin.css -->
+    <!--link rel="stylesheet" href="https://storage.cloud.google.com/vn-plublic/public/dist/css/VentasNubeSkin.css?authuser=2"-->
+    <!-- Production version -->
+
+    <!-- Select menu select2.js Lo uso solo en el catalogo-->
+</head>
+
+<style>
+    /* 
+    @font-face {
+        font-family: 'Material Icons';
+        font-style: normal;
+        font-weight: 400;
+        src: url(<?php echo base_url(); ?>/public/plugins/material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.eot);
+        src: local('Material Icons'), local('MaterialIcons-Regular'), url(<?php echo base_url(); ?>/public/plugins/material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+            url(<?php echo base_url(); ?>/public/plugins/material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.woff) format('woff'),
+            url(<?php echo base_url(); ?>/public/plugins/material-design-icons-3.0.1/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+    }*/
+</style>
+
+<script>
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                console.log('Workcbox Onlie!', registration);
+            }).catch(registrationError => {
+                console.log('Service W no Registrado :( : ', registrationError);
+            });
+        });
+    }
+</script>
+
+<div id="search_module_compiled"></div>
+<div id="right_main_compiled"></div>
+
+<body class="hold-transition skin-ventas-nube sidebar-mini sidebar-collapse fixed">
+    <div class="btnContenedor">
+        <button class="botonF1">
+            <span class="btnSpan">+</span>
+        </button>
+        <button class="btnFloat botonF2">
+            <a href="<?php echo site_url('os/adicionar') ?>"><span class="btnSpan"><i class="fa fa-wrench"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF3">
+            <a href="<?php echo site_url('vendas/adicionar') ?>"><span class="btnSpan"><i class="fa fa-cart-plus"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF4">
+            <a href="<?php echo site_url('home') ?>"><span class="btnSpan"><i class="fa fa-inbox"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF5">
+            <a href="#"><span class="btnSpan"><i class="fa fa-ticket" aria-hidden="true"></i></i></span></a>
+        </button>
+    </div>
+    <div class="wrapper">
+        <!-- TOP NAV -->
+        <header id="top_nav_compiled" class="main-header">
+        </header>
+        <!-- LEFT NAV-->
+        <aside id="left_nav_compiled" class="main-sidebar">
+        </aside>
+        <div class="content-wrapper">
+            <section class="content" id="content">
+                <div id="nav_bar_compiled"></div>
+                <!--MODULE NAV BAR COPILED-->
+                <div id="content_compiled"></div>
+                <!--MODULE CONTENT COPILED-->
+            </section>
+        </div>
+    </div>
+    <!-- Footer-->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            Ventas Nube v4.0.0
+        </div>
+        <strong>Copyright &copy; 2017-2021 <a href="www.ventasnube.com">Ventas Nube</a></strong>
+    </footer>
+
+</body>
+
+<div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
+    aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
+</div>
+
+<!-- DESABLITADO PARA PROBAR POR Q NO SE DONDE SE USA-->
+<!-- Jquery-ui.min.js -->
+<!--script type="text/javascript" src="<?php echo base_url() ?>public/plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script-->
+<!--script src="<?php echo base_url() ?>public/plugins/select2/select2.js"></script-->
+<!-- DataTables.jqueryui.js -->
+<!--script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.js"></script-->
+<!--script type="text/javascript" src="<?php echo base_url() ?>public/plugins/datatables/file/js/jquery.dataTables.min.js"></script-->
+<!--script type="text/javascript" src="<?php echo base_url() ?>/public/plugins/datatables/file/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>/public/plugins/datatables/file/js/dataTables.autoFill.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>/public/plugins/datatables/file/js/autoFill.bootstrap.min.js"></script-->
+<!-- Chart.min.js -->
+<!--script src="<?php echo base_url() ?>public/plugins/chartjs/Chart.min.js"></script-->
+<!-- Maskmoney.js -->
+<!--script src="<?php echo base_url(); ?>public/plugins/mask/jquery.maskMoney.min.js"></script-->
+<!-- Jspdf.debug.js -->
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script-->
+
+<!--- COMPONENTES PRIMARIOS -->
+<!-- Jquery-3.1.1.min.js -->
+<script type="text/javascript" src="/public/plugins/jQuery/jquery-3.1.1.min.js"></script>
+
+
+<!-- Bootstrap.min.JS 
+<script src="/public/dist/bootstrap/js/bootstrap.min.js"></script>
+-->
+
+    <script src="/public/assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="/public/assets/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="/public/assets/js/core/bootstrap-material-desing.js" type="text/javascript"></script>
+
+
+<!-- moments.js -->
+<script type="text/javascript" src="/public/plugins/moments/moments.js"></script>
+<!-- snack-bar.JS -->
+<script src="/public/plugins/snackbar-master/dist/snackbar.min.js"></script>
+<!-- Handlebars -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
+<!-- MUURI Script -->
+
+<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+
+<!-- login script auth -->
+<script src="/public/plugins/pouchdb/js/pouchdb.authentication.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.3"></script>
+<!-- Jquery.validate.js -->
+<script src="public/plugins/validate/jquery.validate.js"></script>
+
+<!--script src="https://unpkg.com/web-animations-js@2.3.2/web-animations.min.js"></script-->
+<!-- script src="https://unpkg.com/muuri@0.8.0/dist/muuri.min.js"></script-->
+
+<script src="https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js"></script>
+
+
+<!--- Vistas con seguridad de login --->
+
+<!--- LOGICA MOTOR AJAX COMPILADOR PLANTILLA NAVEGACION -->
+<!--script src="/public/dist/js/ventas_nube_compilator.js"></script -->
+<script src="/body/ventas_nube_compilator"></script>
+
+<!--- PLANTILLA  BODY NAVEGACION -->
+<!--script src="/public/dist/js/ventas_nube_body.js"></script-->
+<script src="/body/ventas_nube_body"></script>
+
+<!--- PLANTILLA FUNCIONES BODY -->
+<script src="/public/dist/js/ventas_nube_app.js"></script>
+
+
+
+<!--- Conexion al la db login --->
+<!--script src="/public/dist/js/ventas_nube_login.js"></script-->
+<script src="/body/ventas_nube_login"></script>
+
+<!--- Funcines de contruccion del body top bar left 
+<!-- PLANTILLA FUNCIONES CART PounchDB-->
+<!--script src="/public/dist/js/ventas_nube_cart.js"></script-->
+<script src="/body/ventas_nube_store_cart"></script>
+
+<!-- PLANTILLA FUNCIONES CART PounchDB-->
+<!--script src="/public/dist/js/ventas_nube_cart.js"></script-->
+<script src="/body/ventas_nube_cart"></script>
+
+
+
+
+<!--- Funcion para las compilaciones de vistas con ajax --->
+<!-- script src="/body/ventas_nube_compilator"></script  -->
+
+<!--- PLANTILLA FUNCIONES CATALOGO PounchDB-->
+<!--script src="/public/dist/js/ventas_nube_catalog.js"></script-->
+
+<!--- SISTEMA DE REPORTES DE EVENTOS BUGS NUEVO 2021-->
+<!--script src="https://js.sentry-cdn.com/61a2c89016d14759aaee27930f1551a2.min.js" crossorigin="anonymous"></script-->
+
+<!--- PLANTILLA FUNCIONES CART IndexDB-->
+<!--script src="/public/dist/js/ventas_nube_search.js"></script-->
+<!---script src="/public/plugins/pouchdb/js/app.js"></script-->
+<!--script src="https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"></script-->
+
+</html>
+<script>/*
+    Sentry.onLoad(function () {
+        // Use whatever Sentry.* function you want
+    });
+    Sentry.forceLoad();*/
+</script>
+<script>
+    $(document).ready(function () {
+        //TOMO LOS DATOS DE LA URL PARA TRAER LA VISTA ACTUAL
+        // CARGO LAS VISTAS UNA VEZ SE CARGUE LOS RENDER
+        window.onload =
+            //  startCartDB(),
+            //  startSeachDB(),
+             get_top_bar(),
+             get_left_nav(),
+             get_nav_cart();
+             get_content_module()
+         //   get_content_module();
+    });
+</script>

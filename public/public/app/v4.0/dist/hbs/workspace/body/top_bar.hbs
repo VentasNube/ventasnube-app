@@ -1,5 +1,5 @@
 {{#with ws_top_bar}}
-<nav class="navbar navbar-static-top {{{ws_module_color}}} aaa" role="navigation">
+<nav class="navbar navbar-static-top {{{workspace_color}}} " role="navigation">
 
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <i class="material-icons">
@@ -10,8 +10,8 @@
         <ul class="nav navbar-nav">
             <li class="notifications-menu">
                 <span class="logo-img">
-                    <img src="{{{ws_img}}}">
-                    <span>{{ws_name}}</span>
+                    <img src="{{{workspace_img}}}">
+                    <span>{{workspace_name}}</span>
                 </span>
             </li>
 
@@ -67,7 +67,7 @@
                     <i class="material-icons">store</i>
                     <span id="store_cart-number" class="cart-number">0</span>
                 </a>
-                </li-->
+            </li-->
 
             <li class="notifications-menu">
                 <a id="cart_button" href="#" class=" cart_button">
@@ -75,6 +75,7 @@
                     <span id="cart-number-2" class="cart_n cart-number">0</span>
                 </a>
             </li>
+            
             <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
                 {{#with ../user}}
@@ -105,7 +106,7 @@
                     <li class="user-body ">
                         <div class="user-body-workspace">
                             <div class="user-body-workspace-title">
-                                <a href="/workspace">
+                                <a href="/workspace/home">
                                 {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
                                 </a>
                             </div>

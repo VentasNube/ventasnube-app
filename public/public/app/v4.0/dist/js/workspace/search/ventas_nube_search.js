@@ -149,7 +149,7 @@ function get_all_item_punchDb() {
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function search_item_js(search_val) {
-    var url_template = '/public/app/v4.0/dist/hbs/search/card_product.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    var url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     var id_copiled = '#card_product_result_items'; // ID DE COMPILACION // 
     var result = fuse.search(search_val, { limit: 18 });
     //Armo el array para renderizar los items
@@ -217,7 +217,7 @@ function variations_set(element) {
 function variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
-    let url_template = '/public/app/v4.0/dist/hbs/search/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
@@ -243,7 +243,7 @@ function variations_select(element) {
     event.preventDefault();
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
     let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    let url_template = '/public/app/v4.0/dist/hbs/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
     L_search_db.get(product_id, function(err, doc) {

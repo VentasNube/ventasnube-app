@@ -4,7 +4,7 @@
  */
 
 .skin-ventas-nube .main-header .navbar {
-    background: linear-gradient(40deg, #415eff, #c445c1) !important;
+    background: linear-gradient(40deg, #415eff, #c445c1);
     height: 63px;
 }
 

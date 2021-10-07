@@ -183,13 +183,14 @@ class WorkspaceModel extends Model
         } else {
             $client = \Config\Services::curlrequest();
             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
-            $response = $client->request('PUT', $url, ['json' => $ws_db_data]);
-            return $response;
+            $response = $client->request('PUT', $url, ['json' => $ws_db_data, 'http_errors' => false]);
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
+            return $response_code;
         }
     }
     
     //Modelo de elimiar Bases de datos en CouchDB
-    public function curl_delete_db($ws_db_name = false, $ws_db_data = false)
+    public function curl_delete_db($ws_db_name = false)
     {
         if ($ws_db_name === false) {
             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
@@ -197,13 +198,8 @@ class WorkspaceModel extends Model
         } else {        
             $client = \Config\Services::curlrequest();
             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
-            //$response = $client->request('PUT', $url, ['json' => $ws_db_data]);
             $response = $client->request('DELETE', $url, ['http_errors' => false]);
-            // $client->request('GET', '/status/500');
-            // Configuramos los errores para q no detenga el script
-            // $client->request('GET', '/status/404');
-            //  $response = $client->request('GET', '/status/404', ['http_errors' => false]);
-            $response_code = $response->getStatusCode();
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
             return $response_code;
         }
     }

@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 11111231212;
+const version = 4444;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -57,35 +57,34 @@ workbox.precaching.precacheAndRoute([
     { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js', revision: version },
     { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },
     //Funciones Compilador y maqueta
-    { url: '/public/app/v4.0/dist/js/app/ventas_nube_compilator.js', revision: version },
-    { url: '/public/app/v4.0/dist/js/app/ventas_nube_app.js', revision: version },
-    { url: '/public/app/v4.0/dist/js/app/ventas_nube_session.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_app.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_session.js', revision: version },
 
     //MODULOS
     //Funciones body
-    { url: '/public/app/v4.0/dist/js/body/ventas_nube_body.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/body/ventas_nube_body.js', revision: version },
     //Funciones Cart
-    { url: '/public/app/v4.0/dist/js/cart/ventas_nube_cart.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/cart/ventas_nube_cart.js', revision: version },
     //Funciones Search
-    { url: '/public/app/v4.0/dist/js/search/ventas_nube_search.js', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/search/ventas_nube_search.js', revision: version },
     //Acccount 
-    { url: '/public/app/v4.0/dist/js/account/ventas_nube_account.js ', revision: version },
+    { url: '/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js ', revision: version },
 
     //Templates body de Top bar y left bar
-    { url: '/public/app/v4.0/dist/hbs/body/top_bar.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/body/left_nav.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', revision: version },
     //Templates de cart
-    { url: '/public/app/v4.0/dist/hbs/cart/cart_main.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/cart/cart_item.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/cart/cart_total_items.hbs', revision: version },
-
+    { url: '/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/cart/cart_total_items.hbs', revision: version },
     //Templates de Favoritos
-    { url: '/public/app/v4.0/dist/hbs/cart/fav_item.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/cart/fav_item.hbs', revision: version },
     //Template de Search Module
-    { url: '/public/app/v4.0/dist/hbs/search/search_module.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/search/card_product.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/search/card_product_var_select.hbs', revision: version },
-    { url: '/public/app/v4.0/dist/hbs/search/card_product_variant.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs', revision: version },
+    { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
 
 ]);
 

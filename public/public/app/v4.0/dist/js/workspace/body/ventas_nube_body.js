@@ -75,77 +75,6 @@ ws_db_name = 'info';
 get_ws_module_db(ws_db_name);
 
 
-//Nueva funcion de Left nav
-function get_left_nav(ws_left_nav) {
-        /* var ws_left_nav_array = {
-            ws_left_nav: ws_left_nav_doc,
-            ws_lang_data: ws_lang_data
-        }*/
-        $.ajax({
-            url: "/body/left_nav",
-            // dataType: "html",
-            //data: data,
-            type: "POST",
-            dataType: "json",
-            success: function (ws_left_nav) {
-                if (ws_left_nav.result == true) { ///// IMPRIME ////
-                    // window.location = "/account";
-                    //console.log ('CONTENIDO DE LEFT');
-                   // console.log (left_nav_doc);
-                user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
-                    // response.userCtx.name is the current user        
-                    if (err) { 
-                      //  console.log ('No se encuentra el documento en la userdb');
-                        user_db.put({
-                            _id: 'ws_left_nav_' + ws_id, 
-                            ws_left_nav: ws_left_nav
-                          }, function(err, response) {
-                            if (err) { return console.log(err); }
-                                //    console.log ('Creo un doc nuevo');
-                            else{
-
-                            var ws_left_nav_doc = {
-                                ws_left_nav: ws_left_nav
-                            }
-                            //   console.log (ws_left_nav_doc);
-                              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-                            // handle response
-                            }
-                          });
-                        return console.log(err);
-                    }
-                    
-                  });
-                  //creo un array para los datos del documento y lo imprimo en el left bar
-                  var ws_left_nav_doc = {
-                    ws_left_nav: ws_left_nav
-                    }
-                   // console.log(ws_left_nav_doc);
-                  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-
-                }else{
-
-                   renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
-                    //   logout()
-                    //setTimeout(function () { window.location = "/account"; }, 2000);
-                }
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status == 404) {
-                // setTimeout(function () { window.location = "/account"; }, 2000);
-                    Snackbar.show({
-                        text: 'Debes iniciar sesion',
-                        actionText: 'ok',
-                        actionTextColor: "#0575e6",
-                    });
-                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
-                }
-        });
-
-};
-
-
-get_left_nav();
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
 ////----(1 TOP BAR)---/////
@@ -158,7 +87,7 @@ function get_top_bar(ws_info, ws_lang_data) {
     console.log('ws_lang_data')
     console.log(ws_top_bar)
         // console.log(ws_top_bar);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
 };
 
 ////----(3 LEFT NAV CART)---/////
@@ -167,22 +96,81 @@ function get_nav_cart(ws_info, ws_lang_data) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/cart/cart_main.hbs', '#right_main_compiled', ws_cart);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main_compiled', ws_cart);
     // $('#cart_user_input').focus();
 };
 
 ////----(2 LEFT NAV)---/////
-
 // Imprimo en pantalla los el array con los modulos
-/*
-function get_left_nav_OLD(ws_left_nav) {
-// var ws_left_nav_array = {
-  //       ws_left_nav: ws_left_nav_doc,
-   //      ws_lang_data: ws_lang_data
-//     }    
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+//Nueva funcion de Left nav
+function get_left_nav(ws_left_nav) {
+    /* var ws_left_nav_array = {
+        ws_left_nav: ws_left_nav_doc,
+        ws_lang_data: ws_lang_data
+    }*/
+    $.ajax({
+        url: "/body/left_nav",
+        // dataType: "html",
+        //data: data,
+        type: "POST",
+        dataType: "json",
+        success: function (ws_left_nav) {
+            if (ws_left_nav.result == true) { ///// IMPRIME ////
+                // window.location = "/account";
+                //console.log ('CONTENIDO DE LEFT');
+               // console.log (left_nav_doc);
+            user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
+                // response.userCtx.name is the current user        
+                if (err) { 
+                  //  console.log ('No se encuentra el documento en la userdb');
+                    user_db.put({
+                        _id: 'ws_left_nav_' + ws_id, 
+                        ws_left_nav: ws_left_nav
+                      }, function(err, response) {
+                        if (err) { return console.log(err); }
+                            //    console.log ('Creo un doc nuevo');
+                        else{
+
+                        var ws_left_nav_doc = {
+                            ws_left_nav: ws_left_nav
+                        }
+                        //   console.log (ws_left_nav_doc);
+                          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+                        // handle response
+                        }
+                      });
+                    return console.log(err);
+                }
+                
+              });
+              //creo un array para los datos del documento y lo imprimo en el left bar
+              var ws_left_nav_doc = {
+                ws_left_nav: ws_left_nav
+                }
+               // console.log(ws_left_nav_doc);
+              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+
+            }else{
+
+               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+                //   logout()
+                //setTimeout(function () { window.location = "/account"; }, 2000);
+            }
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 404) {
+            // setTimeout(function () { window.location = "/account"; }, 2000);
+                Snackbar.show({
+                    text: 'Debes iniciar sesion',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+            }
+    });
+
 };
-*/
+get_left_nav();
 
 ////----(4 Search Module)---/////
 function get_search_module(ws_info, ws_lang_data) {
@@ -192,7 +180,7 @@ function get_search_module(ws_info, ws_lang_data) {
     }
     console.log('search');
     console.log(ws_search_data);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/search/search_module.hbs', '#search_module_compiled', ws_search_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
 };
 
 //// BOTON SELECT MODULO LEFT BAR //

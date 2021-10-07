@@ -20,7 +20,28 @@ class Workspace extends BaseController
 
     }
     //Inicio de WS
-    public function index()
+
+    function index()
+    {
+        if (!logged_in()) {
+            return redirect()->to('/login');
+        }
+        $user_id = user_id();
+        $Workspace = new WorkspaceModel(); //traigo al modelo
+        $Workspace = $Workspace->get_all_ws_user($user_id); //cargo la data en un array
+        //  $ws_id = session('ws_id');
+        //  $ws_id = $this->session->set($ws_select_data);
+        if ($Workspace) {
+              $model = new OwnerModel(); //traigo al modelo		
+              $data['owner'] = $model->getOwner(); //cargo la data en un array
+              return view('/workspace/body/body.hbs', $data);
+         //   return redirect()->to(base_url('/workspace/home'));
+        } else {
+            return redirect()->to(base_url('/workspace/welcome'));
+        }
+    }
+
+    public function index2()
     {
         if (!logged_in()) {
             return redirect()->to(base_url('/login'));
@@ -29,14 +50,14 @@ class Workspace extends BaseController
         $Workspace = new WorkspaceModel(); //traigo al modelo
         $Workspace = $Workspace->get_all_ws_user($user_id); //cargo la data en un array
         //  $ws_id = session('ws_id');
-        //$ws_id = $this->session->set($ws_select_data);
-
+        //  $ws_id = $this->session->set($ws_select_data);
         if ($Workspace) {
             return redirect()->to(base_url('/workspace/home'));
         } else {
             return redirect()->to(base_url('/workspace/welcome'));
         }
     }
+
     // Vista Home ws
     public function home()
     {
@@ -53,7 +74,7 @@ class Workspace extends BaseController
                 $data['owner'] = $Owner->getOwner(); //cargo la data en un array
                 $data['user'] = $User->getUser($user_id); //cargo la data en un array
                 $data['ws_user'] = $this->WorkspaceModel->get_all_ws_user($user_id); //cargo la data en un array
-                return view('workspace/workspace_home', $data);
+                return view('/workspace/workspace_home', $data);
             } else {
                 return redirect()->to(base_url('/workspace/welcome'));
             }
@@ -110,40 +131,266 @@ class Workspace extends BaseController
 
         }
     }
-
-      //Vista para probar arrays en el navegador
-      public function ws_view()
-      {
+    public function ws_doc()
+    {
   
-          if (!logged_in()) {
-              return redirect()->to(base_url('/login'));
-          } else {
-            $ws_get_type_doc = [
-                '_id' => '_design/get',
-                'views' => [
-                    'type' => [
-                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150\n        });\n    }\n}",
-                    ], 
-                    'sku' => [
-                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service' ) {\n        emit(doc.sku,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150,\n          \'SKU\':doc.variations[0].sku.value_name\n        });\n    }\n} ",
-                    ],
-                    'status' => [
-                        "map" => "function(doc) {if(doc.status === 'active' ) {\n        emit(doc.status,{\n          \'tipo\': doc.type,\n          \'price\': 150,\n          \'stock\': 1,\n          \'discount\': 0,\n          \'tax\': 150\n        });\n    }\n}",
-                    ],
-                    'seach' => [
-                        "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                        ],
-                    'items' => [
-                        "map" => "function(doc) {\n  \n for(var i=0, length=doc.variations.length; i<length; i++){\n                   emit(\n                      [doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
-                        ] ,
-                    'variations' => [
-                        "map" => "function (doc) {\n  emit(doc._id, 1);\n}"]
+        $product_01 = [
+            '_id'=> 'product-11',
+            '_rev'=> '1-62c7987b0c217e3f28b28e09d0bd63d3',
+            'name'=> 'Remera colores',
+            'type'=> 'product',
+                'tags'=> [
+                    'Remera',
+                    'Lisa',
+                    'Adidas'
                 ],
+                'currency'=> [
+                    'id'=> 'ARS',
+                    'value'=> '$'
+                ],
+                'available_quantity'=> 10,
+                'sold_quantity'=> 0,
+                'limit_discount'=> 0,
+                'permalink'=> 'http=>//loalhost/shop/servenet/red-boll-free',
+                'catalog_product_id'=> null,
+                'category_id'=> 1,
+                'sub_category_id'=> 1,
+                'workspace_id'=> 77,
+                'condition'=> 'not_specified',
+                'status'=> 'active',
+                'author'=> 'smartmobile.com.ar@gmail.com',
+                'descriptions'=> [
+                    'Cerveza corona 750cc'
+                ],
+                'attributes'=> [
+                    [
+                    'id'=> 'TYPE',
+                    'name'=> 'Tipo de Ventilador',
+                    'value_id'=> '291719',
+                    'value_name'=> 'Botella 50cc',
+                    'attribute_group_id'=> 'DFLT',
+                    'attribute_group_name'=> 'type'
+                    ],
+                    [
+                    'id'=> 'BRAND',
+                    'name'=> 'Marca',
+                    'value_id'=> '3',
+                    'value_name'=> 'Corona',
+                    'attribute_group_id'=> 'MAIN',
+                    'attribute_group_name'=> 'Marca'
+                    ]
+                ],
+                'variations'=> [
+                    [
+                    'id'=> 1,
+                    'tax'=> [
+                        'id'=> 'IVA',
+                        'value'=> '21'
+                    ],
+                    'sku'=> [
+                        'id'=> 'EAN',
+                        'value'=> '1231256345345'
+                    ],
+                    'pictures'=> [
+                        [
+                        'max'=> '/public/img/catalog/product/max/remera_blanca.jpg',
+                        'min'=> '/public/img/catalog/product/max/remera_blanca.jpg'
+                        ]
+                    ],
+                    'attribute_combinations'=> [
+                        [
+                        'id'=> 'COLOR',
+                        'id_name'=> 'Color',
+                        'name'=> 'Roja',
+                        'value'=> 'EF5350'
+                        ],
+                        [
+                        'id'=> 'SIZE',
+                        'id_name'=> 'Talle',
+                        'name'=> 'Medium',
+                        'value'=> 'M'
+                        ]
+                    ],
+                    'price_list'=> [
+                        [
+                        'id'=> 1,
+                        'value'=> 2550
+                        ],
+                        [
+                        'id'=> 2,
+                        'value'=> 3350
+                        ]
+                    ],
+                    'stock_invetary'=> [
+                        [
+                        'id'=> 123,
+                        'in_datetime'=> '18/3/2021 18:45:10',
+                        'update_datetime'=> '18/3/2021 18:45:10',
+                        'quantity'=> 6,
+                        'sold_quantity'=> 2,
+                        'cost_price'=> 100
+                        ],
+                        [
+                        'id'=> 231,
+                        'in_datetime'=> '18/3/2021 18:45:10',
+                        'update_datetime'=>'18/3/2021 18:45:10',
+                        'quantity'=>4,
+                        'sold_quantity'=>2,
+                        'cost_price'=>150
+                        ]
+                    ],
+                    'sold_quantity'=>2
+                    ],
+                    [
+                    'id'=>2,
+                    'tax'=>[
+                        'id'=>'IVA',
+                        'value'=>'21'
+                    ],
+                    'sku'=>[
+                        'id'=>'EAN',
+                        'value'=>'1231256345345'
+                    ],
+                    'pictures'=>[
+                        [
+                        'max'=>'/public/img/catalog/product/max/remera_amarilla.jpg',
+                        'min'=>'/public/img/catalog/product/max/remera_amarilla.jpg'
+                        ]
+                    ],
+                    'attribute_combinations'=>[
+                        [
+                        'id'=>'COLOR',
+                        'id_name'=>'Color',
+                        'name'=>'Violeta',
+                        'value'=>'ba46c5'
+                        ],
+                        [
+                        'id'=>'SIZE',
+                        'id_name'=>'Talle',
+                        'name'=>'Extra Large',
+                        'value'=>'XL'
+                        ]
+                    ],
+                    'price_list'=>[
+                        [
+                        'id'=>1,
+                        'value'=>1100
+                        ],
+                        [
+                        'id'=>2,
+                        'value'=>1200
+                        ]
+                    ],
+                    'stock_invetary'=>[
+                        [
+                        'id'=>123,
+                        'in_datetime'=>'18/3/2021 18:45:10',
+                        'update_datetime'=>'18/3/2021 18:45:10',
+                        'quantity'=>4,
+                        'quantity_'=>4,
+                        'cost_price'=>100
+                        ],
+                        [
+                        'id'=>231,
+                        'in_datetime'=>'18/3/2021 18:45:10',
+                        'update_datetime'=>'18/3/2021 18:45:10',
+                        'quantity'=>2,
+                        'cost_price'=>150
+                        ]
+                    ],
+                    'sold_quantity'=>2
+                    ],
+                    [
+                    'id'=>3,
+                    'tax'=>[
+                        'id'=>'IVA',
+                        'value'=>'21'
+                    ],
+                    'sku'=>[
+                        'id'=>'EAN',
+                        'value'=>'1231256345345'
+                    ],
+                    'pictures'=>[
+                        [
+                        'max'=>'/public/img/catalog/product/max/remera_azul.jpg',
+                        'min'=>'/public/img/catalog/product/max/remera_azul.jpg'
+                        ]
+                    ],
+                    'attribute_combinations'=>[
+                        [
+                        'id'=>'COLOR',
+                        'id_name'=>'Color',
+                        'name'=>'Azul',
+                        'value'=>'0575e6'
+                        ],
+                        [
+                        'id'=>'SIZE',
+                        'id_name'=>'Talle',
+                        'name'=>'Medium',
+                        'value'=>'M'
+                        ]
+                    ],
+                    'price_list'=>[
+                        [
+                        'id'=>1,
+                        'value'=>1100
+                        ],
+                        [
+                        'id'=>2,
+                        'value'=>1200
+                        ]
+                    ],
+                    'stock_invetary'=>[
+                        [
+                        'id'=>123,
+                        'in_datetime'=>'18/3/2021 18:45:10',
+                        'update_datetime'=>'18/3/2021 18:45:10',
+                        'quantity'=>4,
+                        'quantity_'=>4,
+                        'cost_price'=>100
+                        ],
+                        [
+                        'id'=>231,
+                        'in_datetime'=>'18/3/2021 18:45:10',
+                        'update_datetime'=>'18/3/2021 18:45:10',
+                        'quantity'=>2,
+                        'cost_price'=>150
+                        ]
+                    ],
+                    'sold_quantity'=>2
+                    ]
+                ],
+                'last_update_at'=>[
+                    [
+                    'username'=>'smartmobile.com.ar@gmail.com',
+                    'datetime'=>'18/3/2021 18:45:10'
+                    ],
+                    [
+                    'username'=>'otrousuario@gmail.com',
+                    'datetime'=>'18/3/2021 18:45:10'
+                    ]
+                ],
+                'start_time'=>'2017-03-10T21:18:09.588Z',
+                'stop_time'=>'2037-03-05T21:18:09.588Z',
+                'end_time'=>'2037-03-05T21:18:09.588Z',
+                'expiration_time'=>'2017-05-29T21:18:09.651Z',
+                'shipping'=>[
+                    'mode'=>'not_specified',
+                    'local_pick_up'=>false,
+                    'free_shipping'=>false,
+                    'methods'=>[],
+                    'dimensions'=>null,
+                    'tags'=>[
+                    'me2_available'
+                    ],
+                    'logistic_type'=>'not_specified'
+                ]
             ];
-          return json_encode($ws_get_type_doc);
-          }
-      }
 
+
+            return json_encode($product_01);
+
+    }
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -172,13 +419,13 @@ class Workspace extends BaseController
             $ws_db_pacht = now($ws_zona_h);
             $now = now($ws_zona_h);
             $data_now = date("M d Y H:i:s", $now);
-            //sumo 1 mes
+            // sumo 1 mes
             $ws_plan_expiration = date("Y-m-d H:i:s", strtotime($data_now . "+ 1 month"));
             // Datos de apariencia de la app
             $ws_name = $this->request->getPost("ws_name");
             $ws_avatar_img = $this->request->getPost('ws_avatar_img');
             $ws_color = $this->request->getPost('ws_color');
-            //Datos de contacto
+            // Datos de contacto
             $ws_email = $this->request->getPost("ws_email");
             $ws_web = $this->request->getPost('ws_web');
             $ws_whatsaap = $this->request->getPost('ws_whatsaap');
@@ -231,16 +478,16 @@ class Workspace extends BaseController
                 //Datos de lisencia
                 //'ws_created_at' => now(),
             ];
-            //Inicio la trasaccion
-            $db->transBegin();
-            //$Workspace = $this->WorkspaceModel->new_ws($ws_data);
-            //Creo el workspace
-            $Workspace = $this->WorkspaceModel->insert('workspace', $ws_data); //
 
+            // Inicio la trasaccion
+            $db->transBegin();
+            // $Workspace = $this->WorkspaceModel->new_ws($ws_data);
+            // Creo el workspace
+            $Workspace = $this->WorkspaceModel->insert('workspace', $ws_data); //Creo el Workspace n msql
             $workspace_id = $db->insertID(); //Tomo el nuevo id del workspace
-            //Compruebo q se creo el usuario con exito
+            // Compruebo q se creo el usuario con exito
             if ($workspace_id) {
-                //Habilito el usuario al nuevo workspace
+                // Habilito el usuario al nuevo workspace
                 $ws_user_data = [
                     'workspace_id' => $workspace_id,
                     'user_id' => $user_id,
@@ -250,36 +497,31 @@ class Workspace extends BaseController
                 ];
                 // $ws_user = $this->WorkspaceModel->new_user_ws($ws_user_data); //Asigno el usuario propietario para ese nuevo workspace
                 $ws_user = $this->WorkspaceModel->insert('users_workspace', $ws_user_data);
-                //Modulos del sistema del (plan-starter)( BASICO)
-           
+                
+                // Modulos del sistema del (plan-starter)( BASICO)
                 $ws_info = true; //Todas las configuracinoes del workspace
                 $ws_collections = true; //Catalogo de productos y servicios
-
                 $ws_contact = false; //Catalogo de contactos
                 $ws_boards =  false;
                 $ws_mov = false; //Control de movimientos cajas diario
                 $ws_local_sell = false; //Ventas del local
-
                 //Movimientos de caja (plan-professional) (SUMO LOS MODULOS)
                 //Ordenes (plan-business)  //Activar dependiendo el modulo seleccionado  Maximo (3)
                 $ws_order_buy = $this->request->getPost('ws_order_buy'); //Orden de Compras
                 $ws_order_sell = $this->request->getPost("ws_order_sell"); //Ordenes de ventas
                 $ws_mov_box = $this->request->getPost("ws_box"); //Control de movimientos cajas diario
                 $ws_statistics = $this->request->getPost("ws_statistics"); //Estadisticas (no es una DB)
-
                 //Plan (plan-business-service)
                 //Ordenes de Servicios (plan-business)
                 $ws_reports = $this->request->getPost('ws_reports'); //Reportes (No es una DB)
                 $ws_order_pro_service = $this->request->getPost('ws_pro_service'); //Ordenes de servicios profecionales
                 $ws_order_tecnic_service = $this->request->getPost("ws_tecnic_service"); //Ordenes de servicio tecnico
-
                 //Plan (shop) (plan-business-shop)
                 $ws_order_app = $this->request->getPost('ws_order_app'); //Guardo los productos que se muestran en el catalogo web
-
                 //Plan (shop) (plan-business-shop)
                 // $ws_order_shop = $this->request->getPost("ws_order_shop"); //Ordenes de ventas del la pagina
+               
                 //Creo el doc de seguridad para usar en todas las DB
-
                 $ws_security_doc = [
                     'admins' => [
                         'names' => [$user_email],
@@ -330,8 +572,6 @@ class Workspace extends BaseController
                 //5 _reed   PUEDE LEER
 
                 //Creo los documentos por defecto para crear un WS
-
-              
                 $ws_validate_doc_admin = [
                     "_id" => "_design/_admin_edit",
                     "filters" => [
@@ -349,6 +589,71 @@ class Workspace extends BaseController
                     "validate_doc_update" => "function(newDoc, oldDoc, userCtx)  var role = '_save';  if (userCtx.roles.indexOf('_admin') === -1 && userCtx.roles.indexOf(role) === -1) { { {throw({forbidden : 'Solo usuarios con el rol!'+rol+'o un administrador pueden editar'});}}",
                 ];
 
+
+                $ws_get_type_doc = [
+                    '_id' => '_design/get',
+                    'filters' => [
+                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
+                    ],
+                ];
+              
+                
+            /* ========== 
+             USER DB
+             Edit:10/10/21
+             FUCIONES PARA CREAR LAS DBS DEL USUARIO
+             CON SUS DOCUMENTOS Y CONFUGURACIONES INCIALES 
+             ======== */
+            //DOCUMETO CON CONFIGURACION DEL ESPACIO DE TRABAJO
+            $ws_setting = [
+                '_id' => 'ws_setting_' . $workspace_id,
+                'ws_setting' =>[
+                    'offline_mode' => 'true',
+                ],
+            ];
+            //Documento con la info del workspace creado
+             $ws_body = [
+                '_id' => 'ws_left_nav_' . $workspace_id,
+                'ws_left_nav' => [
+                    'owner' => [$Owner->getOwner()],
+                    'ws_data' => $ws_data,
+                    'ws_module_select' => $ws_module_active,
+                    //  OLD 'm' => $Body_model->get_m($group_id),
+                    //  'm' => $Body_model->get_m($user_id),
+                    //  'group_id' => $group_id,
+                    'result' => true,
+                ],
+            ];
+            //Documento de diseno que trae todos los productos del cart
+            $user_get = [
+                    '_id' => '_design/get-type',
+                    'views' => [
+                        'cart-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ]
+                    ],
+            ];
+            
+            $hex = bin2hex($user_email); //Transformo el email en hexadecimal por seguridad
+            $db_user = 'userdb-' . $hex; //Armo la url de la User BD
+           
+             $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id, $ws_body); //Creo el doc
+             $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
+
+
+             $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get ); //Docuento diseno get
+             
+             /* ========== 
+                INFO DB
+                Edit:10/10/21
+                LA DB INFO GUARDA LAS CONFIGURACIONES DEL WS Y FILTRA LOS PERMISOS PARA PODER EDITAR 
+                LOS DOCUMENTOS DE CONFIFURACION POR UN ADMINISTRADOR
+             ======== */
+
+                // DOC con traduccion del lenguaje
                 $ws_module_config = [
                     '_id' => 'ws_module_config',
                     'type' => 'ws_module_config',
@@ -361,13 +666,11 @@ class Workspace extends BaseController
                     'workspace_color' => $ws_color,
                     'workspace_web' => $ws_web,
                     //Datos de contacto
-                    // 'workspace_created_at' => now(),
+                    'workspace_created_at' => now(),
                     'workspace_plan_expiration' => $ws_plan_expiration,
                     'workspace_db_pacht' => $ws_db_pacht,
                     'workspace_status' => 'active',
                     'workspace_zona_h' => $ws_zona_h,
-                    'workspace_phone' => $ws_phone,
-                    'workspace_img' => $ws_avatar_img,
                     'tax' => [
                         [
                             'tax_id' => 'iva',
@@ -379,144 +682,7 @@ class Workspace extends BaseController
                     //Datos de lisencia
                     // activationSuccess
                 ];
-
-                $price_list = [
-                    '_id' => 'price_list',
-                    'type' => 'price_list',
-                    'status' => 'active',
-                    'price_list' => [
-                        [
-                            'id' => '1',
-                            'value' => 'Consumidor Final',
-                            'currency' => [
-                                'id' => 'ARS',
-                                'value' => '$',
-                            ],
-                        ],
-                        [
-                            'id' => '2',
-                            'value' => 'Gremio',
-                            'currency' => [
-                                'id' => 'ARS',
-                                'value' => '$',
-                            ],
-                        ],
-                        [
-                            'id' => '3',
-                            'value' => 'Mayorista',
-                            'currency' => [
-                                'id' => 'ARS',
-                                'value' => '$',
-                            ],
-                        ],
-                        [
-                            'id' => '4',
-                            'value' => 'Mercado Libre',
-                            'currency' => [
-                                'id' => 'ARS',
-                                'value' => '$',
-                            ],
-                        ],
-                        [
-                            'id' => '5',
-                            'value' => 'Web',
-                            'currency' => [
-                                'id' => 'ARS',
-                                'value' => '$',
-                            ],
-                        ],
-                    ],
-                ];
-
-                $currency_list = [
-                    '_id' => 'currency_list',
-                    'type' => 'product',
-                    'status' => 'active',
-                    'currency_list' => [
-                        [
-                            'id' => 'ARS',
-                            'value' => '$',
-                        ],
-                        [
-                            'id' => 'DOLAR',
-                            'value' => 'u$s',
-                        ],
-                        [
-                            'id' => 'EUR',
-                            'value' => '€',
-                        ],
-                    ],
-                ];
-
-                $category_list = [
-                    '_id' => 'category_list',
-                    'type' => 'product',
-                    'status' => 'active',
-                    'category_list' => [
-                        [
-                            'id' => '1',
-                            'value' => 'Gaseosas',
-                        ],
-                        [
-                            'id' => '2',
-                            'value' => 'Energizante',
-                        ],
-                        [
-                            'id' => '3',
-                            'value' => 'Agua sin gas',
-                        ],
-                    ],
-                ];
-
-                $attributes = [
-                    '_id' => 'attributes',
-                    'type' => 'attributes_list',
-                    'status' => 'active',
-                    'attributes_list' => [
-                        [
-                            'id' => 'COLOR',
-                            'value' => 'Consumidor Final',
-                        ],
-                        [
-                            'id' => 'TYPE',
-                            'value' => 'Gremio',
-                        ],
-                        [
-                            'id' => 'SIZE',
-                            'value' => 'Mayorista',
-                        ],
-                        [
-                            'id' => '4',
-                            'value' => 'Mercado Libre',
-                        ],
-                        [
-                            'id' => '5',
-                            'value' => 'Web',
-                        ],
-                    ],
-                ];
-
-                $ws_setting = [
-                    '_id' => 'ws_setting_' . $workspace_id,
-                    'ws_setting' =>[
-                        'offline_mode' => 'true',
-                    ],
-                ];
-
-                //Documento con la info del workspace creado
-                $ws_body = [
-                    '_id' => 'ws_left_nav_' . $workspace_id,
-                    'ws_left_nav' => [
-                        'owner' => [$Owner->getOwner()],
-                        'ws_data' => $ws_data,
-                        'ws_module_select' => $ws_module_active,
-                        //OLD 'm' => $Body_model->get_m($group_id),
-                        //'m' => $Body_model->get_m($user_id),
-                        //  'group_id' => $group_id,
-                        'result' => true,
-                    ],
-                ];
-                //DOC del lenguaje
+                // Doc de traducciones
                 $ws_lang = [
                     '_id' => 'ws_lang_sp_' . $workspace_id,
                     'ws_lang_es' => [
@@ -573,79 +739,22 @@ class Workspace extends BaseController
                     ],
                 ];
 
-                $ws_get_type = [
-                    '_id' => '_design/get-type',
-                    'filters' => [
-                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
-                    ],
-                ];
-
-                //Documento de diseno que trae todos los productos del cart
-                $user_desing_get = [
-                    '_id' => '_design/get-type',
-                    'views' => [
-                        'cart-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                        ],
-                        'fav-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                            ]
-                    ],
-                ];
-
-
-                $ws_get_type_doc = [
-                    '_id' => '_design/get',
-                    'filters' => [
-                        'myfilter' => 'function(doc, req) {\r\n                return doc.type === req.query.type;\r\n            }',
-                    ],
-                ];
-                //DOCUMENTO GET DE DISEno
-             /*   $ws_get_type_doc = [
-                    '_id' => '_design/get',
-                    'views' => [
-                        "seach" => [
-                            "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                            ],
-                        'items' => [
-                            "map" => "function(doc) {\n  \n for(var i=0, length=doc.variations.length; i<length; i++){\n                   emit(\n                      [doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
-                            ] ,
-                        'variations' => [
-                            "map" => "function (doc) {\n  emit(doc._id, 1);\n}",
-                        ],
-                        
-                    ], 
-
-                ];
-                */
-                // Hago las comprobaciones y creo las bases de datos
-                //Creo al dB info con sus documentos de diseno y seguridad
-                //Modulos del sistema del (plan-starter)
-                //  'author' => $user_email,
-                $binary = $user_email;
-                $hex = bin2hex($binary);
-                $db_user = 'userdb-' . $hex;
-                $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id, $ws_body); //Creo el doc
-
-                //$this->WorkspaceModel->curl_put($db_user . "/_design/get-type", $user_desing_get); 
-
-                $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
-                // $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
-
-                //   $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_desing_get ); 
-                // $this->WorkspaceModel->curl_put( $db_user . "_design/get". $workspace_id, $ws_get_type_doc); //Creo el doc
-
                 if ($ws_info) {
                     $db_name = "ws_info_" . $workspace_id;
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                    //    $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                         $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
-                }
-                // Catalogo de productos
+                    }  
+                    /* ========== 
+                    DB COLLECTION
+                    Edit:10/10/21
+                    LA DB COLLECTION GUARDA LOS DOCUMENTOS DE PRODUCTOS LISTA DE PRECIOS CATEGORIAS
+                    ATRIBUTOS Y LOS DOCUMENTOS DE LOS PRODUCTOS DEL CATALOGO
+                    ======== */
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id;
+                    //Configuarcion de permisos para el modulo
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id,
                         'user_id' => $user_id,
@@ -654,21 +763,415 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+
+                    //DOCUMENTOS DE DISENO DEL CATALOGO
+                    $ws_collection_get = [
+                        '_id' => '_design/get',
+                        'views' => [
+                            "seach" => [
+                                "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                                ],
+                            'items' => [
+                                "map" => "function(doc) {\n  \n for(var i=0, length=doc.variations.length; i<length; i++){\n                   emit(\n                      [doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
+                                ] ,
+                            'variations' => [
+                                "map" => "function (doc) {\n  emit(doc._id, 1);\n}",
+                            ],
+                            
+                        ], 
+
+                    ];
+                    // DOC CON CONFIGURACIONES DEL CATALOGO 
+                    $price_list = [
+                        '_id' => 'price_list',
+                        'type' => 'price_list',
+                        'status' => 'active',
+                        'price_list' => [
+                            [
+                                'id' => '1',
+                                'value' => 'Consumidor Final',
+                                'currency' => [
+                                    'id' => 'ARS',
+                                    'value' => '$',
+                                ],
+                            ],
+                            [
+                                'id' => '2',
+                                'value' => 'Gremio',
+                                'currency' => [
+                                    'id' => 'ARS',
+                                    'value' => '$',
+                                ],
+                            ],
+                            [
+                                'id' => '3',
+                                'value' => 'Mayorista',
+                                'currency' => [
+                                    'id' => 'ARS',
+                                    'value' => '$',
+                                ],
+                            ],
+                            [
+                                'id' => '4',
+                                'value' => 'Mercado Libre',
+                                'currency' => [
+                                    'id' => 'ARS',
+                                    'value' => '$',
+                                ],
+                            ],
+                            [
+                                'id' => '5',
+                                'value' => 'Web',
+                                'currency' => [
+                                    'id' => 'ARS',
+                                    'value' => '$',
+                                ],
+                            ],
+                        ],
+                    ];
+    
+                    $currency_list = [
+                        '_id' => 'currency_list',
+                        'type' => 'product',
+                        'status' => 'active',
+                        'currency_list' => [
+                            [
+                                'id' => 'ARS',
+                                'value' => '$',
+                            ],
+                            [
+                                'id' => 'DOLAR',
+                                'value' => 'u$s',
+                            ],
+                            [
+                                'id' => 'EUR',
+                                'value' => '€',
+                            ],
+                        ],
+                    ];
+    
+                    $category_list = [
+                        '_id' => 'category_list',
+                        'type' => 'product',
+                        'status' => 'active',
+                        'category_list' => [
+                            [
+                                'id' => '1',
+                                'value' => 'Gaseosas',
+                            ],
+                            [
+                                'id' => '2',
+                                'value' => 'Energizante',
+                            ],
+                            [
+                                'id' => '3',
+                                'value' => 'Agua sin gas',
+                            ],
+                        ],
+                    ];
+    
+                    $attributes = [
+                        '_id' => 'attributes',
+                        'type' => 'attributes_list',
+                        'status' => 'active',
+                        'attributes_list' => [
+                            [
+                                'id' => 'COLOR',
+                                'value' => 'Consumidor Final',
+                            ],
+                            [
+                                'id' => 'TYPE',
+                                'value' => 'Gremio',
+                            ],
+                            [
+                                'id' => 'SIZE',
+                                'value' => 'Mayorista',
+                            ],
+                            [
+                                'id' => '4',
+                                'value' => 'Mercado Libre',
+                            ],
+                            [
+                                'id' => '5',
+                                'value' => 'Web',
+                            ],
+                        ],
+                    ];
+                
+                    //Productos DE EJEMPLO
+                    
+                    $product_01 = [
+                    '_id'=> 'product-11',
+                    'name'=> 'Remera colores',
+                    'type'=> 'product',
+                        'tags'=> [
+                            'Remera',
+                            'Lisa',
+                            'Adidas'
+                        ],
+                        'currency'=> [
+                            'id'=> 'ARS',
+                            'value'=> '$'
+                        ],
+                        'available_quantity'=> 10,
+                        'sold_quantity'=> 0,
+                        'limit_discount'=> 0,
+                        'permalink'=> 'http=>//loalhost/shop/servenet/red-boll-free',
+                        'catalog_product_id'=> null,
+                        'category_id'=> 1,
+                        'sub_category_id'=> 1,
+                        'workspace_id'=> 77,
+                        'condition'=> 'not_specified',
+                        'status'=> 'active',
+                        'author'=> 'smartmobile.com.ar@gmail.com',
+                        'descriptions'=> [
+                            'Cerveza corona 750cc'
+                        ],
+                        'attributes'=> [
+                            [
+                            'id'=> 'TYPE',
+                            'name'=> 'Tipo de Ventilador',
+                            'value_id'=> '291719',
+                            'value_name'=> 'Botella 50cc',
+                            'attribute_group_id'=> 'DFLT',
+                            'attribute_group_name'=> 'type'
+                            ],
+                            [
+                            'id'=> 'BRAND',
+                            'name'=> 'Marca',
+                            'value_id'=> '3',
+                            'value_name'=> 'Corona',
+                            'attribute_group_id'=> 'MAIN',
+                            'attribute_group_name'=> 'Marca'
+                            ]
+                        ],
+                        'variations'=> [
+                            [
+                            'id'=> 1,
+                            'tax'=> [
+                                'id'=> 'IVA',
+                                'value'=> '21'
+                            ],
+                            'sku'=> [
+                                'id'=> 'EAN',
+                                'value'=> '1231256345345'
+                            ],
+                            'pictures'=> [
+                                [
+                                'max'=> '/public/img/catalog/product/max/remera_blanca.jpg',
+                                'min'=> '/public/img/catalog/product/max/remera_blanca.jpg'
+                                ]
+                            ],
+                            'attribute_combinations'=> [
+                                [
+                                'id'=> 'COLOR',
+                                'id_name'=> 'Color',
+                                'name'=> 'Roja',
+                                'value'=> 'EF5350'
+                                ],
+                                [
+                                'id'=> 'SIZE',
+                                'id_name'=> 'Talle',
+                                'name'=> 'Medium',
+                                'value'=> 'M'
+                                ]
+                            ],
+                            'price_list'=> [
+                                [
+                                'id'=> 1,
+                                'value'=> 2550
+                                ],
+                                [
+                                'id'=> 2,
+                                'value'=> 3350
+                                ]
+                            ],
+                            'stock_invetary'=> [
+                                [
+                                'id'=> 123,
+                                'in_datetime'=> '18/3/2021 18:45:10',
+                                'update_datetime'=> '18/3/2021 18:45:10',
+                                'quantity'=> 6,
+                                'sold_quantity'=> 2,
+                                'cost_price'=> 100
+                                ],
+                                [
+                                'id'=> 231,
+                                'in_datetime'=> '18/3/2021 18:45:10',
+                                'update_datetime'=>'18/3/2021 18:45:10',
+                                'quantity'=>4,
+                                'sold_quantity'=>2,
+                                'cost_price'=>150
+                                ]
+                            ],
+                            'sold_quantity'=>2
+                            ],
+                            [
+                            'id'=>2,
+                            'tax'=>[
+                                'id'=>'IVA',
+                                'value'=>'21'
+                            ],
+                            'sku'=>[
+                                'id'=>'EAN',
+                                'value'=>'1231256345345'
+                            ],
+                            'pictures'=>[
+                                [
+                                'max'=>'/public/img/catalog/product/max/remera_amarilla.jpg',
+                                'min'=>'/public/img/catalog/product/max/remera_amarilla.jpg'
+                                ]
+                            ],
+                            'attribute_combinations'=>[
+                                [
+                                'id'=>'COLOR',
+                                'id_name'=>'Color',
+                                'name'=>'Violeta',
+                                'value'=>'ba46c5'
+                                ],
+                                [
+                                'id'=>'SIZE',
+                                'id_name'=>'Talle',
+                                'name'=>'Extra Large',
+                                'value'=>'XL'
+                                ]
+                            ],
+                            'price_list'=>[
+                                [
+                                'id'=>1,
+                                'value'=>1100
+                                ],
+                                [
+                                'id'=>2,
+                                'value'=>1200
+                                ]
+                            ],
+                            'stock_invetary'=>[
+                                [
+                                'id'=>123,
+                                'in_datetime'=>'18/3/2021 18:45:10',
+                                'update_datetime'=>'18/3/2021 18:45:10',
+                                'quantity'=>4,
+                                'quantity_'=>4,
+                                'cost_price'=>100
+                                ],
+                                [
+                                'id'=>231,
+                                'in_datetime'=>'18/3/2021 18:45:10',
+                                'update_datetime'=>'18/3/2021 18:45:10',
+                                'quantity'=>2,
+                                'cost_price'=>150
+                                ]
+                            ],
+                            'sold_quantity'=>2
+                            ],
+                            [
+                            'id'=>3,
+                            'tax'=>[
+                                'id'=>'IVA',
+                                'value'=>'21'
+                            ],
+                            'sku'=>[
+                                'id'=>'EAN',
+                                'value'=>'1231256345345'
+                            ],
+                            'pictures'=>[
+                                [
+                                'max'=>'/public/img/catalog/product/max/remera_azul.jpg',
+                                'min'=>'/public/img/catalog/product/max/remera_azul.jpg'
+                                ]
+                            ],
+                            'attribute_combinations'=>[
+                                [
+                                'id'=>'COLOR',
+                                'id_name'=>'Color',
+                                'name'=>'Azul',
+                                'value'=>'0575e6'
+                                ],
+                                [
+                                'id'=>'SIZE',
+                                'id_name'=>'Talle',
+                                'name'=>'Medium',
+                                'value'=>'M'
+                                ]
+                            ],
+                            'price_list'=>[
+                                [
+                                'id'=>1,
+                                'value'=>1100
+                                ],
+                                [
+                                'id'=>2,
+                                'value'=>1200
+                                ]
+                            ],
+                            'stock_invetary'=>[
+                                [
+                                'id'=>123,
+                                'in_datetime'=>'18/3/2021 18:45:10',
+                                'update_datetime'=>'18/3/2021 18:45:10',
+                                'quantity'=>4,
+                                'quantity_'=>4,
+                                'cost_price'=>100
+                                ],
+                                [
+                                'id'=>231,
+                                'in_datetime'=>'18/3/2021 18:45:10',
+                                'update_datetime'=>'18/3/2021 18:45:10',
+                                'quantity'=>2,
+                                'cost_price'=>150
+                                ]
+                            ],
+                            'sold_quantity'=>2
+                            ]
+                        ],
+                        'last_update_at'=>[
+                            [
+                            'username'=>'smartmobile.com.ar@gmail.com',
+                            'datetime'=>'18/3/2021 18:45:10'
+                            ],
+                            [
+                            'username'=>'otrousuario@gmail.com',
+                            'datetime'=>'18/3/2021 18:45:10'
+                            ]
+                        ],
+                        'start_time'=>'2017-03-10T21:18:09.588Z',
+                        'stop_time'=>'2037-03-05T21:18:09.588Z',
+                        'end_time'=>'2037-03-05T21:18:09.588Z',
+                        'expiration_time'=>'2017-05-29T21:18:09.651Z',
+                        'shipping'=>[
+                            'mode'=>'not_specified',
+                            'local_pick_up'=>false,
+                            'free_shipping'=>false,
+                            'methods'=>[],
+                            'dimensions'=>null,
+                            'tags'=>[
+                                    'me2_available'
+                            ],
+                            'logistic_type'=>'not_specified'
+                        ]
+                    ];
+
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
-                        $this->WorkspaceModel->curl_put($db_name . "/price_list", $price_list); //Creo un doc con la informacion del workspace
-                        $this->WorkspaceModel->curl_put($db_name . "/category_list", $category_list); //Creo un doc con la informacion del workspace
-                        $this->WorkspaceModel->curl_put($db_name . "/currency_list", $currency_list); //Creo un doc con la informacion del workspace
-                        $this->WorkspaceModel->curl_put($db_name . "/attributes", $attributes); //Creo un doc con la informacion del workspace
+                        //DOC Diseno y seguridad
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_collection_get); //Creo el documento de diseno par filtrar documentos por tipo
+                        //DOC COFIGURACIONES
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/price_list', $price_list); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/currency_list', $currency_list); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/attributes', $attributes); //Creo un doc con la informacion del workspace
+                         //DOC EJEMPLO PRODUCTOS
+                        $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
+                  
                     }
 
                 }
                 //Contactos
                 if ($ws_contact) {
-                    $db_name = "ws_contact_" . $workspace_id;
+                    $db_name = 'ws_contact_' . $workspace_id;
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id,
                         'user_id' => $user_id,
@@ -679,19 +1182,18 @@ class Workspace extends BaseController
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
                 // Movimientos generales 
                 if ($ws_mov) {
-                    $db_name = "ws_mov_" . $workspace_id;
+                    $db_name = 'ws_mov_' . $workspace_id;
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
-                    
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                 }
 
                 if ($ws_boards) {
@@ -707,7 +1209,7 @@ class Workspace extends BaseController
                 
                 // Ventas locales directas
                 if ($ws_local_sell) {
-                    $db_name = "ws_local_sell_" . $workspace_id;
+                    $db_name = 'ws_local_sell_' . $workspace_id;
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id,
                         'user_id' => $user_id,
@@ -718,15 +1220,15 @@ class Workspace extends BaseController
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get-type", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get-type', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
 
                 // Ordenes (plan-business)
                 if ($ws_order_sell) {
-                    $db_name = "ws_order_sell_" . $workspace_id;
+                    $db_name = 'ws_order_sell_' . $workspace_id;
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id,
                         'user_id' => $user_id,
@@ -737,9 +1239,9 @@ class Workspace extends BaseController
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
 
@@ -872,7 +1374,7 @@ class Workspace extends BaseController
                 }
 
 
-            }
+                }
             if ($db->transStatus() === false) {
                 $db->transRollback();
                 $return = ['msj' => 'Algo salio mal y no se pudo crear!' . $db->transStatus(), 'result' => false];
@@ -886,201 +1388,4 @@ class Workspace extends BaseController
         }
     }
 
-    /* //Elimino el WS Completo de todos lados
-public function ws_delete_db()
-{
-//if (!logged_in() && in_groups('admin')) {
-
-$workspace_id = $this->request->uri->getSegment(3);
-$user_id = user_id(); //Usuario
-$Workspace = $this->WorkspaceModel->get_ws_id_user_id($user_id, $workspace_id);
-// || $Workspace === false
-if (!logged_in() ) {
-// $previus_url == previous_url();
-return redirect()->to(base_url('/login'));
-//return redirect()->to($previus_url);
-} else {
-$db = \Config\Database::connect();
-$ws_db = $db->table('workspace');
-$ws_user = $db->table('users_workspace');
-
-$db->transBegin();
-
-//Elimino el workspace de sql
-// $ws_db->delete('workspace_id' => $workspace_id);
-$ws_db->delete(['workspace_id' => $workspace_id]);
-$ws_user->delete(['workspace_id' => $workspace_id]);
-
-$ws_info = true; //Todas las configuracinoes del workspace
-$ws_collections = true; //Catalogo de productos y servicios
-$ws_collections_img = true; //Base de datos de imagenes en formato blob o base64
-$ws_contact = true; //Catalogo de contactos
-$ws_mov = true; //Control de movimientos cajas diario
-$ws_local_sell = true; //Ventas del local
-
-///Movimientos de caja (plan-professional) (SUMO LOS MODULOS)
-//Ordenes (plan-business)  //Activar dependiendo el modulo seleccionado  Maximo (3)
-$ws_order_buy = true; //Orden de Compras
-$ws_order_sell = true; //Ordenes de ventas
-$ws_mov_box = true; //Control de movimientos cajas diario
-$ws_statistics = true; //Estadisticas (no es una DB)
-
-//Plan (plan-business-service)
-//Ordenes de Servicios (plan-business)
-$ws_reports = true; //Reportes (No es una DB)
-$ws_order_pro_service = true; //Ordenes de servicios profecionales
-$ws_order_tecnic_service = true; //Ordenes de servicio tecnico
-$ws_order_app = true; //
-
-$Workspace = $this->WorkspaceModel->dell('workspace', 'workspace_id', $workspace_id); //Creo el workspace
-$ws_user = $this->WorkspaceModel->dell('users_workspace', 'workspace_id', $workspace_id); //Asigno el usuario propietario para ese nuevo workspace
-
-if ($Workspace || $ws_user) {
-
-$db_delete = 0;
-$db_error = 0;
-if ($ws_info) {
-$db_name = "ws_info_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-if ($ws_collections) {
-$db_name = "/ws_collections_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-if ($ws_collections_img) {
-$db_name = "ws_collections_img_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-if ($ws_contact) {
-$db_name = "ws_contact_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-if ($ws_mov) {
-$db_name = "ws_mov_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-if ($ws_local_sell) {
-$db_name = "ws_local_sell_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-//Creo las DB dependiendo si fueron seleccionadas
-//Ordenes (plan-business)
-if ($ws_order_sell) {
-$db_name = "ws_order_sell_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-if ($ws_order_buy) {
-$db_name = "ws_order_buy_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-if ($ws_mov_box) {
-$db_name = "ws_mov_box_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-//Ordenes de Servicios (plan-business)
-if ($ws_order_pro_service) {
-$db_name = "ws_order_pro_service_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-if ($ws_order_tecnic_service) {
-$db_name = "ws_order_tecnic_service_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-
-}
-//Ordenes de Servicios (plan-business-shop)
-if ($ws_order_app) {
-$db_name = "ws_order_app_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-//Order colection
-$db_name = "ws_order_app_collections_" . $workspace_id;
-$response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
-if ($response_code = '200') {
-$db_delete += 1;
-} elseif ($response_code == '404') {
-$db_error += 1;
-}
-}
-
-}
-
-}
-if ($db->transStatus() === false) {
-$db->transRollback();
-$return = ['msj' => 'No ingresastes el workspace ID o algo salio mal y no se pudo Eliminar!', 'result' => false];
-return json_encode($return);
-} else {
-$db->transCommit();
-$return = ['msj' => 'Salio todo bieen se eliminaron! [' . $response_code . '] DBS', 'DBS ELiminadas' => $db_delete, 'DBS Error 404' => $db_error, 'result' => true];
-// $return = ['msj' => 'Algo salio mal!', 'result' => false];
-return json_encode($return);
-//$return = ['msj' => 'Se creo todo con exito!', 'result' => true];
-// return json_encode($return);
-}
-}
- */
 }
