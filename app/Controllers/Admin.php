@@ -99,8 +99,8 @@ class Admin extends BaseController
         }
         $db = \Config\Database::connect();
         $ws_db = $db->table('users');
-        // $ws_db->where('user_id', $user_id);
-        $Workspace = $ws_db->delete(['workspace_id' => $workspace_id]);
+        $ws_db->where('user_id', $user_id);
+        //  $Workspace = $ws_db->delete(['workspace_id' => $workspace_id]);
         $return = ['msj' => 'Usuario eliminado con exito!', 'result' => true];
         return json_encode($return);
     }
@@ -381,7 +381,6 @@ class Admin extends BaseController
                 }
 
             }
-
             if ($db->transStatus() === false) {
                 $db->transRollback();
                 $return = ['msj' => 'No ingresastes el workspace ID o algo salio mal y no se pudo Eliminar!', 'result' => false];
