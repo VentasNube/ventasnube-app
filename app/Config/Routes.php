@@ -17,6 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * Configuración del enrutador
  * --------------------------------------------------------------------
  */
+
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
@@ -44,6 +45,9 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.
     //$routes->get('/account', 'Account::index', ['filter' => 'role:plan-starter-free']);
+    $routes->get('/workspace', 'workspace::workspace');
+
+
     // SHOP
     $routes->get('/shop', 'Home::shop');
     // Forgot/register cliente
@@ -76,7 +80,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     //New Activation
     $routes->get('activate-account', 'AuthController::activateAccount', ['as' => 'activate-account']);
-    
+
     //Resend Activation
     $routes->get('resend-activate-account', 'AuthController::resendActivateAccount', ['as' => 'resend-activate-account']);
   

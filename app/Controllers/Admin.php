@@ -225,10 +225,15 @@ class Admin extends BaseController
             //   $Workspace = $this->WorkspaceModel->get_ws_id_user_id($user_id, $workspace_id);            
             $ws_db = $db->table('workspace');
             $ws_user = $db->table('users_workspace');
+            $users_workspace_permission = $db->table('users_workspace_permission');
             $db->transBegin();
             //Elimino el workspace de sql
             $Workspace = $ws_db->delete(['workspace_id' => $workspace_id]);
+            //Elimino los permisos de SQL
+            $users_ws_per = $users_workspace_permission->delete(['ws_id' => $workspace_id]);
             $ws_user = $ws_user->delete(['workspace_id' => $workspace_id]);
+
+
             $ws_info = true; //Todas las configuracinoes del workspace
             $ws_collections = true; //Catalogo de productos y servicios
             $ws_collections_img = true; //Base de datos de imagenes en formato blob o base64
