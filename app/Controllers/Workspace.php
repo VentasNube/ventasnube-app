@@ -484,12 +484,17 @@ class Workspace extends BaseController
             // $Workspace = $this->WorkspaceModel->new_ws($ws_data);
             // Creo el workspace
             $Workspace = $this->WorkspaceModel->insert('workspace', $ws_data); //Creo el Workspace n msql
-            $workspace_id = $db->insertID(); //Tomo el nuevo id del workspace
+            $workspace_id_dec = $db->insertID(); //Tomo el nuevo id del workspace
+            //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
+            $workspace_id = bin2hex($workspace_id_dec); //Transformo el email en hexadecimal por seguridad
+            // $workspace_id = $workspace_id_hex; //Armo la url de la User BD
+
             // Compruebo q se creo el usuario con exito
-            if ($workspace_id) {
+            if ($workspace_id_dec) {
                 // Habilito el usuario al nuevo workspace
                 $ws_user_data = [
-                    'workspace_id' => $workspace_id,
+                    'workspace_id' => $workspace_id_dec,
+                    //'workspace_id_hex' => $workspace_id,
                     'user_id' => $user_id,
                     'user_group' => $user_auth_permissions,
                     'user_workspace_status' => 'active',
@@ -498,6 +503,8 @@ class Workspace extends BaseController
                 // $ws_user = $this->WorkspaceModel->new_user_ws($ws_user_data); //Asigno el usuario propietario para ese nuevo workspace
                 $ws_user = $this->WorkspaceModel->insert('users_workspace', $ws_user_data);
                 
+
+
                 // Modulos del sistema del (plan-starter)( BASICO)
                 $ws_info = true; //Todas las configuracinoes del workspace
                 $ws_collections = true; //Catalogo de productos y servicios
@@ -639,11 +646,11 @@ class Workspace extends BaseController
             
             $hex = bin2hex($user_email); //Transformo el email en hexadecimal por seguridad
             $db_user = 'userdb-' . $hex; //Armo la url de la User BD
+         
+
            
              $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id, $ws_body); //Creo el doc
              $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id, $ws_setting); //Creo el doc
-
-
              $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get ); //Docuento diseno get
              
              /* ========== 
@@ -702,7 +709,7 @@ class Workspace extends BaseController
                         'm_favorite' => 'Favoritos',
                         'm_myaccount' => 'Mi cuenta',
                         'm_myorders' => 'Mis compras',
-                        'm_my_workspace' => 'Mis negocios',
+                        'm_my_workspace' => 'Mis workspaces',
                         'b_ok' => 'Ok',
                         'b_dell' => 'Eliminar',
                         'b_add' => 'Agregar',

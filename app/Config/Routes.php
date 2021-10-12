@@ -45,7 +45,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.
     //$routes->get('/account', 'Account::index', ['filter' => 'role:plan-starter-free']);
-    $routes->get('/workspace', 'workspace::workspace');
+    $routes->get('/workspace', 'workspace::index');
 
 
     // SHOP

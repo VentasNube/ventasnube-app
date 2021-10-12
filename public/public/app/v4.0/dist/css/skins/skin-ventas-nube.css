@@ -106,9 +106,9 @@
 
 .skin-ventas-nube .main-header li.user-header {
     /* background-color:#bd3381;*/
-    background: -webkit-linear-gradient(40deg, #c445c1, #415eff) !important;
+    background: -webkit-linear-gradient(40deg, #c445c1, #415eff) ;
     /*  background: radial-gradient(ellipse at 108% 132%,#ee583f 8%,#d92d77 42%,#bd3381 58%);*/
-    background: linear-gradient(40deg, #c445c1, #415eff) !important;
+    background: linear-gradient(40deg, #c445c1, #415eff) ;
 }
 
 .skin-ventas-nube .content-header {

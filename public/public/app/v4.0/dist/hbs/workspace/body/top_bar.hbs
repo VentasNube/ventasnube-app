@@ -9,10 +9,13 @@
     <div class="navbar-custom-menu pull-left">
         <ul class="nav navbar-nav">
             <li class="notifications-menu">
-                <span class="logo-img">
+              
+
+                <span class="logo-img round">
                     <img src="{{{workspace_img}}}">
-                    <span>{{workspace_name}}</span>
                 </span>
+                
+                <span class="text-brand">{{workspace_name}}</span>
             </li>
 
             <li class="notifications-menu" data-toggle="tooltip" data-placement="bottom"
@@ -92,8 +95,8 @@
                 <ul class="dropdown-menu" style="right: 0px;">
 
                     <!-- The user image in the menu -->
-                    <li class="user-header ">
-                        <div class="user-icon md">
+                    <li class="user-header {{#with ../../ws_top_bar}}  {{{workspace_color}}} {{/with}}">
+                        <div class="user-icon md ">
                             <span data-toggle="tooltip" data-placement="bottom" title="" class=""
                                 data-original-title="{{{user_name}}}">
                                 <!--{{trimString user_name}} -->
@@ -111,12 +114,12 @@
                                 </a>
                             </div>
                             <a href="">
-                                <span class="user-icon md">
+                                <!--span class="user-icon md">
                                     <span data-toggle="tooltip" data-placement="bottom" title="" class=""
                                         data-original-title="{{{user_name}}}">
                                         {{trimString user_name}}
                                     </span>
-                                </span>
+                                </span-->
                                 <span id="dbusername" dbusername="{{{user_name}}}" class="user-name">
                                     <small>{{user_name}}</small>
                                 </span>
