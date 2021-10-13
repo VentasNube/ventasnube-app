@@ -88,7 +88,7 @@ class WorkspaceModel extends Model
         }
     }*/
     //Paso los parametros para insertar un item de la DB
-    public function insert($table = false, $data = false)
+    public function insert($table = false, $data = null)
     {
         if ($table === false) {
             $response = ['data' => $data, 'msj' => 'Falta la tabla o los datos', 'result' => false];
@@ -100,6 +100,18 @@ class WorkspaceModel extends Model
             return $response;
         }
     }
+
+       //Paso los parametros para eliminar un item de la DB
+    public function edit($table = false, $data = null, $where = false, $where_id = false)
+       {
+           if ($table === false) {
+              return false;
+           } else {
+              $this->table = $this->db->table($table);
+              $this->table->where($where, $where_id)->update($data);          
+               return true;
+           }
+      }
 
     //Paso los parametros para eliminar un item de la DB
     public function dell($table = false, $where = false, $where_id = false)
