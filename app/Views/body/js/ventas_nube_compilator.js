@@ -53,6 +53,7 @@ function getUrl() {
 var domain_m_url = window.location.host;
 //**** VARIABLES GLOBALES */
 ////-----(MOTOR AJAX)-----////
+
 // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
 function getTemplateAjax(path, callback) {
     var source, template;

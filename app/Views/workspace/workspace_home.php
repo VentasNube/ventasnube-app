@@ -450,7 +450,9 @@ function createCookie(name,value,days) {
 $(".ws_select").click( function() {
         if(validaForm()){
 
-                        const ws_select = $(this).attr('ws_id');
+                    const ws_id = $(this).attr('ws_id');
+                    const ws_select = nocodelog(ws_id); //User Db name
+                     //   const ws_select =;
                         const name = 'ws_select'
           $.ajax({
                 url: "/workspace/ws_select",
