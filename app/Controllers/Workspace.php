@@ -35,7 +35,7 @@ class Workspace extends BaseController
               $model = new OwnerModel(); //traigo al modelo		
               $data['owner'] = $model->getOwner(); //cargo la data en un array
               return view('/workspace/body/body.hbs', $data);
-         //   return redirect()->to(base_url('/workspace/home'));
+              //   return redirect()->to(base_url('/workspace/home'));
         } else {
             return redirect()->to(base_url('/workspace/welcome'));
         }
@@ -84,7 +84,6 @@ class Workspace extends BaseController
     //Vista Welcome
     public function welcome()
     {
-
         if (!logged_in()) {
             return redirect()->to(base_url('/login'));
         } else {
