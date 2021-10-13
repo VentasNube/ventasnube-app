@@ -502,8 +502,6 @@ class Workspace extends BaseController
                 // $ws_user = $this->WorkspaceModel->new_user_ws($ws_user_data); //Asigno el usuario propietario para ese nuevo workspace
                 $ws_user = $this->WorkspaceModel->insert('users_workspace', $ws_user_data);
                 
-
-
                 // Modulos del sistema del (plan-starter)( BASICO)
                 $ws_info = true; //Todas las configuracinoes del workspace
                 $ws_collections = true; //Catalogo de productos y servicios
@@ -762,7 +760,7 @@ class Workspace extends BaseController
                     $db_name = "ws_collections_" . $workspace_id;
                     //Configuarcion de permisos para el modulo
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '2',
                         'module_type_id' => '0',
@@ -1179,7 +1177,7 @@ class Workspace extends BaseController
                 if ($ws_contact) {
                     $db_name = 'ws_contact_' . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '3',
                         'module_type_id' => '0',
@@ -1204,7 +1202,7 @@ class Workspace extends BaseController
 
                 if ($ws_boards) {
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '0',
@@ -1217,7 +1215,7 @@ class Workspace extends BaseController
                 if ($ws_local_sell) {
                     $db_name = 'ws_local_sell_' . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '1',
@@ -1236,7 +1234,7 @@ class Workspace extends BaseController
                 if ($ws_order_sell) {
                     $db_name = 'ws_order_sell_' . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '4',
@@ -1255,7 +1253,7 @@ class Workspace extends BaseController
                 if ($ws_order_buy) {
                     $db_name = "ws_order_buy_" . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '4',
@@ -1274,7 +1272,7 @@ class Workspace extends BaseController
                 if ($ws_order_pro_service) {
                     $db_name = "ws_order_pro_service_" . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '3',
@@ -1293,7 +1291,7 @@ class Workspace extends BaseController
                 if ($ws_order_tecnic_service) {
                     $db_name = "ws_order_tecnic_service_" . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '5',
@@ -1312,7 +1310,7 @@ class Workspace extends BaseController
                 if ($ws_order_app) {
                     $db_name = "ws_order_app_" . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '1',
                         'module_type_id' => '6',
@@ -1338,7 +1336,7 @@ class Workspace extends BaseController
                 if ($ws_mov_box) {
                     $db_name = "ws_mov_box_" . $workspace_id;
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '4',
                         'module_type_id' => '0',
@@ -1358,7 +1356,7 @@ class Workspace extends BaseController
                 // Estadisticas 
                 if ($ws_statistics) {
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '6',
                         'module_type_id' => '0',
@@ -1370,7 +1368,7 @@ class Workspace extends BaseController
                 // Reportes
                 if ($ws_reports) {
                     $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id,
+                        'ws_id' => $workspace_id_dec,
                         'user_id' => $user_id,
                         'module_id' => '5',
                         'module_type_id' => '0',
