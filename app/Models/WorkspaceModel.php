@@ -148,6 +148,7 @@ class WorkspaceModel extends Model
             foreach ($query as $row) {
                 $row_m[] = array(
                     'ws_id' => $row['workspace_id'],
+                    'ws_id_hex' => $row['workspace_id_hex'],
                     'ws_color' => $row['workspace_color'],
                     'ws_name' => $row['workspace_name'],
                     'ws_img' => $row['workspace_img'],

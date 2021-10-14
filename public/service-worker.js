@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 111224;
+const version = 13429;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -33,11 +33,12 @@ self.addEventListener('activate', event => {
 workbox.precaching.precacheAndRoute([
     // { url: '/', revision: version },
     //{ url: '/login', revision: version },
-    { url: '/account', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
+    //{ url: '/workspace/home', revision: version }, 
+    { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
     { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
     { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
     // fuentes css y plugins 
-    { url: 'https://fonts.gstatic.com/s/materialicons/v85/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2', revision: version },
+    { url: 'https://fonts.gstatic.com/s/materialicons/v109/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
     { url: 'https://fonts.googleapis.com/icon?family=Material+Icons', revision: version },
     { url: '/public/app/v4.0/dist/bootstrap/css/bootstrap.css', revision: version },
     { url: '/public/app/v4.0/dist/css/skins/skin-ventas-nube.css', revision: version },
@@ -48,12 +49,11 @@ workbox.precaching.precacheAndRoute([
     { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
     { url: '/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js', revision: version },
     { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js', revision: version },
-
+    // Fuentes js plugins
     { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
-
     { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
     { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
-   
+   // Fuentes js plugins
     { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
     { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js', revision: version },
     { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },

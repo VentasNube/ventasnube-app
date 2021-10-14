@@ -32,156 +32,84 @@ function readCookie(name) {
     return null;
 }
 
-// Leemos la cookie seteada en el ws
-var ws_id = readCookie("ws_select");
-
 // Leemos la cookie seteada para offline mode
 var ws_offline = readCookie("ws_offline");
+
 if (ws_offline == 'true') {
+    var offline_mode = true; 
     $('.offline_mode').attr('checked', ''); //Cambio el atributo no chekeado
 } else if (ws_offline == 'false') {
+    var offline_mode = null; 
     $('.offline_mode').removeAttr('checked'); //Cambio el atributo no chekeado
 }
 
-//Chek workspace seteado
+
+var url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
+
+// Leemos la cookie seteada en el ws
+var ws_id = readCookie ('ws_select');
+var u_email = readCookie ('user_email');
+var u_name = readCookie ('u_name');
+// Leemos la cookie seteada en el userDB
+var userDb = readCookie ('userDb');
+//var user_db = readCookie ('userDb');
+var u_db = readCookie("userDb");
+var userCtx = '';
+
+//Chek workspace seteado en la cokie sino redirecciono al home
 if (!ws_id) {
     window.location = "/workspace/home";
 }
 
-var url_R_db = 'http://localhost:5984/'; //URL global de couchDB
+this.user_data = {
+    user_db: u_db,
+    user_name: u_name,
+    user_email: u_email,
+    url_db: url_R_db + u_db,
+    user_ws: ws_id
+}
 
-var u_email = '';
-var u_name = '';
-var u_db = '';
+//alert(ws_id);
 
-var ws_setting_doc = '';
-var userCtx = '';
-var offline_mode = null; //Offline mode swich
+//Creo y conecto con userDB local 
+user_db = new PouchDB(u_db, { skip_setup: false });
 // FUNCION SESSION DE USUARIO
-/*
 async function user_session() {
     try {
-        //Creo la variable session y conceto con la DB
-        var _session = url_R_db + '_session';
-        _session = new PouchDB(url_R_db, { skip_setup: false });
-        u_session = await _session.get('_session', { include_docs: true, descending: true }); // Conecto a la USER _session
-        userCtx = u_session.userCtx; //Creo la variable global
-
-        u_email = userCtx.name;
-        u_name = u_session.firstname;
-
-        u_db = 'userdb-' + nocodelog(userCtx.name); //User Db name
-        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false }); // Conecto a la USER DB
-
-        ws_setting_doc = user_db.get('ws_setting_' + ws_id, { include_docs: true, descending: true });
-        offline_mode = ws_setting_doc.offline_mode
-        // console.log(ws_setting_doc.offline_mode)
-        // alert(offline_mode)
+        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
+        //sincronizo
+        user_db.sync(u_db, { live: true, retry: true, }); 
+        //FILTRO SI ESTA MODO OFFLINE O MODO ONLINE ACTIVADO
         if (offline_mode) {
-            L_user_db = new PouchDB(u_db, { skip_setup: false });
-            R_user_db = user_db;
-            L_user_db.sync(R_user_db, { live: true, retry: true, }); //sincronizo
-            //var session = 'http://localhost:5984/__session '; //URL global de couchDB
+             //Conecto a la DB LOCAL
+             user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
+            // sincronizo
+            // user_db.sync(url_R_db + u_db, { live: true, retry: true, }); 
+            // user_db = L_user_db;
+            //Creo el array de user Data
             Snackbar.show({
-                text: '<span class="material-icons">wifi_off</span>  Modo Offline Activado ',
+                text: '<span class="material-icons">wifi_off</span>  Modo offline activado ',
                 actionText: 'ok',
                 actionTextColor: "#0575e6",
                 pos: 'top-left',
                 duration: 50000
             });
-            //  alert('User Modo offline');
-            // alert('Offline mode:'+offline_mode);
+
         } else {
-            L_user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-        }
-        this.user_data = {
-            user_db: u_db,
-            user_name: u_email,
-            user_email: u_email,
-            //user_roll: g_session.userCtx.roles,
-            url_db: url_R_db + u_db,
-            user_ws: ws_id
-        }
+
+        //Conecto a la DB remota de UserDB si no esta modo offline activado
+        //Conecto a la DB LOCAL
+        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
+        //sincronizo
+        user_db.sync(u_db, { live: true, retry: true, }); 
+        //user_db = L_user_db;
         Snackbar.show({
             text: 'Bienvenido ' + u_name + '!',
             actionText: 'ok',
             actionTextColor: "#0575e6",
             pos: 'bottom-center'
         });
-    } catch (err) {
-        Snackbar.show({
-            text: 'No estas logeado!',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-center'
-        });
-       // window.location = "/login";
     }
-}*/
-async function user_session() {
-    try {
-        //Creo la variable session y conceto con la DB
-        var _session = url_R_db + '_session';
-        _session = new PouchDB(url_R_db, { skip_setup: false });
-
-        u_session = await _session.get('_session', { include_docs: true, descending: true }); // Conecto a la USER _session
-       
-        userCtx = u_session.userCtx; //Creo la variable global
-        u_email = userCtx.name; // 
-        u_name = u_session.firstname;
-
-        u_db = 'userdb-' + nocodelog(userCtx.name); //User Db name
-        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false }); // Conecto a la USER DB
-
-        ws_setting_doc = user_db.get('ws_setting_' + ws_id, { include_docs: true, descending: true });
-        offline_mode = ws_setting_doc.offline_mode
-
-        
-        // console.log(ws_setting_doc.offline_mode)
-        // alert(offline_mode)
-        if (offline_mode) {
-
-
-            L_user_db = new PouchDB(u_db, { skip_setup: false });
-            R_user_db = user_db;
-            L_user_db.sync(R_user_db, { live: true, retry: true, }); //sincronizo
-            //var session = 'http://localhost:5984/__session '; //URL global de couchDB
-
-
-            Snackbar.show({
-                text: '<span class="material-icons">wifi_off</span>  Modo Offline Activado ',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'top-left',
-                duration: 50000
-            });
-            //  alert('User Modo offline');
-            // alert('Offline mode:'+offline_mode);
-        } else {
-          //  L_user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-
-
-        }
-
-        L_user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-
-        //Cargo la variable global user_db dependiendo si es modo offline o modo online
-        L_user_db = user_db;
-        // Creo la variable User_data con los datos de la sesion
-        this.user_data = {
-            user_db: u_db,
-            user_name: u_email,
-            user_email: u_email,
-            //user_roll: g_session.userCtx.roles,
-            url_db: url_R_db + u_db,
-            user_ws: ws_id
-        }
-        Snackbar.show({
-            text: 'Bienvenido ' + u_name + '!',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-center'
-        });
     } catch (err) {
         Snackbar.show({
             text: 'No estas logeado!',
@@ -192,26 +120,16 @@ async function user_session() {
        // window.location = "/login";
     }
 }
+
+Snackbar.show({
+    text: 'Bienvenido' + u_name + 'ws_id:'+ws_id,
+    actionText: 'ok',
+    actionTextColor: "#0575e6",
+    pos: 'bottom-center'
+});
+
 user_session();
-
-async function ws_mode_offline() {
-    var doc = await user_db.get('ws_setting_' + ws_id);
-    if (doc) {
-        var response = await user_db.put({
-            _id: 'ws_setting_' + ws_id,
-            _rev: doc._rev,
-            ws_setting: ws_setting
-        });
-        //  alert('response PUT')
-    } else {
-        var response = await user_db.put({
-            _id: 'ws_setting_' + ws_id,
-            ws_setting: ws_setting
-        });
-    }
-}
-
-// R_user_db = new PouchDB(u_db);
+// FUNCION LOGOUT
 function logout() {
     L_user_db.logOut(function(err, response) {
         if (response) {
@@ -259,7 +177,6 @@ $(".offline_mode").click(function() {
                 createCookie(name, true);
             }
             //alert('Quieres desactivar el modo offline?');
-
         }
     }
 });
@@ -313,31 +230,3 @@ function chek_session() {
     });
 }
 */
-
-
-async function getSession() {
-
-    // user_session = await L_user_db.getSession();
-
-    //   user_session = await L_user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-    /*   L_user_db.getSession(function(err, response) {
-           if (err) {
-               // network error
-               get_top_bar();
-               get_left_nav();
-               // get_nav_cart();
-           } else if (!response.userCtx.name) {
-               // nobody's logged in
-               // alert('no estas logeado')
-               window.location = "/login";
-               //  setTimeout(function () { window.location = "/login"; }, 2000);
-           } else {
-               // response.userCtx.name is the current user
-               //  get_top_bar();
-               // get_left_nav();
-               // get_nav_cart();
-               ws_module_config();
-           }
-       });*/
-
-}

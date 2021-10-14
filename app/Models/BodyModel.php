@@ -242,9 +242,9 @@ class BodyModel extends Model//Crea el nombre de el modelo
 
         $module_db->join('module_type', 'module_type.m_t_id = users_workspace_permission.module_type_id');
         // $module_db->join('auth_permissions', 'auth_permissions.id = users_workspace_permission.auth_permissions_id');
-
         $module_db->where('user_id', $user_id);
         $module_db->where('ws_id_hex', $ws_id_hex);
+        $module_db->groupBy('module_type.m_t_id');
         //$module_db->groupBy('module.m_id');
         // $query = $plans_db->get()->getResult();
         $query = $module_db->get()->getResultArray();

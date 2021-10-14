@@ -259,8 +259,8 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     var u_name = '<?php echo session('u_name'); ?>';
     //###########################################################
     var u_db = 'userdb-' + nocodelog(u_email);
-    var offline_mode = false;
-/
+    var offline_mode = true;
+
 function user_session() {
         try {
             //Cambio el L_user_db x R_user_db para usar las db locales
