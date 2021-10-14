@@ -73,6 +73,20 @@ this.user_data = {
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: false });
+
+user_db.sync(url_R_db+userDb, {
+    live: true,
+    retry: true
+  }).on('change', function (change) {
+    // yo, something changed!
+  }).on('paused', function (info) {
+    // replication was paused, usually because of a lost connection
+  }).on('active', function (info) {
+    // replication was resumed
+  }).on('error', function (err) {
+    // totally unhandled error (shouldn't happen)
+  });
+
 // FUNCION SESSION DE USUARIO
 async function user_session() {
     try {
@@ -120,6 +134,105 @@ async function user_session() {
        // window.location = "/login";
     }
 }
+
+
+
+function put_left_nav_doc(ws_left_nav) {
+    /* var ws_left_nav_array = {
+        ws_left_nav: ws_left_nav_doc,
+        ws_lang_data: ws_lang_data
+    }*/
+    $.ajax({
+        url: "/body/left_nav",
+        // dataType: "html",
+        //data: data,
+        type: "POST",
+        dataType: "json",
+        success: function (ws_left_nav) {
+            if (ws_left_nav.result == true) { 
+                ///// IMPRIME ////
+                //  console.log ('No se encuentra el documento en la userdb');
+                        user_db.put({
+                            _id: 'ws_left_nav_' + ws_id,
+                            ws_left_nav: ws_left_nav
+                        }, function (err, response) {
+                            if (err) {
+                                return console.log(err);
+                            }
+                                //    console.log ('Creo un doc nuevo');
+                            else {
+                                // DOC DE MODULOS
+                                ws_left_nav_doc_array = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+                                var ws_left_nav_doc = {
+                                    ws_left_nav:  ws_left_nav_doc_array
+                                }
+                                console.log('ws_left_nav_doc OKK');
+                                console.log(ws_left_nav_doc);
+                                console.log( ws_left_nav_doc_array);
+                            
+                               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+                                       
+                                return console.log('Se actualizo el Left document');
+                            }
+                        });
+                        
+                 
+                  //creo un array para los datos del documento y lo imprimo en el left bar
+                 /*        var ws_left_nav_doc = {
+                    ws_left_nav: ws_left_nav
+                }
+               
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+                */
+            } else {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+                //setTimeout(function () { window.location = "/account"; }, 2000);
+            }
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+
+        if (jqXHR.status === 0) {
+            response_msj = 'Not connect: Verify Network.';
+        } else if (jqXHR.status == 404) {
+            response_msj = 'Requested page not found [404]';
+
+        } else if (jqXHR.status == 500) {
+
+            response_msj = 'Internal Server Error [500].';
+
+        } else if (textStatus === 'parsererror') {
+
+            response_msj = 'Requested JSON parse failed.';
+
+        } else if (textStatus === 'timeout') {
+
+            response_msj = 'Time out error.';
+
+        } else if (textStatus === 'abort') {
+
+            response_msj = 'Ajax request aborted';
+
+        } else {
+
+            response_msj = 'Uncaught Error: ' + jqXHR.responseText;
+
+        }
+        //Cargo la variable mensaje y imprimo en pantalla 
+        Snackbar.show({
+            text: response_msj,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+
+
+    });
+
+};
+
+put_left_nav_doc();
+
 
 Snackbar.show({
     text: 'Bienvenido' + u_name + 'ws_id:'+ws_id,
