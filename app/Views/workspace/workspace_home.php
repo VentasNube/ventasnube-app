@@ -442,6 +442,7 @@ function createCookie(name,value,days) {
 }
 
 
+/*
 $(".ws_select").click( function() {
         if(validaForm()){
                         const ws_id = $(this).attr('ws_id');
@@ -458,9 +459,8 @@ $(".ws_select").click( function() {
                         $(location).attr('href','/workspace');
         }
 });
-
-/*
-$(".ws_select_no").click( function() {
+*/
+$(".ws_select").click( function() {
         if(validaForm()){
 
                         const ws_id = $(this).attr('ws_id');
@@ -477,23 +477,12 @@ $(".ws_select_no").click( function() {
                 success: function(response) {
                     if (response.result === true) { ///// IMPRIME ////
                         // window.location = "/account";
-                        // alert('Estas logeado!');
-              
                         ///// IMPRIME la Cokie ////
                         createCookie ('ws_select',ws_id);
                         createCookie ('userDb',userDb);
                         createCookie ('user_email',user_email);
                         createCookie ('u_name',u_name);
-
-                        $(location).attr('href','/workspace');
-
-                        Snackbar.show({
-                            text: ' <span class="material-icons">sentiment_very_satisfied</span> Hola ' + response.user_name.username + ' Bienvenido!',
-                            actionText: ' <span class="material-icons"> highlight_off </span>',
-                            actionTextColor: "#0575e6",
-                            pos: 'bottom-center',
-                            duration: 5000
-                        });
+                        $(location).attr('href','/workspace');                       
                     } else {
                         // alert('No esta logeado');
                        // logout();
@@ -516,7 +505,7 @@ $(".ws_select_no").click( function() {
 });
 
 
-*/
+
 
 
 </script>

@@ -119,7 +119,7 @@ class Workspace extends BaseController
     }
 
     // Boton Selecciono el ws
-  /*  public function ws_select()
+    public function ws_select()
     {
         if (!logged_in()) {
             return redirect()->to(base_url('/login'));
@@ -150,7 +150,7 @@ class Workspace extends BaseController
             return json_encode($return);
         }
     }
-   */
+   
     // Creo un nuevo WS Completo
     public function ws_new()
     {
