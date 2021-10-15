@@ -47,7 +47,7 @@ async function ws_module_config() {
             get_search_module(ws_info, ws_lang_data);
             get_left_nav(ws_left_nav);
 
-            alert('aaaaaaaa')
+          //  alert('aaaaaaaa')
             console.log('ws_left_nav OK BODY');
             console.log(ws_left_nav);
             console.log(ws_lang_data);
@@ -131,30 +131,14 @@ function put_left_nav_doc() {
                                 msj_alert(err);
                                 return console.log(err);
                              }
-                             msj_alert('Se actualizo el left_nav_doc','top-center');
-                              // handle response
+                             //   msj_alert('Se actualizo el left_nav_doc','top-center');
+                             console.log('se actualizo el left bar doc')
+                             // handle response
                             });
                           });
-
-/*
-                        user_db.put({
-                            _id: 'ws_left_nav_' + ws_id,
-                            ws_left_nav: ws_left_nav
-                        }, function (err, response) {
-                            if(response) {
-                              msj_alert('Se actualizo el left_nav_doc', 'top-bottom');
-                            }
-                            else if (err) {
-                                return console.log(err);
-                            }
-                        });
-*/
-
-
             } 
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
-
         if (jqXHR.status === 0) {
             msj_alert('Not connect: Verify Network.', 'top-center');
             //response_msj = 'Not connect: Verify Network.';
@@ -189,7 +173,6 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                             ws_left_nav: doc,
                             ws_lang_data: ws_lang_data
                         }
-                       
                         console.log('ws_left_nav_ :');
                         console.log(doc);
                         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', doc);
