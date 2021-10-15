@@ -477,6 +477,7 @@ class Workspace extends BaseController
                         'm_myaccount' => 'Mi cuenta',
                         'm_myorders' => 'Mis compras',
                         'm_my_workspace' => 'Mis workspaces',
+                        'm_config_workspace' => 'Configurar Workspace',
                         'b_ok' => 'Ok',
                         'b_dell' => 'Eliminar',
                         'b_add' => 'Agregar',

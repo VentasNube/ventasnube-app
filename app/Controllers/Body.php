@@ -31,7 +31,6 @@ class Body extends BaseController
               $user_id = user_id();
               $ws_plan = $Body_model->get_ws($ws_id_hex);   //Traigo el 
               
-              
               /*   helper('date');
               $ws_zona_h = $this->request->getPost("ws_zona_h");
               $ws_db_pacht = now($ws_zona_h);
@@ -53,8 +52,10 @@ class Body extends BaseController
                         'm' => $workspace_modules, //Traigo todos los modulos segun los permisos de usuario
                         'm_t' => $workspace_modules_type, //Traigo todos los tipos de modulos segun los permisos de usuario
                         'user_id' => $user_id,
+                        'user_name' => $this->session->get('u_name'),
+                        'user_email' => $this->session->get('ws_email'),
                         'ws_id' => $ws_id_hex,
-                        // 'ws_plan_id' =>$ws_plan['ws_plan_id'],
+                        //'ws_plan_id' =>$ws_plan['ws_plan_id'],
                         'ws_plan' =>  $ws_plan,
                         'ws_plan_name' =>  $ws_plan['workspace_id'],
                         'workspace_plan_expiration' =>  $ws_plan['workspace_plan_expiration'],
@@ -69,6 +70,8 @@ class Body extends BaseController
                     'm_t' => '',   //Traigo todos los tipos de modulos segun los permisos de usuario
                     //'ws_plan' =>  $ws_plan_id,
                     'user_id' => $user_id,
+                    'user_name' => $this->session->get('u_name'),
+                    'user_email' => $this->session->get('ws_email'),
                     'ws_id' => $ws_id_hex,
                     'ws_plan_name' =>  $ws_plan,
                     'msj' => $msj,
@@ -98,7 +101,7 @@ class Body extends BaseController
             'm_t' => $workspace_modules_type,   //Traigo todos los tipos de modulos segun los permisos de usuario
             'user_id' => $user_id,
             'ws_id' => $ws_id,
-        // 'ws_plan_id' =>$ws_plan['ws_plan_id'],
+         // 'ws_plan_id' =>$ws_plan['ws_plan_id'],
             'ws_plan' =>  $ws_plan,
             'ws_plan_name' =>  $ws_plan['workspace_id'],
             'workspace_plan_expiration' =>  $ws_plan['workspace_plan_expiration'],

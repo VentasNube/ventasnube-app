@@ -18,6 +18,7 @@
                 <span class="text-brand">{{workspace_name}}</span>
             </li>
 
+
             <li class="notifications-menu" data-toggle="tooltip" data-placement="bottom"
                 title="{{#with ../../t_search}} {{b_exit}}{{/with}}">
                 <a id="" href="#" class="search_open ">
@@ -103,37 +104,59 @@
                                 {{trimString user_name}}
                             </span>
                         </div>
+                        <p>{{user_name}}</p>
                         <p>{{user_email}}</p>
                     </li>
                     <!-- Menu Footer-->
-                    <li class="user-body ">
+                    <li class="user-body text-center ">
                         <div class="user-body-workspace">
-                            <div class="user-body-workspace-title">
-                                <a href="/workspace/home">
-                                {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                            <div class="text-center user-body-workspace-title">
+                               
+                                 <a href="/account" class="btn btn-default">
+                                <span class="material-icons">
+                                    tune
+                                 </span>
+                           
+                                 {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
                                 </a>
+                                <br>
+                                <br>
+                                 <a href="/workspace/home" class="btn btn-default">
+                                    <span class="material-icons">
+                                          group_work
+                                    </span>
+                                    {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                </a>
+                                
                             </div>
-                            <a href="">
-                                <!--span class="user-icon md">
+                            <!--a href="">
+                                <span class="user-icon md">
                                     <span data-toggle="tooltip" data-placement="bottom" title="" class=""
                                         data-original-title="{{{user_name}}}">
                                         {{trimString user_name}}
                                     </span>
-                                </span-->
+                                </span>
                                 <span id="dbusername" dbusername="{{{user_name}}}" class="user-name">
                                     <small>{{user_name}}</small>
                                 </span>
-                            </a>
+                            </a-->
                         </div>
                     </li>
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="/account" class="btn btn-default"><i class="fab fa-gears"></i>
+                            <a href="/account" class="btn btn-default">
+                               <span class="material-icons">
+                                manage_accounts
+                                </span>
+                           
                                 {{#with ../../ws_lang_data}} {{b_myaccount}}{{/with}}
                             </a>
                         </div>
                         <div class="pull-right">
                             <a onclick="logout()" class="btn btn-default">
+                                <span class="material-icons">
+                                    logout
+                                </span>
                                 {{#with ../../ws_lang_data}} {{b_exit}}{{/with}}
                             </a>
                         </div>

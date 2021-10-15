@@ -47,7 +47,10 @@ async function ws_module_config() {
             get_search_module(ws_info, ws_lang_data);
             get_left_nav(ws_left_nav);
 
+            alert('aaaaaaaa')
+            console.log('ws_left_nav OK BODY');
             console.log(ws_left_nav);
+            console.log(ws_lang_data);
             // alert('OFFLINE MODE ON')
             Snackbar.show({
                 text: 'Modo offline activado',
@@ -83,8 +86,10 @@ async function ws_module_config() {
             get_search_module(ws_info, ws_lang_data);
             get_left_nav(ws_left_nav);
 
-            console.log('ws_left_nav');
+            console.log('ws_left_nav OK BODY');
             console.log(ws_left_nav);
+            console.log(ws_lang_data);
+            
             // alert('OFFLINE MODE Off')
             Snackbar.show({
                 text: 'Modo offline desactivado',
@@ -115,6 +120,23 @@ function put_left_nav_doc() {
             if (ws_left_nav.result == true) { 
                         console.log('Solicitud ajax ws_left_nav ok! '+ ws_id);
                         ///// IMPRIME ////
+                        user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
+                            if (err) {msj_alert(err); }
+                            user_db.put({
+                              _id: 'ws_left_nav_' + ws_id,
+                              _rev: doc._rev,
+                              ws_left_nav: ws_left_nav
+                            }, function(err, response) {
+                              if (err) {
+                                msj_alert(err);
+                                return console.log(err);
+                             }
+                             msj_alert('Se actualizo el left_nav_doc','top-center');
+                              // handle response
+                            });
+                          });
+
+/*
                         user_db.put({
                             _id: 'ws_left_nav_' + ws_id,
                             ws_left_nav: ws_left_nav
@@ -126,6 +148,9 @@ function put_left_nav_doc() {
                                 return console.log(err);
                             }
                         });
+*/
+
+
             } 
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -155,13 +180,14 @@ function put_left_nav_doc() {
 put_left_nav_doc();
 
 
-function get_left_nav_doc(user_db) {
+function get_left_nav_doc(user_db , ws_lang_data) {
               //    alert('Traigo el doc y imprimo la vista');
                 user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
                     // response.userCtx.name is the current user        
                     if (doc) {
                         var ws_left_nav_doc = {
-                            ws_left_nav: doc
+                            ws_left_nav: doc,
+                            ws_lang_data: ws_lang_data
                         }
                        
                         console.log('ws_left_nav_ :');
@@ -176,8 +202,6 @@ function get_left_nav_doc(user_db) {
 };
 
 get_left_nav_doc(user_db);
-
-
 
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
