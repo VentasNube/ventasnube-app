@@ -7,8 +7,6 @@
 //var ws_info = ws_info;
 //###--- Conection y Sync a la base de datos local ---#####
 
-
-
 var ws_info_db = 'ws_info_' + ws_id;
 
 //alert(ws_id);
@@ -37,7 +35,7 @@ async function ws_module_config() {
             // DOC DE LEGUAJE
             ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
             // DOC DE MODULOS
-            ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+           // ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
             //Mapeo el objeto
             var ws_lang = ws_lang_data_doc;
             //SETEO EL ARRAY CON EL IDIOMA
@@ -108,191 +106,79 @@ async function ws_module_config() {
     }
 }
 
-
-
-
-
-function post_left_nav(ws_left_nav) {
-    /* var ws_left_nav_array = {
-        ws_left_nav: ws_left_nav_doc,
-        ws_lang_data: ws_lang_data
-    }*/
+function put_left_nav_doc() {
     $.ajax({
         url: "/body/left_nav",
-        // dataType: "html",
-        //data: data,
         type: "POST",
         dataType: "json",
         success: function (ws_left_nav) {
-            if (ws_left_nav.result == true) { ///// IMPRIME ////
-                // window.location = "/account";
-                //console.log ('CONTENIDO DE LEFT');
-                // console.log (left_nav_doc);
-                user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
-                    // response.userCtx.name is the current user        
-                    if (err) {
-                        //  console.log ('No se encuentra el documento en la userdb');
+            if (ws_left_nav.result == true) { 
+                        console.log('Solicitud ajax ws_left_nav ok! '+ ws_id);
+                        ///// IMPRIME ////
                         user_db.put({
                             _id: 'ws_left_nav_' + ws_id,
                             ws_left_nav: ws_left_nav
                         }, function (err, response) {
-                            if (err) { return console.log(err); }
-                            //    console.log ('Creo un doc nuevo');
-                            else {
-                                var ws_left_nav_doc = {
-                                    ws_left_nav: ws_left_nav
-                                }
-                                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+                            if(response) {
+                              msj_alert('Se actualizo el left_nav_doc', 'top-bottom');
+                            }
+                            else if (err) {
+                                return console.log(err);
                             }
                         });
-                        return console.log(err);
-                    }
-
-                });
-                //creo un array para los datos del documento y lo imprimo en el left bar
-                var ws_left_nav_doc = {
-                    ws_left_nav: ws_left_nav
-                }
-                console.log('ws_left_nav_doc');
-                 console.log(ws_left_nav_doc);
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-
-            } else {
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
-                //setTimeout(function () { window.location = "/account"; }, 2000);
-            }
+            } 
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
 
         if (jqXHR.status === 0) {
-            response_msj = 'Not connect: Verify Network.';
+            msj_alert('Not connect: Verify Network.', 'top-center');
+            //response_msj = 'Not connect: Verify Network.';
         } else if (jqXHR.status == 404) {
-            response_msj = 'Requested page not found [404]';
-
+            msj_alert('Requested page not found [404]', 'top-center');
+           // response_msj = 'Requested page not found [404]';
         } else if (jqXHR.status == 500) {
-
-            response_msj = 'Internal Server Error [500].';
-
+            msj_alert('Internal Server Error [500].', 'top-center');
+           // response_msj = 'Internal Server Error [500].';
         } else if (textStatus === 'parsererror') {
-
             response_msj = 'Requested JSON parse failed.';
 
         } else if (textStatus === 'timeout') {
-
             response_msj = 'Time out error.';
-
         } else if (textStatus === 'abort') {
-
             response_msj = 'Ajax request aborted';
-
         } else {
-
             response_msj = 'Uncaught Error: ' + jqXHR.responseText;
-
         }
-        //Cargo la variable mensaje y imprimo en pantalla 
-        Snackbar.show({
-            text: response_msj,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
-
-
     });
-
 };
 
-post_left_nav();
+put_left_nav_doc();
+
+
+function get_left_nav_doc(user_db) {
+              //    alert('Traigo el doc y imprimo la vista');
+                user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
+                    // response.userCtx.name is the current user        
+                    if (doc) {
+                        var ws_left_nav_doc = {
+                            ws_left_nav: doc
+                        }
+                       
+                        console.log('ws_left_nav_ :');
+                        console.log(doc);
+                        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', doc);
+                        //  console.log ('No se encuentra el documento en la userdb');
+                    }else{
+                        console.log('Error al traer ws_left_nav doc');
+                        return console.log(err);        
+                    }
+                });
+};
+
+get_left_nav_doc(user_db);
 
 
 
-//var ws_info = ws_info;
-//###--- Conection y Sync a la base de datos local ---#####
-async function ws_module_config_OLD_OK() {
-    try {
-        //Variable global con las DB de serach local
-        if (offline_mode) {
-            // Si esta activo el modo offline
-            L_ws_info_db = await new PouchDB(ws_info_db); // Creo la db local
-            R_ws_info_db = await new PouchDB(url_R_db + ws_info_db, { skip_setup: false }); //Llamo a la db remota
-            L_ws_info_db.sync(R_ws_info_db, { live: true, retry: true, }); //sincronizo
-            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
-            //  alert('OFFLINE MODE ON')
-
-            Snackbar.show({
-                text: 'Modo offline activado',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-left',
-                duration: 50000
-            });
-        } else {
-            // Si no esta activo el modo offline
-            // Conecto a db info
-            L_ws_info_db = await new PouchDB(url_R_db + ws_info_db, { skip_setup: false });
-            // DOC DE CONFIG
-            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
-            // DOC DE LEGUAJE
-            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
-            // DOC DE MODULOS
-            ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-            //Mapeo el objeto
-            var ws_lang = ws_lang_data_doc;
-            //SETEO EL ARRAY CON EL IDIOMA
-            ws_lang_data = ws_lang['ws_lang_es'];
-            //Envio los datos a la funciones y imprimo
-            //Aca activo o desactivo los modulos principales 
-
-            get_top_bar(ws_info, ws_lang_data);
-            get_nav_cart(ws_info, ws_lang_data);
-            get_search_module(ws_info, ws_lang_data);
-            // alert('OFFLINE MODE Off')
-            Snackbar.show({
-                text: 'Modo offline desactivado',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-left',
-                duration: 50000
-            });
-        }
-    } catch (err) {
-        //console.log(err);
-        Snackbar.show({
-            text: err.reason,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-left',
-            duration: 50000
-        });
-    }
-}
-/*
-// Realiza la conexion a las bases de datos una por una, y devuelve un resultado con un error o un objeto del modulo, icono, name, id,
-async function get_ws_module_db(ws_db_name) {
-    const ws_name_db = 'ws_info_' + ws_id;
-    try {
-        // const ws_db_name = ws_db_name;
-        const ws_name_db = 'ws_' + ws_db_name + '_' + ws_id;
-        R_ws_module_db = await new PouchDB(url_R_db + ws_name_db, { skip_setup: false });
-        ws_module_array = await R_ws_module_db.get('ws_module_config', { include_docs: true, descending: true });
-
-        //  const nombre = await getNombreAsync('mortegac')
-        //   alert('get_ws_module_db')
-        console.log(ws_module_array)
-    } catch (e) {
-        console.log(`Error: ${e}`)
-
-    }
-}
-
-
-//PRUEBA DE FUNCION
-ws_db_name = 'info';
-//alert('holaaaaaa');
-get_ws_module_db(ws_db_name);
-
-*/
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
 ////----(1 TOP BAR)---/////
@@ -333,8 +219,6 @@ function get_left_nav(ws_left_nav) {
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
 };
-
-
 
 ////----(4 Search Module)---/////
 function get_search_module(ws_info, ws_lang_data) {

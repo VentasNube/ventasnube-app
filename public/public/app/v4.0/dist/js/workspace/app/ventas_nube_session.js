@@ -55,11 +55,7 @@ var userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
 var u_db = readCookie("userDb");
 var userCtx = '';
-
-//Chek workspace seteado en la cokie sino redirecciono al home
-if (!ws_id) {
-    window.location = "/workspace/home";
-}
+//Varianble global user_data
 
 this.user_data = {
     user_db: u_db,
@@ -69,6 +65,10 @@ this.user_data = {
     user_ws: ws_id
 }
 
+//Chek workspace seteado en la cokie sino redirecciono al home
+if (!ws_id) {
+    window.location = "/workspace/home";
+}
 //alert(ws_id);
 
 //Creo y conecto con userDB local 
@@ -78,170 +78,54 @@ user_db.sync(url_R_db+userDb, {
     live: true,
     retry: true
   }).on('change', function (change) {
+    msj_alert('<span class="material-icons">wifi_off</span> Hay nuevos cambios', 'top-left');
     // yo, something changed!
   }).on('paused', function (info) {
+    msj_alert('<span class="material-icons">wifi_off</span> Sincronización en pausa no hay internet.', 'bottom-center');
     // replication was paused, usually because of a lost connection
   }).on('active', function (info) {
+    msj_alert('<span class="material-icons">wifi</span> Sincronización activa!', 'bottom-center');
     // replication was resumed
   }).on('error', function (err) {
     // totally unhandled error (shouldn't happen)
+    msj_alert(err);
   });
 
-// FUNCION SESSION DE USUARIO
-async function user_session() {
-    try {
-        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-        //sincronizo
-        user_db.sync(u_db, { live: true, retry: true, }); 
-        //FILTRO SI ESTA MODO OFFLINE O MODO ONLINE ACTIVADO
-        if (offline_mode) {
-             //Conecto a la DB LOCAL
-             user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-            // sincronizo
-            // user_db.sync(url_R_db + u_db, { live: true, retry: true, }); 
-            // user_db = L_user_db;
-            //Creo el array de user Data
-            Snackbar.show({
-                text: '<span class="material-icons">wifi_off</span>  Modo offline activado ',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'top-left',
-                duration: 50000
-            });
+/*
+  db.get('charlie').then(function (charlie) {
+    // Within this function, you can do
+    // try/catch/return like you normally would,
+    // and it will be handled asynchronously!
+  }).then(function (result) {
+    // If the previous function returned something
+    // (or returned undefined), it will show up here
+    // as "result".
+  }).catch(function (err) {
+    // If the previous function threw an error,
+    // it will show up here as "err".
+  });
+*/
 
-        } else {
-
-        //Conecto a la DB remota de UserDB si no esta modo offline activado
-        //Conecto a la DB LOCAL
-        user_db = new PouchDB(url_R_db + u_db, { skip_setup: false });
-        //sincronizo
-        user_db.sync(u_db, { live: true, retry: true, }); 
-        //user_db = L_user_db;
-        Snackbar.show({
-            text: 'Bienvenido ' + u_name + '!',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-center'
-        });
-    }
-    } catch (err) {
-        Snackbar.show({
-            text: 'No estas logeado!',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-center'
-        });
-       // window.location = "/login";
-    }
-}
+  if(offline_mode){
 
 
 
-function put_left_nav_doc(ws_left_nav) {
-    /* var ws_left_nav_array = {
-        ws_left_nav: ws_left_nav_doc,
-        ws_lang_data: ws_lang_data
-    }*/
-    $.ajax({
-        url: "/body/left_nav",
-        // dataType: "html",
-        //data: data,
-        type: "POST",
-        dataType: "json",
-        success: function (ws_left_nav) {
-            if (ws_left_nav.result == true) { 
-                ///// IMPRIME ////
-                //  console.log ('No se encuentra el documento en la userdb');
-                        user_db.put({
-                            _id: 'ws_left_nav_' + ws_id,
-                            ws_left_nav: ws_left_nav
-                        }, function (err, response) {
-                            if (err) {
-                                return console.log(err);
-                            }
-                                //    console.log ('Creo un doc nuevo');
-                            else {
-                                // DOC DE MODULOS
-                                ws_left_nav_doc_array = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-                                var ws_left_nav_doc = {
-                                    ws_left_nav:  ws_left_nav_doc_array
-                                }
-                                console.log('ws_left_nav_doc OKK');
-                                console.log(ws_left_nav_doc);
-                                console.log( ws_left_nav_doc_array);
-                            
-                               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-                                       
-                                return console.log('Se actualizo el Left document');
-                            }
-                        });
-                        
-                 
-                  //creo un array para los datos del documento y lo imprimo en el left bar
-                 /*        var ws_left_nav_doc = {
-                    ws_left_nav: ws_left_nav
-                }
-               
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-                */
-            } else {
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
-                //setTimeout(function () { window.location = "/account"; }, 2000);
-            }
-        }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-
-        if (jqXHR.status === 0) {
-            response_msj = 'Not connect: Verify Network.';
-        } else if (jqXHR.status == 404) {
-            response_msj = 'Requested page not found [404]';
-
-        } else if (jqXHR.status == 500) {
-
-            response_msj = 'Internal Server Error [500].';
-
-        } else if (textStatus === 'parsererror') {
-
-            response_msj = 'Requested JSON parse failed.';
-
-        } else if (textStatus === 'timeout') {
-
-            response_msj = 'Time out error.';
-
-        } else if (textStatus === 'abort') {
-
-            response_msj = 'Ajax request aborted';
-
-        } else {
-
-            response_msj = 'Uncaught Error: ' + jqXHR.responseText;
-
-        }
-        //Cargo la variable mensaje y imprimo en pantalla 
-        Snackbar.show({
-            text: response_msj,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+    msj_alert('<span class="material-icons">wifi</span>  Modo offline activado ', 'top-left') 
+  }else{
 
 
-    });
-
-};
-
-put_left_nav_doc();
+    msj_alert('<span class="material-icons">wifi_off</span>  Modo offline Desactivado ', 'top-left') 
+  }
 
 
 Snackbar.show({
-    text: 'Bienvenido' + u_name + 'ws_id:'+ws_id,
+    text: 'Bienvenido' + u_name + ' al WORKSPACE:'+ws_id,
     actionText: 'ok',
     actionTextColor: "#0575e6",
     pos: 'bottom-center'
 });
 
-user_session();
+//user_session();
 // FUNCION LOGOUT
 function logout() {
     L_user_db.logOut(function(err, response) {

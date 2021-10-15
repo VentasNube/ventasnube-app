@@ -699,6 +699,18 @@ $('.datetimepicker').bootstrapMaterialDatePicker({
 
 ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
 
+
+function msj_alert(msj, pos) {
+    //top-left , bottom-left, bottom-center
+    //
+    Snackbar.show({
+        text: msj,
+        actionText: 'ok',
+        actionTextColor: "#0575e6",
+        pos: pos,
+        duration: 50000
+    });
+}
 window.onload =
     $(".material_input").focusout(function() {
         var input_tex = $(this).children('input').val();
