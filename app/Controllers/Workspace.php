@@ -150,7 +150,42 @@ class Workspace extends BaseController
             return json_encode($return);
         }
     }
-   
+    
+
+    public function ws_collection_get()
+    {
+
+    $ws_collection_get = [
+        '_id' => '_design/get',
+        'views' => [
+            "seach" => [
+                "map" => "function(doc) {if(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+            ],
+            'items' => [
+                "map" => "function(doc){\nfor(var i=0,length=doc.variations.length;i<length;i++){\nemit(\n[doc.name, doc.variations[i].sku.value_name],\n                        {\n                          \n                      \'tipo\': doc.type,\n                      \'name\': doc.name,\n                      \'tags\': doc.tags,\n                      \'available_quantity\': doc.available_quantity,\n                      \'sold_quantity\': doc.sold_quantity,\n                      \'cost_price\': doc.cost_price,\n \'limit_discount\': doc.limit_discount,\n                      \'sku\':doc.variations[0].sku.value_name,\n                      \'currency\': doc.currency.value,\n                        }\n                    );\n                }\n\n}",
+            ],
+            'variations' => [
+                "map" => "function (doc) {\n  emit(doc._id, 1);\n}",
+            ],
+
+        ],
+    ];
+
+    $user_get = [
+        '_id' => '_design/get-type',
+        'views' => [
+            'cart-item' => [
+                "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+            ],
+            'fav-item' => [
+                "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+            ]
+        ],
+    ];
+
+    return json_encode($user_get);
+
+}
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -557,8 +592,59 @@ class Workspace extends BaseController
                             ],
 
                         ],
-
                     ];
+
+                    $ws_collection_get = [
+                        '_id' => '_design/get',
+                        'views' => [
+                            'seach' => [
+                                "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ],
+                            'fav-item' => [
+                                "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            ]
+                        ],
+                    ];
+                     //Documento de diseno que trae todos los productos del cart
+                $user_get = [
+                    '_id' => '_design/get-type',
+                    'views' => [
+                        'cart-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ]
+                    ],
+                ];
+
+                $ws_collection_get = [
+                    '_id'=> '_design/get',
+                    'views'=> [
+                      'type'=> [
+                        'map'=> "function(doc) {\nif(doc.status === 'active' && doc.type === 'product' || doc.type === 'service') {\nemit(doc.type,{\n\"tipo\": doc.type,\n\"price\": 150,\n\"stock\": 1,\n\"discount\": 0,\n\"tax\": 150\n });}"
+                        ],
+                      'sku'=>[
+                        'map'=> " "
+                        ],
+                      'status'=> [
+                        'map'=> ""
+                      ],
+                      'seach'=>[
+                        'map'=> ""
+                      ],
+                      'items'=> [
+                        'map'=> ""
+                      ],
+                      'variations'=>[
+                        'map' => ""
+                      ]
+                    ]
+                  ]
+
+              
+
+
                     // DOC CON CONFIGURACIONES DEL CATALOGO 
                     $price_list = [
                         '_id' => 'price_list',
@@ -679,7 +765,7 @@ class Workspace extends BaseController
                     //Productos DE EJEMPLO
 
                     $product_01 = [
-                        '_id' => 'product-11',
+                        '_id' => 'product-1',
                         'name' => 'Remera colores',
                         'type' => 'product',
                         'tags' => [
@@ -929,12 +1015,265 @@ class Workspace extends BaseController
                             'logistic_type' => 'not_specified'
                         ]
                     ];
+                    $product_02 = [
+                        '_id' => 'product-2',
+                        'name' => 'Adidas fit remera ',
+                        'type' => 'product',
+                        'tags' => [
+                            'Remera',
+                            'Lisa',
+                            'Adidas'
+                        ],
+                        'currency' => [
+                            'id' => 'ARS',
+                            'value' => '$'
+                        ],
+                        'available_quantity' => 10,
+                        'sold_quantity' => 0,
+                        'limit_discount' => 0,
+                        'permalink' => 'http=>//loalhost/shop/servenet/red-boll-free',
+                        'catalog_product_id' => null,
+                        'category_id' => 1,
+                        'sub_category_id' => 1,
+                        'workspace_id' => 77,
+                        'condition' => 'not_specified',
+                        'status' => 'active',
+                        'author' => 'smartmobile.com.ar@gmail.com',
+                        'descriptions' => [
+                            'Cerveza corona 750cc'
+                        ],
+                        'attributes' => [
+                            [
+                                'id' => 'TYPE',
+                                'name' => 'Tipo de Ventilador',
+                                'value_id' => '291719',
+                                'value_name' => 'Botella 50cc',
+                                'attribute_group_id' => 'DFLT',
+                                'attribute_group_name' => 'type'
+                            ],
+                            [
+                                'id' => 'BRAND',
+                                'name' => 'Marca',
+                                'value_id' => '3',
+                                'value_name' => 'Adidas',
+                                'attribute_group_id' => 'MAIN',
+                                'attribute_group_name' => 'Marca'
+                            ]
+                        ],
+                        'variations' => [
+                            [
+                                'id' => 1,
+                                'tax' => [
+                                    'id' => 'IVA',
+                                    'value' => '21'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
+                                'pictures' => [
+                                    [
+                                        'max' => '/public/img/catalog/product/max/remera_azul.jpg',
+                                        'min' => '/public/img/catalog/product/max/remera_azul.jpg'
+                                    ]
+                                ],
+                                'attribute_combinations' => [
+                                    [
+                                        'id' => 'COLOR',
+                                        'id_name' => 'Color',
+                                        'name' => 'Roja',
+                                        'value' => 'EF5350'
+                                    ],
+                                    [
+                                        'id' => 'SIZE',
+                                        'id_name' => 'Talle',
+                                        'name' => 'Medium',
+                                        'value' => 'M'
+                                    ]
+                                ],
+                                'price_list' => [
+                                    [
+                                        'id' => 1,
+                                        'value' => 2550
+                                    ],
+                                    [
+                                        'id' => 2,
+                                        'value' => 3350
+                                    ]
+                                ],
+                                'stock_invetary' => [
+                                    [
+                                        'id' => 123,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 6,
+                                        'sold_quantity' => 2,
+                                        'cost_price' => 100
+                                    ],
+                                    [
+                                        'id' => 231,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 4,
+                                        'sold_quantity' => 2,
+                                        'cost_price' => 150
+                                    ]
+                                ],
+                                'sold_quantity' => 2
+                            ],
+                            [
+                                'id' => 2,
+                                'tax' => [
+                                    'id' => 'IVA',
+                                    'value' => '21'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
+                                'pictures' => [
+                                    [
+                                        'max' => '/public/img/catalog/product/max/remera_amarilla.jpg',
+                                        'min' => '/public/img/catalog/product/max/remera_amarilla.jpg'
+                                    ]
+                                ],
+                                'attribute_combinations' => [
+                                    [
+                                        'id' => 'COLOR',
+                                        'id_name' => 'Color',
+                                        'name' => 'Violeta',
+                                        'value' => 'ba46c5'
+                                    ],
+                                    [
+                                        'id' => 'SIZE',
+                                        'id_name' => 'Talle',
+                                        'name' => 'Extra Large',
+                                        'value' => 'XL'
+                                    ]
+                                ],
+                                'price_list' => [
+                                    [
+                                        'id' => 1,
+                                        'value' => 1100
+                                    ],
+                                    [
+                                        'id' => 2,
+                                        'value' => 1200
+                                    ]
+                                ],
+                                'stock_invetary' => [
+                                    [
+                                        'id' => 123,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 4,
+                                        'quantity_' => 4,
+                                        'cost_price' => 100
+                                    ],
+                                    [
+                                        'id' => 231,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 2,
+                                        'cost_price' => 150
+                                    ]
+                                ],
+                                'sold_quantity' => 2
+                            ],
+                            [
+                                'id' => 3,
+                                'tax' => [
+                                    'id' => 'IVA',
+                                    'value' => '21'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
+                                'pictures' => [
+                                    [
+                                        'max' => '/public/img/catalog/product/max/remera_azul.jpg',
+                                        'min' => '/public/img/catalog/product/max/remera_azul.jpg'
+                                    ]
+                                ],
+                                'attribute_combinations' => [
+                                    [
+                                        'id' => 'COLOR',
+                                        'id_name' => 'Color',
+                                        'name' => 'Azul',
+                                        'value' => '0575e6'
+                                    ],
+                                    [
+                                        'id' => 'SIZE',
+                                        'id_name' => 'Talle',
+                                        'name' => 'Medium',
+                                        'value' => 'M'
+                                    ]
+                                ],
+                                'price_list' => [
+                                    [
+                                        'id' => 1,
+                                        'value' => 1100
+                                    ],
+                                    [
+                                        'id' => 2,
+                                        'value' => 1200
+                                    ]
+                                ],
+                                'stock_invetary' => [
+                                    [
+                                        'id' => 123,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 4,
+                                        'quantity_' => 4,
+                                        'cost_price' => 100
+                                    ],
+                                    [
+                                        'id' => 231,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 2,
+                                        'cost_price' => 150
+                                    ]
+                                ],
+                                'sold_quantity' => 2
+                            ]
+                        ],
+                        'last_update_at' => [
+                            [
+                                'username' => 'smartmobile.com.ar@gmail.com',
+                                'datetime' => '18/3/2021 18:45:10'
+                            ],
+                            [
+                                'username' => 'otrousuario@gmail.com',
+                                'datetime' => '18/3/2021 18:45:10'
+                            ]
+                        ],
+                        'start_time' => '2017-03-10T21:18:09.588Z',
+                        'stop_time' => '2037-03-05T21:18:09.588Z',
+                        'end_time' => '2037-03-05T21:18:09.588Z',
+                        'expiration_time' => '2017-05-29T21:18:09.651Z',
+                        'shipping' => [
+                            'mode' => 'not_specified',
+                            'local_pick_up' => false,
+                            'free_shipping' => false,
+                            'methods' => [],
+                            'dimensions' => null,
+                            'tags' => [
+                                'me2_available'
+                            ],
+                            'logistic_type' => 'not_specified'
+                        ]
+                    ];
 
                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         //DOC Diseno y seguridad
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_collection_get); //Creo el documento de diseno par filtrar documentos por tipo
+                        //   $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_collection_get); //Creo el documento de diseno par filtrar documentos por tipo
+                      
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_collection_get); //Docuento diseno get
                         //DOC COFIGURACIONES
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                         $this->WorkspaceModel->curl_put($db_name . '/price_list', $price_list); //Creo un doc con la informacion del workspace
@@ -943,6 +1282,7 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . '/attributes', $attributes); //Creo un doc con la informacion del workspace
                         //DOC EJEMPLO PRODUCTOS
                         $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
 
                     }
                 }

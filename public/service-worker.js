@@ -33,7 +33,7 @@ self.addEventListener('activate', event => {
 workbox.precaching.precacheAndRoute([
     // { url: '/', revision: version },
     //{ url: '/login', revision: version },
-    //{ url: '/workspace/home', revision: version }, 
+   // { url: '/workspace/home', revision: version }, 
     { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
     { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
     { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
