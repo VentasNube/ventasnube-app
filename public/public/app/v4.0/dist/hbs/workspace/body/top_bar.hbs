@@ -111,21 +111,20 @@
                     <li class="user-body text-center ">
                         <div class="user-body-workspace">
                             <div class="text-center user-body-workspace-title">
-                               
+                                <a href="/workspace/home" class="btn btn-default">
+                                    <span class="material-icons">
+                                          group_work
+                                    </span>
+                                    {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                </a>
+                                <br>
+                                <br>
                                  <a href="/account" class="btn btn-default">
                                 <span class="material-icons">
                                     tune
                                  </span>
                            
                                  {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
-                                </a>
-                                <br>
-                                <br>
-                                 <a href="/workspace/home" class="btn btn-default">
-                                    <span class="material-icons">
-                                          group_work
-                                    </span>
-                                    {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
                                 </a>
                                 
                             </div>
