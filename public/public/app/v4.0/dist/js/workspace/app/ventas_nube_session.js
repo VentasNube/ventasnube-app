@@ -43,18 +43,23 @@ if (ws_offline == 'true') {
     $('.offline_mode').removeAttr('checked'); //Cambio el atributo no chekeado
 }
 
+// ***** CONFIGURACIONES GLOBALES *****//
+const url_site = 'http://localhost'
+const url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
+const url_hbs = '/public/app/v4.0/dist/hbs/workspace/'; //URL global de couchDB REMOTO
+const url_js = '/public/app/v4.0/dist/js/workspace/';
 
-var url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
+
 
 // Leemos la cookie seteada en el ws
-var ws_id = readCookie ('ws_select');
-var u_email = readCookie ('user_email');
-var u_name = readCookie ('u_name');
+const ws_id = readCookie ('ws_select');
+const u_email = readCookie ('user_email');
+const u_name = readCookie ('u_name');
 // Leemos la cookie seteada en el userDB
-var userDb = readCookie ('userDb');
+const userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
-var u_db = readCookie("userDb");
-var userCtx = '';
+const u_db = readCookie("userDb");
+const userCtx = '';
 //Varianble global user_data
 
 this.user_data = {

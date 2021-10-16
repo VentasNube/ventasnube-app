@@ -161,8 +161,6 @@ function put_left_nav_doc() {
     });
 };
 
-put_left_nav_doc();
-
 
 function get_left_nav_doc(user_db , ws_lang_data) {
               //    alert('Traigo el doc y imprimo la vista');
@@ -183,8 +181,6 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                     }
                 });
 };
-
-get_left_nav_doc(user_db);
 
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
@@ -240,6 +236,7 @@ function get_search_module(ws_info, ws_lang_data) {
 
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
+/*
 $(document).on('click', 'a.l_nav_m', function (event) {
     // var m_t_icon = $(this).children('span.material-icons').text(); //Trae texto html del icono
     //  var m_t_name = $(this).children('span.this_m_t_name').text(); //Trae texto html del btn
@@ -253,6 +250,54 @@ $(document).on('click', 'a.l_nav_m', function (event) {
     //  get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
     get_content_module(m_id, m_t_id, s_url_t_m);
 });
+*/
+
+//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
+function get_content_module( m_name , m_id, m_t_id, id_copiled ) {
+   // var url_now = getUrl();
+  //  var m_id = url_now.m_id;
+  //  var m_t_id = url_now.m_t_id;
+   // var m_name = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL DE LA URL
+    //  alert(pacht)
+    /// ACA DEBERIA ARMAR LA DATA DEPENDIENDO LO QUE LE ENVIO
+
+    var url_public = url_public;
+   
+    var url_doc = pacht + '_m_data'; //NOMBRE DE CONTROLADOR DATA
+
+    var url_db = url_R_db + 'ws_'+ s_url_t_m + ws_id; //NOMBRE que arma la conexion a las bases de datos
+
+    var url_hbs = url_site + url_hbs + s_url_t_m + '/' + s_url_t_m + '.hbs'; //NOMBRE CONTROLADOR TEMPLATE   
+    
+    var doc_name = url_R_db + 'ws_'+ s_url_t_m + ws_id;
+
+    var id_c_copiled = '#content_compiled'; // ID DE COMPILACION // 
+
+    console.log('Get all content module in body' + controler_c_data + '/' + controler_c_template + '/' + id_c_copiled);
+    get_module_compile(url_db, url_hbs, id_c_copiled); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+};
+
+//// BOTON SELECT MODULO LEFT BAR //
+// Logica q trae el modulos con handelbars no el linck
+$(document).on('click', 'a.l_nav_m', function (event) {
+    // var m_t_icon = $(this).children('span.material-icons').text(); //Trae texto html del icono
+    //  var m_t_name = $(this).children('span.this_m_t_name').text(); //Trae texto html del btn
+    var m_id = $(this).attr('m_id'); //Trae modulo id
+    var m_t_id = $(this).attr('m_t_id'); //Trae module tipo id
+    //  var s_url = window.location.host; // Trae dominio url www.dominio/
+    //  var s_url_t_m = $(this).attr('m_url'); //Trae Pacht url /pacht/
+
+    var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
+    var m_url = '/workspace?type=' + m_name; // Armo la url completa del linck
+    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion                
+    //  get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+   
+    alert('Traigo el modulo ' + m_id + '--' + m_t_id + '' + m_name);
+
+    get_content_module(m_name , m_id, m_t_id, id_copiled);
+
+});
+
 
 //// BOTON SELECT TYPO DE MODULO LEFT BAR///
 $(document).on('click', 'a.l_nav_t_m', function (event) {
@@ -294,4 +339,7 @@ $(document).ready(function () {
 });
 
 
-ws_module_config()
+
+ws_module_config();//Conecto la base de datos y traigo varios documentos de configuracion
+put_left_nav_doc();//Envio el documento de navegacion lateral segun permisos de ci4
+get_left_nav_doc(user_db); //Traigo y imprimo el documento de navegacion lateral 

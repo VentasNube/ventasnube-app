@@ -7,10 +7,11 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
 // TRAE LOS DATOS DE LA URL O DA EL PRIMER MODULO Y LOS COMBIERTE EN UN ARRAY PARA USO GLOBAL
 function getUrl() {
     var domain_m_url = window.location.host; // Trae www.dominio.com
-    var pacht_m_url = window.location.pathname.split('/')[1]; //trae primer /pacht/
+    var pacht_m_url = window.location.pathname.split('/workspace/')[1]; //trae primer /pacht/
     var site_m_url = window.location.href; // Trae la url completa
     var domain_pacht = domain_m_url + '/' + pacht_m_url
     var m_id = getParameterByName('m'); //Trae el modulo id
@@ -53,18 +54,18 @@ function getTemplateAjax(path, callback) {
     $.ajax({
         url: path,
         dataType: "html",
-        success: function(data) {
+        success: function (data) {
             //Helper with
-            Handlebars.registerHelper("with", function(context, options) {
+            Handlebars.registerHelper("with", function (context, options) {
                 return options.fn(context);
             });
             // IMPRIME EL PRIMER CARACTER DE UN STRING
-            Handlebars.registerHelper('trimString', function(passedString) {
+            Handlebars.registerHelper('trimString', function (passedString) {
                 var theString = passedString.substring(0, 1);
                 return new Handlebars.SafeString(theString)
             });
             // COMPARADOR SI TIENE ESO
-            Handlebars.registerHelper("if", function(conditional, options) {
+            Handlebars.registerHelper("if", function (conditional, options) {
                 if (conditional) {
                     return options.fn(this);
                 } else {
@@ -72,29 +73,29 @@ function getTemplateAjax(path, callback) {
                 }
             });
             // COMPARADOR SI ES IGUAL A
-            Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
                 if (v1 === v2) {
                     return options.fn(this);
                 }
                 return options.inverse(this);
             });
             // COMPARADOR SI ES MENOR O IGUAL
-            Handlebars.registerHelper('ifMe', function(v1, v2, options) {
+            Handlebars.registerHelper('ifMe', function (v1, v2, options) {
                 if (v1 <= v2) {
                     return options.fn(this);
                 }
                 return options.inverse(this);
             });
             // Para tomar los 0 como null en el if
-            Handlebars.registerHelper('isdefined', function(value) {
+            Handlebars.registerHelper('isdefined', function (value) {
                 return value !== undefined;
             });
             // COMPARADOR SI ES IGUAL A
-            Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+            Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
                 return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
             });
             /// CONTADOR DE RESULTADOS DENTRO DE UN EACH  EJ:  {{counter @index}}
-            Handlebars.registerHelper("counter", function(index) {
+            Handlebars.registerHelper("counter", function (index) {
                 return index + 1;
             });
             source = data;
@@ -106,7 +107,7 @@ function getTemplateAjax(path, callback) {
 }
 // ARMA EL TEMPLATE PARA COMPILAR 
 function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
-    getTemplateAjax(withTemplate, function(template) {
+    getTemplateAjax(withTemplate, function (template) {
         var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
         targetDiv.html(template(withData));
         if (callback) {
@@ -115,6 +116,144 @@ function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
     })
 };
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
+
+function  ssasa(pacht, controler_data, controler_template, id_copiled, data) {
+        const pacht =  url_site ;
+        const controler_data = controler_data;
+        const controler_template = controler_template;
+        const id_copiled = id_copiled;
+        const data = data ;
+        renderHandlebarsTemplate(url_template, id_copiled, data);
+};
+
+
+function  get_module_compile(pacht, controler_data, controler_template, id_copiled, doc_name , db_name , ws_lang_data) {
+    //    alert('Traigo el doc y imprimo la vista');
+    
+    db_name.get(doc_name, function (err, doc) {      
+          if (doc) {
+              var array_doc = {
+                  data: data,
+                  ws_lang_data: ws_lang_data
+              }
+
+              console.log('get_module_compile');
+              console.log(doc);
+
+              renderHandlebarsTemplate( pacht + '' + controler_template + '.hbs', id_copiled, array_doc);
+              //  console.log ('No se encuentra el documento en la userdb');
+          }else{
+              console.log('Error al traer ws_left_nav doc');
+              return console.log(err);        
+          }
+      });
+};
+
+function get_module(pacht, controler_data, controler_template, id_copiled, data) {
+    // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
+    // ID DE COMPILACION //      
+    var id_copiled = $(id_copiled);
+    var url_data = '/' + pacht + '/' + controler_data; // Controlador que devuelve el array con la info
+    var url_template = '/' + pacht + '/' + controler_template; // Controlador que devuelve el template de la vista
+    // console.log('GET MODULO DOMAIN: ' + domain_pacht);
+
+    $.ajax({
+        url: url_data, //Trae todos los modulos de usuario de la secion
+        data: data,
+        type: "POST",
+        dataType: "json",
+        success: function (response) {
+            if (response.result == true) { ///// IMPRIME ////     
+                renderHandlebarsTemplate(url_template, id_copiled, response);
+                if (response.msj) {
+                    return response, // Devulevo el array resultado                 
+                        Snackbar.show({
+                            text: response.msj,
+                            actionText: 'ok',
+                            actionTextColor: "#0575e6",
+                        });
+                }
+            } else if (response.result == false) {
+                //  renderHandlebarsTemplate(url_template, id_copiled, response);
+                return response, // Devulevo el array resultado    
+                    Snackbar.show({
+                        text: response.error,
+                        actionText: 'ok',
+                        actionTextColor: "#0575e6",
+                    });
+            };
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+
+        if (jqXHR.status === 0) {
+            //alert('Not connect: Verify Network.');
+            Snackbar.show({
+                text: 'No hay conexion verifica la conexion a internet!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+            // Si no hay internet tomo los datos del array response y les doy true para que imprima el modulo 
+            var response = {
+                // m : $this->Body_model->get_m_id($user_id, $m_id),
+                //  m_t : {},
+                //  m_now : {},
+                Msj: 'Se entrego la data con exito',
+                result: true,
+            }
+            renderHandlebarsTemplate(url_template, id_copiled, response);
+
+        } else if (jqXHR.status == 404) {
+
+            Snackbar.show({
+                text: 'Error 404 La pagina no existe',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+
+        } else if (jqXHR.status == 500) {
+
+            Snackbar.show({
+                text: 'Hay un error 500 en el servidor',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+
+        } else if (textStatus === 'parsererror') {
+
+            Snackbar.show({
+                text: 'La respuesta JSON parse fallo!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+
+        } else if (textStatus === 'timeout') {
+
+            Snackbar.show({
+                text: 'El tiempo de espera para la conexion fallo!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        } else if (textStatus === 'abort') {
+
+            Snackbar.show({
+                text: 'La conexion fue abortada!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+
+        } else {
+            Snackbar.show({
+                text: 'Hay un error desconocido!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+            //alert('Uncaught Error: ' + jqXHR.responseText);
+        }
+
+    });
+};
+
+
 function get_module_old(pacht, controler_data, controler_template, id_copiled, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      
     var id_copiled = $(id_copiled);
@@ -135,7 +274,7 @@ function get_module_old(pacht, controler_data, controler_template, id_copiled, d
         data: data,
         type: "POST",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             if (response.result == true) { ///// IMPRIME ////     
                 renderHandlebarsTemplate(url_template, id_copiled, response);
                 if (response.msj) {
@@ -160,13 +299,14 @@ function get_module_old(pacht, controler_data, controler_template, id_copiled, d
     });
 };
 
-function get_module(pacht, controler_data, controler_template, id_copiled, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
+function get_module_ok_old(pacht, controler_data, controler_template, id_copiled, data) {
+    // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      
     var id_copiled = $(id_copiled);
     //// VARIABLES de URLS /// 
-    var url_now = getUrl();
-    var domain = url_now.domain_m_url;
-    var domain_pacht = url_now.domain_pacht;
+    //  var url_now = getUrl();
+    //  var domain = url_now.domain_m_url;
+    //   var domain_pacht = url_now.domain_pacht;
     //// CONTRUCTOR de URLS /// 
     //   var url_data = 'https://' + domain + '/' + pacht + '/' + controler_data;
     // var url_template = 'https://' + domain + '/' + pacht + '/' + controler_template;
@@ -180,7 +320,7 @@ function get_module(pacht, controler_data, controler_template, id_copiled, data)
         data: data,
         type: "POST",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             if (response.result == true) { ///// IMPRIME ////     
                 renderHandlebarsTemplate(url_template, id_copiled, response);
                 if (response.msj) {
@@ -202,7 +342,7 @@ function get_module(pacht, controler_data, controler_template, id_copiled, data)
                     });
             };
         }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
+    }).fail(function (jqXHR, textStatus, errorThrown) {
 
         if (jqXHR.status === 0) {
             //alert('Not connect: Verify Network.');
