@@ -2,10 +2,11 @@
     <ul class="sidebar-menu">
         {{#each ws_left_nav.m}}
             <li class="treeview">
-                 <a
+                 <a class="l_nav_m" 
                     {{#ifEquals m_type_action "1"}} 
-                        class="l_nav_m"  m_id="{{{m_id}}}"  m_url="{{m_url}}" href="{{m_url}}"
+                        m_id="{{{m_id}}}"  m_url="{{m_url}}" href="#"
                         {{else}}
+
                         m_id="{{{m_id}}}" s_url_t_m="{{{m_url}}}" href="#"                   
                     {{/ifEquals}}
                     >

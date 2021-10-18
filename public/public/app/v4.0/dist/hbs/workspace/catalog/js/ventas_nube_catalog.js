@@ -1,10 +1,5 @@
 //Funciones que pueden servir para Importar productos desde otra base de datos
 
-
-
-
-
-
 // CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
 function charge_all_docs_local(remote_items) {
     L_search_db.bulkDocs({ docs: remote_items },
@@ -12,6 +7,7 @@ function charge_all_docs_local(remote_items) {
             // handle err or response
         });
 }
+
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
 function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      

@@ -1,0 +1,371 @@
+<div class="modal-dialog modal-lg" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-nav">
+                <span class="back-arrow" data-dismiss="modal" aria-label="Close">
+                    <span class="material-icons">arrow_back</span>
+                </span>
+                <span class="modal-title">
+                    Agregar colaborador
+                </span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="margin-t-20 padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="input-group text-left">
+                    <span class="input-group-addon"><i class="material-icons">group_add</i></span>
+                    <li id="bag-new-user" userId="{{user_id}}" class="badge md gray">
+                        <div class="round-icon user md" role="button" data-toggle="tooltip" data-placement="top"
+                            data-original-title="{{name}}">M </div>
+                        <span></span>
+                        <button id="btn-del-new-coll" type="button" class="btn md btn-round btn-default text"
+                            data-toggle="dropdown" aria-expanded="true">
+                            <span class="material-icons">cancel</span>
+                        </button>
+                    </li>
+                    <input type="email" class="form-control userSubjet" value="" name="userSubjet"
+                        placeholder="Buscar Correo electronico..." autocomplete="off">
+                    <div id="user-auto-subjet" class="auto-subjet">
+                        <ul class="ul-auto-subjet">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="margin-t-20  col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left">
+                <div class="btn-group">
+                    <button id="per-select-btn" permId="1" type="button"
+                        class=" select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
+                        aria-expanded="true">
+                        <span id="user_per_name">Permiso</span>
+                        <i class="material-icons">arrow_drop_down</i>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        {{#each permissions}}
+                        <li class="margin-5">
+                            <a class="select-per" user_per_id="{{{p_id}}}" href="#" role="button" data-toggle="tooltip"
+                                data-placement="top" data-original-title="{{p_description}}">
+                                {{{p_name}}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <button id="save-new-coll" m_s_id="{{m_s_id}}" class="btn btn-primary ">Agregar</button>
+            </div>
+            <div class="margin-t-10 padding-l-30  text-left col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <p>
+                    <input checked="" type="checkbox" name="permision_all_groups" value="1"
+                        class="permision_all_groups radio-chek" id="permision_all_groups">
+                    <label for="permision_all_groups" data-toggle="tooltip" data-html="true" data-placement="bottom"
+                        data-original-title="<em> Ingresar los permisos para todas las etapas a este board. </em>">
+                        Agregar permiso para todas las etapas de este board.
+                    </label>
+                </p>
+            </div>
+
+            <div class="margin-t-20 padding-0 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul id="user_permision_active" class="text-left  padding-10">
+                    {{#each collaborators}}
+                    <li class="badge md gray margin-10">
+                        <div class="round-icon user md" role="button" data-toggle="tooltip" data-placement="top"
+                            data-original-title="{{name}}">M </div>
+                        <span>{{{email}}}</span>
+                        <div class="select-btn btn-group">
+                            <button type="button" class=" btn xs btn-more  dropdown-toggle btn-primary text"
+                                data-toggle="dropdown" aria-expanded="true">
+                                <span> {{{p_name}}}</span>
+                                <span class="material-icons">expand_more</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                {{#each ../permissions}}
+                                <li class="margin-5"><a class="edit-per" m_s_id="{{../../m_s_id}}"
+                                        user_id="{{../users_id}}" user_per_id="{{p_id}}" selected="{{p_id}}" href="#"
+                                        role="button" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{p_description}}"> <span></span> {{{p_name}}} </a>
+                                </li>
+                                {{/each}}
+                                <li role="separator" class="divider"></li>
+                                <li class="margin-5">
+                                    <a class="del-per" user_per_id="{{users_id}}" m_s_id="{{../m_s_id}}"
+                                        selected="delete" href="#" role="button" data-toggle="tooltip"
+                                        data-placement="top" data-original-title="Eliminar colaborador"> <span></span>
+                                        Eliminar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        <button type="button" class="btn  btn-default " data-dismiss="modal">Cerrar</button>
+        <!--button id="save-new-coll" m_s_id="{{m_s_id}}" class="btn btn-primary ">Guardar</button-->
+    </div>
+
+</div>
+
+
+<script>
+
+  //Eliminar permiso
+    function dell_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id) {
+
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'collaborator_board_group_data_delete'; //NOMBRE DE CONTROLADOR DATA
+        // var controler_template = 'collaborator_board_group_user_permision_active'; //NOMBRE CONTROLADOR TEMPLATE      
+        //var id_copiled = '#user_permision_active'; // ID DE COMPILACION //  
+        var controler_template = 'collaborator_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION // 
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+            m_s_id: m_s_id,
+            user_per_id: user_per_id,
+        }
+        //console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA           
+        $('#master_popup').modal('show');
+        get_board_group_Collaborator(m_id, m_t_id, m_s_id); // Refrezco los usuarios q tienen permisos
+        //  $(".userSubjet").next().show();
+    };
+  //Nuevo permiso
+    function save_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id, permision_all_groups) {
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        // var controler_data = 'collaborator_board_group_data_post'; //NOMBRE DE CONTROLADOR DATA
+        var controler_data = 'collaborator_board_group_data_save'; //NOMBRE DE CONTROLADOR DATA
+        // var controler_template = 'collaborator_board_group_user_permision_active'; //NOMBRE CONTROLADOR TEMPLATE      
+        // var id_copiled = '#user_permision_active'; // ID DE COMPILACION //  
+        var controler_template = 'collaborator_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION // 
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+            m_s_id: m_s_id,
+            bag_new_user: bag_new_user,
+            user_per_id: user_per_id,
+            permision_all_groups: permision_all_groups,
+        }
+        //console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA           
+        // get_board_group_Collaborator(m_id,m_t_id,m_s_id); // Refrezco los usuarios q tienen permisos
+        // $('#master_popup').modal('show');
+        //  get_board_group_Collaborator(m_id,m_t_id,m_s_id); // Refrezco los usuarios q tienen permisos
+        //  $(".userSubjet").next().show();
+    };
+  //Editar permiso
+    function edit_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id) {
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'collaborator_board_group_data_edit'; //NOMBRE DE CONTROLADOR DATA
+        // var controler_template = 'collaborator_board_group_user_permision_active'; //NOMBRE CONTROLADOR TEMPLATE      
+        //var id_copiled = '#user_permision_active'; // ID DE COMPILACION //  
+
+        var controler_template = 'collaborator_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION // 
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+            m_s_id: m_s_id,
+            bag_new_user: bag_new_user,
+            user_per_id: user_per_id,
+        }
+        //console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA          
+    };
+
+    $("#per-select-btn").hide();
+    $("#save-new-coll").hide();
+    $("#bag-new-user").hide();
+    // Es el ato subjet de los usuarios tendria que tenes un permiso especial para verse lo Agregue al controlador solo Administradores de ese modulo, o el Propietario
+    //  Compilador de consulta ajax autosubjet usuarios
+    $(".userSubjet").keyup(function () {
+        var search = $(this).val();
+        var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'users'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'collaborator_subjet_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'collaborator_subjet_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '.ul-auto-subjet'; // ID DE COMPILACION //  
+        var data = {
+            search: search,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+        $(".userSubjet").next().show();
+    });
+   
+    //oculta al hacer click fuera del elemnto autosubjet (items autosubjet)
+    $(document).on("click", function (e) {
+        var container = $("#user-auto-subjet");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            //Se ha pulsado en cualquier lado fuera de los elementos contenidos en la variable container
+            container.hide();
+        }
+    });
+
+    //Ato subjet de emails carga las variable con los valores para enviar por ajax
+    $(document).on('click', 'li.select-autosubjet-item', function (event) {
+        var user_id = $(this).attr('item');
+        var name = $(this).children('span').text();
+        var lerter = $(this).children('div').text();
+        var input = $(":input.userSubjet").val();
+        $("#user-auto-subjet").hide();
+        $(":input.userSubjet").val(name);
+        $("#per-select-btn").show();
+        $("#save-new-coll").show();
+
+
+        $(":input.userSubjet").hide();
+        $("#bag-new-user").show();
+        $("#bag-new-user").children('div').text(lerter);
+        $("#bag-new-user").children('span').text(name);
+        $('#bag-new-user').attr('userid', user_id);
+
+        Snackbar.show({
+            text: 'Muy bien! vamos a enviar un email al nuevo colaborador para crear su cuenta!',
+            pos: 'top-center',
+            actionText: 'ok',
+            onActionClick: function (element) {
+                //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+            }
+        });
+    });
+
+    //Boton que elimina los emails seleccionados
+    $("#btn-del-new-coll").click(function () {
+        $("#bag-new-user").hide();
+        $("#per-select-btn").hide();
+        $("#save-new-coll").hide();
+
+        $(":input.userSubjet").show().val();
+        //  $('button span', $(this).closest('div')).text(); // Edita el contenido del boton superior hermano
+    });
+
+    //Funcion que toma el focus out del input y los datos ingresados y si el email es es valido
+    $(".userSubjet").focusout(function () {
+        var name = $(":input.userSubjet").val();
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (regex.test(name.trim())) {
+            $(":input.userSubjet").hide();
+            $("#bag-new-user").show();
+            $("#bag-new-user").children('span').text(name);
+            $("#per-select-btn").show();
+            $("#save-new-coll").show();
+
+            Snackbar.show({
+                text: 'Muy bien! vamos a enviar un email al nuevo colaborador para crear su cuenta!',
+                pos: 'top-center'
+            });
+        } else {
+            Snackbar.show({
+                text: 'Ingresa un email valido para invitar un nuevo colaborador. ',
+                pos: 'top-center',
+                actionTextColor: '#ff0000',
+                actionText: 'ok',
+                onActionClick: function (element) {
+                    $(element).css('opacity', 0); //Set opacity of element to 0 to close Snackbar
+
+                }
+            });
+        }
+    });
+
+    //Select Tipo de permisos
+    $(".select-per").click(function () {
+        var user_per_id = $(this).attr('user_per_id');
+        var bgText = $(this).html();
+        $("#user_per_name").html(bgText);
+        $("#user_per_name").html(bgText);
+        $("#user_per_name").attr('user_per_id', user_per_id);
+        //alert(user_per_id);
+        // $("#input-select-3").val(bgColor);    
+    });
+    
+    //Eliminar permiso  
+    $(".del-per").click(function () {
+        //  var bgText = $(this).html();
+        //  $("#user_per_name").html(bgText);
+        // $("#user_per_name").html(bgText);
+        ///  $("#user_per_name").attr('user_per_id', user_per_id);     
+        var user_per_id = $(this).attr('user_per_id');
+        var bag_new_user = $('#bag-new-user').attr('userid');
+        var m_s_id = $(this).attr('m_s_id');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        //alert(user_per_id);
+        // $("#input-select-3").val(bgColor);    
+        Snackbar.show({
+            text: 'Estas seguro que quieres eliminar todos los permisos?',
+            width: '475px',
+            actionText: 'Eliminar',
+            actionTextColor: '#ff0000',
+            onActionClick: function (element) {
+                dell_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id);
+            }
+        });
+    });
+    
+    //Editar permiso
+    $(".edit-per").click(function () {
+        //  var bgText = $(this).html();
+        //  $("#user_per_name").html(bgText);
+        // $("#user_per_name").html(bgText);
+        ///  $("#user_per_name").attr('user_per_id', user_per_id);     
+        var user_per_id = $(this).attr('user_per_id');
+        var bag_new_user = $(this).attr('user_id');
+        var m_s_id = $(this).attr('m_s_id');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        //alert(user_per_id);
+        // $("#input-select-3").val(bgColor);    
+        Snackbar.show({
+            text: 'Estas seguro que quieres cambiar los permisos de este usuario para esta seccion?',
+            width: '475px',
+            actionText: 'Cambiar',
+            actionTextColor: '#ff0000',
+            onActionClick: function (element) {
+                edit_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id);
+            }
+        });
+    });
+    
+    //Crear nuevo permiso
+    //  Compilador de consulta ajax autosubjet usuarios
+    $("#save-new-coll").click(function () {
+        var user_per_id = $("#user_per_name").attr('user_per_id');
+        var bag_new_user = $('#bag-new-user').attr('userid');
+        var permision_all_groups = $('#permision_all_groups').val();
+
+        var m_s_id = $('#save-new-coll').attr('m_s_id');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        if (user_per_id) {
+            console.log('save user: ' + user_per_id);
+            // save_Collaborator(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+            //modalNewCollaborator();
+            save_Collaborator(m_id, m_t_id, m_s_id, bag_new_user, user_per_id, permision_all_groups)
+            // $('#master_popup').modal('show');
+        } else {
+            Snackbar.show({
+                text: 'Selecciona un permiso para invitar un nuevo colaborador. ',
+                pos: 'top-center',
+                actionTextColor: '#ff0000',
+                actionText: 'ok',
+                onActionClick: function (element) {
+                    $(element).css('opacity', 0); //Set opacity of element to 0 to close Snackbar
+                }
+            });
+        }
+    });
+
+</script>

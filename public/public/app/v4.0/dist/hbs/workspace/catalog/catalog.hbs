@@ -1,0 +1,84 @@
+<!--div id="nav-bar-copiled"></div-->
+<!--
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+  -->
+<!--MODULE NAV BAR COPILED-->
+<div class="container-fluid" id="scroller">
+    <!--Kanban template-->
+    <div class="content_catalog">
+        <div id="content_catalog_commpiled" class="box-body no-padding">
+
+
+        </div>
+    </div>
+    <!--Kanban template-->
+</div>
+
+
+
+
+<!-- include FilePond library 
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+-->
+<!-- include FilePond plugins
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+ -->
+<!-- include FilePond jQuery adapter 
+<script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+-->
+
+<script>
+
+     ////----( VISTA NAV )----/////
+    
+    function get_nav_catalog(m_id, m_t_id) {
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        /*if(m_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+              var m_id = url_now.m_id;
+         }if(m_t_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+         }*/
+        var pacht = 'catalog'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'nav_bar'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'nav_bar_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#nav_bar_compiled'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+        }
+        console.log('Modulo id nav' + m_id);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+    };
+
+    function get_catalog_items(m_id, m_t_id) {
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        /*if(m_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+              var m_id = url_now.m_id;
+         }if(m_t_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+         }*/
+        var pacht = 'catalog'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'catalog_items_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'catalog_items_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#content_catalog_commpiled'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+        }
+        //console.log('Modulo id nav' + m_id);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+   
+    };
+
+
+    $(document).ready(function () {
+        window.onload =
+            get_catalog_items(),
+            get_nav_catalog();
+
+    });
+
+</script>

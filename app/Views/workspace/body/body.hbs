@@ -158,7 +158,9 @@
             // A wild service worker has appeared in reg.installing!
             const newWorker = reg.installing;
             alert('Ventasnube se actualizo!');
+          
             newWorker.state;
+              location.reload();
             // "installing" - the install event has fired, but not yet complete
             // "installed"  - install complete
             // "activating" - the activate event has fired, but not yet complete
@@ -166,7 +168,7 @@
             // "redundant"  - discarded. Either failed install, or it's been
             //                replaced by a newer version
             newWorker.addEventListener('statechange', () => {
-                $('#sw-version').html("Hay una nueva vesion instalada!!!");
+                $('#sw-version').html("Hay una nueva vesion instalada!");
                 // newWorker.state has changed
                 location.reload();
                 // alert('statechange');
@@ -178,7 +180,9 @@
         // This fires when the service worker controlling this page
         // changes, eg a new worker has skipped waiting and become
         // the new active worker.
-        // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
+            alert('Hay una actualizacion en curso!!!');
+            location.reload();
+       // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
         // alert('controllerchange');
     });
 
