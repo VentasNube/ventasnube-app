@@ -14,43 +14,81 @@ var ws_info_db = 'ws_info_' + ws_id;
 async function ws_module_config() {
     // var ws_info_db = 'ws_info_' + ws_id;
     try {
-        L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: false });
+        L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
         //sincronizo
-        L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, });
+        L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true});
         //Variable global con las DB de serach local
         if (offline_mode) {
             // Si esta activo el modo offline
             // Creo la db local
-            L_ws_info_db = await new PouchDB(ws_info_db);
+            L_ws_info_db = await new PouchDB(ws_info_db, { skip_setup: true,  });
 
             //Conecto a la DB LOCAL
-            L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: false });
+            L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
             //sincronizo
-            L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, });
+            L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true });
 
             // ws_info_db = L_ws_info_db;
             //sync.cancel(); // whenever you want to cancel
             // DOC DE CONFIG
-            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
+          //  ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true });
+            
+             ws_info = null;
+              L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true }).then(function(doc) {
+              ws_info = doc
+               // return db.remove(doc._id, doc._rev);
+              }).then(function (result) {
+                // handle result
+              }).catch(function (err) {
+                console.log(err);
+                alert('Error no se encuentran el archivo ws_module_config');
+              });
+        
             // DOC DE LEGUAJE
-            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
+            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true, skip_setup: true });
             // DOC DE MODULOS
-           // ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+          // ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true, skip_setup: true });
             //Mapeo el objeto
             var ws_lang = ws_lang_data_doc;
             //SETEO EL ARRAY CON EL IDIOMA
             ws_lang_data = ws_lang['ws_lang_es'];
             //Envio los datos a la funciones y imprimo
             //Aca activo o desactivo los modulos principales 
+
+
+     /*       PouchDB.on('created', function (dbName) {
+                // called whenever a db is created.
+              //  alert(dbName +'Se creo la base de datos por primera vez debes refezcar');
+             //   var delay = 2000;
+                // setTimeout(function(){ window.location = "/account"; }, delay);
+              //  setTimeout(function(){location.reload(); }, delay);
+              Snackbar.show({
+                   text:  err.reason,
+                   width: '475px',
+                    actionText: 'Refrezcar',
+                   onActionClick: function(element) {
+                       //Set opacity of element to 0 to close Snackbar
+                       $(element).css('opacity', 0);
+                       location.reload();
+                       //newWorker.postMessage({ action: 'install' });
+                       //alert('Refrezcar pagina!');
+                   }
+                });
+
+
+            // location.reload();
+            });
+*/
             get_top_bar(ws_info, ws_lang_data);
             get_nav_cart(ws_info, ws_lang_data);
             get_search_module(ws_info, ws_lang_data);
-            get_left_nav(ws_left_nav);
+          // get_left_nav(ws_left_nav);
 
+            get_left_nav_doc(user_db , ws_lang_data);
           //  alert('aaaaaaaa')
-            console.log('ws_left_nav OK BODY');
-            console.log(ws_left_nav);
-            console.log(ws_lang_data);
+           // console.log('ws_left_nav OK BODY');
+          //  console.log(ws_left_nav);
+          //  console.log(ws_lang_data);
             // alert('OFFLINE MODE ON')
             Snackbar.show({
                 text: 'Modo offline activado',
@@ -63,32 +101,57 @@ async function ws_module_config() {
             // Si no esta activo el modo offline
 
             // Conecto a db info
-            L_ws_info_db = await new PouchDB(url_R_db + ws_info_db, { skip_setup: false });
+            L_ws_info_db = await new PouchDB(url_R_db + ws_info_db, { skip_setup: true });
 
             //sincronizo con la local DB
             L_ws_info_db.sync(ws_info_db, { live: true, retry: true, });
 
-
             // DOC DE CONFIG
-            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
+            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true });
+
             // DOC DE LEGUAJE
-            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
+            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true,skip_setup: true });
             // DOC DE MODULOS
-            ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+          //  ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true, skip_setup: true });
             // Mapeo el objeto
             var ws_lang = ws_lang_data_doc;
             // SETEO EL ARRAY CON EL IDIOMA
             ws_lang_data = ws_lang['ws_lang_es'];
             // Envio los datos a la funciones y imprimo
             // Aca activo o desactivo los modulos principales 
+
+       /*     PouchDB.on('created', function (dbName) {
+                // called whenever a db is created.
+              //  alert(dbName +'Se creo la base de datos por primera vez debes refezcar');
+             //   var delay = 2000;
+                // setTimeout(function(){ window.location = "/account"; }, delay);
+              //  setTimeout(function(){location.reload(); }, delay);
+              Snackbar.show({
+                   text:  err.reason,
+                   width: '475px',
+                    actionText: 'Refrezcar',
+                   onActionClick: function(element) {
+                       //Set opacity of element to 0 to close Snackbar
+                       $(element).css('opacity', 0);
+                       location.reload();
+                       //newWorker.postMessage({ action: 'install' });
+                       //alert('Refrezcar pagina!');
+                   }
+                });
+
+
+            // location.reload();
+            });
+*/
             get_top_bar(ws_info, ws_lang_data);
             get_nav_cart(ws_info, ws_lang_data);
             get_search_module(ws_info, ws_lang_data);
-            get_left_nav(ws_left_nav);
+           // get_left_nav(ws_left_nav);
+            get_left_nav_doc(user_db , ws_lang_data);
 
-            console.log('ws_left_nav OK BODY');
-            console.log(ws_left_nav);
-            console.log(ws_lang_data);
+            //console.log('ws_left_nav OK BODY');
+           //console.log(ws_left_nav);
+           // console.log(ws_lang_data);
             
             // alert('OFFLINE MODE Off')
             Snackbar.show({
@@ -101,15 +164,37 @@ async function ws_module_config() {
         }
     } catch (err) {
         //console.log(err);
+       // console.log(err);
+     //   alert(err);
+
         Snackbar.show({
+               text:  err.reason,
+               width: '475px',
+                actionTextColor: '#ff0000',
+                actionText: 'Refrezcar',
+                pos: 'bottom-center',
+               onActionClick: function(element) {
+                   //Set opacity of element to 0 to close Snackbar
+                   $(element).css('opacity', 0);
+                   location.reload();
+                   //newWorker.postMessage({ action: 'install' });
+                   //alert('Refrezcar pagina!');
+               }
+            });
+
+       /* Snackbar.show({
             text: err.reason,
             actionText: 'ok',
             actionTextColor: "#0575e6",
             pos: 'bottom-left',
             duration: 50000
-        });
+        });*/
     }
+    
 }
+
+
+
 
 function put_left_nav_doc() {
     $.ajax({

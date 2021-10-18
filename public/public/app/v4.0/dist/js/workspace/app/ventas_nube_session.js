@@ -77,7 +77,7 @@ if (!ws_id) {
 //alert(ws_id);
 
 //Creo y conecto con userDB local 
-user_db = new PouchDB(u_db, { skip_setup: false });
+user_db = new PouchDB(u_db, { skip_setup: true });
 
 user_db.sync(url_R_db+userDb, {
     live: true,
@@ -96,6 +96,10 @@ user_db.sync(url_R_db+userDb, {
     msj_alert(err);
   });
 
+
+
+
+  
 /*
   db.get('charlie').then(function (charlie) {
     // Within this function, you can do

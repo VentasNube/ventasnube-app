@@ -23,10 +23,10 @@ async function search_db() {
     try {
         //  alert(offline_mode)
         if (offline_mode) {
-            L_search_db = await new PouchDB(search_db);
-            R_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: false });
+            L_search_db = await new PouchDB(search_db, { skip_setup: true });
+            R_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: true });
 
-            L_search_db.sync(R_search_db, { live: true, retry: true, }); //sincronizo
+            L_search_db.sync(R_search_db, { live: true, retry: true, skip_setup: true }); //sincronizo
             price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
 
             Snackbar.show({
@@ -36,7 +36,7 @@ async function search_db() {
                 pos: 'top-left'
             });
         } else {
-            L_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: false });
+            L_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: true });
             price_doc = await L_search_db.get('price_list', { include_docs: true, descending: false });
             Snackbar.show({
                 text: '<span class="material-icons">wifi_off</span> Modo Offline desactivado!',

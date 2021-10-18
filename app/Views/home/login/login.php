@@ -115,7 +115,6 @@ $("#formLogin" ).submit(function( event ) {
 
 var url = "<?=site_url('login');?>";
 var db_url = "<?php echo base_url();?>:5984";
-
 var L_user_db = new PouchDB(db_url, {skip_setup: true});
 
 //Funcion logout cdb
