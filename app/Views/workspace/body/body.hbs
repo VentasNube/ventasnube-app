@@ -105,14 +105,23 @@ let newWorker;
                        $(element).css('opacity', 0);
                        // location.reload();
                         newWorker.postMessage({ action: 'skipWaiting' });
-                         //alert('Refrezcar pagina!');
+                        location.reload();
+                       // alert('Refrezcar pagina!');
                    }
                 });
+                var delay = 2000;
+                 setTimeout(function(){ 
+                     newWorker.postMessage({ action: 'skipWaiting' });
+                      location.reload();
+                     // window.location = "/account";
+                      }, delay);
           }
           // The click event on the pop up notification
        /*   document.getElementById('reload').addEventListener('click', function(){
             newWorker.postMessage({ action: 'skipWaiting' });
           });*/
+
+          
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js').then(reg => {
               console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
@@ -124,12 +133,11 @@ let newWorker;
                   switch (newWorker.state) {
                     case 'installed':
                       if (navigator.serviceWorker.controller) {
-                        // new update available
+                         // new update available
                          //alert('Hay una actualizacion diponible');      
                          showUpdateBar();
-                        
-                        // var delay = 2000;
-                        // setTimeout(function(){location.reload(); }, delay);
+                         // var delay = 2000;
+                         // setTimeout(function(){location.reload(); }, delay);
                       }
                       // No update available
                       break;
@@ -163,8 +171,8 @@ let newWorker;
                    onActionClick: function(element) {
                        //Set opacity of element to 0 to close Snackbar
                        $(element).css('opacity', 0);
-                       //location.reload();
-                        newWorker.postMessage({ action: 'install' });
+                       location.reload();
+                      //  newWorker.postMessage({ action: 'install' });
                          //alert('Refrezcar pagina!');
                    }
                 });

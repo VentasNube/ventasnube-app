@@ -1,20 +1,39 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 2129;
+    const version = 2111;
     const expectedCaches = ['ventasnube-v-' + version];
 
-    self.addEventListener('message', function (event) {
+
+    self.addEventListener('install', function(event) {
+        // Perform install steps
+
+      });
+      self.addEventListener('message', function (event) {
         if (event.data.action === 'skipWaiting') {
           self.skipWaiting();
         }
-
-      /*  if (event.data.action === 'install') {
-            self.skipWaiting();
-
-          }
-*/
       });
+/*
+    self.addEventListener('fetch', function(event) {
+        self.clients.matchAll().then(all => all.map(client => client.postMessage('data from webworker')));
+      });
+      
+    
 
+      self.addEventListener('push', function(event) {
+        console.log('[Service Worker] Push Received.');
+        console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+    
+        const title = 'Push Codelab';
+        const options = {
+            body: 'Push notifications',
+            icon: 'images/icon.png',
+            badge: 'images/badge.png'
+        };
+    
+        event.waitUntil(self.registration.showNotification(title, options));
+    });
+*/
     workbox.precaching.precacheAndRoute([
         // { url: '/', revision: version },
         //{ url: '/login', revision: version },

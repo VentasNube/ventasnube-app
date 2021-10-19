@@ -8,194 +8,78 @@
 //###--- Conection y Sync a la base de datos local ---#####
 
 var ws_info_db = 'ws_info_' + ws_id;
-
+var ws_info = null;
 //alert(ws_id);
+//Creo la base de datos local
+L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
+//sincronizo
+//L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true});
 
-async function ws_module_config() {
-    // var ws_info_db = 'ws_info_' + ws_id;
-    try {
-        L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
-        //sincronizo
-        L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true});
-        //Variable global con las DB de serach local
-        if (offline_mode) {
-            // Si esta activo el modo offline
-            // Creo la db local
-            L_ws_info_db = await new PouchDB(ws_info_db, { skip_setup: true,  });
-
-            //Conecto a la DB LOCAL
-            L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
-            //sincronizo
-            L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true });
-
-            // ws_info_db = L_ws_info_db;
-            //sync.cancel(); // whenever you want to cancel
-            // DOC DE CONFIG
-          //  ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true });
-            
-             ws_info = null;
-              L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true }).then(function(doc) {
-              ws_info = doc
-               // return db.remove(doc._id, doc._rev);
-              }).then(function (result) {
-                // handle result
-              }).catch(function (err) {
-                console.log(err);
-                alert('Error no se encuentran el archivo ws_module_config');
-              });
-        
-            // DOC DE LEGUAJE
-            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true, skip_setup: true });
-            // DOC DE MODULOS
-          // ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true, skip_setup: true });
-            //Mapeo el objeto
-            var ws_lang = ws_lang_data_doc;
-            //SETEO EL ARRAY CON EL IDIOMA
-            ws_lang_data = ws_lang['ws_lang_es'];
-            //Envio los datos a la funciones y imprimo
-            //Aca activo o desactivo los modulos principales 
+//Creo y conecto con userDB local 
+//L_ws_info_db = new PouchDB(u_db, { skip_setup: true });
+L_ws_info_db.sync(url_R_db+ws_info_db, {
+    live: true,
+    retry: true,
+  //  skip_setup: true
+  }).on('change', function (change) {
+    msj_alert('<span class="material-icons">wifi_off</span> Hay nuevos cambios', 'top-left');
+    // yo, something changed!
+  }).on('paused', function (info) {
+    msj_alert('<span class="material-icons">wifi_off</span> Sincronización en pausa', 'bottom-center');
+    // replication was paused, usually because of a lost connection
+  }).on('active', function (info) {
+    msj_alert('<span class="material-icons">wifi</span> Sincronización activa!', 'bottom-center');
+    // replication was resumed
+  }).on('error', function (err) {
+    // totally unhandled error (shouldn't happen)
+    msj_alert(err);
+  });
 
 
-     /*       PouchDB.on('created', function (dbName) {
-                // called whenever a db is created.
-              //  alert(dbName +'Se creo la base de datos por primera vez debes refezcar');
-             //   var delay = 2000;
-                // setTimeout(function(){ window.location = "/account"; }, delay);
-              //  setTimeout(function(){location.reload(); }, delay);
-              Snackbar.show({
-                   text:  err.reason,
+
+
+L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true })
+.then(function(doc) {
+    ws_info = doc
+    //Doc de lenguaje
+    ws_lang_data_doc = L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true});
+    //Mapeo el objeto
+    var ws_lang = ws_lang_data_doc;
+    //SETEO EL ARRAY CON EL IDIOMA
+    ws_lang_data = ws_lang['ws_lang_es'];
+    //Imprimo todas las vistas modulares del body
+    // handle result
+    // DOC DE LEGUAJE
+    get_top_bar(ws_info, ws_lang_data);
+    get_nav_cart(ws_info, ws_lang_data);
+    get_search_module(ws_info, ws_lang_data);
+    get_left_nav_doc(user_db , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
+    // get_left_nav(ws_left_nav);
+    //ws_module_config();//Conecto la base de datos y traigo varios documentos de configuracion
+ // return db.remove(doc._id, doc._rev);
+}).then(function (result) {
+  
+}).catch(function (err) {
+            console.log(err);
+            put_left_nav_doc();//Envio el documento de navegacion lateral segun permisos de ci4
+           //  alert('Error no se encuentran el archivo ws_module_config');
+            Snackbar.show({
+                   text:  'Error no se encuentran el archivo ws_module_config',
                    width: '475px',
+                    actionTextColor: '#ff0000',
                     actionText: 'Refrezcar',
-                   onActionClick: function(element) {
+                    pos: 'bottom-center',
+                     onActionClick: function(element) {
                        //Set opacity of element to 0 to close Snackbar
                        $(element).css('opacity', 0);
-                       location.reload();
-                       //newWorker.postMessage({ action: 'install' });
-                       //alert('Refrezcar pagina!');
+                        location.reload();
+                        //newWorker.postMessage({ action: 'install' });
+                        //alert('Refrezcar pagina!');
                    }
                 });
-
-
-            // location.reload();
-            });
-*/
-            get_top_bar(ws_info, ws_lang_data);
-            get_nav_cart(ws_info, ws_lang_data);
-            get_search_module(ws_info, ws_lang_data);
-          // get_left_nav(ws_left_nav);
-
-            get_left_nav_doc(user_db , ws_lang_data);
-          //  alert('aaaaaaaa')
-           // console.log('ws_left_nav OK BODY');
-          //  console.log(ws_left_nav);
-          //  console.log(ws_lang_data);
-            // alert('OFFLINE MODE ON')
-            Snackbar.show({
-                text: 'Modo offline activado',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-left',
-                duration: 50000
-            });
-        } else {
-            // Si no esta activo el modo offline
-
-            // Conecto a db info
-            L_ws_info_db = await new PouchDB(url_R_db + ws_info_db, { skip_setup: true });
-
-            //sincronizo con la local DB
-            L_ws_info_db.sync(ws_info_db, { live: true, retry: true, });
-
-            // DOC DE CONFIG
-            ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true,skip_setup: true });
-
-            // DOC DE LEGUAJE
-            ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true,skip_setup: true });
-            // DOC DE MODULOS
-          //  ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true, skip_setup: true });
-            // Mapeo el objeto
-            var ws_lang = ws_lang_data_doc;
-            // SETEO EL ARRAY CON EL IDIOMA
-            ws_lang_data = ws_lang['ws_lang_es'];
-            // Envio los datos a la funciones y imprimo
-            // Aca activo o desactivo los modulos principales 
-
-       /*     PouchDB.on('created', function (dbName) {
-                // called whenever a db is created.
-              //  alert(dbName +'Se creo la base de datos por primera vez debes refezcar');
-             //   var delay = 2000;
-                // setTimeout(function(){ window.location = "/account"; }, delay);
-              //  setTimeout(function(){location.reload(); }, delay);
-              Snackbar.show({
-                   text:  err.reason,
-                   width: '475px',
-                    actionText: 'Refrezcar',
-                   onActionClick: function(element) {
-                       //Set opacity of element to 0 to close Snackbar
-                       $(element).css('opacity', 0);
-                       location.reload();
-                       //newWorker.postMessage({ action: 'install' });
-                       //alert('Refrezcar pagina!');
-                   }
-                });
-
-
-            // location.reload();
-            });
-*/
-            get_top_bar(ws_info, ws_lang_data);
-            get_nav_cart(ws_info, ws_lang_data);
-            get_search_module(ws_info, ws_lang_data);
-           // get_left_nav(ws_left_nav);
-            get_left_nav_doc(user_db , ws_lang_data);
-
-            //console.log('ws_left_nav OK BODY');
-           //console.log(ws_left_nav);
-           // console.log(ws_lang_data);
-            
-            // alert('OFFLINE MODE Off')
-            Snackbar.show({
-                text: 'Modo offline desactivado',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-left',
-                duration: 50000
-            });
-        }
-    } catch (err) {
-        //console.log(err);
-       // console.log(err);
-     //   alert(err);
-
-        Snackbar.show({
-               text:  err.reason,
-               width: '475px',
-                actionTextColor: '#ff0000',
-                actionText: 'Refrezcar',
-                pos: 'bottom-center',
-               onActionClick: function(element) {
-                   //Set opacity of element to 0 to close Snackbar
-                   $(element).css('opacity', 0);
-                   location.reload();
-                   //newWorker.postMessage({ action: 'install' });
-                   //alert('Refrezcar pagina!');
-               }
             });
 
-       /* Snackbar.show({
-            text: err.reason,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-left',
-            duration: 50000
-        });*/
-    }
     
-}
-
-
-
-
 function put_left_nav_doc() {
     $.ajax({
         url: "/body/left_nav",
@@ -213,7 +97,21 @@ function put_left_nav_doc() {
                               ws_left_nav: ws_left_nav
                             }, function(err, response) {
                               if (err) {
-                                msj_alert(err);
+                               // msj_alert(err);
+                                Snackbar.show({
+                                       text:  err.reason,
+                                       width: '475px',
+                                        actionTextColor: '#ff0000',
+                                        actionText: 'Refrezcar',
+                                        pos: 'bottom-center',
+                                       onActionClick: function(element) {
+                                           //Set opacity of element to 0 to close Snackbar
+                                           $(element).css('opacity', 0);
+                                           location.reload();
+                                           //newWorker.postMessage({ action: 'install' });
+                                           //alert('Refrezcar pagina!');
+                                       }
+                                    });
                                 return console.log(err);
                              }
                              //   msj_alert('Se actualizo el left_nav_doc','top-center');
@@ -260,8 +158,23 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                         console.log(doc);
                         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', doc);
                         //  console.log ('No se encuentra el documento en la userdb');
-                    }else{
-                        console.log('Error al traer ws_left_nav doc');
+                    }else if(err){
+                      //  console.log('Error al traer ws_left_nav doc');
+                        Snackbar.show({
+                               text:  err.reason,
+                               width: '475px',
+                                actionTextColor: '#ff0000',
+                                actionText: 'Refrezcar',
+                                pos: 'bottom-center',
+                               onActionClick: function(element) {
+                                   //Set opacity of element to 0 to close Snackbar
+                                   $(element).css('opacity', 0);
+                                   location.reload();
+                                   //newWorker.postMessage({ action: 'install' });
+                                   //alert('Refrezcar pagina!');
+                               }
+                            });
+
                         return console.log(err);        
                     }
                 });
@@ -294,19 +207,17 @@ function get_nav_cart(ws_info, ws_lang_data) {
 ////----(2 LEFT NAV)---/////
 // Imprimo en pantalla los el array con los modulos
 //Nueva funcion de Left nav
+
+/*
 function get_left_nav(ws_left_nav) {
-    /*  var ws_left_nav_array = {
-          ws_left_nav: ws_left_nav_doc,
-          ws_lang_data: ws_lang_data
-      }
-  */
+
     console.log('left nav IN');
     console.log(ws_left_nav_doc);
     var ws_left_nav_doc = {
         ws_left_nav: ws_left_nav
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-};
+};*/
 
 ////----(4 Search Module)---/////
 function get_search_module(ws_info, ws_lang_data) {
@@ -425,6 +336,4 @@ $(document).ready(function () {
 
 
 
-ws_module_config();//Conecto la base de datos y traigo varios documentos de configuracion
-put_left_nav_doc();//Envio el documento de navegacion lateral segun permisos de ci4
-get_left_nav_doc(user_db); //Traigo y imprimo el documento de navegacion lateral 
+
