@@ -1,18 +1,44 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 2111;
+    const version = 2112113211;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
-    self.addEventListener('install', function(event) {
-        // Perform install steps
-
+    self.addEventListener('install', event => {
+      //  console.log('V1 installing…');
+        // cache a cat SVG
+     //   event.waitUntil(
+          //  console.log('V1 installing…');
+          // caches.open('static-v1').then(cache => cache.add('/cat.svg'))
+    //    );
       });
+
+      self.addEventListener('activate', event => {
+       // console.log('Activate V:'+ version );
+      });
+
+
       self.addEventListener('message', function (event) {
         if (event.data.action === 'skipWaiting') {
           self.skipWaiting();
         }
       });
+
+     /* self.addEventListener('activate', (event) => {
+        var cacheKeeplist = ['v2'];
+      
+        event.waitUntil(
+          caches.keys().then((keyList) => {
+            return Promise.all(keyList.map((key) => {
+              if (cacheKeeplist.indexOf(key) === -1) {
+                return caches.delete(key);
+              }
+            }));
+          })
+        );
+      });
+    */
+      
 /*
     self.addEventListener('fetch', function(event) {
         self.clients.matchAll().then(all => all.map(client => client.postMessage('data from webworker')));
