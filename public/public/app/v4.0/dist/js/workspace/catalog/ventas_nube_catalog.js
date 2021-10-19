@@ -2,9 +2,6 @@
 
 
 
-
-
-
 // CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
 function charge_all_docs_local(remote_items) {
     L_search_db.bulkDocs({ docs: remote_items },
