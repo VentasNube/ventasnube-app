@@ -9,6 +9,9 @@
 
 var ws_info_db = 'ws_info_' + ws_id;
 var ws_info = null;
+var ws_lang_data = null;
+
+
 //alert(ws_id);
 //Creo la base de datos local
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
@@ -35,49 +38,31 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
     msj_alert(err);
   });
 
-ws_lang_data_doc = L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true});
-
-L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true })
-.then(function(doc) {
-    ws_info = doc
-    //Doc de lenguaje
-    //Mapeo el objeto
-    var ws_lang = ws_lang_data_doc;
-    //SETEO EL ARRAY CON EL IDIOMA
-    ws_lang_data = ws_lang['ws_lang_es'];
-    //Imprimo todas las vistas modulares del body
-    // handle result
-
-    // DOC DE LEGUAJE
-    get_top_bar(ws_info, ws_lang_data);
-    get_nav_cart(ws_info, ws_lang_data);
-    get_search_module(ws_info, ws_lang_data);
-    get_left_nav_doc(user_db , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
-    // get_left_nav(ws_left_nav);
-    //ws_module_config();//Conecto la base de datos y traigo varios documentos de configuracion
- // return db.remove(doc._id, doc._rev);
-}).then(function (result) {
-  
-}).catch(function (err) {
-            console.log(err);
-            put_left_nav_doc();//Envio el documento de navegacion lateral segun permisos de ci4
-           //  alert('Error no se encuentran el archivo ws_module_config');
-            Snackbar.show({
-                   text:  'Error no se encuentran el archivo ws_module_config',
-                   width: '475px',
-                    actionTextColor: '#ff0000',
-                    actionText: 'Refrezcar',
-                    pos: 'bottom-center',
-                     onActionClick: function(element) {
-                       //Set opacity of element to 0 to close Snackbar
-                       $(element).css('opacity', 0);
-                        location.reload();
-                        //newWorker.postMessage({ action: 'install' });
-                        //alert('Refrezcar pagina!');
-                   }
-                });
-            });
-
+ async function ws_module_config() {
+                try {
+                        ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
+                        // DOC DE LEGUAJE
+                        ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
+                        //Mapeo el objeto
+                        var ws_lang = ws_lang_data_doc;
+                        //SETEO EL ARRAY CON EL IDIOMA
+                        ws_lang_data = ws_lang['ws_lang_es'];
+                        //Envio los datos a la funciones y imprimo
+                        get_top_bar(ws_info, ws_lang_data);
+                        get_nav_cart(ws_info, ws_lang_data);
+                        get_search_module(ws_info, ws_lang_data);
+                        get_left_nav_doc(user_db , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
+                        put_left_nav_doc();
+                } catch (err) {
+                    Snackbar.show({
+                        text: err.reason,
+                        actionText: 'ok',
+                        actionTextColor: "#0575e6",
+                        pos: 'bottom-left',
+                        duration: 50000
+                    });
+                }
+            }
     
 function put_left_nav_doc() {
     $.ajax({
@@ -97,13 +82,9 @@ function put_left_nav_doc() {
                             }, function(err, response) {
                                if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
+                                // alert('put left nev doc');
                                 createCookie('ws_install-' + ws_id, true), 30;
-                                //Reiniciamos el navegador y si la cokie esta true pasamos el chek
-                                var delay = 2000;
-                                setTimeout(function(){ 
-                                     location.reload();
-                                    // window.location = "/account";
-                                     }, delay);
+                                //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
                                }
                               else if (err) {
                                // msj_alert(err);
@@ -169,6 +150,9 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                         //  console.log ('No se encuentra el documento en la userdb');
                     }else if(err){
                       //  console.log('Error al traer ws_left_nav doc');
+                      
+                      put_left_nav_doc(); //Si no se encuentra el docuento lo creamos nuevo
+
                         Snackbar.show({
                                text:  err.reason,
                                width: '475px',
@@ -344,5 +328,6 @@ $(document).ready(function () {
 });
 
 
+ws_module_config();
 
 

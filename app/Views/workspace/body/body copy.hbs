@@ -147,6 +147,114 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 */
 
 
+          
+let newWorker;
+          function showUpdateBar(newWorker) {
+           // let snackbar = document.getElementById('snackbar');
+            //snackbar.className = 'show';
+
+              Snackbar.show({
+                   text: '<span class="material-icons">cloud_download</span> Se instalo una nueva version con Exito!',
+                   width: '475px',
+                    actionTextColor: '#ff0000',
+                    actionText: 'Refrezcar',
+                    pos: 'bottom-center',
+                   onActionClick: function(element) {
+                       //Set opacity of element to 0 to close Snackbar
+                       $(element).css('opacity', 0);
+                       // location.reload();
+                        newWorker.postMessage({ action: 'skipWaiting' });
+                        location.reload();
+                       // alert('Refrezcar pagina!');
+                   }
+                });
+                var delay = 2000;
+                 setTimeout(function(){ 
+                     newWorker.postMessage({ action: 'skipWaiting' });
+                      location.reload();
+                     // window.location = "/account";
+                      }, delay);
+          }
+
+          ///INSTALACION SW
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+            .then(
+                reg => {
+                //console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
+                newWorker = reg.installing;
+                if (reg.waiting) {
+                console.log('waiting');
+                alert ('waiting')
+                 newWorker.postMessage({ action: 'skipWaiting' });
+                return;
+                }
+                if (reg.installing) {
+                console.log('installing');
+                alert('installing')
+                // newWorker.postMessage({ action: 'skipWaiting' });
+               //  location.reload();
+                newWorker.postMessage({ action: 'skipWaiting' });
+                var delay = 2000;
+                 setTimeout(function(){ 
+                      location.reload();
+                     // window.location = "/account";
+                      }, delay);
+
+               //  showUpdateBar();
+                return;
+                }
+                if (reg.active) {
+                console.log('installing');
+                alert('Se instalo una nueva version!');
+               /*  var delay = 2000;
+                 setTimeout(function(){ 
+                      location.reload();
+                     // window.location = "/account";
+                      }, delay);*/
+                return;
+                }
+
+                /*  reg.addEventListener('updatefound', function() {
+                console.log('service worker changed');
+                 alert ('service worker changed')
+                 
+                });
+                */
+              reg.addEventListener('updatefound', () => {
+                // A wild service worker has appeared in reg.installing!
+                newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                  // Has network.state changed?
+                  switch (newWorker.state) {
+                    case 'installed':
+                      if (navigator.serviceWorker.controller) {
+                         // new update available
+                         //alert('Hay una actualizacion diponible');      
+                        // showUpdateBar(newWorker);
+                        newWorker.postMessage({ action: 'skipWaiting' });
+                         //location.reload();
+                        var delay =2000;
+                        setTimeout(function(){location.reload(); }, delay);
+                      }
+                      // No update available
+                      break;
+                  }
+                });
+              });
+              reg.update(); //Actualiza el service worker cada una hora
+            });
+            let refreshing;
+            navigator.serviceWorker.addEventListener('controllerchange', function () {
+              if (refreshing) return;
+                // alert('Volver a iniciar app');
+              window.location.reload();
+              refreshing = true;
+            });
+          }  
+
+
+
 
  /*         
           
@@ -342,7 +450,6 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 <script src="/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js"></script>
 </html>
 
-
 <script type="module">
 
 
@@ -383,28 +490,29 @@ let newWorker;
                 //console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
                 newWorker = reg.installing;
                 if (reg.waiting) {
-                 console.log('Instalando Nueva vesion');
-                 alert ('waiting');
+                console.log('waiting');
+                 alert ('waiting')
                  newWorker.postMessage({ action: 'skipWaiting' });
                 return;
                 }
                 if (reg.installing) {
                 console.log('installing');
-                alert('Se instalo una nueva version!');
+                alert('installing')
                 // newWorker.postMessage({ action: 'skipWaiting' });
                 //  location.reload();
                 newWorker.postMessage({ action: 'skipWaiting' });
-                var delay = 1000;
+                var delay = 2000;
                  setTimeout(function(){ 
                       location.reload();
                      // window.location = "/account";
                       }, delay);
 
+               //  showUpdateBar();
                 return;
                 }
                 if (reg.active) {
-                console.log('Se instalo una nueva version!');
-                // alert('Se instalo una nueva version!');
+                console.log('installing');
+                alert('Se instalo una nueva version!');
                 /*  var delay = 2000;
                  setTimeout(function(){ 
                       location.reload();
@@ -428,12 +536,14 @@ let newWorker;
                     case 'installed':
                       if (navigator.serviceWorker.controller) {
                          // new update available
+                         //alert('Hay una actualizacion diponible');      
+                        // showUpdateBar(newWorker);
                         newWorker.postMessage({ action: 'skipWaiting' });
                          //location.reload();
                         var delay =2000;
                         setTimeout(function(){location.reload(); }, delay);
-                       // createCookie('ws_install-', true);
-                    
+                        createCookie('ws_install-', true);
+                        
                       }
                       // No update available
                       break;

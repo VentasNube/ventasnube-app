@@ -50,7 +50,6 @@ const url_hbs = '/public/app/v4.0/dist/hbs/workspace/'; //URL global de couchDB 
 const url_js = '/public/app/v4.0/dist/js/workspace/';
 
 
-
 // Leemos la cookie seteada en el ws
 const ws_id = readCookie ('ws_select');
 const u_email = readCookie ('user_email');
@@ -74,7 +73,28 @@ this.user_data = {
 if (!ws_id) {
     window.location = "/workspace/home";
 }
-//alert(ws_id);
+//Chekeo q se alla instalado todas las bases de datos y en especial la left bar y refrezco para inciar las dbs
+const ws_install = readCookie ('ws_install-' + ws_id);
+if (!ws_install) {
+    // alert('Tenemos que instalar el whorkspace ');
+       // window.onload = function () {
+       //     alert("window load complete");
+      //  }
+        var delay = 3000;
+        setTimeout(function(){ 
+             location.reload();
+            // window.location = "/account";
+             }, delay);
+}
+else{
+Snackbar.show({
+    text: 'Bienvenido' + u_name + ' al WORKSPACE: '+ ws_id,
+    actionText: 'ok',
+    actionTextColor: "#0575e6",
+    pos: 'bottom-center'
+});
+   // alert('Instalacion con exito! ' + ws_install);
+}
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });
@@ -116,23 +136,12 @@ user_db.sync(url_R_db+userDb, {
 */
 
   if(offline_mode){
-
-
-
     msj_alert('<span class="material-icons">wifi</span>  Modo offline activado ', 'top-left') 
   }else{
-
-
     msj_alert('<span class="material-icons">wifi_off</span>  Modo offline Desactivado ', 'top-left') 
   }
 
 
-Snackbar.show({
-    text: 'Bienvenido' + u_name + ' al WORKSPACE:'+ws_id,
-    actionText: 'ok',
-    actionTextColor: "#0575e6",
-    pos: 'bottom-center'
-});
 
 //user_session();
 // FUNCION LOGOUT
@@ -166,6 +175,8 @@ function logout() {
 };
 
 //Boton Offline
+
+/*
 $(".offline_mode").click(function() {
     if (validaForm()) {
         const ws_offline = $(this).attr('checked'); // Tomo el parametro del atributo
@@ -186,7 +197,7 @@ $(".offline_mode").click(function() {
         }
     }
 });
-
+?*/
 //Funcion chekeo que esten las 2 sesiones abiertas o cierro y redirecciono al _session 
 /*
 function chek_session() {
