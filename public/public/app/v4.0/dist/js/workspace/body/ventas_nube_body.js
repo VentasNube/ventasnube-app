@@ -35,20 +35,19 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
     msj_alert(err);
   });
 
-
-
+ws_lang_data_doc = L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true});
 
 L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true })
 .then(function(doc) {
     ws_info = doc
     //Doc de lenguaje
-    ws_lang_data_doc = L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true});
     //Mapeo el objeto
     var ws_lang = ws_lang_data_doc;
     //SETEO EL ARRAY CON EL IDIOMA
     ws_lang_data = ws_lang['ws_lang_es'];
     //Imprimo todas las vistas modulares del body
     // handle result
+
     // DOC DE LEGUAJE
     get_top_bar(ws_info, ws_lang_data);
     get_nav_cart(ws_info, ws_lang_data);
@@ -96,7 +95,17 @@ function put_left_nav_doc() {
                               _rev: doc._rev,
                               ws_left_nav: ws_left_nav
                             }, function(err, response) {
-                              if (err) {
+                               if(response) {
+                                //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
+                                createCookie('ws_install-' + ws_id, true), 30;
+                                //Reiniciamos el navegador y si la cokie esta true pasamos el chek
+                                var delay = 2000;
+                                setTimeout(function(){ 
+                                     location.reload();
+                                    // window.location = "/account";
+                                     }, delay);
+                               }
+                              else if (err) {
                                // msj_alert(err);
                                 Snackbar.show({
                                        text:  err.reason,
