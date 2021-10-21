@@ -17,9 +17,48 @@
 var documents = 'No hay documentos';
 var fuse = '';
 
+
 //###--- Conection y Sync a la base de datos local ---#####
-async function search_db() {
-    var search_db = 'ws_collections_' + ws_id;
+var ws_search_db = 'ws_collections_' + ws_id;
+//var ws_info = null;
+//var ws_lang_data = null;
+//Creo la base de datos local info_db
+L_search_db = new PouchDB(ws_search_db, { skip_setup: true });
+//sincronizo
+//Creo y conecto con userDB local 
+L_search_db.sync(url_R_db+ws_search_db, {
+    live: true,
+    retry: true,
+  //  skip_setup: true
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+  }).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('error', function (err) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+ //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+  });
+
+  async function search_db() {
+    try {
+            price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
+    } catch (err) {
+        Snackbar.show({
+            text: err.reason,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+//###--- Conection y Sync a la base de datos local ---#####
+/*async function search_db() {
     try {
         //  alert(offline_mode)
         if (offline_mode) {
@@ -35,26 +74,32 @@ async function search_db() {
                 actionTextColor: "#0575e6",
                 pos: 'top-left'
             });
+
         } else {
             L_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: true });
             price_doc = await L_search_db.get('price_list', { include_docs: true, descending: false });
+          
             Snackbar.show({
                 text: '<span class="material-icons">wifi_off</span> Modo Offline desactivado!',
                 actionText: 'ok',
                 actionTextColor: "#0575e6",
                 pos: 'top-left'
             });
+
         }
     } catch (err) {
-        Snackbar.show({
+        console.log('ERROR EN VENTANUBE SEACH JS');
+        console.log(err);
+    /*    Snackbar.show({
             text: 'Estas sin conexion a internet! ',
             actionText: 'ok',
             actionTextColor: "#0575e6",
             pos: 'bottom-center'
         });
+        
     }
 }
-
+*/
 // Trae los datos de la local user DB filtrado por tipo cart-items
 /*async function load_product_seach() {
     // Traigo los resultados de una vista
@@ -65,6 +110,19 @@ async function search_db() {
     return readCartItemSearch(response.rows);
 }
 */
+
+////----(4 Search Module)---/////
+function get_search_module(ws_info, ws_lang_data) {
+    var ws_search_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user: user_data,
+
+    }
+    console.log('search ARRAYYY ');
+    console.log(ws_search_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
+};
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
 function get_all_item_punchDb() {
