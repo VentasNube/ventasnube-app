@@ -33,22 +33,13 @@ function readCookie(name) {
 }
 
 // Leemos la cookie seteada para offline mode
-var ws_offline = readCookie("ws_offline");
 
-if (ws_offline == 'true') {
-    var offline_mode = true; 
-    $('.offline_mode').attr('checked', ''); //Cambio el atributo no chekeado
-} else if (ws_offline == 'false') {
-    var offline_mode = null; 
-    $('.offline_mode').removeAttr('checked'); //Cambio el atributo no chekeado
-}
 
 // ***** CONFIGURACIONES GLOBALES *****//
 const url_site = 'http://localhost'
 const url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
 const url_hbs = '/public/app/v4.0/dist/hbs/workspace/'; //URL global de couchDB REMOTO
 const url_js = '/public/app/v4.0/dist/js/workspace/';
-
 
 // Leemos la cookie seteada en el ws
 const ws_id = readCookie ('ws_select');
@@ -88,13 +79,14 @@ if (!ws_install) {
 }
 else{
 Snackbar.show({
-    text: 'Bienvenido' + u_name + ' al WORKSPACE: '+ ws_id,
+    text: 'Bienvenido ' + u_name + ' al WORKSPACE: '+ ws_id,
     actionText: 'ok',
     actionTextColor: "#0575e6",
     pos: 'bottom-center'
 });
    // alert('Instalacion con exito! ' + ws_install);
 }
+
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });
@@ -103,45 +95,18 @@ user_db.sync(url_R_db+userDb, {
     live: true,
     retry: true
   }).on('change', function (change) {
-    msj_alert('<span class="material-icons">wifi_off</span> Hay nuevos cambios', 'top-left');
-    // yo, something changed!
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
   }).on('paused', function (info) {
-    msj_alert('<span class="material-icons">wifi_off</span> Sincronización en pausa no hay internet.', 'bottom-center');
-    // replication was paused, usually because of a lost connection
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('active', function (info) {
-    msj_alert('<span class="material-icons">wifi</span> Sincronización activa!', 'bottom-center');
-    // replication was resumed
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('error', function (err) {
-    // totally unhandled error (shouldn't happen)
-    msj_alert(err);
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
   });
-
-
-
-
-  
-/*
-  db.get('charlie').then(function (charlie) {
-    // Within this function, you can do
-    // try/catch/return like you normally would,
-    // and it will be handled asynchronously!
-  }).then(function (result) {
-    // If the previous function returned something
-    // (or returned undefined), it will show up here
-    // as "result".
-  }).catch(function (err) {
-    // If the previous function threw an error,
-    // it will show up here as "err".
-  });
-*/
-
-  if(offline_mode){
-    msj_alert('<span class="material-icons">wifi</span>  Modo offline activado ', 'top-left') 
-  }else{
-    msj_alert('<span class="material-icons">wifi_off</span>  Modo offline Desactivado ', 'top-left') 
-  }
-
-
 
 //user_session();
 // FUNCION LOGOUT

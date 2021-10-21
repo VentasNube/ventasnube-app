@@ -1,16 +1,11 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 331;
+    const version = 22333341;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
-    self.addEventListener('install', event => {
-      //  console.log('V1 installing…');
-        // cache a cat SVG
-     //   event.waitUntil(
-          //  console.log('V1 installing…');
-          // caches.open('static-v1').then(cache => cache.add('/cat.svg'))
-    //    );
+      self.addEventListener('install', event => {
+        self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
       });
 
       self.addEventListener('activate', event => {
@@ -67,8 +62,9 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
         { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
-        // fuentes css y plugins 
-        { url: 'https://fonts.gstatic.com/s/materialicons/v109/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
+        // fuentes css y plugins
+        { url: 'https://fonts.gstatic.com/s/materialicons/v111/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
+       // { url: 'https://fonts.gstatic.com/s/materialicons/v109/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
         { url: 'https://fonts.googleapis.com/icon?family=Material+Icons', revision: version },
         { url: '/public/app/v4.0/dist/bootstrap/css/bootstrap.css', revision: version },
         { url: '/public/app/v4.0/dist/css/skins/skin-ventas-nube.css', revision: version },

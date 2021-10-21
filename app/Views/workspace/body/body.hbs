@@ -250,23 +250,19 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     </div>
     <!-- Footer-->
     <footer class="main-footer">
-        <div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
+        <!--div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
             data-original-title="<em> Habilitar modo offline</em>">
             <input class="offline_mode" value="true" id="switch-9" name="board_delivery_place"
                 type="checkbox" />
             <label for="switch-9" class="label-primary"></label>
-        </div>
-        <strong> Habilitar modo sin conexion </strong>
-
+        </div-->
+        <strong> Offline First APP </strong>
         <strong>Copyright &copy; 2017-2021 <a href="www.ventasnube.com">Ventas Nube</a>
-
             <span id="sw-version">3 </span>
         </strong>
     </footer>
 
 </body>
-
-<div id="snackbar">A new version of this app is available. Click <a id="reload">here</a> to update.</div>
 
 <div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
     aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
@@ -381,15 +377,18 @@ let newWorker;
             .then(
                 reg => {
                 //console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
-                newWorker = reg.installing;
+                 
+                 
                 if (reg.waiting) {
+                waitWorker = reg.waiting;
                  console.log('Instalando Nueva vesion');
-                 alert ('waiting');
-                 newWorker.postMessage({ action: 'skipWaiting' });
+                 alert ('Instalando Nueva vesion');
+                 waitWorker.postMessage({ action: 'skipWaiting' });
                 return;
                 }
                 if (reg.installing) {
-                console.log('installing');
+                newWorker = reg.installing;
+                //console.log('installing');
                 alert('Se instalo una nueva version!');
                 // newWorker.postMessage({ action: 'skipWaiting' });
                 //  location.reload();
@@ -430,29 +429,25 @@ let newWorker;
                          // new update available
                         newWorker.postMessage({ action: 'skipWaiting' });
                          //location.reload();
-                        var delay =2000;
-                        setTimeout(function(){location.reload(); }, delay);
-                       // createCookie('ws_install-', true);
-                    
+                        //  var delay =2000;
+                        //  setTimeout(function(){location.reload(); }, delay);
+                        // createCookie('ws_install-', true);
                       }
                       // No update available
                       break;
                   }
                 });
               });
-              reg.update(); //Actualiza el service worker cada una hora
+              //reg.update(); //Actualiza el service worker cada una hora
             });
             let refreshing;
             navigator.serviceWorker.addEventListener('controllerchange', function () {
               if (refreshing) return;
-                // alert('Volver a iniciar app');
+                //  alert('Volver a iniciar app');
               window.location.reload();
-              refreshing = true;
+                //  refreshing = true;
             });
           }  
-
-
-
 
 
 </script>

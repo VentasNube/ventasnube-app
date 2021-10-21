@@ -20,7 +20,7 @@
 
 
             <li class="notifications-menu" data-toggle="tooltip" data-placement="bottom"
-                title="{{#with ../../t_search}} {{b_exit}}{{/with}}">
+                title="{{#with ../ws_lang_data }} {{t_search}}{{/with}}">
                 <a id="" href="#" class="search_open ">
                     <i class="material-icons">search</i>
                 </a>
@@ -36,7 +36,7 @@
                    <i class="material-icons">search</i>
                 </a>
             </li-->
-            <li class="dropdown notifications-menu">
+            <!--li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <i class="material-icons">notifications_active</i>
                     <span class="countAlert label label-danger"></span>
@@ -46,7 +46,6 @@
                         Tienes <span class="countAlert">0</span> Notificaciones Nuevas
                     </li>
                     <li>
-                        <!-- inner menu: contains the actual data -->
                         <div id="menuBody" class="slimScrollDiv ">
                             <ul id="alert_div" class='menu'>
                                 <li class="text-center">
@@ -64,7 +63,7 @@
                     <li class="footer"><a href="#" id="delAlertas"><i class="ion ion-android-delete"></i> Eliminar</a>
                     </li>
                 </ul>
-            </li>
+            </li-->
 
             <!--li class="notifications-menu">
                 <a id="store_cart_button" href="#" class="cart_button">
@@ -72,10 +71,21 @@
                     <span id="store_cart-number" class="cart-number">0</span>
                 </a>
             </li-->
-
-            <li class="notifications-menu">
+             <li class="notifications-menu">
+                <a id="cloud_sync_icon" href="#">
+                    <!--i class="material-icons ">  cloud_sync</i-->
+                      <i class="material-icons material-icon-spinner"> sync</i>
+                </a>
+            </li>
+            <!--li class="notifications-menu">
                 <a id="cart_button" href="#" class=" cart_button">
                     <i class="material-icons">shopping_cart</i>
+                    <span id="cart-number-2" class="cart_n cart-number">0</span>
+                </a>
+            </li-->
+            <li class="notifications-menu">
+                <a d="cart_button" href="#" class="cart_button">
+                    <i class="material-icons">store</i>
                     <span id="cart-number-2" class="cart_n cart-number">0</span>
                 </a>
             </li>

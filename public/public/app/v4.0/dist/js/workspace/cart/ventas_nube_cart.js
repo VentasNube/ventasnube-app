@@ -17,7 +17,16 @@
 //Inicializacion de APP WPA OFFLINE  2021
 //Instalacion de Dases de datos y documentos.
 //###########################################################################
-
+//Funcion que chekea el ultimo estado del cart
+function chek_cart_open_ws() {
+var cart_open = readCookie("cart_open_ws_"+ws_id);
+    if (cart_open == 'true') {
+        $('#right_main').addClass('move-right');
+      //  alert('Mueve a la derecha');
+    } else if (cart_open == 'false') {
+        $('#right_main').removeClass('move-right');
+    }
+}
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart() {
     // Traigo los resultados de una vista
@@ -29,7 +38,6 @@ async function get_cart() {
     return all_cart_item(false);
    }
 }
-
 
 // Creo los arrays con los datos de la BD
 async function all_cart_item(todos) {
@@ -92,6 +100,7 @@ async function all_cart_item(todos) {
         };
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
+       // chek_cart_open_ws();
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (ex) {
         console.error('inner', ex.message);
@@ -106,6 +115,7 @@ async function all_cart_item(todos) {
         $('#total_neto_discount').text(total_neto_discount);
         $('#total_neto_tax').text(total_neto_tax);
         $('#total_neto_pay').text(total_neto_pay);
+        chek_cart_open_ws();
         //   get_cart_change();
         return;
     }
@@ -225,20 +235,23 @@ async function add_cart_item(data) {
             variant: data //Array new_variant_doc
         });
 
+ //console.log('CART ADD ITEM ');
+ //console.log(data);
         Snackbar.show({  
-            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.variant_quantity + ' </span>   ' + data.variant_name,
+            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Deshacer ',
             actionTextColor: "#4CAF50",
                onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
                 $(element).css('opacity', 0);    
-                dell_product(response.id, response.rev);
+                user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
+                $('#' + response.id).remove();
             }
         });
     } catch (err) {
         Snackbar.show({  
-            text: '<span class="round-icon pr">' + data.variant_quantity + '</span> ' + data.variant_name + '<?= lang("Body.b_error") ?>',
+            text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Recargar',
@@ -299,6 +312,7 @@ async function dell_cart_item(element) {
 
 // Abre el left nav cart
 $(document).on('click', '.cart_button', function(event) {
+    createCookie('cart_open_ws_' + ws_id, false), 30;
     $('#right_main').removeClass('move-right');
     $('#cart_user_input').focus();
     get_cart();
@@ -307,7 +321,9 @@ $(document).on('click', '.cart_button', function(event) {
 
 //Cierra el carrito
 $(document).on('click', '.cart_button_close', function(event) {
+    createCookie('cart_open_ws_' + ws_id, true), 30;
     $('#right_main').addClass('move-right');
+  //  alert('creo la cokie');
     //get_cart();
 });
 
@@ -503,14 +519,15 @@ async function add_fav_item(data) {
         $("#fav_item_tab_icon").addClass('active');
 
         Snackbar.show({  
-            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.variant_quantity + ' </span>   ' + data.variant_name,
+            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Deshacer',
             actionTextColor: "#4CAF50",
                onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
                 $(element).css('opacity', 0);    
-                dell_product(response.id, response.rev);
+                user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
+                $('#' + response.id).remove();
             }
         });
     } catch (err) {
@@ -522,7 +539,7 @@ async function add_fav_item(data) {
             actionTextColor: "#dd4b39",
                onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
                 $(element).css('opacity', 0);    
-                add_cart_item(data);
+             //   add_cart_item(data);
             }
         });
         console.log(err);
@@ -602,3 +619,4 @@ function cart_user_input_out() {
     $('#cart_user_input_subjet').removeClass('in');
 };*/
 // Abre el left nav cart
+

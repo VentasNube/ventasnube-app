@@ -4,38 +4,30 @@
 // 1 TRAIGO LOS DOCUMENTOS CON LA INFORMACIOND E LA ESTRUCTURA 
 //// --- Top Bar ---- Left Nav --- Cart -- Fav -- Search --- acount --  buy 
 
-//var ws_info = ws_info;
 //###--- Conection y Sync a la base de datos local ---#####
-
 var ws_info_db = 'ws_info_' + ws_id;
 var ws_info = null;
 var ws_lang_data = null;
-
-
-//alert(ws_id);
-//Creo la base de datos local
+//Creo la base de datos local info_db
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
 //sincronizo
-//L_ws_info_db.sync(url_R_db + ws_info_db, { live: true, retry: true, skip_setup: true});
-
 //Creo y conecto con userDB local 
-//L_ws_info_db = new PouchDB(u_db, { skip_setup: true });
 L_ws_info_db.sync(url_R_db+ws_info_db, {
     live: true,
     retry: true,
   //  skip_setup: true
-  }).on('change', function (change) {
-    msj_alert('<span class="material-icons">wifi_off</span> Hay nuevos cambios', 'top-left');
-    // yo, something changed!
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
   }).on('paused', function (info) {
-    msj_alert('<span class="material-icons">wifi_off</span> Sincronización en pausa', 'bottom-center');
-    // replication was paused, usually because of a lost connection
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('active', function (info) {
-    msj_alert('<span class="material-icons">wifi</span> Sincronización activa!', 'bottom-center');
-    // replication was resumed
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('error', function (err) {
-    // totally unhandled error (shouldn't happen)
-    msj_alert(err);
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+ //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
   });
 
  async function ws_module_config() {
@@ -48,6 +40,12 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         //SETEO EL ARRAY CON EL IDIOMA
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
+
+                        console.log('WS INFOOOOOOOOOOOO');
+                        console.log(ws_info);
+                        console.log('WS ws_lang_dataAAAAA');
+                        console.log(ws_lang_data);
+
                         get_top_bar(ws_info, ws_lang_data);
                         get_nav_cart(ws_info, ws_lang_data);
                         get_search_module(ws_info, ws_lang_data);
@@ -62,8 +60,9 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         duration: 50000
                     });
                 }
-            }
-    
+ }
+ ////----(1 LEFT NAV)---/////
+ //Creo el doc y lo guardo el la db
 function put_left_nav_doc() {
     $.ajax({
         url: "/body/left_nav",
@@ -133,8 +132,7 @@ function put_left_nav_doc() {
         }
     });
 };
-
-
+//Leo el doc y imprimo la vista
 function get_left_nav_doc(user_db , ws_lang_data) {
               //    alert('Traigo el doc y imprimo la vista');
                 user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
@@ -150,9 +148,7 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                         //  console.log ('No se encuentra el documento en la userdb');
                     }else if(err){
                       //  console.log('Error al traer ws_left_nav doc');
-                      
                       put_left_nav_doc(); //Si no se encuentra el docuento lo creamos nuevo
-
                         Snackbar.show({
                                text:  err.reason,
                                width: '475px',
@@ -167,15 +163,13 @@ function get_left_nav_doc(user_db , ws_lang_data) {
                                    //alert('Refrezcar pagina!');
                                }
                             });
-
                         return console.log(err);        
                     }
                 });
 };
 
-
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
-////----(1 TOP BAR)---/////
+////----(2 TOP BAR)---/////
 function get_top_bar(ws_info, ws_lang_data) {
     var ws_top_bar = {
         ws_top_bar: ws_info,
@@ -197,31 +191,8 @@ function get_nav_cart(ws_info, ws_lang_data) {
     console.log('CART in');
 };
 
-////----(2 LEFT NAV)---/////
-// Imprimo en pantalla los el array con los modulos
-//Nueva funcion de Left nav
 
-/*
-function get_left_nav(ws_left_nav) {
 
-    console.log('left nav IN');
-    console.log(ws_left_nav_doc);
-    var ws_left_nav_doc = {
-        ws_left_nav: ws_left_nav
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
-};*/
-
-////----(4 Search Module)---/////
-function get_search_module(ws_info, ws_lang_data) {
-    var ws_search_data = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data
-    }
-    console.log('search');
-    console.log(ws_search_data);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
-};
 
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck

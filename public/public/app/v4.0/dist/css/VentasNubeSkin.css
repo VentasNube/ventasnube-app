@@ -9144,19 +9144,24 @@ h1 span{
     z-index: 1;
     background-color: #ffff;
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+    display: flex;
 }
+
+.search-content .search-header .search-nav .search-nav-icons {
+    height: 60px;
+    z-index: 1;
+    display: flex;
+    margin-right: 65px;
+}
+
 .search-content .search-header .search-nav .search-close {
-    /* width: 60px; */
-    /* height: 60px; */
-    
-    padding: 11px;
-    /* margin: 0 20px 0 0; */
-    
+    width: 60px;
     position: relative;
     vertical-align: middle;
     font-size: 12px;
     cursor: pointer;
-    background-color: #ffff;
+    padding: 14px;
+    line-height: 20px;
 }
 .search-content .search-header .search-nav .search-delete {
     position: relative;
@@ -9165,10 +9170,10 @@ h1 span{
     cursor: pointer;
     background-color: #ffff;
     padding: 0;
-    margin: 0 0 0 -25px;
+    margin: 0 0 0 0;
 }
 .search-content .search-header .search-nav .search-close span {
-    font-size: 30px;
+    font-size: 36px;
 }
 .search-content .search-header .search-nav .search-close:focus,
 .search-content .search-header .search-nav .search-close:hover {
@@ -9196,7 +9201,7 @@ h1 span{
     position: relative;
     margin-bottom: 45px;
     display: inline-block;
-    width: 80%;
+    width: 100%;
 }
 .search-content .search-header .search-nav .group .search_cat_btn {
     position: relative;
@@ -11413,9 +11418,11 @@ board-item-content
     height: 100%;
     right: 0;
     position: fixed;
-    top: 0px;
+   
+    top: 63px;
     transition: all 0.1s ease-in-out;
-    /*width: 500px;*/
+    /*width: 500px;
+     top: 0px;*/
     
     z-index: 9999;
     background: #fff;
@@ -11425,7 +11432,8 @@ board-item-content
     .right_main {
         height: 100%;
         position: fixed;
-        top: 0px;
+      /*  top: 0px;*/
+        top: 63px;
         right: 0;
         transition: all 0.1s ease-in-out;
         width: 500px;
@@ -12083,6 +12091,14 @@ board-item-content
     z-index: 9999;
 }
 
+/**** Efecto giro 360 *****/
+
+.icon_rotate {
+    -ms-transform:rotate(45deg);     /* Internet Explorer 9 */
+    -webkit-transform:rotate(45deg); /* Chrome, Safari, Opera */
+    transform:rotate(45deg);         /* Standard syntax */
+}
+
 /*** Efecto ripple preloader divs **/
 .card-loader {
     background-color: #fff;
@@ -12154,6 +12170,13 @@ board-item-content
     align-items: center;
     background-color: transparent;
 }
+
+
+.material-icon-spinner {
+    animation: spin 1s linear 0s infinite;
+    -webkit-animation: spin 1s infinite linear;
+}
+
 .three-quarter-spinner {
     width: 50px;
     height: 50px;
