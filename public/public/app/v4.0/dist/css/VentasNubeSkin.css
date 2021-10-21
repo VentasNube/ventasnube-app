@@ -9223,7 +9223,7 @@ h1 span{
         position: relative;
         margin-bottom: 15px;
         display: inline-block;
-        width: 55%;
+        width: 100%;
     }
     
     .search-content .search-header .search-nav .group input {
