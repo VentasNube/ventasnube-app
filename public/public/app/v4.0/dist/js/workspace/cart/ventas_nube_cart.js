@@ -27,10 +27,46 @@ var cart_open = readCookie("cart_open_ws_"+ws_id);
         $('#right_main').removeClass('move-right');
     }
 }
+
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_cart() {
+async function get_cart(ws_id) {
     // Traigo los resultados de una vista
-    let response = await user_db.query('get/cart-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
+    let response = await user_db.query(
+        'get/cart-item',  {
+          include_docs: true,
+          descending: true 
+        }
+     ); //Conceto con la vista de diseno
+   if(response.rows){
+    const rows = response.rows;
+        console.log('Respuesta Origial'); // []
+        console.log(response.rows);
+       // alert(ws_id);
+    const result = rows.filter(row => row.doc.ws_id === ws_id);
+        console.log('Respuesta FILTRADA'); // []
+        console.log(result);
+        //console.log(rows_items); // []
+        return all_cart_item(result);
+        //return all_cart_item(response.rows);
+   }
+   else{
+    return all_cart_item(false);
+   }
+}
+
+// Trae los datos de la local user DB filtrado por tipo cart-items
+async function get_cartOLD2() {
+    // Traigo los resultados de una vista
+    let response = await user_db.query(
+        'get/cart-item',  {
+          include_docs: true,
+          startkey: 'cart_ws_id_'+ ws_id + '_',
+          endkey: 'cart_ws_id_'+ ws_id + '_\ufff0',
+          //filter: 'get_cart_ws/by_ws_id',
+          //query_params: { "ws_id": ws_id },
+          descending: true 
+        }
+     ); //Conceto con la vista de diseno
    if(response.rows){
     return all_cart_item(response.rows);
    }
@@ -134,11 +170,11 @@ async function get_cart_change() {
         if (change.deleted) {
             // alert('Docuento Eliminado' + change.id);
             //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_cart();
+            get_cart(ws_id);
         } else {
             //  alert('Docuento Agregado' + change.id);
             // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_cart();
+            get_cart(ws_id);
         }
     }).on('error', function(err) {
         // handle errors
@@ -231,6 +267,7 @@ async function add_cart_item(data) {
         var response = await user_db.put({
             _id: new Date().toISOString(),
             type: 'cart-item',
+            ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
@@ -319,8 +356,8 @@ async function dell_cart_item(element) {
           createCookie('cart_open_ws_' + ws_id, false), 30;
             $('#right_main').removeClass('move-right');
             $('#cart_user_input').focus();
-            get_cart();
-            get_fav();
+            get_cart(ws_id);
+            get_fav(ws_id);
           break;
           case 2 : 
        //   alert('Abriendo');
@@ -345,12 +382,38 @@ $(document).on('click', '.cart_button_close', function(event) {
 /** ############# FUCNIONES FAVORITOS  ############## *****/
 // Agreagar productos al favoritos
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_fav() {
+async function get_favOLD() {
     // Traigo los resultados de una vista
     let response = await user_db.query('get/fav-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
     // Renderizo todos los resultados 
     console.log(response)
     return all_fav_item(response.rows);
+}
+
+
+async function get_fav(ws_id) {
+    // Traigo los resultados de una vista
+    let response = await user_db.query(
+        'get/fav-item',  {
+          include_docs: true,
+          descending: true 
+        }
+     ); //Conceto con la vista de diseno
+   if(response.rows){
+    const rows = response.rows;
+        console.log('Respuesta Origial'); // []
+        console.log(response.rows);
+       // alert(ws_id);
+    const result = rows.filter(row => row.doc.ws_id === ws_id);
+        console.log('Respuesta FILTRADA'); // []
+        console.log(result);
+        //console.log(rows_items); // []
+        return all_fav_item(result);
+        //return all_cart_item(response.rows);
+   }
+   else{
+    return all_fav_item(false);
+   }
 }
 
 // Creo los arrays con los datos de la BD
@@ -440,7 +503,7 @@ async function all_fav_item(todos) {
 }
 
 // Traer los item leyendo de la pounchDB
-async function get_fav_change() {
+async function get_fav_change(ws_id) {
     //  Escucho Los cambios en tiempo real
     await user_db.changes({
         // filter: '_view',
@@ -452,11 +515,11 @@ async function get_fav_change() {
         if (change.deleted) {
             // alert('Docuento Eliminado' + change.id);
             //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_fav();
+            get_fav(ws_id);
         } else {
             //  alert('Docuento Agregado' + change.id);
             // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_fav();
+            get_fav(ws_id);
         }
     }).on('error', function(err) {
         // handle errors
@@ -518,6 +581,7 @@ async function add_fav_item(data) {
         var response = await user_db.put({
             _id: new Date().toISOString(),
             type: 'fav-item',
+            ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
