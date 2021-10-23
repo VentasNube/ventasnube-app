@@ -66,11 +66,37 @@ if (!ws_id) {
 }
 //Chekeo q se alla instalado todas las bases de datos y en especial la left bar y refrezco para inciar las dbs
 const ws_install = readCookie ('ws_install-' + ws_id);
+
+
+function chek_ws_updates() {
+   // var cart_open = readCookie("cart_open_ws_"+ws_id);
+    const ws_install = readCookie ('ws_install-' + ws_id);
+        if (ws_install == 'true') {
+            $('#modal_master').addClass('hidden');
+            Snackbar.show({
+                text: 'Bienvenido ' + u_name + ' VentasNube esta actualizado!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-center'
+            });
+        } else {
+            // $('#modal_master').removeClass('move-right');
+            var delay = 3000;
+            setTimeout(function(){ 
+                 location.reload();
+                // window.location = "/account";
+                 }, delay);
+        }
+}
+
+chek_ws_updates() ;
+/*
 if (!ws_install) {
-    // alert('Tenemos que instalar el whorkspace ');
+    alert('No se guardo la cockie ');
        // window.onload = function () {
        //     alert("window load complete");
       //  }
+      $('#')
         var delay = 3000;
         setTimeout(function(){ 
              location.reload();
@@ -78,7 +104,9 @@ if (!ws_install) {
              }, delay);
 }
 else{
-Snackbar.show({
+
+    alert('Se guardo la cockie');
+    Snackbar.show({
     text: 'Bienvenido ' + u_name + ' al WORKSPACE: '+ ws_id,
     actionText: 'ok',
     actionTextColor: "#0575e6",
@@ -86,7 +114,7 @@ Snackbar.show({
 });
    // alert('Instalacion con exito! ' + ws_install);
 }
-
+*/
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });

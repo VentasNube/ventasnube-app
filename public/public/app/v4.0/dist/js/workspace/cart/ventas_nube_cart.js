@@ -308,25 +308,39 @@ async function dell_cart_item(element) {
     }
 }
 
+  $(document).on('click', '.cart_open_button', function(event)
+  {
+      var state = $(this).data('state');
+      switch(state){
+          case 1 :
+          case undefined : 
+        //  alert('Cerrando'); 
+          $(this).data('state', 2); 
+          createCookie('cart_open_ws_' + ws_id, false), 30;
+            $('#right_main').removeClass('move-right');
+            $('#cart_user_input').focus();
+            get_cart();
+            get_fav();
+          break;
+          case 2 : 
+       //   alert('Abriendo');
+          createCookie('cart_open_ws_' + ws_id, true), 30;
+          $('#right_main').addClass('move-right');
+          $(this).data('state', 1);
+          break;
+      }
+  });
 
-
-// Abre el left nav cart
-$(document).on('click', '.cart_button', function(event) {
-    createCookie('cart_open_ws_' + ws_id, false), 30;
-    $('#right_main').removeClass('move-right');
-    $('#cart_user_input').focus();
-    get_cart();
-    get_fav();
-});
 
 //Cierra el carrito
+/*
 $(document).on('click', '.cart_button_close', function(event) {
     createCookie('cart_open_ws_' + ws_id, true), 30;
     $('#right_main').addClass('move-right');
   //  alert('creo la cokie');
     //get_cart();
 });
-
+*/
 
 /** ############# FUCNIONES FAVORITOS  ############## *****/
 // Agreagar productos al favoritos

@@ -482,6 +482,19 @@ class Workspace extends BaseController
                         'b_product' => 'Productos',
                         'b_service' => 'Servicios',
                         'b_contact' => 'Contactos',
+                        'm_account_tittle'=> 'Mis datos',
+                        'm_account_tittle_buy'=> 'Mis compras',
+                        'm_account_edit_b'=> 'Modificar datos',
+                        'm_account_save_b'=> 'Guardar cambios',
+                        'm_account_edit_pic_b'=> 'Modificar datos',
+                        'm_account_name'=> 'Nombre',
+                        'm_account_surname'=> 'Apellido',
+                        'm_account_document'=> 'Documento',
+                        'm_account_phone'=> 'Telefono',
+                        'm_account_email'=> 'Email',
+                        'm_account_passwor_b'=> 'Modificar contrase&ntilde;a',
+                        'm_account_passwor'=> 'Nueva Contrase&ntilde;a',
+                        'm_account_passwor_repet'=> 'Volver a escribir Contrase&ntilde;a'
                     ],
                 ];
                 //BD con configuracion del workspace

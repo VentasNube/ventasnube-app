@@ -327,6 +327,9 @@ class BodyModel extends Model//Crea el nombre de el modelo
     }
 
     ///  TRAE TODOS EL MODULO ACTUAL SEGUN PARAMETROS USER PERMISION EL USUARIO(Se usa para la navegacion lateral, del boar etc)
+   
+   */
+
     public function get_m_now($user_id = false, $m_id = false, $m_t_id = false, $m_t_name = false)
     {
         $this->db->select('*');
@@ -366,5 +369,5 @@ class BodyModel extends Model//Crea el nombre de el modelo
             return false;
         }
     }
-*/
+
 }

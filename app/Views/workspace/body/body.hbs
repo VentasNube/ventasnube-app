@@ -1,182 +1,5 @@
 
-<script type="module">
-
-    /*
-    navigator.serviceWorker.register('/service-worker.js').then(reg => {
-        reg.installing; // the installing worker, or undefined
-        reg.waiting; // the waiting worker, or undefined
-        reg.active; // the active worker, or undefined
-        //  reg.update(); 
-        reg.addEventListener('updatefound', () => {
-            // A wild service worker has appeared in reg.installing!
-            const newWorker = reg.installing;
-          
-            newWorker.state;
-
-             $( "#master_popup" ).text( "Validated..." ).show();
-             alert('Ventasnube se actualizo register!');
-            // "installing" - the install event has fired, but not yet complete
-            // "installed"  - install complete
-            // "activating" - the activate event has fired, but not yet complete
-            // "activated"  - fully active
-            // "redundant"  - discarded. Either failed install, or it's been
-            //                replaced by a newer version
-            newWorker.addEventListener('statechange', () => {
-                $('#sw-version').html("Hay una nueva vesion instalada!");
-                // newWorker.state has changed
-                var delay = 2000;
-                 setTimeout(function(){ window.location = "/account"; }, delay);
-             
-                location.reload();
-                // alert('statechange');
-            });
-        });
-    });
-*/
-
-   
-/*
-    navigator.serviceWorker.register('/service-worker.js').then(reg => {
-        reg.installing; // the installing worker, or undefined
-        reg.waiting; // the waiting worker, or undefined
-        reg.active; // the active worker, or undefined
-        //  reg.update(); 
-        reg.addEventListener('updatefound', () => {
-            // A wild service worker has appeared in reg.installing!
-            const newWorker = reg.installing;
-            const waitingInstall = reg.waiting;
-            const activeInstall = reg.active;
-           
-            reg.active; 
-            newWorker.state;
-
-             $( "#master_popup" ).text( "Validated..." ).show();
-             alert('Ventasnube se actualizo register!');
-            // "installing" - the install event has fired, but not yet complete
-            // "installed"  - install complete
-            // "activating" - the activate event has fired, but not yet complete
-            // "activated"  - fully active
-            // "redundant"  - discarded. Either failed install, or it's been
-            //                replaced by a newer version
-            newWorker.addEventListener('statechange', () => {
-                $('#sw-version').html("Se instalo una nueva vesion con exito!");
-                // newWorker.state has changed
-                var delay = 2000;
-                 setTimeout(function(){ window.location = "/account"; }, delay);
-             
-                location.reload();
-                // alert('statechange');
-            });
-
-
-
-
-        });
-
-    });
-
-*/
-
-// Nos aseguramos que el navegador implementa la api 'serviceWorker'/*
-
-/*
-if ('serviceWorker' in navigator) {
-  // Esperamos al evento load para registrar nuestro service worker
-  window.addEventListener('load', () => {
-  // Registramos el service worker
-  navigator.serviceWorker.register('/service-worker.js');
-  });
-}
-*/
-
-          // The click event on the pop up notification
-       /*   document.getElementById('reload').addEventListener('click', function(){
-            newWorker.postMessage({ action: 'skipWaiting' });
-          });*/
-
-
-        /*   navigator.serviceWorker.register('/service-worker.js')
-            .then(function(reg) {
-                if (reg.waiting) {
-                console.log('waiting');
-                return;
-                }
-
-                if (reg.installing) {
-                console.log('installing');
-                return;
-                }
-
-                reg.addEventListener('updatefound', function() {
-                console.log('service worker changed');
-                });
-            });
-
-          *//*
-
-navigator.serviceWorker.register('/service-worker.js').then(reg => {
-  reg.installing; // the installing worker, or undefined
-  reg.waiting; // the waiting worker, or undefined
-  reg.active; // the active worker, or undefined
-
-  reg.addEventListener('updatefound', () => {
-    // A wild service worker has appeared in reg.installing!
-    const newWorker = reg.installing;
-
-    newWorker.state;
-    // "installing" - the install event has fired, but not yet complete
-    // "installed"  - install complete
-    // "activating" - the activate event has fired, but not yet complete
-    // "activated"  - fully active
-    // "redundant"  - discarded. Either failed install, or it's been
-    //                replaced by a newer version
-    alert(newWorker.state);
-    console.log(newWorker.state);
-    newWorker.addEventListener('statechange', () => {
-      // newWorker.state has changed
-    });
-  });
-});
-
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-  // This fires when the service worker controlling this page
-  // changes, eg a new worker has skipped waiting and become
-  // the new active worker.
-});
-
-*/
-
-
-
- /*         
-          
- navigator.serviceWorker.addEventListener('controllerchange', () => {
-            // This fires when the service worker controlling this page
-            // changes, eg a new worker has skipped waiting and become
-            // the new active worker.
-            //alert('Se instalo una nueva vesion con exito!');
-            //location.reload();
-            // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
-            // alert('controllerchange');
-           Snackbar.show({
-                   text: '<span class="material-icons">downloading</span> Hay una actualizacion disponible!',
-                   width: '475px',
-                    actionTextColor: '#ff0000',
-                    actionText: 'Refrezcar',
-                    pos: 'bottom-center',
-                   onActionClick: function(element) {
-                       //Set opacity of element to 0 to close Snackbar
-                       $(element).css('opacity', 0);
-                       location.reload();
-                       //  newWorker.postMessage({ action: 'install' });
-                       //alert('Refrezcar pagina!');
-                   }
-                });
-    });
-*/
-</script>
 <html lang="es" xml:lang="es" xmlns="https://www.w3.org/1999/xhtml">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -204,12 +27,12 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     <!-- Manifest JSON-->
     <link rel="manifest" href="/public/app/v4.0/dist/js/manifest.json">
 </head>
-
+<!-- Search module compiled -->
 <div id="search_module_compiled"></div>
+<!-- Right main compiled -->
 <div id="right_main_compiled"></div>
 
 <body class="hold-transition skin-ventas-nube sidebar-mini sidebar-collapse fixed">
-
     <div class="btnContenedor">
         <button class="botonF1">
             <span class="btnSpan">+</span>
@@ -232,41 +55,58 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     </div>
     <div class="wrapper">
         <!-- TOP NAV -->
-        <header id="top_nav_compiled" class="main-header">
-        </header>
+        <header id="top_nav_compiled" class="main-header"></header>
         <!-- LEFT NAV-->
-        <aside id="left_nav_compiled" class="main-sidebar">
-        </aside>
+        <aside id="left_nav_compiled" class="main-sidebar"></aside>
         <div class="content-wrapper">
             <section class="content" id="content">
                 <div id="nav_bar_compiled"></div>
                 <!--MODULE NAV BAR COPILED-->
-                <div id="content_compiled">
-
-                </div>
+                <div id="content_compiled"></div>
                 <!--MODULE CONTENT COPILED-->
             </section>
         </div>
     </div>
     <!-- Footer-->
     <footer class="main-footer">
-        <!--div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
-            data-original-title="<em> Habilitar modo offline</em>">
-            <input class="offline_mode" value="true" id="switch-9" name="board_delivery_place"
-                type="checkbox" />
-            <label for="switch-9" class="label-primary"></label>
-        </div-->
         <strong> Offline First APP </strong>
-        <strong>Copyright &copy; 2017-2021 <a href="www.ventasnube.com">Ventas Nube</a>
-            <span id="sw-version">3 </span>
+        <strong>Copyright &copy; 2017-2022 <a href="www.ventasnube.com">Ventas Nube</a>
+            <span id="sw-version">4 </span>
         </strong>
     </footer>
-
 </body>
 
 <div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
     aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
 </div>
+
+
+<div id="modal_master" class="modal_master">
+        <div class="modal_header">
+                    <div class="tittle">Actualizando tu Workspace</div>
+                     
+        </div>
+        <div class="modal_body ">
+                        <div class="icon_tittle">
+                          <span class="material-icons">
+                              install_desktop
+                          </span>
+                        </div>
+                        <br>
+                        <div class="icon_loading">
+                          <span class="material-icons material-icon-spinner">
+                               cached
+                          </span>
+                        </div>
+                        <div class="sub_tittle">Aguarda un instante...</div>
+                   
+        </div>
+        <div class="modal_footer">
+       
+        </div>
+</div>
+
+
 
 <!--- COMPONENTES PRIMARIOS -->
 <!-- Jquery-3.1.1.min.js -->
@@ -294,38 +134,7 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 <script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js"></script>
 <!--- PLANTILLA FUNCIONES BODY -->
 <script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_app.js"></script>
-
-<!--script type="text/javascript" src="/public/app/v4.0/dist/js/plugin/WebNotifications.js"></script-->
-
-<!--script type="text/javascript">
-    var n = 1;
-    function showNotification() {
-        //Se usan los siguientes parametros 
-        // title, msg, icon, tag, timeout
-        var notif = showWebNotification(
-            'Nueva notificacion' + n,
-            'Se actualizo con exito!' + n,
-            '/public/app/v4.0/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png',
-            null,
-            3000
-        );
-        // Segun si tiene permisos y el usuario presiona sobre las distintas
-        // funciones y re envia los siguientes parametros
-        notif.addEventListener("show", Notification_OnEvent);
-        notif.addEventListener("click", Notification_OnEvent);
-        notif.addEventListener("close", Notification_OnEvent);
-        n++;
-    }
-    function Notification_OnEvent(event) {
-        //A reference to the Notification object
-        var notif = event.currentTarget;
-        //document.getElementById("msgs").innerHTML += "<br>Notification <strong>'" + notif.title + "'</strong> received event '" + event.type + "' at " + new Date().toLocaleString();
-    }
-</script-->
-
-
-<!-- ############## Modulos VNAPP ##############  -->
-
+<!-- ############## Modulos VENTAS NUBE ##############  -->
 <!--- SESSION -->
 <script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_session.js"></script>
 <!--- BODY -->
@@ -340,11 +149,8 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 
 
 <script type="module">
-
-
-          
 let newWorker;
-          function showUpdateBar(newWorker) {
+function showUpdateBar(newWorker) {
            // let snackbar = document.getElementById('snackbar');
             //snackbar.className = 'show';
 
@@ -370,7 +176,6 @@ let newWorker;
                      // window.location = "/account";
                       }, delay);
           }
-
           ///INSTALACION SW
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
@@ -447,6 +252,4 @@ let newWorker;
                 //  refreshing = true;
             });
           }  
-
-
 </script>

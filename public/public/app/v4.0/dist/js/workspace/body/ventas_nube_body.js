@@ -6,8 +6,9 @@
 
 //###--- Conection y Sync a la base de datos local ---#####
 var ws_info_db = 'ws_info_' + ws_id;
-var ws_info = null;
-var ws_lang_data = null;
+var ws_info = null; // Doc con la info y configuracion del Ws
+var ws_lang_data = null; //Doc con el lenguaje
+var ws_left_nav = null; //DOC con los modulo
 //Creo la base de datos local info_db
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
 //sincronizo
@@ -32,7 +33,10 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
 
  async function ws_module_config() {
                 try {
+                         // DOC DE CONFIGURACION GENERAL
                         ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
+                        // DOC DE NAVEGACION
+                        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
                         // DOC DE LEGUAJE
                         ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
                         //Mapeo el objeto
@@ -41,18 +45,14 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
 
-                        console.log('WS INFOOOOOOOOOOOO');
-                        console.log(ws_info);
-                        console.log('WS ws_lang_dataAAAAA');
-                        console.log(ws_lang_data);
-
-                        get_top_bar(ws_info, ws_lang_data);
-                        get_nav_cart(ws_info, ws_lang_data);
-                        get_search_module(ws_info, ws_lang_data);
-                        get_left_nav_doc(user_db , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
-                        put_left_nav_doc();
+                        get_top_bar(ws_info, ws_lang_data); //Imprimo el top bar
+                        get_left_nav(ws_left_nav , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
+                        get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
+                        get_search_module(ws_info, ws_lang_data); //Imprimo el search 
+                        put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
                 } catch (err) {
-                    Snackbar.show({
+                    put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+                   Snackbar.show({
                         text: err.reason,
                         actionText: 'ok',
                         actionTextColor: "#0575e6",
@@ -69,7 +69,7 @@ function put_left_nav_doc() {
         type: "POST",
         dataType: "json",
         success: function (ws_left_nav) {
-            if (ws_left_nav.result == true) { 
+            if (ws_left_nav.result == true) {
                         console.log('Solicitud ajax ws_left_nav ok! '+ ws_id);
                         ///// IMPRIME ////
                         user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
@@ -81,7 +81,7 @@ function put_left_nav_doc() {
                             }, function(err, response) {
                                if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
-                                // alert('put left nev doc');
+                                //alert('Se actualizo el Left Nav doc');
                                 createCookie('ws_install-' + ws_id, true), 30;
                                 //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
                                }
@@ -133,39 +133,15 @@ function put_left_nav_doc() {
     });
 };
 //Leo el doc y imprimo la vista
-function get_left_nav_doc(user_db , ws_lang_data) {
-              //    alert('Traigo el doc y imprimo la vista');
-                user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
-                    // response.userCtx.name is the current user        
-                    if (doc) {
-                        var ws_left_nav_doc = {
-                            ws_left_nav: doc,
-                            ws_lang_data: ws_lang_data
-                        }
-                        console.log('ws_left_nav_ :');
-                        console.log(doc);
-                        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', doc);
-                        //  console.log ('No se encuentra el documento en la userdb');
-                    }else if(err){
-                      //  console.log('Error al traer ws_left_nav doc');
-                      put_left_nav_doc(); //Si no se encuentra el docuento lo creamos nuevo
-                        Snackbar.show({
-                               text:  err.reason,
-                               width: '475px',
-                                actionTextColor: '#ff0000',
-                                actionText: 'Refrezcar',
-                                pos: 'bottom-center',
-                               onActionClick: function(element) {
-                                   //Set opacity of element to 0 to close Snackbar
-                                   $(element).css('opacity', 0);
-                                   location.reload();
-                                   //newWorker.postMessage({ action: 'install' });
-                                   //alert('Refrezcar pagina!');
-                               }
-                            });
-                        return console.log(err);        
-                    }
-                });
+function get_left_nav(ws_left_nav , ws_lang_data) {
+              var ws_left_nav_doc = {
+                  ws_left_nav: ws_left_nav,
+                  ws_lang_data: ws_lang_data
+              }
+              console.log('ws_left_nav_ :AAAAAA');
+              console.log(ws_left_nav);
+              console.log(ws_left_nav_doc);
+              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO

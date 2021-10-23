@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 22446641;
+    const version = 46;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
@@ -69,7 +69,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/bootstrap/css/bootstrap.css', revision: version },
         { url: '/public/app/v4.0/dist/css/skins/skin-ventas-nube.css', revision: version },
         { url: '/public/app/v4.0/dist/css/VentasNubeSkin.css', revision: version },
-        { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css', revision: version },
+        { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.css', revision: version },
         // Fuentes js plugins
         { url: '/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js', revision: version },
         { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
