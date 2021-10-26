@@ -42,6 +42,8 @@ async function get_cart(ws_id) {
         console.log('Respuesta Origial'); // []
         console.log(response.rows);
        // alert(ws_id);
+
+       //Filtro los items de este espacio de trabajo 
     const result = rows.filter(row => row.doc.ws_id === ws_id);
         console.log('Respuesta FILTRADA'); // []
         console.log(result);
@@ -302,7 +304,6 @@ async function add_cart_item(data) {
     }
 }
 
-
 // Eliminar productos del carrito
 async function dell_cart_item(element) {
 
@@ -345,7 +346,7 @@ async function dell_cart_item(element) {
     }
 }
 
-  $(document).on('click', '.cart_open_button', function(event)
+$(document).on('click', '.cart_open_button', function(event)
   {
       var state = $(this).data('state');
       switch(state){
@@ -366,8 +367,7 @@ async function dell_cart_item(element) {
           $(this).data('state', 1);
           break;
       }
-  });
-
+});
 
 //Cierra el carrito
 /*
@@ -389,7 +389,6 @@ async function get_favOLD() {
     console.log(response)
     return all_fav_item(response.rows);
 }
-
 
 async function get_fav(ws_id) {
     // Traigo los resultados de una vista
@@ -574,7 +573,6 @@ function variations_add_fav(element) {
     return false;
 };
 
-
 async function add_fav_item(data) {
     console.log(data);
     try {
@@ -662,9 +660,7 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
     }
 }
 
-
 ///****** FUNCIONES CONTACTOS **********///
-
 function cart_select_contact() {
 
     alert('seleccionado');
@@ -672,7 +668,6 @@ function cart_select_contact() {
 
 //$('#cart_select_contact').click('').alert('conctactos');
 //var contact = document.getElementById("cart_select_contact");
-
 
 /*
 function cart_user_input_in(element) {

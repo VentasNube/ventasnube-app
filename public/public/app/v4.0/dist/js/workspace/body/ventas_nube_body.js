@@ -169,7 +169,6 @@ function get_nav_cart(ws_info, ws_lang_data) {
 
 
 
-
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
 /*
@@ -189,7 +188,7 @@ $(document).on('click', 'a.l_nav_m', function (event) {
 */
 
 //ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
-function get_content_module( m_name , m_id, m_t_id, id_copiled ) {
+function get_content_module_OLDNO( m_name , m_id, m_t_id, id_copiled ) {
    // var url_now = getUrl();
   //  var m_id = url_now.m_id;
   //  var m_t_id = url_now.m_t_id;
@@ -210,8 +209,36 @@ function get_content_module( m_name , m_id, m_t_id, id_copiled ) {
     var id_c_copiled = '#content_compiled'; // ID DE COMPILACION // 
 
     console.log('Get all content module in body' + controler_c_data + '/' + controler_c_template + '/' + id_c_copiled);
+
     get_module_compile(url_db, url_hbs, id_c_copiled); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
 };
+//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
+function check_content_module(ws_module_name, ws_left_nav , ws_lang_data) {
+    const ws_module_array = ws_left_nav.ws_left_nav.m;
+    const ws_module_type_array = ws_left_nav.ws_left_nav.m_t;
+    var array = ws_module_array;
+    //For normal
+    for (var i=0; i<array.length; i++) { 
+        if(array[i].m_url === ws_module_name ){
+            ws_module_select = array[i].m_url;
+          return  get_module_function(ws_module_select);
+        }
+    }
+};
+
+//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
+function get_module_function(ws_module_select) {
+         const ws_m_s = ws_module_select;
+        if(ws_m_s == 'catalog'){
+          //  alert('TRAIGO EL CATALOGO');
+            get_catalog();
+         //  get_items_catalog();
+        }else if(ws_m_s == 'box'){
+            alert('TRAIGO EL box');
+           // get_box();
+        }
+};
+
 
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
@@ -222,15 +249,13 @@ $(document).on('click', 'a.l_nav_m', function (event) {
     var m_t_id = $(this).attr('m_t_id'); //Trae module tipo id
     //  var s_url = window.location.host; // Trae dominio url www.dominio/
     //  var s_url_t_m = $(this).attr('m_url'); //Trae Pacht url /pacht/
-
     var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
     var m_url = '/workspace?type=' + m_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion                
     //  get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-   
-    alert('Traigo el modulo ' + m_id + '--' + m_t_id + '' + m_name);
-
-    get_content_module(m_name , m_id, m_t_id, id_copiled);
+    // alert('Traigo el modulo ' + m_id + '--' + m_t_id + '' + m_name);
+    // alert(ws_left_nav);
+    check_content_module(m_name, ws_left_nav, ws_lang_data);
 
 });
 
@@ -249,7 +274,7 @@ $(document).on('click', 'a.l_nav_t_m', function (event) {
     var s_url_t_m = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
     var m_url = s_url_t_m + '?m=' + m_id + '&?t=' + m_t_id + '&?type=' + m_t_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
-    get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+ //   get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
     // get_board_group(m_id, m_t_id);
     get_content_module();
 });

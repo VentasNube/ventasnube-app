@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 1113;
+    const version = 22222223333333422;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
@@ -97,7 +97,9 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/js/workspace/search/ventas_nube_search.js', revision: version },
         //Acccount 
         { url: '/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js ', revision: version },
-    
+         //Catalog
+         { url: '/public/app/v4.0/dist/js/workspace/catalog/ventas_nube_catalog.js ', revision: version },
+
         //Templates body de Top bar y left bar
         { url: '/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', revision: version },
         { url: '/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', revision: version },
@@ -112,7 +114,11 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs', revision: version },
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs', revision: version },
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
-    
+          //Template de catalog
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },
+       
     ]);
     
     workbox.routing.registerRoute(
