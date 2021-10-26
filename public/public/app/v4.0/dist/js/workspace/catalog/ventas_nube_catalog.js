@@ -40,3 +40,88 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
         }
     });
 };
+
+
+/**** Nuevo catalogo ****/
+
+//Cargo la variable catalog 
+L_catalog_db = L_search_db;
+
+function get_nav_catalog(ws_info,ws_lang_data) {
+    var url_now = getUrl();
+    var m_id = url_now.m_id;
+    var m_t_id = url_now.m_t_id;
+    /*if(m_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+          var m_id = url_now.m_id;
+     }if(m_t_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
+     }*/
+    //  var pacht = 'catalog'; //CONTROLADOR PRINCIPAL
+    // var controler_data = 'nav_bar'; //NOMBRE DE CONTROLADOR DATA
+    //  var controler_template = 'nav_bar_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    // var id_copiled = '#nav_bar_compiled'; // ID DE COMPILACION //  
+    //  var data = {
+    //      m_id: m_id,
+    //       m_t_id: m_t_id,
+    //   }
+    //  console.log('Modulo id nav' + m_id);
+    //get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+    var ws_catalog_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
+    // $('#cart_user_input').focus();
+    console.log('NAV BAR CATALOG');
+
+};
+
+// 
+function get_catalog(ws_id) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
+    // $('#cart_user_input').focus();
+    console.log('GET CATALOG');
+}
+
+// 
+function get_items_catalog(ws_id) {
+
+
+
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data
+        
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', '#content_catalog_commpiled', ws_cart);
+    // $('#cart_user_input').focus();
+    console.log('GET ITEMS CATALOG');
+}
+
+////----()---/////
+function form_new_product(ws_info, ws_lang_data) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', '#right_main_compiled', ws_cart);
+    // $('#cart_user_input').focus();
+    console.log('FORM NEW PRODUCT');
+};
+
+//get_catalog(ws_id);
+
+
+//get_catalog(),
+get_nav_catalog();
+/*
+$(document).ready(function () {
+    window.onload =
+     //   get_catalog(),
+     //   get_nav_catalog();
+
+});
+*/
