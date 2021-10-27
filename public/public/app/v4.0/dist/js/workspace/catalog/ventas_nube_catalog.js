@@ -251,7 +251,7 @@ function cat_variations_set(element) {
 function cat_variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
@@ -277,7 +277,7 @@ function cat_variations_select(element) {
     event.preventDefault();
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
     let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
     L_search_db.get(product_id, function(err, doc) {
