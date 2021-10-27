@@ -30,7 +30,21 @@
 
 <script>
 
-     get_items_catalog();
-
+    //Input de busqueda 
+    $("input[name=catalog_search]").focusin(function (documents) {
+        //  alert('Input');
+        event.preventDefault();
+        console.log('Creo el array con los items de PounchDb');
+        cat_get_all_item_punchDb();
+    });
+    $("input[name=catalog_search]").keyup(function () {
+        event.preventDefault();
+        var search_m_input = $(this).val();
+        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+        // alert(search_m_input);
+        console.log(search_m_input);
+        
+        cat_search_item_js(search_m_input);
+    });
      ////----( VISTA NAV )----////
 </script>

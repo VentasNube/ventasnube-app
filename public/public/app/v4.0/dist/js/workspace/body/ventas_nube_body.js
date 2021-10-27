@@ -5,10 +5,10 @@
 //// --- Top Bar ---- Left Nav --- Cart -- Fav -- Search --- acount --  buy 
 
 //###--- Conection y Sync a la base de datos local ---#####
-var ws_info_db = 'ws_info_' + ws_id;
-var ws_info = null; // Doc con la info y configuracion del Ws
-var ws_lang_data = null; //Doc con el lenguaje
-var ws_left_nav = null; //DOC con los modulo
+ws_info_db = 'ws_info_' + ws_id;
+ws_info = null; // Doc con la info y configuracion del Ws
+ws_lang_data = null; //Doc con el lenguaje
+ws_left_nav = null; //DOC con los modulo
 //Creo la base de datos local info_db
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
 //sincronizo
@@ -50,6 +50,8 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
                         get_search_module(ws_info, ws_lang_data); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
+                        check_url_module(ws_left_nav, ws_lang_data);//Chequeo y cargo el modulo segun la url actual y la cargo
+
                 } catch (err) {
                     put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
                    Snackbar.show({
@@ -171,70 +173,43 @@ function get_nav_cart(ws_info, ws_lang_data) {
 
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
-/*
-$(document).on('click', 'a.l_nav_m', function (event) {
-    // var m_t_icon = $(this).children('span.material-icons').text(); //Trae texto html del icono
-    //  var m_t_name = $(this).children('span.this_m_t_name').text(); //Trae texto html del btn
-    var m_id = $(this).attr('m_id'); //Trae modulo id
-    var m_t_id = $(this).attr('m_t_id'); //Trae module tipo id
-    //  var s_url = window.location.host; // Trae dominio url www.dominio/
-    //  var s_url_t_m = $(this).attr('m_url'); //Trae Pacht url /pacht/
-    var s_url_t_m = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
-    var m_url = s_url_t_m; // Armo la url completa del linck
-    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion                
-    //  get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-    get_content_module(m_id, m_t_id, s_url_t_m);
-});
-*/
 
 //ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
-function get_content_module_OLDNO( m_name , m_id, m_t_id, id_copiled ) {
-   // var url_now = getUrl();
-  //  var m_id = url_now.m_id;
-  //  var m_t_id = url_now.m_t_id;
-   // var m_name = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL DE LA URL
-    //  alert(pacht)
-    /// ACA DEBERIA ARMAR LA DATA DEPENDIENDO LO QUE LE ENVIO
+function check_url_module(ws_left_nav , ws_lang_data) {
+    var m_id = getParameterByName('m'); //Trae el modulo id
+    var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
+    var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
+    check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+}
 
-    var url_public = url_public;
-   
-    var url_doc = pacht + '_m_data'; //NOMBRE DE CONTROLADOR DATA
 
-    var url_db = url_R_db + 'ws_'+ s_url_t_m + ws_id; //NOMBRE que arma la conexion a las bases de datos
-
-    var url_hbs = url_site + url_hbs + s_url_t_m + '/' + s_url_t_m + '.hbs'; //NOMBRE CONTROLADOR TEMPLATE   
-    
-    var doc_name = url_R_db + 'ws_'+ s_url_t_m + ws_id;
-
-    var id_c_copiled = '#content_compiled'; // ID DE COMPILACION // 
-
-    console.log('Get all content module in body' + controler_c_data + '/' + controler_c_template + '/' + id_c_copiled);
-
-    get_module_compile(url_db, url_hbs, id_c_copiled); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-};
 //ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
-function check_content_module(ws_module_name, ws_left_nav , ws_lang_data) {
+function check_content_module(ws_module_name, ws_left_nav, ws_lang_data) {
     const ws_module_array = ws_left_nav.ws_left_nav.m;
     const ws_module_type_array = ws_left_nav.ws_left_nav.m_t;
     var array = ws_module_array;
-    //For normal
+    //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
     for (var i=0; i<array.length; i++) { 
         if(array[i].m_url === ws_module_name ){
             ws_module_select = array[i].m_url;
           return  get_module_function(ws_module_select);
         }
     }
+
 };
 
-//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
+//Es el filtro comparativo de los modulos y activador de funciones
 function get_module_function(ws_module_select) {
          const ws_m_s = ws_module_select;
         if(ws_m_s == 'catalog'){
-          //  alert('TRAIGO EL CATALOGO');
             get_catalog();
          //  get_items_catalog();
         }else if(ws_m_s == 'box'){
             alert('TRAIGO EL box');
+           // get_box();
+        }
+        else if(ws_m_s == 'board'){
+            alert('TRAIGO EL board');
            // get_box();
         }
 };
@@ -243,20 +218,10 @@ function get_module_function(ws_module_select) {
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
 $(document).on('click', 'a.l_nav_m', function (event) {
-    // var m_t_icon = $(this).children('span.material-icons').text(); //Trae texto html del icono
-    //  var m_t_name = $(this).children('span.this_m_t_name').text(); //Trae texto html del btn
-    var m_id = $(this).attr('m_id'); //Trae modulo id
-    var m_t_id = $(this).attr('m_t_id'); //Trae module tipo id
-    //  var s_url = window.location.host; // Trae dominio url www.dominio/
-    //  var s_url_t_m = $(this).attr('m_url'); //Trae Pacht url /pacht/
     var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
     var m_url = '/workspace?type=' + m_name; // Armo la url completa del linck
-    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion                
-    //  get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-    // alert('Traigo el modulo ' + m_id + '--' + m_t_id + '' + m_name);
-    // alert(ws_left_nav);
+    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
     check_content_module(m_name, ws_left_nav, ws_lang_data);
-
 });
 
 
@@ -282,7 +247,7 @@ $(document).on('click', 'a.l_nav_t_m', function (event) {
 ////----(OTRAS COSAS)----/////
 //Efecto material de los Label imput 2021
 ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
-$(document).ready(function () {
+$(document).ready(function (ws_left_nav , ws_lang_data) {
     window.onload =
         $(".material_input").focusout(function () {
             var input_tex = $(this).children('input').val();
@@ -298,6 +263,9 @@ $(document).ready(function () {
     });
 
 });
+
+
+
 
 
 ws_module_config();

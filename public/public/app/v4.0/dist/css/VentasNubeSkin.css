@@ -9896,6 +9896,7 @@ h1 span{
     line-height: 18px;
 }
 .s-card-actv-post {}
+
 .s-card-actv-input {
     font-size: 15px;
     width: 100%;
@@ -9913,6 +9914,7 @@ h1 span{
     padding-right: 0;
     background-image: linear-gradient(0deg, #0575e6 2px, rgba(213, 0, 0, 0) 0), linear-gradient(0deg, rgba(0, 0, 0, .26) 1px, transparent 0);
 }
+
 .s-card-actv-input:focus {
     background-size: 100% 100%, 100% 100%;
     transition-duration: .3s;
@@ -12266,3 +12268,45 @@ board-item-content
 .modal_master .modal_footer{
     height: 20%;
 }
+
+
+/**** CLASES CATALOG 2021 ****/
+
+
+.nav_bar_catalog_search{
+  /*  display: inline;*/
+}
+
+.nav_bar_catalog_header{
+    display: inline!important;
+
+}
+
+.nav_bar_catalog_search input{
+    font-size: 15px;
+    width: 100%;
+    color: #424242;
+    height: auto;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    background: no-repeat bottom, 50% calc(100% - 1px);
+    background-size: 0 100%, 100% 100%;
+    border: 0;
+    transition: background 0s ease-out;
+    padding-left: 0;
+    padding-right: 0;
+    background-image: linear-gradient(
+0deg, #0575e6 2px, rgba(213, 0, 0, 0) 0), linear-gradient(
+0deg, rgba(0, 0, 0, .26) 1px, transparent 0);
+}
+.nav_bar_catalog_search .input-filters{
+    display: flex;
+
+}
+.nav_bar_catalog_search .input-delete{}
+
+
+
+
