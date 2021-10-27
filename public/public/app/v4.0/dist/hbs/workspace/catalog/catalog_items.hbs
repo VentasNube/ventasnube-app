@@ -116,274 +116,28 @@
         <div class="filter-msj text-center"></div>
     </div>
 </div>
-<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
-<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
 
 <!-- Ayudantes para formularios input drop zone  -->
 <!-- include FilePond library -->
 <!--script src="https://unpkg.com/filepond/dist/filepond.min.js"></script-->
 <script>
 
-    $('[data-toggle="tooltip"]').tooltip()
-    $('.radio-chek').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        handle: '',
-        increaseArea: '20%' // optional
-    });
-    $('.select-sin-stock').click(function () {
-        $(".filter-msj").html("");
-        /** Marcar el boton seleccionado con color*/
-        var $this = $(this);
-        if ($this.hasClass('active')) {
-        } else {
-            /** recorro todos los a dentro del padre <ul> y borra la clase */
-            $('a', $this.parents('ul')).removeClass('active');
-            $this.addClass('active ');
-            $('button', $this.parents('th')).addClass('bg-blue');
-        }
-        /** FIN Marcar el boton seleccionado con color*/
-        var selected = '';
-        $('.swich-list').each(function () {
-            var id = $(this).attr('idProd');
-            var stock = $(this).attr('stock');
-            var select = $(this).hasClass("select");
-            /* Limpia todos los items */
-            $(this).removeClass("far fa-square  text-blue");
-            $(this).addClass("fas fa-check-square text-gray");
-            $(this).removeClass("select");
-            $(this).closest('tr').removeClass('hidden');
-            if (stock <= '0') {
-                /* Agrega las clases a los items */
-                $(this).removeClass("fas fa-check-square text-gray");
-                $(this).addClass("far fa-check-square text-blue");
-                $(this).addClass("select");
-                $(this).closest('tr').addClass('bg-gray');
-                $(this).closest('tr').removeClass('hidden');
-                $(':input', $(this).parents('tr')).attr("disabled", false);
-                selected += $(this).attr('idProd') + ', ';
-                $('#items-results').each(function () {
-                    var select = $('.swich-list').hasClass("select");
-                    if (!select) {
-                        $('#menu-option').hide();
-                    }
-                    else {
-                        $('#menu-option').show();
-                    }
-                });
-            }
-            else {
-                /* Agrega las clases hiddem para ocultar resultados */
-                $(this).closest('tr').addClass('hidden');
-            }
-        });
-        if (!selected) {
-            $('#menu-option').hide();
-            $(".filter-msj").html("<br><br> <i class='fa fa-5x fa-times-circle'></i> <br><h2>Nada por acá…</h2><h4>No encontramos articulos con este filtro. Intentalo de nuevo</h4>");
-
-        }
-
-    });
-    // Swich seleccion de productos //
-    $('.swich-list').click(function () {
-        var selected = '';
-        var id = $(this).attr('idProd');
-        var stock = $(this).attr('stock');
-        var select = $(this).hasClass("select");
-        // Muestra menu de selecciones //
-        $('#menu-option').show();
-        if (!select) {
-            selected += $(this).attr('idProd') + ', ';
-            $(this).html("check_box");            
-            $(this).removeClass("text-gray");
-            $(this).addClass("select text-blue");
-            $(this).closest('tr').addClass('bg-gray');
-            $(':input', $(this).parents('tr')).attr("disabled", false);
-        }
-
-        else {
-            selected += $(this).attr('idProd') + ', ';
-            $(this).html("check_box_outline_blank");     
-            $(this).addClass("text-gray");
-            $(this).removeClass("select text-blue");
-           // $(this).removeClass("select text-gray");
-
-            $(this).closest('tr').removeClass('bg-gray');
-            $(':input', $(this).parents('tr')).attr("disabled", true);
-            // verifica q hay un item selecionado antes de mostrar o hacer desaparecer el menu //
-            $('#items-results').each(function () {
-                var select = $('.swich-list').hasClass("select");
-                if (!select) {
-                    $('#menu-option').hide();
-                }
-                else {
-                    $(this).closest('tr').addClass('bg-gray');
-                    $(':input', $(this).parents('tr')).attr("disabled", false);
-                    $('#menu-option').show();
-                }
-            });
-        }
-    });
-    //* Prueba todos los articulos *//
-    $('#addSelec').click(function () {
-        // $("#loading").show();
-
-        var idSe = '';
-        var selected = '';
-        $('.swich-list').each(function () {
-            var id = $(this).attr('idProd');
-            var stock = $(this).attr('stock');
-            var select = $(this).hasClass("select");
-            if (select == true) {
-                selected += $(this).attr('idProd') + ', ' + $(this).attr('stock');
-                idSe += $(this).attr('idProd');
-            }
-        });
-        var selectCount = idSe.toString();
-        var s = selected.toString();
-        //var n = $(selected).length;
-        //alert (n);
-        //var selected = eval(data);
-        if (s == '') {
-            //selected = 'Debes seleccionar al menos una opción.';
-            //$("#loading").hide();	
-            $('#modal-lista-productos').modal('show');
-            $('#content-modal-tittle').html("Agreagar a lista");
-            $("#content-modal-list-prod").hide();
-            $('#addProductList').hide();
-            $('#content-modal-list-prod-msj').html("Debes seleccionar al menos un producto.");
-            $('#content-modal-list-prod-msj').show();
-            $('#newProductList').hide();
-            $('.confMsj').hide();
-            //$('#content-modal-list-prod-msj').show();
-        }
-        else {
-            $('#content-modal-tittle').html("Agreagar a lista");
-            $('#modal-lista-productos').modal('show');
-            $('#content-modal-list-prod-msj').hide();
-            $('#content-modal-list-prod').show();
-            $('#newProductList').hide();
-            $("#addProductList").show();
-            $('.confMsj').hide();
-            //$('#content-modal-body').html( "Agreagar a lista" );
-            $(".item-check").hover(
-                function () {
-                    $(this).find(".flip-card-inner").addClass("check");
-                }, function () {
-                    $(this).find(".flip-card-inner").removeClass("check");
-                }
-            );
-            $('.item-check').click(function () {
-                $('.content-modal-list').each(function () {
-                    var idProd = $(this).attr('idProd');
-                    //var stock = $(this).attr('stock');
-                    var check = $(this).hasClass('check');
-                    if (select == true) {
-                        //$(this ).find( ".flip-card-inner" ).addClass( "check" );
-                        selected += $(this).attr('idProd') + ', ' + $(this).attr('stock');
-                        // var nombre = $(this).attr('nombre');
-                    }
-                });
-                $('#addProductList').hide();
-                $('#newProductList').hide();
-                //$('#addProdCount').html(nombre);
-                $('#addProdCount').html(selectCount);
-                $('#content-modal-list-prod').hide();
-                $('.confMsj').show();
-                $('#addALLProduct').click(function () {
-                    alert(selected);
-                });
-                $('#adCancel').click(function () {
-                    $('#addProductList').show();
-                    //$('#newProductList').show();
-                    //$('#addProdCount').html(selectCount);
-                    $('#content-modal-list-prod').show();
-                    $('.confMsj').hide();
-
-
-                });
-                //var checked = $(this).find( ".check" );
-                //  $(this ).find( ".flip-card-inner" ).toggleClass( "check" );
-
-                //	alert (selected);
-            });
-
-        }
-
+    //Input de busqueda 
+    $("input[name=searchInput]").focusin(function (documents) {
+        //  alert('Input');
+        event.preventDefault();
+        console.log('Creo el array con los items de PounchDb');
+        get_all_item_punchDb();
     });
 
-    $('#addProductList').click(function () {
-        $('#newProductList').show();
-        $("#addProductList").hide();
-        $("#newProductList").html("<div class='input-group'> <input id='newListInput' class='cliente-dni form-control ui-autocomplete-input' type='text' name'name_list' value='' placeholder='Nombre de la nueva lista' autocomplete='off'></a><div class='input-group-btn'><a id='add_new_list' class='btn btn-success'><span> CREAR</span></a></div></div>");
-        $("#newListInput").focus();		//alert('newlit');
+    $("input[name=searchInput]").keyup(function () {
+        event.preventDefault();
+        var search_m_input = $(this).val();
+        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+        // alert(search_m_input);
+        console.log(search_m_input);
+        search_item_js(search_m_input);
     });
-    /**Desabilita todos los inputs */
-    $(".products-list :input.cat-text-field_input").attr("disabled", true);
-    /**Desabilita todos los inputs */
-    $('.delete_checkbox').click(function () {
-        //  if($(this).is(':checked'))
-        if ($(this).is('.select')) {
-            // $(this).closest('tr').addClass('removeRow');
-            $(this).closest('tr').removeClass('removeRow');
-        } else {
-            //$(this).closest('tr').removeClass('removeRow');
-            $(this).closest('tr').addClass('removeRow');
-        }
-    });
-     $('.orPos').click(function() {
-            $("i", $(this).parents('th')).toggleClass('fa-caret-up');
-            $("i", $(this).parents('th')).toggleClass('fa-caret-down');
-            if ($("i", $(this).parents('th')).is('.fa-caret-down')) {
-                $("i", $(this).parents('th')).is('.fa-caret-down');
-                var ordBy = $(this).attr('orby');
-                $('#orBy').val(ordBy);
-                $('#orPos').val('desc');
-                $("#ui_element").submit();
-            } else if ($("i", $(this).parents('th')).is('.fa-caret-up')) {
-                var ordBy = $(this).attr('orby');
-                $('#orBy').val(ordBy);
-                $('#orPos').val('asc');
-                $("#ui_element").submit();
-            }
-        });
-    /* COMO CREAR LISTAS NUEVAS CON AJAX */
-    $("#add_new_list").validate({
-        rules: {
-            newListInput: { required: true }
-        },
-        messages: {
-            newListInput: { required: 'Ingresé un servicio' }
-        },
-        submitHandler: function (form) {
-            var dados = $(form).serialize();
 
-
-            $("#loading").show();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url(); ?>catalogo/adicionarServico",
-                data: dados,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.result == true) {
-                        alert('Ocurrió un error al intentar agregar un servicio.');
-
-                        $("#divServicos").load("<?php echo current_url(); ?> #divServicos");
-                        $("#totales").load("<?php echo current_url(); ?> #totales");
-                        $("#totalesPopup").load("<?php echo current_url(); ?> #totalesPopup");
-                        $("#divSaldo").load("<?php echo current_url(); ?> #divSaldo");
-                        $("#icons").load("<?php echo current_url(); ?> #icons");
-                        $("#servico").val('').focus();
-                        $("#loading").hide();
-                    } else {
-                        alert('Ocurrió un error al intentar agregar un servicio.');
-                        $("#loading").show();
-                    }
-                }
-            });
-            return false;
-        }
-    });
- 
+    
 </script>

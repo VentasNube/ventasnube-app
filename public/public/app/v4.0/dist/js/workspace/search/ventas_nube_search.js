@@ -56,60 +56,7 @@ L_search_db.sync(url_R_db+ws_search_db, {
             duration: 50000
         });
     }
-}
-//###--- Conection y Sync a la base de datos local ---#####
-/*async function search_db() {
-    try {
-        //  alert(offline_mode)
-        if (offline_mode) {
-            L_search_db = await new PouchDB(search_db, { skip_setup: true });
-            R_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: true });
-
-            L_search_db.sync(R_search_db, { live: true, retry: true, skip_setup: true }); //sincronizo
-            price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
-
-            Snackbar.show({
-                text: 'Catalogo OFFLINE Activado!',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'top-left'
-            });
-
-        } else {
-            L_search_db = await new PouchDB(url_R_db + search_db, { skip_setup: true });
-            price_doc = await L_search_db.get('price_list', { include_docs: true, descending: false });
-          
-            Snackbar.show({
-                text: '<span class="material-icons">wifi_off</span> Modo Offline desactivado!',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-                pos: 'top-left'
-            });
-
-        }
-    } catch (err) {
-        console.log('ERROR EN VENTANUBE SEACH JS');
-        console.log(err);
-    /*    Snackbar.show({
-            text: 'Estas sin conexion a internet! ',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-center'
-        });
-        
     }
-}
-*/
-// Trae los datos de la local user DB filtrado por tipo cart-items
-/*async function load_product_seach() {
-    // Traigo los resultados de una vista
-    let response = await L_user_db.query('get/seach', { include_docs: false, descending: true }); //Conceto con la vista de diseno
-    // Renderizo todos los resultados 
-    // alert('GET CART' + response);
-    // all_cart_item(response.rows);
-    return readCartItemSearch(response.rows);
-}
-*/
 
 ////----(4 Search Module)---/////
 function get_search_module(ws_info, ws_lang_data) {
