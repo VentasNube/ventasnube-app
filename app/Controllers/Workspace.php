@@ -23,7 +23,7 @@ class Workspace extends BaseController
     function index()
     {
         if (!logged_in()) {
-            return redirect()->to('/login');
+            return redirect()->to(base_url('/workspace/login'));
         }
         $user_id = user_id();
         $Workspace = new WorkspaceModel(); //traigo al modelo
@@ -43,7 +43,7 @@ class Workspace extends BaseController
     public function home()
     {
         if (!logged_in()) {
-            return redirect()->to(base_url('/login'));
+            return redirect()->to(base_url('/workspace/login'));
         } else {
             $user_id = user_id();
             $UserModel = new UserModel(); //traigo el modelo
@@ -88,7 +88,7 @@ class Workspace extends BaseController
     public function welcome()
     {
         if (!logged_in()) {
-            return redirect()->to(base_url('/login'));
+            return redirect()->to(base_url('/workspace/login'));
         } else {
             $user_id = user_id();
             $Owner = new OwnerModel(); //traigo el modelo
@@ -104,7 +104,7 @@ class Workspace extends BaseController
     public function ws_select()
     {
         if (!logged_in()) {
-            return redirect()->to(base_url('/login'));
+            return redirect()->to(base_url('/workspace/login'));
         } else {
             $user_id = user_id();
             //$data['ws_user'] = $this->WorkspaceModel->get_user_all_ws($user_id); //cargo la data en un array
@@ -137,7 +137,7 @@ class Workspace extends BaseController
     public function ws_new()
     {
         if (!logged_in()) {
-            return redirect()->to(base_url('/login'));
+            return redirect()->to(base_url('/workspace/login'));
         } else {
             $db = \Config\Database::connect();
             $UserModel = new UserModel(); //traigo el modelo user para pedir datos de la session
@@ -1393,7 +1393,7 @@ class Workspace extends BaseController
     //TESTER DE RECUEST
     public function ws_collection_get(){
         if (!logged_in()) {
-                return redirect()->to(base_url('/login'));
+            return redirect()->to(base_url('/workspace/login'));
             } else {
         $ws_collection_get = [
             '_id'=> '_design/get',
@@ -1407,5 +1407,64 @@ class Workspace extends BaseController
         return json_encode($response);
         }
     }
+
+
+  
+
+	//Vista del login
+	public function login()
+	{
+		if (logged_in()) {
+		    return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/login', $data);
+	}
+    
+	//Vista registro
+	public function register()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/register', $data);
+	}
+	//Vistra recuperacion de contraseña
+	public function forgot()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/forgot', $data);
+	}
+	
+	//Vista de reset de pasword
+	public function resetPassword()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/reset-pasword', $data);
+	}
+
 
 }

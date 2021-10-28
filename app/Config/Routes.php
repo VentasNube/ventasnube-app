@@ -73,22 +73,21 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('login', 'AuthController::attemptLogin');
     $routes->get('logout', 'AuthController::logout');
 
+    $routes->get('workspace/logout', 'AuthController::logout');
+
+
     // Vista Registration
     $routes->get('register', 'home::register');
     // Post Registration
     $routes->post('register', 'AuthController::attemptRegister');
-
     //New Activation
     $routes->get('activate-account', 'AuthController::activateAccount', ['as' => 'activate-account']);
-
     //Resend Activation
     $routes->get('resend-activate-account', 'AuthController::resendActivateAccount', ['as' => 'resend-activate-account']);
-  
     // Forgot vista
     $routes->get('forgot', 'home::forgot');
     //Resets
     $routes->post('forgot', 'AuthController::attemptForgot');
-
     //Reset Pasword  Vista 
     $routes->get('reset-password', 'home::resetPassword', ['as' => 'reset-password']);
     //Change new

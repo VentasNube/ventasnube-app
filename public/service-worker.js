@@ -1,8 +1,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 1320;
+    const version = 11111230;
     const expectedCaches = ['ventasnube-v-' + version];
-
 
       self.addEventListener('install', event => {
         self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
@@ -11,7 +10,6 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
       self.addEventListener('activate', event => {
        // console.log('Activate V:'+ version );
       });
-
 
       self.addEventListener('message', function (event) {
         if (event.data.action === 'skipWaiting') {
@@ -55,12 +53,20 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         event.waitUntil(self.registration.showNotification(title, options));
     });
 */
+  workbox.core.setCacheNameDetails({
+    prefix: 'ventasnube',
+    suffix: 'v1'+version,
+    precache: 'ventasnube-precache',
+    runtime: 'ventasnube-runcache'
+    });
+
     workbox.precaching.precacheAndRoute([
          // { url: '/', revision: version },
          //{ url: '/login', revision: version },
         // { url: '/workspace/home', revision: version }, 
         //{ url: '/workspace?type=catalog', revision: version },
         { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
+        //   { url: '/workspace/login', revision: version },
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
         { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
         // fuentes css y plugins

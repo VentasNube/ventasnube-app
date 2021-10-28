@@ -38,13 +38,13 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-                <a href="<?php echo base_url('login'); ?>" class="nav-link btn btn-primary btn-round purple-gradient btn-xs text-white" type="button">            
+                <a href="<?php echo base_url('workspace/login'); ?>" class="nav-link btn btn-primary btn-round purple-gradient btn-xs text-white" type="button">            
                     <i class="fas fa-user-circle"></i>
                     <?= lang('Auth.login') ?>     
                 </a>
           </li>
           <li class="nav-item">
-               <a id="btn-premium" class="nav-link btn btn-primary btn-round peach-gradient btn-xs text-white" href="<?php echo base_url('register'); ?>"  type="button">
+               <a id="btn-premium" class="nav-link btn btn-primary btn-round peach-gradient btn-xs text-white" href="<?php echo base_url('workspace/register'); ?>"  type="button">
                 <i class="fas fa-crown"></i>
                 <?= lang('Auth.register') ?>       
                </a>

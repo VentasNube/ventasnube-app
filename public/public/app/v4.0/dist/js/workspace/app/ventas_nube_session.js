@@ -81,7 +81,7 @@ function chek_ws_updates() {
             });
         } else {
             // $('#modal_master').removeClass('move-right');
-            var delay = 3000;
+            var delay = 15000;
             setTimeout(function(){ 
                  location.reload();
                 // window.location = "/account";

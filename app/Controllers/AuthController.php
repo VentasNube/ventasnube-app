@@ -7,6 +7,7 @@ use App\Models\UserModel;
 
 // Este archivo es una extencion del archivo de config q esta en vendor auth lo cree para poder setear todo lo necesario para Ventas Nube
 use Myth\Auth\Controllers\AuthController as MythAuthController;
+
 class AuthController extends MythAuthController
 {
 	protected $auth;
@@ -112,7 +113,7 @@ class AuthController extends MythAuthController
 		{
 			$this->auth->logout();
 		}
-		return redirect()->to(site_url('/login'));
+		return redirect()->to(site_url('/workspace/login'));
 	}
 
 /*	public function _session()
