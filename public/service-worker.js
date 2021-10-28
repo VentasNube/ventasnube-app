@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 125686662;
+    const version = 143162;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
@@ -56,10 +56,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
     });
 */
     workbox.precaching.precacheAndRoute([
-        // { url: '/', revision: version },
-        //{ url: '/login', revision: version },
-       // { url: '/workspace/home', revision: version }, 
-       
+         // { url: '/', revision: version },
+         //{ url: '/login', revision: version },
+        // { url: '/workspace/home', revision: version }, 
+        //{ url: '/workspace?type=catalog', revision: version },
         { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
         { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
@@ -117,7 +117,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
           //Template de catalog
 
-          { url: '/workspace?type=catalog', revision: version },
+       
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },

@@ -183,8 +183,7 @@ function cat_get_all_item_punchDb() {
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function cat_search_item_js(search_val) {
-    var url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    var id_copiled = '#content_catalog_commpiled'; // ID DE COMPILACION // 
+
     var result = fuse.search(search_val, { limit: 18 });
     //Armo el array para renderizar los items
     var search_result = {
@@ -193,7 +192,7 @@ function cat_search_item_js(search_val) {
     }
 
     if (result.length > 0) {
-        renderHandlebarsTemplate(url_template, id_copiled, search_result);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs',  '#content_catalog_commpiled', search_result);
         //  console.log('search_item');
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
@@ -311,6 +310,22 @@ function cat_card_edit_variant() {
 
 }
 
+//Ver producto 
+
+
+
+
+function  catalog_edit_item() {
+    //  var result = fuse.search(search_val, { limit: 18 });
+    //Armo el array para renderizar los items
+    var product_data_doc = null;
+    var product_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        product_data:product_data_doc
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_right_main.hbs',  '#right_main_compiled', product_data);
+}
 
 //get_catalog(ws_id);
 

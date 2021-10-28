@@ -114,7 +114,7 @@
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="#cajaRetiro" data-toggle="modal" role="button" title="Retirar efectivo"><i
-                                        class="material-icons">article</i> Lista de productos </a></li>
+                                        class="material-icons">article</i> Lista de articulos </a></li>
                         </ul>
                     </div>
              
@@ -145,12 +145,20 @@
 
 <script>
 
-   /* $(document).on('click', '.catalog_new_item', function (event) {
-        $('#master_popup').modal('show');
-        get_catalog_new_item();
-        alert('Modal');
+    $(document).on('click', '.catalog_edit_item', function (event) {
+      //$('#master_popup').modal('show');
+     // get_catalog_new_item();
+        catalog_edit_item()
+       alert('catalog_edit_item()');
     });
-*/
+
+
+   $(document).on('click', '.catalog_new_item', function (event) {
+      //  $('#master_popup').modal('show');
+       // get_catalog_new_item();
+         catalog_edit_item()
+         alert('catalog_new_item');
+    });
 
 
 </script>
