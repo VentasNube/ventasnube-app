@@ -11678,7 +11678,7 @@ board-item-content
 }
 .card .card-product .header .indicator {
     position: absolute;
-    z-index: 9999;
+   /* z-index: 9999; */
     width: 50px;
     height: 50px;
     top: calc(50% - 25px);
@@ -12309,4 +12309,27 @@ board-item-content
 
 
 
+.view-product{
+    width: 100%;
+    background-color: #fff;
+}
+
+.view-product .header{
+    width: 100%;
+    /* width: 190px; */
+    min-height: 150px;
+    background-color: trasnsparent;
+    overflow: hidden;
+}
+.view-product .header img {
+    width: 100%;
+    background-color: #fff;
+}
+.parallax {
+        min-height: 150px;
+        background-attachment: initial;
+        background-position: initial;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 

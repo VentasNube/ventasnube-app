@@ -132,9 +132,10 @@ user_db.sync(url_R_db+userDb, {
     $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
   //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('error', function (err) {
-    if(err.)
+    if(err){
         $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
     //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+    }
   });
   //user_db.debug.enable('*'); //Activo el depurador de cuchdb
 //user_session();

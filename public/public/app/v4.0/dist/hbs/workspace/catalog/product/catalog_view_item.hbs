@@ -1,0 +1,35 @@
+<div id="right_main" class="right_main col-xs-12 col-sm-12">
+    <!-- Cart Nav module -->
+    <div class="righ_nav_header">
+        <!--span class="material-icons">receipt</span>Nueva -->
+       
+    </div>
+    <div class="view-product">
+        {{#with search_product}}
+                <div class="header" >
+                     <button id="" type="button" class="round cart_open_button btn btn-default right_nav_close pull-right ">
+                                <span class="material-icons">close</span>
+                            </button>
+                        <!-- #first trae el primer item del array -->
+                      {{#first variations}}
+                        <!-- #first trae el primer item del array -->
+                            {{#first pictures}}
+                                <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card" >
+                                    <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                                </div>
+                            {{/first }}
+                      {{/first}}
+                </div>
+                    <h1>{{name}}</h1> 
+                    <p class="cat">
+                        {{#each tags }}
+                        <span class="s-card-cat pull-left">#{{this}}</span>
+                        {{/each}}
+                    </p>
+                    <br>
+                     <h3>{{descriptions}}</h3> 
+
+
+        {{/with}}
+    </div>
+</div>

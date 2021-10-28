@@ -190,7 +190,7 @@ function cat_search_item_js(search_val) {
         search_product: result,
         price_list: price_doc.price_list
     }
-
+    console.log(search_result);
     if (result.length > 0) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs',  '#content_catalog_commpiled', search_result);
         //  console.log('search_item');
@@ -312,10 +312,150 @@ function cat_card_edit_variant() {
 
 //Ver producto 
 
+/*
+// Agreagar productos al carrito
+async function add_cart_item(data) {
+    console.log(data);
+    try {
+        var response = await user_db.put({
+            _id: new Date().toISOString(),
+            type: 'cart-item',
+            ws_id: ws_id,
+            update: new Date().toISOString(),
+            variant: data //Array new_variant_doc
+        });
+        //console.log('CART ADD ITEM ');
+        //console.log(data);
+        Snackbar.show({  
+            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Deshacer ',
+            actionTextColor: "#4CAF50",
+               onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);    
+                user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
+                $('#' + response.id).remove();
+            }
+        });
+    } catch (err) {
+        Snackbar.show({  
+            text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);    
+                add_cart_item(data);
+            }
+        });
+        console.log(err);
+    }
+}
+
+// Eliminar productos del carrito
+async function dell_cart_item(element) {
+
+    var item_cart_id = $(element).attr('item_cart_id');
+    var item_cart_rev = $(element).attr('item_cart_rev');
+    //dell_product(item_cart_id, item_cart_rev);
+    try {
+        //   get_cart()
+        Snackbar.show({  
+            text: '<span class="material-icons">delete</span> Eliminar producto?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+               onActionClick: async function(element) {    
+                user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                $('#' + item_cart_id).remove();
+                $(element).css('opacity', 0);      
+                //    alert('Clicked Called!');
+                // dell_product(response.id, response.rev);
+                //  location.reload();   
+            }
+        });
+
+    } catch (err) {
+        Snackbar.show({  
+            text: 'Hay un conflicto',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);      
+                //    alert('Clicked Called!');
+                //add_product(card_product_id, card_product_img_url, card_product_name, card_product_val, card_product_discount, card_product_quantity);
+                //  location.reload();   
+            }
+        });
+        console.log(err);
+    }
+}
+*/
 
 
 
-function  catalog_edit_item() {
+$(document).on('click', '.catalog_edit_item', function (event) {
+    //$('#master_popup').modal('show');
+   // get_catalog_new_item();
+    //  catalog_edit_item()
+      catalog_view_item(product_id)
+     alert('catalog_edit_item()'+product_id);
+  });
+
+
+  
+ $(document).on('click', '.catalog_new_item', function (event) {
+    //  $('#master_popup').modal('show');
+     // get_catalog_new_item();
+       catalog_edit_item();
+       alert('catalog_new_item');
+  });
+
+
+
+  $(document).on('click', '.view_item', function (element) {
+    var product_id = $(this).attr('product_id');
+        // var item_cart_rev = $(element).attr('item_cart_rev');
+        //  $('#master_popup').modal('show');
+        // get_catalog_new_item();
+        catalog_view_item(product_id);
+      //  alert('catalog_new_item' + product_id);
+  });
+
+async function  catalog_view_item(product_id) {
+    //  var result = fuse.search(search_val, { limit: 18 });
+    //Armo el array para renderizar los items
+  //  alert(product_id);
+      try {
+        var product_doc = await L_search_db.get(product_id);
+       // var product_data_doc = null;
+       console.log('ACAAAAAAAA product_doc');
+       console.log(product_doc);
+            var product_array  = {
+                ws_info: ws_info,
+                ws_lang_data: ws_lang_data,
+                product_data:product_doc
+            }
+
+            var search_result = {
+                search_product: product_doc,
+                price_list: price_doc.price_list,
+                ws_lang_data: ws_lang_data,
+            }
+            console.log(search_result);
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', search_result);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+
+function  catalog_edit_item(product_id, product_rev) {
     //  var result = fuse.search(search_val, { limit: 18 });
     //Armo el array para renderizar los items
     var product_data_doc = null;
@@ -324,9 +464,51 @@ function  catalog_edit_item() {
         ws_lang_data: ws_lang_data,
         product_data:product_data_doc
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_right_main.hbs',  '#right_main_compiled', product_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs',  '#right_main_compiled', product_data);
 }
 
+function  catalog_new_item() {
+    //  var result = fuse.search(search_val, { limit: 18 });
+    //Armo el array para renderizar los items
+    ///// IMPRIME ////
+    user_db.get('product_',function(err, doc) {
+        if (err) {msj_alert(err); }
+        user_db.put({
+          _id: 'product_' + ws_id ,
+          _rev: doc._rev,
+          ws_left_nav: ws_left_nav
+        }, function(err, response) {
+           if(response) {
+           // createCookie('ws_install-' + ws_id, true), 30;
+           }
+          else if (err) {
+            Snackbar.show({
+                   text:  err.reason,
+                   width: '475px',
+                    actionTextColor: '#ff0000',
+                    actionText: 'Refrezcar',
+                    pos: 'bottom-center',
+                   onActionClick: function(element) {
+                       //Set opacity of element to 0 to close Snackbar
+                       $(element).css('opacity', 0);
+                       location.reload();
+                       //newWorker.postMessage({ action: 'install' });
+                       //alert('Refrezcar pagina!');
+                   }
+                });
+            return console.log(err);
+         }
+        });
+      });
+
+    var product_data_doc = null;
+    var product_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        product_data:product_data_doc
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', product_data);
+}
 //get_catalog(ws_id);
 
 

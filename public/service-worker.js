@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 143162;
+    const version = 1320;
     const expectedCaches = ['ventasnube-v-' + version];
 
 
@@ -119,11 +119,13 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
 
        
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },
-
+         // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
+         // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', revision: version },
-       
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
+
+        
     ]);
     
     workbox.routing.registerRoute(
