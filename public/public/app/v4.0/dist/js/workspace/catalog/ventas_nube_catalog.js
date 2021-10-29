@@ -6,7 +6,7 @@ function charge_all_docs_local(remote_items) {
             // handle err or response
         });
 }
-
+all_items_array = {};
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -31,7 +31,7 @@ async function get_all_catalog_intems(ws_id, filter) {
         console.log(filtered);
         */
        // new_items = {}; //creo el array con la variable global
-        var new_array = await rows.map(item => {
+        all_items_array = await rows.map(item => {
             new_items = {};
             // Mapeo el array
             new_items['name'] = item.value.name;
@@ -41,13 +41,15 @@ async function get_all_catalog_intems(ws_id, filter) {
             new_items['attribute_combinations'] = item.value.attribute_combinations;
             new_items['doc'] = item.value;
             //Formateo el array final
-            map_array = {
-                item:new_items
-            }
-            return map_array;
+          //  all_items_map_array = {
+           //     item:new_items
+           // }
+            return new_items;
         });
+
+       
         //Imprimo el resultado en patalla
-        print_catalog_item(new_array);
+        print_catalog_item(all_items_array);
    }
    else{
     //return all_cart_item(false);
@@ -200,6 +202,8 @@ function cat_get_all_item_punchDb() {
                 "cat"
             ]
         };
+        console.log('documents 8888');
+        console.log(documents);
         //  const fuse = new Fuse(books, options)
         // Search for items that include "Man" and "Old",
         // OR end with "Artist"
@@ -225,19 +229,62 @@ function  print_catalog_item(new_items) {
    console.log(search_result);
    if (new_items.length > 0) {
        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs',  '#content_catalog_commpiled', search_result);
-       //  console.log('search_item');
    } else {
        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
    }
 }
-
+//alert(all_items_array);
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function search_catalog_item(search_val ,filter_tag) {
+async function search_catalog_item(search_val ,all_items_array) {
      //Armo el array para renderizar los items
+    // console.log('all_items_array 22');
+    // console.log(search_val);
+  //   console.log(all_items_array);
+     var options = {
+        // isCaseSensitive: false,
+        // includeScore: false,
+        // shouldSort: true,
+        // includeMatches: false,
+        // findAllMatches: false,
+        // minMatchCharLength: 1,
+        // location: 0,
+        // threshold: 0.6,
+        // distance: 100,
+        // useExtendedSearch: false,
+        // ignoreLocation: false,
+        // ignoreFieldNorm: false,
+        includeScore: true,
+        useExtendedSearch: true,
+        keys: [
+            "name",
+            "sku",
+            "tags",
+            "cat"
+        ]
+     };
+    var myIndex = Fuse.createIndex(options.keys, all_items_array);
+     // initialize Fuse with the index
+    var fuse = new Fuse(all_items_array, options, myIndex);
     var new_items_search = fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
     // alert(result);
-    if (new_items_search.length > 0) {
-        print_catalog_item(new_items_search);
+   // console.log('new_items_search 4444');
+  // console.log(new_items_search);
+    search_all_items_map_array = await new_items_search.map(it => {
+        new_items = {};
+        // Mapeo el array
+        new_items['name'] = it.item.name;
+        new_items['cats'] = it.item.cats;
+        new_items['tags'] = it.item.tags;
+        new_items['sku'] = it.item.sku;
+        new_items['attribute_combinations'] = it.item.attribute_combinations;
+        new_items['doc'] = it.item.doc;
+        //Formateo el array final
+        return new_items;
+    });
+    //console.log('all_items_array 4444');
+    //console.log(search_all_items_map_array);
+    if (search_all_items_map_array.length > 0) {
+        print_catalog_item(search_all_items_map_array);
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
@@ -462,10 +509,15 @@ $(document).on('focusin', '.catalog_search', function (element) {
       //  cat_search_item_js();
 });
 
-$(document).on('keyup', '.catalog_search', function (element) {
-    var search_m_input = $(this).val();
+$(document).on('keyup', '.catalog_search', function () {
+    var search_val = $(this).val();
     var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
-    search_catalog_item(search_m_input);
+    //search_catalog_item(search_m_input);
+    console.log('all_items_array llll222');
+    console.log(all_items_array);
+    console.log('all_items_array llll2222');
+    console.log(search_val);
+    search_catalog_item(search_val ,all_items_array)
 });
 
 
@@ -477,6 +529,7 @@ function get_catalog(ws_id) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
     get_nav_catalog();
     get_all_catalog_intems();
+    
    // print_catalog_item(new_items)
     // alert('cargo el bucador');
     // get_items_catalog();
