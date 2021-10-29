@@ -93,7 +93,7 @@
                                                     </ul>
                                                 </div>
                                     </div>
-                                     <input class="search-input s-card-actv-input" autocomplete="off" type="text" id="" name="catalog_search" placeholder="Buscar..">
+                                     <input class="catalog_search search-input s-card-actv-input" autocomplete="off" type="text" id="" name="catalog_search" placeholder="Buscar..">
                             </div>
                     </div>
                 </div>
@@ -146,5 +146,10 @@
 <script>
 
   
+$(window).on( "load", function() { 
+    //$(document).ready(function(){
+    //cat_get_all_item_punchDb();
+   // cat_search_item_js('fit');  
+  });
 
 </script>
