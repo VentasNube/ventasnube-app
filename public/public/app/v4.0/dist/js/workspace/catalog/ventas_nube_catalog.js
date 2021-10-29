@@ -1,7 +1,4 @@
 //Funciones que pueden servir para Importar productos desde otra base de datos
-
-
-
 // CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
 function charge_all_docs_local(remote_items) {
     L_search_db.bulkDocs({ docs: remote_items },
@@ -41,9 +38,7 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
     });
 };
 
-
 /**** Nuevo catalogo ****/
-
 //Cargo la variable catalog 
 L_catalog_db = L_search_db;
 
@@ -52,7 +47,9 @@ function get_nav_catalog(ws_info,ws_lang_data) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
     }
+
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
+    alert('cargo el bucador');
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
@@ -63,12 +60,10 @@ function get_catalog(ws_id) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
     }
-
     get_nav_catalog();
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
-
-   // get_items_catalog();
-
+  // alert('cargo el bucador');
+    // get_items_catalog();
     // $('#cart_user_input').focus();
     console.log('GET CATALOG');
 }
@@ -81,7 +76,7 @@ function get_items_catalog(ws_id) {
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', '#content_catalog_commpiled', ws_catalog);
     // $('#cart_user_input').focus();
-    console.log('GET ITEMS CATALOG');
+    //console.log('GET ITEMS CATALOG');
 }
 
 ////----()---/////
@@ -95,11 +90,7 @@ function form_new_product(ws_info, ws_lang_data) {
     console.log('FORM NEW PRODUCT');
 };
 
-
-
 //* CATALOGO 2021 Tarjetas materiales  **/
-
-
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
 function cat_get_all_item_punchDb() {
     L_search_db.query('get/seach', {
@@ -162,6 +153,8 @@ function cat_get_all_item_punchDb() {
             // useExtendedSearch: false,
             // ignoreLocation: false,
             // ignoreFieldNorm: false,
+            includeScore: true,
+            useExtendedSearch: true,
             keys: [
                 "name",
                 "sku",
@@ -169,6 +162,15 @@ function cat_get_all_item_punchDb() {
                 "cat"
             ]
         };
+
+       
+        //  const fuse = new Fuse(books, options)
+    
+    
+          
+          // Search for items that include "Man" and "Old",
+          // OR end with "Artist"
+          //fuse.search("'Man 'Old | Artist$")
         // var options = { keys: ['title', 'author.firstName'] }
         //Create the Fuse index
         var myIndex = Fuse.createIndex(options.keys, documents);
@@ -182,9 +184,64 @@ function cat_get_all_item_punchDb() {
 }
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function cat_search_item_js(search_val) {
+function cat_search_item_js(search_val ,filter_tag) {
+    /*
+const newUsers = items.map({ name, cat, tags, sku, attribute_combinations, doc} => ({name, cat, tags, sku, attribute_combinations, doc}));
+// will return an array with all keys other than website
+const newUsers = items.map({id, email, name, username, phone, password} => ({id, email, username, email, phone, password}));
+// will return an array with all keys other than website
+// Using ES6
+var filtered_items = items.filter((item) => item.value.name >= 120 );
+// Using arrow functions
+var total_time = tasks.reduce((previous, current) previous + current );
 
-    var result = fuse.search(search_val, { limit: 18 });
+                          // Concatenate our 2D array into a single list
+var new_array = items.reduce((acc, current) => acc.concat(current))
+// Extract the task duration, and convert minutes to hours
+//.map((items) => items.duration / 60) //Divide el tiempo en minutos a horas
+// Filter out any task that took less than two hours
+.filter((duration) => duration >= 2)  //Filtra que sea mayor o igual a 2 horas
+// Multiply each tasks' duration by our hourly rate
+.map((duration) => duration * 25) //Multiplica por 25 
+// Combine the sums into a single dollar amount
+.reduce((acc, current) => [(+acc) + (+current)])
+// Convert to a "pretty-printed" dollar amount
+.map((amount) => '$' + amount.toFixed(2))
+// Pull out the only element of the array we got from map
+.reduce((formatted_amount) =>formatted_amount); */
+/*
+    jscript	coincidencia difusa	Elementos que coinciden de forma aproximada jscript
+    =scheme	coincidencia exacta	Elementos que son scheme
+    'python	incluir partido	Elementos que incluyen python
+    !ruby	coincidencia exacta inversa	Elementos que no incluyen ruby
+    ^java	prefijo-coincidencia-exacta	Elementos que comienzan con java
+    !^earlang	coincidencia exacta de prefijo inverso	Elementos que no comienzan con earlang
+    .js$	sufijo-coincidencia exacta	Elementos que terminan con .js
+    !.go$	sufijo-inverso-coincidencia-exacta	Elementos que no terminan con .go
+*/
+
+    //fuse.search("'Man 'Old | Artist$")
+    //filter_name == "="+ filter_tag +"|"+ Artist +"$"
+
+    //filter_price == "="+ filter_tag +"|"+ Artist +"$"
+    //filter_stock == "="+ filter_tag +"|"+ Artist +"$"
+   // "'Man 'Old | Artist$"
+
+  /* 
+   filter_tag = 'Remera';
+   filter_tag == "="+ filter_tag; //Es igual al tag
+   filter_sort_asc = '>'; //A< B
+   filter_sort_dsc = '<';  //A > B
+
+
+  search_val =  search_val +" "+ filter_sort_dsc +" "+ filter_tag;
+
+
+filter_sort_asc = '>'; //A< B
+
+*/
+
+    var result = fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
     //Armo el array para renderizar los items
     var search_result = {
         search_product: result,
@@ -397,35 +454,29 @@ async function dell_cart_item(element) {
 }
 */
 
-
-
 $(document).on('click', '.catalog_edit_item', function (event) {
     //$('#master_popup').modal('show');
    // get_catalog_new_item();
     //  catalog_edit_item()
       catalog_view_item(product_id)
      alert('catalog_edit_item()'+product_id);
-  });
+});
 
-
-  
- $(document).on('click', '.catalog_new_item', function (event) {
+$(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
      // get_catalog_new_item();
        catalog_edit_item();
        alert('catalog_new_item');
-  });
+});
 
-
-
-  $(document).on('click', '.view_item', function (element) {
+$(document).on('click', '.view_item', function (element) {
     var product_id = $(this).attr('product_id');
         // var item_cart_rev = $(element).attr('item_cart_rev');
         //  $('#master_popup').modal('show');
         // get_catalog_new_item();
         catalog_view_item(product_id);
       //  alert('catalog_new_item' + product_id);
-  });
+});
 
 async function  catalog_view_item(product_id) {
     //  var result = fuse.search(search_val, { limit: 18 });
@@ -434,26 +485,19 @@ async function  catalog_view_item(product_id) {
       try {
         var product_doc = await L_search_db.get(product_id);
        // var product_data_doc = null;
-       console.log('ACAAAAAAAA product_doc');
-       console.log(product_doc);
-            var product_array  = {
-                ws_info: ws_info,
-                ws_lang_data: ws_lang_data,
-                product_data:product_doc
-            }
-
-            var search_result = {
-                search_product: product_doc,
+       //console.log('ACAAAAAAAA product_doc');
+      // console.log(product_doc);
+            var product_doc_array = {
+                product_doc: product_doc,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
             }
-            console.log(search_result);
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', search_result);
+            console.log(product_doc_array);
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', product_doc_array);
       } catch (err) {
         console.log(err);
       }
-    }
-
+}
 
 function  catalog_edit_item(product_id, product_rev) {
     //  var result = fuse.search(search_val, { limit: 18 });
@@ -509,10 +553,7 @@ function  catalog_new_item() {
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', product_data);
 }
-//get_catalog(ws_id);
 
-
-//get_catalog(),
 /*
 $(document).ready(function () {
     window.onload =

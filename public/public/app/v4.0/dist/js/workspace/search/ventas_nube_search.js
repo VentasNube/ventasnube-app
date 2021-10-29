@@ -44,7 +44,7 @@ L_search_db.sync(url_R_db+ws_search_db, {
  //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
   });
 
-  async function search_db() {
+async function search_db() {
     try {
             price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
     } catch (err) {
@@ -56,7 +56,7 @@ L_search_db.sync(url_R_db+ws_search_db, {
             duration: 50000
         });
     }
-    }
+}
 
 ////----(4 Search Module)---/////
 function get_search_module(ws_info, ws_lang_data) {

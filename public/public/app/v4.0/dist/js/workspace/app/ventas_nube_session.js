@@ -20,7 +20,7 @@ function createCookie(name, value, days) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
-// Leemos la cookie para configurar la app
+// Leemos las cookies
 function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -31,9 +31,6 @@ function readCookie(name) {
     }
     return null;
 }
-
-// Leemos la cookie seteada para offline mode
-
 
 // ***** CONFIGURACIONES GLOBALES *****//
 const url_site = 'http://localhost'
@@ -67,7 +64,6 @@ if (!ws_id) {
 //Chekeo q se alla instalado todas las bases de datos y en especial la left bar y refrezco para inciar las dbs
 const ws_install = readCookie ('ws_install-' + ws_id);
 
-
 function chek_ws_updates() {
    // var cart_open = readCookie("cart_open_ws_"+ws_id);
     const ws_install = readCookie ('ws_install-' + ws_id);
@@ -90,31 +86,6 @@ function chek_ws_updates() {
 }
 
 chek_ws_updates() ;
-/*
-if (!ws_install) {
-    alert('No se guardo la cockie ');
-       // window.onload = function () {
-       //     alert("window load complete");
-      //  }
-      $('#')
-        var delay = 3000;
-        setTimeout(function(){ 
-             location.reload();
-            // window.location = "/account";
-             }, delay);
-}
-else{
-
-    alert('Se guardo la cockie');
-    Snackbar.show({
-    text: 'Bienvenido ' + u_name + ' al WORKSPACE: '+ ws_id,
-    actionText: 'ok',
-    actionTextColor: "#0575e6",
-    pos: 'bottom-center'
-});
-   // alert('Instalacion con exito! ' + ws_install);
-}
-*/
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });
