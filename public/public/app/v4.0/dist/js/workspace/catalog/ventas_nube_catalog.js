@@ -7,6 +7,7 @@ function charge_all_docs_local(remote_items) {
         });
 }
 all_items_array = {};
+search_fuse = null;
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -41,15 +42,40 @@ async function get_all_catalog_intems(ws_id, filter) {
             new_items['attribute_combinations'] = item.value.attribute_combinations;
             new_items['doc'] = item.value;
             //Formateo el array final
-          //  all_items_map_array = {
+           //  all_items_map_array = {
            //     item:new_items
            // }
             return new_items;
         });
 
-       
         //Imprimo el resultado en patalla
         print_catalog_item(all_items_array);
+        // CONFIGURO LA VARIABLE GLOBAL FUSE PARA USAR EN TODOS LADOS ya con el array de los resultados
+        var options = {
+            // isCaseSensitive: false,
+            // includeScore: false,
+            // shouldSort: true,
+            // includeMatches: false,
+            // findAllMatches: false,
+            // minMatchCharLength: 1,
+            // location: 0,
+            // threshold: 0.6,
+            // distance: 100,
+            // useExtendedSearch: false,
+            // ignoreLocation: false,
+            // ignoreFieldNorm: false,
+            includeScore: true,
+            useExtendedSearch: true,
+            keys: [
+                "name",
+                "sku",
+                "tags",
+                "cat"
+            ]
+         };
+        var myIndex = Fuse.createIndex(options.keys, all_items_array);
+         // initialize Fuse with the index
+        search_fuse = new Fuse(all_items_array, options, myIndex);
    }
    else{
     //return all_cart_item(false);
@@ -92,8 +118,6 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
 /**** Nuevo catalogo ****/
 //Cargo la variable catalog 
 
-
-
 function get_nav_catalog(ws_info,ws_lang_data) {
     var ws_catalog_data = {
         ws_info: ws_info,
@@ -105,10 +129,7 @@ function get_nav_catalog(ws_info,ws_lang_data) {
     console.log('NAV BAR CATALOG');
 };
 
-// 
 
-
-// 
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -131,95 +152,6 @@ function form_new_product(ws_info, ws_lang_data) {
 };
 
 //* CATALOGO 2021 Tarjetas materiales  **/
-//TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
-function cat_get_all_item_punchDb() {
-    L_search_db.query('get/seach', {
-        include_docs: false,
-        descending: true
-            // attachments: true,
-            // startkey: data,
-            // endkey: data + '\ufff0',
-            //limit: 18,
-            // key:data
-            //inclusive_end:data
-            // endkey: RegExp(data, 'i')
-    }).then(function(result) {
-        // alert(result);
-        // console.log('Proceso el array con get all puch');
-        var new_array = [];
-        var items = result.rows;
-        var i = 0;
-        //   console.log(items)
-        for (i = 0; i < items.length; i++) {
-            // hacer algo con a[i];
-            var new_item = {
-                    name: items[i].value.name,
-                    cat: items[i].value.cats,
-                    tags: items[i].value.tags,
-                    sku: items[i].value.sku,
-                    attribute_combinations: items[i].value.attribute_combinations,
-                    doc: items[i].value
-                        // doc: items[i].doc
-                }
-                /*  var new_item = {
-                      name: items[i].status,
-                      cat: items[i].status,
-                      sold_quantity: items[i].sold_quantity,
-                      cost_price: items[i].cost_price,
-                      limit_discount: items[i].limit_discount,
-                      sku: items[i].sku,
-                      currency: items[i].currency,
-                      price: items[i].price,
-                      profit_percentage: items[i].profit_percentage,
-                      profit_percentage_active: items[i].profit_percentage_active,
-                      stock_list: items[i].stock_list,
-                      picture_min: items[i].pictures.min,
-                      picture_max: items[i].pictures.max
-                          // doc: items[i].doc
-                  }*/
-            new_array.push(new_item);
-        }
-        documents = new_array; //Array Formateado
-        var options = {
-            // isCaseSensitive: false,
-            // includeScore: false,
-            // shouldSort: true,
-            // includeMatches: false,
-            // findAllMatches: false,
-            // minMatchCharLength: 1,
-            // location: 0,
-            // threshold: 0.6,
-            // distance: 100,
-            // useExtendedSearch: false,
-            // ignoreLocation: false,
-            // ignoreFieldNorm: false,
-            includeScore: true,
-            useExtendedSearch: true,
-            keys: [
-                "name",
-                "sku",
-                "tags",
-                "cat"
-            ]
-        };
-        console.log('documents 8888');
-        console.log(documents);
-        //  const fuse = new Fuse(books, options)
-        // Search for items that include "Man" and "Old",
-        // OR end with "Artist"
-        // fuse.search("'Man 'Old | Artist$")
-        // var options = { keys: ['title', 'author.firstName'] }
-        // Create the Fuse index
-        var myIndex = Fuse.createIndex(options.keys, documents);
-        // initialize Fuse with the index
-        fuse = new Fuse(documents, options, myIndex);
-        //fuse = new Fuse(documents, options);
-        //console.log(fuse);
-    }).catch(function(err) {
-        console.log(err);
-    });
-}
-
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function  print_catalog_item(new_items) {
    var search_result = {
@@ -233,42 +165,12 @@ function  print_catalog_item(new_items) {
        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
    }
 }
-//alert(all_items_array);
+
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-async function search_catalog_item(search_val ,all_items_array) {
-     //Armo el array para renderizar los items
-    // console.log('all_items_array 22');
-    // console.log(search_val);
-  //   console.log(all_items_array);
-     var options = {
-        // isCaseSensitive: false,
-        // includeScore: false,
-        // shouldSort: true,
-        // includeMatches: false,
-        // findAllMatches: false,
-        // minMatchCharLength: 1,
-        // location: 0,
-        // threshold: 0.6,
-        // distance: 100,
-        // useExtendedSearch: false,
-        // ignoreLocation: false,
-        // ignoreFieldNorm: false,
-        includeScore: true,
-        useExtendedSearch: true,
-        keys: [
-            "name",
-            "sku",
-            "tags",
-            "cat"
-        ]
-     };
-    var myIndex = Fuse.createIndex(options.keys, all_items_array);
-     // initialize Fuse with the index
-    var fuse = new Fuse(all_items_array, options, myIndex);
-    var new_items_search = fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
-    // alert(result);
-   // console.log('new_items_search 4444');
-  // console.log(new_items_search);
+async function search_catalog_item(search_val) {
+    //Armo el array para renderizar los items
+    var new_items_search = search_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
+    //Mapeo el resultado fuera de item
     search_all_items_map_array = await new_items_search.map(it => {
         new_items = {};
         // Mapeo el array
@@ -281,17 +183,12 @@ async function search_catalog_item(search_val ,all_items_array) {
         //Formateo el array final
         return new_items;
     });
-    //console.log('all_items_array 4444');
-    //console.log(search_all_items_map_array);
     if (search_all_items_map_array.length > 0) {
         print_catalog_item(search_all_items_map_array);
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
-
-
-
 
 //Boton cambiar lista de precio
 function cat_variations_price(element) {
@@ -505,8 +402,9 @@ function  catalog_new_item() {
 }
 
 $(document).on('focusin', '.catalog_search', function (element) {
-        cat_get_all_item_punchDb();
+       // cat_get_all_item_punchDb();
       //  cat_search_item_js();
+      get_all_catalog_intems();
 });
 
 $(document).on('keyup', '.catalog_search', function () {
@@ -520,7 +418,6 @@ $(document).on('keyup', '.catalog_search', function () {
     search_catalog_item(search_val ,all_items_array)
 });
 
-
 function get_catalog(ws_id) {
     var ws_cart = {
         ws_info: ws_info,
@@ -529,33 +426,5 @@ function get_catalog(ws_id) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
     get_nav_catalog();
     get_all_catalog_intems();
-    
-   // print_catalog_item(new_items)
-    // alert('cargo el bucador');
-    // get_items_catalog();
-    // $('#cart_user_input').focus();
-    console.log('GET CATALOG');
 }
-    //Input de busqueda 
-  //  $("input[name=catalog_search]").focusin(function (documents) {
- //       cat_get_all_item_punchDb();
- //   });
- /*
-    $("input[name=catalog_search]").keyup(function () {
-        var search_m_input = $(this).val();
-        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
-        // alert(search_m_input);
-        console.log(search_m_input);
-        cat_search_item_js(search_m_input);
-    });
-    */
-     ////----( VISTA NAV )----////
-
-/*
-$(document).ready(function () {
-    window.onload =
-     //   get_catalog(),
-     //   get_nav_catalog();
-
-});
-*/
+ 
