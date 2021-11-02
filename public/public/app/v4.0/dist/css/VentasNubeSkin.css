@@ -12308,7 +12308,6 @@ board-item-content
 .nav_bar_catalog_search .input-delete{}
 
 
-
 .view-product{
     width: 100%;
     background-color: #fff;
@@ -12321,15 +12320,34 @@ board-item-content
     background-color: trasnsparent;
     overflow: hidden;
 }
+
 .view-product .header img {
     width: 100%;
     background-color: #fff;
 }
+
 .parallax {
         min-height: 150px;
         background-attachment: initial;
         background-position: initial;
         background-repeat: no-repeat;
         background-size: cover;
-    }
+}
+
+.view-product .main_input{
+       display: flex;
+       /*width: 100%;
+       background-color: #fff; */
+}
+
+.view-product  .main_input .material-icons{
+    display: flex;
+    margin: 10 0;
+    /*width: 100%;
+    background-color: #fff; */
+}
+
+
+    
+    
 

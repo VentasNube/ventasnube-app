@@ -47,7 +47,9 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
 
                         get_top_bar(ws_info, ws_lang_data); //Imprimo el top bar
                         get_left_nav(ws_left_nav , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
-                        get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
+                        //get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
+                        get_right_cart(ws_info, ws_lang_data);
+                       // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
                         get_search_module(ws_info, ws_lang_data); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
                         check_url_module(ws_left_nav, ws_lang_data);//Chequeo y cargo el modulo segun la url actual y la cargo
@@ -159,12 +161,12 @@ function get_top_bar(ws_info, ws_lang_data) {
 };
 
 ////----(3 LEFT NAV CART)---/////
-function get_nav_cart(ws_info, ws_lang_data) {
+function get_right_nav(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main_compiled', ws_cart);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
     // $('#cart_user_input').focus();
     console.log('CART in');
 };

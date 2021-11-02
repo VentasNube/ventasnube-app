@@ -4,7 +4,7 @@
 // El user_DB y el user_ws[ID] lo guardo con la la cokie con php 1 vez para traer los datos
 //############################################################################################
 //Uso this.a = 0; para declarar variables globales
-//#############################################################################################
+//############################################################################################
 //Global variables
 //##########################################################
 //Creamos la cookie donde almacenamos el workspace que abrio la session
@@ -47,8 +47,8 @@ const userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
 const u_db = readCookie("userDb");
 const userCtx = '';
-//Varianble global user_data
 
+//Varianble global user_data
 this.user_data = {
     user_db: u_db,
     user_name: u_name,
@@ -61,9 +61,9 @@ this.user_data = {
 if (!ws_id) {
     window.location = "/workspace/home";
 }
+
 //Chekeo q se alla instalado todas las bases de datos y en especial la left bar y refrezco para inciar las dbs
 const ws_install = readCookie ('ws_install-' + ws_id);
-
 function chek_ws_updates() {
    // var cart_open = readCookie("cart_open_ws_"+ws_id);
     const ws_install = readCookie ('ws_install-' + ws_id);
@@ -84,7 +84,6 @@ function chek_ws_updates() {
                  }, delay);
         }
 }
-
 chek_ws_updates() ;
 
 //Creo y conecto con userDB local 
@@ -108,9 +107,9 @@ user_db.sync(url_R_db+userDb, {
     //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
     }
   });
-  //user_db.debug.enable('*'); //Activo el depurador de cuchdb
-//user_session();
-// FUNCION LOGOUT
+    //user_db.debug.enable('*'); //Activo el depurador de cuchdb
+    //user_session();
+    // FUNCION LOGOUT
 function logout() {
     L_user_db.logOut(function(err, response) {
         if (response) {

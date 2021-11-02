@@ -19,7 +19,7 @@
 //###########################################################################
 //Funcion que chekea el ultimo estado del cart
 function chek_cart_open_ws() {
-var cart_open = readCookie("cart_open_ws_"+ws_id);
+var cart_open = readCookie("left_nav_open_ws_"+ws_id);
     if (cart_open == 'true') {
         $('#right_main').addClass('move-right');
       //  alert('Mueve a la derecha');
@@ -27,6 +27,33 @@ var cart_open = readCookie("cart_open_ws_"+ws_id);
         $('#right_main').removeClass('move-right');
     }
 }
+
+function get_right_cart(ws_info, ws_lang_data) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
+
+    get_cart(ws_id);
+    get_fav(ws_id);
+    get_cart_change(ws_id);
+    get_fav_change(ws_id);
+    
+    // $('#cart_user_input').focus();
+   // alert('Tight cart');
+    console.log('CART in');
+};
+
+
+
+ $("#t_cart").click(function () {
+        $('#cart_footer').show();
+    });
+
+    $("#t_fav").click(function () {
+        $('#cart_footer').hide();
+    });
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id) {
@@ -346,6 +373,7 @@ async function dell_cart_item(element) {
     }
 }
 
+/*
 $(document).on('click', '.cart_open_button', function(event)
   {
       var state = $(this).data('state');
@@ -361,23 +389,31 @@ $(document).on('click', '.cart_open_button', function(event)
             get_fav(ws_id);
           break;
           case 2 : 
-       //   alert('Abriendo');
+          //   alert('Abriendo');
           createCookie('cart_open_ws_' + ws_id, true), 30;
           $('#right_main').addClass('move-right');
           $(this).data('state', 1);
           break;
       }
 });
-
-//Cierra el carrito
-/*
-$(document).on('click', '.cart_button_close', function(event) {
-    createCookie('cart_open_ws_' + ws_id, true), 30;
-    $('#right_main').addClass('move-right');
-  //  alert('creo la cokie');
-    //get_cart();
-});
 */
+//Cierra el carrito
+
+$(document).on('click', '.right_nav_open', function(event) {
+        // var status_bar = readCookie('cart_open_ws_' + ws_id);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;
+        $('#right_main').removeClass('move-right');
+        $('#cart_user_input').focus();
+        get_right_cart(ws_info, ws_lang_data); 
+});
+
+
+$(document).on('click', '.right_nav_close', function(event) {
+    createCookie('left_nav_open_ws_' + ws_id, true), 30;
+    $('#right_main').addClass('move-right');
+    
+});
+
 
 /** ############# FUCNIONES FAVORITOS  ############## *****/
 // Agreagar productos al favoritos

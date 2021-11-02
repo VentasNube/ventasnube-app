@@ -303,52 +303,41 @@ function cat_card_edit_variant() {
 
 $(document).on('click', '.catalog_edit_item', function (event) {
     //$('#master_popup').modal('show');
-   // get_catalog_new_item();
+    // get_catalog_new_item();
     //  catalog_edit_item()
-      catalog_view_item(product_id)
-     alert('catalog_edit_item()'+product_id);
+    catalog_view_item(product_id)
+    alert('catalog_edit_item()'+product_id);
 });
 
 $(document).on('click', '.catalog_new_item', function (event) {
-    //  $('#master_popup').modal('show');
-     // get_catalog_new_item();
+       //  $('#master_popup').modal('show');
+       // get_catalog_new_item();
        catalog_edit_item();
        alert('catalog_new_item');
 });
 
 $(document).on('click', '.view_item', function (element) {
-    var product_id = $(this).attr('product_id');
-        // var item_cart_rev = $(element).attr('item_cart_rev');
-        //  $('#master_popup').modal('show');
-        // get_catalog_new_item();
+        var product_id = $(this).attr('product_id');
         catalog_view_item(product_id);
-      //  alert('catalog_new_item' + product_id);
 });
 
 async function  catalog_view_item(product_id) {
-    //  var result = fuse.search(search_val, { limit: 18 });
-    //Armo el array para renderizar los items
-  //  alert(product_id);
       try {
         var product_doc = await L_search_db.get(product_id);
-       // var product_data_doc = null;
-       //console.log('ACAAAAAAAA product_doc');
-      // console.log(product_doc);
             var product_doc_array = {
                 product_doc: product_doc,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
             }
-            console.log(product_doc_array);
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', product_doc_array);
-      } catch (err) {
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
+            createCookie('left_nav_open_ws_' + ws_id, false), 30;
+            $('#right_main').removeClass('move-right');
+        } catch (err) {
         console.log(err);
       }
 }
 
 function  catalog_edit_item(product_id, product_rev) {
-    //  var result = fuse.search(search_val, { limit: 18 });
-    //Armo el array para renderizar los items
     var product_data_doc = null;
     var product_data = {
         ws_info: ws_info,

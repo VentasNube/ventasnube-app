@@ -1,4 +1,4 @@
-<div id="right_main" class="right_main col-xs-12 col-sm-12">
+
     <!-- Cart Nav module -->
     <div class="righ_nav_header">
         <!--span class="material-icons">receipt</span>Nueva -->
@@ -7,7 +7,7 @@
     <div class="view-product">
         {{#with product_doc}}
                 <div class="header" >
-                     <button id="" type="button" class="round cart_open_button btn btn-default right_nav_close pull-right ">
+                            <button id="" type="button" class="round left_nav_close btn btn-default right_nav_close pull-right ">
                                 <span class="material-icons">close</span>
                             </button>
                         <!-- #first trae el primer item del array -->
@@ -29,7 +29,37 @@
                     <br>
                      <h3>{{descriptions}}</h3> 
 
+                        <div class="main_input">
+                            <span class=" material-icons">monetization_on</span>
+                            <input name="card_prduct_val" class="card_product_val form-control" type="number"
+                                placeholder="valor" value="{{item.doc.price}}">
+                        </div>
+
+
+
+                        <div class="main_input">
+                            <span class=" material-icons">local_offer</span>
+                            <input name="card_prduct_discount" class="card_product_discount form-control" type="number"
+                                placeholder="Descuento" value="0">
+                        </div>
+
+
+                        
+                        <div class="main_input" >
+                            <span class=" material-icons">superscript</span>
+                            <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                                placeholder="Cantidad" value="1">
+                        </div>
+                           <div class="main_input" >
+                            <span class=" material-icons">superscript</span>
+                            <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                                placeholder="Cantidad" value="1">
+                        </div>
+                           <div class="main_input" >
+                            <span class=" material-icons">superscript</span>
+                            <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                                placeholder="Cantidad" value="1">
+                        </div>
 
         {{/with}}
     </div>
-</div>

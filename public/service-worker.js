@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 1211111222212211;
+    const version = 1212211113211;
     const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
@@ -62,10 +62,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
     workbox.precaching.precacheAndRoute([
          // { url: '/', revision: version },
          //{ url: '/login', revision: version },
-        // { url: '/workspace/home', revision: version }, 
-        //{ url: '/workspace?type=catalog', revision: version },
+        { url: '/workspace/home', revision: version }, 
+        { url: '/workspace?type=catalog', revision: version },
         { url: '/workspace', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
-        //   { url: '/workspace/login', revision: version },
+        { url: '/workspace/login', revision: version },
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
         { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
         // fuentes css y plugins
@@ -132,6 +132,12 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
 
         
     ]);
+
+
+    workbox.routing.registerRoute(
+      ({ event }) => event.request.mode === 'navigate',
+      ({ url }) => fetch(url.href).catch(() => caches.match('/workspace'))
+      );
     
     workbox.routing.registerRoute(
         ({ request }) => request.destination === 'image',
