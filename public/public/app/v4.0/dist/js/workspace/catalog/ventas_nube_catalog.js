@@ -82,7 +82,6 @@ async function get_all_catalog_intems(ws_id, filter) {
    }
 }
 
-
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
 function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      

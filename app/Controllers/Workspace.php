@@ -1408,9 +1408,6 @@ class Workspace extends BaseController
         }
     }
 
-
-  
-
 	//Vista del login
 	public function login()
 	{
@@ -1423,6 +1420,17 @@ class Workspace extends BaseController
 		echo view('home/login/head', $data);
 		//echo view('login/login', $data);
 		return view('home/login/login', $data);
+	}
+
+    //Log the user out.
+	public function logout()
+	{
+		if ($this->auth->check())
+		{
+			$this->auth->logout();
+		}
+
+		return redirect()->to(site_url('/'));
 	}
     
 	//Vista registro
@@ -1438,6 +1446,7 @@ class Workspace extends BaseController
 		//echo view('login/login', $data);
 		return view('home/login/register', $data);
 	}
+
 	//Vistra recuperacion de contraseña
 	public function forgot()
 	{

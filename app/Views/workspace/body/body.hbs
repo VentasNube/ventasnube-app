@@ -93,14 +93,17 @@
         </div>
         <div class="modal_body ">
                         <div class="icon_tittle">
-                          <span class="material-icons">
+                          <!--span class="material-icons">
                               install_desktop
-                          </span>
+                          </span-->
+
+                         <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
+       
                         </div>
                         <br>
                         <div class="icon_loading">
                           <span class="material-icons material-icon-spinner">
-                               cached
+                               update
                           </span>
                         </div>
                         <div class="sub_tittle">Aguarda un instante...</div>
@@ -177,7 +180,7 @@ function showUpdateBar(newWorker) {
                    }
                 });
                 var delay = 2000;
-                 setTimeout(function(){ 
+                setTimeout(function(){ 
                      newWorker.postMessage({ action: 'skipWaiting' });
                       location.reload();
                      // window.location = "/account";
@@ -258,5 +261,27 @@ function showUpdateBar(newWorker) {
               window.location.reload();
                 //  refreshing = true;
             });
+
+           
+           
+
           }  
+
+          /* 
+          
+           const { cacheNames } = workbox.core;
+
+
+          self.addEventListener('activate', event => {
+                event.waitUntil(async function() {
+                    const userCacheNames = await caches.keys();
+                    await Promise.all(userCacheNames.map(async cacheName => {
+                        if (!Object.values(cacheNames).includes(cacheName)) {
+                            return await caches.delete(cacheName);
+                        }
+                        return await Promise.resolve();
+                    }));
+                }());
+            });
+            */
 </script>

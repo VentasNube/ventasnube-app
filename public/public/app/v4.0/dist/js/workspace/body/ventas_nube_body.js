@@ -16,19 +16,19 @@ L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
 L_ws_info_db.sync(url_R_db+ws_info_db, {
     live: true,
     retry: true,
-  //  skip_setup: true
+    // skip_setup: true
 }).on('change', function (change) {
     $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
   }).on('paused', function (info) {
     $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('active', function (info) {
     $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
   }).on('error', function (err) {
     $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
- //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
   });
 
  async function ws_module_config() {
@@ -44,12 +44,12 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         //SETEO EL ARRAY CON EL IDIOMA
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
-
+                        
                         get_top_bar(ws_info, ws_lang_data); //Imprimo el top bar
                         get_left_nav(ws_left_nav , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
                         //get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
                         get_right_cart(ws_info, ws_lang_data);
-                       // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
+                        // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
                         get_search_module(ws_info, ws_lang_data); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
                         check_url_module(ws_left_nav, ws_lang_data);//Chequeo y cargo el modulo segun la url actual y la cargo
@@ -65,6 +65,7 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                     });
                 }
  }
+
  ////----(1 LEFT NAV)---/////
  //Creo el doc y lo guardo el la db
 function put_left_nav_doc() {
@@ -136,6 +137,7 @@ function put_left_nav_doc() {
         }
     });
 };
+
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav , ws_lang_data) {
               var ws_left_nav_doc = {
@@ -171,11 +173,8 @@ function get_right_nav(ws_info, ws_lang_data) {
     console.log('CART in');
 };
 
-
-
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
-
 //ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
 function check_url_module(ws_left_nav , ws_lang_data) {
     var m_id = getParameterByName('m'); //Trae el modulo id
@@ -183,7 +182,6 @@ function check_url_module(ws_left_nav , ws_lang_data) {
     var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
     check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
 }
-
 
 //ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
 function check_content_module(ws_module_name, ws_left_nav, ws_lang_data) {
@@ -197,7 +195,6 @@ function check_content_module(ws_module_name, ws_left_nav, ws_lang_data) {
           return  get_module_function(ws_module_select);
         }
     }
-
 };
 
 //Es el filtro comparativo de los modulos y activador de funciones
@@ -216,7 +213,6 @@ function get_module_function(ws_module_select) {
         }
 };
 
-
 //// BOTON SELECT MODULO LEFT BAR //
 // Logica q trae el modulos con handelbars no el linck
 $(document).on('click', 'a.l_nav_m', function (event) {
@@ -225,7 +221,6 @@ $(document).on('click', 'a.l_nav_m', function (event) {
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
     check_content_module(m_name, ws_left_nav, ws_lang_data);
 });
-
 
 //// BOTON SELECT TYPO DE MODULO LEFT BAR///
 $(document).on('click', 'a.l_nav_t_m', function (event) {

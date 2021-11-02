@@ -16,10 +16,12 @@ function createCookie(name, value, days) {
     } else var expires = "";
     document.cookie = name + "=" + value + expires + "; path=/workspace";
 }
+
 //Limpiamos la cookie por una nueva
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+
 // Leemos las cookies
 function readCookie(name) {
     var nameEQ = name + "=";
@@ -118,7 +120,7 @@ function logout() {
                 actionText: 'ok',
                 actionTextColor: "#0575e6",
             });
-            window.location = "/logout";
+            window.location = "/workspace/logout";
         } else if (err) {
             if (err) {
                 // name or password incorrect

@@ -1,9 +1,14 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 1212211113211;
+    const version = 213114234;
     const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
+
+
+     //   console.log('Clearing Workbox Cache.');
+   //  WorkBoxCache = new workbox.expiration.Plugin;
+      //  WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
         self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
       });
 
@@ -16,7 +21,22 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
           self.skipWaiting();
         }
       });
-
+      
+/*
+    self.addEventListener('message', function(event){
+        msg = event.data;
+        console.log("SW Received Message: " + msg);
+        // if (msg==='clearCache') {
+          console.log('Clearing Workbox Cache.');
+          WorkBoxCache = new workbox.expiration.Plugin;
+          WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
+                //WorkBoxCacheServer.clear();
+            //  }
+         if (event.data.action === 'skipWaiting') {
+          self.skipWaiting();
+        }
+    });
+*/
      /* self.addEventListener('activate', (event) => {
         var cacheKeeplist = ['v2'];
       
@@ -52,11 +72,11 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         event.waitUntil(self.registration.showNotification(title, options));
     });
 */
-  workbox.core.setCacheNameDetails({
-    prefix: 'ventasnube',
-    suffix: 'v1'+version,
-    precache: 'ventasnube-precache',
-    runtime: 'ventasnube-runcache'
+    workbox.core.setCacheNameDetails({
+        prefix: 'ventasnube',
+        suffix: 'v1'+version,
+        precache: 'ventasnube-precache',
+        runtime: 'ventasnube-runcache'
     });
 
     workbox.precaching.precacheAndRoute([
@@ -133,11 +153,24 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         
     ]);
 
+  /*  const { cacheNames } = workbox.core;
 
+    self.addEventListener('activate', event => {
+        event.waitUntil(async function() {
+            const userCacheNames = await caches.keys();
+            await Promise.all(userCacheNames.map(async cacheName => {
+                if (!Object.values(cacheNames).includes(cacheName)) {
+                    return await caches.delete(cacheName);
+                }
+                return await Promise.resolve();
+            }));
+        }());
+    });
+*/
     workbox.routing.registerRoute(
-      ({ event }) => event.request.mode === 'navigate',
-      ({ url }) => fetch(url.href).catch(() => caches.match('/workspace'))
-      );
+        ({ event }) => event.request.mode === 'navigate',
+        ({ url }) => fetch(url.href).catch(() => caches.match('/workspace'))
+    );
     
     workbox.routing.registerRoute(
         ({ request }) => request.destination === 'image',

@@ -220,9 +220,9 @@
         <div class="container">
         <div class="navbar-translate">
             <a class="navbar-brand" href="<?php echo base_url(); ?>">
-            <div class="ml-3 logo-image" >
-            <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
-            </div>
+              <div class="ml-3 logo-image" >
+                <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
+              </div>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
