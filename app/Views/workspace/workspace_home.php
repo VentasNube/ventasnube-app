@@ -438,7 +438,7 @@ function createCookie(name,value,days) {
 		var expires = "; expires="+date.toGMTString();
 	}
 	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/workspace";
+	document.cookie = name+"="+value+expires+"; path=/workspace/app";
 }
 
 
@@ -482,11 +482,11 @@ $(".ws_select").click( function() {
                         createCookie ('userDb',userDb);
                         createCookie ('user_email',user_email);
                         createCookie ('u_name',u_name);
-                        $(location).attr('href','/workspace');                       
+                        $(location).attr('href','/workspace/app');                       
                     } else {
                         // alert('No esta logeado');
                        // logout();
-                        window.location = "/login";
+                        window.location = "/workspace/login";
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {

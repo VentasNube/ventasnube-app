@@ -1,14 +1,19 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 13;
+    const version = 1;
     const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
+
+
+        //   console.log('Clearing Workbox Cache.');
+        //  WorkBoxCache = new workbox.expiration.Plugin;
+        //  WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
         self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
       });
 
       self.addEventListener('activate', event => {
-
+       // console.log('Activate V:'+ version );
       });
 
       self.addEventListener('message', function (event) {
@@ -45,7 +50,28 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         );
       });
     */
+      
+/*
+    self.addEventListener('fetch', function(event) {
+        self.clients.matchAll().then(all => all.map(client => client.postMessage('data from webworker')));
+      });
+      
+    
 
+      self.addEventListener('push', function(event) {
+        console.log('[Service Worker] Push Received.');
+        console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+    
+        const title = 'Push Codelab';
+        const options = {
+            body: 'Push notifications',
+            icon: 'images/icon.png',
+            badge: 'images/badge.png'
+        };
+    
+        event.waitUntil(self.registration.showNotification(title, options));
+    });
+*/
     workbox.core.setCacheNameDetails({
         prefix: 'ventasnube',
         suffix: 'v1'+version,
@@ -55,9 +81,9 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
 
     workbox.precaching.precacheAndRoute([
          // { url: '/', revision: version },
-        //{ url: '/login', revision: version },
-        //{ url: '/workspace/home', revision: version }, 
-        { url: '/workspace/app/?type=catalog', revision: version },
+         //{ url: '/login', revision: version },
+       //{ url: '/workspace/home', revision: version }, 
+       // { url: '/workspace/app/?type=catalog', revision: version },
         { url: '/workspace/app', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
         //{ url: '/workspace/login', revision: version },
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
@@ -127,6 +153,25 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         
     ]);
 
+  /*  const { cacheNames } = workbox.core;
+
+    self.addEventListener('activate', event => {
+        event.waitUntil(async function() {
+            const userCacheNames = await caches.keys();
+            await Promise.all(userCacheNames.map(async cacheName => {
+                if (!Object.values(cacheNames).includes(cacheName)) {
+                    return await caches.delete(cacheName);
+                }
+                return await Promise.resolve();
+            }));
+        }());
+    });
+*/
+    workbox.routing.registerRoute(
+        ({ event }) => event.request.mode === 'navigate',
+        ({ url }) => fetch(url.href).catch(() => caches.match('/workspace/app'))
+    );
+    
     workbox.routing.registerRoute(
         ({ request }) => request.destination === 'image',
         new workbox.strategies.CacheFirst({
@@ -140,3 +185,25 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
             ]
         })
     );
+
+
+/*
+    // Allow sw to control of current page
+    self.addEventListener('activate', event => {
+        console.log('Activating new service worker...');
+    
+        const cacheWhitelist = [cacheName];
+    
+        event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+            cacheNames.map(cacheName => {
+                if (cacheWhitelist.indexOf(cacheName) === -1) {
+                return caches.delete(cacheName);
+                }
+            })
+            );
+        })
+        );
+    });
+        */

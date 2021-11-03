@@ -44,7 +44,7 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         //SETEO EL ARRAY CON EL IDIOMA
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
-                        
+
                         get_top_bar(ws_info, ws_lang_data); //Imprimo el top bar
                         get_left_nav(ws_left_nav , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
                         //get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
@@ -217,7 +217,7 @@ function get_module_function(ws_module_select) {
 // Logica q trae el modulos con handelbars no el linck
 $(document).on('click', 'a.l_nav_m', function (event) {
     var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
-    var m_url = '/workspace?type=' + m_name; // Armo la url completa del linck
+    var m_url = url_app +'?type=' + m_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
     check_content_module(m_name, ws_left_nav, ws_lang_data);
 });
@@ -236,7 +236,7 @@ $(document).on('click', 'a.l_nav_t_m', function (event) {
     var s_url_t_m = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
     var m_url = s_url_t_m + '?m=' + m_id + '&?t=' + m_t_id + '&?type=' + m_t_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
- //   get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+    //   get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
     // get_board_group(m_id, m_t_id);
     get_content_module();
 });

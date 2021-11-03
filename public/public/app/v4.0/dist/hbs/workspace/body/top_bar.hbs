@@ -156,7 +156,7 @@
                             </a>
                         </div>
                         <div class="pull-right">
-                            <a href="/workspace/logout" class="btn btn-default">
+                            <a href="#" class="logout_button btn btn-default">
                                 <span class="material-icons">
                                     logout
                                 </span>
@@ -203,5 +203,12 @@
     $(document).on('click', '.search_close', function (event) {
         search_close();
     });
+
+  $(document).on('click', '.logout_button', function (event) {
+      alert('Cerrarndo sesion');
+        logout();
+    });
+
+   
 
 </script>

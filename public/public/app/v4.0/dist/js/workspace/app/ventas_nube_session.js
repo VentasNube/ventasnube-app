@@ -7,6 +7,17 @@
 //############################################################################################
 //Global variables
 //##########################################################
+
+
+// ***** CONFIGURACIONES GLOBALES *****//
+const url_site = 'http://localhost'
+const url_app_path = '/workspace/app'
+
+const url_app = 'http://localhost/workspace/app'
+const url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
+const url_hbs = '/public/app/v4.0/dist/hbs/workspace/'; //URL global de couchDB REMOTO
+const url_js = '/public/app/v4.0/dist/js/workspace/';
+
 //Creamos la cookie donde almacenamos el workspace que abrio la session
 function createCookie(name, value, days) {
     if (days) {
@@ -14,7 +25,7 @@ function createCookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         var expires = "; expires=" + date.toGMTString();
     } else var expires = "";
-    document.cookie = name + "=" + value + expires + "; path=/workspace";
+    document.cookie = name + "=" + value + expires + "; path="+url_app_path;
 }
 
 //Limpiamos la cookie por una nueva
@@ -33,12 +44,6 @@ function readCookie(name) {
     }
     return null;
 }
-
-// ***** CONFIGURACIONES GLOBALES *****//
-const url_site = 'http://localhost'
-const url_R_db = 'http://localhost:5984/'; //URL global de couchDB REMOTO
-const url_hbs = '/public/app/v4.0/dist/hbs/workspace/'; //URL global de couchDB REMOTO
-const url_js = '/public/app/v4.0/dist/js/workspace/';
 
 // Leemos la cookie seteada en el ws
 const ws_id = readCookie ('ws_select');
@@ -113,7 +118,7 @@ user_db.sync(url_R_db+userDb, {
     //user_session();
     // FUNCION LOGOUT
 function logout() {
-    L_user_db.logOut(function(err, response) {
+    user_db.logOut(function(err, response) {
         if (response) {
             Snackbar.show({
                 text: 'Cerrando sesion ' + response.name,
@@ -125,17 +130,11 @@ function logout() {
             if (err) {
                 // name or password incorrect
                 Snackbar.show({
-                    text: "No hay conexion a internet",
+                    text: err,
                     actionText: 'ok',
                     actionTextColor: "#0575e6",
                 });
-            } else {
-                // cosmic rays, a meteor, etc.
-                Snackbar.show({
-                    text: "<span class='material-icons'>wifi_off</span> No hay conexion a internet intenta mas tarde",
-                    actionText: 'ok',
-                    actionTextColor: "#0575e6",
-                });
+                window.location = "/workspace/logout";
             }
         }
     });

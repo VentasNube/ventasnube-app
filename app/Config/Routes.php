@@ -45,9 +45,9 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.
     //$routes->get('/account', 'Account::index', ['filter' => 'role:plan-starter-free']);
-    $routes->get('/workspace', 'workspace::index');
-
-
+    //$routes->get('/workspace', 'workspace::app');
+    $routes->get('/workspace/app', 'workspace::app');
+    $routes->get('/workspace/logout', 'AuthController::logout');
     // SHOP
     $routes->get('/shop', 'Home::shop');
     // Forgot/register cliente
@@ -73,7 +73,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('login', 'AuthController::attemptLogin');
     $routes->get('logout', 'AuthController::logout');
 
-    $routes->get('workspace/logout', 'AuthController::logout');
+
 
 
     // Vista Registration

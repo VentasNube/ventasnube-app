@@ -86,19 +86,20 @@
 </div>
 
 
-<div id="modal_master" class="modal_master">
-        <div class="modal_header">
-                    <div class="tittle">Actualizando tu Workspace</div>
-                     
-        </div>
-        <div class="modal_body ">
+<div id="modal_master" class="body-singup modal_master" style="background-repeat: no-repeat;
+    background-position: bottom right; background-image: url('/public/app/v4.0/assets/img/footer.png');">
+                      <div class="modal_header">
+                                <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
+                    
+                                  
+                      </div>
+                       <div class="modal_body ">
                         <div class="icon_tittle">
                           <!--span class="material-icons">
                               install_desktop
                           </span-->
-
-                         <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
-       
+                      <div class="tittle">Actualizando tu Workspace</div>
+                       
                         </div>
                         <br>
                         <div class="icon_loading">
@@ -188,23 +189,23 @@ function showUpdateBar(newWorker) {
           }
           ///INSTALACION SW
           if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
+           navigator.serviceWorker.register("/service-worker.js", { scope: "/workspace/app" })
+          //  navigator.serviceWorker.register('/service-worker.js')
             .then(
                 reg => {
-                //console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
-                 
-               //  waitWorker = reg.waiting;
+                //  console.log( 'ServiceWorker registration successful with scope: ', reg.scope );
+                //  waitWorker = reg.waiting;
                 newWorker = reg.installing;
                 if (reg.waiting) {
-                // console.log('Instalando Nueva vesion');
+                //  console.log('Instalando Nueva vesion');
                  alert('Se actualizo con exito!');
                  waitWorker.postMessage({ action: 'skipWaiting' });
                 return;
                 }
                 if (reg.installing) {
-                //console.log('installing');
+                //  console.log('installing');
                 alert('Se instalo una nueva version!');
-                // newWorker.postMessage({ action: 'skipWaiting' });
+                //  newWorker.postMessage({ action: 'skipWaiting' });
                 //  location.reload();
                 newWorker.postMessage({ action: 'skipWaiting' });
                 var delay = 1000;
