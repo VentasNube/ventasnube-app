@@ -183,7 +183,7 @@ function variations_price(element) {
 }
 
 //Boton setear variacion
-/*
+
 function variations_set(element) {
     // console.log(elemento);
     event.preventDefault();
@@ -219,7 +219,7 @@ function variations_set(element) {
 
 }
 
-*/
+
 
 //Boton variables y las Renderizo
 function variations_get(element) {

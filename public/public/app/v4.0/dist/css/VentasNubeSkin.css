@@ -10330,9 +10330,9 @@ h1 span{
     }
     
     .dropdown-menu.mini {
-        width: 100%;
+     /*   width: 100%;
         position: fixed!important;
-        margin-top: 100%!important;
+        margin-top: 100%!important;*/
     }
 }
 .dropdown-menu.mini {
@@ -10700,6 +10700,8 @@ h2 {
         font-size: 18px;
     }
 }
+
+
 .card-cob-container .left-side-c .card-c .buttons {
     width: 8px;
     height: 8px;
@@ -11432,7 +11434,8 @@ board-item-content
     transition: all 0.1s ease-in-out;
     /*width: 500px;
      top: 0px;*/
-    z-index: 999;
+    /*z-index: 999;*/
+    z-index: 1100;
     background: #fff;
     overflow-y: auto;
 }
@@ -11445,6 +11448,7 @@ board-item-content
         right: 0;
         transition: all 0.1s ease-in-out;
         width: 500px;
+        z-index: 1100;
     }
 }
 .right_main.move-right {
@@ -11680,6 +11684,7 @@ board-item-content
 .card .card-product .header .indicator {
     position: absolute;
    /* z-index: 9999; */
+  /* z-index: 1060;*/
     width: 50px;
     height: 50px;
     top: calc(50% - 25px);
@@ -11697,6 +11702,16 @@ board-item-content
     -ms-transition: top 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, background-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0s, margin 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s;
     transition: top 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, background-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0s, margin 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s;
 }
+
+
+.card .card-product .header .indicator.one {
+   z-index: 900;
+}
+
+.card .card-product .header .indicator.two {
+    z-index: 1060;
+ }
+
 .card .card-product .header .indicator.open {
     top: 33%;
     right: calc(50% - 25px);
@@ -11778,6 +11793,9 @@ board-item-content
     border-radius: 100%;
     background: linear-gradient(40deg, #4CAF50, #689F38) !important;
 }
+
+
+
 .ripple-efect-div {
     background: linear-gradient(40deg, #0575e6, #415eff) !important;
     -webkit-transition: top 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s, background-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0s, margin 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s;

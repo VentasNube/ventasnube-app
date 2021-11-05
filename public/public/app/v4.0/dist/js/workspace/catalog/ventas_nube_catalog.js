@@ -200,6 +200,7 @@ function cat_variations_price(element) {
     //  });
 }
 
+
 //Boton setear variacion
 function cat_variations_set(element) {
     // console.log(elemento);
@@ -241,7 +242,7 @@ function cat_variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
+    let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
@@ -267,7 +268,7 @@ function cat_variations_select(element) {
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
     let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#card_id_' + product_id; // ID DE COMPILACION //
+    let id_copiled = '#cat_card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
@@ -435,7 +436,7 @@ function view_item_variations_select(element) {
     catalog_view_item(element);
 }
 
-
+/*
 function view_item_variations_select_old(element) {
     event.preventDefault();
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
@@ -446,9 +447,9 @@ function view_item_variations_select_old(element) {
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
-        /*const var_doc =  doc.variations.filter(function(element){
+        const var_doc =  doc.variations.filter(function(element){
             return element.id == variant_id;
-        });*/
+        });
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
         const variant_array = {
@@ -463,12 +464,11 @@ function view_item_variations_select_old(element) {
             current: doc.price_list,
         }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-        //Actualizo el boton variables
         console.log("var_doc");
         console.log(variant_array);
     });
 }
-
+*/
 /***  FIN VIEW ITEM */
 function  catalog_edit_item(product_id, product_rev) {
     var product_data_doc = null;
