@@ -92,53 +92,7 @@
 </div>
 <script>
 
-    //Input de busqueda 
-    $("input[name=searchInput]").focusin(function (documents) {
-        //  alert('Input');
-        event.preventDefault();
-        console.log('Creo el array con los items de PounchDb');
-        get_all_item_punchDb();
-    });
-    $("input[name=searchInput]").keyup(function () {
-        event.preventDefault();
-        var search_m_input = $(this).val();
-        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
-        // alert(search_m_input);
-        console.log(search_m_input);
-        search_item_js(search_m_input);
-    });
-
-    //Botones de tipos de busqueda 
-    $(document).on('click', '.search_button_cat', function (event) {
-        var search_cat_selected_btn = $(this).html();
-        var search_cat_selected = $(this).attr('search_cat');
-        var search_cat_input = $('.search_cat_btn').html();
-
-        $('.search-title').find('.search_button_cat').removeClass('active');
-        $(this).addClass('active');
-
-        //alert(search_cat_selected_btn);
-        $('.search_cat_btn').html(search_cat_selected_btn);
-        //$('#searchInput').val('');
-        $('#searchInput').focus();
-    });
-    $(document).on('click', '.search_button_board_li', function (event) {
-        var search_cat_selected_btn = $(this).html();
-        var search_cat_selected_btn_print = $(this).parent().find('.search_m_t').html();
-        var search_cat_selected = $(this).attr('search_cat');
-        var search_cat_input = $('.search_cat_btn').html();
-        var search_cat_btn = $('.search_cat_btn').html();
-
-        $('.search-title').find('.search_button_board').removeClass('active');
-        $('.search-title').find('.search_button_board').addClass('active');
-        // $(this).addClass('active');
-        // alert(search_cat_selected_btn);
-        $('.search_button_board').html(search_cat_selected_btn_print + ' <i class="hidden-xs hidden-sm material-icons">expand_more</i>');
-        $('.search_cat_btn').html(search_cat_selected_btn_print);
-        // $('#searchInput').val('');
-        $('#searchInput').focus();
-    });
-
+ 
     //Boton select animaciones
     /*  $("li.bg-color").click(function () {
           var bgColor = $(this).attr('bg-color');

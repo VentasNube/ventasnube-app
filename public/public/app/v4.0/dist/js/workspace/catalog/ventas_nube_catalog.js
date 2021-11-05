@@ -128,7 +128,6 @@ function get_nav_catalog(ws_info,ws_lang_data) {
     console.log('NAV BAR CATALOG');
 };
 
-
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -179,6 +178,7 @@ async function search_catalog_item(search_val) {
         new_items['sku'] = it.item.sku;
         new_items['attribute_combinations'] = it.item.attribute_combinations;
         new_items['doc'] = it.item.doc;
+
         //Formateo el array final
         return new_items;
     });
@@ -289,6 +289,10 @@ function cat_variations_select(element) {
             current: doc.price_list,
         }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+
+
+        
+        // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
         console.log("var_doc");
         console.log(variant_array);
@@ -299,43 +303,173 @@ function cat_variations_select(element) {
 function cat_card_edit_variant() {
 
 }
-
-$(document).on('click', '.catalog_edit_item', function (event) {
-    //$('#master_popup').modal('show');
-    // get_catalog_new_item();
-    //  catalog_edit_item()
-    catalog_view_item(product_id)
-    alert('catalog_edit_item()'+product_id);
-});
-
-$(document).on('click', '.catalog_new_item', function (event) {
-       //  $('#master_popup').modal('show');
-       // get_catalog_new_item();
-       catalog_edit_item();
-       alert('catalog_new_item');
-});
-
-$(document).on('click', '.view_item', function (element) {
-        var product_id = $(this).attr('product_id');
-        catalog_view_item(product_id);
-});
-
-async function  catalog_view_item(product_id) {
+/*
+async function  catalog_view_item_old(product_id) {
       try {
         var product_doc = await L_search_db.get(product_id);
+
+                var doc_array = {
+                    _id:product_doc._id,
+                    variant_id: product_doc.variations[0].id,
+                    picture_min: product_doc.variations[0].pictures[0].min,
+                    attribute_combinations:product_doc.variations[0].attribute_combinations,
+                    price_list: product_doc.variations[0].price_list,
+                    price:product_doc.variations[0].price_list[0].value,
+                    variations : product_doc.variations[0],
+                    currency:product_doc.currency,
+                }
+
             var product_doc_array = {
-                product_doc: product_doc,
+                product_doc: product_doc ,
+                doc: doc_array ,
+                name: product_doc.name,
+                tags:product_doc.tags,
+                sku:product_doc.variations[0].sku.value,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
+                
             }
+
+
+            console.log('ITEMMM VIEEWW');
+            console.log(product_doc);
+            console.log(product_doc_array);
+            //console.log(product_doc_map);
+
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
-            createCookie('left_nav_open_ws_' + ws_id, false), 30;
+            createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
         } catch (err) {
         console.log(err);
       }
 }
+*/
 
+async function  catalog_view_item(element) {
+    try {
+        console.log('product_id 11111');
+        console.log(product_id);
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
+      
+        console.log('variant_id2222222');
+        console.log(variant_id);
+
+        if(variant_id == null){
+         //   variant_id = 0;
+        }
+
+        var product_doc = await L_search_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        console.log('var_docccccc');
+        console.log(var_doc);
+        
+            var product_doc_array = {
+                product_doc: product_doc ,
+                product_variant: var_doc ,
+                name: product_doc.name,
+                tags:product_doc.tags,
+                // sku:product_doc.variations[variant_id].sku.value,
+                price_list: price_doc.price_list,
+                ws_lang_data: ws_lang_data,
+                
+            }
+          console.log('ITEMMM VIEEWW');
+          console.log(product_doc_array);
+          //console.log(product_doc_map);
+          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
+          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+          $('#right_main').removeClass('move-right');
+      } catch (err) {
+      console.log(err);
+    }
+}
+
+/****  VARIATIONS VIEW ITEM 2021  *******/
+
+
+//Boton cambiar lista de precio
+function view_item_variations_price(element) {
+    //    $(".card_item_select_price").click(function () {
+    var card_item_price = $(element).html();
+    var card_product_val = $(element).find('label').html();
+    $(element).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
+    $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
+    //    alert(card_product_val);
+    //  });
+}
+
+
+//Boton variables y las Renderizo
+function view_item_variations_get(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_search_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}
+
+//Renderizo la variacion nueva en la tarjeta
+
+function view_item_variations_select(element) {
+
+   // let product_id = $(element).attr('product_id'); //Id del producto selccionado
+   //  let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+  //  alert('Mando al la variante' + element);
+    catalog_view_item(element);
+}
+
+
+function view_item_variations_select_old(element) {
+    event.preventDefault();
+    let product_id = $(element).attr('product_id'); //Id del producto selccionado
+    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_select'; // ID DE COMPILACION //
+    //Busco el doc por id actualizado y hago la carga de datos
+    L_search_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
+        /*const var_doc =  doc.variations.filter(function(element){
+            return element.id == variant_id;
+        });*/
+        //Busco el id en el array con find funcion de flecha
+        const var_doc = doc.variations.find(element => element.id == variant_id);
+        const variant_array = {
+            //doc:doc,
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            item: var_doc,
+            name: doc.name,
+            tags: doc.tags,
+            price_list: price_doc.price_list,
+            current: doc.price_list,
+        }
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+        //Actualizo el boton variables
+        console.log("var_doc");
+        console.log(variant_array);
+    });
+}
+
+/***  FIN VIEW ITEM */
 function  catalog_edit_item(product_id, product_rev) {
     var product_data_doc = null;
     var product_data = {
@@ -389,6 +523,21 @@ function  catalog_new_item() {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main_compiled', product_data);
 }
 
+$(document).on('click', '.catalog_edit_item', function (event) {
+    //$('#master_popup').modal('show');
+    // get_catalog_new_item();
+    //  catalog_edit_item()
+    catalog_view_item(product_id)
+    alert('catalog_edit_item()'+product_id);
+});
+
+$(document).on('click', '.catalog_new_item', function (event) {
+       //  $('#master_popup').modal('show');
+       // get_catalog_new_item();
+       catalog_edit_item();
+       alert('catalog_new_item');
+});
+
 $(document).on('focusin', '.catalog_search', function (element) {
        // cat_get_all_item_punchDb();
       //  cat_search_item_js();
@@ -404,6 +553,12 @@ $(document).on('keyup', '.catalog_search', function () {
     console.log('all_items_array llll2222');
     console.log(search_val);
     search_catalog_item(search_val ,all_items_array)
+});
+
+
+$(document).on('click', '.view_variant', function (element) {
+    var product_id = $(this).attr('product_id');
+    catalog_view_item(product_id);
 });
 
 function get_catalog(ws_id) {

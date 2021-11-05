@@ -183,6 +183,7 @@ function variations_price(element) {
 }
 
 //Boton setear variacion
+/*
 function variations_set(element) {
     // console.log(elemento);
     event.preventDefault();
@@ -218,12 +219,17 @@ function variations_set(element) {
 
 }
 
+*/
+
 //Boton variables y las Renderizo
 function variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
+   // let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
     let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
+
+    
     L_search_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
@@ -277,10 +283,53 @@ function variations_select(element) {
     });
 }
 
+
 //Efecto para mostrar el boton de etidar en la tarjetas
 function card_edit_variant() {
 
 }
+//Seacrh Input
+$(document).on('focusin', '.search-input', function (element) {
+    get_all_item_punchDb();//traigo los items del array
+});
+//Searh Input
+$(document).on('keyup', '.search-input', function () {
+ var search_m_input = $(this).val();
+ var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+ search_item_js(search_m_input);
+});
+//Botones de tipos de busqueda 
+$(document).on('click', '.search_button_cat', function (event) {
+    var search_cat_selected_btn = $(this).html();
+    var search_cat_selected = $(this).attr('search_cat');
+    var search_cat_input = $('.search_cat_btn').html();
+
+    $('.search-title').find('.search_button_cat').removeClass('active');
+    $(this).addClass('active');
+
+    //alert(search_cat_selected_btn);
+    $('.search_cat_btn').html(search_cat_selected_btn);
+    //$('#searchInput').val('');
+    $('#searchInput').focus();
+});
+
+$(document).on('click', '.search_button_board_li', function (event) {
+    var search_cat_selected_btn = $(this).html();
+    var search_cat_selected_btn_print = $(this).parent().find('.search_m_t').html();
+    var search_cat_selected = $(this).attr('search_cat');
+    var search_cat_input = $('.search_cat_btn').html();
+    var search_cat_btn = $('.search_cat_btn').html();
+
+    $('.search-title').find('.search_button_board').removeClass('active');
+    $('.search-title').find('.search_button_board').addClass('active');
+    // $(this).addClass('active');
+    // alert(search_cat_selected_btn);
+    $('.search_button_board').html(search_cat_selected_btn_print + ' <i class="hidden-xs hidden-sm material-icons">expand_more</i>');
+    $('.search_cat_btn').html(search_cat_selected_btn_print);
+    // $('#searchInput').val('');
+    $('#searchInput').focus();
+});
+
 
 //Inicio las funciones
 search_db();

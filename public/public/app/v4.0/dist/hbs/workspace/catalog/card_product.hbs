@@ -15,8 +15,8 @@
                         <span id="cat-{{{doc._id}}}" class="s-card-cat pull-left">#{{this}}</span>
                         {{/each}}
                     </p>
-                    <a class="img_card view_item" product_id="{{{doc._id}}}">
-                        <img class="card_img_url"  src="{{{doc.picture_min}}}" alt="200x200">
+                    <a href="#" onclick="catalog_view_item(this)"   class="img_card view_item" variant_id="{{doc.variant_id}}" product_id="{{{doc._id}}}">
+                        <img class="card_img_url"    src="{{{doc.picture_min}}}" alt="200x200">
                     </a>
                     <div onclick="" class="catalog_edit_item indicator" product_id="{{{doc._id}}}">
                         <div class="open_detail" width="18" height="27">
@@ -73,7 +73,7 @@
                 <div class="text-left">
                     <div class="btn-group dropright">
                         <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}"
-                            onclick="variations_get(this)" product_id="{{{doc._id}}}"
+                            onclick="cat_variations_get(this)" product_id="{{{doc._id}}}"
                             variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
                             aria-expanded="true">
                             <span id="bg-select-color" class="btn btn-default">
@@ -125,7 +125,7 @@
                             <li class="header">Precios</li>
                             {{#each doc.price_list as | price_list_p |}}
                             <li>
-                                <a onclick="variations_price(this)" class="" href="#">
+                                <a onclick="cat_variations_price(this)" class="" href="#">
                                     {{#with (lookup ../../price_list [id])~}}
                                     <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
                                         title="{{{value}}}" data-original-title="{{{value}}}">

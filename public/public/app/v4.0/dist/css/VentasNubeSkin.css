@@ -10376,6 +10376,7 @@ h1 span{
     font-size: 18px;
     padding: 5px 15px;
     font-weight: 500;
+    min-height: auto!important;
 }
 
 /*
