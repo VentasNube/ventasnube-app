@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 13;
+    const version = 1332;
     const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
@@ -63,7 +63,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
         { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
         // fuentes css y plugins
-        { url: 'https://fonts.gstatic.com/s/materialicons/v111/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
+         
+
+        { url: 'https://fonts.gstatic.com/s/materialicons/v114/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
+       // { url: 'https://fonts.gstatic.com/s/materialicons/v111/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
        // { url: 'https://fonts.gstatic.com/s/materialicons/v109/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
         { url: 'https://fonts.googleapis.com/icon?family=Material+Icons', revision: version },
         { url: '/public/app/v4.0/dist/bootstrap/css/bootstrap.css', revision: version },
