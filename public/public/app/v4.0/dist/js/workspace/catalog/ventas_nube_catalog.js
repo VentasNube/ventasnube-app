@@ -128,6 +128,7 @@ function get_nav_catalog(ws_info,ws_lang_data) {
     console.log('NAV BAR CATALOG');
 };
 
+
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -200,7 +201,6 @@ function cat_variations_price(element) {
     //  });
 }
 
-
 //Boton setear variacion
 function cat_variations_set(element) {
     // console.log(elemento);
@@ -234,7 +234,6 @@ function cat_variations_set(element) {
         $(element).parent().find(".content").removeClass('ripple_efect');
     }
     // });
-
 }
 
 //Boton variables y las Renderizo
@@ -290,9 +289,6 @@ function cat_variations_select(element) {
             current: doc.price_list,
         }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-
-
-        
         // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
         console.log("var_doc");
