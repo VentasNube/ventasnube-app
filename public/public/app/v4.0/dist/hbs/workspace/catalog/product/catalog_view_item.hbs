@@ -1,150 +1,249 @@
 
-    <!-- Cart Nav module -->
-    <div class="righ_nav_header">
+    <!-- CATALOG VIEW PRODUCT TEMPLATE -->
+   
         <!--span class="material-icons">receipt</span>Nueva -->
-       
-    </div>
+   
     <div class="view-product">
-                {{#with product_variant}}
-                `<div class="header" >
-                            <button id="" type="button" class="round left_nav_close btn btn-default right_nav_close pull-right ">
-                                <span class="material-icons">close</span>
-                            </button>
-                        <!-- #first trae el primer item del array -->
-                   
-                        <!-- #first trae el primer item del array -->
-                            {{#first pictures}}
-                                <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card" >
-                                    <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                    <div class="righ_nav_header">
+                            {{#with product_variant}}
+                                <div class="header" >
+                                            <button id="" type="button" class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
+                                                <span class="material-icons">close</span>
+                                            </button>
+                                            <button  data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto" type="button" class="margin-10 round btn btn-transparent btn-default pull-left ">
+                                                <span class="material-icons">
+                                                    add_a_photo
+                                                    </span>
+                                            </button>
+                                            {{#first pictures}}
+                                                            <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card" >
+                                                                <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                                                                  <div class=" mini-carrousel-img ">
+                                                                    {{#each ../pictures }}
+                                                                            <div class="mini-card-img-s">
+                                                                            
+                                                                                <div class="img">
+                                                                                    <a target="_blank" href="{{min}}">
+                                                                                       <img src="{{min}}" alt="">
+                                                                                    </a>
+                                                                                </div>
+                                                                            
+                                                                            </div>
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                            {{/first }}
+                              
                                 </div>
-                            {{/first }}
-                  
-
-                 
-                </div>
-                 {{/with}} 
+                                  {{/with}} 
                   {{#with product_doc}}
-                    <h1>{{name}}</h1> 
+                    <h1 class="margin-t-0">{{name}}</h1> 
                     <h4>
-                        <div class="btn-group dropright">
-                        <button type="button" class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
-                                <div class="round-icon pr">
-                                    <span class="material-icons">
-                                        history
-                                        </span>
-                                        
-                                </div>
-                            </span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li class="header">Historial de Cambios</li>
-                            {{#each  last_update_at }}
-                                <li>
-                                    <a href="#">
-                                            <span>{{username}}</span>
-                                            <label class="counter">{{datetime}}</label>
-                                    </a>
-                                </li>
-                           {{/each}}
-                        </ul>
-                      </div>
+                        {{#ifEquals status 'active' }}
+                            <span class="s-card-cat pull-left">
+                                      <span class="material-icons text-s lh-n">   highlight_off</span>
+                            Inactivo</span>
+                        {{/ifEquals}}
+                        {{#ifEquals status 'inactive' }}
+                                <span class="s-card-cat pull-left bg-primary">
+                                    <span class="material-icons text-s lh-n"> check_circle  </span>
+                                    Activo
+                                </span>
+                        {{/ifEquals}}
+                    <span class="s-card-cat pull-left ">{{condition}}</span>
                         {{#each tags }}
-                        <span class="s-card-cat pull-left">#{{this}}</span>
-                        {{/each}}
+                    <span class="s-card-cat pull-left">#{{this}}</span>
+                    {{/each}}
                     </h4>
+                    
+                    <br>
                      <h3>Descripcion: {{descriptions}}</h3> 
                      <h3>
                         {{#each attributes }}
                          <div class="s-card-cat pull-left">{{name}}: {{value_name}} </div> 
                         {{/each}}
-                        </h3> 
+                     </h3> 
                      </br>
-                     <h4>Condicion: {{condition}}</h4> 
-                     <h4>Estado: {{status}}</h4> 
-                     <h4>Descuento Maximo: {{limit_discount}}%</h4> 
- {{/with}}  
-      
-        {{#with product_variant}}
-                <div class="text-left">
+                     <h4 class="margin-10">
                     <div class="btn-group dropright">
-                        <button id="var_btn_{{{../product_doc/_id}}}" id="var_btn_{{{../product_doc/_id}}}"
-                            onclick="view_item_variations_get(this)" product_id="{{{../product_doc/_id}}}"
-                            variant_id="{{id}}" type="button" data-toggle="dropdown"
-                            aria-expanded="true">
-                            <span id="bg-select-color" class="btn btn-default">
-                                {{#each pictures}}
-                                    <img src="{{{min}}}" class="var_img img-card-mini s round">
-                               
-                                <!--span id="bg-select-color" class="material-icons">
-                                    category
-                                </span-->
-                                {{/each}}
-                                {{#each attribute_combinations as | ac |}}
-                                <!-- Hago la comprobacion de si es un color -->
-                                {{#ifEquals id 'SIZE' }}
-                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
-                                    title="{{{id_name}}}" data-original-title="{{{id_name}}}">
-                                    <span> {{value}} </span>
-                                </div>
-                                {{/ifEquals}}
-                                {{#ifDiff id 'COLOR' }}
-                                {{name}}
-                                {{/ifDiff}}
-                                {{/each}}
-                                <span class="material-icons">arrow_drop_down</span>
-                            </span>
-                        </button>
-                        <ul class="card-loader dropdown-menu mini ">
-                            <div product_id="{{{../_id}}}" variant_id="{{../variant_id}}" id="view_item_variant_{{{../product_doc/_id}}}">
-                                <div class="spinner-box">
-                                    <div class="three-quarter-spinner primary"></div>
-                                </div>
-                            </div>
-                        </ul>
+                            <button type="button" class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span id="bg-select-color" class="padding-0 card_item_selected_price btn btn-transparent">
+                                    <div class="round-icon pr">
+                                        <span class="material-icons">
+                                            history
+                                            </span>
+                                            
+                                    </div>
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="header">Historial de Cambios</li>
+                                {{#each  last_update_at }}
+                                    <li>
+                                        <a href="#">
+                                                <span>{{username}}</span>
+                                                <label class="counter">{{datetime}}</label>
+                                        </a>
+                                    </li>
+                            {{/each}}
+                            </ul>
                     </div>
+                    Variables
+                </h4>
+{{/with}}  
+{{#with product_variant}}
+
+                <div class="text-left">
+                            <div class="btn-group dropright">
+                                <button id="var_btn_{{{../product_doc/_id}}}" id="var_btn_{{{../product_doc/_id}}}"
+                                    onclick="view_item_variations_get(this)" product_id="{{{../product_doc/_id}}}"
+                                    variant_id="{{id}}" type="button" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span id="bg-select-color" class="btn btn-default">
+                                        {{#first pictures}}
+                                            <img src="{{{min}}}" class="var_img img-card-mini s round">
+                                    
+                                        <!--span id="bg-select-color" class="material-icons">
+                                            category
+                                        </span-->
+                                        {{/first}}
+                                        {{#each attribute_combinations as | ac |}}
+                                        <!-- Hago la comprobacion de si es un color -->
+                                        {{#ifEquals id 'SIZE' }}
+                                        <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                            title="{{{id_name}}}" data-original-title="{{{id_name}}}">
+                                            <span> {{value}} </span>
+                                        </div>
+                                        {{/ifEquals}}
+                                        {{#ifDiff id 'COLOR' }}
+                                        {{name}}
+                                        {{/ifDiff}}
+                                        {{/each}}
+                                        <span class="material-icons">arrow_drop_down</span>
+                                    </span>
+                                </button>
+                                <ul class="card-loader dropdown-menu mini ">
+                                    <div product_id="{{{../_id}}}" variant_id="{{../variant_id}}" id="view_item_variant_{{{../product_doc/_id}}}">
+                                        <div class="spinner-box">
+                                            <div class="three-quarter-spinner primary"></div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
                 </div>
-
-
-        <div class="btn-group dropright">
-            <button type="button" class="" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <span id="bg-select-color " class="card_item_selected_price btn btn-transparent">
-                    {{#first ../price_list}}
-                    <div class="round-icon pr"><span> {{currency.value}} </span></div>
-                    {{/first}}
-                    {{#first price_list}}
-                    
-                    <label class="counter"> {{value}}</label>
-                    {{/first}}
-                    <span class="material-icons">arrow_drop_down</span>
+                <span class="s-card-cat pull-left  margin-10  text-s lh-n">
+                                      <span margin-10 class="material-icons text-m lh-n"> assignment    </span>
+                                Stock: {{#stock stock_invetary}}{{/stock}}
                 </span>
-            </button>
-            <ul class="dropdown-menu">
-                <li class="header">Precios</li>
-               {{#each price_list as | price_list_p |}}
-                <li>
-                    <a onclick="variations_price(this)" class="" href="#">
-                        {{#with (lookup ../../price_list [id])~}}
-                        <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{value}}}"
-                            data-original-title="{{{value}}}">
-                            <span></span>
-                            <!--{{trimString value}}-->
-                            {{trimString value}}
-                            </span>
-                        </div>
-                        {{/with}}
-                        <span>{{../price_list.currency.value}}</span> <label class="counter">{{value}}</label>
-                    </a>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
+
+                                <!--div class="btn-group dropright">
+                                    <button type="button" class="" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <span id="bg-select-color " class="card_item_selected_price btn btn-transparent">
+                                            {{#first ../price_list}}
+                                            <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                            {{/first}}
+                                            {{#first price_list}}
+                                            
+                                            <label class="counter"> {{value}}</label>
+                                            {{/first}}
+                                            <span class="material-icons">arrow_drop_down</span>
+                                        </span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="header">Precios</li>
+                                        {{#each price_list as | price_list_p |}}
+                                        <li>
+                                            <a onclick="variations_price(this)" class="" href="#">
+                                                {{#with (lookup ../../price_list [id])~}}
+                                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{value}}}"
+                                                    data-original-title="{{{value}}}">
+                                                    <span></span>
+                                                
+                                                    {{trimString value}}
+                                                    </span>
+                                                </div>
+                                                {{/with}}
+                                                <span>{{../price_list.currency.value}}</span> <label class="counter">{{value}}</label>
+                                            </a>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </div-->
                         <!--div class="main_input" >
                             <span class=" material-icons">superscript</span>
                             <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
                                 placeholder="Cantidad" value="1">
                         </div-->
+                        <div id="cart_footer">
+                        <div class="s-card-activ-footer b-tiket">
+                               <div class="panel-body">
+                                                    {{#each price_list as | pl |}}
+                                                        <div class="row ">
+                                                            <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                                                <a onclick="variations_price(this)" class="" href="#">
+                                                                    {{#with ( lookup ../../price_list @index)}}
+                                                                        <div class="round-icon pr">
+                                                                            {{trimString value}}
+                                                                        
+                                                                        </div>
+                                                                        {{value}}
+                                                                    {{/with}}
+                                                                </a>
+                                                            </h4>
+                                                            <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                                                {{#first ../../price_list}}
+                                                                    <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                                                    {{/first}}
+                                                                <span iid="total_neto_prod"> {{value}}</span>
+                                                            </h4>
+                                                        </div>
+                                                    {{/each}}
+                            <!--
+                                                {{#each price_list as | pl |}}
+                                                    {{value}} ({{id}})
+                                                    {{#with (lookup ../../price_list [id])~}}
+                                                        {{value}} ({{id}})
+                                                    {{/with}}
+                                                {{/each}}
 
-        {{/with}}           
-    </div>
+
+                                                {{#each price_list}}
+                                                    {{#with (lookup ../../price_list id)~}}
+                                                        {{value}} ({{id}})
+
+                                                        {{@key}} 
+                                                    {{/with}}
+                                                {{/each}}
+                                                        {{#each price_list as | pl |}}
+                                                        {{#ifEquals ../../price_list id }}
+                                                        <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                                            title="{{{id_name}}}" data-original-title="{{{id_name}}}">
+                                                            <span> {{value}} </span>
+                                                        </div>
+                                                        {{/ifEquals}}
+                                                        {{#ifDiff id 'COLOR' }}
+                                                        {{name}}
+                                                        {{/ifDiff}}
+                                                        {{/each}}
+
+
+                -->
+                                            </div>
+                            
+                        </div>
+                            <!--div class="btn-group margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
+                                <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
+                            </div-->
+                            <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
+                                <button or-id="2" type="button" class="cobrar-btn btn btn-primary">
+                                    <span class="material-icons">create</span>
+                                    Editar Producto
+                                </button>
+                            </div>
+                        </div>
+        {{/with}}   
+
+</div>

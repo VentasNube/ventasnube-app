@@ -1,3 +1,5 @@
+ <!--- CATALOG RIGHT VIEW PRODUCT TEMPLATE   --->
+
 {{#each variations}}
 <div onclick="view_item_variations_select(this)" product_id="{{{../_id}}}" variant_id="{{{id}}}" {{#if status}} disabled=""
     {{/if}} class="variations-select ripple s-card-actv-item padd ">
@@ -82,11 +84,5 @@
     </div>
 </div>
 
-
 {{/each}}
 
-<script>
-    ///Boton Seleccionar Variable
-    // variations_get();
-   // variations_select()
-</script>

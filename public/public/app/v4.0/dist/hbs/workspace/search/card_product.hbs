@@ -1,16 +1,13 @@
+ <!--- SEARCH CARD PRODUCT TEMPLATE   --->
 {{#each search_product }}
 <div class="card-content">
-
     <div class="card">
-
         <div id="card_id_{{{item.doc._id}}}">
-
             <!--- RENDER VARIANT ZONE   --->
             <form id="card_var_id_{{{item.doc._id}}}" variant_id="{{item.doc.variant_id}}"
                 class="card-product card_product_form" product_id="{{{item.doc._id}}}">
-                <!--input type="checkbox" id="card-visitors-indicator" /-->
                 <div class="header">
-                    <!-- Indicadr -->
+                    <!-- Indicador -->
                     <p class="cat">
                         {{#each item.doc.tags }}
                         <span id="cat-{{{item.doc._id}}}" class="s-card-cat pull-left">#{{this}}</span>
@@ -26,7 +23,6 @@
                             <span class="quantity">9999</span>
                         </div>
                     </div>
-
                     <div class="card_product_details">
                         <button onclick="variations_edit(this)" class="variations_edit" product_id="{{{item.doc._id}}}">
                             <div class="open_detail" width="18" height="27">
@@ -66,7 +62,6 @@
                     <div class="ripple-efect-div success"></div>
                 </div>
             </form>
-
             <!--- CIERRE DE FORM --->
             <div class="info">
                 <p class="card_product_name">{{item.doc.name}} </p>
@@ -147,7 +142,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <!--- CIERRE DE INFO --->
     </div>
@@ -155,17 +149,3 @@
 </div>
 </div>
 {{/each}}
-<script>
-
-  //  $(document).ready(function () {
-      //  variations_price(); //Boton seleccionar precio
-
-      //  variations_add_cart(); //Boton agreagar al cart
-
-      //  variations_set();//Boton Setear varianble
-     //   variations_get();//Traigo las variables
- //   });
-
-
-
-</script>

@@ -111,8 +111,35 @@ user_db.sync(url_R_db+userDb, {
   }).on('error', function (err) {
     if(err){
         $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
+    //logout()
     }
+    if (err.name === 'Unauthorized') {
+        Snackbar.show({
+            text: '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...',
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+        
+    // conflict!
+    }
+    if (err.name === 'conflict') {
+        Snackbar.show({
+            text: err.name,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    // conflict!
+    } else {
+        //$('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+        Snackbar.show({
+            text: err.name,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    // some other error
+  }
+
   });
     //user_db.debug.enable('*'); //Activo el depurador de cuchdb
     //user_session();

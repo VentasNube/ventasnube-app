@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 81111111;
+    const version = 3111111111332441112;
     const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
@@ -73,6 +73,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         { url: '/public/app/v4.0/dist/css/skins/skin-ventas-nube.css', revision: version },
         { url: '/public/app/v4.0/dist/css/VentasNubeSkin.css', revision: version },
         { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.css', revision: version },
+        { url: 'public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css', revision: version },
         // Fuentes js plugins
         { url: '/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js', revision: version },
         { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
@@ -126,8 +127,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
-
-        
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
+          
     ]);
 
     workbox.routing.registerRoute(
