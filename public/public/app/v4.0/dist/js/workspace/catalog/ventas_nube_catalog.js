@@ -342,25 +342,13 @@ async function  catalog_view_item_old(product_id) {
 }
 */
 
-async function  catalog_view_item(element) {
+
+async function  post_url_history(module, id) {
     try {
-        console.log('product_id 11111');
-        console.log(product_id);
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
-      
-        console.log('variant_id2222222');
-        console.log(variant_id);
-
-        if(variant_id == null){
-         //   variant_id = 0;
-        }
-
         var product_doc = await L_search_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
-        console.log('var_docccccc');
-        console.log(var_doc);
-        
             var product_doc_array = {
                 product_doc: product_doc ,
                 product_variant: var_doc ,
@@ -371,9 +359,6 @@ async function  catalog_view_item(element) {
                 ws_lang_data: ws_lang_data,
                 
             }
-          console.log('ITEMMM VIEEWW');
-          console.log(product_doc_array);
-          //console.log(product_doc_map);
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
           createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
           $('#right_main').removeClass('move-right');
@@ -382,6 +367,61 @@ async function  catalog_view_item(element) {
     }
 }
 
+
+async function  catalog_view_item(element) {
+    try {
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
+        var product_doc = await L_search_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+            var product_doc_array = {
+                product_doc: product_doc ,
+                product_variant: var_doc ,
+                name: product_doc.name,
+                tags:product_doc.tags,
+                // sku:product_doc.variations[variant_id].sku.value,
+                price_list: price_doc.price_list,
+                ws_lang_data: ws_lang_data,
+                
+            }
+          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
+          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+          $('#right_main').removeClass('move-right');
+          // var m_name = 'catalog' //Trae Pacht url /pacht/    
+          //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
+          var m_url = '?type=catalog&?t=product&?id='+product_id+'&?v='+variant_id;
+          history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+          
+      } catch (err) {
+      console.log(err);
+    }
+}
+
+async function  catalog_view_item_url(m_id,m_var_id) {
+    try {
+        var product_id = m_id;
+        var variant_id = m_var_id;
+        var product_doc = await L_search_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+            var product_doc_array = {
+                product_doc: product_doc ,
+                product_variant: var_doc ,
+                name: product_doc.name,
+                tags:product_doc.tags,
+                // sku:product_doc.variations[variant_id].sku.value,
+                price_list: price_doc.price_list,
+                ws_lang_data: ws_lang_data,
+            }
+          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
+          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+          $('#right_main').removeClass('move-right');
+          // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
+          // var m_url = url_app +'?type=catalog?=' + m_name; // Armo la url completa del linck
+          //  history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+      } catch (err) {
+      console.log(err);
+    }
+}
 /****  VARIATIONS VIEW ITEM 2021  *******/
 
 
