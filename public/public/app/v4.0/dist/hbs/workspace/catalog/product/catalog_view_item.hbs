@@ -93,7 +93,7 @@
 {{/with}}  
 {{#with product_variant}}
 
-                <div class="text-left">
+                <div class="margin-10 text-center">
                             <div class="btn-group dropright">
                                 <button id="var_btn_{{{../product_doc/_id}}}" id="var_btn_{{{../product_doc/_id}}}"
                                     onclick="view_item_variations_get(this)" product_id="{{{../product_doc/_id}}}"
@@ -115,9 +115,9 @@
                                             <span> {{value}} </span>
                                         </div>
                                         {{/ifEquals}}
-                                        {{#ifDiff id 'COLOR' }}
-                                        {{name}}
-                                        {{/ifDiff}}
+                                            {{#ifDiff id 'COLOR' }}
+                                            {{name}}
+                                            {{/ifDiff}}
                                         {{/each}}
                                         <span class="material-icons">arrow_drop_down</span>
                                     </span>
@@ -130,11 +130,13 @@
                                     </div>
                                 </ul>
                             </div>
-                </div>
-                <span class="s-card-cat pull-left  margin-10  text-s lh-n">
-                                      <span margin-10 class="material-icons text-m lh-n"> assignment    </span>
+                            <span class="s-card-cat margin-10  text-m lh-n">
+                               <span class="material-icons text-m lh-n"> assignment    </span>
                                 Stock: {{#stock stock_invetary}}{{/stock}}
-                </span>
+                            </span>
+                </div>
+
+               
 
                                 <!--div class="btn-group dropright">
                                     <button type="button" class="" data-toggle="dropdown" aria-haspopup="true"

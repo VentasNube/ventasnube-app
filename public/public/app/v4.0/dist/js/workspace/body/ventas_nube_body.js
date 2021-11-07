@@ -144,9 +144,9 @@ function get_left_nav(ws_left_nav , ws_lang_data) {
                   ws_left_nav: ws_left_nav,
                   ws_lang_data: ws_lang_data
               }
-              console.log('ws_left_nav_ :AAAAAA');
-              console.log(ws_left_nav);
-              console.log(ws_left_nav_doc);
+              //console.log('ws_left_nav_ :AAAAAA');
+              //console.log(ws_left_nav);
+             // console.log(ws_left_nav_doc);
               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 
@@ -173,36 +173,53 @@ function get_right_nav(ws_info, ws_lang_data) {
     console.log('CART in');
 };
 
-//// BOTON SELECT MODULO LEFT BAR //
-// Logica q trae el modulos con handelbars no el linck
-//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
-function check_url_module(ws_left_nav , ws_lang_data) {
-    var m_id = getParameterByName('m'); //Trae el modulo id
-    var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
-    var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
-    check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+
+
+function updateHistory(curr) {
+    window.location.lasthash.Push(window.location.hash);
+    window.location.hash = curr;
 }
 
-//ARMA LOS MODULOS DESDE EL BODY PARA TRAER TODOS LOS TEMPLATES Y DATA DE CADA CONTROLADOR
-function check_content_module(ws_module_name, ws_left_nav, ws_lang_data) {
-    const ws_module_array = ws_left_nav.ws_left_nav.m;
-    const ws_module_type_array = ws_left_nav.ws_left_nav.m_t;
-    var array = ws_module_array;
+//LEE LOS PARAMETROS DE LA URL Y LOS ENVIA A UN CHECK de Permisos
+async function check_url_module() {
+    var m_var_id = getParameterByName('v'); //Trae una variable del modulo idel modulo id
+    var m_id = getParameterByName('id'); //Trae el modulo id
+    var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
+    var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
+    //console.log('111LASKSAJJ ASOASOASPOJD ASDASD')
+    //console.log(ws_left_nav.ws_left_nav.m);
+   // console.log('1');
+    check_content_module(m_name, m_t_id, m_id,m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+    //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+}
+//Chekea q los modulos del la URL tengan permisos de lectura
+async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
+    //Traigo el documento actualizado y lo recorro
+    ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });   
+    var array = ws_module_array.ws_left_nav.m;
     //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
     for (var i=0; i<array.length; i++) { 
+        //Si el nombre del modulo esta en el listado de permisos de
         if(array[i].m_url === ws_module_name ){
             ws_module_select = array[i].m_url;
-          return  get_module_function(ws_module_select);
+          return  get_module_function(ws_module_select,m_t_id,m_id,m_var_id);
+
         }
     }
 };
 
-//Es el filtro comparativo de los modulos y activador de funciones
-function get_module_function(ws_module_select) {
+//Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
+async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
          const ws_m_s = ws_module_select;
+         //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
         if(ws_m_s == 'catalog'){
             get_catalog();
-         //  get_items_catalog();
+            //Si el tipo de modulo es producto envia los parametros a la funcion constructora
+            if( m_t_id == 'product'){
+                catalog_view_item_url(m_id,m_var_id);
+                //updateHistory();
+            }
+            //  get_items_catalog();
         }else if(ws_m_s == 'box'){
             alert('TRAIGO EL box');
            // get_box();
@@ -262,9 +279,6 @@ $(document).ready(function (ws_left_nav , ws_lang_data) {
 });
 
 
-
-
-
-ws_module_config();
+ws_module_config();// Ejecuto todas las funciones del espacio de trabajo
 
 
