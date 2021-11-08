@@ -283,11 +283,11 @@ function variations_select(element) {
     });
 }
 
-
 //Efecto para mostrar el boton de etidar en la tarjetas
 function card_edit_variant() {
 
 }
+
 //Seacrh Input
 $(document).on('focusin', '.search-input', function (element) {
     get_all_item_punchDb();//traigo los items del array

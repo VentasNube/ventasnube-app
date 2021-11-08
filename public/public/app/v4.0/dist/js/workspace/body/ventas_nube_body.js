@@ -78,19 +78,21 @@ function put_left_nav_doc() {
                         console.log('Solicitud ajax ws_left_nav ok! '+ ws_id);
                         ///// IMPRIME ////
                         user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
-                            if (err) {msj_alert(err); }
+                            if (err) {
+                                msj_alert(err);
+                            }
                             user_db.put({
                               _id: 'ws_left_nav_' + ws_id,
                               _rev: doc._rev,
                               ws_left_nav: ws_left_nav
                             }, function(err, response) {
-                               if(response) {
+                            if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
                                 //alert('Se actualizo el Left Nav doc');
                                 createCookie('ws_install-' + ws_id, true), 30;
                                 //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
-                               }
-                              else if (err) {
+                            }
+                            else if (err) {
                                // msj_alert(err);
                                 Snackbar.show({
                                        text:  err.reason,
@@ -98,21 +100,24 @@ function put_left_nav_doc() {
                                         actionTextColor: '#ff0000',
                                         actionText: 'Refrezcar',
                                         pos: 'bottom-center',
-                                       onActionClick: function(element) {
-                                           //Set opacity of element to 0 to close Snackbar
-                                           $(element).css('opacity', 0);
+                                       onActionClick: function(element) {                                                                                   
+                                           //Set opacity of element to 0 to close snackbar
+                                           
+                                           $(element).css('opacity', 0);
                                            location.reload();
-                                           //newWorker.postMessage({ action: 'install' });
+
+                                           //newWorker.postMessage({ action: 'install' });                                           
                                            //alert('Refrezcar pagina!');
+
                                        }
                                     });
                                 return console.log(err);
-                             }
+                            }
                              //   msj_alert('Se actualizo el left_nav_doc','top-center');
                              console.log('se actualizo el left bar doc')
                              // handle response
                             });
-                          });
+                        });
             } 
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -146,7 +151,7 @@ function get_left_nav(ws_left_nav , ws_lang_data) {
               }
               //console.log('ws_left_nav_ :AAAAAA');
               //console.log(ws_left_nav);
-             // console.log(ws_left_nav_doc);
+              // console.log(ws_left_nav_doc);
               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 
@@ -174,7 +179,6 @@ function get_right_nav(ws_info, ws_lang_data) {
 };
 
 
-
 function updateHistory(curr) {
     window.location.lasthash.Push(window.location.hash);
     window.location.hash = curr;
@@ -192,6 +196,7 @@ async function check_url_module() {
     check_content_module(m_name, m_t_id, m_id,m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
     //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
 }
+
 //Chekea q los modulos del la URL tengan permisos de lectura
 async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
     //Traigo el documento actualizado y lo recorro
@@ -263,14 +268,14 @@ $(document).on('click', 'a.l_nav_t_m', function (event) {
 ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
 $(document).ready(function (ws_left_nav , ws_lang_data) {
     window.onload =
-        $(".material_input").focusout(function () {
+    $(".material_input").focusout(function () {
             var input_tex = $(this).children('input').val();
             if (!input_tex) {
                 $(this).children('label').css({ "top": "15px", "font-size": "18px" });
                 $(this).children('label').children('span').css({ "font-size": "24px" });
                 //$(this).prev('label span').css({ "font-size": "10px" });
             }
-        });
+    });
     $(".material_input").focusin(function () {
         $(this).children('label').css({ "top": "5px", "font-size": "13px" });
         $(this).children('label').children('span').css({ "font-size": "18px" });
