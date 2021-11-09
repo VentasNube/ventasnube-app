@@ -11,6 +11,7 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 //Creo la base de datos local info_db
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
+
 //sincronizo
 //Creo y conecto con userDB local 
 L_ws_info_db.sync(url_R_db+ws_info_db, {
@@ -30,9 +31,32 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
     $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
     //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
   });
+/*
+  user_db.getSession(function (err, response) {
+    if (err) {
+        console.log('ERROR DE SESSION');
+        console.log(err);
+        // network error
+    } else if (!response.userCtx.name) {
+        console.log('esponse.userCtx');
+        console.log(esponse.userCtx);
+        // nobody's logged in
+       // setTimeout(function () { window.location = "/login"; }, 2000);
+    } else {
+        var userCtx = response.userCtx;
+        console.log('USER SESSSIONNNN AAAA BBBBB ');
+        console.log(userCtx);
+        return userCtx;
+    }
+});
+*/
+
 
  async function ws_module_config() {
                 try {
+                        //userCtx variable global de permisos y roles para filtrar las vistas
+                        console.log('userCtx BODY.js');
+                        console.log(userCtx);    
                          // DOC DE CONFIGURACION GENERAL
                         ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
                         // DOC DE NAVEGACION
@@ -45,14 +69,14 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
 
-                        get_top_bar(ws_info, ws_lang_data); //Imprimo el top bar
-                        get_left_nav(ws_left_nav , ws_lang_data);//Traigo y imprimo el documento de navegacion lateral 
+                        get_top_bar(ws_info, ws_lang_data, userCtx); //Imprimo el top bar
+                        get_left_nav(ws_left_nav , ws_lang_data , userCtx);//Traigo y imprimo el documento de navegacion lateral 
                         //get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
-                        get_right_cart(ws_info, ws_lang_data);
+                        get_right_cart(ws_info, ws_lang_data , userCtx);
                         // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
-                        get_search_module(ws_info, ws_lang_data); //Imprimo el search 
+                        get_search_module(ws_info, ws_lang_data , userCtx); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
-                        check_url_module(ws_left_nav, ws_lang_data);//Chequeo y cargo el modulo segun la url actual y la cargo
+                        check_url_module(ws_left_nav, ws_lang_data , userCtx);//Chequeo y cargo el modulo segun la url actual y la cargo
 
                 } catch (err) {
                     put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
@@ -84,11 +108,15 @@ function put_left_nav_doc() {
                             user_db.put({
                               _id: 'ws_left_nav_' + ws_id,
                               _rev: doc._rev,
-                              ws_left_nav: ws_left_nav
+                              ws_left_nav: ws_left_nav,
+                              userCtx: userCtx
+
                             }, function(err, response) {
                             if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
                                 //alert('Se actualizo el Left Nav doc');
+                                console.log('userCtx 1');
+                                console.log(userCtx);
                                 createCookie('ws_install-' + ws_id, true), 30;
                                 //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
                             }
@@ -96,25 +124,23 @@ function put_left_nav_doc() {
                                // msj_alert(err);
                                 Snackbar.show({
                                        text:  err.reason,
-                                       width: '475px',
+                                        width: '475px',
                                         actionTextColor: '#ff0000',
                                         actionText: 'Refrezcar',
                                         pos: 'bottom-center',
                                        onActionClick: function(element) {                                                                                   
-                                           //Set opacity of element to 0 to close snackbar
-                                           
+                                           //Set opacity of element to 0 to close snackba
                                            $(element).css('opacity', 0);
                                            location.reload();
-
                                            //newWorker.postMessage({ action: 'install' });                                           
                                            //alert('Refrezcar pagina!');
-
                                        }
                                     });
                                 return console.log(err);
                             }
                              //   msj_alert('Se actualizo el left_nav_doc','top-center');
-                             console.log('se actualizo el left bar doc')
+                             console.log('se actualizo el left bar doc');
+                             console.log(response);
                              // handle response
                             });
                         });
