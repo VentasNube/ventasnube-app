@@ -42,7 +42,7 @@ function get_right_cart(ws_info, ws_lang_data) {
     
     // $('#cart_user_input').focus();
    // alert('Tight cart');
-    console.log('CART in');
+   // console.log('CART in');
 };
 
 
@@ -51,7 +51,7 @@ function get_right_cart(ws_info, ws_lang_data) {
         $('#cart_footer').show();
     });
 
-    $("#t_fav").click(function () {
+$("#t_fav").click(function () {
         $('#cart_footer').hide();
     });
 
@@ -66,17 +66,11 @@ async function get_cart(ws_id) {
      ); //Conceto con la vista de diseno
    if(response.rows){
     const rows = response.rows;
-        console.log('Respuesta Origial'); // []
-        console.log(response.rows);
-       // alert(ws_id);
-
        //Filtro los items de este espacio de trabajo 
     const result = rows.filter(row => row.doc.ws_id === ws_id);
-        console.log('Respuesta FILTRADA'); // []
-        console.log(result);
-        //console.log(rows_items); // []
+       // console.log('Respuesta FILTRADA'); // []
+       // console.log(result);
         return all_cart_item(result);
-        //return all_cart_item(response.rows);
    }
    else{
     return all_cart_item(false);
@@ -207,7 +201,7 @@ async function get_cart_change() {
         }
     }).on('error', function(err) {
         // handle errors
-        console.log('' + err);
+        console.log(err);
     });
 }
 
@@ -230,7 +224,7 @@ function variations_add_cart(element) {
         if (err) { return console.log(err); }
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
-        console.log(var_doc);
+       // console.log(var_doc);
         const new_variant_doc = {
             product_id: product_id,
             product_rev: var_doc._rev,
@@ -418,6 +412,7 @@ $(document).on('click', '.right_nav_close', function(event) {
 /** ############# FUCNIONES FAVORITOS  ############## *****/
 // Agreagar productos al favoritos
 // Trae los datos de la local user DB filtrado por tipo cart-items
+/*
 async function get_favOLD() {
     // Traigo los resultados de una vista
     let response = await user_db.query('get/fav-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
@@ -425,7 +420,7 @@ async function get_favOLD() {
     console.log(response)
     return all_fav_item(response.rows);
 }
-
+*/
 async function get_fav(ws_id) {
     // Traigo los resultados de una vista
     let response = await user_db.query(
@@ -436,12 +431,12 @@ async function get_fav(ws_id) {
      ); //Conceto con la vista de diseno
    if(response.rows){
     const rows = response.rows;
-        console.log('Respuesta Origial'); // []
-        console.log(response.rows);
+      //  console.log('Respuesta Origial'); // []
+     //   console.log(response.rows);
        // alert(ws_id);
     const result = rows.filter(row => row.doc.ws_id === ws_id);
-        console.log('Respuesta FILTRADA'); // []
-        console.log(result);
+      //  console.log('Respuesta FILTRADA'); // []
+       // console.log(result);
         //console.log(rows_items); // []
         return all_fav_item(result);
         //return all_cart_item(response.rows);
@@ -513,7 +508,6 @@ async function all_fav_item(todos) {
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/fav_item.hbs', '#product_fav_items', cart_items);
         //Limpio la animacion del tab cart
-
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (ex) {
         console.error('inner', ex.message);
@@ -521,17 +515,14 @@ async function all_fav_item(todos) {
     } finally {
         //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
         // alert('finally' + total_neto_prod + '----' + total_quantity_cart_item);
-
         /*  $('#total_cart_neto').text(total_cart_neto);
           $('#total_neto_prod').text(total_neto_prod);
           // $('#total_neto_service').text(total_neto_service);
           $('#total_neto_discount').text(total_neto_discount);
           $('#total_neto_tax').text(total_neto_tax);
           $('#total_neto_pay').text(total_neto_pay);*/
-
         // alert(total_quantity_cart_item);
         $('.fav_count').text(total_quantity_cart_item);
-
         //   get_cart_change();
         return;
     }
@@ -602,7 +593,7 @@ function variations_add_fav(element) {
             $(this_card_id).find(".ripple_div").addClass('add');
             $(this_card_id).find(".content").addClass('ripple_efect');
             add_fav_item(new_variant_doc);
-            console.log(new_variant_doc);
+          //  console.log(new_variant_doc);
         }
         //    renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
@@ -610,7 +601,7 @@ function variations_add_fav(element) {
 };
 
 async function add_fav_item(data) {
-    console.log(data);
+   // console.log(data);
     try {
         var response = await user_db.put({
             _id: new Date().toISOString(),
@@ -698,7 +689,6 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
 
 ///****** FUNCIONES CONTACTOS **********///
 function cart_select_contact() {
-
     alert('seleccionado');
 }
 

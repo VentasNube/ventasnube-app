@@ -141,7 +141,7 @@ function put_left_nav_doc() {
                                 return console.log(err);
                             }
                              //   msj_alert('Se actualizo el left_nav_doc','top-center');
-                             console.log('se actualizo el left bar doc');
+                             console.log('Se actualizo el left bar doc');
                              console.log(response);
                              // handle response
                             });
@@ -177,9 +177,9 @@ function get_left_nav(ws_left_nav , ws_lang_data) {
                   ws_left_nav: ws_left_nav,
                   ws_lang_data: ws_lang_data
               }
-              //console.log('ws_left_nav_ :AAAAAA');
-              //console.log(ws_left_nav);
-              // console.log(ws_left_nav_doc);
+              console.log('ws_left_nav_');
+              console.log(ws_left_nav);
+              //console.log(ws_left_nav_doc);
               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
 
@@ -192,7 +192,7 @@ function get_top_bar(ws_info, ws_lang_data) {
         ws_lang_data: ws_lang_data
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
-    console.log('Top bar in');
+   // console.log('Top bar in');
 };
 
 ////----(3 LEFT NAV CART)---/////
@@ -203,7 +203,7 @@ function get_right_nav(ws_info, ws_lang_data) {
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
     // $('#cart_user_input').focus();
-    console.log('CART in');
+   // console.log('CART in');
 };
 
 

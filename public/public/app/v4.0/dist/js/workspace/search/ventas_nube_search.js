@@ -66,8 +66,8 @@ function get_search_module(ws_info, ws_lang_data) {
         user: user_data,
 
     }
-    console.log('search ARRAYYY ');
-    console.log(ws_search_data);
+    //console.log('SEARCH ARRAYYY ');
+    //console.log(ws_search_data);
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
 };
 
@@ -278,8 +278,8 @@ function variations_select(element) {
         }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
-        console.log("var_doc");
-        console.log(variant_array);
+      //  console.log("var_doc");
+     //   console.log(variant_array);
     });
 }
 
