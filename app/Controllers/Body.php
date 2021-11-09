@@ -59,7 +59,7 @@ class Body extends BaseController
                         'ws_plan' =>  $ws_plan,
                         'ws_plan_name' =>  $ws_plan['workspace_id'],
                         'workspace_plan_expiration' =>  $ws_plan['workspace_plan_expiration'],
-                        'result' => true,
+                        'result' => true
                     );
                     return json_encode($data);
 

@@ -53,7 +53,7 @@ const u_name = readCookie ('u_name');
 const userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
 const u_db = readCookie("userDb");
-const userCtx = '';
+var userCtx = '';
 
 //Varianble global user_data
 this.user_data = {
@@ -94,7 +94,35 @@ function chek_ws_updates() {
 chek_ws_updates() ;
 
 //Creo y conecto con userDB local 
+u_session = new PouchDB(url_R_db, { skip_setup: true });
+ // DOC DE CONFIGURACION GENERAL PERMISOS Y SESIONES
+ // FORMATO DE ROLES POR MODULO PERMISOS PARA TODOS LOS MODULOS:
+            //1 owner  PUEDE LEER, ESCRIBIR, EDITAR, ELIMINAR, NOMBRAR owner...
+            //2 admin  PUEDE LEER, ESCRIBIR, EDITAR, ELIMINAR, AGREGAR COLAB...
+            //3 edit   PUEDE LEER, ESCRIBIR, EDITAR
+            //4 write  PUEDE LEER, ESCRIBIR,
+            //5 reed   PUEDE LEER
+ // owner : ws_xxxxx_modulo_OWNER
+ // ADMIN: ws_xxxxx_modulo_admin
+ // LECTURA: ws_xxxxx_modulo_reed
+ // ESCRITURA: ws_xxxxx_modulo_write
+ // EDICION:  ws_xxxxx_modulo_edit  
+ // ELMINACION: ws_xxxxx_modulo_delet
+
+//Varianble global user_data
+/*
+var module = 'catalog';
+var reed = 'ws_'+ ws_id +'_'+module +'_reed';
+var write = 'ws_'+ ws_id +'_'+ module + '_write';
+var edit = 'ws_'+ ws_id +'_'+ module + '_edit';
+var del = 'ws_'+ ws_id +'_'+ module + '_del';
+var admin = 'ws_'+ ws_id +'_'+ module +'_admin';
+*/
+
+//Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });
+
+//getSession();
 
 user_db.sync(url_R_db+userDb, {
     live: true,
@@ -138,12 +166,23 @@ user_db.sync(url_R_db+userDb, {
             actionTextColor: "#0575e6",
         });
     // some other error
-  }
-
+    }
   });
-    //user_db.debug.enable('*'); //Activo el depurador de cuchdb
-    //user_session();
-    // FUNCION LOGOUT
+
+
+
+
+  async function _session(){
+    userCtx = await u_session.get('_session', { include_docs: true});
+    console.log("userCtx remota");
+    console.log(userCtx);
+ }
+
+
+
+ _session();
+
+// FUNCION LOGOUT
 function logout() {
     user_db.logOut(function(err, response) {
         if (response) {
@@ -168,6 +207,68 @@ function logout() {
 };
 
 //Boton Offline
+
+/*
+
+/*
+  user_db.getSession(function (err, response) {
+    if (err) {
+        console.log('ERROR DE SESSION');
+        console.log(err);
+        // network error
+    } else if (!response.userCtx.name) {
+        console.log('esponse.userCtx');
+        console.log(esponse.userCtx);
+        // nobody's logged in
+       // setTimeout(function () { window.location = "/login"; }, 2000);
+    } else {
+        var userCtx = response.userCtx;
+        console.log('USER SESSSIONNNN AAAA BBBBB ');
+        console.log(userCtx);
+        return userCtx;
+    }
+});
+//user_db.debug.enable('*'); //Activo el depurador de cuchdb
+//user_session();
+
+user_db.getSession(function (err, response) {
+    if (err) {
+        // network error
+    } else if (!response.userCtx.name) {
+        // nobody's logged in
+       // setTimeout(function () { window.location = "/login"; }, 2000);
+    } else {
+        // response.userCtx.name is the current user
+        $.ajax({
+        url: "/body/user_data",
+        // dataType: "html",
+        //data: data,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (response.result == true) { ///// IMPRIME ////
+                window.location = "/account";
+            }else{
+                logout()
+                //setTimeout(function () { window.location = "/account"; }, 2000);
+            }
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 404) {
+                setTimeout(function () { window.location = "/account"; }, 7000);
+                Snackbar.show({
+                    text: 'Debes iniciar sesion',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+            }
+    });
+
+    }
+});
+
+*/
+
 
 /*
 $(".offline_mode").click(function() {
