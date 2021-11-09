@@ -68,6 +68,8 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         //SETEO EL ARRAY CON EL IDIOMA
                         ws_lang_data = ws_lang['ws_lang_es'];
                         //Envio los datos a la funciones y imprimo
+                        //Creo la variable userCtx apartir del comento left nav
+                        userCtx = ws_left_nav.userCtx
 
                         get_top_bar(ws_info, ws_lang_data, userCtx); //Imprimo el top bar
                         get_left_nav(ws_left_nav , ws_lang_data , userCtx);//Traigo y imprimo el documento de navegacion lateral 
