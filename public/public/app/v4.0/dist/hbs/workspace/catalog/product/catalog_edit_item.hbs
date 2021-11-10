@@ -40,7 +40,10 @@
                                 </div>
                             {{/with}} 
                   {{#with product_doc}}
-                    <h1 class="margin-t-0">{{name}}</h1> 
+                    <h1 class="margin-t-0">
+                        <input id="" class="form-control" type="text" placeholder="Nombre del producto" value="{{name}}">
+    
+                        </h1> 
                     <h4>
                         {{#ifEquals status 'active' }}
                             <span class="s-card-cat pull-left">
@@ -60,7 +63,9 @@
                     </h4>
                     
                     <br>
-                     <h3>Descripcion: {{descriptions}}</h3> 
+                     <h3>
+                          <input id="" class="form-control" type="textarea" placeholder="Descripcion del producto" value="{{descriptions}}">
+                         </h3> 
                      <h3>
                         {{#each attributes }}
                          <div class="s-card-cat pull-left">{{name}}: {{value_name}} </div> 
@@ -248,15 +253,15 @@
 
                                 {{/with}} 
 
-                            {{#userCtx 'catalog' 'edit' user_roles}}
-                                                        {{#with ../product_variant}}
-                                                            <button onclick="catalog_edit_item(this)" product_id="{{{../../product_doc/_id}}}"
-                                                                variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">
-                                                                <span class="material-icons">create</span>
-                                                                Editar Producto
-                                                            </button>
-                                                        {{/with}} 
-                            {{/userCtx}}
+                                {{#userCtx 'catalog' 'edit' user_roles}}
+                                                            {{#with ../product_variant}}
+                                                                <button onclick="item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
+                                                                    variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">
+                                                                    <span class="material-icons">create</span>
+                                                                    Editar Producto
+                                                                </button>
+                                                            {{/with}} 
+                                {{/userCtx}}
 
                             </div>
                         </div>

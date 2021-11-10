@@ -246,11 +246,8 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
         if(array[i].m_url === ws_module_name ){
             ws_module_select = array[i].m_url;
           return  get_module_function(ws_module_select,m_t_id,m_id,m_var_id);
-
         }
         else{
-            
-
         }
     }
 };
@@ -264,6 +261,10 @@ async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
                 //Si el tipo de modulo es producto envia los parametros a la funcion constructora
             if( m_t_id == 'product'){
                 catalog_view_item_url(m_id,m_var_id, userCtx);
+                //updateHistory();
+            }
+            if( m_t_id == 'edit'){
+                catalog_edit_item(m_id,m_var_id, userCtx);
                 //updateHistory();
             }
             //  get_items_catalog();
