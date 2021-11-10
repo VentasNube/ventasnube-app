@@ -7,14 +7,17 @@
                     <div class="righ_nav_header">
                             {{#with product_variant}}
                                 <div class="header" >
+
                                             <button id="" type="button" class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
                                                 <span class="material-icons">close</span>
                                             </button>
+
                                             <button  data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto" type="button" class="margin-10 round btn btn-transparent btn-default pull-left ">
                                                 <span class="material-icons">
                                                     add_a_photo
                                                     </span>
                                             </button>
+
                                             {{#first pictures}}
                                                             <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card" >
                                                                 <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
@@ -35,7 +38,7 @@
                                             {{/first }}
                               
                                 </div>
-                                  {{/with}} 
+                            {{/with}} 
                   {{#with product_doc}}
                     <h1 class="margin-t-0">{{name}}</h1> 
                     <h4>
@@ -187,7 +190,6 @@
                                                                     {{#with ( lookup ../../price_list @index)}}
                                                                         <div class="round-icon pr">
                                                                             {{trimString value}}
-                                                                        
                                                                         </div>
                                                                         {{value}}
                                                                     {{/with}}
@@ -238,14 +240,26 @@
                                 <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
                                 <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
                             </div-->
+
+  
                             <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
-                                <button or-id="2" type="button" class="cobrar-btn btn btn-primary">
-                                    <span class="material-icons">create</span>
-                                    Editar Producto
-                                </button>
+                             
+
+                                {{/with}} 
+
+                            {{#userCtx 'catalog' 'edit' user_roles}}
+                                                        {{#with ../product_variant}}
+                                                            <button onclick="item_item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
+                                                                variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">
+                                                                <span class="material-icons">create</span>
+                                                                Editar Producto
+                                                            </button>
+                                                        {{/with}} 
+                            {{/userCtx}}
+
                             </div>
                         </div>
-        {{/with}}   
+    
 
 </div>

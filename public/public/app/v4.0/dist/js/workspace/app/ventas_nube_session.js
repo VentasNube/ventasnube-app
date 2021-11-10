@@ -8,7 +8,6 @@
 //Global variables
 //##########################################################
 
-
 // ***** CONFIGURACIONES GLOBALES *****//
 const url_site = 'http://localhost'
 const url_app_path = '/workspace/app'
@@ -53,7 +52,7 @@ const u_name = readCookie ('u_name');
 const userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
 const u_db = readCookie("userDb");
-var userCtx = '';
+
 
 //Varianble global user_data
 this.user_data = {
@@ -93,8 +92,6 @@ function chek_ws_updates() {
 }
 chek_ws_updates() ;
 
-//Creo y conecto con userDB local 
-u_session = new PouchDB(url_R_db, { skip_setup: true });
  // DOC DE CONFIGURACION GENERAL PERMISOS Y SESIONES
  // FORMATO DE ROLES POR MODULO PERMISOS PARA TODOS LOS MODULOS:
             //1 owner  PUEDE LEER, ESCRIBIR, EDITAR, ELIMINAR, NOMBRAR owner...
@@ -169,19 +166,20 @@ user_db.sync(url_R_db+userDb, {
     }
   });
 
-
-
+var userCtx = '';
+//Creo y conecto con userDB local 
+u_session = new PouchDB(url_R_db, { skip_setup: true });
 
   async function _session(){
     userCtx = await u_session.get('_session', { include_docs: true});
     console.log("userCtx remota");
     console.log(userCtx);
+    return userCtx;
  }
 
-
-
  _session();
-
+ console.log("userCtx remota");
+ console.log(userCtx);
 // FUNCION LOGOUT
 function logout() {
     user_db.logOut(function(err, response) {

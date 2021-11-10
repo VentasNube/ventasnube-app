@@ -13,9 +13,32 @@ function getTemplateAjax(path, callback) {
             });
             // IMPRIME EL PRIMER CARACTER DE UN STRING
             Handlebars.registerHelper('trimString', function(passedString) {
+
                 var theString = passedString.substring(0, 1);
                 return new Handlebars.SafeString(theString)
+
             });
+
+             // COMPARADOR SI TIENE ESO
+              // COMPARADOR SI ES IGUAL A
+
+
+            Handlebars.registerHelper("userCtx", function(modulo, rol, roles, options) {
+                //Recorro el array para buscar coincidencias del valor de ID
+                var rol = modulo +'_'+ rol +'_'+ ws_id ;
+                var rol_admin = modulo +'_admin_'+ ws_id ;
+                    for (var i = 0, j = roles.length; i < j; i++) {
+                        if (roles[i] === rol_admin) {
+                            //Si tengo coincidencias
+                            return options.fn(roles[i]);
+                        }else if(roles[i] === rol){
+                            return options.fn(roles[i]);
+                        }
+                    }
+                    //Si no tengo resultados
+                    return options.inverse(roles[i]);
+            });
+
             // COMPARADOR SI TIENE ESO
             Handlebars.registerHelper("if", function(conditional, options) {
                 if (conditional) {

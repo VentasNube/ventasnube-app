@@ -382,8 +382,15 @@ async function  catalog_view_item(element) {
                 // sku:product_doc.variations[variant_id].sku.value,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
-                
+                user_roles:user_Ctx.userCtx.roles
             }
+
+            console.log('catalog_view_item OKK ONE');
+           // console.log(product_doc_array);
+            console.log(user_Ctx.userCtx.roles);
+            console.log('product_doc_array');
+            console.log(product_doc_array);
+
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
           createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
           $('#right_main').removeClass('move-right');
@@ -406,12 +413,19 @@ async function  catalog_view_item_url(m_id,m_var_id) {
             var product_doc_array = {
                 product_doc: product_doc ,
                 product_variant: var_doc ,
-                name: product_doc.name,
-                tags:product_doc.tags,
+                name: product_doc.name,   
+                tags:product_doc.tags, // Etiquetas
                 // sku:product_doc.variations[variant_id].sku.value,
-                price_list: price_doc.price_list,
-                ws_lang_data: ws_lang_data,
+                price_list: price_doc.price_list,   //Lista de precios
+                ws_lang_data: ws_lang_data, //Documento de lenguaje
+                user_roles:user_Ctx.userCtx.roles // User roles
             }
+
+            console.log('VISTA DE PRODUCTO ROLES');
+            console.log(user_Ctx.userCtx.roles);
+            console.log('VISTA DE PRODUCTO ARRAY');
+            console.log(product_doc_array);
+
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
           createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
           $('#right_main').removeClass('move-right');

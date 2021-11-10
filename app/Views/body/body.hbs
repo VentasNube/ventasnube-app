@@ -172,7 +172,7 @@
             });
         });
     });
-
+    
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         // This fires when the service worker controlling this page
         // changes, eg a new worker has skipped waiting and become
@@ -180,7 +180,6 @@
         // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
         // alert('controllerchange');
     });
-
 </script>
 
 <script>
@@ -189,8 +188,6 @@
     //Creo la variable global con el objeto de la secion 
     //###########################################################
     //Limpio las variables globales si hay un error de pantalla asi no falla el APP
- 
-
     //    ws_info = new PouchDB(url_R_db + 'ws_info_' + ws_id, { skip_setup: false });
     //    ws_setting_doc = ws_info.get('ws_lang_sp', { include_docs: true, descending: true });
     //Creo las variables globales
@@ -198,7 +195,6 @@
     // var ws_lang_data = '';
     //Traigo el doc con los textos en diferentes idiomas
     /*var ws_info = new PouchDB(url_R_db + 'ws_info_' + ws_id, { skip_setup: false });
-
     //function ws_lang(){
     ws_info.get('ws_lang_sp', function (err, doc) {
         var ws_lang = doc;
@@ -206,17 +202,10 @@
         if (err) { return console.log(err); }
     });
 */
-
     //}
-
     //ws_lang();
-
-
-
-
 </script>
 <!-- ############## Modulos VNAPP ##############  -->
-
 <!--- SESSION -->
 <script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_session.js"></script>
 <!--- BODY -->
@@ -225,7 +214,6 @@
 <script src="/public/app/v4.0/dist/js/workspace/cart/ventas_nube_cart.js"></script>
 <!--- SEARCH -->
 <script src="/public/app/v4.0/dist/js/workspace/search/ventas_nube_search.js"></script>
-
 <!--- ACCOUNT -->
 <script src="/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js"></script>
 

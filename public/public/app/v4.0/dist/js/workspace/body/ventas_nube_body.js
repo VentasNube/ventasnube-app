@@ -11,7 +11,7 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 //Creo la base de datos local info_db
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
-
+user_Ctx = null;
 //sincronizo
 //Creo y conecto con userDB local 
 L_ws_info_db.sync(url_R_db+ws_info_db, {
@@ -55,30 +55,36 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
  async function ws_module_config() {
                 try {
                         //userCtx variable global de permisos y roles para filtrar las vistas
-                        console.log('userCtx BODY.js');
-                        console.log(userCtx);    
-                         // DOC DE CONFIGURACION GENERAL
+                        // console.log('userCtx BODY.js');
+                        // console.log(userCtx);    
+                        // DOC DE CONFIGURACION GENERAL
                         ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
                         // DOC DE NAVEGACION
                         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+                        // VARIABLE DE USUARIO Y ROLES
+                        // userCtx = await u_session.get('_session', { include_docs: true});
+                        // console.log("userCtx body 1111");
+                        // console.log(userCtx);
                         // DOC DE LEGUAJE
                         ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
-                        //Mapeo el objeto
+                        // Mapeo el objeto
                         var ws_lang = ws_lang_data_doc;
-                        //SETEO EL ARRAY CON EL IDIOMA
+                        // SETEO EL ARRAY CON EL IDIOMA
                         ws_lang_data = ws_lang['ws_lang_es'];
-                        //Envio los datos a la funciones y imprimo
-                        //Creo la variable userCtx apartir del comento left nav
-                        userCtx = ws_left_nav.userCtx
-
-                        get_top_bar(ws_info, ws_lang_data, userCtx); //Imprimo el top bar
-                        get_left_nav(ws_left_nav , ws_lang_data , userCtx);//Traigo y imprimo el documento de navegacion lateral 
-                        //get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
-                        get_right_cart(ws_info, ws_lang_data , userCtx);
+                        // Envio los datos a la funciones y imprimo
+                        // Creo la variable userCtx apartir del comento left nav
+                        user_Ctx = ws_left_nav.userCtx;
+                        get_top_bar(ws_info, ws_lang_data, user_Ctx); //Imprimo el top bar
+                        get_left_nav(ws_left_nav , ws_lang_data , user_Ctx);//Traigo y imprimo el documento de navegacion lateral 
+                        // get_right_nav(ws_info, ws_lang_data);//Imprimo el cart
+                        get_right_cart(ws_info, ws_lang_data , user_Ctx);
                         // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
-                        get_search_module(ws_info, ws_lang_data , userCtx); //Imprimo el search 
+                        get_search_module(ws_info, ws_lang_data , user_Ctx); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
-                        check_url_module(ws_left_nav, ws_lang_data , userCtx);//Chequeo y cargo el modulo segun la url actual y la cargo
+                        check_url_module(ws_left_nav, ws_lang_data , user_Ctx);//Chequeo y cargo el modulo segun la url actual y la cargo
+
+
+
 
                 } catch (err) {
                     put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
@@ -101,7 +107,9 @@ function put_left_nav_doc() {
         dataType: "json",
         success: function (ws_left_nav) {
             if (ws_left_nav.result == true) {
-                        console.log('Solicitud ajax ws_left_nav ok! '+ ws_id);
+                        console.log('Solicitud ajax ws_left_nav ok! ws_id:'+ ws_id);
+                        // console.log('userCtx L nav doc 1');
+                        //console.log(userCtx);
                         ///// IMPRIME ////
                         user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
                             if (err) {
@@ -112,13 +120,12 @@ function put_left_nav_doc() {
                               _rev: doc._rev,
                               ws_left_nav: ws_left_nav,
                               userCtx: userCtx
-
                             }, function(err, response) {
                             if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
                                 //alert('Se actualizo el Left Nav doc');
-                                console.log('userCtx 1');
-                                console.log(userCtx);
+                                //console.log('userCtx L nav doc 2');
+                               // console.log(userCtx);
                                 createCookie('ws_install-' + ws_id, true), 30;
                                 //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
                             }
@@ -140,8 +147,11 @@ function put_left_nav_doc() {
                                     });
                                 return console.log(err);
                             }
-                             //   msj_alert('Se actualizo el left_nav_doc','top-center');
+                            //   msj_alert('Se actualizo el left_nav_doc','top-center');
+                            //   console.log('userCtx L nav doc 3');
+                            //  console.log(userCtx);
                              console.log('Se actualizo el left bar doc');
+                             console.log(userCtx);
                              console.log(response);
                              // handle response
                             });
@@ -177,8 +187,8 @@ function get_left_nav(ws_left_nav , ws_lang_data) {
                   ws_left_nav: ws_left_nav,
                   ws_lang_data: ws_lang_data
               }
-              console.log('ws_left_nav_');
-              console.log(ws_left_nav);
+              // console.log('ws_left_nav_');
+              //console.log(ws_left_nav);
               //console.log(ws_left_nav_doc);
               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
 };
@@ -238,6 +248,10 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
           return  get_module_function(ws_module_select,m_t_id,m_id,m_var_id);
 
         }
+        else{
+            
+
+        }
     }
 };
 
@@ -246,10 +260,10 @@ async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
          const ws_m_s = ws_module_select;
          //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
         if(ws_m_s == 'catalog'){
-            get_catalog();
-            //Si el tipo de modulo es producto envia los parametros a la funcion constructora
+                get_catalog();
+                //Si el tipo de modulo es producto envia los parametros a la funcion constructora
             if( m_t_id == 'product'){
-                catalog_view_item_url(m_id,m_var_id);
+                catalog_view_item_url(m_id,m_var_id, userCtx);
                 //updateHistory();
             }
             //  get_items_catalog();
