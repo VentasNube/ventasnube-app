@@ -605,4 +605,10 @@ function get_catalog(ws_id) {
     get_nav_catalog();
     get_all_catalog_intems();
 }
+
+/* TAGGER INICIALIZACION */
+
+
+
+
  
