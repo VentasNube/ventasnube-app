@@ -697,7 +697,7 @@ $('.datetimepicker').bootstrapMaterialDatePicker({
 });
 */
 
-////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
+////----(  Funciones 2021 Ventasnube Offlinefirt  )----/////
 
 
 function msj_alert(msj, pos) {
@@ -729,3 +729,60 @@ $(".material_input").focusin(function() {
 
     $(this).children('label').children('span').animate({ "font-size": "18px" }, 150, "linear");;
 });
+
+////----( Tags chips efecto  )----/////
+
+//Boton variables y las Renderizo
+function view_item_variations_getOLD_NO(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_search_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}
+
+function add_new_tag_press(e, element){
+    //let product_id = $(e).attr('product_id');
+    var key=e.keyCode || e.which;
+     if (key==13){
+        add_new_tag(element);
+     }
+}
+
+
+
+function add_new_tag(element){
+
+        let text = $(element).val();
+
+        let div_main = $(element).parentNode;
+
+       // $(element).parent('div').children('.chips_item').html('<div class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span>'+text+'</span></div><div> </div>');
+
+        $(element).prev('div').find('.chips_item').each(function(){
+            var text = $(this).attr('val_text');
+                    $(this).css("color","red");
+            console.log(text);
+        });
+
+        
+        $(element).prev('div').append('<div val_text="'+text+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+text+'</span></div>');
+}
+
+

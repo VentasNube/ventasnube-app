@@ -40,9 +40,8 @@
                                 </div>
                             {{/with}} 
                   {{#with product_doc}}
-                    <h1 class="margin-t-0">
-                        <input id="" class="form-control" type="text" placeholder="Nombre del producto" value="{{name}}">
-    
+                        <h1 class="margin-t-0">
+                            <input id="" class="form-control" type="text" placeholder="Nombre del producto" value="{{name}}">
                         </h1> 
                     <h4>
                         {{#ifEquals status 'active' }}
@@ -57,11 +56,34 @@
                                 </span>
                         {{/ifEquals}}
                     <span class="s-card-cat pull-left ">{{condition}}</span>
-                        {{#each tags }}
-                    <span class="s-card-cat pull-left">#{{this}}</span>
+
+
+                    {{#each tags }}
+                        <span class="s-card-cat pull-left">#{{this}}</span>
                     {{/each}}
+
+                           
+                 
                     </h4>
-                    
+                
+
+                    <div class="chips_main">
+                        
+                        <div class="chips_items_main">
+
+                                <div class="chips_item s-card-cat pull-left" val_text="Coca cola">
+                                    <a href="#" onclick="">
+                                        <span class="button material-icons text-s lh-n">   highlight_off</span>
+                                    </a>
+                                    <label class="chips_text">    
+                                                            Coca cola
+                                    </label>
+                                </div>
+                        
+                        </div>
+
+                        <input product_id="12377652" class="chips_input form-control" name="keywords" type="text"  onkeypress="add_new_tag_press(event,this)" style="">
+                    </div>
                     <br>
                      <h3>
                           <input id="" class="form-control" type="textarea" placeholder="Descripcion del producto" value="{{descriptions}}">

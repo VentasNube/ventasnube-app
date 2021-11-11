@@ -12490,7 +12490,36 @@ board-item-content
     background-color: #fff; */
 }
 
+/**** CHIPS CLASES ***/
 
-    
+
+.chips_main{
+    display: inline-block;
+    width: 100%;
+    margin: 5 0;
+}
+
+.chips_input{
+    display: inline-block;
+    width: 150px;
+    padding: 0 15px;
+}
+
+.chips_item{
+    margin: 5px;
+}
+
+.chips_text{
+   /* display: inline-block;
+    width: 100%;*/
+}
+
+.chips_delete{
+    display: inline-block;
+
+}
+
+
+
     
 
