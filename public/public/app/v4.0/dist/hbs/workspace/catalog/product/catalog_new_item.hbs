@@ -244,10 +244,7 @@
   
                             <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
-                             
-
-                                {{/with}} 
-
+                            {{/with}} 
                             {{#userCtx 'catalog' 'edit' user_roles}}
                                                         {{#with ../product_variant}}
                                                             <button onclick="item_item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
@@ -257,9 +254,6 @@
                                                             </button>
                                                         {{/with}} 
                             {{/userCtx}}
-
                             </div>
                         </div>
-    
-
 </div>
