@@ -56,40 +56,47 @@
                                 </span>
                         {{/ifEquals}}
                     <span class="s-card-cat pull-left ">{{condition}}</span>
-
-
-                    {{#each tags }}
-                        <span class="s-card-cat pull-left">#{{this}}</span>
-                    {{/each}}
-
-                           
-                 
                     </h4>
                 
-
                     <div class="chips_main">
-                        
                         <div class="chips_items_main">
-
-                                <div class="chips_item s-card-cat pull-left" val_text="Coca cola">
+                             {{#each tags }}
+                                 <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
                                     <a href="#" onclick="dell_tag(this)">
                                         <span class="button material-icons text-s lh-n">   highlight_off</span>
                                     </a>
-                                    
                                     <label class="chips_text">    
-                                                            Coca cola
+                                                         {{this}}
                                     </label>
                                 </div>
-                        
+                            {{/each}}
+                              
                         </div>
-
                         <input product_id="12377652" class="chips_input form-control" name="keywords" type="text"  onkeypress="add_new_tag_press(event,this)" style="">
                     </div>
 
                     <br>
+
+                    <div class="chips_main">
+                        <div class="chips_items_main">
+                             {{#each tags }}
+                                 <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
+                                    <a href="#" onclick="dell_tag(this)">
+                                        <span class="button material-icons text-s lh-n">   highlight_off</span>
+                                    </a>
+                                    <label class="chips_text">    
+                                                         {{this}}
+                                    </label>
+                                </div>
+                            {{/each}}
+                              
+                        </div>
+                        <input product_id="12377652" class="chips_input form-control" name="keywords" type="text"  onkeypress="add_new_tag_press(event,this)" style="">
+                    </div>
+
                      <h3>
                           <input id="" class="form-control" type="textarea" placeholder="Descripcion del producto" value="{{descriptions}}">
-                         </h3> 
+                     </h3> 
                      <h3>
                         {{#each attributes }}
                          <div class="s-card-cat pull-left">{{name}}: {{value_name}} </div> 
@@ -281,8 +288,8 @@
                                                             {{#with ../product_variant}}
                                                                 <button onclick="item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
                                                                     variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">
-                                                                    <span class="material-icons">create</span>
-                                                                    Editar Producto
+                                                                    <span class="material-icons">save</span>
+                                                                   Guardar cambios
                                                                 </button>
                                                             {{/with}} 
                                 {{/userCtx}}
