@@ -357,6 +357,7 @@ async function  post_url_history(module, id) {
                 // sku:product_doc.variations[variant_id].sku.value,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
+                category_list:category_list
                 
             }
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
@@ -382,8 +383,14 @@ async function  catalog_view_item(element) {
                 // sku:product_doc.variations[variant_id].sku.value,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
-                user_roles:user_Ctx.userCtx.roles
+                user_roles:user_Ctx.userCtx.roles,
+                category_list:category_list
             }
+
+            console.log('Catalog_view_item OK ONE2 2222222');
+            console.log(category_list);
+
+            console.log('catalog_view_item OK ONE AAAAAAA');
 
             console.log('catalog_view_item OKK ONE');
            // console.log(product_doc_array);
@@ -452,13 +459,17 @@ async function  catalog_edit_item(element) {
                 // sku:product_doc.variations[variant_id].sku.value,
                 price_list: price_doc.price_list,
                 ws_lang_data: ws_lang_data,
-                user_roles:user_Ctx.userCtx.roles
+                user_roles:user_Ctx.userCtx.roles,
+                category_list:category_list
+               
             }
 
-            console.log('catalog_view_item OK ONE');
+            console.log(category_list);
+
+            console.log('catalog_view_item OK ONE AAAAAAA');
             // console.log(product_doc_array);
             console.log(user_Ctx.userCtx.roles);
-            console.log('product_doc_array');
+            console.log('product_doc_array AAAAAAA');
             console.log(product_doc_array);
 
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs',  '#right_main', product_doc_array);
@@ -606,7 +617,97 @@ function get_catalog(ws_id) {
     get_all_catalog_intems();
 }
 
+
+async function put_catalog(doc_id, my_doc) {
+    try {
+        var doc = await L_search_db.get(doc_id);
+        var response = await L_search_db.put({
+        _id: mydoc,
+        _rev: doc._rev,
+        doc:my_doc
+        });
+        return response;
+    } catch (err) {
+        console.log(err);
+       // return response
+    }
+}
+
+
 /* TAGGER INICIALIZACION */
+
+////----( Tags chips efecto  )----/////
+
+//Tomo el enter si esta en el input
+function add_new_tag_press(e, element){
+    //let product_id = $(e).attr('product_id');
+    var key=e.keyCode || e.which;
+     if (key==13){
+        add_new_tag(element);
+     }
+}
+//INPUT Chekeo si esta ingresada en el
+function add_new_tag(element){
+        let new_tag = $(element).val();
+        let chips_item = $('.chips_item');//selecciono las clases
+        let chips_count = 0;
+        //CHEKEO Q NO ESTA INGRESADA
+        for (var i = 0; i < chips_item.length; i++) {
+            var text = $(chips_item[i]).attr('val_text');
+            if(text === new_tag){
+                chips_count += 1;
+                $(chips_item[i]).css("color","red");
+            }
+        }
+        if(chips_count === 0){
+            $(element).prev('div').append('<div val_text="'+new_tag+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+new_tag+'</span></div>');
+        }
+}
+
+function add_new_tagOK(element){
+    let new_tag = $(element).val();
+    let chips_item = $('.chips_item');//selecciono las clases
+    let chips_count = 0;
+    //CHEKEO Q NO ESTA INGRESADA
+    for (var i = 0; i < chips_item.length; i++) {
+        var text = $(chips_item[i]).attr('val_text');
+        if(text === new_tag){
+            chips_count += 1;
+            $(chips_item[i]).css("color","red");
+        }
+    }
+    if(chips_count === 0){
+        $(element).prev('div').append('<div val_text="'+new_tag+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+new_tag+'</span></div>');
+    }
+}
+
+//Elimino un tag
+function dell_tag(element){
+    let text = $(element).val();
+    //let div_main = $(element).parentNode;
+   $(element).parent('div').remove();
+   // $(element).prev('div').append('<div val_text="'+text+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+text+'</span></div>');
+}
+
+
+function catalog_save_edit_item(element){
+
+    /*let cat_edit_name = $('#cat_edit_name').val();
+    let cat_edit_name = $('#cat_edit_name').val();
+    let cat_edit_name = $('#cat_edit_name').val();
+    let cat_edit_name = $('#cat_edit_name').val();
+
+    let text = $(element).val();
+    let text = $(element).val();
+    let text = $(element).val();
+    let text = $(element).val();
+
+*/
+
+
+}
+
+/* NEWW TAG FUNTIONS */
 
 
 

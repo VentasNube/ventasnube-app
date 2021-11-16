@@ -730,41 +730,6 @@ $(".material_input").focusin(function() {
     $(this).children('label').children('span').animate({ "font-size": "18px" }, 150, "linear");;
 });
 
-////----( Tags chips efecto  )----/////
 
-//Tomo el enter si esta en el input
-function add_new_tag_press(e, element){
-    //let product_id = $(e).attr('product_id');
-    var key=e.keyCode || e.which;
-     if (key==13){
-        add_new_tag(element);
-     }
-}
-//INPUT Chekeo si esta ingresada en el
-function add_new_tag(element){
-        let new_tag = $(element).val();
-        let chips_item = $('.chips_item');//selecciono las clases
-        let chips_count = 0;
-        //CHEKEO Q NO ESTA INGRESADA
-        for (var i = 0; i < chips_item.length; i++) {
-            var text = $(chips_item[i]).attr('val_text');
-            if(text === new_tag){
-                chips_count += 1;
-                $(chips_item[i]).css("color","red");
-            }
-        }
-        if(chips_count === 0){
-            $(element).prev('div').append('<div val_text="'+new_tag+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+new_tag+'</span></div>');
-        }
-}
-//Elimino un tag
-function dell_tag(element){
-    let text = $(element).val();
-    //let div_main = $(element).parentNode;
-   $(element).parent('div').remove();
-   // $(element).prev('div').append('<div val_text="'+text+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+text+'</span></div>');
-}
-
-/* NEWW TAG FUNTIONS */
 
 

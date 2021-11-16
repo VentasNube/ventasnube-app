@@ -16,7 +16,7 @@
 // Variables Globales
 var documents = 'No hay documentos';
 var fuse = '';
-
+category_list = null;
 
 //###--- Conection y Sync a la base de datos local ---#####
 var ws_search_db = 'ws_collections_' + ws_id;
@@ -47,6 +47,10 @@ L_search_db.sync(url_R_db+ws_search_db, {
 async function search_db() {
     try {
             price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
+            //DOC DE CATEGORIAS PRODUCTOS
+            category_list = await L_search_db.get('category_list', { include_docs: true, descending: true });
+
+
     } catch (err) {
         Snackbar.show({
             text: err.reason,

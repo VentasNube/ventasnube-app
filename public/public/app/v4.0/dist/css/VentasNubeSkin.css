@@ -1529,6 +1529,22 @@ a.ui-button:active,
     -webkit-animation: fadeout 10s linear forwards;
 }
 
+.form-control.md {
+    height: 35px;
+    padding: 0px 0px;
+    font-size: 18px;
+    cursor: pointer;
+    /* text-align: center; */
+}
+
+.form-control.xl {
+    height: 40px;
+    padding: 0px 0px;
+    font-size: 24px;
+    cursor: pointer;
+    /* text-align: center; */
+}
+
 .form-control.maxi2 {
     height: 34px;
     padding: 0px 0px;
