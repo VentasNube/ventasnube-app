@@ -1,7 +1,7 @@
 //Funciones que pueden servir para Importar productos desde otra base de datos
 // CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
 function charge_all_docs_local(remote_items) {
-    L_search_db.bulkDocs({ docs: remote_items },
+    L_catalog_db.bulkDocs({ docs: remote_items },
         function(err, response) {
             // handle err or response
         });
@@ -11,7 +11,7 @@ search_fuse = null;
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
-    let response = await L_search_db.query(
+    let response = await L_catalog_db.query(
         'get/seach',  {
           include_docs: true,
           descending: true 
@@ -242,7 +242,7 @@ function cat_variations_get(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
                 //doc:doc,
@@ -269,7 +269,7 @@ function cat_variations_select(element) {
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#cat_card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
         /*const var_doc =  doc.variations.filter(function(element){
@@ -303,7 +303,7 @@ function cat_card_edit_variant() {
 /*
 async function  catalog_view_item_old(product_id) {
       try {
-        var product_doc = await L_search_db.get(product_id);
+        var product_doc = await L_catalog_db.get(product_id);
 
                 var doc_array = {
                     _id:product_doc._id,
@@ -347,7 +347,7 @@ async function  post_url_history(module, id) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
-        var product_doc = await L_search_db.get(product_id);
+        var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
             var product_doc_array = {
                 product_doc: product_doc ,
@@ -373,7 +373,7 @@ async function  catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
-        var product_doc = await L_search_db.get(product_id);
+        var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
             var product_doc_array = {
                 product_doc: product_doc ,
@@ -415,7 +415,7 @@ async function  catalog_view_item_url(m_id,m_var_id) {
     try {
         var product_id = m_id;
         var variant_id = m_var_id;
-        var product_doc = await L_search_db.get(product_id);
+        var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
             var product_doc_array = {
                 product_doc: product_doc ,
@@ -448,7 +448,7 @@ async function  catalog_edit_item(element) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
-        var product_doc = await L_search_db.get(product_id);
+        var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
 
             var product_doc_array = {
@@ -506,7 +506,7 @@ function view_item_variations_get(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
                 //doc:doc,
@@ -543,7 +543,7 @@ function view_item_variations_select_old(element) {
     let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_select'; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
         const var_doc =  doc.variations.filter(function(element){
@@ -620,8 +620,8 @@ function get_catalog(ws_id) {
 
 async function put_catalog(doc_id, my_doc) {
     try {
-        var doc = await L_search_db.get(doc_id);
-        var response = await L_search_db.put({
+        var doc = await L_catalog_db.get(doc_id);
+        var response = await L_catalog_db.put({
         _id: mydoc,
         _rev: doc._rev,
         doc:my_doc
@@ -688,6 +688,87 @@ function dell_tag(element){
    $(element).parent('div').remove();
    // $(element).prev('div').append('<div val_text="'+text+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+text+'</span></div>');
 }
+
+//CATEGORIAS 
+
+
+//Boton variables y las Renderizo
+function catalog_get_cat(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}
+
+//Boton variables y las Renderizo
+function catalog_post_cat(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}   
+
+//Boton variables y las Renderizo
+function catalog_dell_cat(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function(err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}  
+
+// SUB CATEGORIAS
+
 
 
 function catalog_save_edit_item(element){
