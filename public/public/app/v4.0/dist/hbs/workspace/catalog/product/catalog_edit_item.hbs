@@ -11,7 +11,7 @@
         </button>
         <h3 class=" margin-0 padding-t-20">Editar</h3>
     </div>
-    <h3> Descripcion</h3>
+    <h3 class=""> Descripcion</h3>
     {{#with product_doc}}
         <div class="s-card-activ-footer ">
             <div class="panel-group " role="tablist" aria-multiselectable="true">
@@ -172,6 +172,9 @@
                                     href="#edit_variations_{{id}}" aria-expanded="false" aria-controls="collapseOne"
                                     class="collapsed">
                                         <div class="text-left btn-group">
+                                            <span class="material-icons">
+                                            expand_circle_down
+                                            </span>
                                                 <div class="s-card-mini-img ">
                                                     {{#first pictures}}
                                                     <img src="{{min}}" alt="">
@@ -201,6 +204,12 @@
                                                             {{#first price_list}}
                                                             <span iid="total_neto_prod"> {{value}}</span>
                                                              {{/first}}
+                                                            <button class="">  
+                                                                <span class="material-icons">
+                                                                toggle_off
+                                                                </span>
+                                                            </button>
+                                                              
                                         </div>
                                    
                                 </a>
