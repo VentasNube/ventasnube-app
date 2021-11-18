@@ -11,9 +11,7 @@
         </button>
         <h3 class=" margin-0 padding-t-20">Editar</h3>
     </div>
-    <h3><span class="material-icons">
-auto_stories
-</span> Descripcion</h3>
+    <h3> Descripcion</h3>
     {{#with product_doc}}
         <div class="s-card-activ-footer ">
             <div class="panel-group " role="tablist" aria-multiselectable="true">
@@ -163,7 +161,7 @@ auto_stories
         </div>
         <!--- NAME -->
     {{/with}}
-    <h3> <span class="material-icons">style</span> Variables</h3>
+    <h3> Variables</h3>
     {{#each product_doc/variations}}
             <div class="s-card-activ-footer">
                 <div class="panel-group " role="tablist" aria-multiselectable="true">
@@ -260,10 +258,13 @@ auto_stories
                                                     <input type="checkbox" aria-label="...">
                                                 </span>
 
-                                                <select class="form-control md" name="cars" id="cars">
+                                                <!--select class="form-control md" name="cars" id="cars">
                                                     {{#each ../category_list/category_list }}
-                                                    <option value="{{id}}">{{value}}</option>
+                                                         <option value="{{id}}">{{value}}</option>
                                                     {{/each}}
+                                                </select-->
+                                                  <select class="form-control md" name="cars" id="cars">
+                                                         <option value="">Marca</option>
                                                 </select>
 
                                                 <span class="input-group-addon">
@@ -300,11 +301,10 @@ auto_stories
                                                     <input type="checkbox" aria-label="...">
                                                 </span>
 
-                                                <select class="form-control md" name="">
-                                                    {{#each ../category_list/category_list }}
-                                                    <option value="{{id}}">{{value}}</option>
-                                                    {{/each}}
+                                                 <select class="form-control md" name="cars" id="cars">
+                                                         <option value="">Modelo</option>
                                                 </select>
+
 
                                                 <span class="input-group-addon">
                                                     <div class="btn-group dropright">
