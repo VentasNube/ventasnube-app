@@ -23,10 +23,10 @@ var ws_search_db = 'ws_collections_' + ws_id;
 //var ws_info = null;
 //var ws_lang_data = null;
 //Creo la base de datos local info_db
-L_search_db = new PouchDB(ws_search_db, { skip_setup: true });
+L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
 //sincronizo
 //Creo y conecto con userDB local 
-L_search_db.sync(url_R_db+ws_search_db, {
+L_catalog_db.sync(url_R_db+ws_search_db, {
     live: true,
     retry: true,
   //  skip_setup: true
@@ -46,9 +46,9 @@ L_search_db.sync(url_R_db+ws_search_db, {
 
 async function search_db() {
     try {
-            price_doc = await L_search_db.get('price_list', { include_docs: true, descending: true });
+            price_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
             //DOC DE CATEGORIAS PRODUCTOS
-            category_list = await L_search_db.get('category_list', { include_docs: true, descending: true });
+            category_list = await L_catalog_db.get('category_list', { include_docs: true, descending: true });
 
 
     } catch (err) {
@@ -77,7 +77,7 @@ function get_search_module(ws_info, ws_lang_data) {
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
 function get_all_item_punchDb() {
-    L_search_db.query('get/seach', {
+    L_catalog_db.query('get/seach', {
         include_docs: false,
         descending: true
             // attachments: true,
@@ -223,8 +223,6 @@ function variations_set(element) {
 
 }
 
-
-
 //Boton variables y las Renderizo
 function variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -234,7 +232,7 @@ function variations_get(element) {
     let id_copiled = '#variant_' + product_id; // ID DE COMPILACION // 
 
     
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
                 //doc:doc,
@@ -261,7 +259,7 @@ function variations_select(element) {
     let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
         /*const var_doc =  doc.variations.filter(function(element){
