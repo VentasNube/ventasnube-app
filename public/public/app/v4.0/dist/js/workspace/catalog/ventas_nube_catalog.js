@@ -769,8 +769,6 @@ function catalog_dell_cat(element) {
 
 // SUB CATEGORIAS
 
-
-
 function catalog_save_edit_item(element){
 
     /*let cat_edit_name = $('#cat_edit_name').val();
@@ -787,8 +785,24 @@ function catalog_save_edit_item(element){
 
 
 }
-
 /* NEWW TAG FUNTIONS */
+
+/* Animacion botones selectores wich Editar producto */
+$("li.bg-color").click(function () {
+    var bgColor = $(this).attr('bg-color');
+    $("#bg-select-color").removeClass();
+    $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+    $("#bg-select").val(bgColor);
+    $("#bg-select-color").attr('bg-color', bgColor);
+    // $("#bg-select-color").attr('bg-color').html(bgColor);
+})
+    .mouseout(function () {
+        $("span", this).first().text("panorama_fish_eye");
+        // $("p", this).last().text(++i);
+    })
+    .mouseover(function () {
+        $("span", this).first().text("check_circle");
+    });
 
 
 

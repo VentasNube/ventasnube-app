@@ -12530,19 +12530,22 @@ board-item-content
 
 
 .chips_main{
-    display: inline-block;
+    display: inline-flex;
     width: 100%;
     margin: 5 0;
+}
+.chips_main .icon{
+   padding: 10px;
 }
 
 .chips_input{
     display: inline-block;
-    width: 150px;
+    max-width: 100px;
     padding: 0 15px;
 }
 
 .chips_item{
-    margin: 5px;
+    margin:10px 5px;
 }
 
 .chips_text{
