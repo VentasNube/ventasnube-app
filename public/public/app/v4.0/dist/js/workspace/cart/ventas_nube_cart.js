@@ -220,7 +220,7 @@ function variations_add_cart(element) {
     let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
     let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
     //Busco el doc por id actualizado y hago la carga de datos
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
@@ -569,7 +569,7 @@ function variations_add_fav(element) {
     let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
     //Busco el doc por id actualizado y hago la carga de datos
     console.log(element);
-    L_search_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function(err, doc) {
         if (err) { return console.log(err); }
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);

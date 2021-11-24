@@ -783,8 +783,35 @@ function catalog_save_edit_item(element){
 
 */
 
+var data = [
+    {id:1, nombre:"nombre1", editable:true},
+    {id:2, nombre:"nombre2", editable: false},
+    {id:3, nombre:"nombre3", editable: false},
+    {id:4, nombre:"nombre4", editable: false},
+    {id:5, nombre:"nombre5", editable: false}
+  ];
+  
+  data[data.findIndex(e=>e.id === 4)].nombre = "nuevo nombre 4";
+
+
+  /// PRUEBA 2
+  var data = [
+    {id:1, nombre: "nombre1", editable: true},
+    {id:2, nombre: "nombre2", editable: false},
+    {id:3, nombre: "nombre3", editable: false}
+  ]
+  var elementoAEditar = data.find(elemento => elemento.id === 2);
+  // Para asegurar que encuentra el elemento, ponemos este if. Si no lo encuentra no entrará en el if.
+  if (elementoAEditar) {
+      elementoAEditar.editable = true;
+  }
+  // Ahora data[1].editable (el de ID 2) será igual a true.
+  console.log(data);
+
 
 }
+
+//https://es.stackoverflow.com/questions/285722/como-editar-informaci%C3%B3n-de-un-json-dentro-de-un-array-en-javascript-typescript/285770
 /* NEWW TAG FUNTIONS */
 
 /* Animacion botones selectores wich Editar producto */
