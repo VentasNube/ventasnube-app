@@ -811,6 +811,26 @@ var data = [
 
 }
 
+//Edit cataloge item
+
+async function cat_edit_item(doc_id,item){
+
+try {
+    var doc = await db.get(doc_id);
+        var response = await db.put({
+        _id: doc_id,
+        _rev: doc._rev,
+
+        title: "Let's Dance"
+        });
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
+
+
 //https://es.stackoverflow.com/questions/285722/como-editar-informaci%C3%B3n-de-un-json-dentro-de-un-array-en-javascript-typescript/285770
 /* NEWW TAG FUNTIONS */
 
