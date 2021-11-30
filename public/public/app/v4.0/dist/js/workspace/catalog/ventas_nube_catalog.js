@@ -768,9 +768,8 @@ function catalog_dell_cat(element) {
 }  
 
 // SUB CATEGORIAS
-
+/*
 function catalog_save_edit_item(element){
-
     /*let cat_edit_name = $('#cat_edit_name').val();
     let cat_edit_name = $('#cat_edit_name').val();
     let cat_edit_name = $('#cat_edit_name').val();
@@ -781,7 +780,6 @@ function catalog_save_edit_item(element){
     let text = $(element).val();
     let text = $(element).val();
 
-*/
 
 var data = [
     {id:1, nombre:"nombre1", editable:true},
@@ -810,19 +808,53 @@ var data = [
 
 
 }
-
+*/
 //Edit cataloge item
 
-async function cat_edit_item(doc_id,item){
+async function cat_edit_variations(doc_id, variant_id, input_id, input_new_value){
 
 try {
-    var doc = await db.get(doc_id);
-        var response = await db.put({
-        _id: doc_id,
-        _rev: doc._rev,
+    //traigo el documento a editar
+     var doc = await L_catalog_db.get(doc_id);
+        //Busco el la variable y el id del input
+        console.log('DOC ORIGINAL A EDITAR');
+        console.log(doc);
+        // var elementoAEditar = data.find(element => element.id === 2);
+        // var elementoAEditar = doc.find( elemento => elemento.category_id === variant_id );
+         var product_id = $(element).attr('product_id');
+         var variant_id = $(element).attr('variant_id');
+       //  var input_id = $(element).attr('input_id');
+         var new_value = $(element).value();
+        // var product_doc = await L_catalog_db.get(product_id);
+        // var item = variations;
 
-        title: "Let's Dance"
-        });
+
+        var var_doc = doc.variations.find(response => response.id == variant_id);
+        console.log('DOC ELEMENTO A EDITAR elementoAEditar');
+        console.log(var_doc);
+
+        console.log('DOC ELEMENTO A EDITADO FINAL');
+        console.log(doc);
+
+        // Para asegurar que encuentra el elemento, ponemos este if. Si no lo encuentra no entrará en el if.
+        if (var_doc) {
+        
+        input_id = 'id';
+
+        console.log('DOC DATA input_id');
+        console.log(input_id);
+
+        // var elementoAEditar = doc_data.find(elemento => elemento.id === variant_id);
+        var_doc.sku.value = new_value;
+        // Ahora data[1].editable (el de ID 2) será igual a true.
+        console.log('DOC DATA EDIT ITEM NEWW');
+        console.log(var_doc);
+        var response = await L_catalog_db.put({
+            doc
+            });
+        console.log('DOC DATA RESPONSE EDITADO');
+        console.log(response);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -830,6 +862,8 @@ try {
 }
 
 
+
+cat_edit_variations('product_02', '2', 'input_id', 'input_new_value');
 
 //https://es.stackoverflow.com/questions/285722/como-editar-informaci%C3%B3n-de-un-json-dentro-de-un-array-en-javascript-typescript/285770
 /* NEWW TAG FUNTIONS */
