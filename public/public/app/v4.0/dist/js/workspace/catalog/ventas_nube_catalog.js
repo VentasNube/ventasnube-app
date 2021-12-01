@@ -814,41 +814,52 @@ var data = [
 async function cat_edit_variations(doc_id, variant_id, input_id, input_new_value){
 
 try {
-    //traigo el documento a editar
-     var doc = await L_catalog_db.get(doc_id);
+        //traigo el documento a editar
+        var doc = await L_catalog_db.get(doc_id);
         //Busco el la variable y el id del input
         console.log('DOC ORIGINAL A EDITAR');
         console.log(doc);
         // var elementoAEditar = data.find(element => element.id === 2);
         // var elementoAEditar = doc.find( elemento => elemento.category_id === variant_id );
-         var product_id = $(element).attr('product_id');
-         var variant_id = $(element).attr('variant_id');
-       //  var input_id = $(element).attr('input_id');
-         var new_value = $(element).value();
+      //  var product_id = $(element).attr('product_id');
+      //  var variant_id = $(element).attr('variant_id');
+        //  var input_id = $(element).attr('input_id');
+   //    var new_value = $(element).value();
         // var product_doc = await L_catalog_db.get(product_id);
         // var item = variations;
+        var var_arr = doc.variations.find(response => response.id == variant_id);
 
+        console.log("VARIANT ARR FINNDDD"); 
+        console.log(var_arr);
 
-        var var_doc = doc.variations.find(response => response.id == variant_id);
+        var obj_arr = var_arr.find(response => response.id == 'IVA');
+        //var var_doc = var_arr.find(obje => obje.id == '2');
+
+        console.log("IVAAAA FINNDDD");
+        console.log(obj_arr);
+
+        // var user = users.find(user => user.id === 7);
+        // var input = var_doc.find(variant => variant.id === 'IVA');
+        // HAcer una busqueda dentro de un un array con includes  
+        // var user = users(user => user.name.includes('Bauch');
+
         console.log('DOC ELEMENTO A EDITAR elementoAEditar');
-        console.log(var_doc);
-
+        console.log(var_arr);
+        //
         console.log('DOC ELEMENTO A EDITADO FINAL');
         console.log(doc);
-
         // Para asegurar que encuentra el elemento, ponemos este if. Si no lo encuentra no entrará en el if.
-        if (var_doc) {
-        
+        if (var_arr) {
+            
         input_id = 'id';
-
         console.log('DOC DATA input_id');
         console.log(input_id);
-
         // var elementoAEditar = doc_data.find(elemento => elemento.id === variant_id);
+
         var_doc.sku.value = new_value;
         // Ahora data[1].editable (el de ID 2) será igual a true.
         console.log('DOC DATA EDIT ITEM NEWW');
-        console.log(var_doc);
+        console.log(var_arr);
         var response = await L_catalog_db.put({
             doc
             });
