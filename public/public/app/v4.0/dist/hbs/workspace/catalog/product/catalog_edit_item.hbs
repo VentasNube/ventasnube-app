@@ -330,7 +330,8 @@
                                                 description
                                             </span>
                                         </span>
-                                        <input id="" class="form-control" type="textarea" placeholder="Descripcion"
+
+                                        <input doc_id="{{../id}}" variant_id="{{id}}"  input_id = "description"  onfocusout="cat_edit_variations(element)"  class="form-control" type="textarea" placeholder="Descripcion"
                                             value="{{descriptions}}">
                                         <!--- ATRIBUTOS DE LA VARIABLE -->
                                     </div>
@@ -549,8 +550,9 @@
                                             qr_code
                                         </span>
                                     </span>
-                                    <input id="" class="form-control" type="text" placeholder="Codigo universal SKU"
+                                    <input product_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_variations(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
                                         value="{{sku.value}}">
+
                                 </div>
                             </div>
                             <!-- PRECIOS INVENTARIO -->
@@ -561,7 +563,7 @@
                                             <span class="material-icons">
                                                 price_change
                                             </span>
-                                            <span class="">0</span>
+                                            <span class="">0</span>s
                                             {{#with ws_lang_data}} Precios {{/with}}
                                         </a>
                                     </li>
