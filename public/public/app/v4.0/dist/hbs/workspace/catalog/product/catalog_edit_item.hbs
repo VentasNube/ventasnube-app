@@ -28,8 +28,11 @@
                                             drive_file_rename_outline
                                         </span>
                                     </span>
-                                    <input id="cat_edit_name" class="form-control" type="text"
-                                        placeholder="Nombre del producto" value="{{name}}">
+
+                                     <input doc_id="{{_id}}"  input_id="name"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Nombre de producto"
+                                            value="{{name}}">
+                                    
+                                 
                                 </div>
                             </div>
                         </a>
@@ -74,7 +77,7 @@
                                         </span>
                                         <select class="form-control md" name="cars" id="cars">
                                             {{#each ../category_list/category_list }}
-                                            <option value="{{id}}">{{value}}</option>
+                                                <option value="{{id}}">{{value}}</option>
                                             {{/each}}
                                         </select>
                                         <span class="input-group-addon">
@@ -330,8 +333,7 @@
                                                 description
                                             </span>
                                         </span>
-
-                                        <input doc_id="{{../id}}" variant_id="{{id}}"  input_id = "description"  onfocusout="cat_edit_variations(element)"  class="form-control" type="textarea" placeholder="Descripcion"
+                                        <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="description"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="Descripcion"
                                             value="{{descriptions}}">
                                         <!--- ATRIBUTOS DE LA VARIABLE -->
                                     </div>
@@ -550,7 +552,7 @@
                                             qr_code
                                         </span>
                                     </span>
-                                    <input product_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_variations(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
+                                    <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
                                         value="{{sku.value}}">
 
                                 </div>
@@ -607,7 +609,7 @@
                                                     {{#first ../../price_list}}
                                                     <div class="round-icon pr"><span> {{currency.value}} </span></div>
                                                     {{/first}}
-                                                    <span iid="total_neto_prod"> {{value}}</span>
+                                                    <span id="total_neto_prod"> {{value}}</span>
 
                                                     <div class="btn-group dropright">
                                                         <button id="" type="button"

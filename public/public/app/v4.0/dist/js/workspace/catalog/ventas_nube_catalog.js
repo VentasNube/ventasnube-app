@@ -821,131 +821,88 @@ for (let i = 0; i < doc.length; i++) {
     }
 }    
 */
+/*
+function showProps(obj, objName) {
+    var result = ``;
+    for (var i in obj) {
+      // obj.hasOwnProperty() se usa para filtrar propiedades de la cadena de prototipos del objeto
+      if (obj.hasOwnProperty(i)) {
+        result += `${objName}.${i} = ${obj[i]}\n`;
+      }
+    }
+    return result;
+  }
+
+*/
+async function cat_edit_product(element){
+
+    try {
+            //traigo el documento a editar
+                const doc_id = $(element).attr('doc_id');
+                const variant_id = $(element).attr('variant_id');
+                const input_id = $(element).attr('input_id');
+                const new_value = $(element).val();
+
+            var doc_id_s =  String(doc_id);
+            var doc = await L_catalog_db.get(doc_id_s);
+            console.log('DOCUMENTO A EDITAR1');
+            console.log(doc);
+
+            if(variant_id){
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+                const value = item[input_id]; //Traigo el ojeto especifico 
+                value.value = new_value; //Edito el valor del value por el valor nuevo
+                console.log('VARIANTE EDITADA 1');
+                console.log(doc);
+            }else{
+                doc[input_id] = new_value;
+                console.log('Descripcion EDITADA 2');
+                console.log(doc);   
+            }
+
+        if(doc ){
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+                });
+            console.log('DOC DATA RESPONSE EDITADO 3');
+            console.log(doc);
+            console.log(response);
+        }
+      } catch (err) {
+        console.log(err);
+        }
+        
+        }
+    
 
 async function cat_edit_variations(element){
 
     try {
             //traigo el documento a editar
-                const doc_id = $(element).attr('product_id');
-               const variant_id = $(element).attr('variant_id');
-               const input_id = $(element).attr('input_id');
-               const new_value = $(element).val();
-                //    const new_value = "Tortilla de papa";
-           //    const variant_id = null;
-               //  const variant_id = 'name';
-              //  const input_id = 'name';
-               // const input_id = "name";
-            /*   const doc_id = "product_02";
-            const variant_id = "1";
-            const input_id = "sku";
-            const new_value = "laputa q los pario";
-            */
-           /* console.log('DATOR TRAIDOS DEL INPUT');
-            console.log('DOC ID');
-            console.log(doc_id);
-            console.log('VARIANt ID');
-            console.log(variant_id);
-            console.log(input_id);
-            console.log(new_value);
-            console.log('FIN DE DATOS INPUT');
-            */
-            var doc = await L_catalog_db.get(doc_id);
-           console.log('DOC ORIGINAL A EDITAR');
-           console.log(doc);
-            //var doc_array = doc;
-           // var item = doc.find(r => r.name == "Remera colores");// Traigo el elemento por la id variant
-         //   var doc_2 = {doc};
-
-           // console.log('doc_2 doc_2doc_2');
-           // console.log(doc_2);
-
-           // var item = doc.include(response => response.category_id == 1);
-
-          //  console.log('item item item item');
-          //  console.log(item);
-            /*var item = doc_2.find(elemtnto => {
-                return elemento.name === "Campari";
-            });// Traigo el elemento por la id variant
-            */
-
+                const doc_id = $(element).attr('doc_id');
+                const variant_id = $(element).attr('variant_id');
+                const input_id = $(element).attr('input_id');
+                const new_value = $(element).val();
+            var doc_id_s =  String(doc_id);
+            var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if(variant_id){
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             const value = item[input_id]; //Traigo el ojeto especifico 
             value.value = new_value; //Edito el valor del value por el valor nuevo
-        }else{
-
-           ///const value = item[input_id]; //Traigo el ojeto especifico 
-            //value.value = new_value; //Edito el valor del value por el valor nuevo
-            
-/*
-            var item = doc;
-            console.log('ITEM ORIGINAL');
-            console.log(item);
-            let value = item['name']; //Traigo el ojeto especifico 
-             value = new_value; //Edito el valor del value por el valor nuevo
-            console.log('ITEM EDITADO');
-            console.log(value);
-            console.log(new_value);
-
-*/           /*   const product_doc = doc[0];
-                console.log(product_doc);
-                product_doc.forEach(function(item){
-                    item.name = 'NUEVO NOMBREEEEEE';
-                })
-*/
-const product_doc = doc[0];
-
-                for (let i = 0; i < product_doc.length; i++) {
-                    const item = product_doc[0];
-                 if (item.id === variant_id) {
-                    const value = item[variant_input_name]; //Traigo el ojeto especifico
-                    console.log("ENCONTRADO 2");
-                    console.log(value);
-                    value.value = new_input_value;
-                    console.log("EDITADO 2");
-                    console.log(item);
-                    break;// Frena el loop
-                  }
-                 }     
-
-
-
-            // doc[doc.findIndex(e=>e[input_id] === 4)].nombre = "nuevo nombre 4";
-            //var item = doc.find(response => response[input_id] == new_value );// Traigo el elemento por la id variant
-           // var item = doc.find(r => r.name == "Remera colores");// Traigo el elemento por la id variant
-            //var item = doc.find(element => element[input_id] = new_value);
-            // var item = doc.findIndex(response => response[input_id]);// Traigo el elemento por la id variant
+        }
+        else{
+            doc[input_id] = new_value;
         }
 
-        if(item ){
-           
+
+        if(item){
             var response = await L_catalog_db.put({
                 _id: doc._id,
                 _rev: doc._rev,
-                attributes:doc.attributes,
-                author: doc.author,
-                available_quantity: doc.available_quantity,
-                category_id: doc.category_id,
-                condition: doc.condition,
-                currency: doc.currency,
-                descriptions: doc.descriptions,
-                end_time: doc.end_time,
-                expiration_time: doc.expiration_time,
-                last_update_at: doc.last_update_at,
-                limit_discount: doc.limit_discount,
-                name: doc.name,
-                permalink: doc.permalink,
-                shipping: doc.shipping,
-                sold_quantity: doc.sold_quantity,
-                start_time: doc.start_time,
-                status: doc.status,
-                stop_time: doc.stop_time,
-                sub_category_id: doc.sub_category_id,
-                tags: doc.tags,
-                type: doc.type,
-                variations: doc.variations,
-                workspace_id: doc.workspace_id
+                ...doc,
                 });
             console.log('DOC DATA RESPONSE EDITADO');
             console.log(doc);
@@ -953,10 +910,8 @@ const product_doc = doc[0];
         }
       } catch (err) {
         console.log(err);
-      }
-    
     }
-    
+} 
 
 
 
