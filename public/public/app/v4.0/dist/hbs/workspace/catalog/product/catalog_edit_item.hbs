@@ -51,17 +51,17 @@
                                     </span>
                                     <div class="chips_items_main">
                                         {{#each tags }}
-                                        <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
-                                            <a href="#" onclick="dell_tag(this)">
-                                                <span class="button material-icons text-s lh-n"> highlight_off</span>
-                                            </a>
-                                            <label class="chips_text">
-                                                {{this}}
-                                            </label>
-                                        </div>
+                                            <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
+                                                <a doc_id="{{../_id}}" new_tag="{{this}}"  input_id="tags" href="#" onclick="dell_tag(this)">
+                                                    <span class="button material-icons text-s lh-n"> highlight_off</span>
+                                                </a>
+                                                <label class="chips_text">
+                                                    {{this}}
+                                                </label>
+                                            </div>
                                         {{/each}}
                                     </div>
-                                    <input product_id="12377652" class="chips_input form-control" name="keywords"
+                                    <input doc_id="{{_id}}"  input_id="tags" class="chips_input form-control" name="keywords"
                                         type="text" onkeypress="add_new_tag_press(event,this)" style="">
                                 </div>
                             </div>

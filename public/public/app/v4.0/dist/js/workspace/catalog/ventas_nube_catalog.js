@@ -2,7 +2,7 @@
 // CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
 function charge_all_docs_local(remote_items) {
     L_catalog_db.bulkDocs({ docs: remote_items },
-        function(err, response) {
+        function (err, response) {
             // handle err or response
         });
 }
@@ -12,13 +12,13 @@ search_fuse = null;
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
     let response = await L_catalog_db.query(
-        'get/seach',  {
-          include_docs: true,
-          descending: true 
-        }
-     ); //Conceto con la vista de diseno
-   if(response.rows){
-       const rows = response.rows;
+        'get/seach', {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const rows = response.rows;
         //  console.log('Respuesta Origial'); // []
         // console.log(response.rows);
         // alert(ws_id);
@@ -31,7 +31,7 @@ async function get_all_catalog_intems(ws_id, filter) {
         console.log('filtered ppppp');
         console.log(filtered);
         */
-       // new_items = {}; //creo el array con la variable global
+        // new_items = {}; //creo el array con la variable global
         all_items_array = await rows.map(item => {
             new_items = {};
             // Mapeo el array
@@ -42,9 +42,9 @@ async function get_all_catalog_intems(ws_id, filter) {
             new_items['attribute_combinations'] = item.value.attribute_combinations;
             new_items['doc'] = item.value;
             //Formateo el array final
-           //  all_items_map_array = {
-           //     item:new_items
-           // }
+            //  all_items_map_array = {
+            //     item:new_items
+            // }
             return new_items;
         });
 
@@ -72,16 +72,15 @@ async function get_all_catalog_intems(ws_id, filter) {
                 "tags",
                 "cat"
             ]
-         };
+        };
         var myIndex = Fuse.createIndex(options.keys, all_items_array);
-         // initialize Fuse with the index
+        // initialize Fuse with the index
         search_fuse = new Fuse(all_items_array, options, myIndex);
-   }
-   else{
-    //return all_cart_item(false);
-   }
+    }
+    else {
+        //return all_cart_item(false);
+    }
 }
-
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
 function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      
@@ -98,7 +97,7 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
         data: data,
         type: "POST",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             if (response) { ///// IMPRIME ////     
                 charge_all_docs_local(response);
                 console.log(response);
@@ -116,8 +115,7 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
 
 /**** Nuevo catalogo ****/
 //Cargo la variable catalog 
-
-function get_nav_catalog(ws_info,ws_lang_data) {
+function get_nav_catalog(ws_info, ws_lang_data) {
     var ws_catalog_data = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data
@@ -127,8 +125,6 @@ function get_nav_catalog(ws_info,ws_lang_data) {
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
-
-
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -138,8 +134,6 @@ function get_items_catalog(ws_id) {
     // $('#cart_user_input').focus();
     //console.log('GET ITEMS CATALOG');
 }
-
-////----()---/////
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -152,17 +146,17 @@ function form_new_product(ws_info, ws_lang_data) {
 
 //* CATALOGO 2021 Tarjetas materiales  **/
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function  print_catalog_item(new_items) {
-   var search_result = {
-       search_product: new_items,
-       price_list: price_doc.price_list
-   }
-   console.log(search_result);
-   if (new_items.length > 0) {
-       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs',  '#content_catalog_commpiled', search_result);
-   } else {
-       $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
-   }
+function print_catalog_item(new_items) {
+    var search_result = {
+        search_product: new_items,
+        price_list: price_doc.price_list
+    }
+    console.log(search_result);
+    if (new_items.length > 0) {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
 }
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
@@ -242,20 +236,20 @@ function cat_variations_get(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
+            //doc:doc,
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+            // tags: doc.tags,
+            // price_list: price_doc.price_list,
+            //  current: doc.price_list,
+        }
+        //  console.log(element);
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 
@@ -269,7 +263,7 @@ function cat_variations_select(element) {
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#cat_card_id_' + product_id; // ID DE COMPILACION //
     //Busco el doc por id actualizado y hago la carga de datos
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
         /*const var_doc =  doc.variations.filter(function(element){
@@ -291,202 +285,153 @@ function cat_variations_select(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
-      //  console.log("var_doc");
-      //  console.log(variant_array);
+        //  console.log("var_doc");
+        //  console.log(variant_array);
     });
 }
 
-//Efecto para mostrar el boton de etidar en la tarjetas
-function cat_card_edit_variant() {
-
-}
-/*
-async function  catalog_view_item_old(product_id) {
-      try {
+async function post_url_history(module, id) {
+    try {
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
         var product_doc = await L_catalog_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,
+            ws_lang_data: ws_lang_data,
+            category_list: category_list
 
-                var doc_array = {
-                    _id:product_doc._id,
-                    variant_id: product_doc.variations[0].id,
-                    picture_min: product_doc.variations[0].pictures[0].min,
-                    attribute_combinations:product_doc.variations[0].attribute_combinations,
-                    price_list: product_doc.variations[0].price_list,
-                    price:product_doc.variations[0].price_list[0].value,
-                    variations : product_doc.variations[0],
-                    currency:product_doc.currency,
-                }
-
-            var product_doc_array = {
-                product_doc: product_doc ,
-                doc: doc_array ,
-                name: product_doc.name,
-                tags:product_doc.tags,
-                sku:product_doc.variations[0].sku.value,
-                price_list: price_doc.price_list,
-                ws_lang_data: ws_lang_data,
-                
-            }
-
-
-            console.log('ITEMMM VIEEWW');
-            console.log(product_doc);
-            console.log(product_doc_array);
-            //console.log(product_doc_map);
-
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
-            createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-            $('#right_main').removeClass('move-right');
-        } catch (err) {
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+    } catch (err) {
         console.log(err);
-      }
+    }
 }
-*/
 
-
-async function  post_url_history(module, id) {
+async function catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
-            var product_doc_array = {
-                product_doc: product_doc ,
-                product_variant: var_doc ,
-                name: product_doc.name,
-                tags:product_doc.tags,
-                // sku:product_doc.variations[variant_id].sku.value,
-                price_list: price_doc.price_list,
-                ws_lang_data: ws_lang_data,
-                category_list:category_list
-                
-            }
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
-          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-          $('#right_main').removeClass('move-right');
-      } catch (err) {
-      console.log(err);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: category_list
+        }
+
+        console.log('Catalog_view_item OK ONE2 2222222');
+        console.log(category_list);
+
+        console.log('catalog_view_item OK ONE AAAAAAA');
+
+        console.log('catalog_view_item OKK ONE');
+        // console.log(product_doc_array);
+        console.log(user_Ctx.userCtx.roles);
+        console.log('product_doc_array');
+        console.log(product_doc_array);
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        // var m_name = 'catalog' //Trae Pacht url /pacht/    
+        //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
+        var m_url = '?type=catalog&?t=product&?id=' + product_id + '&?v=' + variant_id;
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+
+    } catch (err) {
+        console.log(err);
     }
 }
 
-async function  catalog_view_item(element) {
-    try {
-        var product_id = $(element).attr('product_id');
-        var variant_id = $(element).attr('variant_id');
-        var product_doc = await L_catalog_db.get(product_id);
-        var var_doc = product_doc.variations.find(response => response.id == variant_id);
-            var product_doc_array = {
-                product_doc: product_doc ,
-                product_variant: var_doc ,
-                name: product_doc.name,
-                tags:product_doc.tags,
-                // sku:product_doc.variations[variant_id].sku.value,
-                price_list: price_doc.price_list,
-                ws_lang_data: ws_lang_data,
-                user_roles:user_Ctx.userCtx.roles,
-                category_list:category_list
-            }
-
-            console.log('Catalog_view_item OK ONE2 2222222');
-            console.log(category_list);
-
-            console.log('catalog_view_item OK ONE AAAAAAA');
-
-            console.log('catalog_view_item OKK ONE');
-           // console.log(product_doc_array);
-            console.log(user_Ctx.userCtx.roles);
-            console.log('product_doc_array');
-            console.log(product_doc_array);
-
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
-          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-          $('#right_main').removeClass('move-right');
-          // var m_name = 'catalog' //Trae Pacht url /pacht/    
-          //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
-          var m_url = '?type=catalog&?t=product&?id='+product_id+'&?v='+variant_id;
-          history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
-          
-      } catch (err) {
-      console.log(err);
-    }
-}
-
-async function  catalog_view_item_url(m_id,m_var_id) {
+async function catalog_view_item_url(m_id, m_var_id) {
     try {
         var product_id = m_id;
         var variant_id = m_var_id;
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
-            var product_doc_array = {
-                product_doc: product_doc ,
-                product_variant: var_doc ,
-                name: product_doc.name,   
-                tags:product_doc.tags, // Etiquetas
-                // sku:product_doc.variations[variant_id].sku.value,
-                price_list: price_doc.price_list,   //Lista de precios
-                ws_lang_data: ws_lang_data, //Documento de lenguaje
-                user_roles:user_Ctx.userCtx.roles // User roles
-            }
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags, // Etiquetas
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,   //Lista de precios
+            ws_lang_data: ws_lang_data, //Documento de lenguaje
+            user_roles: user_Ctx.userCtx.roles // User roles
+        }
 
-            console.log('VISTA DE PRODUCTO ROLES');
-            console.log(user_Ctx.userCtx.roles);
-            console.log('VISTA DE PRODUCTO ARRAY');
-            console.log(product_doc_array);
+        console.log('VISTA DE PRODUCTO ROLES');
+        console.log(user_Ctx.userCtx.roles);
+        console.log('VISTA DE PRODUCTO ARRAY');
+        console.log(product_doc_array);
 
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs',  '#right_main', product_doc_array);
-          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-          $('#right_main').removeClass('move-right');
-          // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
-          // var m_url = url_app +'?type=catalog?=' + m_name; // Armo la url completa del linck
-          //  history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
-      } catch (err) {
-      console.log(err);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
+        // var m_url = url_app +'?type=catalog?=' + m_name; // Armo la url completa del linck
+        //  history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+    } catch (err) {
+        console.log(err);
     }
 }
 
-async function  catalog_edit_item(element) {
+async function catalog_edit_item(element) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
 
-            var product_doc_array = {
-                product_doc: product_doc ,
-                product_variant: var_doc ,
-                name: product_doc.name,
-                tags:product_doc.tags,
-                // sku:product_doc.variations[variant_id].sku.value,
-                price_list: price_doc.price_list,
-                ws_lang_data: ws_lang_data,
-                user_roles:user_Ctx.userCtx.roles,
-                category_list:category_list
-               
-            }
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: category_list
 
-            console.log(category_list);
+        }
 
-            console.log('catalog_view_item OK ONE AAAAAAA');
-            // console.log(product_doc_array);
-            console.log(user_Ctx.userCtx.roles);
-            console.log('product_doc_array AAAAAAA');
-            console.log(product_doc_array);
+        console.log(category_list);
 
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs',  '#right_main', product_doc_array);
-          createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-          $('#right_main').removeClass('move-right');
-          // var m_name = 'catalog' //Trae Pacht url /pacht/    
-          //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
-          var m_url = '?type=catalog&?t=edit&?id='+product_id+'&?v='+variant_id;
-          history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
-          
-      } catch (err) {
-      console.log(err);
+        console.log('catalog_view_item OK ONE AAAAAAA');
+        // console.log(product_doc_array);
+        console.log(user_Ctx.userCtx.roles);
+        console.log('product_doc_array AAAAAAA');
+        console.log(product_doc_array);
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        // var m_name = 'catalog' //Trae Pacht url /pacht/    
+        //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
+        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+
+    } catch (err) {
+        console.log(err);
     }
 }
 
 /****  VARIATIONS VIEW ITEM 2021  *******/
-
-
 //Boton cambiar lista de precio
 function view_item_variations_price(element) {
     //    $(".card_item_select_price").click(function () {
@@ -498,95 +443,59 @@ function view_item_variations_price(element) {
     //  });
 }
 
-
 //Boton variables y las Renderizo
 function view_item_variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
+            //doc:doc,
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+            // tags: doc.tags,
+            // price_list: price_doc.price_list,
+            //  current: doc.price_list,
+        }
+        //  console.log(element);
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 
 }
 
 //Renderizo la variacion nueva en la tarjeta
-
 function view_item_variations_select(element) {
 
-   // let product_id = $(element).attr('product_id'); //Id del producto selccionado
-   //  let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-  //  alert('Mando al la variante' + element);
+    // let product_id = $(element).attr('product_id'); //Id del producto selccionado
+    //  let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+    //  alert('Mando al la variante' + element);
     catalog_view_item(element);
 }
-
-/*
-function view_item_variations_select_old(element) {
-    event.preventDefault();
-    let product_id = $(element).attr('product_id'); //Id del producto selccionado
-    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#view_item_select'; // ID DE COMPILACION //
-    //Busco el doc por id actualizado y hago la carga de datos
-    L_catalog_db.get(product_id, function(err, doc) {
-        if (err) { return console.log(err); }
-        //Busco dentro del doc el id seleccionado y cargo el objeto al compilador
-        const var_doc =  doc.variations.filter(function(element){
-            return element.id == variant_id;
-        });
-        //Busco el id en el array con find funcion de flecha
-        const var_doc = doc.variations.find(element => element.id == variant_id);
-        const variant_array = {
-            //doc:doc,
-            variant_id: variant_id,
-            _id: doc._id,
-            _rev: doc._rev,
-            item: var_doc,
-            name: doc.name,
-            tags: doc.tags,
-            price_list: price_doc.price_list,
-            current: doc.price_list,
-        }
-        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-        console.log("var_doc");
-        console.log(variant_array);
-    });
-}
-*/
 /***  FIN VIEW ITEM */
 $(document).on('click', '.catalog_edit_item', function (event) {
     //$('#master_popup').modal('show');
     // get_catalog_new_item();
     //  catalog_edit_item()
     catalog_view_item(product_id)
-    alert('catalog_edit_item()'+product_id);
+    alert('catalog_edit_item()' + product_id);
 });
 
 $(document).on('click', '.catalog_new_item', function (event) {
-       //  $('#master_popup').modal('show');
-       // get_catalog_new_item();
-       catalog_edit_item();
-       alert('catalog_new_item');
+    //  $('#master_popup').modal('show');
+    // get_catalog_new_item();
+    catalog_edit_item();
+    alert('catalog_new_item');
 });
 
 $(document).on('focusin', '.catalog_search', function (element) {
-       // cat_get_all_item_punchDb();
-      //  cat_search_item_js();
-      get_all_catalog_intems();
+    // cat_get_all_item_punchDb();
+    //  cat_search_item_js();
+    get_all_catalog_intems();
 });
 
 $(document).on('keyup', '.catalog_search', function () {
@@ -597,15 +506,14 @@ $(document).on('keyup', '.catalog_search', function () {
     console.log(all_items_array);
     console.log('all_items_array llll2222');
     console.log(search_val);
-    search_catalog_item(search_val ,all_items_array)
+    search_catalog_item(search_val, all_items_array)
 });
-
 
 $(document).on('click', '.view_variant', function (element) {
     var product_id = $(this).attr('product_id');
     catalog_view_item(product_id);
 });
-
+// TRAIGO EL CATALOGO Y IMPRIMO
 function get_catalog(ws_id) {
     var ws_cart = {
         ws_info: ws_info,
@@ -616,75 +524,116 @@ function get_catalog(ws_id) {
     get_all_catalog_intems();
 }
 
-
 async function put_catalog(doc_id, my_doc) {
     try {
         var doc = await L_catalog_db.get(doc_id);
         var response = await L_catalog_db.put({
-        _id: mydoc,
-        _rev: doc._rev,
-        doc:my_doc
+            _id: mydoc,
+            _rev: doc._rev,
+            doc: my_doc
         });
         return response;
     } catch (err) {
         console.log(err);
-       // return response
+        // return response
     }
 }
 
-/* TAGGER INICIALIZACION */
-////----( Tags chips efecto  )----/////
+/* TAGS FUNCIONES */
 //Tomo el enter si esta en el input
-
-function add_new_tag_press(e, element){
-    //let product_id = $(e).attr('product_id');
-    var key=e.keyCode || e.which;
-     if (key==13){
+function add_new_tag_press(e, element) {
+    var key = e.keyCode || e.which;
+    if (key == 13) {
         add_new_tag(element);
-     }
+    }
 }
 
-//INPUT Chekeo si esta ingresada en el
-function add_new_tag(element){
-        let new_tag = $(element).val();
-        let chips_item = $('.chips_item');//selecciono las clases
-        let chips_count = 0;
-        //CHEKEO Q NO ESTA INGRESADA
-        for (var i = 0; i < chips_item.length; i++) {
-            var text = $(chips_item[i]).attr('val_text');
-            if(text === new_tag){
-                chips_count += 1;
-                $(chips_item[i]).css("color","red");
+// Agrego un tag
+async function add_new_tag(element) {
+    try {
+        // Datos del cocumento y el id 
+        // Traigo el documento a editar
+        let doc_id = $(element).attr('doc_id');
+        let input_id = $(element).attr('input_id');
+        // Efecto y verificacion del tag
+        let new_tag_val = $(element).val();
+        // Selecciono las clases
+        let class_item = $('.chips_item');
+        // Me aseguro q sea un stringd
+        let new_tag = String(new_tag_val);
+        // Filtro si el input esta bacio
+        if (new_tag != '') {
+            // Me aseguro q sea un string
+            let doc_id_s = String(doc_id);
+            let doc = await L_catalog_db.get(doc_id_s);
+            // Verigico q el item a agregar ya no este repetido
+            const tag_index = doc.tags.findIndex((element) => element == new_tag);
+            // Si encuentra un duplicado devuelve el indice del array para mostrar en pantalla el error
+            if (tag_index >= 0) {
+                $(class_item[tag_index]).css("color", "red");
+            }
+            else {
+                //si esta todo ok cargo el nuevo valor al final del array
+                //Cargo el nuevo resultado al final del array con push
+                const count = doc.tags.push(new_tag);
+                //Envio los datos editados al documento
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    //Imprimo el item en la pantalla 
+                    $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a doc_id="' + doc._id + '" new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
+                    //limpio el imput 
+                    $(element).val('');
+                } else {
+                    //Si no se grabo tira un error en pantalla
+                    $(element).css("color", "red");
+                }
             }
         }
-        if(chips_count === 0){
-            $(element).prev('div').append('<div val_text="'+new_tag+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+new_tag+'</span></div>');
+        else {
+            $(element).css("color", "red");
         }
-}
-
-function add_new_tagOK(element){
-    let new_tag = $(element).val();
-    let chips_item = $('.chips_item');//selecciono las clases
-    let chips_count = 0;
-    //CHEKEO Q NO ESTA INGRESADA
-    for (var i = 0; i < chips_item.length; i++) {
-        var text = $(chips_item[i]).attr('val_text');
-        if(text === new_tag){
-            chips_count += 1;
-            $(chips_item[i]).css("color","red");
-        }
-    }
-    if(chips_count === 0){
-        $(element).prev('div').append('<div val_text="'+new_tag+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+new_tag+'</span></div>');
+    }catch (err) {
+        console.log(err);
+        $(element).css("color", "red");
     }
 }
 
-//Elimino un tag
-function dell_tag(element){
-    let text = $(element).val();
-    //let div_main = $(element).parentNode;
-   $(element).parent('div').remove();
-   // $(element).prev('div').append('<div val_text="'+text+'" class="chips_item  s-card-cat pull-left"> <a href="#" onclick=""><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">'+text+'</span></div>');
+// Elimino un tag
+async function dell_tag(element) {
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let new_tag = $(element).attr('new_tag');
+        //Efecto y verificacion del tag
+        let doc_id_s = String(doc_id);
+        //Traigo el documento actualizado
+        let doc = await L_catalog_db.get(doc_id_s);
+        //Filtro los resultados del array menos el que quiero eliminar
+        const tags = doc.tags.filter(word => word != new_tag);
+        //Reemplazo el array por el filtrado
+        doc['tags'] = tags;
+        //Guardo los cambios
+        if (doc) {
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+            if (response) {
+                //Limpio el item de la pantalla
+                $(element).parent('div').remove();
+            } else {
+                //Si no se grabo tira un error en pantalla
+                $(element).parent('div').css("color", "red");
+            }
+        }
+    }catch (err) {
+        console.log(err);
+    }
 }
 
 //CATEGORIAS 
@@ -694,23 +643,17 @@ function catalog_get_cat(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+        }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
-
 }
 
 //Boton variables y las Renderizo
@@ -719,24 +662,18 @@ function catalog_post_cat(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+        }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
-
-}   
+}
 
 //Boton variables y las Renderizo
 function catalog_dell_cat(element) {
@@ -744,181 +681,96 @@ function catalog_dell_cat(element) {
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+        }
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
-
-}  
+}
 
 // SUB CATEGORIAS
-/*
-function catalog_save_edit_item(element){
-    /*let cat_edit_name = $('#cat_edit_name').val();
-    let cat_edit_name = $('#cat_edit_name').val();
-    let cat_edit_name = $('#cat_edit_name').val();
-    let cat_edit_name = $('#cat_edit_name').val();
-
-    let text = $(element).val();
-    let text = $(element).val();
-    let text = $(element).val();
-    let text = $(element).val();
-
-
-var data = [
-    {id:1, nombre:"nombre1", editable:true},
-    {id:2, nombre:"nombre2", editable: false},
-    {id:3, nombre:"nombre3", editable: false},
-    {id:4, nombre:"nombre4", editable: false},
-    {id:5, nombre:"nombre5", editable: false}
-  ];
-  
-  data[data.findIndex(e=>e.id === 4)].nombre = "nuevo nombre 4";
-
-
-  /// PRUEBA 2
-  var data = [
-    {id:1, nombre: "nombre1", editable: true},
-    {id:2, nombre: "nombre2", editable: false},
-    {id:3, nombre: "nombre3", editable: false}
-  ]
-  var elementoAEditar = data.find(elemento => elemento.id === 2);
-  // Para asegurar que encuentra el elemento, ponemos este if. Si no lo encuentra no entrará en el if.
-  if (elementoAEditar) {
-      elementoAEditar.editable = true;
-  }
-  // Ahora data[1].editable (el de ID 2) será igual a true.
-  console.log(data);
-
-
-}
-*/
-//Edit cataloge item
-//console.log(doc);
-/*
-for (let i = 0; i < doc.length; i++) {
- 	 const item = doc[i];
-   if (item.id === variant_id) {
-      const value = item[variant_input_name]; //Traigo el ojeto especifico
-      console.log("ENCONTRADO 2");
-      console.log(value);
-      value.value = new_input_value;
-      console.log("EDITADO 2");
-      console.log(item);
-      break;// Frena el loop
-    }
-}    
-*/
-/*
-function showProps(obj, objName) {
-    var result = ``;
-    for (var i in obj) {
-      // obj.hasOwnProperty() se usa para filtrar propiedades de la cadena de prototipos del objeto
-      if (obj.hasOwnProperty(i)) {
-        result += `${objName}.${i} = ${obj[i]}\n`;
-      }
-    }
-    return result;
-  }
-
-*/
-async function cat_edit_product(element){
+async function cat_edit_product(element) {
 
     try {
-            //traigo el documento a editar
-                const doc_id = $(element).attr('doc_id');
-                const variant_id = $(element).attr('variant_id');
-                const input_id = $(element).attr('input_id');
-                const new_value = $(element).val();
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_id = $(element).attr('input_id');
+        const new_value = $(element).val();
 
-            var doc_id_s =  String(doc_id);
-            var doc = await L_catalog_db.get(doc_id_s);
-            console.log('DOCUMENTO A EDITAR1');
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        console.log('DOCUMENTO A EDITAR1');
+        console.log(doc);
+
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            const value = item[input_id]; //Traigo el ojeto especifico 
+            value.value = new_value; //Edito el valor del value por el valor nuevo
+            console.log('VARIANTE EDITADA 1');
             console.log(doc);
+        } else {
+            doc[input_id] = new_value;
+            console.log('Descripcion EDITADA 2');
+            console.log(doc);
+        }
 
-            if(variant_id){
-                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-                const value = item[input_id]; //Traigo el ojeto especifico 
-                value.value = new_value; //Edito el valor del value por el valor nuevo
-                console.log('VARIANTE EDITADA 1');
-                console.log(doc);
-            }else{
-                doc[input_id] = new_value;
-                console.log('Descripcion EDITADA 2');
-                console.log(doc);   
-            }
-
-        if(doc ){
+        if (doc) {
             var response = await L_catalog_db.put({
                 _id: doc._id,
                 _rev: doc._rev,
                 ...doc,// trae todos los datos del doc y los pega en la raiz
-                });
+            });
             console.log('DOC DATA RESPONSE EDITADO 3');
             console.log(doc);
             console.log(response);
         }
-      } catch (err) {
+    } catch (err) {
         console.log(err);
-        }
-        
-        }
-    
+    }
 
-async function cat_edit_variations(element){
+}
+async function cat_edit_variations(element) {
 
     try {
-            //traigo el documento a editar
-                const doc_id = $(element).attr('doc_id');
-                const variant_id = $(element).attr('variant_id');
-                const input_id = $(element).attr('input_id');
-                const new_value = $(element).val();
-            var doc_id_s =  String(doc_id);
-            var doc = await L_catalog_db.get(doc_id_s);
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_id = $(element).attr('input_id');
+        const new_value = $(element).val();
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
-        if(variant_id){
+        if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             const value = item[input_id]; //Traigo el ojeto especifico 
             value.value = new_value; //Edito el valor del value por el valor nuevo
         }
-        else{
+        else {
             doc[input_id] = new_value;
         }
 
 
-        if(item){
+        if (item) {
             var response = await L_catalog_db.put({
                 _id: doc._id,
                 _rev: doc._rev,
                 ...doc,
-                });
+            });
             console.log('DOC DATA RESPONSE EDITADO');
             console.log(doc);
             console.log(response);
         }
-      } catch (err) {
+    } catch (err) {
         console.log(err);
     }
-} 
-
-
-
-//cat_edit_variations();
-
-//https://es.stackoverflow.com/questions/285722/como-editar-informaci%C3%B3n-de-un-json-dentro-de-un-array-en-javascript-typescript/285770
-/* NEWW TAG FUNTIONS */
+}
 
 /* Animacion botones selectores wich Editar producto */
 $("li.bg-color").click(function () {
@@ -940,4 +792,3 @@ $("li.bg-color").click(function () {
 
 
 
- 
