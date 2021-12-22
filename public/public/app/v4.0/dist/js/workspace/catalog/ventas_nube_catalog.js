@@ -637,6 +637,118 @@ async function dell_tag(element) {
 }
 
 //CATEGORIAS 
+
+//Tomo el enter si esta en el input
+function add_new_cat_press(e, element) {
+    var key = e.keyCode || e.which;
+    if (key == 13) {
+        add_new_cat(element);
+    }
+}
+// Agrego un tag
+async function add_new_cat(element) {    
+    try {
+        // Datos del cocumento y el id 
+        // Traigo el documento a editar
+        let doc_id = 'category_list';
+        //let input_id = $(element).attr('input_id');
+        // Efecto y verificacion del tag
+        let new_cat_val = $(element).val();
+        // Selecciono las clases
+        let class_item = $('.chips_item');
+        // Me aseguro q sea un stringd
+        let new_cat = String(new_cat_val);
+        // Filtro si el input esta bacio
+        if (new_cat != '') {
+            // Me aseguro q sea un string
+            let doc_id_s = String(doc_id);
+            let doc = await L_catalog_db.get(doc_id_s);
+            // Verigico q el item a agregar ya no este repetido
+            const tag_index = doc.category_list.findIndex((element) => element == new_cat);
+            // Si encuentra un duplicado devuelve el indice del array para mostrar en pantalla el error
+            if (tag_index >= 0) {
+                $(class_item[tag_index]).css("color", "red");
+            }
+            else {
+                //si esta todo ok cargo el nuevo valor al final del array
+                //Cargo el nuevo resultado al final del array con push
+                const arr_number = doc.category_list.length - 1;
+                console.log(arr_number);
+
+            
+                var new_item = {
+                        id:arr_number,
+                        value:new_cat
+                }
+
+                console.log(arr_number);
+                console.log(new_item);
+                const count = doc.category_list.push(new_item);
+                //Envio los datos editados al documento
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    //Imprimo el item en la pantalla 
+                    $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_cat + '" > <a doc_id="' + doc._id + '" new_tag="' + new_cat + '"  input_id="tags" val_text="' + new_cat + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_cat + '</span></div>');
+                    //limpio el imput 
+                    $(element).val('');
+                } else {
+                    //Si no se grabo tira un error en pantalla
+                    $(element).css("color", "red");
+                }
+            }
+        }
+        else {
+            $(element).css("color", "red");
+        }
+    }catch (err) {
+        console.log(err);
+        $(element).css("color", "red");
+    }
+}
+
+// Elimino un tag
+async function dell_cat(element) {
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let new_tag = $(element).attr('new_tag');
+        //Efecto y verificacion del tag
+        let doc_id_s = String(doc_id);
+        //Traigo el documento actualizado
+        let doc = await L_catalog_db.get(doc_id_s);
+        //Filtro los resultados del array menos el que quiero eliminar
+        const tags = doc.tags.filter(word => word != new_tag);
+        //Reemplazo el array por el filtrado
+        doc['tags'] = tags;
+        //Guardo los cambios
+        if (doc) {
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+            if (response) {
+                //Limpio el item de la pantalla
+                $(element).parent('div').remove();
+            } else {
+                //Si no se grabo tira un error en pantalla
+                $(element).parent('div').css("color", "red");
+            }
+        }
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+
+
+
+
+
 //Boton variables y las Renderizo
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -657,7 +769,7 @@ function catalog_get_cat(element) {
 }
 
 //Boton variables y las Renderizo
-function catalog_post_cat(element) {
+function catalog_new_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      

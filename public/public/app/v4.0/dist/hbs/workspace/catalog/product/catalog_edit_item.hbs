@@ -52,7 +52,7 @@
                                     <div class="chips_items_main">
                                         {{#each tags }}
                                             <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
-                                                <a doc_id="{{../_id}}" new_tag="{{this}}"  input_id="tags" href="#" onclick="dell_tag(this)">
+                                                <a doc_id="{{../_id}}" new_tag=" {{this}}"  input_id="tags" href="#" onclick="dell_tag(this)">
                                                     <span class="button material-icons text-s lh-n"> highlight_off</span>
                                                 </a>
                                                 <label class="chips_text">
@@ -90,17 +90,10 @@
                                                 <ul class="dropdown-menu pull-right">
                                                     <li class="header">Nueva</li>
                                                     <li>
-                                                        <input id="" class="form-control" type="text"
-                                                            placeholder="Escribe la categoria..." value="">
-                                                    </li>
-                                                    <li class="margin-t-10 text-center">
-                                                        {{#with product_doc}}
-                                                        <button onclick="catalog_save_edit_item(this)"
-                                                            product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
-                                                            type="button" class="cobrar-btn btn btn-primary">
-                                                            Agregar
-                                                        </button>
-                                                        {{/with}}
+
+                                                        <input doc_id="{{_id}}"  input_id="tags" class="chips_input form-control" name="keywords"
+                                                     type="text" onkeypress="add_new_cat_press(event,this)" style="">
+                           
                                                     </li>
                                                 </ul>
                                             </div>
