@@ -506,7 +506,7 @@ class AuthController extends MythAuthController
 		//convierto el json en un objeto
 		$json = json_decode($query->getBody());
 		
-				$data = [
+			$data = [
 					'_id' =>  $json->_id,
 					'_rev' => $json->_rev,
 					'name' =>  $json->name,
@@ -520,8 +520,8 @@ class AuthController extends MythAuthController
 					'type' => $json->type,
 					'active' => $json->active,
 					'roles' => $json->roles
-				];
-				//Envio el put con los datos del nuevo cliente			
+			];
+			//Envio el put con los datos del nuevo cliente			
 		
 			$client->request('PUT', $url, ['json' => $data ]);
 			//return $data;

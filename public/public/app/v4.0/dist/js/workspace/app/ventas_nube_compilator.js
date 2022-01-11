@@ -19,9 +19,8 @@ function getTemplateAjax(path, callback) {
 
             });
 
-             // COMPARADOR SI TIENE ESO
-              // COMPARADOR SI ES IGUAL A
-
+            // COMPARADOR SI TIENE ESO
+            // COMPARADOR SI ES IGUAL A
 
             Handlebars.registerHelper("userCtx", function(modulo, rol, roles, options) {
                 //Recorro el array para buscar coincidencias del valor de ID
