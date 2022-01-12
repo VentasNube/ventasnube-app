@@ -201,7 +201,23 @@ class WorkspaceModel extends Model
             return $response_code;
         }
     }
-    
+
+     //Modelo de insercion de datos a CouchDB
+     public function curl_get($ws_db_name = false, $ws_db_data = false)
+     {
+         if ($ws_db_name === false) {
+             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
+             return $response;
+         } else {
+             $client = \Config\Services::curlrequest();
+             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+             $response = $client->request('GET', $url);  //Devuelvo el contenido del documento
+             $body = $response->getBody();   
+             // $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
+             return $body;
+         }
+     }
+
     //Modelo de elimiar Bases de datos en CouchDB
     public function curl_delete_db($ws_db_name = false)
     {
@@ -216,5 +232,55 @@ class WorkspaceModel extends Model
             return $response_code;
         }
     }
+
+     //Agregar rol a usuario y autorizar en la DB Cocuchdb
+	public function add_rol($ws_id,$module,$new_rol,$user_email)
+	{	
+ 
+       $user_url = '/_users/org.couchdb.user:'.$user_email;
+       $query = $this->WorkspaceModel->curl_get($user_url);
+       $json = json_decode($query);
+
+       // $ws_id = '323130';
+       $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
+       $edit_roles = $json->roles;
+
+      // $array = array(5, "45", "78", "17", "5");
+      var_export ($edit_roles);
+      $indice = array_search($new_rol,$edit_roles,false);
+      if($indice){
+           // FIltro el array para q no alla duplicados
+           $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
+           return  json_encode($msj);
+       }
+       else{
+            array_push($edit_roles,$new_rol);
+            $ws_security_doc_edited = [
+                       '_id' =>  $json->_id,
+                       '_rev' => $json->_rev,
+                       'name' =>  $json->name,
+                       'firstname' => $json->firstname,			
+                       'lastname' => $json->lastname,
+                       // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
+                       'email' => $json->email, 
+                       'phone' => $json->phone, 
+                       'created_at' => $json->created_at, 
+                       // 'update_at' => now(),
+                       'type' => $json->type,
+                       'active' => $json->active,
+                       'roles' => $edit_roles,
+                       'password_scheme'=> $json->password_scheme,
+                       'iterations'=> $json->iterations,
+                       'derived_key'=>$json->derived_key,
+                       'salt'=> $json->salt
+            ];
+       
+           $response  = $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
+           return  json_encode($response);
+        }
+
+	}
+
+
 
 }

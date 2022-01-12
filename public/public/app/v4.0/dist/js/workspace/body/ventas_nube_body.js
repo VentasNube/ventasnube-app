@@ -61,10 +61,7 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         // DOC DE CONFIGURACION GENERAL
                         ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
                         // DOC DE NAVEGACION
-                        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-
-                        
+                        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });                   
                         // VARIABLE DE USUARIO Y ROLES
                         // userCtx = await u_session.get('_session', { include_docs: true});
                         // console.log("userCtx body 1111");

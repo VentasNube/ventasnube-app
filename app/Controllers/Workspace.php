@@ -166,7 +166,163 @@ class Workspace extends BaseController
             return json_encode($return);
         }
     }
-    
+  
+
+    //TESTER DE RECUEST
+    public function ws_collection_get(){
+        if (!logged_in()) {
+            return redirect()->to(base_url('/workspace/login'));
+            } else {
+        $ws_collection_get = [
+            '_id'=> '_design/get',
+            'views'=> [
+                'seach'=> [
+                    'map' => "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n      var price_list = doc.variations[0].price_list;\n var stock_list =  doc.variations[0].stock_list;\n  var pictures_min = doc.variations[0].pictures[0].min;\n      var pictures_max = doc.variations[0].pictures[0].max;\n                  var sku = doc.variations[0].sku.value_name;\n                  var variant_id = doc.variations[0].id;\n                  var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.currency.value,\n                    'available_quantity': doc.available_quantity,\n                    'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    'limit_discount': doc.limit_discount,\n                    'price':doc.variations[0].price_list[0].value,\n                    'price_list':price_list,\n  'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                ],
+            ]
+        ];
+        $response = $this->WorkspaceModel->curl_put("/ws_collections_323034/_design/get", $ws_collection_get); //Docuento diseno get
+        return json_encode($response);
+        }
+    }
+
+	//Vista del login
+	public function login()
+	{
+		if (logged_in()) {
+		    return redirect()->to(base_url('/workspace/app'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/login', $data);
+	}
+
+    //Log the user out.
+	public function logout()
+	{
+		if ($this->auth->check())
+		{
+			$this->auth->logout();
+		}
+		return redirect()->to(site_url('/'));
+	}
+
+	//Vista registro
+	public function register()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/register', $data);
+	}
+
+	//Vistra recuperacion de contraseña
+	public function forgot()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/forgot', $data);
+	}
+	
+	//Vista de reset de pasword
+	public function resetPassword()
+	{
+		if (logged_in()) {
+            return redirect()->to(base_url('/workspace'));
+		}
+		//return view('auth/login');
+		$model = new OwnerModel(); //traigo al modelo		
+		$data['owner'] = $model->getOwner(); //cargo la data en un array
+		echo view('home/login/head', $data);
+		//echo view('login/login', $data);
+		return view('home/login/reset-pasword', $data);
+	}
+
+    //FUNCIONES 2022 Edicion roles de usuarios a WS y eliminacion
+
+    //Agregar rol a usuario y autorizar en la DB Cocuchdb
+	public function add_rol($ws_id,$module,$new_rol,$user_email)
+	{	
+     if (!logged_in()) {
+        return redirect()->to(base_url('/workspace'));
+      }
+       $user_url = '/_users/org.couchdb.user:'.$user_email;
+       $query = $this->WorkspaceModel->curl_get($user_url);
+       $json = json_decode($query);
+
+      // $ws_id = '323130';
+       $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
+       $edit_roles = $json->roles;
+
+      // $array = array(5, "45", "78", "17", "5");
+      var_export ($edit_roles);
+      $indice = array_search($new_rol,$edit_roles,false);
+      if($indice){
+           // FIltro el array para q no alla duplicados
+           $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
+         //  return  json_encode($msj);
+       }
+       else{
+            array_push($edit_roles,$new_rol);
+            $ws_security_doc_edited = [
+                       '_id' =>  $json->_id,
+                       '_rev' => $json->_rev,
+                       'name' =>  $json->name,
+                       'firstname' => $json->firstname,			
+                       'lastname' => $json->lastname,
+                       // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
+                       'email' => $json->email, 
+                       'phone' => $json->phone, 
+                       'created_at' => $json->created_at, 
+                       // 'update_at' => now(),
+                       'type' => $json->type,
+                       'active' => $json->active,
+                       'roles' => $edit_roles,
+                       'password_scheme'=> $json->password_scheme,
+                       'iterations'=> $json->iterations,
+                       'derived_key'=>$json->derived_key,
+                       'salt'=> $json->salt
+            ];
+       
+           $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
+           //return  true;
+        }
+
+	}
+
+       //Vista de reset de pasword
+	public function dell_rol()
+	{
+
+	}
+
+    public function testcurlput()
+	{	
+        $ws_id = '323137';
+        $module = 'catalog';
+        $new_rol = 'admin';
+        $user_email = 'ventas.servernet@gmail.com';
+
+        $response = $this->add_rol($ws_id,$module,$new_rol,$user_email);
+        return  json_encode($response);
+	}
+
+ 
+  
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -189,7 +345,13 @@ class Workspace extends BaseController
             //4 save   PUEDE LEER, CREAR,
             //5 reed   PUEDE LEER
             //Comfiguraciones de seguridad y lisencia
+
+
+     
+
             $user_auth_permissions = '_admin'; // Permiso de app
+
+
             $ws_plan = 'plan-starter-free'; // Plan starter
             $ws_zona_h = $this->request->getPost("ws_zona_h");
             $ws_db_pacht = now($ws_zona_h);
@@ -301,22 +463,6 @@ class Workspace extends BaseController
                 //Plan (shop) (plan-business-shop)
                 $ws_order_app = $this->request->getPost('ws_order_app'); //Guardo los productos que se muestran en el catalogo web
                 //Plan (shop) (plan-business-shop)
-
-                //Creo el doc de seguridad para usar en todas las DB
-                $ws_security_doc = [
-                    'admins' => [
-                        'names' => [$user_email],
-                        'roles' => [$user_auth_permissions],
-                    ],
-                    'members' => [
-                        'names' => [],
-                        'roles' => [
-                            'p_edit',
-                            'p_save',
-                            'p_reed'
-                        ],
-                    ],
-                ];
 
                 //Creamos el contenido de los documentos json
                 $ws_module_active = [
@@ -534,10 +680,28 @@ class Workspace extends BaseController
                 //BD con configuracion del workspace
                 if ($ws_info) {
                     $db_name = "ws_info_" . $workspace_id_hex;
+                    $ws_module_name = "info";
+                    $ws_security_doc = [
+                        'admins' => [
+                            'names' => [$user_email],
+                            'roles' => [$ws_module_name .'_admin_'.$workspace_id_hex],
+                        ],
+                        'members' => [
+                            'names' => [],
+                            'roles' => [
+                                $ws_module_name .'_save_'.$workspace_id_hex,
+                                $ws_module_name .'_edit_'.$workspace_id_hex,
+                                $ws_module_name .'_reed_'.$workspace_id_hex
+                            ],
+                        ],
+                    ];
+
                     $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                     $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                     $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
+                    $this->add_rol($workspace_id_hex,'info','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+                 
                 }
                 /* ========== 
                     DB COLLECTION
@@ -548,17 +712,21 @@ class Workspace extends BaseController
 
                 //DB de catalogo productos y sericios
                 if ($ws_collections) {
-                    $db_name = "ws_collections_" . $workspace_id_hex;
-                    //CREO LOS PERMISOS PARA EL MODULO
-                    $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id_dec,
-                        'ws_id_hex' => $workspace_id_hex,
-                        'user_id' => $user_id,
-                        'module_id' => '2',
-                        'module_type_id' => '0',
-                        'auth_permissions_id' => '1',
-                    ];
-                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+
+                        $db_name = "ws_collections_" . $workspace_id_hex;
+                        //CREO LOS PERMISOS PARA EL MODULO EN MYSQL
+                        $ws_user_workspace_permission = [
+                            'ws_id' => $workspace_id_dec,
+                            'ws_id_hex' => $workspace_id_hex,
+                            'user_id' => $user_id,
+                            'module_id' => '2',
+                            'module_type_id' => '0',
+                            'auth_permissions_id' => '1',
+                        ];
+
+                        //Creo el doc de seguridad para usar en todas las DB
+                        $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                  
                         //DOCUMENTOS DE DISENO GET DEL BUSCADOR
                         $ws_collection_get = [
                             '_id'=> '_design/get',
@@ -654,6 +822,46 @@ class Workspace extends BaseController
                                 [
                                     'id' => '3',
                                     'value' => 'Agua sin gas',
+                                ],
+                            ],
+                        ];
+                        //Marca
+                        $trade_list = [
+                            '_id' => 'trade_list',
+                            'type' => 'trade_list',
+                            'status' => 'active',
+                            'category_list' => [
+                                [
+                                    'id' => '1',
+                                    'value' => 'coca cola',
+                                ],
+                                [
+                                    'id' => '2',
+                                    'value' => 'Speed',
+                                ],
+                                [
+                                    'id' => '3',
+                                    'value' => 'Villa vicencio',
+                                ],
+                            ],
+                        ];
+                         //Modelo
+                        $model_list = [
+                            '_id' => 'model_list',
+                            'type' => 'model_list',
+                            'status' => 'active',
+                            'category_list' => [
+                                [
+                                    'id' => '1',
+                                    'value' => 'Zero azucar 1.5l',
+                                ],
+                                [
+                                    'id' => '2',
+                                    'value' => 'Original 250cc',
+                                ],
+                                [
+                                    'id' => '3',
+                                    'value' => 'Sin gas 1.5l',
                                 ],
                             ],
                         ];
@@ -1191,7 +1399,28 @@ class Workspace extends BaseController
                         //SI SE CREARON CON EXITO CREO LA DB CATALOGO EN COUCHDB
                         if ($result) {
                             $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+
+                            //Agrego el rol del modulo admin al cliente que lo crea
                             //DOC Diseno y seguridad
+                            $ws_module_name = "catalog";
+
+                            $ws_security_doc = [
+                                'admins' => [
+                                    'names' => [$user_email],
+                                    'roles' => [$ws_module_name .'_admin_'.$workspace_id_hex],
+                                ],
+                                'members' => [
+                                    'names' => [],
+                                    'roles' => [
+                                        $ws_module_name .'_save_'.$workspace_id_hex,
+                                        $ws_module_name .'_edit_'.$workspace_id_hex,
+                                        $ws_module_name .'_reed_'.$workspace_id_hex
+                                    ],
+                                ],
+                            ];
+
+                            //$ws_module_name = "catalog";
+                            $this->add_rol($workspace_id_hex,'catalog','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
                             $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                             //   $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_collection_get); //Creo el documento de diseno par filtrar documentos por tipo
                             $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_collection_get); //Docuento diseno get
@@ -1201,11 +1430,18 @@ class Workspace extends BaseController
                             $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); //Creo un doc con la informacion del workspace
                             $this->WorkspaceModel->curl_put($db_name . '/currency_list', $currency_list); //Creo un doc con la informacion del workspace
                             $this->WorkspaceModel->curl_put($db_name . '/attributes', $attributes); //Creo un doc con la informacion del workspace
+                            
+                            $this->WorkspaceModel->curl_put($db_name . '/trade_list', $trade_list); //Creo un doc con la informacion las listas de marcas
+                            $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
+                           
                             //DOC EJEMPLO PRODUCTOS
                             $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                             $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
                         }
                     }
+                
+                /*
+
                 //Contactos
                 if ($ws_contact) {
                     $db_name = 'ws_contact_' . $workspace_id_hex;
@@ -1302,7 +1538,6 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
-              
                 //Ordenes de Servicios tecnicos (plan-business)
                 if ($ws_order_tecnic_service) {
                     $db_name = "ws_order_tecnic_service_" . $workspace_id_hex;
@@ -1411,6 +1646,8 @@ class Workspace extends BaseController
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
                 }
+
+                */
             }
             if ($db->transStatus() === false) {
                 $db->transRollback();
@@ -1424,89 +1661,63 @@ class Workspace extends BaseController
         }
     }
 
-    //TESTER DE RECUEST
-    public function ws_collection_get(){
-        if (!logged_in()) {
-            return redirect()->to(base_url('/workspace/login'));
-            } else {
-        $ws_collection_get = [
-            '_id'=> '_design/get',
-            'views'=> [
-                'seach'=> [
-                    'map' => "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n      var price_list = doc.variations[0].price_list;\n var stock_list =  doc.variations[0].stock_list;\n  var pictures_min = doc.variations[0].pictures[0].min;\n      var pictures_max = doc.variations[0].pictures[0].max;\n                  var sku = doc.variations[0].sku.value_name;\n                  var variant_id = doc.variations[0].id;\n                  var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.currency.value,\n                    'available_quantity': doc.available_quantity,\n                    'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    'limit_discount': doc.limit_discount,\n                    'price':doc.variations[0].price_list[0].value,\n                    'price_list':price_list,\n  'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
-                ],
-            ]
-        ];
-        $response = $this->WorkspaceModel->curl_put("/ws_collections_323034/_design/get", $ws_collection_get); //Docuento diseno get
-        return json_encode($response);
-        }
-    }
-
-	//Vista del login
-	public function login()
+    //Vista de reset de pasword
+	public function testcurl()
 	{
-		if (logged_in()) {
-		    return redirect()->to(base_url('/workspace/app'));
-		}
-		//return view('auth/login');
-		$model = new OwnerModel(); //traigo al modelo		
-		$data['owner'] = $model->getOwner(); //cargo la data en un array
-		echo view('home/login/head', $data);
-		//echo view('login/login', $data);
-		return view('home/login/login', $data);
+	//	$db_name = '';
+        $url = '/_users/org.couchdb.user:ventas.servernet@gmail.com';
+        $response = $this->WorkspaceModel->curl_get($url); //Creo la base de dato
+        //DOC Diseno y seguridad
+		return $response;
+	}
+	public function testcurlput2()
+	{
+            $user_url = '/_users/org.couchdb.user:ventas.servernet@gmail.com';
+             //  $query = $client->request('GET', $url);
+            $query = $this->WorkspaceModel->curl_get($user_url);
+            $json = json_decode($query);
+            $ws_id = '323130';
+            $new_rol = 'catalog_admin_323130';
+            $edit_roles = $json->roles;
+           // $array = array(5, "45", "78", "17", "5");
+           var_export ($edit_roles);
+           $indice = array_search($new_rol,$edit_roles,false);
+           if($indice){
+                // FIltro el array para q no alla duplicados
+                //Filtra los resultados del array si es que encuenta un duplicado lo elimina
+                // array_unique($edit_roles);
+                $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
+                return  json_encode($msj);
+            }
+            else{
+                array_push($edit_roles,$new_rol);
+                $ws_security_doc_edited = [
+                            '_id' =>  $json->_id,
+                            '_rev' => $json->_rev,
+                            'name' =>  $json->name,
+                            'firstname' => $json->firstname,			
+                            'lastname' => $json->lastname,
+                            // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
+                            'email' => $json->email, 
+                            'phone' => $json->phone, 
+                            'created_at' => $json->created_at, 
+                            // 'update_at' => now(),
+                            'type' => $json->type,
+                            'active' => $json->active,
+                            'roles' => $edit_roles,
+                            'password_scheme'=> $json->password_scheme,
+                            'iterations'=> $json->iterations,
+                            'derived_key'=>$json->derived_key,
+                            'salt'=> $json->salt
+                   ];
+            
+
+                $response  = $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
+                return  json_encode($response);
+             }
 	}
 
-    //Log the user out.
-	public function logout()
-	{
-		if ($this->auth->check())
-		{
-			$this->auth->logout();
-		}
-		return redirect()->to(site_url('/'));
-	}
 
-	//Vista registro
-	public function register()
-	{
-		if (logged_in()) {
-            return redirect()->to(base_url('/workspace'));
-		}
-		//return view('auth/login');
-		$model = new OwnerModel(); //traigo al modelo		
-		$data['owner'] = $model->getOwner(); //cargo la data en un array
-		echo view('home/login/head', $data);
-		//echo view('login/login', $data);
-		return view('home/login/register', $data);
-	}
-
-	//Vistra recuperacion de contraseña
-	public function forgot()
-	{
-		if (logged_in()) {
-            return redirect()->to(base_url('/workspace'));
-		}
-		//return view('auth/login');
-		$model = new OwnerModel(); //traigo al modelo		
-		$data['owner'] = $model->getOwner(); //cargo la data en un array
-		echo view('home/login/head', $data);
-		//echo view('login/login', $data);
-		return view('home/login/forgot', $data);
-	}
-	
-	//Vista de reset de pasword
-	public function resetPassword()
-	{
-		if (logged_in()) {
-            return redirect()->to(base_url('/workspace'));
-		}
-		//return view('auth/login');
-		$model = new OwnerModel(); //traigo al modelo		
-		$data['owner'] = $model->getOwner(); //cargo la data en un array
-		echo view('home/login/head', $data);
-		//echo view('login/login', $data);
-		return view('home/login/reset-pasword', $data);
-	}
-
+    
 
 }

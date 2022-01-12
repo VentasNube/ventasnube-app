@@ -8,6 +8,7 @@ function charge_all_docs_local(remote_items) {
 }
 all_items_array = {};
 search_fuse = null;
+
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -194,7 +195,6 @@ function cat_variations_price(element) {
     //    alert(card_product_val);
     //  });
 }
-
 //Boton setear variacion
 function cat_variations_set(element) {
     // console.log(elemento);
@@ -229,7 +229,6 @@ function cat_variations_set(element) {
     }
     // });
 }
-
 //Boton variables y las Renderizo
 function cat_variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -289,7 +288,6 @@ function cat_variations_select(element) {
         //  console.log(variant_array);
     });
 }
-
 async function post_url_history(module, id) {
     try {
         var product_id = $(element).attr('product_id');
@@ -314,7 +312,6 @@ async function post_url_history(module, id) {
         console.log(err);
     }
 }
-
 async function catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -356,7 +353,6 @@ async function catalog_view_item(element) {
         console.log(err);
     }
 }
-
 async function catalog_view_item_url(m_id, m_var_id) {
     try {
         var product_id = m_id;
@@ -389,7 +385,6 @@ async function catalog_view_item_url(m_id, m_var_id) {
         console.log(err);
     }
 }
-
 async function catalog_edit_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -442,7 +437,6 @@ function view_item_variations_price(element) {
     //    alert(card_product_val);
     //  });
 }
-
 //Boton variables y las Renderizo
 function view_item_variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -467,7 +461,6 @@ function view_item_variations_get(element) {
     });
 
 }
-
 //Renderizo la variacion nueva en la tarjeta
 function view_item_variations_select(element) {
 
@@ -484,20 +477,17 @@ $(document).on('click', '.catalog_edit_item', function (event) {
     catalog_view_item(product_id)
     alert('catalog_edit_item()' + product_id);
 });
-
 $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
     // get_catalog_new_item();
     catalog_edit_item();
     alert('catalog_new_item');
 });
-
 $(document).on('focusin', '.catalog_search', function (element) {
     // cat_get_all_item_punchDb();
     //  cat_search_item_js();
     get_all_catalog_intems();
 });
-
 $(document).on('keyup', '.catalog_search', function () {
     var search_val = $(this).val();
     var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
@@ -508,7 +498,6 @@ $(document).on('keyup', '.catalog_search', function () {
     console.log(search_val);
     search_catalog_item(search_val, all_items_array)
 });
-
 $(document).on('click', '.view_variant', function (element) {
     var product_id = $(this).attr('product_id');
     catalog_view_item(product_id);
@@ -539,6 +528,8 @@ async function put_catalog(doc_id, my_doc) {
     }
 }
 
+
+// EDITAR PRODUCTOS
 /* TAGS FUNCIONES */
 //Tomo el enter si esta en el input
 function add_new_tag_press(e, element) {
@@ -547,7 +538,6 @@ function add_new_tag_press(e, element) {
         add_new_tag(element);
     }
 }
-
 // Agrego un tag
 async function add_new_tag(element) {
     try {
@@ -601,7 +591,6 @@ async function add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
-
 // Elimino un tag
 async function dell_tag(element) {
     try {
@@ -635,9 +624,6 @@ async function dell_tag(element) {
         console.log(err);
     }
 }
-
-//CATEGORIAS 
-
 //Tomo el enter si esta en el input
 function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
@@ -645,7 +631,8 @@ function add_new_cat_press(e, element) {
         add_new_cat(element);
     }
 }
-// Agrego un tag
+//CATEGORIAS
+// Agrego un Categoria
 async function add_new_cat(element) {    
     try {
         // Datos del cocumento y el id 
@@ -674,13 +661,10 @@ async function add_new_cat(element) {
                 //Cargo el nuevo resultado al final del array con push
                 const arr_number = doc.category_list.length - 1;
                 console.log(arr_number);
-
-            
                 var new_item = {
                         id:arr_number,
                         value:new_cat
                 }
-
                 console.log(arr_number);
                 console.log(new_item);
                 const count = doc.category_list.push(new_item);
@@ -709,8 +693,23 @@ async function add_new_cat(element) {
         $(element).css("color", "red");
     }
 }
-
-// Elimino un tag
+// Traigo las categorias, 
+async function get_all_tag(element) {
+    try {
+        //Datos del cocumento y el id
+        let doc = await L_catalog_db.get('category_list');
+        let cat_list = doc['category_id'];
+        //var array = ws_module_array.ws_left_nav.m;
+        //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
+        for (var i=0; i<cat_list.length; i++) { 
+            //Si el nombre del modulo esta en el listado de permisos de
+            $(element).children('option').html("<option value="+ cat_list[i].id+">"+cat_list[i].value +"</option>");
+        }
+    }catch (err) {
+        console.log(err);
+    }
+}
+// Elimino una Categoria
 async function dell_cat(element) {
     try {
         //Datos del cocumento y el id 
@@ -744,11 +743,6 @@ async function dell_cat(element) {
     }
 }
 
-
-
-
-
-
 //Boton variables y las Renderizo
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -767,7 +761,6 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
-
 //Boton variables y las Renderizo
 function catalog_new_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -786,7 +779,6 @@ function catalog_new_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
-
 //Boton variables y las Renderizo
 function catalog_dell_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -884,7 +876,10 @@ async function cat_edit_variations(element) {
     }
 }
 
+
 /* Animacion botones selectores wich Editar producto */
+
+/*
 $("li.bg-color").click(function () {
     var bgColor = $(this).attr('bg-color');
     $("#bg-select-color").removeClass();
@@ -901,6 +896,6 @@ $("li.bg-color").click(function () {
         $("span", this).first().text("check_circle");
     });
 
-
+*/
 
 

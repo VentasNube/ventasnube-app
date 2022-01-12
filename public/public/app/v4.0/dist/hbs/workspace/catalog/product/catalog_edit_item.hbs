@@ -75,7 +75,8 @@
                                                 category
                                             </span>
                                         </span>
-                                        <select class="form-control md" name="cars" id="cars">
+                                         <a doc_id="{{../_id}}" new_tag=" {{this}}"  input_id="tags" href="#" onclick="get_all_tag(this)"></a>
+                                        <select doc_id="{{../_id}}" input_id="cat" href="#" onclick="get_all_tag(this)" class="form-control md" name="cat" id="cat">
                                             {{#each ../category_list/category_list }}
                                                 <option value="{{id}}">{{value}}</option>
                                             {{/each}}
