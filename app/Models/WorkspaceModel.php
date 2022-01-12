@@ -251,7 +251,8 @@ class WorkspaceModel extends Model
             $msj = "El rol ".$new_rol." esta en el indice: " .$filter_rol;
            return  json_encode($msj);
         }*/
-     //   else{
+         //   else{
+            if($edit_roles){
              array_push($edit_roles,$new_rol);
 
              $ws_security_doc_edited = [
@@ -276,7 +277,7 @@ class WorkspaceModel extends Model
         
              $this->curl_put($user_url, $ws_security_doc_edited);
              return true;
-      //   }
+        }
  
 
 	}
