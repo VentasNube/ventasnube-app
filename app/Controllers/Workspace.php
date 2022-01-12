@@ -263,15 +263,13 @@ class Workspace extends BaseController
        $user_url = '/_users/org.couchdb.user:'.$user_email;
        $query = $this->WorkspaceModel->curl_get($user_url);
        $json = json_decode($query);
-
-      // $ws_id = '323130';
+       // $ws_id = '323130';
        $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
        $edit_roles = $json->roles;
-
-      // $array = array(5, "45", "78", "17", "5");
-      var_export ($edit_roles);
-      $indice = array_search($new_rol,$edit_roles,false);
-      if($indice){
+       // $array = array(5, "45", "78", "17", "5");
+       var_export ($edit_roles);
+       $indice = array_search($new_rol,$edit_roles,false);
+       if($indice){
            // FIltro el array para q no alla duplicados
            $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
          //  return  json_encode($msj);
@@ -288,7 +286,7 @@ class Workspace extends BaseController
                        'email' => $json->email, 
                        'phone' => $json->phone, 
                        'created_at' => $json->created_at, 
-                       // 'update_at' => now(),
+                       'update_at' => now(),
                        'type' => $json->type,
                        'active' => $json->active,
                        'roles' => $edit_roles,
@@ -298,31 +296,15 @@ class Workspace extends BaseController
                        'salt'=> $json->salt
             ];
        
-           $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
-           //return  true;
+            $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
+            return true;
         }
 
 	}
 
-       //Vista de reset de pasword
-	public function dell_rol()
-	{
-
-	}
-
-    public function testcurlput()
-	{	
-        $ws_id = '323137';
-        $module = 'catalog';
-        $new_rol = 'admin';
-        $user_email = 'ventas.servernet@gmail.com';
-
-        $response = $this->add_rol($ws_id,$module,$new_rol,$user_email);
-        return  json_encode($response);
-	}
-
- 
-  
+     /*  //Vista de reset de pasword
+	
+  */
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -333,7 +315,7 @@ class Workspace extends BaseController
             $UserModel = new UserModel(); //traigo el modelo user para pedir datos de la session
             $Owner = new OwnerModel(); //traigo el modelo
             //  $User = new UserModel(); //traigo el modelo
-            $Body_model = new BodyModel(); //traigo el modelo
+           // $Body_model = new BodyModel(); //traigo el modelo
             helper('date');
             $user_id = user_id(); //Usuario
             $user_email = $UserModel->getUserData($user_id, 'email'); //Traigo el email del usuario
@@ -344,13 +326,9 @@ class Workspace extends BaseController
             //3 edit   PUEDE LEER, CREAR, EDITAR
             //4 save   PUEDE LEER, CREAR,
             //5 reed   PUEDE LEER
-            //Comfiguraciones de seguridad y lisencia
+            //Comfiguraciones de seguridad y lisenci
 
-
-     
-
-            $user_auth_permissions = '_admin'; // Permiso de app
-
+          //  $user_auth_permissions = '_admin'; // Permiso de app
 
             $ws_plan = 'plan-starter-free'; // Plan starter
             $ws_zona_h = $this->request->getPost("ws_zona_h");
@@ -436,7 +414,7 @@ class Workspace extends BaseController
                     'workspace_id' => $workspace_id_dec,
                     'workspace_id_hex' => $workspace_id_hex,
                     'user_id' => $user_id,
-                    'user_group' => $user_auth_permissions,
+                    'user_group' => '_admin',
                     'user_workspace_status' => 'active',
                     'user_workspace_create_time' => now(),
                 ];
@@ -700,7 +678,7 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                     $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
-                    $this->add_rol($workspace_id_hex,'info','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+                    $this->WorkspaceModel->add_rol($workspace_id_hex,'info','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
                  
                 }
                 /* ========== 
@@ -1420,7 +1398,7 @@ class Workspace extends BaseController
                             ];
 
                             //$ws_module_name = "catalog";
-                            $this->add_rol($workspace_id_hex,'catalog','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+                            $this->WorkspaceModel->add_rol($workspace_id_hex,'catalog','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
                             $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                             //   $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_collection_get); //Creo el documento de diseno par filtrar documentos por tipo
                             $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_collection_get); //Docuento diseno get
@@ -1655,12 +1633,34 @@ class Workspace extends BaseController
                 return json_encode($return);
             } else {
                 $db->transCommit();
-                $return = ['msj' => 'Felicitades! se creo tu espacio ' . $ws_name . ' con exito!', 'result' => true];
-                return json_encode($return);
+               
+               
+                $msj = ['msj' => 'Felicitades! se creo tu espacio ' . $ws_name . ' con exito!', 'result' => true];
+                return json_encode($msj);
+
+               // return json_encode($msj);
             }
         }
     }
+/*
 
+public function dell_rol()
+	{
+
+	}
+
+    public function testcurlput()
+	{	
+        $ws_id = '323137';
+        $module = 'catalog';
+        $new_rol = 'admin';
+        $user_email = 'ventas.servernet@gmail.com';
+
+        $response = $this->add_rol($ws_id,$module,$new_rol,$user_email);
+        return  json_encode($response);
+	}
+
+ 
     //Vista de reset de pasword
 	public function testcurl()
 	{
@@ -1670,6 +1670,7 @@ class Workspace extends BaseController
         //DOC Diseno y seguridad
 		return $response;
 	}
+    
 	public function testcurlput2()
 	{
             $user_url = '/_users/org.couchdb.user:ventas.servernet@gmail.com';
@@ -1717,7 +1718,6 @@ class Workspace extends BaseController
              }
 	}
 
-
-    
+*/
 
 }

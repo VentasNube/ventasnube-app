@@ -237,47 +237,47 @@ class WorkspaceModel extends Model
 	public function add_rol($ws_id,$module,$new_rol,$user_email)
 	{	
  
-       $user_url = '/_users/org.couchdb.user:'.$user_email;
-       $query = $this->WorkspaceModel->curl_get($user_url);
-       $json = json_decode($query);
-
-       // $ws_id = '323130';
-       $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
-       $edit_roles = $json->roles;
-
-      // $array = array(5, "45", "78", "17", "5");
-      var_export ($edit_roles);
-      $indice = array_search($new_rol,$edit_roles,false);
-      if($indice){
-           // FIltro el array para q no alla duplicados
-           $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
+        $user_url = '/_users/org.couchdb.user:'.$user_email;
+        $query = $this->curl_get($user_url);
+        $json = json_decode($query);
+        // $ws_id = '323130';
+        $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
+        $edit_roles = $json->roles;
+        // $array = array(5, "45", "78", "17", "5");
+       /* var_export ($edit_roles);
+        $filter_rol = array_search($new_rol,$edit_roles,false);
+        if($filter_rol){
+            // FIltro el array para q no alla duplicados
+            $msj = "El rol ".$new_rol." esta en el indice: " .$filter_rol;
            return  json_encode($msj);
-       }
-       else{
-            array_push($edit_roles,$new_rol);
-            $ws_security_doc_edited = [
-                       '_id' =>  $json->_id,
-                       '_rev' => $json->_rev,
-                       'name' =>  $json->name,
-                       'firstname' => $json->firstname,			
-                       'lastname' => $json->lastname,
-                       // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
-                       'email' => $json->email, 
-                       'phone' => $json->phone, 
-                       'created_at' => $json->created_at, 
-                       // 'update_at' => now(),
-                       'type' => $json->type,
-                       'active' => $json->active,
-                       'roles' => $edit_roles,
-                       'password_scheme'=> $json->password_scheme,
-                       'iterations'=> $json->iterations,
-                       'derived_key'=>$json->derived_key,
-                       'salt'=> $json->salt
-            ];
-       
-           $response  = $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
-           return  json_encode($response);
-        }
+        }*/
+     //   else{
+             array_push($edit_roles,$new_rol);
+
+             $ws_security_doc_edited = [
+                        '_id' =>  $json->_id,
+                        '_rev' => $json->_rev,
+                        'name' =>  $json->name,
+                        'firstname' => $json->firstname,			
+                        'lastname' => $json->lastname,
+                        // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
+                        'email' => $json->email, 
+                        'phone' => $json->phone, 
+                        'created_at' => $json->created_at, 
+                        'update_at' => now(),
+                        'type' => $json->type,
+                        'active' => $json->active,
+                        'roles' => $edit_roles,
+                        'password_scheme'=> $json->password_scheme,
+                        'iterations'=> $json->iterations,
+                        'derived_key'=>$json->derived_key,
+                        'salt'=> $json->salt
+             ];
+        
+             $this->curl_put($user_url, $ws_security_doc_edited);
+             return true;
+      //   }
+ 
 
 	}
 
