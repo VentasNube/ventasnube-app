@@ -54,17 +54,12 @@ class WorkspaceModel extends Model
     protected $validationMessages = [];
     protected $skipValidation     = false;
      */
-
     // protected $table = 'workspace'; //Trae los datos de la tabla users
-    //protected $table = 'Students';
-
+    // protected $table = 'Students';
     // protected  $primaryKey = 'workspace_id';
-
-    //Workspace filas
+    // Workspace filas
     // workspace_id    workspace_name    workspace_plan    workspace_plan_expiration    workspace_db_pacht    workspace_status    workspace_web    workspace_phone    workspace_zona_h    workspace_icon    workspace_img
-
     // Users_workspace
-  
     /* public function new_ws($ws_data = false)
     {
         if ($ws_data === false) {
