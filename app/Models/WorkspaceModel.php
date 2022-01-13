@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\HTTP\Response;
 use CodeIgniter\Model;
 
 class WorkspaceModel extends Model
@@ -231,25 +232,23 @@ class WorkspaceModel extends Model
      //Agregar rol a usuario y autorizar en la DB Cocuchdb
 	public function add_rol($ws_id,$module,$new_rol,$user_email)
 	{	
- 
+        helper('array');
         $user_url = '/_users/org.couchdb.user:'.$user_email;
         $query = $this->curl_get($user_url);
         $json = json_decode($query);
         // $ws_id = '323130';
         $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
         $edit_roles = $json->roles;
-        // $array = array(5, "45", "78", "17", "5");
-       /* var_export ($edit_roles);
-        $filter_rol = array_search($new_rol,$edit_roles,false);
+        //Busco en el array si hay un permiso repetido
+        $filter_rol = dot_array_search($new_rol, $edit_roles);
         if($filter_rol){
             // FIltro el array para q no alla duplicados
             $msj = "El rol ".$new_rol." esta en el indice: " .$filter_rol;
            return  json_encode($msj);
-        }*/
-         //   else{
+        }
+        else{
             if($edit_roles){
              array_push($edit_roles,$new_rol);
-
              $ws_security_doc_edited = [
                         '_id' =>  $json->_id,
                         '_rev' => $json->_rev,
@@ -269,14 +268,65 @@ class WorkspaceModel extends Model
                         'derived_key'=>$json->derived_key,
                         'salt'=> $json->salt
              ];
-        
              $this->curl_put($user_url, $ws_security_doc_edited);
              return true;
         }
- 
-
+        }
 	}
 
+     //Eliminar rol a usuario y autorizar en la DB Cocuchdb
+    public function dell_rol($ws_id,$module,$new_rol,$user_email)
+    {	
+        helper('array');
+        helper('date');
+        $user_url = '/_users/org.couchdb.user:'.$user_email;
+        $query = $this->curl_get($user_url);
+        $json = json_decode($query);
+        //armo el nombre del rol a eliminar
+        $del_rol = $module.'_'. $new_rol .'_'. $ws_id;
+        $edit_roles = $json->roles;
+        //Busco en el array si hay un permiso repetido
+        $delete_rol = array_search($del_rol, $edit_roles);
+        //Elimina el rol espesifico del array
+        //  array_deep_search
+        if(!$delete_rol){
+            // FIltro el array para q no alla duplicados
+            $msj = "El rol ".$new_rol." esta en el indice: " .$delete_rol;
+            return  json_encode($msj);
+        }
+        else{
+            if($edit_roles){
+            //Elimino el objeto
+            unset($edit_roles[$delete_rol]);
+           // var_export ($edit_roles);
+           // array_push($edit_roles,$new_rol);
+            $ws_security_doc_edited = [
+                        '_id' =>  $json->_id,
+                        '_rev' => $json->_rev,
+                        'name' =>  $json->name,
+                        'firstname' => $json->firstname,			
+                        'lastname' => $json->lastname,
+                        // 'password' => 'Ven6942233',
+                        // Solo en la actualizacion del pasword se usa
+                        'email' => $json->email, 
+                        'phone' => $json->phone, 
+                        'created_at' => $json->created_at, 
+                        'update_at' => now(),
+                        'type' => $json->type,
+                        'active' => $json->active,
+                        'roles' => $edit_roles,
+                        'password_scheme'=> $json->password_scheme,
+                        'iterations'=> $json->iterations,
+                        'derived_key'=>$json->derived_key,
+                        'salt'=> $json->salt
+            ];
+            
+            $this->curl_put($user_url, $ws_security_doc_edited);
+           // return  $edit_roles;
+            return  json_encode($edit_roles);
+        }
+        }
+    }
 
 
 }

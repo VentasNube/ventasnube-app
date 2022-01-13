@@ -260,22 +260,20 @@ class Workspace extends BaseController
             $db = \Config\Database::connect();
             $UserModel = new UserModel(); //traigo el modelo user para pedir datos de la session
             $Owner = new OwnerModel(); //traigo el modelo
-            //  $User = new UserModel(); //traigo el modelo
-           // $Body_model = new BodyModel(); //traigo el modelo
+            // $User = new UserModel(); //traigo el modelo
+            // $Body_model = new BodyModel(); //traigo el modelo
             helper('date');
             $user_id = user_id(); //Usuario
             $user_email = $UserModel->getUserData($user_id, 'email'); //Traigo el email del usuario
-            // $user_email = user_email();
-            //Permisos de toda la APP Mysql y Couchdb
+            //  $user_email = user_email();
+            //  Permisos de toda la APP Mysql y Couchdb
             //1 owner  PUEDE LEER, CREAR, EDITAR, ELIMINAR, NOMBRAR owner...
             //2 admin  PUEDE LEER, CREAR, EDITAR, ELIMINAR, AGREGAR COLAB...
             //3 edit   PUEDE LEER, CREAR, EDITAR
             //4 save   PUEDE LEER, CREAR,
             //5 reed   PUEDE LEER
             //Comfiguraciones de seguridad y lisenci
-
-          //  $user_auth_permissions = '_admin'; // Permiso de app
-
+            //  $user_auth_permissions = '_admin'; // Permiso de app
             $ws_plan = 'plan-starter-free'; // Plan starter
             $ws_zona_h = $this->request->getPost("ws_zona_h");
             $ws_db_pacht = now($ws_zona_h);
@@ -449,11 +447,12 @@ class Workspace extends BaseController
                 ];
 
                 /* ========== 
-             USER DB
-             Edit:10/10/21
-             FUCIONES PARA CREAR LAS DBS DEL USUARIO
-             CON SUS DOCUMENTOS Y CONFUGURACIONES INCIALES 
-             ======== */
+                USER DB
+                Edit:10/10/21
+                FUCIONES PARA CREAR LAS DBS DEL USUARIO
+                CON SUS DOCUMENTOS Y CONFUGURACIONES INCIALES 
+                ======== */
+
                 //DOCUMETO CON CONFIGURACION DEL ESPACIO DE TRABAJO
                 $ws_setting = [
                     '_id' => 'ws_setting_' . $workspace_id_hex,
@@ -1588,6 +1587,21 @@ class Workspace extends BaseController
             }
         }
     }
+
+    public function dell_rol()
+	{
+            $WorkspaceModel = new WorkspaceModel(); //traigo al modelo
+         
+         //   $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+            $workspace_id_hex = '313636';
+            $user_email = 'smartmobile.com.ar@gmail.com';
+            $response = $WorkspaceModel->dell_rol($workspace_id_hex,'info','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+           //  $response = 'Hola';           
+            return $response;
+
+	}
+
+
 
 
 }
