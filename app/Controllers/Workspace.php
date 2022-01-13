@@ -44,7 +44,6 @@ class Workspace extends BaseController
         return redirect()->to(base_url('/workspace/app'));
     }
 
-
     function service_worker()
     {
         if (!logged_in()) {
@@ -167,7 +166,6 @@ class Workspace extends BaseController
         }
     }
   
-
     //TESTER DE RECUEST
     public function ws_collection_get(){
         if (!logged_in()) {
@@ -253,58 +251,6 @@ class Workspace extends BaseController
 	}
 
     //FUNCIONES 2022 Edicion roles de usuarios a WS y eliminacion
-
-    //Agregar rol a usuario y autorizar en la DB Cocuchdb
-	public function add_rol($ws_id,$module,$new_rol,$user_email)
-	{	
-     if (!logged_in()) {
-        return redirect()->to(base_url('/workspace'));
-      }
-       $user_url = '/_users/org.couchdb.user:'.$user_email;
-       $query = $this->WorkspaceModel->curl_get($user_url);
-       $json = json_decode($query);
-       // $ws_id = '323130';
-       $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
-       $edit_roles = $json->roles;
-       // $array = array(5, "45", "78", "17", "5");
-       var_export ($edit_roles);
-       $indice = array_search($new_rol,$edit_roles,false);
-       if($indice){
-           // FIltro el array para q no alla duplicados
-           $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
-         //  return  json_encode($msj);
-       }
-       else{
-            array_push($edit_roles,$new_rol);
-            $ws_security_doc_edited = [
-                       '_id' =>  $json->_id,
-                       '_rev' => $json->_rev,
-                       'name' =>  $json->name,
-                       'firstname' => $json->firstname,			
-                       'lastname' => $json->lastname,
-                       // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
-                       'email' => $json->email, 
-                       'phone' => $json->phone, 
-                       'created_at' => $json->created_at, 
-                       'update_at' => now(),
-                       'type' => $json->type,
-                       'active' => $json->active,
-                       'roles' => $edit_roles,
-                       'password_scheme'=> $json->password_scheme,
-                       'iterations'=> $json->iterations,
-                       'derived_key'=>$json->derived_key,
-                       'salt'=> $json->salt
-            ];
-       
-            $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
-            return true;
-        }
-
-	}
-
-     /*  //Vista de reset de pasword
-	
-  */
     // Creo un nuevo WS Completo
     public function ws_new()
     {
@@ -1642,82 +1588,6 @@ class Workspace extends BaseController
             }
         }
     }
-/*
 
-public function dell_rol()
-	{
-
-	}
-
-    public function testcurlput()
-	{	
-        $ws_id = '323137';
-        $module = 'catalog';
-        $new_rol = 'admin';
-        $user_email = 'ventas.servernet@gmail.com';
-
-        $response = $this->add_rol($ws_id,$module,$new_rol,$user_email);
-        return  json_encode($response);
-	}
-
- 
-    //Vista de reset de pasword
-	public function testcurl()
-	{
-	//	$db_name = '';
-        $url = '/_users/org.couchdb.user:ventas.servernet@gmail.com';
-        $response = $this->WorkspaceModel->curl_get($url); //Creo la base de dato
-        //DOC Diseno y seguridad
-		return $response;
-	}
-    
-	public function testcurlput2()
-	{
-            $user_url = '/_users/org.couchdb.user:ventas.servernet@gmail.com';
-             //  $query = $client->request('GET', $url);
-            $query = $this->WorkspaceModel->curl_get($user_url);
-            $json = json_decode($query);
-            $ws_id = '323130';
-            $new_rol = 'catalog_admin_323130';
-            $edit_roles = $json->roles;
-           // $array = array(5, "45", "78", "17", "5");
-           var_export ($edit_roles);
-           $indice = array_search($new_rol,$edit_roles,false);
-           if($indice){
-                // FIltro el array para q no alla duplicados
-                //Filtra los resultados del array si es que encuenta un duplicado lo elimina
-                // array_unique($edit_roles);
-                $msj = "El rol ".$new_rol." esta en el indice: " . $indice;
-                return  json_encode($msj);
-            }
-            else{
-                array_push($edit_roles,$new_rol);
-                $ws_security_doc_edited = [
-                            '_id' =>  $json->_id,
-                            '_rev' => $json->_rev,
-                            'name' =>  $json->name,
-                            'firstname' => $json->firstname,			
-                            'lastname' => $json->lastname,
-                            // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
-                            'email' => $json->email, 
-                            'phone' => $json->phone, 
-                            'created_at' => $json->created_at, 
-                            // 'update_at' => now(),
-                            'type' => $json->type,
-                            'active' => $json->active,
-                            'roles' => $edit_roles,
-                            'password_scheme'=> $json->password_scheme,
-                            'iterations'=> $json->iterations,
-                            'derived_key'=>$json->derived_key,
-                            'salt'=> $json->salt
-                   ];
-            
-
-                $response  = $this->WorkspaceModel->curl_put($user_url, $ws_security_doc_edited);
-                return  json_encode($response);
-             }
-	}
-
-*/
 
 }
