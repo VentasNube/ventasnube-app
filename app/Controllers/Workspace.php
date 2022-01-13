@@ -1601,7 +1601,17 @@ class Workspace extends BaseController
 
 	}
 
+    public function add_rol()
+	{
+            $WorkspaceModel = new WorkspaceModel(); //traigo al modelo
+            //   $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+            $workspace_id_hex = '313636';
+            $user_email = 'smartmobile.com.ar@gmail.com';
+            $response = $WorkspaceModel->add_rol($workspace_id_hex,'info','admin',$user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+           //  $response = 'Hola';           
+            return $response;
 
+	}
 
 
 }
