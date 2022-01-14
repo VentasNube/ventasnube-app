@@ -83,7 +83,9 @@ class WorkspaceModel extends Model
             return $response;
         }
     }*/
-    //Paso los parametros para insertar un item de la DB
+
+   
+    //Funcion para crear items 
     public function insert($table = false, $data = null)
     {
         if ($table === false) {
@@ -97,7 +99,7 @@ class WorkspaceModel extends Model
         }
     }
 
-       //Paso los parametros para eliminar un item de la DB
+    //Funcion para editar(lo uso en la creacion de ws )
     public function edit($table = false, $data = null, $where = false, $where_id = false)
        {
            if ($table === false) {
@@ -109,7 +111,7 @@ class WorkspaceModel extends Model
            }
       }
 
-    //Paso los parametros para eliminar un item de la DB
+    //Funcion para eeliminar( NO lo uso )
     public function dell($table = false, $where = false, $where_id = false)
     {
         if ($table === false) {
@@ -121,17 +123,17 @@ class WorkspaceModel extends Model
         }
     }
 
-    //user_workspace_id    user_id    user_group    user_workspace_status    user_workspace_create_time
+    // Traigo los datos del ws por id
     public function get_ws_id($workspace_id = false)
     {
-        //  $this->table = $this->db->table('workspace');
         $this->table = $this->db->table('workspace');
         $this->table->select('*');
         $this->table->where('workspace_id', $workspace_id);
         return $this->table->get()->getResultArray();
     }
 
-    //Traigo todos los ws del usuario por la ID 
+
+    //Traigo  todos los ws del usuario por la ID 
     public function get_all_ws_user($user_id = false)
     {
         $this->table = $this->db->table('users_workspace');
@@ -227,6 +229,40 @@ class WorkspaceModel extends Model
             $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
             return $response_code;
         }
+    }
+      //FILTRO CHEKEO DE PERMISOS Devuelve true
+
+
+    public function check_rol($user_id = false, $module_id = false, $rol_id = false, $ws_id = false)
+    {
+
+            // Permisos de toda la APP Mysql y Couchdb
+            // 1 owner  PUEDE LEER, CREAR, EDITAR, ELIMINAR, NOMBRAR owner...
+            // 2 admin  PUEDE LEER, CREAR, EDITAR, ELIMINAR, AGREGAR COLAB...
+            // 3 edit   PUEDE LEER, CREAR, EDITAR
+            // 4 create PUEDE LEER, CREAR,
+            // 5 reed   PUEDE LEER
+            // Comfiguraciones de seguridad y lisencia
+            // El formato completo del permiso :
+            // modulo + permiso + ws_id
+
+          $this->table = $this->db->table('users_workspace_permission');
+          $this->table->select('*');
+          $this->table->join('workspace', 'workspace.workspace_id = users_workspace_permission.ws_id');
+          // $this->table->orderBy('workspace_id', 'Asc');
+          //busco por el id_user
+
+          $this->table->where('user_id', $user_id);
+          $this->table->where('ws_id', $ws_id);
+          $this->table->where('module_id', $module_id);      
+          $this->table->where('auth_permissions_id', $rol_id);
+
+          $query = $this->table->get()->getResultArray();
+          if ($query) {
+              return true;
+          } else {
+              return false;
+          }
     }
 
      //Agregar rol a usuario y autorizar en la DB Cocuchdb
