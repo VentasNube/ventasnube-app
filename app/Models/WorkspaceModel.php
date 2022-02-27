@@ -132,7 +132,6 @@ class WorkspaceModel extends Model
         return $this->table->get()->getResultArray();
     }
 
-
     //Traigo  todos los ws del usuario por la ID 
     public function get_all_ws_user($user_id = false)
     {
@@ -200,7 +199,7 @@ class WorkspaceModel extends Model
         }
     }
 
-     //Modelo de insercion de datos a CouchDB
+    //Modelo de insercion de datos a CouchDB
      public function curl_get($ws_db_name = false, $ws_db_data = false)
      {
          if ($ws_db_name === false) {
@@ -230,9 +229,8 @@ class WorkspaceModel extends Model
             return $response_code;
         }
     }
-      //FILTRO CHEKEO DE PERMISOS Devuelve true
 
-
+    //FILTRO CHEKEO DE PERMISOS Devuelve true
     public function check_rol($user_id = false, $module_id = false, $rol_id = false, $ws_id = false)
     {
 
@@ -251,12 +249,10 @@ class WorkspaceModel extends Model
           $this->table->join('workspace', 'workspace.workspace_id = users_workspace_permission.ws_id');
           // $this->table->orderBy('workspace_id', 'Asc');
           //busco por el id_user
-
           $this->table->where('user_id', $user_id);
           $this->table->where('ws_id', $ws_id);
           $this->table->where('module_id', $module_id);      
           $this->table->where('auth_permissions_id', $rol_id);
-
           $query = $this->table->get()->getResultArray();
           if ($query) {
               return true;
@@ -306,7 +302,7 @@ class WorkspaceModel extends Model
              ];
              $this->curl_put($user_url, $ws_security_doc_edited);
              return true;
-        }
+            }
         }
 	}
 
