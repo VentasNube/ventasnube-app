@@ -489,66 +489,14 @@ class Workspace extends BaseController
                         'result' => true,
                     ],
                 ];
-                //Documento de diseno que trae todos los productos del cart
-                $user_get = [
-                    '_id' => '_design/get-type',
-                    'views' => [
-                        'cart-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                        ],
-                        'fav-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
-                        ]
-                    ],
-                ];
-                //Transformo el email en hexadecimal por seguridad
-                $hex = bin2hex($user_email);
-                //Armo la url de la User BD
-                $db_user = 'userdb-' . $hex;
-                //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
-                $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id_hex, $ws_body); //Creo el doc
-                $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id_hex, $ws_setting); //Creo el doc
-                $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get); //Docuento diseno get
-                /* ========== 
-                    INFO DB
-                    Edit:10/10/21
-                    LA DB INFO GUARDA LAS CONFIGURACIONES DEL WS Y FILTRA LOS PERMISOS PARA PODER EDITAR 
-                    LOS DOCUMENTOS DE CONFIFURACION POR UN ADMINISTRADOR
-                ======== */
 
-                // DOC con traduccion del lenguaje
-                $ws_module_config = [
-                    '_id' => 'ws_module_config',
-                    'type' => 'ws_module_config',
-                    'author' => $user_email,
-                    'create_at' => $data_now,
-                    'workspace_name' => $ws_name,
-                    'workspace_img' => $ws_avatar_img,
-                    'workspace_phone' => $ws_phone,
-                    'workspace_plan' => $ws_plan,
-                    'workspace_color' => $ws_color,
-                    'workspace_web' => $ws_web,
-                    //Datos de contacto
-                    'workspace_created_at' => now(),
-                    'workspace_plan_expiration' => $ws_plan_expiration,
-                    'workspace_db_pacht' => $ws_db_pacht,
-                    'workspace_status' => 'active',
-                    'workspace_zona_h' => $ws_zona_h,
-                    'tax' => [
-                        [
-                            'tax_id' => 'iva',
-                            'tax_name' => 'IVA',
-                            'tax_value' => '21',
-                        ],
-                    ],
-                    'money' => '$',
-                    //Datos de lisencia
-                    // activationSuccess
-                ];
-
+            
+              
                 // Doc de traducciones
                 $ws_lang = [
-                    '_id' => 'ws_lang_sp_' . $workspace_id_hex,
+                    '_id' => 'ws_lang_' . $workspace_id_hex,
+                    'ws_update' => now(),
+                    'ws_land_default' => 'ws_lang_es',
                     'ws_lang_es' => [
                         'b_myaccount' => 'Mi cuenta',
                         'b_exit' => 'Salir',
@@ -615,38 +563,102 @@ class Workspace extends BaseController
                         'm_account_passwor' => 'Nueva Contrase&ntilde;a',
                         'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a'
                     ],
+                    'ws_lang_us' => [
+                        'b_myaccount' => 'My account',
+                        'b_exit' => 'Exit',
+                        'b_search_tittle' => 'Search ..',
+                        'b_tittle_workspace' => 'My workspace',
+                        'm_board' => 'Board',
+                        'm_catalog' => 'Catalog',
+                        'm_box' => 'Box',
+                        'm_my_box' => 'My box',
+                        'm_all_box' => 'All box',
+                        'm_contact' => 'Contact',
+                        'm_reports' => 'Report',
+                        'm_stats' => 'Stast',
+                        'm_cart' => 'Cart',
+                        'm_favorite' => 'Favorit',
+                        'm_myaccount' => 'My account',
+                        'm_myorders' => 'My purchase',
+                        'm_my_workspace' => 'My workspaces',
+                        'm_config_workspace' => 'Workspace Config',
+                        'b_ok' => 'Ok',
+                        'b_dell' => 'Delete',
+                        'b_add' => 'Add',
+                        'b_confirm' => 'Are you youre?',
+                        'b_reload' => 'Reintentar',
+                        'b_undo' => 'Deshacer',
+                        'b_error' => 'Error',
+                        'a_add_confirm' => 'Agregado con exito!',
+                        'a_add_conflict' => 'No se pudo agregar!',
+                        'a_dell_product' => 'Quieres eliminar el producto?',
+                        'a_dell_confirm' => 'Se elimino con exito!',
+                        'a_dell_conflict' => 'No se pudo eliminar!',
+                        'b_add_order' => 'Crear orden',
+                        'm_cart_trash' => 'El carrito esta vacio',
+                        'm_cart_all_dellete' => 'El carrito esta vacio',
+                        'b_cart_add_product' => 'Agrega productos',
+                        'b_add_cart' => 'Agregar al carrito',
+                        'm_fav_trash' => 'No tienes favoritos',
+                        'b_add_fav' => 'Agregar a favoritos',
+                        'b_fav_add_all_items' => 'Agregar todos a favoritos',
+                        't_search' => 'Busca lo que sea..',
+                        't_cart' => 'Carrito',
+                        't_fav' => 'Favoritos',
+                        't_new_product' => 'Crear producto',
+                        't_total' => 'Total',
+                        't_service' => 'Total Servicios',
+                        't_product' => 'Total Productos',
+                        't_dicount' => 'Total Descuentos',
+                        't_tax' => 'Total impuestos',
+                        't_pay' => 'Total abonado',
+                        'b_product' => 'Productos',
+                        'b_service' => 'Servicios',
+                        'b_contact' => 'Contactos',
+                        'm_account_tittle' => 'Mis datos',
+                        'm_account_tittle_buy' => 'Mis compras',
+                        'm_account_edit_b' => 'Modificar datos',
+                        'm_account_save_b' => 'Guardar cambios',
+                        'm_account_edit_pic_b' => 'Modificar datos',
+                        'm_account_name' => 'Nombre',
+                        'm_account_surname' => 'Apellido',
+                        'm_account_document' => 'Documento',
+                        'm_account_phone' => 'Telefono',
+                        'm_account_email' => 'Email',
+                        'm_account_passwor_b' => 'Modificar contrase&ntilde;a',
+                        'm_account_passwor' => 'Nueva Contrase&ntilde;a',
+                        'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a'
+                    ],
                 ];
-                //BD con configuracion del workspace
-                if ($ws_info) {
-                    $db_name = "ws_info_" . $workspace_id_hex;
-                    $ws_module_name = "info";
-                    $ws_security_doc = [
-                        'admins' => [
-                            'names' => [$user_email],
-                            'roles' => [
-                                $ws_module_name . '_' . $ws_rol . '_' . $workspace_id_hex
-                            ],
+
+
+                 //Documento de diseno que trae todos los productos del cart
+                 $user_get = [
+                    '_id' => '_design/get-type',
+                    'views' => [
+                        'cart-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
                         ],
-                        'members' => [
-                            'names' => [],
-                            'roles' => [
-                                $ws_module_name . '_save_' . $workspace_id_hex,
-                                $ws_module_name . '_edit_' . $workspace_id_hex,
-                                $ws_module_name . '_reed_' . $workspace_id_hex
-                            ],
-                        ],
-                    ];
+                        'fav-item' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ]
+                    ],
+                ];
 
-                    $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                    $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                    $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
-                    $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
+                //Transformo el email en hexadecimal por seguridad
+                $hex = bin2hex($user_email);
+                //Armo la url de la User BD
+                $db_user = 'userdb-' . $hex;
+                //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
+                $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id_hex, $ws_body); //Creo el doc
+                $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id_hex, $ws_setting); //Creo el doc
 
-                    $this->WorkspaceModel->add_rol($workspace_id_hex, 'info', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+                //$this->WorkspaceModel->curl_put($db_user . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                $this->WorkspaceModel->curl_put($db_user . "/ws_lang_". $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
 
-
-
-                }
+                
+                $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get); //Docuento diseno get
+            
                 /* ========== 
                     DB COLLECTION
                     Edit:10/10/21
@@ -658,7 +670,6 @@ class Workspace extends BaseController
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id_hex;
                     $module_name = "catalog";
-
                     // SETEO LOS PERMISOS 
                     $ws_module_name = "catalog";
                     $module_id = '2';
@@ -672,6 +683,7 @@ class Workspace extends BaseController
                         'user_id' => $user_id,
                         'auth_permissions_id' => $ws_rol_id
                     ];
+
                     // Creo el documento de diseño q filtra los permisos q otorgan a los usuarios para hacer update 
 
                     $ws_validate_doc_save = [
@@ -679,7 +691,6 @@ class Workspace extends BaseController
                         "validate_doc_update" => "function(newDoc, oldDoc, userCtx)  var role = '_save';  if (userCtx.roles.indexOf('_admin') === -1 && userCtx.roles.indexOf(role) === -1) { { {throw({forbidden : 'Solo usuarios con el rol!'+rol+'o un administrador pueden editar'});}}",
                     ];
                     //CREO LOS PERMISOS PARA EL MODULO EN MYSQL
-
                     //DOCUMENTOS DE DISENO GET DEL BUSCADOR
                     $ws_collection_get = [
                         '_id' => '_design/get',
@@ -689,7 +700,38 @@ class Workspace extends BaseController
                             ],
                         ]
                     ];
+
                     // DOC CON CONFIGURACIONES DEL CATALOGO 
+                    // DOC CONFIGURACION DEL WORKSPACE FOTO DATOS DE CONTACTO DE CONFIGURACION DE FACTURA 
+                    $ws_module_config = [
+                        '_id' => 'ws_module_config',
+                        'type' => 'ws_module_config',
+                        'author' => $user_email,
+                        'create_at' => $data_now,
+                        'workspace_name' => $ws_name,
+                        'workspace_img' => $ws_avatar_img,
+                        'workspace_phone' => $ws_phone,
+                        'workspace_plan' => $ws_plan,
+                        'workspace_color' => $ws_color,
+                        'workspace_web' => $ws_web,
+                        //Datos de contacto
+                        'workspace_created_at' => now(),
+                        'workspace_plan_expiration' => $ws_plan_expiration,
+                        'workspace_db_pacht' => $ws_db_pacht,
+                        'workspace_status' => 'active',
+                        'workspace_zona_h' => $ws_zona_h,
+                        'tax' => [
+                            [
+                                'tax_id' => 'iva',
+                                'tax_name' => 'IVA',
+                                'tax_value' => '21',
+                            ],
+                        ],
+                        'money' => '$',
+                        //Datos de lisencia
+                        // activationSuccess
+                    ];
+
                     // LISTA DE PRECIOS
                     $price_list = [
                         '_id' => 'price_list',
@@ -738,6 +780,7 @@ class Workspace extends BaseController
                             ],
                         ],
                     ];
+
                     //MONEDAS
                     $currency_list = [
                         '_id' => 'currency_list',
@@ -1382,7 +1425,6 @@ class Workspace extends BaseController
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
 
-
                     //ASIGNO UN LOS PERMISOS DE USARIOS PARA EL WORKSPACE
                     $this->WorkspaceModel->insert('users_workspace_permission', $ws_permission);
 
@@ -1406,6 +1448,49 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
                 }
+
+                    /* ========== 
+                    INFO DB
+                    Edit:10/10/21
+                    LA DB INFO GUARDA LAS CONFIGURACIONES DEL WS Y FILTRA LOS PERMISOS PARA PODER EDITAR 
+                    LOS DOCUMENTOS DE CONFIFURACION POR UN ADMINISTRADOR
+                ======== */
+
+
+                //BD con configuracion del workspace
+                /*if ($ws_info) {
+                    $db_name = "ws_info_" . $workspace_id_hex;
+                    $ws_module_name = "info";
+                    $ws_security_doc = [
+                        'admins' => [
+                            'names' => [$user_email],
+                            'roles' => [
+                                $ws_module_name . '_' . $ws_rol . '_' . $workspace_id_hex
+                            ],
+                        ],
+                        'members' => [
+                            'names' => [],
+                            'roles' => [
+                                $ws_module_name . '_save_' . $workspace_id_hex,
+                                $ws_module_name . '_edit_' . $workspace_id_hex,
+                                $ws_module_name . '_reed_' . $workspace_id_hex
+                            ],
+                        ],
+                    ];
+
+                    $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+                    $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                    $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                    $this->WorkspaceModel->curl_put($db_name . "/ws_lang_sp", $ws_lang); //Creo un doc con la informacion del workspace
+
+                    $this->WorkspaceModel->add_rol($workspace_id_hex, 'info', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
+
+
+
+                }
+*/
+
+
 
 
                 /*

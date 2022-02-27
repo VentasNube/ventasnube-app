@@ -5,12 +5,13 @@
 //// --- Top Bar ---- Left Nav --- Cart -- Fav -- Search --- acount --  buy 
 
 //###--- Conection y Sync a la base de datos local ---#####
-ws_info_db = 'ws_info_' + ws_id;
+//ws_info_db = 'ws_info_' + ws_id;
 ws_info = null; // Doc con la info y configuracion del Ws
 ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 
 //Creo la base de datos local info_db
+/*
 L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
 user_Ctx = null;
 //sincronizo
@@ -52,28 +53,55 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
 });
 */
 
+//###--- Conection y Sync a la base de datos local ---#####
+var ws_search_db = 'ws_collections_' + ws_id;
+//var ws_info = null;
+//var ws_lang_data = null;
+//Creo la base de datos local info_db
+L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
+//sincronizo
+//Creo y conecto con userDB local 
+L_catalog_db.sync(url_R_db+ws_search_db, {
+    live: true,
+    retry: true,
+  //  skip_setup: true
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+  }).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('error', function (err) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+ //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+  });
+
 
  async function ws_module_config() {
                 try {
                         //userCtx variable global de permisos y roles para filtrar las vistas
-                        // console.log('userCtx BODY.js');
-                        // console.log(userCtx);    
                         // DOC DE CONFIGURACION GENERAL
-                        ws_info = await L_ws_info_db.get('ws_module_config', { include_docs: true, descending: true });
+                        ws_info = await L_catalog_db.get('ws_module_config', { include_docs: true, descending: true });
                         // DOC DE NAVEGACION
-                        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });                   
-                        // VARIABLE DE USUARIO Y ROLES
-                        // userCtx = await u_session.get('_session', { include_docs: true});
-                        // console.log("userCtx body 1111");
-                        // console.log(userCtx);
-                        // DOC DE LEGUAJE
-                        ws_lang_data_doc = await L_ws_info_db.get('ws_lang_sp', { include_docs: true, descending: true });
+                        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });      
+                        //Mapeo el contenido del objeto ws_left_nav M
+                        ws_left_nav_data = ws_left_nav['ws_left_nav'];
+                        console.log(' AAAAAAA LEFTTT DATAAAAAAaaaaaaaaaa aaaaaaaaasasasasassa');
+                        console.log(ws_left_nav_data);
+                        // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
+                        ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
                         // Mapeo el objeto
                         var ws_lang = ws_lang_data_doc;
-                        // SETEO EL ARRAY CON EL IDIOMA
-                        ws_lang_data = ws_lang['ws_lang_es'];
+                        // SETEO EL ARRAY CON EL IDIOMA Con la variable
+                        // Recorro el objeto y busco el nombre ws_lang_es o ws_lang_us dependiendo lo que configuro el admin
+                        ws_lang_default = ws_lang['ws_land_default'];
+                        // Recorro el objeto con la confuracion seteada en el DOC lang por default
+                        ws_lang_data = ws_lang[ws_lang_default];
                         // Envio los datos a la funciones y imprimo
-                        // Creo la variable userCtx apartir del comento left nav
+                        // Creo la variable userCtx apartir del doc left nav
                         user_Ctx = ws_left_nav.userCtx;
                         get_top_bar(ws_info, ws_lang_data, user_Ctx); //Imprimo el top bar
                         get_left_nav(ws_left_nav , ws_lang_data , user_Ctx);//Traigo y imprimo el documento de navegacion lateral 
@@ -83,9 +111,6 @@ L_ws_info_db.sync(url_R_db+ws_info_db, {
                         get_search_module(ws_info, ws_lang_data , user_Ctx); //Imprimo el search 
                         put_left_nav_doc()//Actualizo o envio la cokkie de navegacion lateral
                         check_url_module(ws_left_nav, ws_lang_data , user_Ctx);//Chequeo y cargo el modulo segun la url actual y la cargo
-
-
-
 
                 } catch (err) {
                     put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
@@ -183,15 +208,16 @@ function put_left_nav_doc() {
 };
 
 //Leo el doc y imprimo la vista
-function get_left_nav(ws_left_nav , ws_lang_data) {
+function get_left_nav(ws_left_nav_data , ws_lang_data) {
               var ws_left_nav_doc = {
-                  ws_left_nav: ws_left_nav,
+                  ws_left_nav_data: ws_left_nav_data.ws_left_nav,
                   ws_lang_data: ws_lang_data
               }
-              // console.log('ws_left_nav_');
-              //console.log(ws_left_nav);
-              //console.log(ws_left_nav_doc);
-              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav);
+
+
+              console.log('aa  aaaa jj j j jjjjj kkakkkskksksksksksksksksk /////...... . .. . sksksksksksksksks aaaaccccaaaaa');
+              console.log(ws_left_nav_doc);
+              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
 };
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
