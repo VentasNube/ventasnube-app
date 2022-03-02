@@ -143,11 +143,44 @@
         console.log(data);
     } );
 
+//FUNCIONES PARA ACTUALIZAR LOS ESPACIOS DE TRABAJO
+$(".update_ws" ).click(function() {
 
-
-
-
+    var ws_id_ex = $(this).attr('ws_id_ex');
+    var user_id = $(this).attr('user_id');
+    var user_email = $(this).attr('user_email');
     
+    $('#update_ws_submit').attr('ws_id_ex', ws_id_ex );
+    $('#update_ws_submit').attr('user_id', user_id );
+
+    $('#update_ws_submit').attr('user_email', user_email );
+    
+});
+//$(document).on('click', '#update_ws_submit', function (element) {
+ 
+$("#update_ws_submit" ).click(function() {
+    var ws_id_ex = $(this).attr('ws_id_ex');
+    var user_id = $(this).attr('user_id');
+    var url = "<?=site_url('/admin/ws_lang_update');?>";
+   // var formData = $("#formUpadate").serialize();
+
+        $.ajax({
+          data: {
+              ws_id_ex:ws_id_ex,
+              user_id:user_id
+            },
+          url: url, //url de donde obtener los datos
+	      dataType: 'json', //tipo de datos retornados
+	      type: 'post' //enviar variables como post
+	    }).done(function (data){
+	      console.log(data);
+          alert('Se actualizo con exito' + data['res'] + 'Datos:' +data);
+              //conformar respuesta final
+            //  $('#resultado').html('El resultado es: <b>' + data['res'] + '</b>');
+	    });
+});
+
+
 
 
 

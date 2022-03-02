@@ -251,6 +251,7 @@ class Workspace extends BaseController
         return view('home/login/reset-pasword', $data);
     }
 
+   
     //FUNCIONES 2022 Edicion roles de usuarios a WS y eliminacion
     // Creo un nuevo WS Completo
     public function ws_new()
@@ -259,13 +260,15 @@ class Workspace extends BaseController
             return redirect()->to(base_url('/workspace/login'));
         } else {
             $db = \Config\Database::connect();
-            $UserModel = new UserModel(); //traigo el modelo user para pedir datos de la session
-            $Owner = new OwnerModel(); //traigo el modelo
-            // $User = new UserModel(); //traigo el modelo
-            // $Body_model = new BodyModel(); //traigo el modelo
-            helper('date');
-            $user_id = user_id(); //Usuario
-            $user_email = $UserModel->getUserData($user_id, 'email'); //Traigo el email del usuario
+            $UserModel = new UserModel(); // traigo el modelo user para pedir datos de la session
+            $Owner = new OwnerModel(); // traigo el modelo
+            // $User = new UserModel(); // traigo el modelo
+            // $Body_model = new BodyModel(); // traigo el modelo
+
+            helper('date');       // Libreria de tiempo 
+            // R
+            $user_id = user_id(); // Usuario
+            $user_email = $UserModel->getUserData($user_id, 'email'); // Traigo el email del usuario
 
             // Permisos de toda la APP Mysql y Couchdb se relacionan en la tabla (auth_permissions);
             // 1 owner  PUEDE LEER, CREAR, EDITAR, ELIMINAR, NOMBRAR COLABORADORES Y ADMINISTRADORES
@@ -291,16 +294,20 @@ class Workspace extends BaseController
             $ws_rol_id = '1';
 
             /////////////////////////////////////////////////////////////////
+
             $ws_zona_h = $this->request->getPost("ws_zona_h");
             $ws_db_pacht = now($ws_zona_h);
             $now = now($ws_zona_h);
             $data_now = date("M d Y H:i:s", $now);
-            // sumo 1 mes
+
+            // Sumo 1 mes
             $ws_plan_expiration = date("Y-m-d H:i:s", strtotime($data_now . "+ 1 month"));
+            
             // Datos de apariencia de la app
             $ws_name = $this->request->getPost("ws_name");
             $ws_avatar_img = $this->request->getPost('ws_avatar_img');
             $ws_color = $this->request->getPost('ws_color');
+           
             // Datos de contacto
             $ws_email = $this->request->getPost("ws_email");
             $ws_web = $this->request->getPost('ws_web');
@@ -314,7 +321,9 @@ class Workspace extends BaseController
             $ws_number = $this->request->getPost("ws_number");
             $ws_float = $this->request->getPost('ws_float');
             $ws_cp = $this->request->getPost("ws_cp");
+            
 
+            // 
             $ws_data = [
                 'workspace_name' => $ws_name,
                 'workspace_img' => $ws_avatar_img,
@@ -331,9 +340,11 @@ class Workspace extends BaseController
                 'workspace_phone' => $ws_phone,
                 'workspace_img' => $ws_avatar_img,
                 //Datos de lisencia
-                // activationSuccess
+                // ActivationSuccess
             ];
-            //
+
+            // 
+
             $ws_contact_data = [
                 'ws_name' => $ws_name,
                 //'ws_avatar_img' => $ws_avatar_img,
@@ -354,19 +365,24 @@ class Workspace extends BaseController
                 //Datos de lisencia
                 //'ws_created_at' => now(),
             ];
+
             // Inicio la trasaccion
             $db->transBegin();
             // Creo el workspace
             $Workspace = $this->WorkspaceModel->insert('workspace', $ws_data); //Creo el Workspace n msql
             $workspace_id_dec = $db->insertID(); //Tomo el nuevo id del workspace
+            
             //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
             $workspace_id_hex = bin2hex($workspace_id_dec); //Transformo el email en hexadecimal por seguridad
+            
             // ACTUALIZO EL ID HEXA EN LA TABLA WORKSPACE
             $ws_data_update = [
                 'workspace_id_hex' => $workspace_id_hex
             ];
+            
             //Grabo la id exadecimal en la tabla de worksapces
             $Workspace_id_hex_post = $this->WorkspaceModel->edit('workspace', $ws_data_update, 'workspace_id', $workspace_id_dec);
+            
             // Compruebo q se creo el usuario con exito
             if ($Workspace_id_hex_post) {
                 // Habilito el usuario al nuevo workspace
@@ -490,147 +506,17 @@ class Workspace extends BaseController
                     ],
                 ];
 
-            
-              
-                // Doc de traducciones
+                //Busco la rev del docuemnto para poder actualizarlo   
+             //   $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_". $workspace_id_hex); 
                 $ws_lang = [
                     '_id' => 'ws_lang_' . $workspace_id_hex,
+                   // '_rev'=> $doc_rev,
                     'ws_update' => now(),
-                    'ws_land_default' => 'ws_lang_es',
-                    'ws_lang_es' => [
-                        'b_myaccount' => 'Mi cuenta',
-                        'b_exit' => 'Salir',
-                        'b_search_tittle' => 'Buscar lo que sea..',
-                        'b_tittle_workspace' => 'Mis espacios de trabajo',
-                        'm_board' => 'Tableros',
-                        'm_catalog' => 'Catalogo',
-                        'm_box' => 'Caja',
-                        'm_my_box' => 'Mi caja',
-                        'm_all_box' => 'Todas las cajas',
-                        'm_contact' => 'Contactos',
-                        'm_reports' => 'Reportes',
-                        'm_stats' => 'Estadisticas',
-                        'm_cart' => 'Carrito',
-                        'm_favorite' => 'Favoritos',
-                        'm_myaccount' => 'Mi cuenta',
-                        'm_myorders' => 'Mis compras',
-                        'm_my_workspace' => 'Mis workspaces',
-                        'm_config_workspace' => 'Configurar Workspace',
-                        'b_ok' => 'Ok',
-                        'b_dell' => 'Eliminar',
-                        'b_add' => 'Agregar',
-                        'b_confirm' => 'Estas seguro?',
-                        'b_reload' => 'Reintentar',
-                        'b_undo' => 'Deshacer',
-                        'b_error' => 'Error',
-                        'a_add_confirm' => 'Agregado con exito!',
-                        'a_add_conflict' => 'No se pudo agregar!',
-                        'a_dell_product' => 'Quieres eliminar el producto?',
-                        'a_dell_confirm' => 'Se elimino con exito!',
-                        'a_dell_conflict' => 'No se pudo eliminar!',
-                        'b_add_order' => 'Crear orden',
-                        'm_cart_trash' => 'El carrito esta vacio',
-                        'm_cart_all_dellete' => 'El carrito esta vacio',
-                        'b_cart_add_product' => 'Agrega productos',
-                        'b_add_cart' => 'Agregar al carrito',
-                        'm_fav_trash' => 'No tienes favoritos',
-                        'b_add_fav' => 'Agregar a favoritos',
-                        'b_fav_add_all_items' => 'Agregar todos a favoritos',
-                        't_search' => 'Busca lo que sea..',
-                        't_cart' => 'Carrito',
-                        't_fav' => 'Favoritos',
-                        't_new_product' => 'Crear producto',
-                        't_total' => 'Total',
-                        't_service' => 'Total Servicios',
-                        't_product' => 'Total Productos',
-                        't_dicount' => 'Total Descuentos',
-                        't_tax' => 'Total impuestos',
-                        't_pay' => 'Total abonado',
-                        'b_product' => 'Productos',
-                        'b_service' => 'Servicios',
-                        'b_contact' => 'Contactos',
-                        'm_account_tittle' => 'Mis datos',
-                        'm_account_tittle_buy' => 'Mis compras',
-                        'm_account_edit_b' => 'Modificar datos',
-                        'm_account_save_b' => 'Guardar cambios',
-                        'm_account_edit_pic_b' => 'Modificar datos',
-                        'm_account_name' => 'Nombre',
-                        'm_account_surname' => 'Apellido',
-                        'm_account_document' => 'Documento',
-                        'm_account_phone' => 'Telefono',
-                        'm_account_email' => 'Email',
-                        'm_account_passwor_b' => 'Modificar contrase&ntilde;a',
-                        'm_account_passwor' => 'Nueva Contrase&ntilde;a',
-                        'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a'
-                    ],
-                    'ws_lang_us' => [
-                        'b_myaccount' => 'My account',
-                        'b_exit' => 'Exit',
-                        'b_search_tittle' => 'Search ..',
-                        'b_tittle_workspace' => 'My workspace',
-                        'm_board' => 'Board',
-                        'm_catalog' => 'Catalog',
-                        'm_box' => 'Box',
-                        'm_my_box' => 'My box',
-                        'm_all_box' => 'All box',
-                        'm_contact' => 'Contact',
-                        'm_reports' => 'Report',
-                        'm_stats' => 'Stast',
-                        'm_cart' => 'Cart',
-                        'm_favorite' => 'Favorit',
-                        'm_myaccount' => 'My account',
-                        'm_myorders' => 'My purchase',
-                        'm_my_workspace' => 'My workspaces',
-                        'm_config_workspace' => 'Workspace Config',
-                        'b_ok' => 'Ok',
-                        'b_dell' => 'Delete',
-                        'b_add' => 'Add',
-                        'b_confirm' => 'Are you youre?',
-                        'b_reload' => 'Reintentar',
-                        'b_undo' => 'Deshacer',
-                        'b_error' => 'Error',
-                        'a_add_confirm' => 'Agregado con exito!',
-                        'a_add_conflict' => 'No se pudo agregar!',
-                        'a_dell_product' => 'Quieres eliminar el producto?',
-                        'a_dell_confirm' => 'Se elimino con exito!',
-                        'a_dell_conflict' => 'No se pudo eliminar!',
-                        'b_add_order' => 'Crear orden',
-                        'm_cart_trash' => 'El carrito esta vacio',
-                        'm_cart_all_dellete' => 'El carrito esta vacio',
-                        'b_cart_add_product' => 'Agrega productos',
-                        'b_add_cart' => 'Agregar al carrito',
-                        'm_fav_trash' => 'No tienes favoritos',
-                        'b_add_fav' => 'Agregar a favoritos',
-                        'b_fav_add_all_items' => 'Agregar todos a favoritos',
-                        't_search' => 'Busca lo que sea..',
-                        't_cart' => 'Carrito',
-                        't_fav' => 'Favoritos',
-                        't_new_product' => 'Crear producto',
-                        't_total' => 'Total',
-                        't_service' => 'Total Servicios',
-                        't_product' => 'Total Productos',
-                        't_dicount' => 'Total Descuentos',
-                        't_tax' => 'Total impuestos',
-                        't_pay' => 'Total abonado',
-                        'b_product' => 'Productos',
-                        'b_service' => 'Servicios',
-                        'b_contact' => 'Contactos',
-                        'm_account_tittle' => 'Mis datos',
-                        'm_account_tittle_buy' => 'Mis compras',
-                        'm_account_edit_b' => 'Modificar datos',
-                        'm_account_save_b' => 'Guardar cambios',
-                        'm_account_edit_pic_b' => 'Modificar datos',
-                        'm_account_name' => 'Nombre',
-                        'm_account_surname' => 'Apellido',
-                        'm_account_document' => 'Documento',
-                        'm_account_phone' => 'Telefono',
-                        'm_account_email' => 'Email',
-                        'm_account_passwor_b' => 'Modificar contrase&ntilde;a',
-                        'm_account_passwor' => 'Nueva Contrase&ntilde;a',
-                        'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a'
-                    ],
-                ];
-
+                    'ws_update_user' => $user_email,
+                    'ws_land_default' => 'ws_lang_us',
+                    'ws_lang_es' =>  lang('ws_app_lang.ws_lang_es'),//Traigo la plantilla con los objetos dentro de la carpeta LENGUAJE
+                    'ws_lang_us' =>  lang('ws_app_lang.ws_lang_us'), // ASI puedo llevar un orden mucho mejor para centralizar los formatos
+                  ];
 
                  //Documento de diseno que trae todos los productos del cart
                  $user_get = [
@@ -652,11 +538,7 @@ class Workspace extends BaseController
                 //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
                 $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id_hex, $ws_body); //Creo el doc
                 $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id_hex, $ws_setting); //Creo el doc
-
-                //$this->WorkspaceModel->curl_put($db_user . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                 $this->WorkspaceModel->curl_put($db_user . "/ws_lang_". $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
-
-                
                 $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get); //Docuento diseno get
             
                 /* ========== 
@@ -1488,13 +1370,11 @@ class Workspace extends BaseController
 
 
                 }
-*/
 
 
 
-
+                */
                 /*
-
                 //Contactos
                 if ($ws_contact) {
                     $db_name = 'ws_contact_' . $workspace_id_hex;

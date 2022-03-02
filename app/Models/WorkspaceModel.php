@@ -84,7 +84,6 @@ class WorkspaceModel extends Model
         }
     }*/
 
-   
     //Funcion para crear items 
     public function insert($table = false, $data = null)
     {
@@ -101,7 +100,7 @@ class WorkspaceModel extends Model
 
     //Funcion para editar(lo uso en la creacion de ws )
     public function edit($table = false, $data = null, $where = false, $where_id = false)
-       {
+    {
            if ($table === false) {
               return false;
            } else {
@@ -109,7 +108,7 @@ class WorkspaceModel extends Model
               $this->table->where($where, $where_id)->update($data);          
                return true;
            }
-      }
+    }
 
     //Funcion para eeliminar( NO lo uso )
     public function dell($table = false, $where = false, $where_id = false)
@@ -199,9 +198,9 @@ class WorkspaceModel extends Model
         }
     }
 
-    //Modelo de insercion de datos a CouchDB
-     public function curl_get($ws_db_name = false, $ws_db_data = false)
-     {
+    //Modelo traigo datos de CouchDB
+    public function curl_get($ws_db_name = false, $ws_db_data = false)
+    {
          if ($ws_db_name === false) {
              $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
              return $response;
@@ -210,10 +209,42 @@ class WorkspaceModel extends Model
              $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
              $response = $client->request('GET', $url);  //Devuelvo el contenido del documento
              $body = $response->getBody();   
-             // $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
              return $body;
          }
-     }
+    }
+
+    // Devuelve la revision del documento que consulto
+    public function curl_get_rev($ws_db_name = false)
+    {
+         if ($ws_db_name === false) {
+             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
+             return $response;
+         } else {
+             $client = \Config\Services::curlrequest();
+             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+             $response = $client->request('GET', $url);  //Devuelvo el contenido del documento
+             $doc = $response->getBody();  
+             $obj = json_decode($doc); //transformo el json e un array 
+             $_rev = $obj->{'_rev'}; // lo recorro y traigo el rev
+             return $_rev ;
+         }
+    }
+     
+    //Modelo de actualizacion de documentos a CouchDB
+    public function curl_update($ws_db_name = false, $ws_db_data = false)
+    {
+          if ($ws_db_name === false) {
+              $response = ['msj' => 'Ocurrio un error y no se pudo editar la db', 'result' => true];
+              return $response;
+          } else {
+            $client = \Config\Services::curlrequest();
+            $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+            $response = $client->request('PUT', $url, ['json' => $ws_db_data, 'http_errors' => false]);
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
+
+            return $response_code;
+          }
+    }
 
     //Modelo de elimiar Bases de datos en CouchDB
     public function curl_delete_db($ws_db_name = false)

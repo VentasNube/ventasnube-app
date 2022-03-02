@@ -9,18 +9,16 @@
                                                 <div class="btn-group dopdown">
                                                     <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
                                                         Filtrar
-
-                                                        ws_lang_data
                                                         <span class="material-icons"> filter_list </span>
                                                     </button>
                                                     <ul class="dropdown-menu xl pull-left">
                                                         <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                                                         <div class="body">
-                                                            <li class="header">Filtrar ordenes</li>
+                                                            <li class="header"> <span> {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span> Filtrar ordenes</li>
                                                             <li class="divider"></li>
                                                             <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
                                                                 <li>
-                                                                    <label>Cliente</label>
+                                                                    <label>Cliente  {{#each ws_lang_data.ws_lang_data}} {{b_myaccount}}{{/each}}</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-addon">
                                                                             <span class="material-icons">account_circle</span>
