@@ -56,20 +56,26 @@
                             </li-->
                             <li class="active">
                                 <a class="l_nav_t_m"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
-                                    <span class="material-icons">local_mall</span>
-                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_my_workspace}}{{/with}} </span>                                
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{m_account_tittle_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_myaccount}}{{/with}}</span>
                                 </a>
-                            </li>         
+                            </li>     
                             <li class="active">
                                 <a class="l_nav_t_m"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
-                                    <span class="material-icons">{{#with ws_lang_data}} {{{m_account_tittle_icon}}}{{/with}}</span>
-                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_account_tittle}}{{/with}}</span>
+                                    <span class="material-icons">{{#with ws_lang_data}}{{{ws_home_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_my_workspace}} {{/with}} </span>                                
                                 </a>
-                            </li>        
+                            </li>   
                             <li class="active">
                                 <a class="l_nav_t_m"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
-                                    <span class="material-icons">{{#with ws_lang_data}}{{{m_config_workspace_icon}}}{{/with}}</span>
-                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_config_workspace}}{{/with}}</span>
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{ws_config_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_config_workspace}} {{/with}}</span>
+                                </a>
+                            </li>
+                             <li class="active">
+                                <a class="logout_button"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{b_exit_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{b_exit}} {{/with}}</span>
                                 </a>
                             </li>
                 </ul>
