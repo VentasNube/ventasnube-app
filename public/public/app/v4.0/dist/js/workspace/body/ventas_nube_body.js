@@ -215,8 +215,8 @@ function get_left_nav(ws_left_nav_data , ws_lang_data) {
               }
 
 
-              console.log('aa  aaaa jj j j jjjjj kkakkkskksksksksksksksksk /////...... . .. . sksksksksksksksks aaaaccccaaaaa');
-              console.log(ws_left_nav_doc);
+            //  console.log('aa  aaaa jj j j jjjjj kkakkkskksksksksksksksksk /////...... . .. . sksksksksksksksks aaaaccccaaaaa');
+            //  console.log(ws_left_nav_doc);
               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
 };
 
@@ -228,6 +228,10 @@ function get_top_bar(ws_info, ws_lang_data) {
         user: user_data,
         ws_lang_data: ws_lang_data
     }
+  //  console.log('12213123  aajajjajajajaj  hahahahahahahha gagagagagaggaga sksks aaaaccccaaaaa');
+  //  console.log(ws_top_bar);
+  //  console.log(ws_lang_data);
+    
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
    // console.log('Top bar in');
 };
