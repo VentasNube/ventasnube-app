@@ -1,5 +1,5 @@
 
-////----(3 Right NAV MAIN)---/////
+////----(Traigo el modulo de configuracion)---/////
 function get_account_profile(user_data,ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -9,3 +9,11 @@ function get_account_profile(user_data,ws_info, ws_lang_data) {
     // $('#cart_user_input').focus();
     console.log('PROFILE IN');
 };
+
+
+
+$(document).on('click', '.config_workspace_btn', function(event) {
+    $('#right_main').addClass('move-right');
+    get_account_profile(user_data,ws_info, ws_lang_data);
+    
+});

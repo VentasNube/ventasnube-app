@@ -210,81 +210,68 @@ class Admin extends BaseController
         //   return json_encode($data);
     }
 
-     //Vista de reset de pasword
-     public function ws_lang_update()
-     {
-           //if (!logged_in() || !in_groups('admin')) {
-               if (!logged_in()) {
-             return redirect()->to(base_url('/workspace'));
-           }
-           helper('date');       // Libreria de tiempo 
+    //Vista de reset de pasword
+    public function ws_lang_update()
+    {
+        if (!logged_in() /*|| !in_groups('admin')*/ ) {
+            return redirect()->to(base_url('/workspace'));
+        }
+        helper('date');       // Libreria de tiempo 
+        $UserModel = new UserModel(); //traigo el modelo
+        $db = \Config\Database::connect();
+        $user_id = $this->request->getPost("user_id");
+        // $u_name = $this->session->get('u_name');
+        // $user_id = user_id(); // Usuari
+        // $ws_id = $session->get('ws_id');
+        // $user_email = $this->request->getPost("user_email");
+        $user_email = $UserModel->getUserData($user_id, 'email');// Traigo el email del usuario
+        //Transformo el email en hexadecimal por seguridad
+        $user_email_hex = bin2hex($user_email);
+        //Armo la url de la User BD
+        $db_user = 'userdb-' .  $user_email_hex;
+        // $ws_id_dec = $this->session->get('ws_id');
+        // DATOS DEL FORMULARIO
+        $workspace_id_hex = $this->request->getPost("ws_id_ex");
+        //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
+        // Traigo la revision del documento y lo creo
+        $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_" . $workspace_id_hex); //Creo un doc con la informacion del workspace
+        //Creo el documento
+        $ws_lang = [
+            '_id' => 'ws_lang_' . $workspace_id_hex,
+            '_rev' => $doc_rev,
+            'ws_update' => now(),
+            'ws_update_user' => $user_email,
+            'ws_land_default' => 'ws_lang_es',
+            'ws_lang_es' =>  lang('ws_app_lang.ws_lang_es'), //Traigo la plantilla de idioma   
+            'ws_lang_us' =>  lang('ws_app_lang.ws_lang_us'), //Traigo la plantilla de idioma
+        ];
+        // Inicio la trasaccion
+        $db->transBegin();
+        //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
+        $result_doc = $this->WorkspaceModel->curl_update($db_user . "/ws_lang_" . $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
+        if ($db->transStatus() === false) {
+            $db->transRollback();
+            $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' . $db->transStatus(), 'result' => false];
+            return json_encode($return);
+        } else {
+            $db->transCommit();
+            $msj = ['msj' => 'Felicitades!  REV:' . $doc_rev . ' ------- RESULT UPDATE ' . $result_doc  . '------- Codigo Status:' . $db->transStatus() . ' Se actualizo la app con exito!', 'result' => true];
+            return json_encode($msj);
+            // return json_encode($msj);
+        }
+        return json_encode($ws_lang);
+        //return true;
+    }
+
+    // INSTALACION DE WORKSPACE
 
 
-           $UserModel = new UserModel(); //traigo el modelo
-           $db = \Config\Database::connect();
-          // $UserModel = new UserModel(); // traigo el modelo user para pedir datos de la session
 
-           $user_id = $this->request->getPost("user_id");
-           //$user_email = $this->request->getPost("user_email");
 
-           $user_email = $UserModel->getUserData($user_id, 'email');
-
-            //Transformo el email en hexadecimal por seguridad
-           $user_email_hex = bin2hex($user_email);
-           
-
-           //$user_id = user_id(); // Usuario
-          // $user_email = $UserModel->getUserData($user_id, 'email'); // Traigo el email del usuario
-       
-           //Armo la url de la User BD
-           $db_user = 'userdb-' .  $user_email_hex;
-           //$ws_id_dec = $this->session->get('ws_id');
-
-           $u_name = $this->session->get('u_name');
-           // DATOS DEL FORMULARIO
-
-           
-           $workspace_id_hex = $this->request->getPost("ws_id_ex");
-           // $ws_id = $session->get('ws_id');
-           //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
-          // $workspace_id_hex = bin2hex($ws_id_dec); //Transformo el email en hexadecimal por seguridad
-           // lang('Auth.login');   
-           // Traigo la revision del documento y lo creo
-           $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_". $workspace_id_hex); //Creo un doc con la informacion del workspace
-          
-           //Creo el documento
-           $ws_lang = [
-             '_id' => 'ws_lang_' . $workspace_id_hex,
-             '_rev'=> $doc_rev,
-             'ws_update' => now(),
-             'ws_update_user' => $user_email,
-             'ws_land_default' => 'ws_lang_es',
-             'ws_lang_es' =>  lang('ws_app_lang.ws_lang_es'), //Traigo la plantilla de idioma   
-             'ws_lang_us' =>  lang('ws_app_lang.ws_lang_us'), //Traigo la plantilla de idioma
-           ];
-             // Inicio la trasaccion
-             $db->transBegin();
-             //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
-            $result_doc = $this->WorkspaceModel->curl_update($db_user . "/ws_lang_". $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
-             if ($db->transStatus() === false) {
-                 $db->transRollback();
-                 $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' . $db->transStatus(), 'result' => false];
-                 return json_encode($return);
-             } else {
-                 $db->transCommit();
-                 $msj = ['msj' => 'Felicitades!  REV:' . $doc_rev .' ------- RESULT UPDATE '. $result_doc  .'------- Codigo Status:'. $db->transStatus() .' Se actualizo la app con exito!', 'result' => true];
-                 return json_encode($msj);
-                 // return json_encode($msj);
-             }
-           return json_encode($ws_lang);
-           //return true;
-     }
- 
-    
     //Elimino el WS Completo de todos lados
     public function ws_delete_db($workspace_id = 0)
     {
-       
+
         // || $Workspace === false
         if (!logged_in() || !in_groups('admin')) {
             // $previus_url == previous_url();
@@ -436,7 +423,6 @@ class Admin extends BaseController
                     } elseif ($response_code == '404') {
                         $db_error += 1;
                     }
-
                 }
                 //Ordenes de Servicios (plan-business-shop)
                 if ($ws_order_app) {
@@ -456,7 +442,6 @@ class Admin extends BaseController
                         $db_error += 1;
                     }
                 }
-
             }
             if ($db->transStatus() === false) {
                 $db->transRollback();
@@ -474,6 +459,7 @@ class Admin extends BaseController
     }
 
     //MODULES
+    //PAGOS
     // GET user AJAX PARA DATATABLE
     public function payments($user_id = 0)
     {
@@ -593,12 +579,10 @@ class Admin extends BaseController
             $ws_db = $db->table('module_plan');
             $result = $ws_db->insert($data);
             return redirect()->to(base_url('admin/edit_plan/' . $plan_id));
-
         } else {
             // return redirect()->to(base_url('admin/edit_plan/'. $plan_id));
             // $result =  $ws_db->insert($data);
         }
-
     }
 
     public function dell_module_plan()
@@ -646,7 +630,7 @@ class Admin extends BaseController
         return json_encode($data);
     }
 
-    //MODULES
+    // MODULES
     public function modules()
     {
         if (!logged_in() || !in_groups('admin')) {
@@ -699,6 +683,4 @@ class Admin extends BaseController
             return json_encode($result);
         }
     }
-
-
 }
