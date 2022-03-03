@@ -12,7 +12,7 @@ function get_ws_setting(user_data,ws_info, ws_lang_data) {
 
 
 $(document).on('click', '.config_workspace_btn', function(event) {
-    $('#right_main').addClass('move-right');
+    //$('#right_main').addClass('move-right');
     get_ws_setting(user_data,ws_info, ws_lang_data);
 });
 
