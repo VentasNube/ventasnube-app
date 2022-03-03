@@ -503,7 +503,7 @@ $(document).on('click', '.view_variant', function (element) {
     catalog_view_item(product_id);
 });
 // TRAIGO EL CATALOGO Y IMPRIMO
-function get_catalog(ws_id) {
+async function get_catalog(ws_id) {
     var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data

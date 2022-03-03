@@ -1,4 +1,4 @@
-/*
+
 ////----(Traigo el modulo de configuracion)---/////
 function get_ws_setting(user_data,ws_info, ws_lang_data) {
     var ws_cart = {
@@ -36,7 +36,11 @@ async function ws_setting_general_edit(element) {
         var doc_id_s = String(doc_id);
         var doc = await L_catalog_db.get(doc_id_s);
         
-     
+        /*           
+        var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+        const value = item[input_id]; //Traigo el ojeto especifico 
+        value.value = new_value; //Edito el valor del value por el valor nuevo
+        */
 
         if (doc) {
             
@@ -59,4 +63,3 @@ async function ws_setting_general_edit(element) {
     }
 
 }
-*/

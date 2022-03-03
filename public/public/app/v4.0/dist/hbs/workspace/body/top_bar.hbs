@@ -17,7 +17,7 @@
             <li class="notifications-menu" data-toggle="tooltip" data-placement="bottom"
                 title="{{#with ../ws_lang_data }} {{t_search}}{{/with}}">
                 <a id="" href="#" class="search_open ">
-                    <i class="material-icons">search</i>
+                    <i class="material-icons">{{#with ../ws_lang_data }} {{search_icon}}{{/with}}</i>
                 </a>
             </li>
 
@@ -118,18 +118,18 @@
                             <div class="text-center user-body-workspace-title">
                                 <a href="/workspace/home" class="btn btn-default">
                                     <span class="material-icons">
-                                          group_work
+                                         {{#with ../../ws_lang_data}} {{ws_home_icon}}{{/with}}
                                     </span>
-                                    {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                         {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
                                 </a>
                                 <br>
                                 <br>
-                                 <a href="/account" class="config_workspace_btn btn btn-default">
+                                 <button  class="config_workspace_btn btn btn-default">
                                     <span class="material-icons">
-                                        tune
+                                         {{#with ../../ws_lang_data}} {{ws_config_icon}}{{/with}}
                                     </span>
-                                 {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
-                                </a>
+                                        {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
+                                </button>
                                 
                             </div>
                             <!--a href="">
@@ -149,7 +149,7 @@
                         <div class="pull-left">
                             <a href="/account" class="btn btn-default">
                                <span class="material-icons">
-                                manage_accounts
+                                {{#with ../../ws_lang_data}} {{m_account_tittle_icon}}{{/with}}
                                 </span>
                            
                                 {{#with ../../ws_lang_data}} {{b_myaccount}}{{/with}}
@@ -158,7 +158,7 @@
                         <div class="pull-right">
                             <a href="#" class="logout_button btn btn-default">
                                 <span class="material-icons">
-                                    logout
+                                      {{#with ../../ws_lang_data}} {{b_exit_icon}}{{/with}}
                                 </span>
                                 {{#with ../../ws_lang_data}} {{b_exit}}{{/with}}
                             </a>
@@ -172,43 +172,3 @@
     </div>
 </nav>
 {{/with}}
-<script>
-    //// BOTON SEARCH ///
-    function search_open() {
-        $('#searchBox').fadeIn();
-        $('#searchInput').focus();
-        $('body').addClass('search-active');
-    }
-
-    function search_close() {
-        $('#searchBox').fadeOut();
-        $('#searchInput').focus();
-        $('body').removeClass('search-active');
-    }
-
-
-    $(".search_button_dell").click(function () {
-        $('#searchInput').val('');
-        $('#searchInput').focus();
-    });
-
-    $(document).on('click', '.search_open', function (event) {
-        // get_search_module(textobuscar);
-        //  load_product_cart();
-        search_open();
-    });
-
-    // $(".search_close").click(function () {
-
-    $(document).on('click', '.search_close', function (event) {
-        search_close();
-    });
-
-  $(document).on('click', '.logout_button', function (event) {
-      alert('Cerrarndo sesion');
-        logout();
-    });
-
-   
-
-</script>

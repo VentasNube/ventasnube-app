@@ -307,6 +307,37 @@ $(document).on('click', '.search_button_board_li', function (event) {
     $('#searchInput').focus();
 });
 
+/// 2022 
+ //// BOTON SEARCH ///
+ function search_open() {
+    $('#searchBox').fadeIn();
+    $('#searchInput').focus();
+    $('body').addClass('search-active');
+}
+
+function search_close() {
+    $('#searchBox').fadeOut();
+    $('#searchInput').focus();
+    $('body').removeClass('search-active');
+}
+
+
+$("#search_button_dell").click(function () {
+    $('#searchInput').val('');
+    $('#searchInput').focus();
+});
+
+$(document).on('click', '.search_open', function (event) {
+    // get_search_module(textobuscar);
+    //  load_product_cart();
+    search_open();
+});
+
+// $(".search_close").click(function () {
+
+$(document).on('click', '.search_close', function (event) {
+    search_close();
+});
 
 //Inicio las funciones
 search_db();

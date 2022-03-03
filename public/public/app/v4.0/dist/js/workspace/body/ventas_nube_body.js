@@ -288,7 +288,7 @@ async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
          const ws_m_s = ws_module_select;
          //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
         if(ws_m_s == 'catalog'){
-                get_catalog();
+               await get_catalog();
                 //Si el tipo de modulo es producto envia los parametros a la funcion constructora
             if( m_t_id == 'product'){
                 catalog_view_item_url(m_id,m_var_id, userCtx);

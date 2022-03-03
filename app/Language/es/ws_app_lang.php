@@ -27,6 +27,7 @@ return [
         //BUSCADOR
         't_search' => 'Busca lo que sea..',
         'b_search_tittle' => 'Buscar lo que sea..',
+        'search_icon' => 'search',
         //BOARDS
         'm_board' => 'Tableros',
 
@@ -65,13 +66,35 @@ return [
         'm_myaccount' => 'Mi cuenta',
         //MIS ORDENES
         'm_myorders' => 'Mis compras',
-        //ESPACIOS DE TRABAJO
+
+        //CONFIGURACION WORKSPACE
+        //TEXTOS
         'm_my_workspace' => 'Mis workspaces',
-        'm_config_workspace' => 'Configurar Workspace',
-        'ws_config_icon' => 'tune',
-        'ws_home_icon' => 'group_work',
+        'm_config_workspace' => 'Configurar Workspace',    
         'm_config_workspace_icon' => 'group_work',
         'b_tittle_workspace' => 'Mis espacios de trabajo',
+
+        'ws_panel_settings_general' => 'General',
+        'ws_panel_settings_users' => 'Colaboradores',
+        'ws_panel_settings_update' => 'Actualizaciones',
+        
+
+        'ws_panel_settings_lang_label' => 'Modificar Idioma', 
+
+        'ws_panel_settings_lang_es' => 'Espa&ntilde;ol',
+        'ws_panel_settings_lang_us' => 'Ingles',
+        'ws_panel_settings_lang_por' => 'Portugues',
+    
+        //ICONOS
+    
+        'ws_config_icon' => 'tune',
+        'ws_home_icon' => 'group_work',
+
+        'ws_panel_settings_icon' => 'admin_panel_settings',
+        'ws_panel_settings_users_icon' => 'people',
+        'ws_panel_settings_update_icon' => 'browser_updated',
+
+        'ws_panel_settings_lang_icon' => 'translate',
 
          //MI CUENTA
          'm_account_tittle' => 'Mis datos',
@@ -121,11 +144,10 @@ return [
         'a_dell_conflict' => 'Could not delete!',
         //MODULOS
 
-       
-
         //BUSCADOR
         't_search' => 'Search what you want',
         'b_search_tittle' => 'Find whatever...',
+        'search_icon' => 'search',
 
         //BOARDS
         'm_board' => 'Boards',
@@ -140,6 +162,7 @@ return [
         //CARRITO
         'm_cart' => 'Cart',
         't_cart' => 'Cart',
+        'cart_icon' => 'shopping_cart',
         'm_cart_trash' => 'Cart is empty',
         'm_cart_all_dellete' => 'Empty cart',
         'b_cart_add_product' => 'Add products',
@@ -165,14 +188,16 @@ return [
         'b_fav_add_all_items' => 'Add all to favorites',
         't_fav' => 'Favorites',
 
+        'fav_icon' => 'favorite',
+
         //MIS ORDENES
         'm_myorders' => 'My shopping',
 
           //ESPACIOS DE TRABAJO
           
         'm_my_workspace' => 'My Workspace',
-        'm_config_workspace' => 'Comfig Workspace',
-            
+        'm_config_workspace' => 'Workspace settings',
+        //Iconos    
         'ws_config_icon' => 'tune',
         'ws_home_icon' => 'group_work',
 
@@ -181,6 +206,7 @@ return [
          'b_exit' => 'Logout',
          'b_exit_icon' => 'logout',
          'm_myaccount' => 'My Account',
+
 
          //MI CUENTA
          'm_account_tittle' => 'My data',
@@ -202,13 +228,13 @@ return [
          //CAJA
         'm_box' => 'Box',
         'm_my_box' => 'My box',
-        'm_all_box' => 'Todas las cajas',
+        'm_all_box' => 'All box',
 
         //CONTACTOS
         'm_contact' => 'Contacts',
 
         //REPORTES
-        'm_reports' => 'Reportss',
+        'm_reports' => 'Reports',
 
         //ESTADISTICAS
         'm_stats' => 'Statisticss',
