@@ -6817,8 +6817,8 @@ label:focus {
 
 /* Colores de header */
 .modal-primary .modal-header {
-    background-color: #ffff;
-    color: #212121;
+    background: #ffff!important;
+    color: #212121!important;
 }
 .modal-primary .modal-header.border-bottom {
     border-bottom: 1px solid #e5e5e5;

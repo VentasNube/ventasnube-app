@@ -82,8 +82,56 @@
     </footer>
 </body>
 
-<div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
+
+
+
+<!--div class="modal fade modal-primary master_popup" id="master_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div-->
+
+ <div class="modal fade modal-primary" id="master_modal" tabindex="-1" role="dialog"
     aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
+
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+
+     <div class="modal-header">
+                         <div class="modal-nav">
+                             <span class="back-arrow" data-dismiss="modal" aria-label="Close">
+                                 <span class="material-icons">arrow_back</span>
+                             </span>
+                             <span class="modal-title">
+                             </span>
+                         </div>
+                     </div>
+
+      <div class="modal-body text-center col-sm-12 col-md-12 col-xs-12">
+
+      </div>
+      <div class="modal-footer">
+        <!--button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary modal_btn_close" data-dismiss="modal">Close</button-->
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 
@@ -91,8 +139,6 @@
     background-position: bottom right; background-image: url('/public/app/v4.0/assets/img/footer.png');">
                       <div class="modal_header">
                                 <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
-                    
-                                  
                       </div>
                        <div class="modal_body ">
                         <div class="icon_tittle">
@@ -100,7 +146,6 @@
                               install_desktop
                           </span-->
                       <div class="tittle">Actualizando tu Workspace</div>
-                       
                         </div>
                         <br>
                         <div class="icon_loading">
@@ -109,10 +154,8 @@
                           </span>
                         </div>
                         <div class="sub_tittle">Aguarda un instante...</div>
-                   
         </div>
         <div class="modal_footer">
-       
         </div>
 </div>
 

@@ -53,6 +53,18 @@ const userDb = readCookie ('userDb');
 //var user_db = readCookie ('userDb');
 const u_db = readCookie("userDb");
 
+//Configuracion global de mododal
+
+
+$('#master_modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    modal.find('.modal-body input').val(recipient)
+  })
 
 //Varianble global user_data
 this.user_data = {
@@ -116,70 +128,6 @@ var del = 'ws_'+ ws_id +'_'+ module + '_del';
 var admin = 'ws_'+ ws_id +'_'+ module +'_admin';
 */
 
-//Creo y conecto con userDB local 
-user_db = new PouchDB(u_db, { skip_setup: true });
-
-//getSession();
-
-user_db.sync(url_R_db+userDb, {
-    live: true,
-    retry: true,
-  }).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
-  }).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-  }).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-  }).on('error', function (err) {
-    if(err){
-        $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
-    //logout()
-    }
-    if (err.name === 'Unauthorized') {
-        Snackbar.show({
-            text: '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-        
-    // conflict!
-    }
-    if (err.name === 'conflict') {
-        Snackbar.show({
-            text: err.name,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-    // conflict!
-    } else {
-        //$('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-        Snackbar.show({
-            text: err.name,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-    // some other error
-    }
-  });
-
-var userCtx = '';
-//Creo y conecto con userDB local 
-u_session = new PouchDB(url_R_db, { skip_setup: true });
-
-  async function _session(){
-    userCtx = await u_session.get('_session', { include_docs: true});
-    console.log("userCtx remota");
-    console.log(userCtx);
-    return userCtx;
- }
-
- _session();
- console.log("userCtx remota");
- console.log(userCtx);
 // FUNCION LOGOUT
 function logout() {
     user_db.logOut(function(err, response) {
@@ -203,6 +151,96 @@ function logout() {
         }
     });
 };
+
+//Creo y conecto con userDB local 
+user_db = new PouchDB(u_db, { skip_setup: true });
+
+//getSession();
+
+user_db.sync(url_R_db+userDb, {
+    live: true,
+    retry: true,
+  }).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+  }).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+   // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+  }).on('error', function (err) {
+    if(err){
+        $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+        //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
+        //logout()
+        var msj_error = "Hay un error inesperado";
+        if (err.status === 401) {
+            msj_error = '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...';
+        }
+        if (err.status != 401) {
+            msj_error = err.name;
+        }
+        //Imprimo el Mensaje de error en pantalla
+        // $('#master_modal').modal('show');
+
+
+        $('#master_modal').modal('show', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+           // var recipient = button.data('whatever') // Extract info from data-* attributes
+            var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+            //modal.find('.modal-body input').val(recipient)
+            modal.find('.modal-body').html( "<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>")
+            //Imprimo rl boton personalizado
+          //  modal.find('.modal-footer').html( "<button type='button' onclick='logout()' class='btn btn-secondary modal_btn_close'>Login</button>")
+          });
+
+
+      /*  $('#master_modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+            modal.find('.modal-body input').val(recipient)
+          })
+
+*/
+        Snackbar.show({  
+            text: msj_error,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Ingresar',
+            actionTextColor: "#4CAF50",
+               onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);    
+                logout()
+            }
+        });
+    }
+  });
+
+var userCtx = '';
+//Creo y conecto con userDB local 
+u_session = new PouchDB(url_R_db, { skip_setup: true });
+  async function _session(ws_lang_data){
+    userCtx = await u_session.get('_session', { include_docs: true});
+    return userCtx;
+ }
+
+ _session();
+
+
+
+ button.onclick = function() {
+    registration.update();
+  }
+
 
 //Boton Offline
 
