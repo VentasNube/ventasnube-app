@@ -237,15 +237,8 @@ u_session = new PouchDB(url_R_db, { skip_setup: true });
 
 
 
- button.onclick = function() {
-    registration.update();
-  }
-
-
 //Boton Offline
-
 /*
-
 /*
   user_db.getSession(function (err, response) {
     if (err) {
