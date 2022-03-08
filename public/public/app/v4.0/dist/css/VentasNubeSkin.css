@@ -6674,7 +6674,7 @@ label:focus {
     background: #ffffff!important;
     font-size: 18px;
     text-overflow: ellipsis;
-    text-align: left;
+    /*text-align: left;*/
     color: #555!important;
     padding: 20px 0px;
     display: inline-block;

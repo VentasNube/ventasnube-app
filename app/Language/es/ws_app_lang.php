@@ -81,12 +81,15 @@ return [
 
         'ws_panel_settings_lang_label' => 'Modificar Idioma', 
 
+        
+
         'ws_panel_settings_lang_es' => 'Espa&ntilde;ol',
         'ws_panel_settings_lang_us' => 'Ingles',
         'ws_panel_settings_lang_por' => 'Portugues',
         //BOTONES
         
         'ws_settings_update_btn' => 'Actualizar',
+
         //ICONOS
     
         'ws_config_icon' => 'tune',
