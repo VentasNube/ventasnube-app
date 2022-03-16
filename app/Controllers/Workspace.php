@@ -53,8 +53,26 @@ class Workspace extends BaseController
         return json_encode(view('/workspace/js/service-worker.js'));
         //return view('/workspace/js/service-worker.js');
     }
-
     function app()
+    {
+      //  if (!logged_in()) {
+        //    return redirect()->to(base_url('/workspace/login'));
+       // }
+        $user_id = user_id();
+        $Workspace = new WorkspaceModel(); //traigo al modelo
+        $Workspace = $Workspace->get_all_ws_user($user_id); //cargo la data en un array
+        //  $ws_id = session('ws_id');
+        //  $ws_id = $this->session->set($ws_select_data);
+      //  if ($Workspace) {
+            $model = new OwnerModel(); //traigo al modelo		
+            $data['owner'] = $model->getOwner(); //cargo la data en un array
+            return view('/workspace/body/body.hbs', $data);
+            //   return redirect()->to(base_url('/workspace/home'));
+      //  } else {
+       //     return redirect()->to(base_url('/workspace/welcome'));
+      //  }
+    }
+    function appOLD()
     {
         if (!logged_in()) {
             return redirect()->to(base_url('/workspace/login'));
