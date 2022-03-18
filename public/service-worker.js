@@ -1,7 +1,7 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
+      importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-    const version = 2111113121;
-    const expectedCaches = ['ventasnube-v-' + version];
+      const version = 1122111111;
+      const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
         self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
@@ -17,34 +17,38 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox
         }
       });
       
-/*
-    self.addEventListener('message', function(event){
+        /*
+
+        self.addEventListener('message', function(event){
         msg = event.data;
         console.log("SW Received Message: " + msg);
-        // if (msg==='clearCache') {
-          console.log('Clearing Workbox Cache.');
-          WorkBoxCache = new workbox.expiration.Plugin;
-          WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
-                //WorkBoxCacheServer.clear();
-            //  }
-         if (event.data.action === 'skipWaiting') {
-          self.skipWaiting();
-        }
-    });
-*/
-     /* self.addEventListener('activate', (event) => {
+
+            if ( msg === 'clearCache' ) {
+                    console.log('Clearing Workbox Cache.');
+                    WorkBoxCache = new workbox.expiration.Plugin;
+                    WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
+                    WorkBoxCacheServer.clear();
+            }
+
+            if (event.data.action === 'skipWaiting') {
+                self.skipWaiting();
+            }
+
+        });
+     
+        self.addEventListener('activate', (event) => {
         var cacheKeeplist = ['v2'];
-      
         event.waitUntil(
           caches.keys().then((keyList) => {
             return Promise.all(keyList.map((key) => {
               if (cacheKeeplist.indexOf(key) === -1) {
                 return caches.delete(key);
               }
-          })
-        );
-      });
-    */
+            })
+          );
+        });
+
+      */
 
     workbox.core.setCacheNameDetails({
         prefix: 'ventasnube',

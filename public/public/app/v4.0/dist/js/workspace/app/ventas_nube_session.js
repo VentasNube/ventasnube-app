@@ -185,22 +185,20 @@ user_db.sync(url_R_db+userDb, {
         // $('#master_modal').modal('show');
 
 
-        $('#master_modal').modal('show', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-           // var recipient = button.data('whatever') // Extract info from data-* attributes
-            var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title').text('New message to ' + recipient)
-            //modal.find('.modal-body input').val(recipient)
-            modal.find('.modal-body').html( "<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>")
-            //Imprimo rl boton personalizado
-          //  modal.find('.modal-footer').html( "<button type='button' onclick='logout()' class='btn btn-secondary modal_btn_close'>Login</button>")
-          });
+            $('#master_modal').modal('show', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                // var recipient = button.data('whatever') // Extract info from data-* attributes
+                var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title').text(recipient)
+                // modal.find('.modal-body input').val(recipient)
+                modal.find('.modal-body').html( "<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>");
+            });
 
 
-      /*  $('#master_modal').on('show.bs.modal', function (event) {
+        /*  $('#master_modal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipient = button.data('whatever') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -209,8 +207,8 @@ user_db.sync(url_R_db+userDb, {
             modal.find('.modal-title').text('New message to ' + recipient)
             modal.find('.modal-body input').val(recipient)
           })
+        */
 
-*/
         Snackbar.show({  
             text: msj_error,
             width: '475px',
@@ -222,6 +220,7 @@ user_db.sync(url_R_db+userDb, {
                 logout()
             }
         });
+
     }
   });
 

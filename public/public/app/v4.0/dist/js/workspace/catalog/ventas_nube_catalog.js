@@ -6,6 +6,7 @@ function charge_all_docs_local(remote_items) {
             // handle err or response
         });
 }
+
 all_items_array = {};
 search_fuse = null;
 
@@ -82,6 +83,7 @@ async function get_all_catalog_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
+
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
 function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      
@@ -126,6 +128,7 @@ function get_nav_catalog(ws_info, ws_lang_data) {
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
+
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -135,6 +138,7 @@ function get_items_catalog(ws_id) {
     // $('#cart_user_input').focus();
     //console.log('GET ITEMS CATALOG');
 }
+
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -195,6 +199,7 @@ function cat_variations_price(element) {
     //    alert(card_product_val);
     //  });
 }
+
 //Boton setear variacion
 function cat_variations_set(element) {
     // console.log(elemento);
@@ -229,6 +234,7 @@ function cat_variations_set(element) {
     }
     // });
 }
+
 //Boton variables y las Renderizo
 function cat_variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -437,6 +443,7 @@ function view_item_variations_price(element) {
     //    alert(card_product_val);
     //  });
 }
+
 //Boton variables y las Renderizo
 function view_item_variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -461,6 +468,7 @@ function view_item_variations_get(element) {
     });
 
 }
+
 //Renderizo la variacion nueva en la tarjeta
 function view_item_variations_select(element) {
 
@@ -469,6 +477,7 @@ function view_item_variations_select(element) {
     //  alert('Mando al la variante' + element);
     catalog_view_item(element);
 }
+
 /***  FIN VIEW ITEM */
 $(document).on('click', '.catalog_edit_item', function (event) {
     //$('#master_popup').modal('show');
@@ -477,17 +486,20 @@ $(document).on('click', '.catalog_edit_item', function (event) {
     catalog_view_item(product_id)
     alert('catalog_edit_item()' + product_id);
 });
+
 $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
     // get_catalog_new_item();
     catalog_edit_item();
     alert('catalog_new_item');
 });
+
 $(document).on('focusin', '.catalog_search', function (element) {
     // cat_get_all_item_punchDb();
     //  cat_search_item_js();
     get_all_catalog_intems();
 });
+
 $(document).on('keyup', '.catalog_search', function () {
     var search_val = $(this).val();
     var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
@@ -498,10 +510,12 @@ $(document).on('keyup', '.catalog_search', function () {
     console.log(search_val);
     search_catalog_item(search_val, all_items_array)
 });
+
 $(document).on('click', '.view_variant', function (element) {
     var product_id = $(this).attr('product_id');
     catalog_view_item(product_id);
 });
+
 // TRAIGO EL CATALOGO Y IMPRIMO
 async function get_catalog(ws_id) {
     var ws_cart = {
@@ -528,16 +542,16 @@ async function put_catalog(doc_id, my_doc) {
     }
 }
 
-
 // EDITAR PRODUCTOS
 /* TAGS FUNCIONES */
-//Tomo el enter si esta en el input
+// Tomo el enter si esta en el input
 function add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
     if (key == 13) {
         add_new_tag(element);
     }
 }
+
 // Agrego un tag
 async function add_new_tag(element) {
     try {
@@ -591,6 +605,7 @@ async function add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
+
 // Elimino un tag
 async function dell_tag(element) {
     try {
@@ -624,6 +639,7 @@ async function dell_tag(element) {
         console.log(err);
     }
 }
+
 //Tomo el enter si esta en el input
 function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
@@ -631,6 +647,7 @@ function add_new_cat_press(e, element) {
         add_new_cat(element);
     }
 }
+
 //CATEGORIAS
 // Agrego un Categoria
 async function add_new_cat(element) {    
@@ -693,6 +710,7 @@ async function add_new_cat(element) {
         $(element).css("color", "red");
     }
 }
+
 // Traigo las categorias, 
 async function get_all_tag(element) {
     try {
@@ -709,6 +727,7 @@ async function get_all_tag(element) {
         console.log(err);
     }
 }
+
 // Elimino una Categoria
 async function dell_cat(element) {
     try {
@@ -761,6 +780,7 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
+
 //Boton variables y las Renderizo
 function catalog_new_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -779,6 +799,7 @@ function catalog_new_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
+
 //Boton variables y las Renderizo
 function catalog_dell_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -840,6 +861,7 @@ async function cat_edit_product(element) {
     }
 
 }
+
 async function cat_edit_variations(element) {
 
     try {
@@ -876,9 +898,7 @@ async function cat_edit_variations(element) {
     }
 }
 
-
 /* Animacion botones selectores wich Editar producto */
-
 /*
 $("li.bg-color").click(function () {
     var bgColor = $(this).attr('bg-color');

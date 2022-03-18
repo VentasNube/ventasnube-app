@@ -24,8 +24,6 @@ async function search_db() {
             price_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
             //DOC DE CATEGORIAS PRODUCTOS
             category_list = await L_catalog_db.get('category_list', { include_docs: true, descending: true });
-
-
     } catch (err) {
         Snackbar.show({
             text: err.reason,
@@ -43,7 +41,6 @@ function get_search_module(ws_info, ws_lang_data) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         user: user_data,
-
     }
     //console.log('SEARCH ARRAYYY ');
     //console.log(ws_search_data);
