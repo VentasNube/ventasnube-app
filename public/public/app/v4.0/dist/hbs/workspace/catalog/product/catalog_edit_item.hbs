@@ -110,7 +110,7 @@
                                         </span>
                                         <select class="form-control md" name="cars" id="cars">
                                             {{#each ../category_list/category_list }}
-                                            <option value="{{id}}">{{value}}</option>
+                                                <option value="{{id}}">{{value}}</option>
                                             {{/each}}
                                         </select>
                                         <span class="input-group-addon">
@@ -327,8 +327,9 @@
                                                 description
                                             </span>
                                         </span>
-                                        <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="description"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="Descripcion"
-                                            value="{{descriptions}}">
+                                        <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="descriptions"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="Descripcion"
+                                            value="{{descriptions.value}}">
+
                                         <!--- ATRIBUTOS DE LA VARIABLE -->
                                     </div>
                                 </div>
@@ -471,8 +472,6 @@
                                         <select class="form-control md" name="cars" id="cars">
                                             <option value="">Peso</option>
                                         </select>
-
-
                                         <span class="input-group-addon">
                                             <div class="btn-group dropright">
                                                 <button id="" type="button"
@@ -548,7 +547,6 @@
                                     </span>
                                     <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
                                         value="{{sku.value}}">
-
                                 </div>
                             </div>
                             <!-- PRECIOS INVENTARIO -->
