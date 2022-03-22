@@ -622,9 +622,13 @@ class Workspace extends BaseController
                         'workspace_zona_h' => $ws_zona_h,
                         'tax' => [
                             [
-                                'tax_id' => 'iva',
-                                'tax_name' => 'IVA',
-                                'tax_value' => '21',
+                                'id' => '0',
+                                'name' => 'IVA 21',
+                                'value' => '21',
+                            ],   [
+                                'id' => '1',
+                                'name' => 'IVA 10',
+                                'value' => '10',
                             ],
                         ],
                         'money' => '$',
@@ -838,10 +842,19 @@ class Workspace extends BaseController
                         'variations' => [
                             [
                                 'id' => 1,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
+                                
                                 'sku' => [
                                     'id' => 'EAN',
                                     'value' => '1231256345345'
@@ -898,9 +911,17 @@ class Workspace extends BaseController
                             ],
                             [
                                 'id' => 2,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'sku' => [
                                     'id' => 'EAN',
@@ -957,9 +978,17 @@ class Workspace extends BaseController
                             ],
                             [
                                 'id' => 3,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'sku' => [
                                     'id' => 'EAN',
@@ -1089,9 +1118,17 @@ class Workspace extends BaseController
                         'variations' => [
                             [
                                 'id' => 1,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'sku' => [
                                     'id' => 'EAN',
@@ -1149,9 +1186,17 @@ class Workspace extends BaseController
                             ],
                             [
                                 'id' => 2,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'sku' => [
                                     'id' => 'EAN',
@@ -1208,9 +1253,17 @@ class Workspace extends BaseController
                             ],
                             [
                                 'id' => 3,
-                                'tax' => [
-                                    'id' => 'IVA',
-                                    'value' => '21'
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'sku' => [
                                     'id' => 'EAN',
