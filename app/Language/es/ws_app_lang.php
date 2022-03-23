@@ -37,6 +37,46 @@ return [
         't_new_product' => 'Crear producto',
         'a_dell_product' => 'Quieres eliminar el producto?',
 
+        //Editar producto
+        'm_catalog_edit_tittle' => 'Editar producto',
+        'm_catalog_edit_sub_tittle' => 'Informacion General',
+
+        'm_catalog_edit_name' => 'Nombre',
+        'm_catalog_edit_cat' => 'Categoria',
+
+        //
+        'm_catalog_edit_trade' => 'Marca',
+        'm_catalog_edit_model' => 'Modelo',
+        'm_catalog_edit_category' => 'Categoria',
+        'm_catalog_edit_sub_category' => 'Sub Categoria',
+        //
+        'm_catalog_edit_variant' => 'Variantes',
+        'm_catalog_edit_stock' => 'Stock',
+        'm_catalog_edit_on' => 'Activar',
+        'm_catalog_edit_off' => 'Desactivar',
+        //
+        'm_catalog_edit_description' => 'Descripcion',
+        'm_catalog_edit_color' => 'Color',
+        'm_catalog_edit_talle' => 'Talle',
+        'm_catalog_edit_peso' => 'Peso',
+        'm_catalog_edit_barcode' => 'Codigo de barras',
+        //
+        
+        'm_catalog_edit_price' => 'Precios',
+        'm_catalog_edit_stock' => 'Stock',
+        'm_catalog_edit_inicial_stock' => 'Stock Inicial',
+        'm_catalog_edit_create' => 'Creado',
+        'm_catalog_edit_sale' => 'Vendidos',
+        'm_catalog_edit_cost' => 'Costo',
+        'm_catalog_edit_enable' => 'Disponible',
+        'm_catalog_edit_contity' => 'Cantidad',
+        'm_catalog_edit_price_update' => 'Actualizar Lista de precios',
+        'm_catalog_edit_stock_update' => 'Actualizar Stock',
+        //
+        'm_catalog_edit_edit' => 'Editar',
+        'm_catalog_edit_delete' => 'Eliminar',
+
+
         
         //CARRITO
         'm_cart' => 'Carrito',
