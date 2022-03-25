@@ -40,10 +40,11 @@ return [
         //Editar producto
         'm_catalog_edit_tittle' => 'Editar producto',
         'm_catalog_edit_sub_tittle' => 'Informacion General',
-
+        //
         'm_catalog_edit_name' => 'Nombre',
-        'm_catalog_edit_cat' => 'Categoria',
-
+        'm_catalog_edit_tags' => 'Etiquetas',
+        'm_catalog_edit_add_pic' => 'Agregar foto',
+        'm_catalog_edit_del_pic' => 'Eliminar foto',
         //
         'm_catalog_edit_trade' => 'Marca',
         'm_catalog_edit_model' => 'Modelo',
@@ -73,6 +74,8 @@ return [
         'm_catalog_edit_price_update' => 'Actualizar Lista de precios',
         'm_catalog_edit_stock_update' => 'Actualizar Stock',
         //
+        'm_catalog_edit_new' => 'Nueva',
+        'm_catalog_edit_add' => 'Agregar',
         'm_catalog_edit_edit' => 'Editar',
         'm_catalog_edit_delete' => 'Eliminar',
 
