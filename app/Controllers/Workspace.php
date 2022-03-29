@@ -403,6 +403,7 @@ class Workspace extends BaseController
             
             // Compruebo q se creo el usuario con exito
             if ($Workspace_id_hex_post) {
+
                 // Habilito el usuario al nuevo workspace
                 $ws_user_data = [
                     'workspace_id' => $workspace_id_dec,
@@ -412,6 +413,7 @@ class Workspace extends BaseController
                     'user_workspace_status' => 'active',
                     'user_workspace_create_time' => now(),
                 ];
+
                 //ASIGNO UN LOS PERMISOS DE USARIOS PARA EL WORKSPACE
                 $ws_user = $this->WorkspaceModel->insert('users_workspace', $ws_user_data);
                 // Modulos del sistema del (plan-starter)( BASICO)
@@ -510,6 +512,7 @@ class Workspace extends BaseController
                         'offline_mode' => 'true',
                     ],
                 ];
+
                 //Documento con la info del workspace creado
                 $ws_body = [
                     '_id' => 'ws_left_nav_' . $workspace_id_hex,
@@ -570,10 +573,12 @@ class Workspace extends BaseController
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id_hex;
                     $module_name = "catalog";
+
                     // SETEO LOS PERMISOS 
                     $ws_module_name = "catalog";
                     $module_id = '2';
                     $module_type_id = '0';
+
                     // Agrego permiso s 
                     $ws_permission = [
                         'ws_id' => $workspace_id_dec,
@@ -585,11 +590,11 @@ class Workspace extends BaseController
                     ];
 
                     // Creo el documento de diseño q filtra los permisos q otorgan a los usuarios para hacer update 
-
                     $ws_validate_doc_save = [
                         "_id" => "_design/validate_save_doc",
                         "validate_doc_update" => "function(newDoc, oldDoc, userCtx)  var role = '_save';  if (userCtx.roles.indexOf('_admin') === -1 && userCtx.roles.indexOf(role) === -1) { { {throw({forbidden : 'Solo usuarios con el rol!'+rol+'o un administrador pueden editar'});}}",
                     ];
+
                     //CREO LOS PERMISOS PARA EL MODULO EN MYSQL
                     //DOCUMENTOS DE DISENO GET DEL BUSCADOR
                     $ws_collection_get = [
@@ -705,6 +710,7 @@ class Workspace extends BaseController
                             ],
                         ],
                     ];
+
                     //CATEGORIAS
                     $category_list = [
                         '_id' => 'category_list',
@@ -725,6 +731,7 @@ class Workspace extends BaseController
                             ],
                         ],
                     ];
+
                     //Marca
                     $trade_list = [
                         '_id' => 'trade_list',
@@ -745,6 +752,7 @@ class Workspace extends BaseController
                             ],
                         ],
                     ];
+
                     //Modelo
                     $model_list = [
                         '_id' => 'model_list',
@@ -1070,6 +1078,7 @@ class Workspace extends BaseController
                             'logistic_type' => 'not_specified'
                         ]
                     ];
+                    
                     $product_02 = [
                         '_id' => 'product-2',
                         'name' => 'Adidas fit remera ',
@@ -1345,18 +1354,16 @@ class Workspace extends BaseController
                             'logistic_type' => 'not_specified'
                         ]
                     ];
+
                     //SI SE CREARON CON EXITO CREO LA DB CATALOGO EN COUCHDB
                     $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                     //Agrego el rol del modulo admin al cliente que lo crea
 
-
                     // SEGURIDAD TODOS LOS DOCUMENTOS POR CADA MODULO DB
-
                     $ws_validate_doc_edit = [
                         "_id" => "_design/validate_edit_doc",
                         "validate_doc_update" => "function(newDoc, oldDoc, userCtx)  var role = '" . $module_name . "_edit" . $workspace_id_hex . "';  if (userCtx.roles.indexOf('_admin') === -1 && userCtx.roles.indexOf(role) === -1) { { {throw({forbidden : 'Solo usuarios con el rol!'+rol+'o un administrador pueden editar'});}}",
                     ];
-
 
                     $ws_security_doc = [
                         'admins' => [
@@ -1672,7 +1679,6 @@ class Workspace extends BaseController
     public function dell_rol()
     {
         $WorkspaceModel = new WorkspaceModel(); //traigo al modelo
-
         //   $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
         $workspace_id_hex = '313636';
         $user_email = 'smartmobile.com.ar@gmail.com';

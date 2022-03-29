@@ -263,6 +263,82 @@ class Admin extends BaseController
         //return true;
     }
 
+     //Vista de reset de pasword
+     public function ws_products_update()
+     {
+        if (!logged_in() || !in_groups('admin')) {
+             return redirect()->to(base_url('/workspace'));
+         }
+         helper('date');       // Libreria de tiempo 
+         $UserModel = new UserModel(); //traigo el modelo
+         $db = \Config\Database::connect();
+         $user_id = $this->request->getPost("user_id");
+         //$ws_id = $this->request->getPost("ws_id_ex");
+         // $u_name = $this->session->get('u_name');
+         // $user_id = user_id(); // Usuari
+         // $ws_id = $session->get('ws_id');
+         // $user_email = $this->request->getPost("user_email");
+
+         $user_email = $UserModel->getUserData($user_id, 'email');// Traigo el email del usuario
+         //Transformo el email en hexadecimal por seguridad
+         // $user_email_hex = bin2hex($user_email);
+
+         //Armo la url de la User BD
+
+         // $db_user = 'userdb-' .  $user_email_hex;
+         // $ws_id_dec = $this->session->get('ws_id');
+
+         // DATOS DEL FORMULARIO
+         $workspace_id_hex = $this->request->getPost("ws_id_ex");
+
+         //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
+         $db_name = "ws_collections_" . $workspace_id_hex;
+         // Traigo la revision del documento y lo creo
+         // $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_" . $workspace_id_hex); //Creo un doc con la informacion del workspace
+         
+
+         $product_01 = null;
+
+         $product_02 = null;
+
+
+
+      
+         //Creo el documento
+         $ws_lang = [
+             '_id' => 'ws_lang_' . $workspace_id_hex,
+             '_rev' => $doc_rev,
+             'ws_update' => now(),
+             'ws_update_user' => $user_email,
+             'ws_land_default' => 'ws_lang_es',
+             'ws_lang_es' =>  lang('ws_app_lang.ws_lang_es'), //Traigo la plantilla de idioma   
+             'ws_lang_us' =>  lang('ws_app_lang.ws_lang_us'), //Traigo la plantilla de idioma
+         ];
+
+         // Inicio la trasaccion
+         $db->transBegin();
+         //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
+
+
+            //DOC EJEMPLO PRODUCTOS
+            $result_doc =  $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
+            $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
+         
+            //  $result_doc = $this->WorkspaceModel->curl_update($db_user . "/ws_lang_" . $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
+         if ($db->transStatus() === false) {
+             $db->transRollback();
+             $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' . $db->transStatus(), 'result' => false];
+             return json_encode($return);
+         } else {
+             $db->transCommit();
+             $msj = ['msj' => 'Felicitades!  REV:' . $doc_rev . ' ------- RESULT UPDATE ' . $result_doc  . '------- Codigo Status:' . $db->transStatus() . ' Se actualizo la app con exito!', 'result' => true];
+             return json_encode($msj);
+             // return json_encode($msj);
+         }
+         return json_encode($ws_lang);
+         //return true;
+     }
+
 
   //Vista de reset de pasword
   public function ws_catalog_update()
@@ -877,16 +953,7 @@ class Admin extends BaseController
       return json_encode($ws_lang);
       //return true;
   }
-
-
-
-
-
     // INSTALACION DE WORKSPACE
-
-
-
-
     //Elimino el WS Completo de todos lados
     public function ws_delete_db($workspace_id = 0)
     {

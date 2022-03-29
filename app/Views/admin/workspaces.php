@@ -130,6 +130,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                 <button id="update_ws_submit"   type="button" class="btn btn-primary"> ( ws_app_lang ) </button><br>
+                                                <button id="ws_products_update"   type="button" class="btn btn-primary"> ( Productos de prueba ) </button><br>
             <button id=""   type="button" class="btn btn-primary">(	_design/get )</button><br>
              <button id=""   type="button" class="btn btn-primary">( _design/get_cart_ws )</button><br>
            <button id=""   type="button" class="btn btn-primary">( ws_left_nav_xxxx )</button><br>              
