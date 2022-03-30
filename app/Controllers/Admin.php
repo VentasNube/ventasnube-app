@@ -263,6 +263,31 @@ class Admin extends BaseController
         //return true;
     }
 
+  //Vista de reset de pasword
+  public function ws_update()
+  {
+     if (!logged_in() || !in_groups('admin')) {
+          return redirect()->to(base_url('/workspace'));
+      }
+      helper('date');       // Libreria de tiempo 
+      $UserModel = new UserModel(); //traigo el modelo
+      $db = \Config\Database::connect();
+      $user_id = $this->request->getPost("user_id");
+
+      $files = new FileCollection();
+      $document = $files->add(APPPATH . 'views/workspace/catalog/templates/example_prduct_001.php', true); // Adds all Config files and directories
+
+
+      echo $document;
+     // addFile(cadena $archivo) 
+
+    }
+
+
+
+
+
+
      //Vista de reset de pasword
      public function ws_products_update()
      {
