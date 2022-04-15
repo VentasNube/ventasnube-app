@@ -862,6 +862,14 @@ class Workspace extends BaseController
                                       'value' => '10'
                                       ]
                                 ],
+                                'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
                                 
                                 'sku' => [
                                     'id' => 'EAN',

@@ -144,20 +144,29 @@
     // FUNCIONES PARA ACTUALIZAR LOS ESPACIOS DE TRABAJO
 
     $(".update_ws" ).click(function() {
-
         var ws_id_ex = $(this).attr('ws_id_ex');
         var user_id = $(this).attr('user_id');
         var user_email = $(this).attr('user_email');
         $('#update_ws_submit').attr('ws_id_ex', ws_id_ex );
         $('#update_ws_submit').attr('user_id', user_id );
         $('#update_ws_submit').attr('user_email', user_email );
+
+
+        $('#formUpadate').attr('ws_id_ex', ws_id_ex );
+        $('#formUpadate').attr('user_id', user_id );
+        $('#formUpadate').attr('user_email', user_email );
         
     });
 
     // EDITAR LENGUAJE 
     $("#update_ws_submit" ).click(function() {
-            var ws_id_ex = $(this).attr('ws_id_ex');
-            var user_id = $(this).attr('user_id');
+           // var ws_id_ex = $(this).attr('ws_id_ex');
+           // var user_id = $(this).attr('user_id');
+
+
+            var ws_id_ex = $('#formUpadate').attr('ws_id_ex');
+            var user_id = $('#formUpadate').attr('user_id');
+
             var url = "<?=site_url('/admin/ws_lang_update');?>";
             $.ajax({
             data: {
@@ -177,8 +186,9 @@
 
        // EDITAR PRODUCTO DE PRUEBA 1
     $("#ws_products_update" ).click(function() {
-            var ws_id_ex = $(this).attr('ws_id_ex');
-            var user_id = $(this).attr('user_id');
+            var ws_id_ex = $('#formUpadate').attr('ws_id_ex');
+            var user_id = $('#formUpadate').attr('user_id');
+
             var url = "<?=site_url('/admin/ws_products_update');?>";
             $.ajax({
                 data: {

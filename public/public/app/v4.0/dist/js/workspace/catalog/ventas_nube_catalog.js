@@ -121,7 +121,8 @@ function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, to
 function get_nav_catalog(ws_info, ws_lang_data) {
     var ws_catalog_data = {
         ws_info: ws_info,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
@@ -132,7 +133,8 @@ function get_nav_catalog(ws_info, ws_lang_data) {
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', '#content_catalog_commpiled', ws_catalog);
     // $('#cart_user_input').focus();
@@ -154,7 +156,9 @@ function form_new_product(ws_info, ws_lang_data) {
 function print_catalog_item(new_items) {
     var search_result = {
         search_product: new_items,
-        price_list: price_doc.price_list
+        price_list: price_doc.price_list,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
     }
     console.log(search_result);
     if (new_items.length > 0) {
@@ -520,7 +524,8 @@ $(document).on('click', '.view_variant', function (element) {
 async function get_catalog(ws_id) {
     var ws_cart = {
         ws_info: ws_info,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
     get_nav_catalog();
@@ -819,47 +824,59 @@ function catalog_dell_cat(element) {
     });
 }
 
-// SUB CATEGORIAS
+// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 async function cat_edit_product(element) {
 
     try {
-        //traigo el documento a editar
-        const doc_id = $(element).attr('doc_id');
-        const variant_id = $(element).attr('variant_id');
-        const input_id = $(element).attr('input_id');
-        const new_value = $(element).val();
-
-        var doc_id_s = String(doc_id);
-        var doc = await L_catalog_db.get(doc_id_s);
-        console.log('DOCUMENTO A EDITAR1');
-        console.log(doc);
-
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        const input_status_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id+'_status'; //Armo la id del checkbox
+        const input_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id; // Armo la id del input
+        const new_input_status =  $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        if(new_input_status === false){
+            var input_status = true;
+            $(input_html_id).prop('disabled', true);
+            $(input_html_id).prop('status', true);
+        }else if(new_input_status === true){
+            var input_status = false;
+            $(input_html_id).prop('disabled', false);
+            $(input_html_id).prop('status', false);
+        }else{
+            var input_status = true;
+        }
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+        // Si el objeto a editar esta dentro de una variable
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            const value = item[input_id]; //Traigo el ojeto especifico 
-            value.value = new_value; //Edito el valor del value por el valor nuevo
-            console.log('VARIANTE EDITADA 1');
-            console.log(doc);
-        } else {
-            doc[input_id] = new_value;
-            console.log('Descripcion EDITADA 2');
-            console.log(doc);
+            const new_objet_input = item; //Traigo el ojeto especifico 
+            new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
         }
-
+        // Si la edicion es fuera de una variable
+        else {
+         doc[input_id] = new_value ;//BUSCO EL OBJETO Y LO EDITO
+        }
+        //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
             var response = await L_catalog_db.put({
                 _id: doc._id,
                 _rev: doc._rev,
                 ...doc,// trae todos los datos del doc y los pega en la raiz
             });
-            console.log('DOC DATA RESPONSE EDITADO 3');
-            console.log(doc);
-            console.log(response);
         }
     } catch (err) {
         console.log(err);
     }
 
+}
+
+
+async function cat_edit_product_input_status(element) {
+
+    var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
 }
 
 async function cat_edit_variations(element) {

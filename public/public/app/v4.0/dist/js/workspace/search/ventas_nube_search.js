@@ -136,7 +136,9 @@ function search_item_js(search_val) {
     //Armo el array para renderizar los items
     var search_result = {
         search_product: result,
-        price_list: price_doc.price_list
+        price_list: price_doc.price_list,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
     }
 
     if (result.length > 0) {
