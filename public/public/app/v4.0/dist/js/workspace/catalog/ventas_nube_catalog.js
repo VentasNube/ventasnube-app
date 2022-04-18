@@ -141,10 +141,13 @@ function get_items_catalog(ws_id) {
     //console.log('GET ITEMS CATALOG');
 }
 
+
+/**** NUEVO PRODUCTO */
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', '#right_main_compiled', ws_cart);
     // $('#cart_user_input').focus();
@@ -322,6 +325,8 @@ async function post_url_history(module, id) {
         console.log(err);
     }
 }
+//FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
+
 async function catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -363,6 +368,10 @@ async function catalog_view_item(element) {
         console.log(err);
     }
 }
+
+
+
+//FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function catalog_view_item_url(m_id, m_var_id) {
     try {
         var product_id = m_id;
@@ -395,6 +404,8 @@ async function catalog_view_item_url(m_id, m_var_id) {
         console.log(err);
     }
 }
+
+// FUNCION PARA EDITAR PRODUCTO
 async function catalog_edit_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -411,18 +422,9 @@ async function catalog_edit_item(element) {
             price_list: price_doc.price_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            category_list: category_list
-
+            category_list: category_list,
+            attributes_list:attributes
         }
-
-        console.log(category_list);
-
-        console.log('catalog_view_item OK ONE AAAAAAA');
-        // console.log(product_doc_array);
-        console.log(user_Ctx.userCtx.roles);
-        console.log('product_doc_array AAAAAAA');
-        console.log(product_doc_array);
-
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -430,7 +432,35 @@ async function catalog_edit_item(element) {
         //var m_url = url_app +'?type=catalog&?=' + m_name; // Armo la url completa del linck
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+    } catch (err) {
+        console.log(err);
+    }
+}
 
+//FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
+async function catalog_edit_item_url(m_id, m_var_id) {
+    try {
+        var product_id = m_id;
+        var variant_id = m_var_id;
+        var product_doc = await L_catalog_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: category_list,
+            attributes_list:attributes
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
     } catch (err) {
         console.log(err);
     }
@@ -861,6 +891,10 @@ async function cat_edit_product(element) {
         }
         //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
+            console.log('EDICION DE:new_value');
+            console.log(new_value);
+            console.log('EDICION DE:new_value');
+            console.log();
             var response = await L_catalog_db.put({
                 _id: doc._id,
                 _rev: doc._rev,
@@ -874,10 +908,6 @@ async function cat_edit_product(element) {
 }
 
 
-async function cat_edit_product_input_status(element) {
-
-    var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-}
 
 async function cat_edit_variations(element) {
 

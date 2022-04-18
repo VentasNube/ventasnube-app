@@ -238,9 +238,13 @@
             <div class="panel panel-default margin-b-10">
                 <div class="panel-heading" role="tab" id="variants">
                     <h4 class="panel-title">
-                        <div class="Switch">
-                            <input {{#ifEquals status '1' }} checked="" {{/ifEquals}} value="1"
-                                id="switch_variation_{{id}}" name="switch_variation" type="checkbox" />
+                        <div class="Switch" onclick="">
+                            <input
+                            {{#ifEquals status.value active }} checked {{/ifEquals}}
+                                id="switch_variation_{{id}}" name="switch_variation"
+ {{#ifEquals                    status 'active' }} checked="" {{/ifEquals}} value="{{{status.value}}}" name="switch_variation"
+                                type="checkbox" doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"  input_id="status" onclick="cat_edit_product(this)"
+                                />
                             <label for="switch_variation_{{id}}" class="label-primary"></label>
                         </div>
                         <a role="button" data-toggle="collapse" data-parent="#item-edit-variants"
@@ -333,101 +337,61 @@
                                 </div>
                                 <!---COLOR-->
 
- {{#with color }}
-                                <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input id="{{{../../product_doc/_id}}}_{{../id}}_color_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
-                                                </span>
-                                                <label for="" >
-                                                     <input status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_color" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" onfocusout="cat_edit_product(this)"  class="form-control md padding-10" type="color" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_color}}} {{/with}}" >
-                                        
-                                                </label>
-                                            </div>
-                               </div>
-                                 {{/with}} 
-                                  {{#with size }}
-                               <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input id="{{{../../product_doc/_id}}}_{{../id}}_size_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
-                                                </span>
-                                                <label for="" >
-                                                     <select onchange="cat_edit_product(this)" class="form-control md" name="size" status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_size" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size"  >
-                                                            <option selected value="{{{value}}}">{{{value}}}</option>
-                                                            <option value="xs">Talle xs</option>
-                                                            <option value="s">Talle s</option>
-                                                            <option value="m">Talle m</option>
-                                                            <option value="l">Talle l</option>
-                                                            <option value="">Talle xl</option>
-                                                            <option value="xxl">Talle xxl</option>
-                                                    </select>
-                                                </label>
-                                            </div>
-                               </div>
-                                {{/with}} 
-
-   {{#with size }}
-     <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                {{#with color }}
+                                    <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
-                                                        <input type="checkbox" aria-label="...">
+                                                        <input id="{{{../../product_doc/_id}}}_{{../id}}_color_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
                                                     </span>
-                                                            <!--select class="form-control md" name="cars" id="cars">
-                                                                {{#each ../category_list/category_list }}
-                                                                    <option value="{{id}}">{{value}}</option>
-                                                                {{/each}}
-                                                            </select-->
-                                                    <select class="form-control md" name="size" id="cars">
-                                                            <option value="">Talle xs</option>
-                                                            <option value="">Talle s</option>
-                                                            <option value="">Talle m</option>
-                                                            <option value="">Talle l</option>
-                                                            <option value="">Talle xl</option>
-                                                            <option value="">Talle xxl</option>
-                                                    </select>
-
-                                                    <span class="input-group-addon">
-                                                        <div class="btn-group dropright">
-                                                            <button id="" type="button"
-                                                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <span class="material-icons">add_circle</span>
-                                                            </button>
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
-                                                                <li>
-                                                                    <input id="" class="form-control" type="text"
-                                                                        placeholder="Escribe la categoria..." value="">
-                                                                </li>
-                                                                <li class="margin-t-10 text-center">
-                                                                    {{#with product_doc}}
-                                                                    <button onclick="catalog_save_edit_item(this)"
-                                                                        product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
-                                                                        type="button" class="cobrar-btn btn btn-primary">
-                                                                        {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
-                                                                    </button>
-                                                                    {{/with}}
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </span>
+                                                    <label for="" >
+                                                        <input status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_color" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" onfocusout="cat_edit_product(this)"  class="form-control md padding-10" type="color" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_color}}} {{/with}}" >
+                                            
+                                                    </label>
                                                 </div>
-    </div>
-    {{/with}}                                           
-                            <!--     {{#ifEquals attribute_combinations.id 'COLOR' }} 
-                                        <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input type="checkbox" aria-label="...">
-                                                </span>
-                                            <span class="">
-                                                <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="color" onfocusout="cat_edit_product(this)"  class="form-control md padding-10" type="color" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_color}}} {{/with}}" value=" {{{value}}} {{#each ../ws_lang_data}} {{{m_catalog_edit_color}}} {{/each}}">
-                                            </span>
-                                            </div>
-                                        </div>
-                                {{/ifEquals}} 
-                                -->
+                                </div>
+                                {{/with}} 
+                                {{#with size }}
+                                <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon">
+                                                                                    <input id="{{{../../product_doc/_id}}}_{{../id}}_size_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
+                                                                                </span>
+                                                                                <label for="" >
+                                                                                    <select onchange="cat_edit_product(this)" class="form-control md" name="size" status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_size" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size"  >
+                                                                                                <option selected value="{{{value}}}">{{{value}}}</option>
+                                                                                            {{#each ../../attributes_list/size }}
+                                                                                                <option value="{{value}}">{{value}}</option>
+                                                                                            {{/each}}
+                                                                                    </select>
+                                                                                </label>
+                                                                                <span class="input-group-addon">
+                                                                                        <div class="btn-group dropright">
+                                                                                            <button id="" type="button"
+                                                                                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                <span class="material-icons">add_circle</span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu pull-right">
+                                                                                                <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                                                                <li>
+                                                                                                    <input id="" class="form-control" type="text"
+                                                                                                        placeholder="Escribe la categoria..." value="">
+                                                                                                </li>
+                                                                                                <li class="margin-t-10 text-center">
+                                                                                                    {{#with product_doc}}
+                                                                                                    <button onclick="catalog_save_edit_item(this)"
+                                                                                                        product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
+                                                                                                        type="button" class="cobrar-btn btn btn-primary">
+                                                                                                        {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                                                                    </button>
+                                                                                                    {{/with}}
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                </span>
+                                                                            </div>
+                                </div>
+                                {{/with}}                                           
                                 {{#each attribute_combinations as | ac |}}
 
                                         <!--- weight --->
@@ -738,14 +702,10 @@
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit' user_roles}}
             {{#with ../product_variant}}
-            <button onclick="item_variations_get(this)" product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
-                type="button" class="cobrar-btn btn btn-default">
-                Crear variable
-            </button>
-            <button disabled="" onclick="item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
+            <button disabled="" onclick="item_variations_new(this)" product_id="{{{../../product_doc/_id}}}"
                 variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">
 
-                Guardar cambios
+                Nueva Variable
             </button>
             {{/with}}
             {{/userCtx}}

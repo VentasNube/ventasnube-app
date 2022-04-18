@@ -17,13 +17,16 @@
 var documents = 'No hay documentos';
 var fuse = '';
 category_list = null;
-
+attributes = null;
 
 async function search_db() {
     try {
             price_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
             //DOC DE CATEGORIAS PRODUCTOS
             category_list = await L_catalog_db.get('category_list', { include_docs: true, descending: true });
+            //DOC ATRIBUTOS COLOR, TALLE, PESO, TAMANO
+            attributes = await L_catalog_db.get('attributes', { include_docs: true, descending: true });
+
     } catch (err) {
         Snackbar.show({
             text: err.reason,

@@ -711,7 +711,8 @@ class Workspace extends BaseController
                         ],
                     ];
 
-                    //CATEGORIAS
+                    
+                    //CATEGORIAS Y SUB CATEGORIAS
                     $category_list = [
                         '_id' => 'category_list',
                         'type' => 'product',
@@ -719,15 +720,84 @@ class Workspace extends BaseController
                         'category_list' => [
                             [
                                 'id' => '1',
-                                'value' => 'Gaseosas',
+                                'value' => 'Bebidas',
+                                'sub_category' => [
+                                    
+                                    [
+                                        'id' => '1',
+                                        'value' => 'Aguas',
+                                        'status' => 'true'
+                                    ],
+                                    [
+                                        'id' => '2',
+                                        'value' => 'Jugos',
+                                        'status' => 'true',
+                                    ], 
+                                    [
+                                        'id' => '3',
+                                        'value' => 'Sin Azucar',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '4',
+                                        'value' => 'Sin gas',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '5',
+                                        'value' => 'Zero 250cc',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '6',
+                                        'value' => 'Energizante',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '7',
+                                        'value' => 'Zero 250cc',
+                                        'status' => 'true',
+                                    ]
+
+                                ],
                             ],
                             [
                                 'id' => '2',
-                                'value' => 'Energizante',
-                            ],
-                            [
-                                'id' => '3',
-                                'value' => 'Agua sin gas',
+                                'value' => 'Galletitas',
+                                'sub_category' => [
+                                    
+                                    [
+                                        'id' => '1',
+                                        'value' => 'Dulces',
+                                        'status' => 'true'
+                                    ],
+                                    [
+                                        'id' => '2',
+                                        'value' => 'Saladas',
+                                        'status' => 'true',
+                                    ], 
+                                    [
+                                        'id' => '3',
+                                        'value' => 'Chocolate',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '4',
+                                        'value' => 'Bainilla',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '5',
+                                        'value' => 'Semillas',
+                                        'status' => 'true',
+                                    ],
+                                    [
+                                        'id' => '6',
+                                        'value' => 'Arroz',
+                                        'status' => 'true',
+                                    ]
+
+                                ],
                             ],
                         ],
                     ];
@@ -737,18 +807,59 @@ class Workspace extends BaseController
                         '_id' => 'trade_list',
                         'type' => 'trade_list',
                         'status' => 'active',
-                        'category_list' => [
+                        'trade_list' => [
                             [
                                 'id' => '1',
                                 'value' => 'coca cola',
+                                'models' => [
+                                    [
+                                        'id' => '1',
+                                        'value' => 'Zero 2.5L',
+                                        'status' => 'true'
+                                    ],[
+                                        'id' => '2',
+                                        'value' => 'Zero 1.5L',
+                                        'status' => 'true'
+                                    ],[
+                                        'id' => '3',
+                                        'value' => 'Zero 250cc',
+                                        'status' => 'true'
+                                    ]
+                                ],
                             ],
                             [
                                 'id' => '2',
                                 'value' => 'Speed',
+                                'models' => [
+                                    [
+                                        'id' => '2',
+                                        'value' => 'Speed 550cc',
+                                        'status' => 'true'
+                                    ], [
+                                        'id' => '3',
+                                        'value' => 'Speed 250cc',
+                                        'status' => 'true'
+                                    ]
+                                ],
                             ],
                             [
-                                'id' => '3',
-                                'value' => 'Villa vicencio',
+                                'id' => '2',
+                                'value' => 'Villa Vicencio',
+                                'models' => [
+                                    [
+                                        'id' => '2',
+                                        'value' => 'Botella 2.4L',
+                                        'status' => 'true'
+                                    ], [
+                                        'id' => '3',
+                                        'value' => 'Botella 1.4L',
+                                        'status' => 'true'
+                                    ],[
+                                        'id' => '4',
+                                        'value' => 'Botella 500cc',
+                                        'status' => 'true'
+                                    ]
+                                ],
                             ],
                         ],
                     ];
@@ -758,18 +869,18 @@ class Workspace extends BaseController
                         '_id' => 'model_list',
                         'type' => 'model_list',
                         'status' => 'active',
-                        'category_list' => [
+                        'model_list' => [
                             [
                                 'id' => '1',
-                                'value' => 'Zero azucar 1.5l',
+                                'value' => 'Zero azucar 1.5l'
                             ],
                             [
                                 'id' => '2',
-                                'value' => 'Original 250cc',
+                                'value' => 'Original 250cc'
                             ],
                             [
                                 'id' => '3',
-                                'value' => 'Sin gas 1.5l',
+                                'value' => 'Sin gas 1.5l'
                             ],
                         ],
                     ];
@@ -778,34 +889,45 @@ class Workspace extends BaseController
                         '_id' => 'attributes',
                         'type' => 'attributes_list',
                         'status' => 'active',
-                        'attributes_list' => [
-                            [
-                                'id' => 'COLOR',
-                                'value' => 'Consumidor Final',
-                            ],
-                            [
-                                'id' => 'TYPE',
-                                'value' => 'Gremio',
-                            ],
-                            [
-                                'id' => 'SIZE',
-                                'value' => 'Mayorista',
-                            ],
-                            [
-                                'id' => '4',
-                                'value' => 'Mercado Libre',
-                            ],
-                            [
-                                'id' => '5',
-                                'value' => 'Web',
-                            ],
-                        ],
+                        'size' => [
+                                    [
+                                        'id'=> '1',
+                                        'status' => 'true',
+                                        'value' => 'xs'
+                                    ],
+                                     [
+                                        'id'=> '2',
+                                        'status' => 'true',
+                                        'value' => 's'
+                                    ],
+                                    [
+                                        'id'=> '3',
+                                        'status' => 'true',
+                                        'value' => 'm'
+                                    ],
+                                    [
+                                        'id'=> '4',
+                                        'status' => 'true',
+                                        'value' => 'l'
+                                    ],
+                                    [
+                                        'id'=> '5',
+                                        'status' => 'true',
+                                        'value' => 'xl'
+                                    ],
+                                    [
+                                        'id'=> '6',
+                                        'status' => 'true',
+                                        'value' => 'xxl'
+                                    ]
+                                ]
                     ];
                     //PRODUCTOS DE EJEMPLO
                     $product_01 = [
                         '_id' => 'product-1',
                         'name' => 'Remera colores',
                         'type' => 'product',
+
                         'tags' => [
                             'Remera',
                             'Lisa',
@@ -815,20 +937,22 @@ class Workspace extends BaseController
                             'id' => 'ARS',
                             'value' => '$'
                         ],
+                        'status' =>  [
+                            'value'=> 'active'
+                        ],
                         'available_quantity' => 10,
                         'sold_quantity' => 0,
                         'limit_discount' => 0,
+
                         'permalink' => 'http=>//loalhost/shop/servenet/red-boll-free',
                         'catalog_product_id' => null,
+
                         'category_id' => 1,
                         'sub_category_id' => 1,
+
                         'workspace_id' => 77,
                         'condition' => 'not_specified',
-                        'status' => 'active',
                         'author' => 'smartmobile.com.ar@gmail.com',
-                        'descriptions' => [
-                            'Cerveza corona 750cc'
-                        ],
                         'attributes' => [
                             [
                                 'id' => 'TYPE',
@@ -851,16 +975,11 @@ class Workspace extends BaseController
                             [
                                 'id' => 1,
                                 'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
-                                'tax'=>[
+                                'pictures' => [
                                     [
-                                      'id'=> '0',
-                                      'value'=>'21'
-                                      ]
-                                    ,
-                                      [
-                                      'id' => '1',
-                                      'value' => '10'
-                                      ]
+                                        'max' => '/public/img/catalog/product/max/remera_blanca.jpg',
+                                        'min' => '/public/img/catalog/product/max/remera_blanca.jpg'
+                                    ]
                                 ],
                                 'size' => [
                                     'status' => 'true',
@@ -870,17 +989,11 @@ class Workspace extends BaseController
                                     'status' => 'true',
                                     'value' => '#0000'
                                 ],
-                                
                                 'sku' => [
                                     'id' => 'EAN',
                                     'value' => '1231256345345'
                                 ],
-                                'pictures' => [
-                                    [
-                                        'max' => '/public/img/catalog/product/max/remera_blanca.jpg',
-                                        'min' => '/public/img/catalog/product/max/remera_blanca.jpg'
-                                    ]
-                                ],
+                               
                                 'attribute_combinations' => [
                                     [
                                         'id' => 'COLOR',
@@ -904,6 +1017,17 @@ class Workspace extends BaseController
                                         'id' => 2,
                                         'value' => 3350
                                     ]
+                                    ],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'stock_invetary' => [
                                     [
@@ -928,6 +1052,38 @@ class Workspace extends BaseController
                             [
                                 'id' => 2,
                                 'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
+                                'pictures' => [
+                                    [
+                                        'max' => '/public/img/catalog/product/max/remera_amarilla.jpg',
+                                        'min' => '/public/img/catalog/product/max/remera_amarilla.jpg'
+                                    ]
+                                ],
+                                'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
+                                'attribute_combinations' => [
+                                    [
+                                        'id' => 'COLOR',
+                                        'id_name' => 'Color',
+                                        'name' => 'Azul',
+                                        'value' => '0575e6'
+                                    ],
+                                    [
+                                        'id' => 'SIZE',
+                                        'id_name' => 'Talle',
+                                        'name' => 'Medium',
+                                        'value' => 'M'
+                                    ]
+                                ],
                                 'tax'=>[
                                     [
                                       'id'=> '0',
@@ -938,30 +1094,6 @@ class Workspace extends BaseController
                                       'id' => '1',
                                       'value' => '10'
                                       ]
-                                ],
-                                'sku' => [
-                                    'id' => 'EAN',
-                                    'value' => '1231256345345'
-                                ],
-                                'pictures' => [
-                                    [
-                                        'max' => '/public/img/catalog/product/max/remera_amarilla.jpg',
-                                        'min' => '/public/img/catalog/product/max/remera_amarilla.jpg'
-                                    ]
-                                ],
-                                'attribute_combinations' => [
-                                    [
-                                        'id' => 'COLOR',
-                                        'id_name' => 'Color',
-                                        'name' => 'Violeta',
-                                        'value' => 'ba46c5'
-                                    ],
-                                    [
-                                        'id' => 'SIZE',
-                                        'id_name' => 'Talle',
-                                        'name' => 'Extra Large',
-                                        'value' => 'XL'
-                                    ]
                                 ],
                                 'price_list' => [
                                     [
@@ -995,26 +1127,23 @@ class Workspace extends BaseController
                             [
                                 'id' => 3,
                                 'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
-                                'tax'=>[
-                                    [
-                                      'id'=> '0',
-                                      'value'=>'21'
-                                      ]
-                                    ,
-                                      [
-                                      'id' => '1',
-                                      'value' => '10'
-                                      ]
-                                ],
-                                'sku' => [
-                                    'id' => 'EAN',
-                                    'value' => '1231256345345'
-                                ],
                                 'pictures' => [
                                     [
                                         'max' => '/public/img/catalog/product/max/remera_azul.jpg',
                                         'min' => '/public/img/catalog/product/max/remera_azul.jpg'
                                     ]
+                                ],
+                                'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
                                 ],
                                 'attribute_combinations' => [
                                     [
@@ -1029,6 +1158,17 @@ class Workspace extends BaseController
                                         'name' => 'Medium',
                                         'value' => 'M'
                                     ]
+                                ],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'price_list' => [
                                     [
@@ -1090,6 +1230,9 @@ class Workspace extends BaseController
                     $product_02 = [
                         '_id' => 'product-2',
                         'name' => 'Adidas fit remera ',
+                        'status' =>  [
+                            'value'=> 'active'
+                        ],
                         'type' => 'product',
                         'tags' => [
                             'Remera',
@@ -1109,7 +1252,6 @@ class Workspace extends BaseController
                         'sub_category_id' => 1,
                         'workspace_id' => 77,
                         'condition' => 'not_specified',
-                        'status' => 'active',
                         'author' => 'smartmobile.com.ar@gmail.com',
                         'descriptions' => [
                             'Cerveza corona 750cc'
@@ -1136,33 +1278,30 @@ class Workspace extends BaseController
                             [
                                 'id' => 1,
                                 'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
-                                'tax'=>[
-                                    [
-                                      'id'=> '0',
-                                      'value'=>'21'
-                                      ]
-                                    ,
-                                      [
-                                      'id' => '1',
-                                      'value' => '10'
-                                      ]
-                                ],
-                                'sku' => [
-                                    'id' => 'EAN',
-                                    'value' => '1231256345345'
-                                ],
                                 'pictures' => [
                                     [
                                         'max' => '/public/img/catalog/product/max/remera_azul.jpg',
                                         'min' => '/public/img/catalog/product/max/remera_azul.jpg'
                                     ]
                                 ],
+                                'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
                                 'attribute_combinations' => [
                                     [
                                         'id' => 'COLOR',
                                         'id_name' => 'Color',
-                                        'name' => 'Roja',
-                                        'value' => 'EF5350'
+                                        'name' => 'Azul',
+                                        'value' => '0575e6'
                                     ],
                                     [
                                         'id' => 'SIZE',
@@ -1171,39 +1310,6 @@ class Workspace extends BaseController
                                         'value' => 'M'
                                     ]
                                 ],
-                                'price_list' => [
-                                    [
-                                        'id' => 1,
-                                        'value' => 2550
-                                    ],
-                                    [
-                                        'id' => 2,
-                                        'value' => 3350
-                                    ]
-                                ],
-                                'stock_invetary' => [
-                                    [
-                                        'id' => 123,
-                                        'in_datetime' => '18/3/2021 18:45:10',
-                                        'update_datetime' => '18/3/2021 18:45:10',
-                                        'quantity' => 6,
-                                        'sold_quantity' => 2,
-                                        'cost_price' => 100
-                                    ],
-                                    [
-                                        'id' => 231,
-                                        'in_datetime' => '18/3/2021 18:45:10',
-                                        'update_datetime' => '18/3/2021 18:45:10',
-                                        'quantity' => 4,
-                                        'sold_quantity' => 2,
-                                        'cost_price' => 150
-                                    ]
-                                ],
-                                'sold_quantity' => 2
-                            ],
-                            [
-                                'id' => 2,
-                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
                                 'tax'=>[
                                     [
                                       'id'=> '0',
@@ -1215,29 +1321,80 @@ class Workspace extends BaseController
                                       'value' => '10'
                                       ]
                                 ],
-                                'sku' => [
-                                    'id' => 'EAN',
-                                    'value' => '1231256345345'
+                                'price_list' => [
+                                    [
+                                        'id' => 1,
+                                        'value' => 1100
+                                    ],
+                                    [
+                                        'id' => 2,
+                                        'value' => 1200
+                                    ]
                                 ],
+                                'stock_invetary' => [
+                                    [
+                                        'id' => 123,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 4,
+                                        'quantity_' => 4,
+                                        'cost_price' => 100
+                                    ],
+                                    [
+                                        'id' => 231,
+                                        'in_datetime' => '18/3/2021 18:45:10',
+                                        'update_datetime' => '18/3/2021 18:45:10',
+                                        'quantity' => 2,
+                                        'cost_price' => 150
+                                    ]
+                                ],
+                                'sold_quantity' => 2
+                            ],
+                            [
+                                'id' => 2,
+                                'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
                                 'pictures' => [
                                     [
                                         'max' => '/public/img/catalog/product/max/remera_amarilla.jpg',
                                         'min' => '/public/img/catalog/product/max/remera_amarilla.jpg'
                                     ]
                                 ],
+                                'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
+                                ],
                                 'attribute_combinations' => [
                                     [
                                         'id' => 'COLOR',
                                         'id_name' => 'Color',
-                                        'name' => 'Violeta',
-                                        'value' => 'ba46c5'
+                                        'name' => 'Azul',
+                                        'value' => '0575e6'
                                     ],
                                     [
                                         'id' => 'SIZE',
                                         'id_name' => 'Talle',
-                                        'name' => 'Extra Large',
-                                        'value' => 'XL'
+                                        'name' => 'Medium',
+                                        'value' => 'M'
                                     ]
+                                ],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'price_list' => [
                                     [
@@ -1271,26 +1428,22 @@ class Workspace extends BaseController
                             [
                                 'id' => 3,
                                 'descriptions' => ['value' => 'Hermoso poder editar la descripción'],
-                                'tax'=>[
-                                    [
-                                      'id'=> '0',
-                                      'value'=>'21'
-                                      ]
-                                    ,
-                                      [
-                                      'id' => '1',
-                                      'value' => '10'
-                                      ]
-                                ],
-                                'sku' => [
-                                    'id' => 'EAN',
-                                    'value' => '1231256345345'
-                                ],
                                 'pictures' => [
                                     [
                                         'max' => '/public/img/catalog/product/max/remera_azul.jpg',
                                         'min' => '/public/img/catalog/product/max/remera_azul.jpg'
                                     ]
+                                ],'size' => [
+                                    'status' => 'true',
+                                    'value' => 'xl'
+                                ],
+                                'color' => [
+                                    'status' => 'true',
+                                    'value' => '#0000'
+                                ],
+                                'sku' => [
+                                    'id' => 'EAN',
+                                    'value' => '1231256345345'
                                 ],
                                 'attribute_combinations' => [
                                     [
@@ -1305,6 +1458,17 @@ class Workspace extends BaseController
                                         'name' => 'Medium',
                                         'value' => 'M'
                                     ]
+                                ],
+                                'tax'=>[
+                                    [
+                                      'id'=> '0',
+                                      'value'=>'21'
+                                      ]
+                                    ,
+                                      [
+                                      'id' => '1',
+                                      'value' => '10'
+                                      ]
                                 ],
                                 'price_list' => [
                                     [
