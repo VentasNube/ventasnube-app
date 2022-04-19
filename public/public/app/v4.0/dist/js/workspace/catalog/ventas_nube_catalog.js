@@ -395,6 +395,8 @@ async function catalog_view_item_url(m_id, m_var_id) {
         console.log(product_doc_array);
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+      
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
@@ -426,6 +428,7 @@ async function catalog_edit_item(element) {
             attributes_list:attributes
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         // var m_name = 'catalog' //Trae Pacht url /pacht/    
@@ -449,7 +452,6 @@ async function catalog_edit_item_url(m_id, m_var_id) {
             product_variant: var_doc,
             name: product_doc.name,
             tags: product_doc.tags,
-            // sku:product_doc.variations[variant_id].sku.value,
             price_list: price_doc.price_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
@@ -457,6 +459,8 @@ async function catalog_edit_item_url(m_id, m_var_id) {
             attributes_list:attributes
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+      
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
@@ -884,6 +888,8 @@ async function cat_edit_product(element) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             const new_objet_input = item; //Traigo el ojeto especifico 
             new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
+            console.log('DOCUMENTO ACTUALIZADO');
+            console.log(input_status);
         }
         // Si la edicion es fuera de una variable
         else {
@@ -908,7 +914,238 @@ async function cat_edit_product(element) {
 }
 
 
+// EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
+async function cat_edit_chekbox(element) {
 
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        const input_status_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id+'_checkbox'; //Armo la id del checkbox
+        const input_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id +'_input'; // Armo la id del input
+        const new_input_status =  $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        if(new_input_status === false){
+            var input_status = false;
+            $(input_html_id).addClass('bg-gray', true);
+           // $(input_html_id).prop('disabled', true);
+           // $(input_html_id).prop('status', true);
+        }else if(new_input_status === true){
+            var input_status = true;
+
+            $(input_html_id).removeClass('bg-gray');
+            //$(input_html_id).prop('disabled', false);
+            //$(input_html_id).prop('status', false);
+        }else{
+            var input_status = true;
+        }
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+        // Si el objeto a editar esta dentro de una variable
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            const new_objet_input = item; //Traigo el ojeto especifico 
+            new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
+            console.log('DOCUMENTO ACTUALIZADO');
+            console.log(input_status);
+        }
+        // Si la edicion es fuera de una variable
+        else {
+         doc[input_id] = new_value ;//BUSCO EL OBJETO Y LO EDITO
+        }
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (doc) {
+           // console.log('EDICION DE:new_value');
+           // console.log(new_value);
+            //console.log('EDICION DE:new_value');
+            //console.log();
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// CREO NUEVA VARIABLE
+async function cat_new_variant(element) {
+
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        //  const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento actualizado
+        //const input_status_html_id = '#'+doc_id+'_'+variant_id+'_status_status'; //Armo la id del checkbox
+        //const input_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id; // Armo la id del input
+        //  var validate_id_variant = $(input_html_id).html();
+        //Si el ID Existe ene l dom tira un error de lo contrario continua con la validacion
+       /*  if($(input_status_html_id).length){
+            alert( $(input_html_id).length);
+         }else{
+        */
+        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
+        //alert(new_variant_id);
+
+       // var new_variant_id = doc.variations.length + 1; //Cuento el numero variables q hau y le sumo uno para dar el nuevo numero de id
+        var doc_varian_id = doc.variations.find(response => response.id == new_variant_id);// Compruebo q el id no exista
+            
+        if(!doc_varian_id){
+
+        var new_variant = {
+        "id": new_variant_id,
+        "tax": [
+          {
+            "id": "0",
+            "value": "21"
+          },
+          {
+            "id": "1",
+            "value": "10"
+          }
+        ],
+        "sku": {
+          "status": true,
+          "value": ""
+        },
+        "pictures": [
+          {
+            "max": "/public/img/catalog/product/max/remera_azul.jpg",
+            "min": "/public/img/catalog/product/max/remera_azul.jpg"
+          }
+        ],
+        "attribute_combinations": [
+          {
+            "id": "COLOR",
+            "id_name": "Color",
+            "name": "Roja",
+            "value": "EF5350"
+          },
+          {
+            "id": "SIZE",
+            "id_name": "Talle",
+            "name": "Medium",
+            "value": "M"
+          }
+        ],
+        "price_list": [
+          {
+            "id": 1,
+            "value": 2550
+          },
+          {
+            "id": 2,
+            "value": 3350
+          }
+        ],
+        "stock_invetary": [
+          {
+            "id": 123,
+            "in_datetime": "18/3/2021 18:45:10",
+            "update_datetime": "18/3/2021 18:45:10",
+            "quantity": 6,
+            "sold_quantity": 2,
+            "cost_price": 100
+          },
+          {
+            "id": 231,
+            "in_datetime": "18/3/2021 18:45:10",
+            "update_datetime": "18/3/2021 18:45:10",
+            "quantity": 4,
+            "sold_quantity": 2,
+            "cost_price": 150
+          }
+        ],
+        "sold_quantity": 2,
+        "description": {
+          "status": true,
+          "value": "Es una descripcion"
+        },
+        "color": {
+          "status": false,
+          "value": "#4f78ba"
+        },
+        "size": {
+          "status": false,
+          "value": ""
+        },
+        "status": {
+          "status": true,
+          "value": ""
+        }
+        };
+        //   console.log('ANTES DE EDITAR');
+        //   console.log(doc.variations);
+        doc.variations.push(new_variant);
+        //  console.log('DESPUES DE EDITAR CON PUSH');
+        //  console.log(doc.variations);
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+            if (doc) {
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// trae todos los datos del doc y los pega en la raiz
+                });
+            if(response){
+                catalog_edit_item_url(doc_id,new_variant_id);// Refrezco la vista de las variables de nuevo
+            }
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+async function cat_delete_variant(element) {
+
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento actualizado
+
+        var new_variations = doc.variations.filter(response => response.id != variant_id); //Traigo el array variant filtrado por el variant_id que quiero eliminar
+
+       // var var_doc = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+       // var new_variant_id = doc.variations.length + 1; //Cuento el numero variables q hau y le sumo uno para dar el nuevo numero de id
+        
+       //var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+      // const new_objet_input = item; //Traigo el ojeto especifico 
+      // new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
+
+      // const new_objet_input = new_variations;
+
+        doc.variations = new_variations;
+
+
+
+        console.log('ANTES DE EDITAR');
+        console.log(new_variations);
+        //doc.variations.push(new_variant);
+         console.log('DESPUES DE EDITAR CON PUSH');
+         console.log(doc.variations);
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (doc) {
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+           if(response){
+            catalog_edit_item_url(doc_id,variant_id);// Refrezco la vista de las variables de nuevo
+           }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
 async function cat_edit_variations(element) {
 
     try {
