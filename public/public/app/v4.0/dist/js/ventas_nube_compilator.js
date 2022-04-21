@@ -55,6 +55,8 @@ function getTemplateAjax(path, callback) {
         url: path,
         dataType: "html",
         success: function (data) {
+
+            if(data){
             //Helper with
             Handlebars.registerHelper("with", function (context, options) {
                 return options.fn(context);
@@ -98,11 +100,24 @@ function getTemplateAjax(path, callback) {
             Handlebars.registerHelper("counter", function (index) {
                 return index + 1;
             });
+            //Crea listados completos con un solo array que entrego
             source = data;
             //   console.log('gettemplate');
             template = Handlebars.compile(source);
             if (callback) callback(template);
+
         }
+            else{
+                console.log(response);
+                return response, // Devulevo el array resultado    
+                Snackbar.show({
+                    text: 'No hay resultados',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        }
+
     });
 }
 // ARMA EL TEMPLATE PARA COMPILAR 
@@ -112,11 +127,14 @@ function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
         targetDiv.html(template(withData));
         if (callback) {
             callback()
+            return true;
+        }else{
+            return false;
         }
     })
 };
 //// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
-
+/*
 function  ssasa(pacht, controler_data, controler_template, id_copiled, data) {
         const pacht =  url_site ;
         const controler_data = controler_data;
@@ -127,19 +145,17 @@ function  ssasa(pacht, controler_data, controler_template, id_copiled, data) {
 };
 
 
+
 function  get_module_compile(pacht, controler_data, controler_template, id_copiled, doc_name , db_name , ws_lang_data) {
     //    alert('Traigo el doc y imprimo la vista');
-    
     db_name.get(doc_name, function (err, doc) {      
           if (doc) {
               var array_doc = {
                   data: data,
                   ws_lang_data: ws_lang_data
               }
-
               console.log('get_module_compile');
               console.log(doc);
-
               renderHandlebarsTemplate( pacht + '' + controler_template + '.hbs', id_copiled, array_doc);
               //  console.log ('No se encuentra el documento en la userdb');
           }else{
@@ -148,7 +164,7 @@ function  get_module_compile(pacht, controler_data, controler_template, id_copil
           }
       });
 };
-
+*/
 function get_module(pacht, controler_data, controler_template, id_copiled, data) {
     // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
     // ID DE COMPILACION //      

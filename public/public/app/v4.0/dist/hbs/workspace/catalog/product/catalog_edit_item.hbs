@@ -73,15 +73,12 @@
                                                 category
                                             </span>
                                         </span>
-
-                                         <a doc_id="{{../_id}}" new_tag=" {{this}}"  input_id="tags" href="#" onclick="get_all_tag(this)"></a>
-                                        <select doc_id="{{../_id}}" input_id="cat" href="#" onclick="get_all_tag(this)" class="form-control md" name="cat" id="cat">
+                                        <select doc_id="{{_id}}" input_value="{{category.id}}" input_id="category" href="#" onchange='cat_edit_product_category(this)' value="{{category_list/category_list.value}}" class="form-control md" name="cat">
+                                            <option selected value="{{category.value}}"> {{category.value}} </option>
                                             {{#each ../category_list/category_list }}
-                                                <option value="{{id}}">{{value}}</option>
+                                                <option doc_id="{{../_id }}"  value="{{value}}">{{value}}</option>
                                             {{/each}}
                                         </select>
-
-
                                         <span class="input-group-addon">
                                             <div class="btn-group dropright">
                                                 <button id="" type="button"
@@ -93,57 +90,16 @@
                                                     <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}</li>
                                                     <li>
 
-                                                        <input doc_id="{{_id}}"  input_id="tags" class="chips_input form-control" name="keywords"
+                                                        <input doc_id="{{_id}}"  input_id="tags" class="form-control" name="keywords"
                                                      type="text" onkeypress="add_new_cat_press(event,this)" style="">
                            
                                                     </li>
+                                                    <li class="footer"><br></li>
                                                 </ul>
                                             </div>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <span class="material-icons">
-                                                grid_view
-                                            </span>
-                                        </span>
-                                        <select class="form-control md" name="cars" id="cars">
-                                            {{#each ../category_list/category_list }}
-                                                <option value="{{id}}">{{value}}</option>
-                                            {{/each}}
-                                        </select>
-                                        <span class="input-group-addon">
-                                            <div class="btn-group dropright">
-                                                <button id="" type="button"
-                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="material-icons">add_circle</span>
-                                                </button>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li class="header"> {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
-                                                    <li>
-                                                        <input id="" class="form-control" type="text"
-                                                            placeholder="Escribe la categoria..." value="">
-                                                    </li>
-                                                    <li class="margin-t-10 text-center">
-                                                        {{#with product_doc}}
-                                                        <button onclick="catalog_save_edit_item(this)"
-                                                            product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
-                                                            type="button" class="cobrar-btn btn btn-primary">
-                                                            {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
-                                                        </button>
-                                                        {{/with}}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--- Marca y modelo  -->
-                            <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -165,6 +121,49 @@
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
                                                     <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                    <li>
+                                                        <input id="" class="form-control" type="text"
+                                                            placeholder="Escribe la categoria..." value="">
+                                                    </li>
+                                                    <li class="margin-t-10 text-center">
+                                                        {{#with product_doc}}
+                                                        <button onclick="catalog_save_edit_item(this)"
+                                                            product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
+                                                            type="button" class="cobrar-btn btn btn-primary">
+                                                            {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                        </button>
+                                                        {{/with}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <!--- Marca y modelo  -->
+                            <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="material-icons">
+                                                grid_view
+                                            </span>
+                                        </span>
+                                        <select class="form-control md" name="cars" id="cars">
+                                            {{#each ../category_list/category_list }}
+                                                <option value="{{id}}">{{value}}</option>
+                                            {{/each}}
+                                        </select>
+                                        <span class="input-group-addon">
+                                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="material-icons">add_circle</span>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li class="header"> {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
                                                     <li>
                                                         <input id="" class="form-control" type="text"
                                                             placeholder="Escribe la categoria..." value="">
