@@ -37,8 +37,8 @@
                     </h4>
                 </div>
 
-                <div id="edit-item-description-body" class="panel-collapse collapse" role="tabpanel"
-                    aria-labelledby="edit-item-description" aria-expanded="false" style="height: 0px;">
+                <div id="edit-item-description-body" class="panel-collapse collapse in" role="tabpanel"
+                    aria-labelledby="edit-item-description" aria-expanded="true" style="height: 0px;">
                     <div class="panel-body">
                         <div class="row">
                             <!--- TAGS MAIN -->
@@ -73,7 +73,7 @@
                                                 category
                                             </span>
                                         </span>
-                                        <select doc_id="{{_id}}" input_value="{{category.id}}" input_id="category" href="#" onchange='cat_edit_product_category(this)' value="{{category_list/category_list.value}}" class="form-control md" name="cat">
+                                        <select id="edit_cat_select_{{_id}}" doc_id="{{_id}}" input_value="{{category.id}}" input_id="category" href="#" onchange='cat_edit_product_category(this)' value="{{category_list/category_list.value}}" class="form-control md" name="cat">
                                             <option selected value="{{category.value}}"> {{category.value}} </option>
                                             {{#each ../category_list/category_list }}
                                                 <option doc_id="{{../_id }}"  value="{{value}}">{{value}}</option>

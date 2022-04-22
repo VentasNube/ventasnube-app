@@ -301,6 +301,8 @@ function cat_variations_select(element) {
         //  console.log(variant_array);
     });
 }
+
+
 async function post_url_history(module, id) {
     try {
         var product_id = $(element).attr('product_id');
@@ -325,8 +327,8 @@ async function post_url_history(module, id) {
         console.log(err);
     }
 }
-//FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
 
+//FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
 async function catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -395,21 +397,21 @@ async function catalog_edit_item(element) {
     try {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
+        var new_category_list = await L_catalog_db.get('category_list');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
-
         var product_doc_array = {
             product_doc: product_doc,
             product_variant: var_doc,
             name: product_doc.name,
             tags: product_doc.tags,
-            // sku:product_doc.variations[variant_id].sku.value,
             price_list: price_doc.price_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            category_list: category_list,
+            category_list: new_category_list,
             attributes_list:attributes
         }
+
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
@@ -424,10 +426,11 @@ async function catalog_edit_item(element) {
 }
 
 //FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
-async function catalog_edit_item_url(m_id, m_var_id) {
+async function catalog_edit_item_url(product_id, variant_id) {
     try {
-        var product_id = m_id;
-        var variant_id = m_var_id;
+        var product_id = product_id;
+        var variant_id = variant_id;
+        var new_category_list = await L_catalog_db.get('category_list');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
         var product_doc_array = {
@@ -438,34 +441,30 @@ async function catalog_edit_item_url(m_id, m_var_id) {
             price_list: price_doc.price_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            category_list: category_list,
+            category_list: new_category_list,
             attributes_list:attributes
         }
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-        
-        
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id; 
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-
-        return true;
-       /*
-        console.log('item_print');
-        console.log(item_print);
-        if(item_print){
-           createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-        $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
-        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        }
-        */
+        return item_print;
     } catch (err) {
         return false;
         console.log(err);
     }
 }
+
+
+//Leer sub categorias
+
+
+//Crear sub categorias
+
+//Eliminar sub categorias
+
 
 /****  VARIATIONS VIEW ITEM 2021  *******/
 //Boton cambiar lista de precio
@@ -676,14 +675,6 @@ async function dell_tag(element) {
     }
 }
 
-//Tomo el enter si esta en el input
-function add_new_cat_press(e, element) {
-    var key = e.keyCode || e.which;
-    if (key == 13) {
-        add_new_cat(element);
-    }
-}
-
 //CATEGORIAS
 // Agrego un Categoria
 async function add_new_cat(element) {    
@@ -721,6 +712,7 @@ async function add_new_cat(element) {
                     ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
                 });
                 if (response) {
+                    load_all_cat(doc._id);
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
@@ -767,25 +759,62 @@ async function get_all_tag(element) {
 // Traigo las categorias, 
 async function get_all_cat(element) {
     try {
-
         const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-       // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
-       // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
-      //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-
+        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        var select_id = 'edit_cat_select_'+doc_id;
+       // var select = $(select_id).attr('input_id');
         let doc = await L_catalog_db.get('category_list');
         let cat_list = doc['category_id']; 
         for (var i=0; i<cat_list.length; i++) {
-            $(element).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
+            $(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
         }
-        alert('todas las opciones')
+        //alert('todas las opciones')
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+// Traigo las categorias, 
+async function load_all_cat(id) {
+    try {
+        const doc_id = id; //Id del documento a editar
+        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        var select_id = 'edit_cat_select_'+doc_id;
+        // var select = $(select_id).attr('input_id');
+        let doc = await L_catalog_db.get('category_list');
+        let cat_list = doc['category_id']; 
+
+        for (var i=0; i<cat_list.length; i++) {
+            $(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
+        }
+
+        alert(select_id);
+        //alert('todas las opciones')
     }catch (err) {
         console.log(err);
     }
 }
 
 
+//Tomo el enter si esta en el input
+function add_new_cat_press(e, element) {
+    var key = e.keyCode || e.which;
+    if (key == 13) {
+        alert($(element).attr('variant_id'));
+        add_new_cat(element);
+        /// const input_id = $(element).attr('doc_id'); //EL id del OBJETO a editar
+        // load_all_cat(input_id);
+        catalog_edit_item_url($(element).attr('doc_id'), $(element).attr('variant_id'));
+        $('#edit-item-description-body').addClass('in');
+    }
+}
 
+
+//EDITO LAS CATEGORIAS
 async function cat_edit_product_category(element){
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value =  $(element).attr('input_value'); //Id del documento a editar
@@ -815,7 +844,7 @@ async function cat_edit_product_category(element){
         });
 
        // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    };
+};
 
 
 // Elimino una Categoria
