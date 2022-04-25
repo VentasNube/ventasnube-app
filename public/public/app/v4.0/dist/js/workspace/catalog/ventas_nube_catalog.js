@@ -625,7 +625,7 @@ async function add_new_tag(element) {
                     //Imprimo el item en la pantalla 
                     $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a doc_id="' + doc._id + '" new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
                     //limpio el imput 
-                    $(element).val('');
+                 //   $(element).val('');
                 } else {
                     //Si no se grabo tira un error en pantalla
                     $(element).css("color", "red");
@@ -676,17 +676,75 @@ async function dell_tag(element) {
 }
 
 //CATEGORIAS
+
+
+// Traigo las categorias, 
+async function load_all_cat(id,new_value ) {
+    try {
+        var doc_id = id; //Id del documento a editar
+        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        //var new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        var select_id = '#edit_cat_select_'+doc_id;
+        // var select = $(select_id).attr('input_id');
+        let doc = await L_catalog_db.get('category_list');
+        let cat_list = doc['category_list'];
+        
+
+        for (var i=0; i<cat_list.length; i++) {
+
+            var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
+
+            
+           //$(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
+           $('#edit_cat_select_product_01').append("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
+          
+           $('#edit_cat_select_product_01').append("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'> </option>");
+          
+
+           $('#edit_cat_select_product_01').hide();
+
+           console.log('cat_list[i].value');
+           console.log(cat_list[i].value);
+           
+           console.log('cat_list[i].id');
+           console.log(cat_list[i].id);
+           
+           console.log('doc_id');
+           console.log(doc_id);
+           
+           console.log('select_id');
+           console.log(select_id);
+
+        }
+        
+        alert(select_id);
+
+    }catch (err) {
+        console.log(err);
+    }
+}
 // Agrego un Categoria
 async function add_new_cat(element) {    
     try {
-        let doc_id = 'category_list';
-        let new_cat_val = $(element).val();
-        let new_cat = String(new_cat_val);
+        var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $(element).val();
+        //  var input_value = $(element).attr('input_value');
+        //var input_id = $(element).attr('doc_id');
+        var new_cat = String(new_cat_val);
+
         // Filtro si el input esta bacio
-        if (new_cat != '') {
-            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        if (new_cat) {
+            let doc_id_s = String('category_list');  // Me aseguro q sea un string
             let doc = await L_catalog_db.get(doc_id_s);
-            const tag_index = doc.category_list.find((element) => element.value == new_cat);  // Verigico q el item a agregar ya no este repetido
+
+            const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
+            
+            //console.log('doc');
+            //console.log(doc);
+            //console.log('tag_index');
+            //console.log(tag_index);
+
             if (tag_index) {
                 Snackbar.show({  
                     text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
@@ -696,8 +754,19 @@ async function add_new_cat(element) {
                 });
             }
             else {
-                var arr_number_id = Math.floor(Math.random() * (+'10000' - +'1')) + +'1'; // Creo el id aleatorio
+
+                //  load_all_cat(doc._id,arr_number_id );
+                console.log('tag_index 2');
+                console.log(tag_index);
+                console.log('doc 2');
+                console.log(doc);
+                console.log('tag_index 2');
+                console.log(tag_index);
+
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
                 var arr_number_id_valid  = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+              
+              
                 if(!arr_number_id_valid){
                     var new_item = {
                         id:arr_number_id,
@@ -705,14 +774,26 @@ async function add_new_cat(element) {
                         sub_category: []
                     }
                 }
-                const count = doc.category_list.push(new_item);  //Envio los datos editados al documento
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+
+                var new_doc = doc.category_list.push(new_item);  //Envio los datos editados al documento
+
+
+                console.log('new_doc');
+                console.log(new_doc);
+                console.log('doc_id');
+                console.log(doc_id);
+                console.log('tag_index 2');
+                console.log(tag_index);
+
                 var response = await L_catalog_db.put({
                     _id: doc._id,
                     _rev: doc._rev,
                     ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
                 });
                 if (response) {
-                    load_all_cat(doc._id);
+                    load_all_cat(doc_id,arr_number_id );
+
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
@@ -720,7 +801,7 @@ async function add_new_cat(element) {
                         actionTextColor: "#0575e6",
                     });
                 } else {
-
+                    alert("no se actualizo");
                 }
             }
         }
@@ -739,31 +820,13 @@ async function add_new_cat(element) {
 
 // Traigo las categorias, 
 /*
-async function get_all_tag(element) {
-    try {
-        //Datos del cocumento y el id
-        let doc = await L_catalog_db.get('category_list'); //tomo el listado de categorias del ducumento de configuracion
-       // let doc2 = await L_catalog_db.get(doc_id_s);
-        let cat_list = doc['category_id']; //tomo el listado de categorias del ducumento de configuracion
-        for (var i=0; i<cat_list.length; i++) { 
-           var selected = ''
-           // if(){selected = 'selected'}
-            $(element).children('option').html("<option"+ selected + " value="+ cat_list[i].id+">"+cat_list[i].value +"</option>"); //tomo el listado de categorias del ducumento de configuracion
-           }
-    }catch (err) {
-        console.log(err);
-    }
-}
-*/
-
-// Traigo las categorias, 
 async function get_all_cat(element) {
     try {
         const doc_id = $(element).attr('doc_id'); //Id del documento a editar
         // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
         // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
         //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        var select_id = 'edit_cat_select_'+doc_id;
+        var select_id = '#edit_cat_select_'+doc_id;
        // var select = $(select_id).attr('input_id');
         let doc = await L_catalog_db.get('category_list');
         let cat_list = doc['category_id']; 
@@ -775,40 +838,21 @@ async function get_all_cat(element) {
         console.log(err);
     }
 }
-
-// Traigo las categorias, 
-async function load_all_cat(id) {
-    try {
-        const doc_id = id; //Id del documento a editar
-        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
-        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
-        //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        var select_id = 'edit_cat_select_'+doc_id;
-        // var select = $(select_id).attr('input_id');
-        let doc = await L_catalog_db.get('category_list');
-        let cat_list = doc['category_id']; 
-
-        for (var i=0; i<cat_list.length; i++) {
-            $(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
-        }
-
-        alert(select_id);
-        //alert('todas las opciones')
-    }catch (err) {
-        console.log(err);
-    }
-}
+*/
 
 
 //Tomo el enter si esta en el input
 function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
     if (key == 13) {
-        alert($(element).attr('variant_id'));
+       // alert($(element).attr('variant_id'));
+        alert($(element).val());
         add_new_cat(element);
+        console.log('element');
+        console.log(element);
         /// const input_id = $(element).attr('doc_id'); //EL id del OBJETO a editar
         // load_all_cat(input_id);
-        catalog_edit_item_url($(element).attr('doc_id'), $(element).attr('variant_id'));
+        catalog_edit_item_url($(element).attr('doc_id'));
         $('#edit-item-description-body').addClass('in');
     }
 }
