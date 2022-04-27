@@ -688,23 +688,6 @@ console.log(compiled);
 }
 
 
-// Traigo las categorias, 
-async function load_all_cat(id,new_value ) {
-    try {
-        var doc_id = id; //Id del documento a editar
-        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
-        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
-        //var new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        var select_id = '#edit_cat_select_'+doc_id;
-        // var select = $(select_id).attr('input_id');
-     //  let doc = await L_catalog_db.get('category_list');
-        let cat_list = doc['category_list'];
-        catalog_edit_item_url(doc_id, 1);
-     
-    }catch (err) {
-        console.log(err);
-    }
-}
 // Agrego un Categoria
 async function add_new_cat(element) {    
     try {
@@ -738,7 +721,7 @@ async function add_new_cat(element) {
                 }
                 //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
                 var new_doc = doc.category_list.unshift(new_item);  //Envio los datos editados al documento
-                
+
                 var response = await L_catalog_db.put({
                     _id: doc._id,
                     _rev: doc._rev,
