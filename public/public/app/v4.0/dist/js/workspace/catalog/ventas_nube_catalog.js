@@ -328,7 +328,7 @@ async function post_url_history(module, id) {
     }
 }
 
-//FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
+// FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
 async function catalog_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -356,7 +356,7 @@ async function catalog_view_item(element) {
     }
 }
 
-//FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
+// FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function catalog_view_item_url(m_id, m_var_id) {
     try {
         var product_id = m_id;
@@ -425,7 +425,7 @@ async function catalog_edit_item(element) {
     }
 }
 
-//FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
+// FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function catalog_edit_item_url(product_id, variant_id) {
     try {
         var product_id = product_id;
@@ -459,13 +459,8 @@ async function catalog_edit_item_url(product_id, variant_id) {
 
 
 //Leer sub categorias
-
-
 //Crear sub categorias
-
 //Eliminar sub categorias
-
-
 /****  VARIATIONS VIEW ITEM 2021  *******/
 //Boton cambiar lista de precio
 function view_item_variations_price(element) {
@@ -679,6 +674,21 @@ async function dell_tag(element) {
 
 
 // Traigo las categorias, 
+async function get_all_cat(element) {
+
+let template = "Handlebars <b>{{doesWhat}}</b> precompiled!";
+
+let Handlebars = require("handlebars");
+
+let compiled = Handlebars.precompile(template);
+
+console.log(compiled);
+
+
+}
+
+
+// Traigo las categorias, 
 async function load_all_cat(id,new_value ) {
     try {
         var doc_id = id; //Id del documento a editar
@@ -687,39 +697,10 @@ async function load_all_cat(id,new_value ) {
         //var new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
         var select_id = '#edit_cat_select_'+doc_id;
         // var select = $(select_id).attr('input_id');
-        let doc = await L_catalog_db.get('category_list');
+     //  let doc = await L_catalog_db.get('category_list');
         let cat_list = doc['category_list'];
-        
-
-        for (var i=0; i<cat_list.length; i++) {
-
-            var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
-
-            
-           //$(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
-           $('#edit_cat_select_product_01').append("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
-          
-           $('#edit_cat_select_product_01').append("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'> </option>");
-          
-
-           $('#edit_cat_select_product_01').hide();
-
-           console.log('cat_list[i].value');
-           console.log(cat_list[i].value);
-           
-           console.log('cat_list[i].id');
-           console.log(cat_list[i].id);
-           
-           console.log('doc_id');
-           console.log(doc_id);
-           
-           console.log('select_id');
-           console.log(select_id);
-
-        }
-        
-        alert(select_id);
-
+        catalog_edit_item_url(doc_id, 1);
+     
     }catch (err) {
         console.log(err);
     }
@@ -732,19 +713,11 @@ async function add_new_cat(element) {
         //  var input_value = $(element).attr('input_value');
         //var input_id = $(element).attr('doc_id');
         var new_cat = String(new_cat_val);
-
         // Filtro si el input esta bacio
         if (new_cat) {
             let doc_id_s = String('category_list');  // Me aseguro q sea un string
             let doc = await L_catalog_db.get(doc_id_s);
-
             const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
-            
-            //console.log('doc');
-            //console.log(doc);
-            //console.log('tag_index');
-            //console.log(tag_index);
-
             if (tag_index) {
                 Snackbar.show({  
                     text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
@@ -754,19 +727,8 @@ async function add_new_cat(element) {
                 });
             }
             else {
-
-                //  load_all_cat(doc._id,arr_number_id );
-                console.log('tag_index 2');
-                console.log(tag_index);
-                console.log('doc 2');
-                console.log(doc);
-                console.log('tag_index 2');
-                console.log(tag_index);
-
                 var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
                 var arr_number_id_valid  = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-              
-              
                 if(!arr_number_id_valid){
                     var new_item = {
                         id:arr_number_id,
@@ -775,31 +737,23 @@ async function add_new_cat(element) {
                     }
                 }
                 //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-
-                var new_doc = doc.category_list.push(new_item);  //Envio los datos editados al documento
-
-
-                console.log('new_doc');
-                console.log(new_doc);
-                console.log('doc_id');
-                console.log(doc_id);
-                console.log('tag_index 2');
-                console.log(tag_index);
-
+                var new_doc = doc.category_list.unshift(new_item);  //Envio los datos editados al documento
+                
                 var response = await L_catalog_db.put({
                     _id: doc._id,
                     _rev: doc._rev,
                     ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
                 });
                 if (response) {
-                    load_all_cat(doc_id,arr_number_id );
-
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
+                    catalog_edit_item_url(doc_id, 1);
                 } else {
                     alert("no se actualizo");
                 }
@@ -848,8 +802,8 @@ function add_new_cat_press(e, element) {
        // alert($(element).attr('variant_id'));
         alert($(element).val());
         add_new_cat(element);
-        console.log('element');
-        console.log(element);
+       // console.log('element');
+        //console.log(element);
         /// const input_id = $(element).attr('doc_id'); //EL id del OBJETO a editar
         // load_all_cat(input_id);
         catalog_edit_item_url($(element).attr('doc_id'));
@@ -880,13 +834,11 @@ async function cat_edit_product_category(element){
     else {*/
      doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
    // }
-
         var response = await L_catalog_db.put({
             _id: doc._id,
             _rev: doc._rev,
             ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
         });
-
        // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
 };
 
