@@ -1,0 +1,15 @@
+{{#each cat_find_list }}
+                                                    <li>
+                                                        <div class="dropdown-item">
+                                                            <a  new_value="{{value}}" onclick='cat_edit_product_category(this)' 
+                                                            input_value="{{category.id}}" 
+                                                            input_id="category" href="#"   doc_id="{{../_id }}"  value="{{value}}">
+                                                            {{value}}
+                                                            </a>
+
+                                                            {{#userCtx 'catalog' 'edit' ../user_roles}}
+                                                                    <button><span  doc_id="{{../_id }}"  value="{{value}}" class="material-icons" onclick='catalog_dell_cat(this)' >delete</span></button>
+                                                            {{/userCtx}}
+                                                                  </div>
+                                                    </li> 
+{{/each}}

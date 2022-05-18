@@ -573,7 +573,6 @@ async function put_catalog(doc_id, my_doc) {
 }
 
 // EDITAR PRODUCTOS
-/* TAGS FUNCIONES */
 // Tomo el enter si esta en el input
 function add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
@@ -671,22 +670,24 @@ async function dell_tag(element) {
 }
 
 //CATEGORIAS
-
-
 // Traigo las categorias, 
 async function get_all_cat(element) {
-
-let template = "Handlebars <b>{{doesWhat}}</b> precompiled!";
-
+/*
 let Handlebars = require("handlebars");
-
 let compiled = Handlebars.precompile(template);
-
 console.log(compiled);
+*/
+
+var template_obj = "Handlebars <b>{{doesWhat}}</b> precompiled!";
+var Handlebars = require("handlebars");
+var template = Handlebars.compile("Name: {{name}}");
+
+console.log(template({ name: "Nils" }));
+
+$(element).parent('div').css("color", "red");
 
 
 }
-
 
 // Agrego un Categoria
 async function add_new_cat(element) {    
@@ -754,49 +755,69 @@ async function add_new_cat(element) {
      
     }
 }
-
-// Traigo las categorias, 
-/*
-async function get_all_cat(element) {
-    try {
-        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-        // const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
-        // const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
-        //  const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        var select_id = '#edit_cat_select_'+doc_id;
-       // var select = $(select_id).attr('input_id');
-        let doc = await L_catalog_db.get('category_list');
-        let cat_list = doc['category_id']; 
-        for (var i=0; i<cat_list.length; i++) {
-            $(select_id).children('option').html("<option doc_id="+doc_id+"  input_value="+doc_id+"  onchange='cat_edit_product_category(this)'  value='"+ cat_list[i].id+"'>"+cat_list[i].value +"</option>");
-        }
-        //alert('todas las opciones')
-    }catch (err) {
-        console.log(err);
-    }
-}
-*/
-
-
-//Tomo el enter si esta en el input
-function add_new_cat_press(e, element) {
+//Search Input de categorias
+async function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
+    //tomo el key code para saber si es el enter o un caracter
     if (key == 13) {
-       // alert($(element).attr('variant_id'));
-        alert($(element).val());
+       // alert($(element).val());
         add_new_cat(element);
-       // console.log('element');
-        //console.log(element);
-        /// const input_id = $(element).attr('doc_id'); //EL id del OBJETO a editar
-        // load_all_cat(input_id);
         catalog_edit_item_url($(element).attr('doc_id'));
         $('#edit-item-description-body').addClass('in');
+    }else{
+        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
+        var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $(element).val();
+        var select_div_id  = "#select_category_list_"+doc_id;
+        var new_cat = String(new_cat_val);
+        if (new_cat) {
+            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get('category_list');
+            //Filstro con una busqueda que incluya las palabras que ingreso al input
+            const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );}
+           // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                _id: doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                cat_find_list: filterItems(new_cat)
+            }
+            //renderizo las categorias nuevas filtradas
+            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+      }
     }
 }
 
-
-//EDITO LAS CATEGORIAS
+//Tomo la seleccion nueva y edito el documento
 async function cat_edit_product_category(element){
+    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+    const input_value =  $(element).attr('input_value'); //Id del documento a edita
+
+    let input_id = $(element).attr('input_id');
+    let new_value = $(element).attr('new_value');
+
+    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+    
+     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+     var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    catalog_edit_item_url(doc_id, 1);
+  //  alert('salio todo ok')
+
+
+};
+
+//EDITO LAS CATEGORIAScat_edit_product_category(this)
+async function cat_edit_product_category_old(element){
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value =  $(element).attr('input_value'); //Id del documento a editar
     let input_id = $(element).attr('input_id');
@@ -805,18 +826,8 @@ async function cat_edit_product_category(element){
     var doc_id_s = String(doc_id); //Combierto el id del doc en un string
     var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
     
-    // Si el objeto a editar esta dentro de una variable
-    /*  if (variant_id) {
-        var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-        const new_objet_input = item; //Traigo el ojeto especifico 
-        new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
-        console.log('DOCUMENTO ACTUALIZADO');
-        console.log(input_status);
-    }
-    // Si la edicion es fuera de una variable
-    else {*/
      doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-   // }
+
         var response = await L_catalog_db.put({
             _id: doc._id,
             _rev: doc._rev,
@@ -825,36 +836,56 @@ async function cat_edit_product_category(element){
        // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
 };
 
-
 // Elimino una Categoria
-async function dell_cat(element) {
+async function catalog_dell_cat(element) {
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
-        let new_tag = $(element).attr('new_tag');
-        //Efecto y verificacion del tag
-        let doc_id_s = String(doc_id);
-        //Traigo el documento actualizado
-        let doc = await L_catalog_db.get(doc_id_s);
-        //Filtro los resultados del array menos el que quiero eliminar
-        const tags = doc.tags.filter(word => word != new_tag);
-        //Reemplazo el array por el filtrado
-        doc['tags'] = tags;
-        //Guardo los cambios
-        if (doc) {
-            var response = await L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,// trae todos los datos del doc y los pega en la raiz
-            });
-            if (response) {
-                //Limpio el item de la pantalla
-                $(element).parent('div').remove();
-            } else {
-                //Si no se grabo tira un error en pantalla
-                $(element).parent('div').css("color", "red");
+        let value = $(element).attr('value');
+        Snackbar.show({  
+            text: '<span class="material-icons">delete</span> Quieres eliminar la categoria ' +value+' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+               onActionClick: async function(element) {   
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_catalog_db.get('category_list');
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+                const new_cat_list = doc.category_list.filter(word => word.value != value);
+                //Reemplazo el array por el filtrado
+                console.log(new_cat_list);
+                doc['category_list'] = new_cat_list;
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        catalog_edit_item_url(doc_id, 1);
+
+                        $(element).parent('li').remove();
+
+
+
+
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                //$('#' + item_cart_id).remove();
+               // $(element).css('opacity', 0);      
             }
-        }
+        });
     }catch (err) {
         console.log(err);
     }
@@ -881,25 +912,6 @@ function catalog_get_cat(element) {
 
 //Boton variables y las Renderizo
 function catalog_new_cat(element) {
-    let product_id = $(element).attr('product_id');
-    let variant_id = $(element).attr('variant_id');
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function (err, doc) {
-        if (err) { return console.log(err); }
-        const variant_array = {
-            variant_id: variant_id,
-            _id: doc._id,
-            _rev: doc._rev,
-            variations: doc.variations,
-            name: doc.name,
-        }
-        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    });
-}
-
-//Boton variables y las Renderizo
-function catalog_dell_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
@@ -1210,25 +1222,5 @@ async function cat_edit_variations(element) {
         console.log(err);
     }
 }
-
-/* Animacion botones selectores wich Editar producto */
-/*
-$("li.bg-color").click(function () {
-    var bgColor = $(this).attr('bg-color');
-    $("#bg-select-color").removeClass();
-    $("#bg-select-color").addClass('btn ' + bgColor + ' line');
-    $("#bg-select").val(bgColor);
-    $("#bg-select-color").attr('bg-color', bgColor);
-    // $("#bg-select-color").attr('bg-color').html(bgColor);
-})
-    .mouseout(function () {
-        $("span", this).first().text("panorama_fish_eye");
-        // $("p", this).last().text(++i);
-    })
-    .mouseover(function () {
-        $("span", this).first().text("check_circle");
-    });
-
-*/
 
 
