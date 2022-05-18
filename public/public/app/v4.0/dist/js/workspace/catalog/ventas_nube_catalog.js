@@ -669,7 +669,7 @@ async function dell_tag(element) {
     }
 }
 
-//CATEGORIAS
+// FUNCIONES CATEGORIAS
 // Traigo las categorias, 
 async function get_all_cat(element) {
 /*
@@ -755,7 +755,7 @@ async function add_new_cat(element) {
      
     }
 }
-//Search Input de categorias
+// Search Input de categorias
 async function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
     //tomo el key code para saber si es el enter o un caracter
@@ -791,7 +791,7 @@ async function add_new_cat_press(e, element) {
     }
 }
 
-//Tomo la seleccion nueva y edito el documento
+// Tomo la seleccion nueva y edito el documento
 async function cat_edit_product_category(element){
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value =  $(element).attr('input_value'); //Id del documento a edita
@@ -816,7 +816,7 @@ async function cat_edit_product_category(element){
 
 };
 
-//EDITO LAS CATEGORIAScat_edit_product_category(this)
+// EDITO LAS CATEGORIAScat_edit_product_category(this)
 async function cat_edit_product_category_old(element){
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value =  $(element).attr('input_value'); //Id del documento a editar
@@ -891,7 +891,7 @@ async function catalog_dell_cat(element) {
     }
 }
 
-//Boton variables y las Renderizo
+// Boton traigo las catgorias
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
@@ -910,7 +910,8 @@ function catalog_get_cat(element) {
     });
 }
 
-//Boton variables y las Renderizo
+// Boton Agregar catgorias
+/*
 function catalog_new_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
@@ -928,7 +929,7 @@ function catalog_new_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
-
+*/
 // EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 async function cat_edit_product(element) {
 
