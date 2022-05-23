@@ -88,6 +88,8 @@
         </div>
     </div>
 
+    
+
     <!-- Bootstrap core JavaScript  vendor/twbs/bootstrap/dist  -->
     <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -140,6 +142,61 @@
         alert( data[0] +"'s salary is: "+ data[ 5 ] );
         console.log(data);
     } );
+
+
+    //FUNCIONES PARA DAR LISENCIA A UN USUARIO WS SPACE
+
+    $(".licencia_ws" ).click(function() {
+
+       // alert('HOLAAA LE DOY MAS LICENCIA')
+        var ws_id_ex = $(this).attr('ws_id_ex');
+        var user_id = $(this).attr('user_id');
+        var user_email = $(this).attr('user_email');
+        //
+        $('#licencia_ws_submit').attr('ws_id_ex', ws_id_ex );
+        $('#licencia_ws_submit').attr('user_id', user_id );
+        $('#licencia_ws_submit').attr('user_email', user_email );
+        //
+        $('#licencia_ws_form').attr('ws_id_ex', ws_id_ex );
+        $('#licencia_ws_form').attr('user_id', user_id );
+        $('#licencia_ws_form').attr('user_email', user_email );
+
+        $('#licencia_ws').attr('ws_id_ex', ws_id_ex );
+       
+        
+    });
+
+    // EDITAR LENGUAJE 
+    $("#licencia_ws_submit" ).click(function() {
+           // var ws_id_ex = $(this).attr('ws_id_ex');
+           // var user_id = $(this).attr('user_id');
+
+            var licence_input_out_ws = $('#licence_input_out_ws').val();
+            var licence_time_out_ws =  $('#licence_time_out_ws').val();
+
+            var licence_time = licence_input_out_ws +' '+ licence_time_out_ws;
+
+            var ws_id_ex = $('#licencia_ws').attr('ws_id_ex');
+            //var user_id = $('#formUpadate').attr('user_id');
+        console.log(ws_id_ex);
+            var url = "<?=site_url('/admin/ws_licence_update');?>";
+            $.ajax({
+            data: {
+                ws_id_ex:ws_id_ex,
+                licence_input_out_ws:licence_time
+               //   user_id:user_id
+                },
+            url: url, //url de donde obtener los datos
+            dataType: 'json', //tipo de datos retornados
+            type: 'post' //enviar variables como post
+            }).done(function (response){
+              //  console.log(data);
+                  alert('Se actualizo con exito nuevo vencimiento' + data['licence_input_out_ws']);
+                //conformar respuesta final
+                //  $('#resultado').html('El resultado es: <b>' + data['res'] + '</b>');
+            });
+    });
+
 
     // FUNCIONES PARA ACTUALIZAR LOS ESPACIOS DE TRABAJO
 

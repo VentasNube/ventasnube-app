@@ -53,6 +53,10 @@
                                                     Actualizar
                                                 </button>
 
+                                                <button type="button" class="licencia_ws btn btn-secondary" ws_id_ex="<?= $ws->workspace_id_hex;?>" user_id="<?=$ws->user_id;?>"   ws_id="<?=$ws->user_workspace_id;?>"  data-toggle="modal" data-target="#licencia_ws">
+                                                   Licencia
+                                                </button>
+
                                                 <button class="btn btn-primary pull-right"> Bloquear
                                                 </button>
 
@@ -78,6 +82,32 @@
     </div>
 
 
+<div class="modal fade" id="licencia_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form id="licencia_ws_form" action="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Actualizar licencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+               <label for="start">Fecha de caducidad:</label>
+ 
+                    <input id="licence_input_out_ws" type="date" name="fecha" step="1" value="<?php echo date("Y-m-d");?>">
+                    <input id="licence_time_out_ws" type="time" name="hora" step="2"value="">
+       
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="licencia_ws_submit" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="delete_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

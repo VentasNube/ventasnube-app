@@ -573,6 +573,7 @@ async function put_catalog(doc_id, my_doc) {
 }
 
 // EDITAR PRODUCTOS
+// TAGS
 // Tomo el enter si esta en el input
 function add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
@@ -669,26 +670,21 @@ async function dell_tag(element) {
     }
 }
 
+//FIN TAGS
+
 // FUNCIONES CATEGORIAS
 // Traigo las categorias, 
-async function get_all_cat(element) {
 /*
-let Handlebars = require("handlebars");
-let compiled = Handlebars.precompile(template);
-console.log(compiled);
-*/
+async function get_all_cat(element) {
 
 var template_obj = "Handlebars <b>{{doesWhat}}</b> precompiled!";
 var Handlebars = require("handlebars");
 var template = Handlebars.compile("Name: {{name}}");
-
 console.log(template({ name: "Nils" }));
-
 $(element).parent('div').css("color", "red");
 
-
 }
-
+*/
 // Agrego un Categoria
 async function add_new_cat(element) {    
     try {
@@ -697,6 +693,7 @@ async function add_new_cat(element) {
         //  var input_value = $(element).attr('input_value');
         //var input_id = $(element).attr('doc_id');
         var new_cat = String(new_cat_val);
+       // .toLowerCase()
         // Filtro si el input esta bacio
         if (new_cat) {
             let doc_id_s = String('category_list');  // Me aseguro q sea un string
@@ -816,26 +813,6 @@ async function cat_edit_product_category(element){
 
 };
 
-// EDITO LAS CATEGORIAScat_edit_product_category(this)
-async function cat_edit_product_category_old(element){
-    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-    const input_value =  $(element).attr('input_value'); //Id del documento a editar
-    let input_id = $(element).attr('input_id');
-    const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-
-    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-    
-     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-
-        var response = await L_catalog_db.put({
-            _id: doc._id,
-            _rev: doc._rev,
-            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-        });
-       // renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-};
-
 // Elimino una Categoria
 async function catalog_dell_cat(element) {
     try {
@@ -909,6 +886,8 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
+
+// FIN FUNCIONES CATEGORIAS
 
 // Boton Agregar catgorias
 /*

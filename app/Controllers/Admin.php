@@ -263,41 +263,38 @@ class Admin extends BaseController
         //return true;
     }
 
-  //Vista de reset de pasword
-  public function ws_update()
-  {
-     if (!logged_in() || !in_groups('admin')) {
-          return redirect()->to(base_url('/workspace'));
-      }
-      helper('date');       // Libreria de tiempo 
-      $UserModel = new UserModel(); //traigo el modelo
-      $db = \Config\Database::connect();
-      $user_id = $this->request->getPost("user_id");
-
-     // $files = new FileCollection();
-    //  $document = $files->add(APPPATH . 'views/workspace/catalog/templates/example_prduct_001.php', true); // Adds all Config files and directories
 
 
-      //echo json_decode(view('/workspace/doc_templates/catalog/product/product-01.php'));
-      echo 'ahhhhhhhh';
-      $prduct_01 = view('/workspace/doc_templates/catalog/product/product-01');
 
-      //$prduct_01
-      // echo ($prduct_01);
-      //  echo $prduct_01;
+    public function ws_licence_update()
+    {
+        if (!logged_in() || !in_groups('admin')) {
+            return redirect()->to(base_url('/login'));
+        }
+        $db = \Config\Database::connect();
+        $licence_input_out_ws = $this->request->getPost("licence_input_out_ws");
+        $ws_id_ex = $this->request->getPost("ws_id_ex");
+        $data = [
+            ' workspace_plan_expiration' => $licence_input_out_ws,
+        ];
+        $ws_db = $db->table('workspace');
+        $db->transBegin();
+            $result = $ws_db->update($data, ['workspace_id_hex' => $ws_id_ex]);
 
-      //  $prduct_01
 
-    // json_decode($prduct_01, false);
+            if ($db->transStatus() === false) {
+             $db->transRollback();
+             $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' . $db->transStatus(), 'result' => false];
+             return json_encode($return);
+            } else {
+             $db->transCommit();
+             $msj = ['msj' => 'Felicitades!' . $licence_input_out_ws . '  REV:------- RESULT UPDATE ------- Codigo Status:' . $db->transStatus() . ' Se actualizo la app con exito!' , 'result' => true];
+             return json_encode($msj);
+             // return json_encode($msj);
+         }
+        return json_encode($result);
 
-      //echo json_encode($prduct_01, true);
-      echo $prduct_01;
-      // addFile(cadena $archivo) 
-    
     }
-
-
-
 
 
 
@@ -357,18 +354,11 @@ class Admin extends BaseController
 
          // Inicio la trasaccion
          $db->transBegin();
-         //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
-
-            //DOC EJEMPLO PRODUCTOS
-           // $result_product_01 =  $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
-           // $result_product_02 = $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
-         
-            //  $result_doc = $this->WorkspaceModel->curl_update($db_user . "/ws_lang_" . $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
-         if ($db->transStatus() === false) {
+            if ($db->transStatus() === false) {
              $db->transRollback();
              $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' . $db->transStatus(), 'result' => false];
              return json_encode($return);
-         } else {
+            } else {
              $db->transCommit();
              $msj = ['msj' => 'Felicitades!  REV: '. $rev_product_01.' ------- RESULT UPDATE ------- Codigo Status:' . $db->transStatus() . ' Se actualizo la app con exito!' , 'result' => true];
              return json_encode($msj);
@@ -376,7 +366,7 @@ class Admin extends BaseController
          }
          return json_encode($ws_lang);
          //return true;
-     }
+     }  
 
 
   //Vista de reset de pasword
