@@ -180,8 +180,8 @@ function put_left_nav_doc() {
                             });
                         });
             }else{
-                    console.log('ws_left_nav 2');
-                    console.log(ws_left_nav);
+                    //console.log('ws_left_nav 2');
+                   // console.log(ws_left_nav);
                     alert( ws_left_nav.msj+ 'Workspace ID:'+ ws_left_nav.ws_id );
             } 
         }
@@ -208,22 +208,6 @@ function put_left_nav_doc() {
     });
 };
 
-//Leo el doc y imprimo la vista
-function chek_licence_msj(ws_left_nav) {
-
-        //var ret = ws_left_nav['return'];
-        console.log('ws_left_nav');
-        console.log(ws_left_nav);
-        if(ws_left_nav){
-
-            alert('Hola ' + ws_left_nav);
-        }else{
-
-        }
-
-};
-
-chek_licence_msj();
 
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data , ws_lang_data) {
