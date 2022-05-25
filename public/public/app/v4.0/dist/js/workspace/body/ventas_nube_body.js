@@ -149,9 +149,6 @@ function put_left_nav_doc() {
                             }, function(err, response) {
                             if(response) {
                                 //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
-                                //alert('Se actualizo el Left Nav doc');
-                                //console.log('userCtx L nav doc 2');
-                               // console.log(userCtx);
                                 createCookie('ws_install-' + ws_id, true), 30;
                                 //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
                             }
@@ -182,6 +179,10 @@ function put_left_nav_doc() {
                              // handle response
                             });
                         });
+            }else{
+                    console.log('ws_left_nav 2');
+                    console.log(ws_left_nav);
+                    alert( ws_left_nav.msj+ 'Workspace ID:'+ ws_left_nav.ws_id );
             } 
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -208,16 +209,29 @@ function put_left_nav_doc() {
 };
 
 //Leo el doc y imprimo la vista
+function chek_licence_msj(ws_left_nav) {
+
+        //var ret = ws_left_nav['return'];
+        console.log('ws_left_nav');
+        console.log(ws_left_nav);
+        if(ws_left_nav){
+
+            alert('Hola ' + ws_left_nav);
+        }else{
+
+        }
+
+};
+
+chek_licence_msj();
+
+//Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data , ws_lang_data) {
               var ws_left_nav_doc = {
                   ws_left_nav_data: ws_left_nav_data.ws_left_nav,
                   ws_lang_data: ws_lang_data
               }
-
-
-            //  console.log('aa  aaaa jj j j jjjjj kkakkkskksksksksksksksksk /////...... . .. . sksksksksksksksks aaaaccccaaaaa');
-            //  console.log(ws_left_nav_doc);
-              renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', '#left_nav_compiled', ws_left_nav_doc);
 };
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
@@ -228,12 +242,7 @@ function get_top_bar(ws_info, ws_lang_data) {
         user: user_data,
         ws_lang_data: ws_lang_data
     }
-  //  console.log('12213123  aajajjajajajaj  hahahahahahahha gagagagagaggaga sksks aaaaccccaaaaa');
-  //  console.log(ws_top_bar);
-  //  console.log(ws_lang_data);
-    
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
-   // console.log('Top bar in');
 };
 
 ////----(3 LEFT NAV CART)---/////
@@ -243,8 +252,6 @@ function get_right_nav(ws_info, ws_lang_data) {
         ws_lang_data: ws_lang_data
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
-    // $('#cart_user_input').focus();
-   // console.log('CART in');
 };
 
 
@@ -259,9 +266,6 @@ async function check_url_module() {
     var m_id = getParameterByName('id'); //Trae el modulo id
     var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
     var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
-    //console.log('111LASKSAJJ ASOASOASPOJD ASDASD')
-    //console.log(ws_left_nav.ws_left_nav.m);
-   // console.log('1');
     check_content_module(m_name, m_t_id, m_id,m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
     //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
 }
