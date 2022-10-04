@@ -948,12 +948,19 @@ class Workspace extends BaseController
                         'catalog_product_id' => null,
 
                         'category_id' => 1,
-                        'sub_category_id' => 1,
-
+                       // 'sub_category_id' => 1,
+                       'trade' => [
+                        'id' => 'adi',
+                        'value' => 'adidas'
+                        ],
+                        'model' => [
+                            'id' => 'adi',
+                            'value' => 'scote v'
+                            ],
                         'workspace_id' => 77,
                         'condition' => 'not_specified',
                         'author' => 'smartmobile.com.ar@gmail.com',
-                        'attributes' => [
+                       /* 'attributes' => [
                             [
                                 'id' => 'TYPE',
                                 'name' => 'Tipo de Ventilador',
@@ -970,7 +977,7 @@ class Workspace extends BaseController
                                 'attribute_group_id' => 'MAIN',
                                 'attribute_group_name' => 'Marca'
                             ]
-                        ],
+                        ],*/
                         'variations' => [
                             [
                                 'id' => 1,

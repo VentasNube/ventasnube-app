@@ -1561,6 +1561,17 @@ a.ui-button:active,
     cursor: pointer;
 }
 
+.input-group {
+    position: relative;
+    border-collapse: separate;
+}
+.input-group.flex {
+    position: relative;
+    display: inline-flex!important;
+    border-collapse: separate;
+}
+
+
 .input-group-btn {
     position: relative;
     white-space: nowrap;

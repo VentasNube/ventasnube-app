@@ -1,88 +1,87 @@
  <!--- CATALOG RIGHT VIEW PRODUCT TEMPLATE   --->
 
 {{#each variations}}
-<div onclick="view_item_variations_select(this)" product_id="{{{../_id}}}" variant_id="{{{id}}}" {{#if status}} disabled=""
-    {{/if}} class="variations-select ripple s-card-actv-item padd ">
-    <div class="s-card-actv-item-body">
+    <div onclick="view_item_variations_select(this)" product_id="{{{../_id}}}" variant_id="{{{id}}}" {{#if status}} disabled=""
+        {{/if}} class="variations-select ripple s-card-actv-item padd ">
+        <div class="s-card-actv-item-body">
 
-        {{#search_id attribute_combinations 'COLOR'}}
-        <!-- Hago la comprobacion de si es un color -->
-        {{#with (lookup ../attribute_group [id])~}}
-        <div style="background-color:#{{../value}};" class="s-card-mini-img" data-toggle="tooltip"
-            data-placement="bottom" title="{{{../name}}}" data-original-title="{{{../name}}}">
-        </div>
-        {{/with}}
-
-        {{else}}
-
-        {{#first ../pictures}}
-        <div class="s-card-mini-img" data-toggle="tooltip" data-placement="bottom" title="{{{../value}}}"
-            data-original-title="{{{../name}}}">
-            <img class="var_new_img" src="{{{this.min}}}" alt="">
-        </div>
-        {{/first}}
-
-        {{/search_id}}
-
-
-        <div class="s-card-actv-item-prod">
-            <div class="var_new_name s-card-actv-item-name">
-                {{#each attribute_combinations as | ac |}}
-                <!-- Hago la comprobacion de si es un color -->
-                {{#ifEquals id 'SIZE' }}
-                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
-                    data-original-title="{{{id_name}}}">
-                    <span> {{value}} </span>
-                </div>
-                {{/ifEquals}}
-                {{#ifDiff id 'COLOR' }}
-                {{name}}
-                {{/ifDiff}}
-                {{/each}}
-
-                {{#ifEquals id ../variant_id }}
-                <div class="s-card-actv-item-dell">
-                    <button type="button" class="btn btn-round text-blue pull-right">
-                        <span class="material-icons">check_circle </span>
-                    </button>
-                </div>
-                {{else}}
-                <div class="s-card-actv-item-dell">
-                    <button type="button" class="btn btn-roundpull-right" >
-                        <span class="material-icons">check_circle </span>
-                    </button>
-                </div>
-
-                {{/ifEquals}}
-
-                {{!--#with (lookup id [../variant_id])~}}
-                <div class="s-card-actv-item-dell">
-                    <button type="button" class="btn-dell-item-cart btn btn-round
-                        text-blue pull-right" item_cart_rev="{{{_rev}}}" item_cart_id="{{{_id}}}">
-                        <span class="material-icons">check_circle </span>
-                    </button>
-                </div>
-                {{/with--}}
+            {{#search_id attribute_combinations 'COLOR'}}
+            <!-- Hago la comprobacion de si es un color -->
+            {{#with (lookup ../attribute_group [id])~}}
+            <div style="background-color:#{{../value}};" class="s-card-mini-img" data-toggle="tooltip"
+                data-placement="bottom" title="{{{../name}}}" data-original-title="{{{../name}}}">
             </div>
-            <span class="s-card-actv-item-price-left ">
-                <span class="text-blue" data-toggle="tooltip" data-placement="top"
-                    data-original-title="Stock Disponible">Stock:{{#stock stock_invetary}}{{/stock}}</span>
-            </span>
-            </span>
+            {{/with}}
 
-            <span class="s-card-actv-item-price-right text font-weight-bold">
-                <span class="tot" style="font-size: 20px;">
+            {{else}}
 
-                    {{#first price_list}}
-                        <span>{{../../currency.value}}</span> <label class="counter">{{value}}</label>
-                    {{/first}}
+            {{#first ../pictures}}
+            <div class="s-card-mini-img" data-toggle="tooltip" data-placement="bottom" title="{{{../value}}}"
+                data-original-title="{{{../name}}}">
+                <img class="var_new_img" src="{{{this.min}}}" alt="">
+            </div>
+            {{/first}}
 
+            {{/search_id}}
+
+
+            <div class="s-card-actv-item-prod">
+                <div class="var_new_name s-card-actv-item-name">
+                    {{#each attribute_combinations as | ac |}}
+                    <!-- Hago la comprobacion de si es un color -->
+                    {{#ifEquals id 'SIZE' }}
+                    <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
+                        data-original-title="{{{id_name}}}">
+                        <span> {{value}} </span>
+                    </div>
+                    {{/ifEquals}}
+                    {{#ifDiff id 'COLOR' }}
+                    {{name}}
+                    {{/ifDiff}}
+                    {{/each}}
+
+                    {{#ifEquals id ../variant_id }}
+                    <div class="s-card-actv-item-dell">
+                        <button type="button" class="btn btn-round text-blue pull-right">
+                            <span class="material-icons">check_circle </span>
+                        </button>
+                    </div>
+                    {{else}}
+                    <div class="s-card-actv-item-dell">
+                        <button type="button" class="btn btn-roundpull-right" >
+                            <span class="material-icons">check_circle </span>
+                        </button>
+                    </div>
+
+                    {{/ifEquals}}
+
+                    {{!--#with (lookup id [../variant_id])~}}
+                    <div class="s-card-actv-item-dell">
+                        <button type="button" class="btn-dell-item-cart btn btn-round
+                            text-blue pull-right" item_cart_rev="{{{_rev}}}" item_cart_id="{{{_id}}}">
+                            <span class="material-icons">check_circle </span>
+                        </button>
+                    </div>
+                    {{/with--}}
+                </div>
+                <span class="s-card-actv-item-price-left ">
+                    <span class="text-blue" data-toggle="tooltip" data-placement="top"
+                        data-original-title="Stock Disponible">Stock:{{#stock stock_invetary}}{{/stock}}</span>
                 </span>
-            </span>
+                </span>
 
+                <span class="s-card-actv-item-price-right text font-weight-bold">
+                    <span class="tot" style="font-size: 20px;">
+
+                        {{#first price_list}}
+                            <span>{{../../currency.value}}</span> <label class="counter">{{value}}</label>
+                        {{/first}}
+
+                    </span>
+                </span>
+
+            </div>
         </div>
     </div>
-</div>
-
 {{/each}}
 

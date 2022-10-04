@@ -398,6 +398,8 @@ async function catalog_edit_item(element) {
         var product_id = $(element).attr('product_id');
         var variant_id = $(element).attr('variant_id');
         var new_category_list = await L_catalog_db.get('category_list');
+        var new_trade_list = await L_catalog_db.get('trade_list');
+        var new_model_list = await L_catalog_db.get('model_list');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
         var product_doc_array = {
@@ -409,6 +411,8 @@ async function catalog_edit_item(element) {
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
+            trade_list: new_trade_list,
+            model_list: new_model_list,
             attributes_list:attributes
         }
 
@@ -431,6 +435,8 @@ async function catalog_edit_item_url(product_id, variant_id) {
         var product_id = product_id;
         var variant_id = variant_id;
         var new_category_list = await L_catalog_db.get('category_list');
+        var new_trade_list = await L_catalog_db.get('trade_list');
+        var new_model_list = await L_catalog_db.get('model_list');
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
         var product_doc_array = {
@@ -442,6 +448,8 @@ async function catalog_edit_item_url(product_id, variant_id) {
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
+            trade_list: new_trade_list,
+            model_list: new_model_list,
             attributes_list:attributes
         }
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
@@ -685,6 +693,9 @@ $(element).parent('div').css("color", "red");
 
 }
 */
+
+// FUNCIONES EDITAR CATEGORIAS 2022
+
 // Agrego un Categoria
 async function add_new_cat(element) {    
     try {
@@ -752,6 +763,7 @@ async function add_new_cat(element) {
      
     }
 }
+
 // Search Input de categorias
 async function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
@@ -797,7 +809,6 @@ async function cat_edit_product_category(element){
     let new_value = $(element).attr('new_value');
 
     // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-
     var doc_id_s = String(doc_id); //Combierto el id del doc en un string
     var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
     
@@ -808,8 +819,7 @@ async function cat_edit_product_category(element){
         ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
     });
     catalog_edit_item_url(doc_id, 1);
-  //  alert('salio todo ok')
-
+    //  alert('salio todo ok')
 
 };
 
@@ -886,6 +896,376 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
+
+
+/// MARCA 2022
+
+
+// Agrego un Categoria
+async function add_new_trade(element) {    
+    try {
+        var doc_id = $(element).attr('doc_id');
+        var new_trade_val = $(element).val();
+        //  var input_value = $(element).attr('input_value');
+        //var input_id = $(element).attr('doc_id');
+        var new_trade = String(new_trade_val);
+       // .toLowerCase()
+        // Filtro si el input esta bacio
+        if (new_trade) {
+            let doc_id_s = String('trade_list');  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get(doc_id_s);
+            const tag_index = doc.trade_list.find((objeto) => objeto.value == new_trade);  // Verigico q el item a agregar ya no este repetido
+            if (tag_index) {
+                Snackbar.show({  
+                    text: ' <span class="material-icons">category</span> La marca ' + new_trade_val + ' ya existe!',
+                    width: '475px',
+                    pos: 'bottom-right',
+                    actionTextColor: "#4CAF50",
+                });
+            }
+            else {
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
+                var arr_number_id_valid  = doc.trade_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if(!arr_number_id_valid){
+                    var new_item = {
+                        id:arr_number_id,
+                        value:new_trade,
+                       // sub_category: []
+                    }
+                }
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+                var new_doc = doc.trade_list.unshift(new_item);  //Envio los datos editados al documento
+
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    Snackbar.show({
+                        text: 'La marca ' + new_trade_val + ' se agrego!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                    catalog_edit_item_url(doc_id, 1);
+                } else {
+                    alert("no se actualizo");
+                }
+            }
+        }
+        else {
+            Snackbar.show({  
+                text: ' La marca no puede estar bacia',
+                width: '475px',
+                pos: 'bottom-right',
+                actionTextColor: "#4CAF50"
+            });
+        }
+    }catch (err) {
+     
+    }
+}
+
+// Search Input de categorias
+async function add_new_trade_press(e, element) {
+    var key = e.keyCode || e.which;
+    //tomo el key code para saber si es el enter o un caracter
+    if (key == 13) {
+       // alert($(element).val());
+        add_new_trade(element);
+        catalog_edit_item_url($(element).attr('doc_id'));
+        $('#edit-item-description-body').addClass('in');
+    }else{
+        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
+        var doc_id = $(element).attr('doc_id');
+        var new_trade_val = $(element).val();
+        var select_div_id  = "#select_trade_list_"+doc_id;
+        var new_trade = String(new_trade_val);
+        if (new_trade) {
+            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get('trade_list');
+            //Filstro con una busqueda que incluya las palabras que ingreso al input
+            const filterItems = query => {
+            return doc.trade_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );}
+           // creo un array con los datos del producto y la lista de categorias actualizadas
+            var trade_list_search = {
+                _id: doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                trade_find_list: filterItems(new_trade)
+            }
+            //renderizo las categorias nuevas filtradas
+            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, trade_list_search);
+      }
+    }
+}
+
+// Elimino una Categoria
+async function catalog_dell_trade(element) {
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let value = $(element).attr('value');
+        Snackbar.show({  
+            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' +value+' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+               onActionClick: async function(element) {   
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_catalog_db.get('trade_list');
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+                const new_trade_list = doc.trade_list.filter(word => word.value != value);
+                //Reemplazo el array por el filtrado
+                console.log(new_trade_list);
+                doc['trade_list'] = new_trade_list;
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        catalog_edit_item_url(doc_id, 1);
+
+                        $(element).parent('li').remove();
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                //$('#' + item_cart_id).remove();
+               // $(element).css('opacity', 0);      
+            }
+        });
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+// Tomo la seleccion nueva y edito el documento
+async function catalog_edit_trade(element){
+    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+    const input_value =  $(element).attr('input_value'); //Id del documento a edita
+
+    let input_id = $(element).attr('input_id');
+    let new_value = $(element).attr('new_value');
+
+    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+    
+     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+     var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    catalog_edit_item_url(doc_id, 1);
+    //  alert('salio todo ok')
+
+};
+
+
+// MODELOS 2022
+
+
+// Agrego un Categoria
+async function add_new_model(element) {    
+    try {
+        var doc_id = $(element).attr('doc_id');
+        var new_model_val = $(element).val();
+        //  var input_value = $(element).attr('input_value');
+        //var input_id = $(element).attr('doc_id');
+        var new_model = String(new_model_val);
+       // .toLowerCase()
+        // Filtro si el input esta bacio
+        if (new_model) {
+            let doc_id_s = String('model_list');  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get(doc_id_s);
+            const tag_index = doc.model_list.find((objeto) => objeto.value == new_model);  // Verigico q el item a agregar ya no este repetido
+            if (tag_index) {
+                Snackbar.show({  
+                    text: ' <span class="material-icons">category</span> La marca ' + new_model_val + ' ya existe!',
+                    width: '475px',
+                    pos: 'bottom-right',
+                    actionTextColor: "#4CAF50",
+                });
+            }
+            else {
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
+                var arr_number_id_valid  = doc.model_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if(!arr_number_id_valid){
+                    var new_item = {
+                        id:arr_number_id,
+                        value:new_model,
+                       // sub_category: []
+                    }
+                }
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+                var new_doc = doc.model_list.unshift(new_item);  //Envio los datos editados al documento
+
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    Snackbar.show({
+                        text: 'La marca ' + new_model_val + ' se agrego!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                    catalog_edit_item_url(doc_id, 1);
+                } else {
+                    alert("no se actualizo");
+                }
+            }
+        }
+        else {
+            Snackbar.show({  
+                text: ' La marca no puede estar bacia',
+                width: '475px',
+                pos: 'bottom-right',
+                actionTextColor: "#4CAF50"
+            });
+        }
+    }catch (err) {
+     
+    }
+}
+
+// Search Input de categorias
+async function add_new_model_press(e, element) {
+    var key = e.keyCode || e.which;
+    //tomo el key code para saber si es el enter o un caracter
+    if (key == 13) {
+       // alert($(element).val());
+        add_new_model(element);
+        catalog_edit_item_url($(element).attr('doc_id'));
+        $('#edit-item-description-body').addClass('in');
+    }else{
+        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
+        var doc_id = $(element).attr('doc_id');
+        var new_model_val = $(element).val();
+        var select_div_id  = "#select_model_list_"+doc_id;
+        var new_model = String(new_model_val);
+        if (new_model) {
+            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get('model_list');
+            //Filstro con una busqueda que incluya las palabras que ingreso al input
+            const filterItems = query => {
+            return doc.model_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );}
+           // creo un array con los datos del producto y la lista de categorias actualizadas
+            var model_list_search = {
+                _id: doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                model_find_list: filterItems(new_model)
+            }
+            //renderizo las categorias nuevas filtradas
+            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, model_list_search);
+      }
+    }
+}
+
+// Elimino una Categoria
+async function catalog_dell_model(element) {
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let value = $(element).attr('value');
+        Snackbar.show({  
+            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' +value+' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+               onActionClick: async function(element) {   
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_catalog_db.get('model_list');
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+                const new_model_list = doc.model_list.filter(word => word.value != value);
+                //Reemplazo el array por el filtrado
+                console.log(new_model_list);
+                doc['model_list'] = new_model_list;
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        catalog_edit_item_url(doc_id, 1);
+
+                        $(element).parent('li').remove();
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                //$('#' + item_cart_id).remove();
+               // $(element).css('opacity', 0);      
+            }
+        });
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+// Tomo la seleccion nueva y edito el documento
+async function catalog_edit_model(element){
+    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+    const input_value =  $(element).attr('input_value'); //Id del documento a edita
+
+    let input_id = $(element).attr('input_id');
+    let new_value = $(element).attr('new_value');
+
+    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+    
+     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+     var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    catalog_edit_item_url(doc_id, 1);
+    //  alert('salio todo ok')
+
+};
+
+
+
+
+//   SUB CATERGORIAS 2022
+// FUERON ELIMINADAS LAS SUB CATEGORIAS
 
 // FIN FUNCIONES CATEGORIAS
 
@@ -1167,6 +1547,7 @@ async function cat_delete_variant(element) {
     }
 
 }
+
 async function cat_edit_variations(element) {
 
     try {
