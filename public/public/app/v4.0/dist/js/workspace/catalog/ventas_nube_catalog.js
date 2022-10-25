@@ -1338,36 +1338,6 @@ async function cat_edit_product(element) {
 
 }
 
-
-// Tomo la seleccion nueva y edito el documento
-async function new_price_var_NO_2(element) {
-
-    const doc_id = $(element).attr('doc_id');
-    const variant_id = $(element).attr('variant_id');
-    const input_id = $(element).attr('input_id');
-    const new_value = $('#new_price_var_'+variant_id).val();
-
-    const input_value =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
-
-    alert(new_value);
-    alert(input_value);
-
-    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-    
-     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-     var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-    });
-    catalog_edit_item_url(doc_id, 1);
-    //  alert('salio todo ok')
-
-};
-
-
 // EDICION DE PRECIOS DEL PRODUCTO
 async function new_price_var(element) {
 
@@ -1431,6 +1401,92 @@ async function new_price_var(element) {
     }
 
 }
+
+// EDICION DE PRECIOS DEL PRODUCTO
+// Elimino una Categoria
+async function dell_price_var(element) {
+    try {
+
+        //const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_id = $(element).attr('input_id');
+        const new_value = $('#new_price_var_'+variant_id).val();
+        //const price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
+
+        const price_list_id = $(element).attr('price_id');
+        const price_list_value = $(element).attr('price_value');
+
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let value = $(element).attr('value');
+        
+        Snackbar.show({  
+            text: '<span class="material-icons">delete</span> Quieres eliminar el precio' + price_list_value+' ID: '+price_list_id +'?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+               onActionClick: async function(element) {   
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_catalog_db.get(doc_id_s);
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+                //var price_list  = item[input_id].find(response => response.id ==  price_list_id);// Compruebo q el id lista existe 
+                const new_price_list = item[input_id].filter(response => response.id != price_list_id);
+                //Reemplazo el array por el filtrado
+                console.log(new_price_list);
+                item[input_id] = new_price_list;
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        catalog_edit_item_url(doc_id, 1);
+                        $(element).parent('li').remove();
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
+                //$('#' + item_cart_id).remove();
+               // $(element).css('opacity', 0);      
+            }
+        });
+    }catch (err) {
+        console.log(err);
+    }
+}
+
+// EDICION DE PRECIOS DEL PRODUCTO
+async function edit_price_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const price_id = $(element).attr('price_id');
+        const price_value = $(element).attr('price_value');
+       $('#new_price_var_'+variant_id).focus();
+       $('#new_price_var_'+variant_id).val(price_value);
+       $("#price_list_var_"+ variant_id +" option[value="+ price_id +"]").attr("selected",true);
+
+    
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 
 // EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
 async function cat_edit_chekbox(element) {
@@ -1544,11 +1600,11 @@ async function cat_new_variant(element) {
         "price_list": [
           {
             "id": 1,
-            "value": 2550
+            "value": 150
           },
           {
             "id": 2,
-            "value": 3350
+            "value": 100
           }
         ],
         "stock_invetary": [
