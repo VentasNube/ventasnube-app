@@ -1338,6 +1338,100 @@ async function cat_edit_product(element) {
 
 }
 
+
+// Tomo la seleccion nueva y edito el documento
+async function new_price_var_NO_2(element) {
+
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const input_id = $(element).attr('input_id');
+    const new_value = $('#new_price_var_'+variant_id).val();
+
+    const input_value =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
+
+    alert(new_value);
+    alert(input_value);
+
+    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+    
+     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+     var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    catalog_edit_item_url(doc_id, 1);
+    //  alert('salio todo ok')
+
+};
+
+
+// EDICION DE PRECIOS DEL PRODUCTO
+async function new_price_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_id = $(element).attr('input_id');
+        const new_value = $('#new_price_var_'+variant_id).val();
+        const price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
+
+        //   alert(new_value);
+       // console.log(new_value);
+
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            var price_list  = item[input_id].find(response => response.id ==  price_list_id);// Compruebo q el id lista existe 
+          //  console.log(price_list);
+           // console.log(item);
+            if(price_list){
+                const value = price_list; //Traigo el ojeto especifico 
+                value.value = new_value; //Edito el valor del value por el valor nuevo
+            }else{
+                var new_item = {
+                        id:price_list_id,
+                        value:new_value,
+                };
+                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+               // console.log('price_list');
+               // console.log(price_list);
+               // console.log('new_doc');
+                //console.log(new_doc);
+            }
+            var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                // load_all_cat(doc_id,arr_number_id );
+                // catalog_edit_item_url(doc_id, 1);
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                catalog_edit_item_url(doc_id, 1);
+            } else {
+                alert("no se actualizo");
+            }
+
+
+        }
+   
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 // EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
 async function cat_edit_chekbox(element) {
 
