@@ -332,31 +332,43 @@
                                                             </button>
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li>
-                                                                    <a onclick="cat_variations_price(this)" class=""
+                                                                    <a
+                                                                     price_id=" {{id}}"
+                                                                     price_value="  {{value}}"
+                                                                     onclick="edit_price_var(this)"
+                                                                     id="edit_price_var_{{../id}}"
+                                                                     doc_id="{{{../product_doc/_id}}}"
+                                                                     variant_id="{{../id}}" 
+
+                                                                     input_id="price_list"
                                                                         href="#">
                                                                         <span class="material-icons">
                                                                             edit
-                                                                        </span><span>Editar</span>
-
+                                                                        </span><span> {{#with ../../ws_lang_data}} {{{m_catalog_edit_edit}}} {{/with}}</span>
                                                                     </a>
                                                                 </li>
-
                                                                 <li>
-                                                                    <a onclick="cat_variations_price(this)" class=""
+                                                                    <a 
+
+                                                                     onclick="dell_price_var(this)"
+                                                                     id="dell_price_var_{{id}}"
+                                                                     doc_id="{{{../../product_doc/_id}}}"
+                                                                     variant_id="{{../id}}" 
+                                                                     price_id=" {{id}}"
+                                                                     price_value="  {{value}}"
+                                                                     input_id="price_list"
+
+                                                
                                                                         href="#">
                                                                         <span class="material-icons">
                                                                             delete
-                                                                        </span> <span>Eliminar</span>
-
+                                                                        </span>
+                                                                         <span> {{#with ../../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}</span>
                                                                     </a>
                                                                 </li>
-
                                                             </ul>
                                                         </div>
                                                     </div>
-
-
-
                                                 </li>
                                                 {{/each}}
                                             </ul>
