@@ -310,13 +310,18 @@
                                                             {{value}}
                                                         </div>
                                                         {{value}}
+                                                         {{id}}
                                                     {{/with}}
 
-                                                    <div class="round-icon pr uper">
+                                                     {{#with ( lookup ../../price_list [id])}}
+                                                        <div class="round-icon pr uper">
+                                                            {{value}}
+                                                        </div>
                                                         {{value}}
-                                                    </div>
-                                                    {{value}}
+                                                         {{id}}
+                                                    {{/with}}
 
+                                                    
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom" title=""
                                                         data-original-title="Creado:{{in_datetime}}">
