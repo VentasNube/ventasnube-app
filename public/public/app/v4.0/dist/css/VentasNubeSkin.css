@@ -9688,6 +9688,17 @@ h1 span{
     background-color: #575757;
     color: #fff;
 }
+
+.round-icon.uper {
+    text-overflow: clip;
+    overflow: hidden;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
+
+
 .round-icon.pr.xs {
     width: 15px;
     height: 15px;

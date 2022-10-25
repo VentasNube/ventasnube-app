@@ -516,6 +516,7 @@ function view_item_variations_select(element) {
 }
 
 /***  FIN VIEW ITEM */
+
 $(document).on('click', '.catalog_edit_item', function (event) {
     //$('#master_popup').modal('show');
     // get_catalog_new_item();
@@ -1345,34 +1346,39 @@ async function new_price_var(element) {
         //traigo el documento a editar
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
-        const input_id = $(element).attr('input_id');
-        const new_value = $('#new_price_var_'+variant_id).val();
-        const price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
+        let input_id = $(element).attr('input_id');
+        let new_value = $('#new_price_var_'+variant_id).val();
+        let price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
 
-        //   alert(new_value);
-       // console.log(new_value);
+        // alert(new_value);
+        // console.log(new_value);
 
-        var doc_id_s = String(doc_id);
+        const doc_id_s = String(doc_id);
+        var new_value_s = Number(new_value);
+        var price_list_id_s = Number(price_list_id)
+
         var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list  = item[input_id].find(response => response.id ==  price_list_id);// Compruebo q el id lista existe 
-          //  console.log(price_list);
-           // console.log(item);
+            var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
+              console.log(price_list_id_s);
+              console.log(new_value_s);
+              console.log(price_list);
+              console.log('price_list_id_s');
+            //console.log(item);
             if(price_list){
-                const value = price_list; //Traigo el ojeto especifico 
-                value.value = new_value; //Edito el valor del value por el valor nuevo
+                const value = price_list;//Traigo el ojeto especifico 
+                value.value = new_value_s; //Edito el valor del value por el valor nuevo
+                value.id = price_list_id_s;//Edito el valor del value por el valor nuevo
             }else{
                 var new_item = {
-                        id:price_list_id,
+                        id:price_list_id_s,
                         value:new_value,
                 };
+
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-               // console.log('price_list');
-               // console.log(price_list);
-               // console.log('new_doc');
-                //console.log(new_doc);
+                
             }
             var response = await L_catalog_db.put({
                     _id: doc._id,
@@ -1404,6 +1410,7 @@ async function new_price_var(element) {
 
 // EDICION DE PRECIOS DEL PRODUCTO
 // Elimino una Categoria
+
 async function dell_price_var(element) {
     try {
 
@@ -1419,11 +1426,12 @@ async function dell_price_var(element) {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
         let value = $(element).attr('value');
-        
+        //alert(input_id)
+
         Snackbar.show({  
             text: '<span class="material-icons">delete</span> Quieres eliminar el precio' + price_list_value+' ID: '+price_list_id +'?',
             width: '475px',
-            pos: 'bottom-right',
+            pos: 'bottom-center',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
                onActionClick: async function(element) {   
@@ -1434,11 +1442,12 @@ async function dell_price_var(element) {
                 let doc = await L_catalog_db.get(doc_id_s);
                 console.log(doc);
                 //Filtro los resultados del array menos el que quiero eliminar
-
+                alert(input_id)
                 var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
                 //var price_list  = item[input_id].find(response => response.id ==  price_list_id);// Compruebo q el id lista existe 
                 const new_price_list = item[input_id].filter(response => response.id != price_list_id);
                 //Reemplazo el array por el filtrado
+                console.log('new_price_list');
                 console.log(new_price_list);
                 item[input_id] = new_price_list;
                 //Guardo los cambios

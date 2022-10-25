@@ -306,11 +306,17 @@
                                                 <li class="list-group-item ripple">
 
                                                     {{#with ( lookup ../../price_list @index)}}
-                                                    <div class="round-icon pr">
-                                                        {{trimString value}}
+                                                        <div class="round-icon pr uper">
+                                                            {{value}}
+                                                        </div>
+                                                        {{value}}
+                                                    {{/with}}
+
+                                                    <div class="round-icon pr uper">
+                                                        {{value}}
                                                     </div>
                                                     {{value}}
-                                                    {{/with}}
+
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom" title=""
                                                         data-original-title="Creado:{{in_datetime}}">
@@ -333,6 +339,7 @@
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li>
                                                                     <a
+                                                                    
                                                                      price_id=" {{id}}"
                                                                      price_value="  {{value}}"
                                                                      onclick="edit_price_var(this)"

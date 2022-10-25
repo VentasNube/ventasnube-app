@@ -14,8 +14,8 @@ function getTemplateAjax(path, callback) {
             // IMPRIME EL PRIMER CARACTER DE UN STRING
             Handlebars.registerHelper('trimString', function(passedString) {
 
-                var theString = passedString.substring(0, 1);
-                return new Handlebars.SafeString(theString)
+              //  var theString = passedString.substring(0, 1);
+              // return new Handlebars.SafeString(theString)
 
             });
 

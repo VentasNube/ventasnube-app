@@ -129,11 +129,10 @@
                             <li>
                                 <a onclick="cat_variations_price(this)" class="" href="#">
                                     {{#with (lookup ../../price_list [id])~}}
-                                    <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    <div class="round-icon pr uper" data-toggle="tooltip" data-placement="bottom"
                                         title="{{{value}}}" data-original-title="{{{value}}}">
-                                        <span></span>
-                                        <!--{{trimString value}}-->
-                                        {{trimString value}}
+                                        <span>
+                                        {{value}}
                                         </span>
                                     </div>
                                     {{/with}}
