@@ -304,22 +304,17 @@
                                             <ul class="list-group margin-0">
                                                 {{#each price_list as | pl |}}
                                                 <li class="list-group-item ripple">
-
-                                                    {{#with ( lookup ../../price_list @index)}}
-                                                        <div class="round-icon pr uper">
-                                                            {{value}}
-                                                        </div>
-                                                        {{value}}
+                                                     {{value}}
                                                          {{id}}
-                                                    {{/with}}
-
-                                                     {{#with ( lookup ../../price_list [id])}}
-                                                        <div class="round-icon pr uper">
+                                                    {{#each ../../price_list as | l1 |}}
+                                                        {{#ifEquals l1.id pl.id }}
+                                                            <div class="round-icon pr uper">
+                                                                {{value}}
+                                                            </div>
                                                             {{value}}
-                                                        </div>
-                                                        {{value}}
-                                                         {{id}}
-                                                    {{/with}}
+                                                            {{id}}
+                                                        {{/ifEquals}}
+                                                    {{/each}}
 
                                                     
                                                     <span class="material-icons" data-toggle="tooltip"
