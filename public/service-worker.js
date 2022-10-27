@@ -1,6 +1,6 @@
       importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-      const version = 2111112313;
+      const version = 22222;
       const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
@@ -135,6 +135,7 @@
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_config.hbs', revision: version },
           
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', revision: version },
           

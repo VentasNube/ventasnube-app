@@ -1,0 +1,184 @@
+
+<div id="right_main" class="right_main col-xs-12 col-sm-12">
+    <!-- Cart Nav module -->
+    <div class="righ_nav_header">
+        <!--s-card-activ-cont--->
+            <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button type="button"
+                    class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+                    <span class="material-icons">
+                        arrow_back
+                    </span>
+                </button>
+                <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_workspace}}{{/with}} </h3>
+            </div>
+    </div>
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
+            <li class="ripple  active">
+                <a data-toggle="tab" href="#catalog_general">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{ws_panel_settings_icon}}{{/with}}
+                    </span>
+                        {{#with ws_lang_data}} {{ws_panel_settings_general}} {{/with}}
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_users_setting">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{ws_panel_settings_users_icon}}{{/with}}
+                    </span>
+                    {{#with ws_lang_data}}{{ ws_panel_settings_users}} {{/with}}
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_update">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}} {{ws_panel_settings_update_icon}}{{/with}}
+                    </span>
+                     {{#with ws_lang_data}} {{ws_panel_settings_update}} {{/with}}
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="catalog_general" class="tab-pane fade in active">
+                <!--s-card-activ-cont--->
+                <div id="" class="padding-10 s-card-activ-cont">
+                    <!--IDIOMA--->
+                    </br>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                               <span class="material-icons">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
+                                </span>
+                            </span>
+                          <input class="catalog_search search-input s-card-actv-input" autocomplete="off" type="text" id="new_price_list_value" name="new_list_price" placeholder="Buscar..">
+
+
+                             
+                        </div>
+                    </div>
+                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                               <span class="material-icons">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
+                                </span>
+                            </span>
+                            <select class="form-control md" name="ws_lang_setting"  >
+                                <option value="ws_lang_es" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}} {{{ws_panel_settings_lang_es}}}{{/with}} </option>
+                                <option value="ws_lang_us" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}}  {{ws_panel_settings_lang_us}}{{/with}}</option>
+                                <option value="ws_lang_por" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}} {{ws_panel_settings_lang_por}}{{/with}} </option>
+                            </select>
+
+                             
+                        </div>
+                    </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                
+                    {{#each price_list }}
+                        <li class="list-group-item ripple">
+                                                     <!-- Hago un each de los precios --->
+                                                  
+                                                            <div class="round-icon pr uper">
+                                                                {{value}}
+                                                            </div>
+                                                            {{value}}
+
+                                                    
+                                                    <span class="material-icons" data-toggle="tooltip"
+                                                        data-placement="bottom" title=""
+                                                        data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                                        history
+                                                    </span>
+                                               
+                                                    <div class="pull-right">
+                                                        {{#first ../price_list}}
+                                                        <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                                        {{/first}}
+                                                        <div class="btn-group dropright">
+                                                            <button id="" type="button"
+                                                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                                <span class="material-icons">more_vert</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li>
+                                                                    <a
+                                                                    
+                                                                     onclick="edit_list_price_var(this)"
+                                                                     price_id=" {{id}}"
+                                                                     price_value="  {{value}}"
+                                                                                        
+                                                                        href="#">
+                                                                        <span class="material-icons">
+                                                                            edit
+                                                                        </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a 
+
+                                                                     onclick="dell_price_var(this)"
+                                                                   
+                                                                     price_id=" {{id}}"
+                                                                     price_value="  {{value}}"
+                                                                     
+
+                                                
+                                                                        href="#">
+                                                                        <span class="material-icons">
+                                                                            delete
+                                                                        </span>
+                                                                         <span> {{#with ../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                        </li>
+                    {{/each}}
+                </div>
+            </div>
+            <div id="ws_users_setting" class="tab-pane fade in">
+                <div id="" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="ws_update" class="tab-pane fade in">
+                <div id="" class="s-card-activ-cont gray">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                               <span class="material-icons">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
+                                </span>
+                            </span>
+
+                              <button type="button" class="btn btn-primary" onclick="update_app()" data-toggle="modal" data-target="#master_modal" data-whatever="Actualizar">{{#with ws_lang_data}} {{{ws_settings_update_btn}}}{{/with}}</button>
+                            
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
+    </div>
+
+    <!-- Cart footer module -->
+    <div>
+        
+    </div>
+
+</div>

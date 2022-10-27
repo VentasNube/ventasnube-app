@@ -89,8 +89,8 @@ L_catalog_db.sync(url_R_db+ws_search_db, {
                         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });      
                         //Mapeo el contenido del objeto ws_left_nav M
                         ws_left_nav_data = ws_left_nav['ws_left_nav'];
-                        console.log(' AAAAAAA LEFTTT DATAAAAAAaaaaaaaaaa aaaaaaaaasasasasassa');
-                        console.log(ws_left_nav_data);
+                       // console.log(' AAAAAAA LEFTTT DATAAAAAAaaaaaaaaaa aaaaaaaaasasasasassa');
+                       // console.log(ws_left_nav_data);
                         // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
                         ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
                         // Mapeo el objeto
