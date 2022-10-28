@@ -46,25 +46,21 @@
             <!--tab--->
             <div id="catalog_general" class="tab-pane fade in active">
                 <!--s-card-activ-cont--->
-                <div id="" class="padding-10 s-card-activ-cont">
+            <div id="" class="padding-10 s-card-activ-cont">
                     <!--IDIOMA--->
-                    </br>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <label>Nueva lista de precios</label>
                         <div class="input-group">
                             <span class="input-group-addon">
                                <span class="material-icons">
-                                {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
+                                {{#with ws_lang_data}} {{m_catalog_edit_price_list}} {{/with}} 
                                 </span>
                             </span>
                           <input class="catalog_search search-input s-card-actv-input" autocomplete="off" type="text" id="new_price_list_value" name="new_list_price" placeholder="Buscar..">
-
-
-                             
                         </div>
                     </div>
-                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <label>Tipo de moneda</label>
                         <div class="input-group">
                             <span class="input-group-addon">
                                <span class="material-icons">
@@ -82,7 +78,7 @@
                     </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                    <label>{{#with ws_lang_data}} Listas de precios {{/with}} </label>
                 
                     {{#each price_list }}
                         <li class="list-group-item ripple">
@@ -163,9 +159,7 @@
                                 {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
                                 </span>
                             </span>
-
                               <button type="button" class="btn btn-primary" onclick="update_app()" data-toggle="modal" data-target="#master_modal" data-whatever="Actualizar">{{#with ws_lang_data}} {{{ws_settings_update_btn}}}{{/with}}</button>
-                            
                         </div>
                     </div>
                   
