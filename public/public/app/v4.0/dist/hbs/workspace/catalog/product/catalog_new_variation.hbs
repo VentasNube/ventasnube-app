@@ -180,7 +180,6 @@
                                         </div>
                                     {{/with}}                                           
                                     {{#each attribute_combinations as | ac |}}
-
                                             <!--- weight --->
                                             {{#ifEquals id 'WEIGHT' }}
                                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -220,7 +219,6 @@
                                                     </div><!-- /input-group -->
                                                 </div>
                                             {{/ifEquals}}  
-
                                             <!--- PACK --->
                                             {{#ifEquals id 'PACK' }}
                                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -315,8 +313,6 @@
                                                             {{value}}
                                                             <!-- {{id}} --->
                                                         {{/ifEquals}}
-                                                   
-
                                                      {{/each}}
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom" title=""
@@ -382,8 +378,7 @@
                                             </ul>
                                             <!--- Listas de precios --->
                                             <form class="" role="">
-                                                <div
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -402,10 +397,7 @@
                                                     </div>
                                                     <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                         <div class="input-group">
-
-                                                            <input id="new_price_var_{{id}}" class="form-control" type="number"
-                                                                placeholder="Precio" value="">
-
+                                                            <input id="new_price_var_{{id}}" class="form-control" type="number"  placeholder="Precio" value="">
                                                             <span class="input-group-addon">
                                                                 <button
                                                                 

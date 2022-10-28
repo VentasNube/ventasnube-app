@@ -73,6 +73,11 @@ return [
         'm_catalog_edit_contity' => 'Cantidad',
         'm_catalog_edit_price_update' => 'Actualizar Lista de precios',
         'm_catalog_edit_stock_update' => 'Actualizar Stock',
+
+
+        'm_catalog_edit_price_list' => 'Listas de precios',
+        'm_catalog_edit_price_list_update' => 'Actualizar Listas de precios',
+        'm_catalog_edit_price_list' => 'Listas de precios',
         //
         'm_catalog_edit_new' => 'Nueva',
         'm_catalog_edit_add' => 'Agregar',
