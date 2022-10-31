@@ -418,7 +418,7 @@ async function catalog_edit_item(element) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list:attributes
+            attributes_list:attributes,
         }
 
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
@@ -1375,6 +1375,8 @@ async function catalog_config(element) {
             price_list :price_list.price_list,
             currency_list:currency_list.currency_list
         }
+
+        console.log(catalog_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
     
     } catch (err) {
@@ -1384,17 +1386,85 @@ async function catalog_config(element) {
 
 async function catalog_config_show_edit(element) {
     try {
-       var price_list = await L_catalog_db.get('price_list');
-       var currency_list = await L_catalog_db.get('currency_list');
-        var catalog_config = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            price_list :price_list.price_list,
-            currency_list:currency_list.currency_list
-        }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
-    
+
+        let price_id =  $(element).attr('price_id'); 
+        let new_value =  $(element).attr('price_value'); 
+        let new_currency_id =  $(element).attr('price_currency_id'); 
+
+        const price_id_n =  Number(price_id);
+        var new_value_n = Number(new_value);
+        var new_currency_id_n = Number(new_currency_id);
+       
+       $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
+       $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
+       $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
+
+       $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div
+
+    } catch (err) {
+    console.log(err);
+}
+}
+
+
+async function catalog_config_save_edit(element) {
+    try {
+
+        let new_name = $('#new_price_list_name_value').val(); 
+        let new_money = $('#new_price_list_money_value').val(); 
+
+        var price_list = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+
+        const price_id_n =  Number(price_id);
+        var new_value_n = Number(new_value);
+        var new_currency_id_n = Number(new_currency_id);
+
+        //PRUEBAS NUEVAS
+        var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+
+       $('#new_price_list_name_value').val(new_value); 
+       $("#new_price_list_money_value[value='"+ new_currency_id_n + "']").attr("selected", true);
+
+        var doc = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+        var price_list = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
+            
+           // var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            console.log(' price_list 1' , price_list, ' new_item 1' , new_item)
+            if(price_list){
+                const price = price_list;//Traigo el ojeto especifico 
+                price.value = new_value_n; //Edito el valor del value por el valor nuevo
+                price.id = new_id_n;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+            }else{
+                var new_item = {
+                        id:new_id_n,
+                        value:new_value,
+                        currency_id:new_currency_id,
+                        create:newDate,
+                        updateDate : newDate,
+                        updateUser : userName
+                };
+
+              //  console.log(userName, 'else userName',new_item,'new_item');
+              //  var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+            }
+            console.log(' price_list 2' , price_list, ' new_item 2' , new_item)
+            var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+
+
+
+        
+
     } catch (err) {
     console.log(err);
 }
