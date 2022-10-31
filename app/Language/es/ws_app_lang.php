@@ -125,11 +125,8 @@ return [
         'ws_panel_settings_general' => 'General',
         'ws_panel_settings_users' => 'Colaboradores',
         'ws_panel_settings_update' => 'Actualizaciones',
-        
 
         'ws_panel_settings_lang_label' => 'Modificar Idioma', 
-
-        
 
         'ws_panel_settings_lang_es' => 'Espa&ntilde;ol',
         'ws_panel_settings_lang_us' => 'Ingles',
@@ -148,6 +145,29 @@ return [
         'ws_panel_settings_update_icon' => 'browser_updated',
 
         'ws_panel_settings_lang_icon' => 'translate',
+
+        // CONFIGURACION CATALOGO
+        //'m_my_catalog' => 'Configuar',
+        'm_config_catalog' => 'Configurar Catalogo',    
+        'm_config_catalog_icon' => 'collections',
+
+        //BOTONES
+        'ws_catalog_settings_add' => 'Agregar',
+        'ws_catalog_settings_add_icon' => 'check_circle',
+
+        'ws_catalog_settings_edit' => 'Editar',
+        'ws_catalog_settings_delete' => 'Eliminar',
+
+        //TITULOS
+        'ws_catalog_settings_list' => 'Listas de precios',
+        'ws_catalog_settings_money' => 'Monedas',
+        'ws_catalog_settings_tax' => 'Impuestos',
+        //ICONOS
+        'm_config_catalog_list_icon' => 'format_list_numbered',
+        'm_config_catalog_list_money_icon' => 'paid',
+        'm_config_catalog_list_tax_icon' => 'corporate_fare',
+
+
 
          //MI CUENTA
          'm_account_tittle' => 'Mis datos',

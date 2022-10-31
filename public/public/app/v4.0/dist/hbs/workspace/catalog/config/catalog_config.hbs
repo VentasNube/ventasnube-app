@@ -1,0 +1,195 @@
+
+<div id="right_main" class="right_main col-xs-12 col-sm-12">
+    <!-- Cart Nav module -->
+    <div class="righ_nav_header">
+        <!--s-card-activ-cont--->
+            <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button type="button"
+                    class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+                    <span class="material-icons">
+                        arrow_back
+                    </span>
+                </button>
+                <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_catalog}}{{/with}} </h3>
+            </div>
+    </div>
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
+            <li class="ripple  active">
+                <a data-toggle="tab" href="#ws_catalog_config_list">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{m_config_catalog_icon}}{{/with}}
+                    </span>
+                         {{#with ws_lang_data}} {{ws_catalog_settings_list}} {{/with}} 
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_catalog_config_money">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{m_config_catalog_list_money_icon}}{{/with}}
+                    </span>
+                    {{#with ws_lang_data}}{{ ws_catalog_settings_money }} {{/with}}
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_catalog_config_tax">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}} {{m_config_catalog_list_tax_icon}}{{/with}}
+                    </span>
+                     {{#with ws_lang_data}} {{ws_catalog_settings_tax}} {{/with}}
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="ws_catalog_config_list" class="tab-pane fade in active">
+
+                <div id="" class="padding-0 s-card-activ-cont">
+                <!-- LISTADO --->    
+                    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {{#each price_list }}
+                            <li class="list-group-item ripple">
+                                                        <!-- Hago un each de los precios --->
+                                                    
+                                                                <div class="round-icon pr uper">
+                                                                    {{value}}
+                                                                </div>
+                                                                {{value}}
+
+                                                        
+                                                        <span class="material-icons" data-toggle="tooltip"
+                                                            data-placement="bottom" title=""
+                                                            data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                                            history
+                                                        </span>
+                                                
+                                                        <div class="pull-right">
+                                                            {{#first ../price_list}}
+                                                            <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                                            {{/first}}
+                                                            <div class="btn-group dropright">
+                                                                <button id="" type="button"
+                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    <span class="material-icons">more_vert</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a
+                                                                        
+                                                                        onclick="edit_list_price_var(this)"
+                                                                        price_id=" {{id}}"
+                                                                        price_value="  {{value}}"
+                                                                                            
+                                                                            href="#">
+                                                                            <span class="material-icons">
+                                                                                edit
+                                                                            </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a 
+
+                                                                        onclick="dell_price_var(this)"
+                                                                    
+                                                                        price_id=" {{id}}"
+                                                                        price_value="  {{value}}"
+                                                                        
+
+                                                    
+                                                                            href="#">
+                                                                            <span class="material-icons">
+                                                                                delete
+                                                                            </span>
+                                                                            <span> {{#with ../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                            </li>
+                        {{/each}}
+
+
+                        
+                    </div>
+
+                    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <form class="" role="">
+                                                                    <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                                        <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                                            <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}} {{ws_catalog_settings_list}} {{/with}} </label>
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon">
+                                                                                    <span class="material-icons">
+                                                                                    {{#with ws_lang_data}} {{m_config_catalog_list_icon}} {{/with}} 
+                                                                                    </span>
+                                                                                </span>
+                                                                            <input class="form-control" autocomplete="off" type="text" id="new_price_list_name_value" name="new_list_price" placeholder="Buscar..">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                                             <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}} {{ws_catalog_settings_money}} {{/with}} </label>
+                                                                        
+                                                                            <div class="input-group">
+                                                                                 <select class="form-control md" name="ws_lang_setting"  >
+                                                                                      {{#each currency_list }}
+
+                                                                                                    <option value=" {{id}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)"> {{value}}  </option>
+                                                                            
+                                                                                      {{/each}}
+
+
+                                                                                       </select>
+                                                                                                                            
+                                                                                <span class="input-group-addon">
+
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        onclick="edit_price_list_var(this)"
+                                                                                        id="add_price_var_{{id}}"
+                                                                                        doc_id="{{{../product_doc/_id}}}"
+                                                                                        variant_id="{{id}}" 
+                                                                                        input_id="price_list"
+
+                                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                                        
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        data-original-title=" {{#with ws_lang_data}} {{ws_catalog_settings_edit}} {{ws_catalog_settings_money}} {{/with}} "
+                                                                                        
+                                                                                        data-toggle="dropdown" 
+                                                                                        aria-haspopup="true"
+                                                                                        aria-expanded="false">
+                                                                                        <span class="material-icons"> {{#with ws_lang_data}} {{ws_catalog_settings_add_icon}} {{/with}} </span>
+                                                                                    </button>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                        </form>
+                    </div>
+                </div>
+              <!--tab-content--->
+            </div>
+            <div id="ws_catalog_config_money" class="tab-pane fade">
+    <h4 class=" margin-0 padding-t-20">Monedas {{#with ws_lang_data}}{{m_config_catalog_list_money}}{{/with}} </h3>
+     
+            </div>
+            <div id="ws_catalog_config_tax" class="tab-pane fade ">
+<h4 class=" margin-0 padding-t-20">Impuestos {{#with ws_lang_data}}{{m_config_catalog_list_tax}}{{/with}} </h3>
+  
+            </div>
+        <!--tabs-main--->
+    </div>
+
+    <!-- Cart footer module -->
+    <div>
+        
+    </div>
+
+</div>

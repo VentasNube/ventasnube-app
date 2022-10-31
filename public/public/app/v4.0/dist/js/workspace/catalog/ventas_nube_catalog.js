@@ -1367,13 +1367,33 @@ function form_new_product(ws_info, ws_lang_data) {
 async function catalog_config(element) {
     try {
        var price_list = await L_catalog_db.get('price_list');
+       var currency_list = await L_catalog_db.get('currency_list');
         var catalog_config = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            price_list :price_list.price_list
+            price_list :price_list.price_list,
+            currency_list:currency_list.currency_list
         }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog_config.hbs', '#right_main_compiled', catalog_config);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
+    
+    } catch (err) {
+    console.log(err);
+}
+}
+
+async function catalog_config_show_edit(element) {
+    try {
+       var price_list = await L_catalog_db.get('price_list');
+       var currency_list = await L_catalog_db.get('currency_list');
+        var catalog_config = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list :price_list.price_list,
+            currency_list:currency_list.currency_list
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
     
     } catch (err) {
     console.log(err);
