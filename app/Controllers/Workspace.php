@@ -534,7 +534,7 @@ class Workspace extends BaseController
                    // '_rev'=> $doc_rev,
                     'ws_update' => now(),
                     'ws_update_user' => $user_email,
-                    'ws_land_default' => 'ws_lang_us',
+                    'ws_land_default' => 'ws_lang_es',
                     'ws_lang_es' =>  lang('ws_app_lang.ws_lang_es'),//Traigo la plantilla con los objetos dentro de la carpeta LENGUAJE
                     'ws_lang_us' =>  lang('ws_app_lang.ws_lang_us'), // ASI puedo llevar un orden mucho mejor para centralizar los formatos
                   ];
@@ -648,16 +648,22 @@ class Workspace extends BaseController
                         'status' => 'active',
                         'price_list' => [
                             [
-                                'id' => '1',
+                                'id' => 1,
                                 'value' => 'Consumidor Final',
+                                'currency_id' => 1,
+                                'status'=> true,
+                                'delete'=> false,
                                 'currency' => [
                                     'id' => 'ARS',
                                     'value' => '$',
                                 ],
                             ],
                             [
-                                'id' => '2',
+                                'id' => 2,
                                 'value' => 'Gremio',
+                                'currency_id' => 1,
+                                'status'=> true,
+                                'delete'=> false,
                                 'currency' => [
                                     'id' => 'ARS',
                                     'value' => '$',
@@ -666,6 +672,9 @@ class Workspace extends BaseController
                             [
                                 'id' => '3',
                                 'value' => 'Mayorista',
+                                'currency_id' => 1,
+                                'status'=> true,
+                                'delete'=> false,
                                 'currency' => [
                                     'id' => 'ARS',
                                     'value' => '$',
@@ -674,6 +683,9 @@ class Workspace extends BaseController
                             [
                                 'id' => '4',
                                 'value' => 'Mercado Libre',
+                                'currency_id' => 3,
+                                'status'=> true,
+                                'delete'=> false,
                                 'currency' => [
                                     'id' => 'ARS',
                                     'value' => '$',
@@ -682,6 +694,9 @@ class Workspace extends BaseController
                             [
                                 'id' => '5',
                                 'value' => 'Web',
+                                'currency_id' => 2,
+                                'status'=> true,
+                                'delete'=> false,
                                 'currency' => [
                                     'id' => 'ARS',
                                     'value' => '$',
@@ -697,15 +712,15 @@ class Workspace extends BaseController
                         'status' => 'active',
                         'currency_list' => [
                             [
-                                'id' => 'ARS',
+                                'id' => 1,
                                 'value' => '$',
                             ],
                             [
-                                'id' => 'DOLAR',
+                                'id' => 2,
                                 'value' => 'u$s',
                             ],
                             [
-                                'id' => 'EUR',
+                                'id' => 3,
                                 'value' => '€',
                             ],
                         ],
@@ -948,8 +963,8 @@ class Workspace extends BaseController
                         'catalog_product_id' => null,
 
                         'category_id' => 1,
-                       // 'sub_category_id' => 1,
-                       'trade' => [
+                        // 'sub_category_id' => 1,
+                        'trade' => [
                         'id' => 'adi',
                         'value' => 'adidas'
                         ],
