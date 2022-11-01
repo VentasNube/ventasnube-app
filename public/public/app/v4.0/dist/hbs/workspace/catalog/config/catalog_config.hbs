@@ -45,14 +45,19 @@
         <div class="tab-content ">
             <!--tab--->
             <div id="ws_catalog_config_list" class="tab-pane fade in active">
-
                 <div id="" class="padding-0 s-card-activ-cont">
-                <!-- LISTADO --->    
+                    <!-- LISTADO --->    
                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         {{#each price_list as | pl |}}
-                            <li class="list-group-item ripple">
+                            <li class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
                                                         <!-- Hago un each de los precios --->
-                                                    
+                                                                                    <span class="material-icons">
+                                                                                            {{#ifEquals pl.status 'active' }}
+                                                                                                           visibility
+                                                                                                {{else}}
+                                                                                                           visibility_off
+                                                                                            {{/ifEquals}}
+                                                                                    </span>
                                                                 <div class="round-icon pr uper">
                                                                     {{value}}
                                                                 </div>
@@ -63,8 +68,11 @@
                                                             data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
                                                             history
                                                         </span>
+                                                                            
+                                                                     
                                                 
                                                         <div class="pull-right">
+                                                            
                                                             {{#each ../currency_list as | cu |}}
                                                                 <!-- Relaciono los dos valores por la ID --->
                                                                     {{#ifEquals cu.id pl.currency_id }}
@@ -97,15 +105,22 @@
                                                                     </li>
                                                                     <li>
                                                                         <a 
-                                                                            onclick="dell_config_name_price_list(this)"
+                                                                            onclick="catalog_config_save_block(this)"
                                                                             price_id=" {{id}}"
-                                                                            price_value="  {{value}}"
+                                                                            price_value="{{value}}"
+                                                                            price_currency_id="{{currency_id}}"
+                                                                            price_status="{{status}}"
+
                                                                             href="#"
                                                                             >
-                                                                            <span class="material-icons">
-                                                                                delete
-                                                                            </span>
-                                                                            <span> {{#with ../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                                                    <span class="material-icons">
+                                                                                            {{#ifEquals pl.status 'active' }}
+                                                                                                           visibility
+                                                                                                {{else}}
+                                                                                                           visibility_off
+                                                                                            {{/ifEquals}}
+                                                                                    </span>
+                                                                            <span>   {{#ifEquals pl.status 'active' }} {{#with ../ws_lang_data}} {{{m_catalog_edit_inactive}}} {{/with}}  {{else}}    {{#with ../ws_lang_data}} {{{m_catalog_edit_active}}} {{/with}}       {{/ifEquals}}</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>

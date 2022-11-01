@@ -405,6 +405,10 @@ async function catalog_edit_item(element) {
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
+
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
         var product_doc_array = {
@@ -413,6 +417,7 @@ async function catalog_edit_item(element) {
             name: product_doc.name,
             tags: product_doc.tags,
             price_list: price_doc.price_list,
+            currency_list: currency_doc.currency_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
@@ -425,7 +430,7 @@ async function catalog_edit_item(element) {
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
 
-       // console.log('product_doc_array', product_doc_array);
+        // console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -446,6 +451,9 @@ async function catalog_edit_item_url(product_id, variant_id) {
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
         var product_doc_array = {
@@ -454,6 +462,7 @@ async function catalog_edit_item_url(product_id, variant_id) {
             name: product_doc.name,
             tags: product_doc.tags,
             price_list: price_doc.price_list,
+            currency_list: currency_doc.currency_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
@@ -907,9 +916,7 @@ function catalog_get_cat(element) {
     });
 }
 
-
 /// MARCA 2022
-
 
 // Agrego un Categoria
 async function add_new_trade(element) {    
@@ -1352,7 +1359,8 @@ async function cat_edit_product(element) {
 // EDICION DE LISTA DE PRECIOS GENERAL
 
 
-/**** NUEVO PRODUCTO */
+/***  CONFIGURACION DE CATALOGO  ****/
+
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -1364,7 +1372,7 @@ function form_new_product(ws_info, ws_lang_data) {
     console.log('FORM NEW PRODUCT');
 };
 
-async function catalog_config(element) {
+async function catalog_config() {
     try {
        var price_list = await L_catalog_db.get('price_list');
        var currency_list = await L_catalog_db.get('currency_list');
@@ -1378,7 +1386,6 @@ async function catalog_config(element) {
 
         console.log(catalog_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
-    
     } catch (err) {
     console.log(err);
 }
@@ -1386,89 +1393,160 @@ async function catalog_config(element) {
 
 async function catalog_config_show_edit(element) {
     try {
-
+        //Traigo los valores
         let price_id =  $(element).attr('price_id'); 
         let new_value =  $(element).attr('price_value'); 
         let new_currency_id =  $(element).attr('price_currency_id'); 
-
+        //Filtro los resultados
         const price_id_n =  Number(price_id);
         var new_value_n = Number(new_value);
         var new_currency_id_n = Number(new_currency_id);
-       
-       $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
-       $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
-       $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
-
-       $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div
+        //Modifico el dom
+        $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
+        $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
+        $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
+        $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_price_list_name_value').focus(); //llevo el foco al input 
 
     } catch (err) {
     console.log(err);
 }
 }
-
 
 async function catalog_config_save_edit(element) {
     try {
 
+        let price_id =  $('#new_price_list_name_value').attr('price_id');  
         let new_name = $('#new_price_list_name_value').val(); 
-        let new_money = $('#new_price_list_money_value').val(); 
-
-        var price_list = await L_catalog_db.get('price_list');
-        var currency_list = await L_catalog_db.get('currency_list');
-
+        let new_money_id = $('#new_price_list_money_value').val(); 
         const price_id_n =  Number(price_id);
-        var new_value_n = Number(new_value);
-        var new_currency_id_n = Number(new_currency_id);
-
+        var new_name_n = String(new_name);
+        var new_money_id_n = Number(new_money_id);
         //PRUEBAS NUEVAS
         var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
-
-       $('#new_price_list_name_value').val(new_value); 
-       $("#new_price_list_money_value[value='"+ new_currency_id_n + "']").attr("selected", true);
-
         var doc = await L_catalog_db.get('price_list');
-        var currency_list = await L_catalog_db.get('currency_list');
-        var price_list = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
-            
-           // var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            console.log(' price_list 1' , price_list, ' new_item 1' , new_item)
-            if(price_list){
-                const price = price_list;//Traigo el ojeto especifico 
-                price.value = new_value_n; //Edito el valor del value por el valor nuevo
-                price.id = new_id_n;//Edito el valor del value por el valor nuevo
+        var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
+        //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+        if(price_array){
+                const price = price_array;//Traigo el ojeto especifico 
+                price.value = new_name_n; //Edito el valor del value por el valor nuevo
+                price.id = price_id_n;//Edito el valor del value por el valor nuevo
+                price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+                price.status = 'active';//Edito el valor del value por el valor nuevo
+                price.delete = false;//Edito el valor del value por el valor nuevo
                 price.updateDate = newDate;
                 price.updateUser = userName;
+                //Acutualizo el documento
+                var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    var print_item = await catalog_config(); //Refrezco la pantalla
+                    Snackbar.show({
+                        text: 'Se actualizo con exito!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                } else {
+                    Snackbar.show({
+                        text: 'NO actualizo!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                }
+
             }else{
-                var new_item = {
-                        id:new_id_n,
-                        value:new_value,
-                        currency_id:new_currency_id,
-                        create:newDate,
-                        updateDate : newDate,
-                        updateUser : userName
-                };
-
-              //  console.log(userName, 'else userName',new_item,'new_item');
-              //  var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+                Snackbar.show({
+                    text: 'NO actualizo!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
             }
-            console.log(' price_list 2' , price_list, ' new_item 2' , new_item)
-            var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-            });
+        } catch (err) {
+            console.log(err);
+    }
+}
 
 
+async function catalog_config_save_block(element) {
+    try {
+        //Traigo los valores
+        let price_id =  $(element).attr('price_id'); 
+        price_status = $(element).attr('price_status'); 
+        //alert(price_status);
 
-        
-
+        if(price_status  === 'active'){
+            var price_status = 'inactive';
+            
+           // alert(price_status);
+        }else{
+                var price_status = 'active';
+               // alert(price_status);
+        }
+        //Filtro los resultados
+        const price_id_n =  Number(price_id);
+        //PRUEBAS NUEVAS
+        var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get('price_list');
+        var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
+        //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+        if(price_array){
+                const price = price_array;//Traigo el ojeto especifico 
+                //price.value = new_name_n; //Edito el valor del value por el valor nuevo
+             //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
+             //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+                price.status = price_status;//Edito el valor del value por el valor nuevo
+              //  price.delete = false;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+                //Acutualizo el documento
+                var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    var print_item = await catalog_config(); //Refrezco la pantalla
+                    Snackbar.show({
+                        text: 'Se actualizo con exito!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                } else {
+                    Snackbar.show({
+                        text: 'NO actualizo!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                }
+            }else{
+                Snackbar.show({
+                    text: 'NO actualizo!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
     } catch (err) {
     console.log(err);
+    }
 }
-}
+
+
+
+
+/***  CONFIGURACION DE CATALOGO  ****/
 
 
 async function new_price_list(element) {
@@ -1498,13 +1576,8 @@ async function new_price_list(element) {
         //Busco dentro de las variables
         if (variant_id) {
 
-
             var price_list = doc.price_list.find(response => response.id == price_id);// Traigo el elemento por la id variant
-            
-           // var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            
-            
+             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
             if(price_list){
                 const price = price_list;//Traigo el ojeto especifico 
                 price.value = new_value_s; //Edito el valor del value por el valor nuevo
@@ -1529,8 +1602,6 @@ async function new_price_list(element) {
                     ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
             });
             if (response) {
-                // load_all_cat(doc_id,arr_number_id );
-                // catalog_edit_item_url(doc_id, 1);
                 Snackbar.show({
                     text: 'El precio se actualizo!',
                     actionText: 'ok',
@@ -1756,6 +1827,7 @@ async function cat_edit_chekbox(element) {
                 _rev: doc._rev,
                 ...doc,// trae todos los datos del doc y los pega en la raiz
             });
+
         }
     } catch (err) {
         console.log(err);
@@ -1876,8 +1948,8 @@ async function cat_new_variant(element) {
              var print_item = await catalog_edit_item_url(doc_id,new_variant_id);// Refrezco la vista de las variables de nuevo
             // console.log('PRINT ITEM BORRADO')
              //console.log(print_item)
-             return print_item;
-            }
+                return print_item;
+                }
             }
         }else{
 

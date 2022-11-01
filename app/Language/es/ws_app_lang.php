@@ -84,7 +84,8 @@ return [
         'm_catalog_edit_edit' => 'Editar',
         'm_catalog_edit_delete' => 'Eliminar',
 
-
+        'm_catalog_edit_inactive' => 'Desactivar',
+        'm_catalog_edit_active' => 'Activar',
         
         //CARRITO
         'm_cart' => 'Carrito',
