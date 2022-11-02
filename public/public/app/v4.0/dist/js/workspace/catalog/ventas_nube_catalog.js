@@ -1096,10 +1096,7 @@ async function catalog_edit_trade(element){
 
 };
 
-
 // MODELOS 2022
-
-
 // Agrego un Categoria
 async function add_new_model(element) {    
     try {
@@ -1358,9 +1355,7 @@ async function cat_edit_product(element) {
 // CONFIGURACION DE CATALOGO
 // EDICION DE LISTA DE PRECIOS GENERAL
 
-
 /***  CONFIGURACION DE CATALOGO  ****/
-
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -1376,12 +1371,15 @@ async function catalog_config() {
     try {
        var price_list = await L_catalog_db.get('price_list');
        var currency_list = await L_catalog_db.get('currency_list');
+
+       var tax_list = await L_catalog_db.get('tax_list');
         var catalog_config = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             price_list :price_list.price_list,
-            currency_list:currency_list.currency_list
+            currency_list:currency_list.currency_list,
+            tax_list:tax_list.tax_list,
         }
 
         console.log(catalog_config);
@@ -1543,18 +1541,38 @@ async function catalog_config_save_block(element) {
     }
 }
 
+///** MONEDAS CATALOGO ***/
+
+
+
+async function catalog_config_money_save() {
+    try {
+       var price_list = await L_catalog_db.get('price_list');
+       var currency_list = await L_catalog_db.get('currency_list');
+       var tax_list = await L_catalog_db.get('tax_list');
+        var catalog_config = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list :price_list.price_list,
+            currency_list:currency_list.currency_list,
+            tax_list:tax_list.tax_list,
+
+        }
+
+        console.log(catalog_config);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config_money.hbs', '#right_main_compiled', catalog_config);
+    } catch (err) {
+    console.log(err);
+}
+}
 
 
 
 /***  CONFIGURACION DE CATALOGO  ****/
-
-
 async function new_price_list(element) {
-
     try {
-    
         const doc_id = ('price_list');    //traigo el documento a editar
-        //
         const price_id = $(element).attr('price_id');
         // let input_id = $(element).attr('input_id');
         //Nuevos valores
@@ -1619,8 +1637,6 @@ async function new_price_list(element) {
 
 }
 
-
-
 // EDICION DE PRECIOS DEL PRODUCTO
 async function new_price_var(element) {
 
@@ -1631,27 +1647,14 @@ async function new_price_var(element) {
         let input_id = $(element).attr('input_id');
         let new_value = $('#new_price_var_'+variant_id).val();
         let price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
-
-       // let doc_id_s = String('category_list');  // Me aseguro q sea un string
-       // let doc = await L_catalog_db.get(doc_id_s);
-      //  const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
-  
-        // alert(new_value);
-        // console.log(new_value);
-
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
         var price_list_id_s = Number(price_list_id)
-
-            //PRUEBAS NUEVAS
+        //PRUEBAS NUEVAS
         var user_Ctx =  userCtx;
-            
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
-
-        //console.log(user_Ctx, 'USER CTX');
-       // console.log(userName, 'USER userName');
-       var doc = await L_catalog_db.get(doc_id_s);
+        var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
@@ -1767,8 +1770,6 @@ async function edit_price_var(element) {
        $('#new_price_var_'+variant_id).focus();
        $('#new_price_var_'+variant_id).val(price_value);
        $("#price_list_var_"+ variant_id +" option[value="+ price_id +"]").attr("selected",true);
-
-    
     } catch (err) {
         console.log(err);
     }

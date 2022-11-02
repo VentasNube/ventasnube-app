@@ -710,22 +710,57 @@ class Workspace extends BaseController
                         '_id' => 'currency_list',
                         'type' => 'product',
                         'status' => 'active',
+                        'currency_sell_default_id' => 1,
+                        'currency_link_status' => 1,
                         'currency_list' => [
+                            
                             [
                                 'id' => 1,
-                                'value' => '$',
+                                'value' => 'u$s',
+                                'currency_name' =>'Dolar Americano',
+                                'currency_link_id' =>1,
+                                'currency_link_value' =>1
                             ],
                             [
                                 'id' => 2,
-                                'value' => 'u$s',
+                                'value' => '$',
+                                'currency_name' =>'Peso Argentino',
+                                'currency_link_id' =>1,
+                                'currency_link_value' =>1
                             ],
                             [
                                 'id' => 3,
                                 'value' => '€',
+                                'currency_name' =>'Euro Europa',
+                                'currency_link_id' =>1,
+                                'currency_link_value' =>1
                             ],
                         ],
                     ];
 
+                    $tax_list = [
+                        '_id' => 'tax__list',
+                        'type' => 'tax',
+                        'status' => 'active',
+                        'tax__sell_default_id' => 1,
+                        'tax__link_status' => 1,
+
+                        'tax' => [
+                            [
+                                'id' => '0',
+                                'name' => 'IVA 21',
+                                'value' => '21',
+                            ],   [
+                                'id' => '1',
+                                'name' => 'IVA 10',
+                                'value' => '10',
+                            ], [
+                                'id' => '3',
+                                'name' => 'IVA exento',
+                                'value' => '0',
+                            ]
+                        ],
+                    ];
                     
                     //CATEGORIAS Y SUB CATEGORIAS
                     $category_list = [
@@ -1595,8 +1630,14 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/currency_list', $currency_list); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/attributes', $attributes); //Creo un doc con la informacion del workspace
 
+
+
                     $this->WorkspaceModel->curl_put($db_name . '/trade_list', $trade_list); //Creo un doc con la informacion las listas de marcas
                     $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
+
+                    $this->WorkspaceModel->curl_put($db_name . '/tax_list', $tax_list); //Creo un doc con la informacion las listas de modelos
+
+                    
 
                     //DOC EJEMPLO PRODUCTOS
                     $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
