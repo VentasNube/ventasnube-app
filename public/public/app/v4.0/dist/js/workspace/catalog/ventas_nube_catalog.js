@@ -1355,7 +1355,6 @@ async function cat_edit_product(element) {
 // CONFIGURACION DE CATALOGO
 // EDICION DE LISTA DE PRECIOS GENERAL
 
-/***  CONFIGURACION DE CATALOGO  ****/
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -1367,7 +1366,12 @@ function form_new_product(ws_info, ws_lang_data) {
     console.log('FORM NEW PRODUCT');
 };
 
-async function catalog_config() {
+
+/***  CONFIGURACION DE CATALOGO  ****/
+
+
+//*** Imprimir configuracion  */
+async function catalog_config(tab_id) {
     try {
        var price_list = await L_catalog_db.get('price_list');
        var currency_list = await L_catalog_db.get('currency_list');
@@ -1379,16 +1383,18 @@ async function catalog_config() {
             user_roles: user_Ctx.userCtx.roles,
             price_list :price_list.price_list,
             currency_list:currency_list.currency_list,
-            tax_list:tax_list.tax_list,
+            tax_list:tax_list.tax,
         }
 
-        console.log(catalog_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
+      //  $('#['+ tab_id +']').class('active in'); 
+
     } catch (err) {
     console.log(err);
 }
 }
 
+/*** Editar lista de precios */
 async function catalog_config_show_edit(element) {
     try {
         //Traigo los valores
@@ -1472,7 +1478,6 @@ async function catalog_config_save_edit(element) {
     }
 }
 
-
 async function catalog_config_save_block(element) {
     try {
         //Traigo los valores
@@ -1541,27 +1546,98 @@ async function catalog_config_save_block(element) {
     }
 }
 
-///** MONEDAS CATALOGO ***/
-
-
-
-async function catalog_config_money_save() {
+async function catalog_config_money_block(element) {
     try {
-       var price_list = await L_catalog_db.get('price_list');
-       var currency_list = await L_catalog_db.get('currency_list');
-       var tax_list = await L_catalog_db.get('tax_list');
-        var catalog_config = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            price_list :price_list.price_list,
-            currency_list:currency_list.currency_list,
-            tax_list:tax_list.tax_list,
+        //Traigo los valores
+        let price_id =  $(element).attr('price_id'); 
+        price_status = $(element).attr('price_status'); 
+        //alert(price_status);
 
+        if(price_status  === 'active'){
+            var price_status = 'inactive';
+            
+           // alert(price_status);
+        }else{
+                var price_status = 'active';
+               // alert(price_status);
         }
+        //Filtro los resultados
+        const price_id_n =  Number(price_id);
+        //PRUEBAS NUEVAS
+        var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get('price_list');
+        var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
+        //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+        if(price_array){
+                const price = price_array;//Traigo el ojeto especifico 
+                //price.value = new_name_n; //Edito el valor del value por el valor nuevo
+             //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
+             //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+                price.status = price_status;//Edito el valor del value por el valor nuevo
+              //  price.delete = false;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+                //Acutualizo el documento
+                var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    var print_item = await catalog_config(); //Refrezco la pantalla
+                    Snackbar.show({
+                        text: 'Se actualizo con exito!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                } else {
+                    Snackbar.show({
+                        text: 'NO actualizo!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                }
+            }else{
+                Snackbar.show({
+                    text: 'NO actualizo!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
+    } catch (err) {
+    console.log(err);
+    }
+}
 
-        console.log(catalog_config);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config_money.hbs', '#right_main_compiled', catalog_config);
+
+async function catalog_config_show_money_edit(element) {
+    try {
+        //Traigo los valores
+        let price_id =  $(element).attr('price_id'); 
+        let new_value =  $(element).attr('price_value'); 
+        let new_currency_id =  $(element).attr('price_currency_id'); 
+        //Filtro los resultados
+        const price_id_n =  Number(price_id);
+        var new_value_n = Number(new_value);
+        var new_currency_id_n = Number(new_currency_id);
+        //Modifico el dom
+        $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
+        $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
+        $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
+        $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_price_list_name_value').focus(); //llevo el foco al input 
+
+        $('#new_price_list_name_value').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
+
+       // $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+        
+
+
     } catch (err) {
     console.log(err);
 }
@@ -1569,7 +1645,252 @@ async function catalog_config_money_save() {
 
 
 
-/***  CONFIGURACION DE CATALOGO  ****/
+
+
+///** MONEDAS CATALOGO ***/
+
+async function catalog_config_show_tax_edit(element) {
+    try {
+
+        //Traigo los valores
+        let id =  $(element).attr('id'); 
+        let new_value =  $(element).attr('value'); 
+        let new_name =  $(element).attr('name'); 
+
+        //Filtro los resultados
+        const id_n =  Number(id);
+        var value_n = Number(new_value);
+        var name_n = Number(new_name);
+
+        //Modifico el dom
+        $('#new_value_tax_edit').val(new_value); //Tomo el valor de input
+        $('#new_value_tax_edit').attr('tax_id',  id); //Grabo el valor en un attr en el input
+        $("#new_name_tax_input").val(new_name); // cambio el valor del select
+        $("#edit_panel_config_tax" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_value_tax_edit').focus(); //llevo el foco al input 
+        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_money_edit(this)'); //Grabo el valor en un attr en el input
+
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+
+    } catch (err) {
+    console.log(err);
+}
+}
+
+async function catalog_config_tax_money_edit(element) {
+    try {
+
+        let id =  $('#new_value_tax_edit').attr('tax_id');  
+        let value = $('#new_value_tax_edit').val(); 
+        let name = $('#new_name_tax_input').val(); 
+        const id_n =  Number(id);
+        var value_n = String(value);
+        var name_n = String(name);
+        //PRUEBAS NUEVAS
+        //var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get('tax_list');
+        var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
+        var final_id_tax = doc.tax[doc.tax.length - 1].id //Traigo el ultimo id tax
+        //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+        if(tax_array){
+                const tax = tax_array;//Traigo el ojeto especifico 
+                tax.value = value_n; //Edito el valor del value por el valor nuevo
+                //tax.id = name_n;//Edito el valor del value por el valor nuevo
+                tax.name = name_n;
+                tax.status = 'active';//Edito el valor del value por el valor nuevo
+                tax.delete = false;//Edito el valor del value por el valor nuevo
+                tax.updateDate = newDate;
+                tax.updateUser = userName;
+                //Acutualizo el documento
+                var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    var print_item = await catalog_config(); //Refrezco la pantalla
+                    Snackbar.show({
+                        text: 'Se actualizo con exito!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                } else {
+                    Snackbar.show({
+                        text: 'NO actualizo!!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                }
+
+            }else{
+                Snackbar.show({
+                    text: 'NO actualizo!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        } catch (err) {
+            console.log(err);
+    }
+}
+
+// *** NUEVO IMPUESTO **** ///
+
+
+async function catalog_config_new_tax(element) {
+    try {
+        //Traigo los valores
+        var id =  $(element).attr('id'); 
+        let new_value =  $(element).attr('value'); 
+        let new_name =  $(element).attr('name'); 
+        //Filtro los resultados
+        var id_n =  Number(id);
+        var value_n = Number(new_value);
+        var name_n = Number(new_name);
+        //Modifico el dom
+        var doc = await L_catalog_db.get('tax_list');
+       
+        if(id){
+            var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
+            var final_id_tax = doc.tax[doc.tax.length - 1]//Traigo el ultimo id tax
+            alert(final_id_tax);
+        }
+        else{
+            var final_id_tax = 1;
+            var id = 0;
+        }
+
+        
+
+        $('#new_value_tax_edit').val(); //Tomo el valor de input
+        $('#new_value_tax_edit').attr('tax_id',  id); //Grabo el valor en un attr en el input
+        $("#new_name_tax_input").val(new_name); // cambio el valor del select
+        $("#edit_panel_config_tax" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_value_tax_edit').focus(); //llevo el foco al input 
+        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
+
+        
+
+        // new_value_tax_edit
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('type', 'number'); //Grabo el valor en un attr en el input
+
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+
+    } catch (err) {
+    console.log(err);
+    }
+}
+
+
+async function catalog_config_tax_new(element) {
+    try {
+        //let id =  $('#new_value_tax_edit').attr('tax_id');  
+        let value = $('#new_value_tax_edit').val(); 
+        let name = $('#new_name_tax_input').val(); 
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+       // const id_n =  Number(id);
+        var value_n = String(value);
+        var name_n = String(name);
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get('tax_list'); //Traigo el documento
+        var id_tax = doc.tax[doc.tax.length - 1];
+        //Si Id_tax es nulo o esta vacio 
+        if(id_tax){
+            var new_id = id_tax.id 
+            var  sum_id = new_id + 1;// Veo el ultimo id y le agrego 1
+            var final_id =  Number(sum_id); 
+        }else{
+            var final_id = 1; //Defino la id 1 como incial
+        }
+
+        var new_tax = {
+            id:final_id ,
+            value:value_n,
+            name:name_n,
+            status:'active', 
+            delete:false, 
+            create:newDate,
+            updateDate : newDate,
+            updateUser : userName
+                
+        };
+        var tax_array = doc.tax.push(new_tax);  //Envio los datos editados al documento
+        //Envio el documento
+        var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+if (response) {
+    var print_item = await catalog_config(); //Refrezco la pantalla
+    Snackbar.show({
+        text: 'Se actualizo con exito!!',
+        actionText: 'ok',
+        pos: 'bottom-right',
+        actionTextColor: "#0575e6",
+    });
+} else {
+    Snackbar.show({
+        text: 'NO actualizo!!',
+        actionText: 'ok',
+        pos: 'bottom-right',
+        actionTextColor: "#0575e6",
+    });
+}
+} catch (err) {
+    console.log(err);
+    }
+}
+
+
+async function catalog_config_tax_delete(element) {
+    try {
+       
+           //Traigo los valores
+           let id =  $(element).attr('id'); 
+           const id_n =  Number(id);
+            var doc = await L_catalog_db.get('tax_list');
+            const new_price_list = doc.tax.filter(response => response.id != id_n);
+            //Reemplazo el array por el filtrado
+            doc.tax = new_price_list;
+            //Acutualizo el documento
+            var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+if (response) {
+    var print_item = await catalog_config(); //Refrezco la pantalla
+    Snackbar.show({
+        text: 'Se actualizo con exito!!',
+        actionText: 'ok',
+        pos: 'bottom-right',
+        actionTextColor: "#0575e6",
+    });
+} else {
+    Snackbar.show({
+        text: 'NO actualizo!!',
+        actionText: 'ok',
+        pos: 'bottom-right',
+        actionTextColor: "#0575e6",
+    });
+}
+} catch (err) {
+    console.log(err);
+    }
+}
+
+/*** FIN CONFIGURACION DE CATALOGO  ****/
+
 async function new_price_list(element) {
     try {
         const doc_id = ('price_list');    //traigo el documento a editar
