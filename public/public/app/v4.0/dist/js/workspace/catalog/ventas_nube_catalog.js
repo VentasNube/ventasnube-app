@@ -1766,21 +1766,15 @@ async function catalog_config_new_tax(element) {
             var id = 0;
         }
 
-        
-
         $('#new_value_tax_edit').val(); //Tomo el valor de input
         $('#new_value_tax_edit').attr('tax_id',  id); //Grabo el valor en un attr en el input
         $("#new_name_tax_input").val(new_name); // cambio el valor del select
         $("#edit_panel_config_tax" ).first().fadeIn( "slow" );// Muestro el div con efecto
         $('#new_value_tax_edit').focus(); //llevo el foco al input 
         $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
-
-        
-
         // new_value_tax_edit
         $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
         $('#new_value_tax_edit').attr('type', 'number'); //Grabo el valor en un attr en el input
-
         $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
 
     } catch (err) {

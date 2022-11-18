@@ -124,23 +124,24 @@
                             </span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="header">Precios</li>
-                            {{#each doc.price_list as | price_list_p |}}
-                            <li>
-                                <a onclick="cat_variations_price(this)" class="" href="#">
-                                    {{#with (lookup ../../price_list [id])~}}
-                                    <div class="round-icon pr uper" data-toggle="tooltip" data-placement="bottom"
-                                        title="{{{value}}}" data-original-title="{{{value}}}">
-                                        <span>
-                                        {{value}}
-                                        </span>
-                                    </div>
-                                    {{/with}}
-                                    <span>{{../doc.currency}}</span>
-                                    <label class="counter">{{value}}</label>
-                                </a>
-                            </li>
+                            <li class="header">Precios Catalogo</li>
+
+                            {{#each doc.price_list as | pl |}}
+                                    <li>
+                                        <a onclick="cat_variations_price(this)" class="" href="#">
+                                        {{#each ../../price_list as | l1 |}}
+                                                {{#ifEquals l1.id pl.id }}
+                                                                    <div class="round-icon pr uper">
+                                                                        {{value}}
+                                                                    </div>
+                                                {{/ifEquals}}
+                                               {{/each}}   
+                                        <span>{{../doc.currency}}</span>
+                                        <label class="counter">{{value}}</label>
+                                        </a>
+                                    </li>                
                             {{/each}}
+
                         </ul>
                     </div>
                 </div>
