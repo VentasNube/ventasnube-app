@@ -258,7 +258,8 @@ function variations_select(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
       //  console.log("var_doc");
-     //   console.log(variant_array);
+      console.log('variant_array VARIANT ARRAY');
+      console.log(variant_array);
     });
 }
 

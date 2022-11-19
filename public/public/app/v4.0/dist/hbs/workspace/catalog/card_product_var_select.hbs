@@ -113,22 +113,22 @@
             </button>
             <ul class="dropdown-menu">
                 <li class="header">Precios  </li>
-                {{#each price_list as | price_list_p |}}
-                <li>
-                    <a onclick="variations_price(this)" class="" href="#">
-                        {{#with (lookup ../../price_list [id])~}}
-                        <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{value}}}"
-                            data-original-title="{{{value}}}">
-                            <span></span>
-                            <!--{{trimString value}}-->
-                            {{trimString value}}
-                            </span>
-                        </div>
-                        {{/with}}
-                        <span>{{../price_list.currency.value}}</span> <label class="counter">{{value}}</label>
-                    </a>
-                </li>
-                {{/each}}
+                    {{#each price_list as | pl |}}
+                                    <li>
+                                        <a onclick="cat_variations_price(this)" class="" href="#">
+                                        {{#each ../../price_list as | l1 |}}
+                                                {{#ifEquals l1.id pl.id }}
+                                                                    <div class="round-icon pr uper">
+                                                                        {{value}}
+                                                                    </div>
+                                                                     <span>{{currency.value}}</span>
+                                                {{/ifEquals}}
+                                                  
+                                        {{/each}}   
+                                            <label class="counter">{{value}}</label>
+                                        </a>
+                                    </li>                
+                    {{/each}}
                 
             </ul>
         </div>
