@@ -129,15 +129,17 @@
                             {{#each doc.price_list as | pl |}}
                                     <li>
                                         <a onclick="cat_variations_price(this)" class="" href="#">
-                                        {{#each ../../price_list as | l1 |}}
-                                                {{#ifEquals l1.id pl.id }}
-                                                                    <div class="round-icon pr uper">
-                                                                        {{value}}
-                                                                    </div>
-                                                {{/ifEquals}}
-                                               {{/each}}   
-                                        <span>{{../doc.currency}}</span>
-                                        <label class="counter">{{value}}</label>
+                                            
+                                            {{#each ../../price_list as | l1 |}}
+                                                    {{#ifEquals l1.id pl.id }}
+                                                                        <div class="round-icon pr uper">
+                                                                            {{value}}
+                                                                        </div>
+                                                    {{/ifEquals}}
+                                            {{/each}}
+
+                                            <span>{{../currency}}</span>
+                                            <label class="counter">{{value}}</label>
                                         </a>
                                     </li>                
                             {{/each}}
