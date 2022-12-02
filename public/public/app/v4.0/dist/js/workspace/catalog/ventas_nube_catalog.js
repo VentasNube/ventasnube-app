@@ -2097,6 +2097,34 @@ async function edit_price_var(element) {
 // Los movimientos de stock se editan de los primeros mas viejos q fueron ingrasados 
 // se usa ese precio de costo, para sumar las ganancias
 
+//Modelo de array para los movimientos inventarios
+/*  stock_invetary": [
+    {
+        "id": 123,
+        "in_datetime": "18/3/2021 18:45:10",
+        "update_datetime": "18/3/2021 18:45:10",
+        "quantity": 4,
+        "quantity_sell": 4,
+        "cost_price": 100,
+        "currency_id": 1,
+        "location_id": 1,
+        "updates": [
+          {
+            "id": 1,
+            "create": "2022-11-03T16:46:36.131Z",
+            "updateDate": "2022-11-03T16:46:36.131Z",
+            "updateUser": "smartmobile.com.ar@gmail.com"
+          },
+          {
+            "id": 2,
+            "create": "2022-11-03T16:46:36.131Z",
+            "updateDate": "2022-11-03T16:46:36.131Z",
+            "updateUser": "smartmobile.com.ar@gmail.com"
+          }
+       
+      ]
+*/
+
 
 // Hacer un ingreso de stock (abre formulario)
 
