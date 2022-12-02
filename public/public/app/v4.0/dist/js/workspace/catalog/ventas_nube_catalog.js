@@ -2096,15 +2096,13 @@ async function edit_price_var(element) {
 // Los movimientos no se pueden editar se puen hacer nuevos ingresos y egresos de mercaderia
 // Los movimientos de stock se editan de los primeros mas viejos q fueron ingrasados 
 // se usa ese precio de costo, para sumar las ganancias
-// 
+
 
 // Hacer un ingreso de stock (abre formulario)
 
 // Hacer movimiento Positivo (Envia ale formulario)
 
 // Hacer movimiento Negativo (Envia el formulario )
-
-
 
 
 
