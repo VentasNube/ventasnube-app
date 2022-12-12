@@ -2098,22 +2098,44 @@ async function edit_price_var(element) {
 // se usa ese precio de costo, para sumar las ganancias
 
 //Modelo de array para los movimientos inventarios
-/*  stock_invetary": [
+/* 
+ "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "location": {
+            "id": 1,
+            "value": "Deposito 1"
+          },
+          "update": [
+            {
+              "username": "smartmobile.com.ar@gmail.com",
+              "update_datetime": "18/3/2021 18:45:10",
+              "in_stok": 10,
+              "out_stock": 4,
+              "quantity": 6,
+              "sold_quantity": 4,
+              "sold_id": 12554,
+              "cost_price": 150
+            }
+        }
+      ],
+
+stock_invetary": [
     {
         "id": 123,
         "in_datetime": "18/3/2021 18:45:10",
         "update_datetime": "18/3/2021 18:45:10",
-        "quantity": 4,
-        "quantity_sell": 4,
-        "cost_price": 100,
         "currency_id": 1,
         "location_id": 1,
         "updates": [
           {
             "id": 1,
-            "create": "2022-11-03T16:46:36.131Z",
             "updateDate": "2022-11-03T16:46:36.131Z",
-            "updateUser": "smartmobile.com.ar@gmail.com"
+            "updateUser": "smartmobile.com.ar@gmail.com",
+            "quantity": 4,
+            "quantity_sell": 4,
+            "cost_price": 100,
           },
           {
             "id": 2,
