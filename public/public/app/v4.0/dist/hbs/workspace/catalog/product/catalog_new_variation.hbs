@@ -449,91 +449,90 @@
                                                     {{sold_quantity}}
                                                     <div class="pull-right">
                                                         <span class="margin-r-10">Costo: ${{cost_price}}</span>
-
                                                         <span class="pull-right">Disponible <span
                                                                 class="badge">{{quantity}}</span></span>
-
                                                     </div>
-
                                                 </li>
                                                 {{/each}}
                                             </ul>
-                                            <form class="" role="">
-                                                <div
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                            <div  class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                    <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">                                                          
+                                                        <button type="button" class="btn xl btn-more btn-primary line"  role="button" data-toggle="collapse" data-parent="#item-edit-variants" href="#add_stock_form{{id}}" aria-expanded="true" aria-controls="collapseOne" >
+                            
+                                                            <span class="material-icons">add_circle_outline</span>
+                                                            <span class=""> Ingresar</span>
+
+                                                        </button>          
+                                                    </div>
+
+                                                    <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                       <button type="button" class="btn xl btn-more btn-danger line"  role="button" data-toggle="collapse" data-parent="#item-edit-variants" href="#dell_stock_form{{id}}" aria-expanded="true" aria-controls="collapseOne" >
+                                                            <span class="material-icons">do_not_disturb_on</span>
+                                                                <span class="">
+                                                                   Retirar
+                                                                </span>
+                                                        </button>          
+                                                    </div>
+
+                                         
+                                            <div id="dell_stock_form{{id}}" role="tabpanel" class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Cantidad">
+                                                                 inventory_2
+                                                                </span>
+                                                            </span>
+                                                            <input id="" class="form-control" type="number" placeholder="Cantidad" value="">
+                                                            <span class="input-group-addon">
+                                                                <button id="" type="button" class="round padding-0 btn-danger line pull-right ">
+                                                                    <span class="material-icons">do_not_disturb_on</span>
+                                                                </button>
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+                                                   
+                                            </div>
+                                            <div id="add_stock_form{{id}}"  role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true"  class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
                                                     <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <span class="material-icons" data-toggle="tooltip"
                                                                     data-placement="bottom" title=""
                                                                     data-original-title="Agregar precio">
-                                                                    price_check
+                                                                   price_change
                                                                 </span>
                                                             </span>
-                                                            <input id="" class="form-control" type="number"
-                                                                placeholder="Precio de costo" value="">
+                                                            <input id="" class="col-sm-4 form-control" type="number" placeholder="Precio de costo" value="">
                                                         </div>
                                                     </div>
+
                                                     <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                         <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <span class="material-icons" data-toggle="tooltip"
+                                                                        data-placement="bottom" title=""
+                                                                        data-original-title="Cantidad">
+                                                                        inventory_2
+                                                                    </span>
+                                                                 </span>
+                                                            <input id="" class="form-control" type="number" placeholder="Cantidad" value="">
                                                             <span class="input-group-addon">
-                                                                <span class="material-icons">
-                                                                    inventory
-                                                                </span>
-                                                            </span>
-                                                            <input id="" class="form-control" type="number"
-                                                                placeholder="Cantidad" value="">
-
-                                                            <span class="input-group-addon">
-                                                                <button id="" type="button"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
+                                                                <button id="" type="button" class="round padding-0 margin-5btn btn-primary line pull-right ">
                                                                     <span class="material-icons">add_circle</span>
                                                                 </button>
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                              <form class="" role="">
-                                                <div
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <span class="material-icons" data-toggle="tooltip"
-                                                                    data-placement="bottom" title=""
-                                                                    data-original-title="Agregar precio">
-                                                                    price_check
-                                                                </span>
-                                                            </span>
-                                                            <input id="" class="form-control" type="number"
-                                                                placeholder="Precio de costo" value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <span class="material-icons">
-                                                                    inventory
-                                                                </span>
-                                                            </span>
-                                                            <input id="" class="form-control" type="number"
-                                                                placeholder="Cantidad" value="">
 
-                                                            <span class="input-group-addon">
-                                                                <button id="" type="button"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                    <span class="material-icons">add_circle</span>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                            </div>
+                                               </div>
+                                          
                                         </div>
                                         <!--tab-content--->
                                     </div>
