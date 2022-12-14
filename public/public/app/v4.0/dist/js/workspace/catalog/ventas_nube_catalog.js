@@ -2099,7 +2099,7 @@ async function edit_price_var(element) {
 
 //Modelo de array para los movimientos inventarios
 /* 
- "stock_invetary": [
+  "stock_invetary": [
         {
           "id": 123,
           "in_datetime": "18/3/2021 18:45:10",
@@ -2117,42 +2117,224 @@ async function edit_price_var(element) {
               "sold_quantity": 4,
               "sold_id": 12554,
               "cost_price": 150
+            },
+            {
+              "username": "smartmobile.com.ar@gmail.com",
+              "datetime": "18/3/2021 18:45:10",
+              "in_stok": 10,
+              "out_stock": 4,
+              "quantity": 6,
+              "sold_quantity": 4,
+              "sold_id": 12554,
+              "cost_price": 250
             }
+          ]
         }
       ],
-
-stock_invetary": [
-    {
-        "id": 123,
-        "in_datetime": "18/3/2021 18:45:10",
-        "update_datetime": "18/3/2021 18:45:10",
-        "currency_id": 1,
-        "location_id": 1,
-        "updates": [
-          {
-            "id": 1,
-            "updateDate": "2022-11-03T16:46:36.131Z",
-            "updateUser": "smartmobile.com.ar@gmail.com",
-            "quantity": 4,
-            "quantity_sell": 4,
-            "cost_price": 100,
-          },
-          {
-            "id": 2,
-            "create": "2022-11-03T16:46:36.131Z",
-            "updateDate": "2022-11-03T16:46:36.131Z",
-            "updateUser": "smartmobile.com.ar@gmail.com"
-          }
-       
-      ]
 */
 
 
 // Hacer un ingreso de stock (abre formulario)
+async function add_stock_form(element) {
+
+    try {
+        //traigo el documento a editar
+
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// Hacer un egreso de stock de stock (abre formulario)
+
+async function dell_stock_form(element) {
+
+    try {
+        //traigo el documento a editar
+
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+
+// EDICION DE PRECIOS DEL PRODUCTO
+async function add_stock_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+
+        let input_id = $(element).attr('input_id');
+
+        let new_value = $('#add_stock_var_'+variant_id).val();
+        
+        let new_cost_stock =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
+
+        var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
+
+        const doc_id_s = String(doc_id);
+        var new_value_s = Number(new_value);
+        var new_cost_stock_s = Number(new_cost_stock)
+        //PRUEBAS NUEVAS
+        var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get(doc_id_s);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            var price_list  = item[input_id].find(response => response.id ==   add_stock_variant_id);// Compruebo q el id lista existe 
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            if(price_list){
+                var add_stock_variant_id = Math.floor(Math.random() * (+'10000' - +'1')) + +'1';
+            }else{
+                var new_item = {
+                    id:add_stock_variant_id,
+                    value:new_value,
+                    create:newDate,
+                    in_datetime: newDate,
+                    update_datetime: newDate,
+                    updateUser : userName,
+                    type: 'in',
+                    quantity: new_value,
+                    inicial_stok: new_value,
+                    out_stock: 0,
+                    cost_price:new_cost_stock_s,
+                    location_id:1
+
+                };
+              //  console.log(userName, 'else userName',new_item,'new_item');
+                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+            }
+            var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                // load_all_cat(doc_id,arr_number_id );
+                // catalog_edit_item_url(doc_id, 1);
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                catalog_edit_item_url(doc_id, 1);
+            } else {
+                alert("no se actualizo");
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// EDICION DE PRECIOS DEL PRODUCTO
+// Elimino una Categoria
+
+// EDICION DE PRECIOS DEL PRODUCTO
+async function dell_stock_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        let input_id = $(element).attr('input_id');
+        let new_value = $('#dell_stock_var_'+variant_id).val();
+        var new_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
+
+        let price_list_id =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
+
+        /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
+
+
+        //*
+
+        
+
+
+    //
+        // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
+        // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
+
+
+
+
+        const doc_id_s = String(doc_id);
+        var new_value_s = Number(new_value);
+        var price_list_id_s = Number(price_list_id)
+        //PRUEBAS NUEVAS
+        var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get(doc_id_s);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            if(price_list){
+                const price = price_list;//Traigo el ojeto especifico 
+                price.value = new_value_s; //Edito el valor del value por el valor nuevo
+                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+            }else{
+                var new_item = {
+                        id:new_stock_variant_id,
+                       // value:new_value,
+                        create:newDate,
+                        in_datetime: newDate,
+                        update_datetime: newDate,
+                        updateUser : userName,
+                        type: 'out',
+                        quantity: new_value,
+                        cost_price: price_list_id
+
+                };
+              //  console.log(userName, 'else userName',new_item,'new_item');
+                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+            }
+            var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                // load_all_cat(doc_id,arr_number_id );
+                // catalog_edit_item_url(doc_id, 1);
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                catalog_edit_item_url(doc_id, 1);
+            } else {
+                alert("no se actualizo");
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+
+
 
 // Hacer movimiento Positivo (Envia ale formulario)
 
 // Hacer movimiento Negativo (Envia el formulario )
+
 
 
 
