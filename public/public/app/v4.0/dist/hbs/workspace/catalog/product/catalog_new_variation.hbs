@@ -299,9 +299,7 @@
                                     <div class="tab-content ">
                                         <!--tab--->
                                         
-
                                         <div id="edit_stock_item_tab_{{id}}" class="tab-pane fade in  active">
-
                                             <ul class="list-group margin-0">
                                                 {{#each stock_invetary}}
                                                 <li class="list-group-item ripple ">
@@ -310,18 +308,27 @@
                                                         data-original-title="Creado:{{in_datetime}}">
                                                         history
                                                     </span>
-                                                    <span class="material-icons" data-toggle="tooltip"
+
+                                                    {{#ifEquals type "in" }}
+                                                    <span class="material-icons text-green" data-toggle="tooltip"
                                                         data-placement="bottom" title="" data-original-title="Stock inicial:
-                                                    {{quantity}}">
+                                                    {{quantity}}"> 
                                                         moving
                                                     </span>
+                                                     {{/ifEquals}}
+                                                     
                                                     {{quantity}}
-                                                    <span class="material-icons" data-toggle="tooltip"
+
+                                                     {{#ifEquals type "out" }} 
+                                                    <span class="material-icons text-red" data-toggle="tooltip"
                                                         data-placement="bottom" title="" data-original-title="Vendidos:
                                                     {{sold_quantity}}">
                                                         trending_down
                                                     </span>
+                                                     {{/ifEquals}}
+
                                                     {{sold_quantity}}
+
                                                     <div class="pull-right">
                                                         <span class="margin-r-10">Costo: ${{cost_price}}</span>
                                                         <span class="pull-right">Disponible <span class="badge">{{quantity}}</span></span>
