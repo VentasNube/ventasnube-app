@@ -2328,16 +2328,9 @@ async function dell_stock_var(element) {
 
 }
 
-
-
-
 // Hacer movimiento Positivo (Envia ale formulario)
 
 // Hacer movimiento Negativo (Envia el formulario )
-
-
-
-
 // EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
 async function cat_edit_chekbox(element) {
 
