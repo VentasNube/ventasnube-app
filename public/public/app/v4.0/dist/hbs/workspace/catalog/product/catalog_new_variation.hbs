@@ -366,12 +366,26 @@
                                                                     inventory_2
                                                                     </span>
                                                                 </span>
-                                                                <input id="" class="form-control" type="number" placeholder="Cantidad" value="">
-                                                                <span class="input-group-addon">
-                                                                    <button id="" type="button" class="round padding-0 btn-danger line pull-right ">
-                                                                        <span class="material-icons">do_not_disturb_on</span>
-                                                                    </button>
-                                                                </span>
+
+                                                                <div class="input-group">
+                                                                    <input id="dell_stock_var_{{id}}" class="form-control" type="number"  placeholder="Cantidad" value="">
+                                                                    <span class="input-group-addon">
+                                                                        <button                                                                
+                                                                            type="button"
+                                                                            onclick="dell_stock_var(this)"
+                                                                            id="dell_stock_var_{{id}}"
+                                                                            doc_id="{{{../product_doc/_id}}}"
+                                                                            variant_id="{{id}}" 
+                                                                            input_id="stock_invetary"      
+                                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-danger line pull-right "
+                                                                            data-toggle="dropdown" 
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded="false">
+                                                                            <span class="material-icons">do_not_disturb_on</span>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+
 
                                                             </div>
                                                         </div>

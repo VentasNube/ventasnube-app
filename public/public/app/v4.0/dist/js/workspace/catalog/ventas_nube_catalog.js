@@ -2162,25 +2162,21 @@ async function dell_stock_form(element) {
 }
 
 
-// EDICION DE PRECIOS DEL PRODUCTO
+// AGREGAR STOCK AL PRODUCTO
 async function add_stock_var(element) {
 
     try {
         //traigo el documento a editar
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
-
         let input_id = $(element).attr('input_id');
-
         let new_value = $('#add_stock_var_'+variant_id).val();
-        
         let new_cost_stock =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
-
         var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
 
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
-        var new_cost_stock_s = Number(new_cost_stock)
+        var new_cost_stock_s = Number(new_cost_stock);
         //PRUEBAS NUEVAS
         var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
@@ -2249,33 +2245,58 @@ async function dell_stock_var(element) {
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
         let new_value = $('#dell_stock_var_'+variant_id).val();
-        var new_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
-
+        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1'; 
         let price_list_id =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
+       
 
         /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
-
-
-        //*
-
-        
-
-
-    //
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
-
-
-
-
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
-        var price_list_id_s = Number(price_list_id)
+        var price_list_id_s = Number(price_list_id);
+
+       
+
         //PRUEBAS NUEVAS
         var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
+
+
+
+       // var check_first_date = check_old_date_inventary ;
+        var check_now_date = newDate;
+        
+         
+        //Buscar el primer array (mas viejo) con stock disponible y tomar el valor de costo de referencia
+        var get_variant_id = doc.variations.find(response => response.id == variant_id);
+        var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create <  newDate);// Compruebo q el id lista existe 
+       
+        console.log( 'old_inventary',old_inventary);
+        console.log( 'get_variant_id',get_variant_id);
+
+
+        console.log( 'newDate',newDate);
+        console.log( 'get_variant_id',get_variant_id);
+        
+       
+       //var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
+    
+
+       /* if (check_first_date < check_now_date) {
+            console.log(`${check_first_date} is less than ${check_now_date}`);
+        }
+        else if (check_first_date > check_now_date) {
+            console.log(`${check_first_date} is greater than ${check_now_date}`);
+        }
+        else {
+            console.log(`${check_first_date} is equal to ${check_now_date}`);
+        }
+        */
+       // alert(price_list_id_s);
+
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
@@ -2289,15 +2310,18 @@ async function dell_stock_var(element) {
                 price.updateUser = userName;
             }else{
                 var new_item = {
-                        id:new_stock_variant_id,
-                       // value:new_value,
-                        create:newDate,
-                        in_datetime: newDate,
-                        update_datetime: newDate,
-                        updateUser : userName,
-                        type: 'out',
-                        quantity: new_value,
-                        cost_price: price_list_id
+                    id:new_stock_variant_id,
+                    value:new_value,
+                    create:newDate,
+                    in_datetime: newDate,
+                    update_datetime: newDate,
+                    updateUser : userName,
+                    type: 'out',
+                    quantity: new_value,
+                    out_stock: new_value,
+                    inicial_stok: new_value,
+                    cost_price:price_list_id_s,
+                    location_id:1
 
                 };
               //  console.log(userName, 'else userName',new_item,'new_item');
@@ -2312,7 +2336,7 @@ async function dell_stock_var(element) {
                 // load_all_cat(doc_id,arr_number_id );
                 // catalog_edit_item_url(doc_id, 1);
                 Snackbar.show({
-                    text: 'El precio se actualizo!',
+                    text: 'El stock se actualizo!',
                     actionText: 'ok',
                     pos: 'bottom-right',
                     actionTextColor: "#0575e6",
