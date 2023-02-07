@@ -2199,7 +2199,8 @@ async function add_stock_var(element) {
                     updateUser : userName,
                     type: 'in',
                     quantity: new_value,
-                    inicial_stok: new_value,
+                    out_stock: new_value,
+                    available_stok: new_value,
                     out_stock: 0,
                     cost_price:new_cost_stock_s,
                     location_id:1
@@ -2309,6 +2310,11 @@ async function dell_stock_var(element) {
                 price.updateDate = newDate;
                 price.updateUser = userName;
             }else{
+
+
+                var available_stok = available_stok;
+
+
                 var new_item = {
                     id:new_stock_variant_id,
                     value:new_value,
@@ -2319,7 +2325,7 @@ async function dell_stock_var(element) {
                     type: 'out',
                     quantity: new_value,
                     out_stock: new_value,
-                    inicial_stok: new_value,
+                    available_stok: new_value,
                     cost_price:price_list_id_s,
                     location_id:1
 
