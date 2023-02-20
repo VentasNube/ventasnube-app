@@ -101,15 +101,54 @@ function getTemplateAjax(path, callback) {
                 return out;
             });
 
+            //CACLCULO PARA MOSTRAR EL STOCK 2023
+
+            // Suma el valor del objeto quantity en stock_inventari
             Handlebars.registerHelper("stock", function(value) {
                 var ret = 0;
-
                 for (var i = 0, j = value.length; i < j; i++) {
                     ret += parseInt(value[i].quantity);
                 }
                 // ret = 10;
                 return ret;
             });
+
+            //Logica de suma de stok new 2023
+
+             // Suma el valor del objeto quantity en stock_inventari
+            Handlebars.registerHelper("available_stock", function(value) {
+                var available_stock = 0;
+                var  tot_stock_in = 0;
+                var  tot_stock_out = 0;
+               
+                    for (var i = 0, j = value.length; i < j; i++) {
+                        if (value[i].type === "in") {
+                            //Si tengo coincidencias
+                            tot_stock_in += parseInt(value[i].quantity);
+                        }else if(value[i].type === "out"){
+                            tot_stock_out += parseInt(value[i].quantity);
+                            //  return options.fn(value[i]);
+                        }
+                    
+                    }
+                var available_stock = tot_stock_in - tot_stock_out;
+                return available_stock;
+            });
+
+
+             //  Logica q suma el stock de el array productos no anda
+             Handlebars.registerHelper('stockNO', function(context, options) {
+                var ret = "";
+                for (var i = 0, j = context.length; i < j; i++) {
+                    ret += options.fn(
+                        $.extend(
+                            context[i], { position: i + 1 }
+                        )
+                    );
+                }
+                return ret;
+            });
+
 
             Handlebars.registerHelper("first", function(context, options) {
                 var ret = "";
@@ -128,18 +167,8 @@ function getTemplateAjax(path, callback) {
                     return options.inverse(array[i]);
                 }
             });
-            //  Logica q suma el stock de el array productos
-            Handlebars.registerHelper('stockNO', function(context, options) {
-                var ret = "";
-                for (var i = 0, j = context.length; i < j; i++) {
-                    ret += options.fn(
-                        $.extend(
-                            context[i], { position: i + 1 }
-                        )
-                    );
-                }
-                return ret;
-            });
+
+           
 
 
             source = data;
