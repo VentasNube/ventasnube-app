@@ -56,7 +56,8 @@
                                 </div>
                                 <div class="pull-right padding-10">
                                     {{#with ws_lang_data}} Stock: {{/with}}
-                                    {{#stock stock_invetary}}{{/stock}}
+                                    {{#available_stock stock_invetary}}{{/available_stock}}
+                    
                                     <div class="round-icon pr"><span> {{../product_doc/currency.value}} </span></div>
                                     {{#first price_list}}
                                     <span iid="total_neto_prod"> {{value}}</span>
@@ -80,7 +81,7 @@
                                                 <span class="material-icons">
                                                     production_quantity_limits
                                                 </span>
-                                                <span class="">{{#stock stock_invetary}}{{/stock}}</span>
+                                                <span class=""> {{#available_stock stock_invetary}}{{/available_stock}}</span>
                                                 {{#with ../ws_lang_data}} {{{m_catalog_edit_stock}}} {{/with}}
                                             </a>
                                         </li>
@@ -109,38 +110,34 @@
                                         <div id="edit_stock_item_tab_{{id}}" class="tab-pane fade in active">
                                             <ul class="list-group margin-0">
                                                 {{#each stock_invetary}}
-                                                <li class="list-group-item ripple ">
-                                                    <span class="material-icons" data-toggle="tooltip"
-                                                        data-placement="bottom" title=""
-                                                        data-original-title="Creado:{{in_datetime}}">
-                                                        history
-                                                    </span>
+                                                    <li class="list-group-item ripple ">
+                                                        <span class="material-icons" data-toggle="tooltip"
+                                                            data-placement="bottom" title=""
+                                                            data-original-title="Creado:{{in_datetime}}">
+                                                            history
+                                                        </span>
+                                                        <span class="material-icons text-green" data-toggle="tooltip"
+                                                            data-placement="bottom" title="" data-original-title="Stock inicial"> 
+                                                            moving
+                                                        </span>
+                                                        {{in_stock}}
+                                                            <span class="material-icons text-red" data-toggle="tooltip"
+                                                                data-placement="bottom" title="" data-original-title="Vendidos">
+                                                                trending_down
+                                                            </span>
+                                                        {{out_stock}}
 
-                                                    {{#ifEquals type "in" }}
-                                                    <span class="material-icons text-green" data-toggle="tooltip"
-                                                        data-placement="bottom" title="" data-original-title="Stock inicial:
-                                                    {{quantity}}"> 
-                                                        moving
-                                                    </span>
-                                                     {{/ifEquals}}
-                                                     
-                                                    {{quantity}}
+                                                        <div class="pull-right">
+                                                            
+                                                        {{#ifEquals type "in" }} 
+                                                            <span class="margin-r-10">Costo: ${{cost_price}}</span>
+                                                            <span class="pull-right">Disponible
+                                                                <span class="badge">   {{real_stock}}</span>
+                                                                </span>
+                                                        {{/ifEquals}}
 
-                                                     {{#ifEquals type "out" }} 
-                                                    <span class="material-icons text-red" data-toggle="tooltip"
-                                                        data-placement="bottom" title="" data-original-title="Vendidos:
-                                                    {{sold_quantity}}">
-                                                        trending_down
-                                                    </span>
-                                                     {{/ifEquals}}
-
-                                                    {{sold_quantity}}
-
-                                                    <div class="pull-right">
-                                                        <span class="margin-r-10">Costo: ${{cost_price}}</span>
-                                                        <span class="pull-right">Disponible <span class="badge">{{quantity}}</span></span>
-                                                    </div>
-                                                </li>
+                                                        </div>
+                                                    </li>
                                                 {{/each}}
                                             </ul>
 
@@ -381,7 +378,8 @@
                                         </div>
                                         <div id="edit_description_item_tab_{{id}}" class="tab-pane fade">
                                          <!-- FOTOS -->
-                                <div class="header">
+
+                                        <div class="header">
                                     <button id="" type="button"
                                         class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
                                         <span class="material-icons">
@@ -411,9 +409,9 @@
                                             </div>
                                         </div>
                                     {{/first }}
-                                </div>
-                                <!-- DETALLE  COLOR ETC TALLE -->
-                                <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        </div>
+                                    <!-- DETALLE  COLOR ETC TALLE -->
+                                        <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <!--- DETALLE -->
                                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="input-group">
@@ -575,8 +573,8 @@
                                         <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
                                             value="{{sku.value}}">
                                     </div>
-                                </div>
-                                    </div>
+                                        </div>
+                                        </div>
                                         <!--tab-content--->
                                     </div>
                                     <!--tabs-main--->

@@ -117,22 +117,21 @@ function getTemplateAjax(path, callback) {
 
              // Suma el valor del objeto quantity en stock_inventari
             Handlebars.registerHelper("available_stock", function(value) {
-                var available_stock = 0;
-                var  tot_stock_in = 0;
+                var tot_real_stock = 0;
+               // var  tot_stock_in = 0;
                 var  tot_stock_out = 0;
                
                     for (var i = 0, j = value.length; i < j; i++) {
                         if (value[i].type === "in") {
-                            //Si tengo coincidencias
-                            tot_stock_in += parseInt(value[i].quantity);
+                            //Si tengo coincidenciass
+                            tot_real_stock += parseInt(value[i].real_stock);
                         }else if(value[i].type === "out"){
-                            tot_stock_out += parseInt(value[i].quantity);
-                            //  return options.fn(value[i]);
+                            tot_stock_out += parseInt(value[i].out_stock);
                         }
                     
                     }
-                var available_stock = tot_stock_in - tot_stock_out;
-                return available_stock;
+               // var available_stock = tot_stock_in - tot_stock_out;
+                return tot_real_stock;
             });
 
 

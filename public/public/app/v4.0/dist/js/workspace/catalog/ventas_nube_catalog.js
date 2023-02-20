@@ -2192,19 +2192,16 @@ async function add_stock_var(element) {
             }else{
                 var new_item = {
                     id:add_stock_variant_id,
-                    value:new_value,
                     create:newDate,
                     in_datetime: newDate,
                     update_datetime: newDate,
                     updateUser : userName,
                     type: 'in',
-                    quantity: new_value,
-                    out_stock: new_value,
-                    available_stok: new_value,
-                    out_stock: 0,
+                    in_stock: new_value,
+                    out_stock: new_value, 
+                    available_stock: new_value,
                     cost_price:new_cost_stock_s,
                     location_id:1
-
                 };
               //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
@@ -2257,36 +2254,26 @@ async function dell_stock_var(element) {
         var new_value_s = Number(new_value);
         var price_list_id_s = Number(price_list_id);
 
-       
-
         //PRUEBAS NUEVAS
         var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
 
-
-
        // var check_first_date = check_old_date_inventary ;
         var check_now_date = newDate;
         
-         
         //Buscar el primer array (mas viejo) con stock disponible y tomar el valor de costo de referencia
         var get_variant_id = doc.variations.find(response => response.id == variant_id);
         var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create <  newDate);// Compruebo q el id lista existe 
        
         console.log( 'old_inventary',old_inventary);
         console.log( 'get_variant_id',get_variant_id);
-
-
         console.log( 'newDate',newDate);
         console.log( 'get_variant_id',get_variant_id);
         
-       
-       //var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
-    
-
-       /* if (check_first_date < check_now_date) {
+        //var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
+        /* if (check_first_date < check_now_date) {
             console.log(`${check_first_date} is less than ${check_now_date}`);
         }
         else if (check_first_date > check_now_date) {
@@ -2296,8 +2283,7 @@ async function dell_stock_var(element) {
             console.log(`${check_first_date} is equal to ${check_now_date}`);
         }
         */
-       // alert(price_list_id_s);
-
+        // alert(price_list_id_s);
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
@@ -2310,25 +2296,19 @@ async function dell_stock_var(element) {
                 price.updateDate = newDate;
                 price.updateUser = userName;
             }else{
-
-
                 var available_stok = available_stok;
-
-
                 var new_item = {
                     id:new_stock_variant_id,
-                    value:new_value,
                     create:newDate,
                     in_datetime: newDate,
                     update_datetime: newDate,
                     updateUser : userName,
                     type: 'out',
-                    quantity: new_value,
-                    out_stock: new_value,
-                    available_stok: new_value,
-                    cost_price:price_list_id_s,
+                    in_stock: 0,
+                    out_stock: new_value, 
+                    available_stock: 0,
+                    cost_price:null,
                     location_id:1
-
                 };
               //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
