@@ -2271,98 +2271,70 @@ async function dell_stock_var(element) {
         // Y continuar con el proximo objeto, repertir el filtro y la operacion hasta q out_stock quede en 0
 
         // New Variables globales
-      //  var create_date = create;
-       // var real_stock = 0;
+        //  var create_date = create;
+        // var real_stock = 0;
        
-
         var get_variant_id = doc.variations.find(response => response.id == variant_id);
         var stock_invetary = get_variant_id['stock_invetary'];
         
-      console.log('stock_invetary.lenght ---->',stock_invetary.length - 1);
-      console.log('stock_invetary ---->',stock_invetary);
+        //  console.log('stock_invetary.lenght ---->',stock_invetary.length - 1);
+        //  console.log('stock_invetary ---->',stock_invetary);
 
-       // var rs = real_stock;
-       //var out_stock = out_stock_s;
-      // var count_out_stock = 0;
-       
-        var os = out_stock_s;
-        var cos = out_stock_s;
+        //var rs = real_stock;
+        //var out_stock = out_stock_s;
+        // var count_out_stock = 0;
+       // var os = out_stock_s;
+        var count_out_stock = out_stock_s;
 
+        console.log('RETIRO INICIAL:',out_stock_s);
+        console.log('CONTADOR INCIAL:',count_out_stock);
 
        for (var i = stock_invetary.length - 1; i >= 0; i--) {
-            //compruebo q tenga stock mayor a 1
-          if(stock_invetary[i].real_stock >= 1  ){
+        
+            //Compruebo q tenga stock mayor a 1
+            var real_stock = stock_invetary[i].real_stock;
+            console.log('------ RECORRO LOS ITEMS ---------');
+            console.log('ITEM NUMERO ID:',stock_invetary[i].id);
+            console.log('DISPONIBLE:',real_stock);
+            console.log('RESTAN RETIRAR:',count_out_stock);
 
-                var si_rs = stock_invetary[i].real_stock;
-                var cos = si_rs - os;
+            //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
+            if(real_stock >= 1 && count_out_stock >= 1 ){
 
-                console.log('si_rs 11' , si_rs,'cos 11' , cos);
+                    // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
+                    for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
+                        console.log('------ RECORRO Y DESCUENTO ---------');
+                        var real_stock = real_stock - 1;
+                        var count_out_stock = count_out_stock - 1 ;
+                        //Compruebo que queda stock disponible
+                        if(real_stock <= 0 ){
+                            // Si no hay mas stock paro
+                            console.log('------ NO QUEDA MAS STOCK ---------');
+                            console.log('(RESTAN DESCONTAR):',count_out_stock);
+                            console.log('(STOCK DISPONIBLE):' , real_stock);
+                             break
+                          
+                        }else{
+                            // SI hay stock continuo
+                            console.log('------ HAY STOCK DISPONIBLE CONTINUO ---------');
+                            console.log('(RESTAN DESCONTAR):',count_out_stock);
+                            console.log('(STOCK DISPONIBLE):' , real_stock);
+                            continue;
+                        }
 
-                for (var ib = os; ib >= 1 ; ib--) {
-                    //compruebo q tenga stock mayor a 1
-                     cos - 1;
-                     console.log('ib ==' , ib,'cos ==' , cos);
+                    }
 
-                //  if(stock_invetary[ib].real_stock >= 1  ){
+                    // Compruebo el resultado si es positivo                    
+                    // cargo el resultado de la resta al contador para ininerar una vez mas                    
+                    // var count_out_stock = count_out_stock;
 
-                  //      var si_rs = stock_invetary[i].real_stock;
-                  //      var cos = si_rs - os;
-
-                 //       console.log('si_rs' , si_rs,'cos' , cos);
-                      
-               //   }
-               }
-
-
-              
-
-          }
-
+                 }
+                 console.log('(CONTADOR FINAL):',count_out_stock);
+                 console.log('(STOCK DISPONIBLE DEL ITEM FINAL):' , real_stock);
 
        }
 
-       console.log();
-       // var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create <  newDate);// Compruebo q el id lista existe 
-
-
-/*
-        console.log(
-            array.sort(
-                (a, b) => new Date(a.fechas).getTime() > new Date(b.fechas).getTime()
-                )
-                );
-
-
-            var arr = [1, 2, 3, 4, 5];
-            
-            for (var i = arr.length - 1; i >= 0; i--) {
-                console.log(arr[i]);
-            }
-
-
-        /*console.log( 'stock_inventary',stock_inventary);
-        console.log( 'old_inventary',old_inventary);
-        console.log( 'get_variant_id',get_variant_id);
-        console.log( 'newDate',newDate);
-        console.log( 'get_variant_id',get_variant_id);
-        */
-      //  var old_inventary  = get_variant['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
-       
-        /* if (check_first_date < check_now_date) {
-            console.log(`${check_first_date} is less than ${check_now_date}`);
-        }
-        else if (check_first_date > check_now_date) {
-            console.log(`${check_first_date} is greater than ${check_now_date}`);
-        }
-        else {
-            console.log(`${check_first_date} is equal to ${check_now_date}`);
-        }
-        */
-        // alert(price_list_id_s);
-        //Busco dentro de las variables
-
-/*
-
+       /*
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
