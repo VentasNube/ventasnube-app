@@ -2323,12 +2323,15 @@ async function dell_stock_var(element) {
                         }
 
                     }
-
-                    // Compruebo el resultado si es positivo                    
-                    // cargo el resultado de la resta al contador para ininerar una vez mas                    
-                    // var count_out_stock = count_out_stock;
+                   
+                    // EDITO EL ARRAY 
+                    const real_stock_new = stock_invetary[i]
+                    real_stock_new.real_stock = real_stock;
+                    //real_stock.
+                    var real_stock = stock_invetary[i].real_stock;
 
                  }
+                 
                  console.log('(CONTADOR FINAL):',count_out_stock);
                  console.log('(STOCK DISPONIBLE DEL ITEM FINAL):' , real_stock);
 
