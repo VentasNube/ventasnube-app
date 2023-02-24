@@ -1275,14 +1275,9 @@ async function catalog_edit_model(element){
 
 };
 
-
-
-
 //   SUB CATERGORIAS 2022
 // FUERON ELIMINADAS LAS SUB CATEGORIAS
-
 // FIN FUNCIONES CATEGORIAS
-
 // Boton Agregar catgorias
 /*
 function catalog_new_cat(element) {
@@ -1643,11 +1638,7 @@ async function catalog_config_show_money_edit(element) {
 }
 }
 
-
-
-
-
-///** MONEDAS CATALOGO ***/
+///** MONEDAS CATALOGO 
 
 async function catalog_config_show_tax_edit(element) {
     try {
@@ -1740,8 +1731,7 @@ async function catalog_config_tax_money_edit(element) {
     }
 }
 
-// *** NUEVO IMPUESTO **** ///
-
+// *** NUEVO IMPUESTO 
 
 async function catalog_config_new_tax(element) {
     try {
@@ -1782,15 +1772,12 @@ async function catalog_config_new_tax(element) {
     }
 }
 
-
 async function catalog_config_tax_new(element) {
     try {
-        //let id =  $('#new_value_tax_edit').attr('tax_id');  
         let value = $('#new_value_tax_edit').val(); 
         let name = $('#new_name_tax_input').val(); 
         $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
         $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
-       // const id_n =  Number(id);
         var value_n = String(value);
         var name_n = String(name);
         var newDate = new Date(); //fecha actual del navegador
@@ -1805,7 +1792,6 @@ async function catalog_config_tax_new(element) {
         }else{
             var final_id = 1; //Defino la id 1 como incial
         }
-
         var new_tax = {
             id:final_id ,
             value:value_n,
@@ -1845,7 +1831,6 @@ if (response) {
     }
 }
 
-
 async function catalog_config_tax_delete(element) {
     try {
        
@@ -1884,7 +1869,6 @@ if (response) {
 }
 
 /*** FIN CONFIGURACION DE CATALOGO  ****/
-
 async function new_price_list(element) {
     try {
         const doc_id = ('price_list');    //traigo el documento a editar
@@ -2091,48 +2075,10 @@ async function edit_price_var(element) {
 
 }
 
-
 // ### Movimientos de stock #####
 // Los movimientos no se pueden editar se puen hacer nuevos ingresos y egresos de mercaderia
 // Los movimientos de stock se editan de los primeros mas viejos q fueron ingrasados 
 // se usa ese precio de costo, para sumar las ganancias
-
-//Modelo de array para los movimientos inventarios
-/* 
-  "stock_invetary": [
-        {
-          "id": 123,
-          "in_datetime": "18/3/2021 18:45:10",
-          "location": {
-            "id": 1,
-            "value": "Deposito 1"
-          },
-          "update": [
-            {
-              "username": "smartmobile.com.ar@gmail.com",
-              "update_datetime": "18/3/2021 18:45:10",
-              "in_stok": 10,
-              "out_stock": 4,
-              "quantity": 6,
-              "sold_quantity": 4,
-              "sold_id": 12554,
-              "cost_price": 150
-            },
-            {
-              "username": "smartmobile.com.ar@gmail.com",
-              "datetime": "18/3/2021 18:45:10",
-              "in_stok": 10,
-              "out_stock": 4,
-              "quantity": 6,
-              "sold_quantity": 4,
-              "sold_id": 12554,
-              "cost_price": 250
-            }
-          ]
-        }
-      ],
-*/
-
 
 // Hacer un ingreso de stock (abre formulario)
 async function add_stock_form(element) {
@@ -2188,7 +2134,7 @@ async function add_stock_var(element) {
             var price_list  = item[input_id].find(response => response.id ==   add_stock_variant_id);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
             if(price_list){
-                var add_stock_variant_id = Math.floor(Math.random() * (+'10000' - +'1')) + +'1';
+                var add_stock_variant_id = Math.floor(Math.random() * (+'100000000' - +'1')) + +'1';
             }else{
                 var new_item = {
                     id:add_stock_variant_id,
@@ -2228,16 +2174,13 @@ async function add_stock_var(element) {
     } catch (err) {
         console.log(err);
     }
-
 }
 
 // EDICION DE PRECIOS DEL PRODUCTO
-
 // LOGICA :
 // 1: Recorro los objetos, y busco el ultimo con stock disponible, le descuento el stock al real_stock
 // si no alcanza sigo y descuento el objeto con disponible q sigue hasta no tener mas para descontar
 // 2 : Por final creo un nuevo objeto con q registra el movimiento, y lo guardo ahi.
-
 async function dell_stock_var(element) {
 
     try {
@@ -2245,7 +2188,7 @@ async function dell_stock_var(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-        let out_stock = $('#dell_stock_var_'+variant_id).val();
+        var out_stock_input = $('#dell_stock_var_'+variant_id).val();
         var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1'; 
         let price_list_id =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
        
@@ -2253,7 +2196,7 @@ async function dell_stock_var(element) {
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
         const doc_id_s = String(doc_id);
-        var out_stock_s = Number(out_stock);
+        var out_stock_s = Number(out_stock_input);
         var price_list_id_s = Number(price_list_id);
 
         //PRUEBAS NUEVAS
@@ -2273,126 +2216,92 @@ async function dell_stock_var(element) {
         // New Variables globales
         //  var create_date = create;
         // var real_stock = 0;
-       
+
         var get_variant_id = doc.variations.find(response => response.id == variant_id);
         var stock_invetary = get_variant_id['stock_invetary'];
-        
-        //  console.log('stock_invetary.lenght ---->',stock_invetary.length - 1);
-        //  console.log('stock_invetary ---->',stock_invetary);
-
-        //var rs = real_stock;
-        //var out_stock = out_stock_s;
-        // var count_out_stock = 0;
-       // var os = out_stock_s;
         var count_out_stock = out_stock_s;
 
-        console.log('RETIRO INICIAL:',out_stock_s);
-        console.log('CONTADOR INCIAL:',count_out_stock);
+       // console.log('(ARRAY INICIAL  stock_invetary):', stock_invetary);
+      //  console.log('RETIRO INICIAL:',out_stock_s);
+     //   console.log('CONTADOR INCIAL:',count_out_stock);
 
        for (var i = stock_invetary.length - 1; i >= 0; i--) {
         
             //Compruebo q tenga stock mayor a 1
             var real_stock = stock_invetary[i].real_stock;
+            var out_stock = stock_invetary[i].out_stock;
+            //  var stock_inventary_doc = stock_invetary[i];
+            //var stock_invetary_item = stock_invetary[i];
+            /*
             console.log('------ RECORRO LOS ITEMS ---------');
             console.log('ITEM NUMERO ID:',stock_invetary[i].id);
             console.log('DISPONIBLE:',real_stock);
             console.log('RESTAN RETIRAR:',count_out_stock);
-
+*/
             //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
             if(real_stock >= 1 && count_out_stock >= 1 ){
 
                     // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
                     for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
-                        console.log('------ RECORRO Y DESCUENTO ---------');
+
+                     //   console.log('------ RECORRO Y DESCUENTO ---------');
                         var real_stock = real_stock - 1;
+                        var out_stock = out_stock += 1;
                         var count_out_stock = count_out_stock - 1 ;
+
                         //Compruebo que queda stock disponible
                         if(real_stock <= 0 ){
-                            // Si no hay mas stock paro
-                            console.log('------ NO QUEDA MAS STOCK ---------');
-                            console.log('(RESTAN DESCONTAR):',count_out_stock);
-                            console.log('(STOCK DISPONIBLE):' , real_stock);
-                             break
-                          
+                            // Si no hay mas stock paro y guardo el resultado en el array
+                            var stock_invetary_new = stock_invetary[i];
+                            stock_invetary_new.real_stock = real_stock;
+                            stock_invetary_new.out_stock = out_stock;
+                            stock_invetary_new.update_datetime = newDate;
+                            stock_invetary_new.updateUser = userName;
+                            break
                         }else{
-                            // SI hay stock continuo
-                            console.log('------ HAY STOCK DISPONIBLE CONTINUO ---------');
-                            console.log('(RESTAN DESCONTAR):',count_out_stock);
-                            console.log('(STOCK DISPONIBLE):' , real_stock);
                             continue;
                         }
-
                     }
                    
                     // EDITO EL ARRAY 
-                    const real_stock_new = stock_invetary[i]
-                    real_stock_new.real_stock = real_stock;
-                    //real_stock.
-                    var real_stock = stock_invetary[i].real_stock;
-
+                    var stock_invetary_new = stock_invetary[i];
+                    stock_invetary_new.real_stock = real_stock;
+                    stock_invetary_new.out_stock = out_stock;
+                    stock_invetary_new.update_datetime = newDate;
+                    stock_invetary_new.updateUser = userName;
                  }
-                 
-                 console.log('(CONTADOR FINAL):',count_out_stock);
-                 console.log('(STOCK DISPONIBLE DEL ITEM FINAL):' , real_stock);
 
        }
-
-       /*
-        if (variant_id) {
-            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if(price_list){
-                const price = price_list;//Traigo el ojeto especifico 
-                price.value = new_value_s; //Edito el valor del value por el valor nuevo
-                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-            }else{
-                var available_stok = available_stok;
-                var new_item = {
-                    id:new_stock_variant_id,
-                    create:newDate,
-                    in_datetime: newDate,
-                    update_datetime: newDate,
-                    updateUser : userName,
-                    type: 'out',
-                    in_stock: 0,
-                    out_stock: new_value, 
-                    real_stock: 0,
-                    cost_price:null,
-                    location_id:1
-                };
-              //  console.log(userName, 'else userName',new_item,'new_item');
-                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-            }
-            var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+       //Modifico los datos del array viejo por el nuevo
+       var stock_invetary = stock_invetary;
+       // Lo guardo
+       var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+        if (response) {
+            // load_all_cat(doc_id,arr_number_id );
+            // catalog_edit_item_url(doc_id, 1);
+            Snackbar.show({
+                text: 'El actualizo el stock!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
             });
-            if (response) {
-                // load_all_cat(doc_id,arr_number_id );
-                // catalog_edit_item_url(doc_id, 1);
-                Snackbar.show({
-                    text: 'El stock se actualizo!',
-                    actionText: 'ok',
-                    pos: 'bottom-right',
-                    actionTextColor: "#0575e6",
-                });
-                catalog_edit_item_url(doc_id, 1);
-            } else {
-                alert("no se actualizo");
-            }
+            catalog_edit_item_url(doc_id, 1);
+        } else {
+            alert("no se actualizo");
         }
-*/
+       
+       console.log('(ARRAY MODIFICADO stock_invetary ):', stock_invetary);
     } catch (err) {
         console.log(err);
     }
 
 }
 
-async function dell_stock_var_ok(element) {
+async function dell_stock_var_ok_old(element) {
 
     try {
         //traigo el documento a editar
@@ -2411,12 +2320,12 @@ async function dell_stock_var_ok(element) {
         var price_list_id_s = Number(price_list_id);
 
         //PRUEBAS NUEVAS
-       // var user_Ctx =  userCtx;
+        // var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
 
-       // var check_first_date = check_old_date_inventary ;
+        // var check_first_date = check_old_date_inventary ;
         var check_now_date = newDate;
         
         //Buscar el primer array (mas viejo) con stock disponible y tomar el valor de costo de referencia
@@ -2495,7 +2404,6 @@ async function dell_stock_var_ok(element) {
 }
 
 // Hacer movimiento Positivo (Envia ale formulario)
-
 // Hacer movimiento Negativo (Envia el formulario )
 // EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
 async function cat_edit_chekbox(element) {
@@ -2618,27 +2526,12 @@ async function cat_new_variant(element) {
           }
         ],
         "stock_invetary": [
-          {
-            "id": 123,
-            "in_datetime": "18/3/2021 18:45:10",
-            "update_datetime": "18/3/2021 18:45:10",
-            "quantity": 6,
-            "sold_quantity": 2,
-            "cost_price": 100
-          },
-          {
-            "id": 231,
-            "in_datetime": "18/3/2021 18:45:10",
-            "update_datetime": "18/3/2021 18:45:10",
-            "quantity": 4,
-            "sold_quantity": 2,
-            "cost_price": 150
-          }
+         
         ],
-        "sold_quantity": 2,
+        "sold_quantity": 0,
         "description": {
           "status": true,
-          "value": "Es una descripcion"
+          "value": "Nueva Descripcion"
         },
         "color": {
           "status": false,
