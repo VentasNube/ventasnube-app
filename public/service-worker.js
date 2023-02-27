@@ -1,6 +1,6 @@
-      importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
-
-      const version = 122112;
+     // importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
+      importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
+      const version = 78982198222;
       const expectedCaches = ['ventasnube-v-' + version];
 
       self.addEventListener('install', event => {
@@ -83,7 +83,7 @@
         { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
         { url: '/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js', revision: version },
         { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js', revision: version },
-        // Fuentes js plugins
+        // Fuentes js Handelbar POUCHDB
         { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
         { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
         { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
@@ -139,6 +139,9 @@
         //  { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_config.hbs', revision: version },
           
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
+
+          
           
     ]);
 

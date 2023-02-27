@@ -142,17 +142,6 @@ function get_items_catalog(ws_id) {
 }
 
 
-/**** NUEVO PRODUCTO */
-function form_new_product(ws_info, ws_lang_data) {
-    var ws_cart = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', '#right_main_compiled', ws_cart);
-    // $('#cart_user_input').focus();
-    console.log('FORM NEW PRODUCT');
-};
 
 //* CATALOGO 2021 Tarjetas materiales  **/
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
@@ -543,12 +532,7 @@ $(document).on('click', '.catalog_edit_item', function (event) {
     alert('catalog_edit_item()' + product_id);
 });
 
-$(document).on('click', '.catalog_new_item', function (event) {
-    //  $('#master_popup').modal('show');
-    // get_catalog_new_item();
-    catalog_edit_item();
-    alert('catalog_new_item');
-});
+
 
 $(document).on('focusin', '.catalog_search', function (element) {
     // cat_get_all_item_punchDb();
@@ -571,6 +555,8 @@ $(document).on('click', '.view_variant', function (element) {
     var product_id = $(this).attr('product_id');
     catalog_view_item(product_id);
 });
+
+
 
 // TRAIGO EL CATALOGO Y IMPRIMO
 async function get_catalog(ws_id) {
@@ -598,6 +584,75 @@ async function put_catalog(doc_id, my_doc) {
         // return response
     }
 }
+
+
+
+
+/**** NUEVO PRODUCTO */
+async function catalog_new_item_old(ws_info, ws_lang_data) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main_compiled', ws_cart);
+    // $('#cart_user_input').focus();
+   // alert('catalog_new_item');
+    console.log('FORM NEW PRODUCT');
+};
+
+
+// FUNCION PARA CREAR PRODUCTO
+async function catalog_new_item(element) {
+    try {
+      //  var product_id = $(element).attr('product_id');
+     //   var variant_id = $(element).attr('variant_id');
+        var new_category_list = await L_catalog_db.get('category_list');
+        var new_trade_list = await L_catalog_db.get('trade_list');
+        var new_model_list = await L_catalog_db.get('model_list');
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+
+        //  var product_doc = await L_catalog_db.get(product_id);
+        //var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        
+        var product_doc_array = {
+            //product_doc: product_doc,
+            //product_variant: var_doc,
+            //name: 'Nuevo',
+            //tags: product_doc.tags,
+            price_list: price_doc.price_list,
+            currency_list: currency_doc.currency_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: new_category_list,
+            trade_list: new_trade_list,
+            model_list: new_model_list,
+            attributes_list:attributes,
+        }
+
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        // console.log('product_doc_array', product_doc_array);
+        // alert('Holaaaaaa');
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=new&?id=';
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+        return item_print;   
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
+$(document).on('click', '.catalog_new_item', function (event) {
+    //  $('#master_popup').modal('show');
+    // get_catalog_new_item();
+    catalog_new_item(ws_info, ws_lang_data);
+   
+});
 
 // EDITAR PRODUCTOS
 // TAGS
@@ -1349,7 +1404,7 @@ async function cat_edit_product(element) {
 
 // CONFIGURACION DE CATALOGO
 // EDICION DE LISTA DE PRECIOS GENERAL
-
+/*
 function form_new_product(ws_info, ws_lang_data) {
     var ws_cart = {
         ws_info: ws_info,
@@ -1361,7 +1416,7 @@ function form_new_product(ws_info, ws_lang_data) {
     console.log('FORM NEW PRODUCT');
 };
 
-
+*/
 /***  CONFIGURACION DE CATALOGO  ****/
 
 
