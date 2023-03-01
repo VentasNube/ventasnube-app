@@ -88,14 +88,7 @@
             <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
                 {{#with ../user}}
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <!-- The user image in the navbar-->
-                    <!--div class="user-icon">
-                        <span data-toggle="tooltip" data-placement="bottom" title="" class=""
-                            data-original-title=" {{{user_name}}}">
-                            {{user_name}}
-                        </span>
-                    </div-->
+                <a href="#" id="account_menu_open" class="account_menu_open" >
                      <div class="round-icon user-top">
                             {{user_name}}
                          </div>
@@ -105,12 +98,7 @@
 
                     <!-- The user image in the menu -->
                     <li class="user-header {{#with ../../ws_top_bar}}  {{{workspace_color}}} {{/with}}">
-                        <!--div class="user-icon md ">
-                            <span data-toggle="tooltip" data-placement="bottom" title="" class=""
-                                data-original-title="{{{user_name}}}">
-                                {{user_name}}
-                            </span>
-                        </div-->
+                     
                        <div class="round-icon user-top">
                             {{user_name}}
                          </div>
@@ -135,18 +123,7 @@
                                     </span>
                                         {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
                                 </button>
-                                
                             </div>
-                            <!--a href="">
-                                <span class="user-icon md">
-                                    <span data-toggle="tooltip" data-placement="bottom" title="" class=""
-                                        data-original-title="{{{user_name}}}">
-                                    </span>
-                                </span>
-                                <span id="dbusername" dbusername="{{{user_name}}}" class="user-name">
-                                    <small>{{user_name}}</small>
-                                </span>
-                            </a-->
                         </div>
                     </li>
                     <li class="user-footer">
