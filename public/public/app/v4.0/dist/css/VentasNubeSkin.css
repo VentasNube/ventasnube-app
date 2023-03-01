@@ -9741,6 +9741,26 @@ h1 span{
     color: #ffff;
     border-color: #ffff;
 }
+
+.round-icon.user-top {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 22px;
+    border: none;
+    padding: 0px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 36px;
+   /* background-color: #575757;*/
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    text-overflow: clip;
+    overflow: hidden;
+    text-transform: uppercase;
+    vertical-align: top;
+}
+
 .round-icon.user {
     width: 55px;
     height: 55px;
@@ -10585,6 +10605,7 @@ h1 span{
     padding: 0;
     position: absolute;
     right: 15px;
+    z-index: 999999999;
 }
 
 
@@ -10608,6 +10629,11 @@ h1 span{
     color: #424242;
     white-space: nowrap;
 }
+
+
+
+
+
 .dropdown-menu .divider {
     padding: 0;
     height: 1px;

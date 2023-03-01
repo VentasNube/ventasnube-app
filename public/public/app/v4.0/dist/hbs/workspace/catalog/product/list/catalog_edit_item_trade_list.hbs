@@ -2,25 +2,25 @@
                                                     <li>
                                                         <div class="dropdown-item">
                                                             <a 
-                                                                    onclick='catalog_select_new_cat(this)' 
+                                                                    onclick='catalog_select_new_trade(this)' 
                                                                     item_value_id="{{category.id}}" 
                                                                     item_value="{{value}}"
-                                                                    item_id="category"
+                                                                    item_id="trade"
                                                                     href="#" 
                                                              >
                                                             {{value}}
                                                             </a>
                                                             {{#userCtx 'catalog' 'admin'}}
                                                                     <button><span  doc_id="{{../_id }}"  value="{{value}}" class="material-icons" onclick='catalog_dell_cat(this)' >delete</span></button>
-                                                            {{/userCtx}}
+                                                            {{/userCtx}}              
                                                         </div>
                                                     </li> 
 {{/each}}
 {{#if no_result }}
          <div class="padding-30 margin-t-30 text-center" >
-              <button class="btn btn-default" onclick='catalog_add_new_cat(this)'  data-toggle="tooltip" data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_variant}}} {{/with}} " data-placement="bottom" >
+              <button class="btn btn-default" onclick='catalog_add_new_trade(this)'  data-toggle="tooltip" data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_trade}}} {{/with}} " data-placement="bottom" >
                     <span class="material-icons"  title=""  >add_circle_outline</span>
-                {{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} 
+                {{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_trade}}} {{/with}} 
              </button> 
          </div>
 {{/if}}

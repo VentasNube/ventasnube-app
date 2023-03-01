@@ -242,7 +242,7 @@
     <div id="cart_footer">
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
-            {{#userCtx 'catalog' 'edit' user_roles}}
+            {{#userCtx 'catalog' 'edit' }}
                 {{#with ../product_variant}}
                     <button onclick="cat_new_variant(this)" doc_id="{{{../../product_doc/_id}}}"
                         variant_id="{{id}}" type="button" class="btn btn-primary">

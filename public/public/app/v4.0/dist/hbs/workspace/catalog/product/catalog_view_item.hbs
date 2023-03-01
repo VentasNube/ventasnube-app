@@ -165,7 +165,6 @@
                                                     data-original-title="{{{value}}}">
                                                     <span></span>
                                                 
-                                                    {{trimString value}}
                                                     </span>
                                                 </div>
                                                 {{/with}}
@@ -189,7 +188,7 @@
                                                                 <a onclick="variations_price(this)" class="" href="#">
                                                                     {{#with ( lookup ../../price_list @index)}}
                                                                         <div class="round-icon pr">
-                                                                            {{trimString value}}
+                                                                            {{value}}
                                                                         </div>
                                                                         {{value}}
                                                                     {{/with}}
@@ -248,7 +247,7 @@
 
                                 {{/with}} 
 
-                            {{#userCtx 'catalog' 'edit' user_roles}}
+                            {{#userCtx 'catalog' 'edit'}}
                                                         {{#with ../product_variant}}
                                                             <button onclick="catalog_edit_item(this)" product_id="{{{../../product_doc/_id}}}"
                                                                 variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">

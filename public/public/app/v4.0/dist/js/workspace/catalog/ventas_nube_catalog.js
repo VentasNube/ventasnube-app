@@ -589,70 +589,53 @@ async function put_catalog(doc_id, my_doc) {
 
 
 /**** NUEVO PRODUCTO */
-async function catalog_new_item_old(ws_info, ws_lang_data) {
-    var ws_cart = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main_compiled', ws_cart);
-    // $('#cart_user_input').focus();
-   // alert('catalog_new_item');
-    console.log('FORM NEW PRODUCT');
-};
-
-
 // FUNCION PARA CREAR PRODUCTO
 async function catalog_new_item(element) {
     try {
-      //  var product_id = $(element).attr('product_id');
-     //   var variant_id = $(element).attr('variant_id');
+
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
+        var user_roles_permisions = user_Ctx.userCtx.roles;
 
-        //  var product_doc = await L_catalog_db.get(product_id);
-        //var var_doc = product_doc.variations.find(response => response.id == variant_id);
-        
+        console.log('user_roles_permisions',user_roles_permisions);
+
         var product_doc_array = {
-            //product_doc: product_doc,
-            //product_variant: var_doc,
-            //name: 'Nuevo',
-            //tags: product_doc.tags,
             price_list: price_doc.price_list,
             currency_list: currency_doc.currency_list,
             ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
+            user_roles: user_roles_permisions,
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
             attributes_list:attributes,
         }
 
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-        // console.log('product_doc_array', product_doc_array);
-        // alert('Holaaaaaa');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        console.log('product_doc_array', product_doc_array);
+        
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=new&?id=';
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return item_print;   
+        return;   
     } catch (err) {
         console.log(err);
     }
 }
 
-
-
+// BOTON CREAR
 $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
     // get_catalog_new_item();
     catalog_new_item(ws_info, ws_lang_data);
    
 });
+
+
 
 // EDITAR PRODUCTOS
 // TAGS
@@ -752,23 +735,10 @@ async function dell_tag(element) {
     }
 }
 
-//FIN TAGS
+// FUNCIONES EDITAR CATEGORIAS 2023
 
-// FUNCIONES CATEGORIAS
-// Traigo las categorias, 
-/*
-async function get_all_cat(element) {
 
-var template_obj = "Handlebars <b>{{doesWhat}}</b> precompiled!";
-var Handlebars = require("handlebars");
-var template = Handlebars.compile("Name: {{name}}");
-console.log(template({ name: "Nils" }));
-$(element).parent('div').css("color", "red");
 
-}
-*/
-
-// FUNCIONES EDITAR CATEGORIAS 2022
 
 // Agrego un Categoria
 async function add_new_cat(element) {    
@@ -897,6 +867,30 @@ async function cat_edit_product_category(element){
 
 };
 
+
+// Boton traigo las catgorias //NO SEE
+function catalog_get_cat(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function (err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+        }
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+}
+
+
+// FUNCIONES NUEVO PRODUCTO EDITAR CATEGORIAS 2023
+
+
 // Elimino una Categoria
 async function catalog_dell_cat(element) {
     try {
@@ -952,24 +946,138 @@ async function catalog_dell_cat(element) {
     }
 }
 
-// Boton traigo las catgorias
-function catalog_get_cat(element) {
-    let product_id = $(element).attr('product_id');
-    let variant_id = $(element).attr('variant_id');
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function (err, doc) {
-        if (err) { return console.log(err); }
-        const variant_array = {
-            variant_id: variant_id,
-            _id: doc._id,
-            _rev: doc._rev,
-            variations: doc.variations,
-            name: doc.name,
+// Agrego un Categoria
+async function catalog_add_new_cat(element) {    
+    try {
+        var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $('#catalog_new_cat_input').val();
+        //  var input_value = $(element).attr('input_value');
+        //var input_id = $(element).attr('doc_id');
+        var new_cat = String(new_cat_val);
+        // .toLowerCase()
+        // Filtro si el input esta bacio
+        if (new_cat) {
+            let doc_id_s = String('category_list');  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get(doc_id_s);
+            const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
+            if (tag_index) {
+                Snackbar.show({  
+                    text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
+                    width: '475px',
+                    pos: 'bottom-right',
+                    actionTextColor: "#4CAF50",
+                });
+            }
+            else {
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
+                var arr_number_id_valid  = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if(!arr_number_id_valid){
+                    var new_item = {
+                        id:arr_number_id,
+                        value:new_cat,
+                        sub_category: []
+                    }
+                }
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+                var new_doc = doc.category_list.unshift(new_item);  //Envio los datos editados al documento
+
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    Snackbar.show({
+                        text: 'La categoria ' + new_cat_val + ' se agrego!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                    catalog_edit_item_url(doc_id, 1);
+                } else {
+                    alert("no se actualizo");
+                }
+            }
         }
-        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    });
+        else {
+            Snackbar.show({  
+                text: ' La categoria no puede estar bacia',
+                width: '475px',
+                pos: 'bottom-right',
+                actionTextColor: "#4CAF50"
+            });
+        }
+    }catch (err) {
+     
+    }
 }
+// Search Input de categorias
+async function catalog_search_cat(e, element) {
+    
+
+        //traigo el resultado mas parecido con find
+      //  var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $(element).val();
+        var select_div_id  = "#catalog_select_new_cat_list";
+        var new_cat = String(new_cat_val);
+        if (new_cat) {
+           // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+            
+            const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );}
+
+            var search_list = filterItems(new_cat);
+
+                if(search_list.length >= 1){
+                        // creo un array con los datos del producto y la lista de categorias actualizadas
+                        var cat_list_search = {
+                            ws_lang_data: ws_lang_data,
+                            user_roles: user_Ctx.userCtx.roles,
+                            cat_find_list: search_list
+                        }
+                        //renderizo las categorias nuevas filtradas
+                      
+                }else if (search_list == null){
+                    var cat_list_search = {
+                        ws_lang_data: ws_lang_data,
+                        user_roles: user_Ctx.userCtx.roles,
+                        cat_find_list: doc.category_list
+                    }
+                }
+                else{
+                    var cat_list_search = {
+                        ws_lang_data: ws_lang_data,
+                        user_roles: user_Ctx.userCtx.roles,
+                        no_result: true
+                    }
+                }
+               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+
+            
+            }
+    
+}
+
+async function catalog_select_new_cat(element) {
+
+    let item_value_id = $(element).attr('item_value_id');
+    let item_value = $(element).attr('item_value');
+    try {
+        $('#catalog_select_cat_value').attr('catalog_select_cat_value',item_value_id);
+        $('#catalog_select_cat_value').html(item_value);
+        $('#catalog_select_cat_tittle').html(item_value);
+        //traigo el documento a editar
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 
 /// MARCA 2022
 

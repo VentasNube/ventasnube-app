@@ -165,7 +165,6 @@
                                                     data-original-title="{{{value}}}">
                                                     <span></span>
                                                 
-                                                    {{trimString value}}
                                                     </span>
                                                 </div>
                                                 {{/with}}
@@ -189,7 +188,7 @@
                                                                 <a onclick="variations_price(this)" class="" href="#">
                                                                     {{#with ( lookup ../../price_list @index)}}
                                                                         <div class="round-icon pr">
-                                                                            {{trimString value}}
+                                                                            {{value}}
                                                                         </div>
                                                                         {{value}}WILDE
                                                                     {{/with}}
@@ -245,7 +244,7 @@
                             <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
                             {{/with}} 
-                            {{#userCtx 'catalog' 'edit' user_roles}}
+                            {{#userCtx 'catalog' 'edit'}}
                                                         {{#with ../product_variant}}
                                                             <button onclick="item_item_variations_get(this)" product_id="{{{../../product_doc/_id}}}"
                                                                 variant_id="{{id}}" type="button" class="cobrar-btn btn btn-primary">

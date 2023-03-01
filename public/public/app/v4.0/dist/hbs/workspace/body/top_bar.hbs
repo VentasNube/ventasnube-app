@@ -90,25 +90,30 @@
                 {{#with ../user}}
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <!-- The user image in the navbar-->
-                    <div class="user-icon">
+                    <!--div class="user-icon">
                         <span data-toggle="tooltip" data-placement="bottom" title="" class=""
-                            data-original-title=" {{{trimString user_name}}}">
-                            {{trimString user_name}}
+                            data-original-title=" {{{user_name}}}">
+                            {{user_name}}
                         </span>
-                    </div>
+                    </div-->
+                     <div class="round-icon user-top">
+                            {{user_name}}
+                         </div>
                 </a>
 
                 <ul class="dropdown-menu" style="right: 0px;">
 
                     <!-- The user image in the menu -->
                     <li class="user-header {{#with ../../ws_top_bar}}  {{{workspace_color}}} {{/with}}">
-                        <div class="user-icon md ">
+                        <!--div class="user-icon md ">
                             <span data-toggle="tooltip" data-placement="bottom" title="" class=""
                                 data-original-title="{{{user_name}}}">
-                                <!--{{trimString user_name}} -->
-                                {{trimString user_name}}
+                                {{user_name}}
                             </span>
-                        </div>
+                        </div-->
+                       <div class="round-icon user-top">
+                            {{user_name}}
+                         </div>
                         <p>{{user_name}}</p>
                         <p>{{user_email}}</p>
                     </li>
@@ -136,7 +141,6 @@
                                 <span class="user-icon md">
                                     <span data-toggle="tooltip" data-placement="bottom" title="" class=""
                                         data-original-title="{{{user_name}}}">
-                                        {{trimString user_name}}
                                     </span>
                                 </span>
                                 <span id="dbusername" dbusername="{{{user_name}}}" class="user-name">
