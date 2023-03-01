@@ -1,0 +1,68 @@
+
+<!-- CATALOG CREATE NEW PRODUCT TEMPLATE -->
+<div class="view-product">
+    
+    <!--- HEADER NAV  -->
+    <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto"
+            type="button"
+            class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+            <span class="material-icons">
+                arrow_back
+            </span>
+        </button>
+        <h3 class=" margin-0 padding-t-20"> </h3>
+    </div>
+
+       {{#with user}}
+                               
+                <div class="user-body-workspace">
+                        <div class="text-center user-body-workspace-title  {{{workspace_color}}}">
+                                                <div class="round-icon user-top">
+                                                    {{user_name}}
+                                                </div>
+                                                <p>{{user_name}}</p>
+                                                <p>{{user_email}}</p>
+                                            <!-- Menu Footer-->
+                                               
+                        </div>
+                            <div class="text-center user-body-workspace-title">
+
+                                <a href="/workspace/home" class="btn btn-default">
+                                    <span class="material-icons">
+                                         {{#with ../ws_lang_data}} {{ws_home_icon}}{{/with}}
+                                    </span>
+                                         {{#with ../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                </a>
+                                <br>
+                                <br>
+                                 <button  class="config_workspace_btn btn btn-default">
+                                    <span class="material-icons">
+                                         {{#with ../ws_lang_data}} {{ws_config_icon}}{{/with}}
+                                    </span>
+                                        {{#with ../ws_lang_data}} {{m_config_workspace}}{{/with}}
+                                </button>
+                            </div>
+                        </div>
+                        
+                    <div class="pull-left">
+                            <a href="/account" class="btn btn-default">
+                               <span class="material-icons">
+                                {{#with ../ws_lang_data}} {{m_account_tittle_icon}}{{/with}}
+                                </span>
+                           
+                                {{#with ../ws_lang_data}} {{b_myaccount}}{{/with}}
+                            </a>
+                        </div>
+                        <div class="pull-right">
+                            <button onclick="logout()" class="btn btn-default">
+                                <span class="material-icons">
+                                      {{#with ../ws_lang_data}} {{b_exit_icon}}{{/with}}
+                                </span>
+                                {{#with ../ws_lang_data}} {{b_exit}}{{/with}}
+                            </button >
+                        </div>
+
+                {{/with}}
+
+</div>

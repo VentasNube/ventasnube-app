@@ -3,7 +3,7 @@
       
       
     
-      const version = 1121212222;
+      const version = 1222112221111112121112111112111222;
       
       
     
@@ -111,6 +111,7 @@
         { url: '/public/app/v4.0/dist/js/workspace/search/ventas_nube_search.js', revision: version },
         //Acccount 
         { url: '/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js ', revision: version },
+        { url: '/public/app/v4.0/dist/hbs/workspace/account/account_menu.hbs', revision: version },
          //Catalog
          { url: '/public/app/v4.0/dist/js/workspace/catalog/ventas_nube_catalog.js ', revision: version },
 
