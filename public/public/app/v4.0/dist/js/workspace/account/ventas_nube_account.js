@@ -21,7 +21,6 @@ async function account_menu_open(ws_info, ws_lang_data) {
             ws_lang_data: ws_lang_data,
             user_roles: user_roles_permisions,
             ws_top_bar: ws_info,
-
             user: user_data,
         }
 

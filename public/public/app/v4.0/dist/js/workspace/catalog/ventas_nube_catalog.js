@@ -342,9 +342,9 @@ async function catalog_view_item(element) {
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=product&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion      
-        
-      
-       
+
+
+
     } catch (err) {
         console.log(err);
     }
@@ -375,7 +375,7 @@ async function catalog_view_item_url(m_id, m_var_id) {
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-      
+
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
@@ -412,7 +412,7 @@ async function catalog_edit_item(element) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list:attributes,
+            attributes_list: attributes,
         }
 
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
@@ -426,7 +426,7 @@ async function catalog_edit_item(element) {
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return item_print;   
+        return item_print;
     } catch (err) {
         console.log(err);
     }
@@ -457,13 +457,13 @@ async function catalog_edit_item_url(product_id, variant_id) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list:attributes
+            attributes_list: attributes
         }
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id; 
+        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
         return item_print;
     } catch (err) {
@@ -532,8 +532,6 @@ $(document).on('click', '.catalog_edit_item', function (event) {
     alert('catalog_edit_item()' + product_id);
 });
 
-
-
 $(document).on('focusin', '.catalog_search', function (element) {
     // cat_get_all_item_punchDb();
     //  cat_search_item_js();
@@ -585,9 +583,6 @@ async function put_catalog(doc_id, my_doc) {
     }
 }
 
-
-
-
 /**** NUEVO PRODUCTO */
 // FUNCION PARA CREAR PRODUCTO
 async function catalog_new_item(element) {
@@ -600,7 +595,7 @@ async function catalog_new_item(element) {
         var currency_doc = await L_catalog_db.get('currency_list');
         var user_roles_permisions = user_Ctx.userCtx.roles;
 
-        console.log('user_roles_permisions',user_roles_permisions);
+        console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
@@ -610,18 +605,18 @@ async function catalog_new_item(element) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list:attributes,
+            attributes_list: attributes,
         }
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         console.log('product_doc_array', product_doc_array);
-        
+
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=new&?id=';
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return;   
+        return;
     } catch (err) {
         console.log(err);
     }
@@ -632,9 +627,8 @@ $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
     // get_catalog_new_item();
     catalog_new_item(ws_info, ws_lang_data);
-   
-});
 
+});
 
 
 // EDITAR PRODUCTOS
@@ -685,7 +679,7 @@ async function add_new_tag(element) {
                     //Imprimo el item en la pantalla 
                     $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a doc_id="' + doc._id + '" new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
                     //limpio el imput 
-                 //   $(element).val('');
+                    //   $(element).val('');
                 } else {
                     //Si no se grabo tira un error en pantalla
                     $(element).css("color", "red");
@@ -695,7 +689,7 @@ async function add_new_tag(element) {
         else {
             $(element).css("color", "red");
         }
-    }catch (err) {
+    } catch (err) {
         console.log(err);
         $(element).css("color", "red");
     }
@@ -730,32 +724,30 @@ async function dell_tag(element) {
                 $(element).parent('div').css("color", "red");
             }
         }
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
 
 // FUNCIONES EDITAR CATEGORIAS 2023
 
-
-
-
 // Agrego un Categoria
-async function add_new_cat(element) {    
+/*
+async function add_new_cat(element) {
     try {
         var doc_id = $(element).attr('doc_id');
         var new_cat_val = $(element).val();
         //  var input_value = $(element).attr('input_value');
         //var input_id = $(element).attr('doc_id');
         var new_cat = String(new_cat_val);
-       // .toLowerCase()
+        // .toLowerCase()
         // Filtro si el input esta bacio
         if (new_cat) {
             let doc_id_s = String('category_list');  // Me aseguro q sea un string
             let doc = await L_catalog_db.get(doc_id_s);
             const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
             if (tag_index) {
-                Snackbar.show({  
+                Snackbar.show({
                     text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
                     width: '475px',
                     pos: 'bottom-right',
@@ -764,11 +756,11 @@ async function add_new_cat(element) {
             }
             else {
                 var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
-                var arr_number_id_valid  = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-                if(!arr_number_id_valid){
+                var arr_number_id_valid = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
                     var new_item = {
-                        id:arr_number_id,
-                        value:new_cat,
+                        id: arr_number_id,
+                        value: new_cat,
                         sub_category: []
                     }
                 }
@@ -796,79 +788,22 @@ async function add_new_cat(element) {
             }
         }
         else {
-            Snackbar.show({  
+            Snackbar.show({
                 text: ' La categoria no puede estar bacia',
                 width: '475px',
                 pos: 'bottom-right',
                 actionTextColor: "#4CAF50"
             });
         }
-    }catch (err) {
-     
+    } catch (err) {
+
     }
 }
-
-// Search Input de categorias
-async function add_new_cat_press(e, element) {
-    var key = e.keyCode || e.which;
-    //tomo el key code para saber si es el enter o un caracter
-    if (key == 13) {
-       // alert($(element).val());
-        add_new_cat(element);
-        catalog_edit_item_url($(element).attr('doc_id'));
-        $('#edit-item-description-body').addClass('in');
-    }else{
-        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
-        var doc_id = $(element).attr('doc_id');
-        var new_cat_val = $(element).val();
-        var select_div_id  = "#select_category_list_"+doc_id;
-        var new_cat = String(new_cat_val);
-        if (new_cat) {
-            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
-            let doc = await L_catalog_db.get('category_list');
-            //Filstro con una busqueda que incluya las palabras que ingreso al input
-            const filterItems = query => {
-            return doc.category_list.filter((el) =>
-                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );}
-           // creo un array con los datos del producto y la lista de categorias actualizadas
-            var cat_list_search = {
-                _id: doc_id,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-                cat_find_list: filterItems(new_cat)
-            }
-            //renderizo las categorias nuevas filtradas
-            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
-      }
-    }
-}
-
-// Tomo la seleccion nueva y edito el documento
-async function cat_edit_product_category(element){
-    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-    const input_value =  $(element).attr('input_value'); //Id del documento a edita
-
-    let input_id = $(element).attr('input_id');
-    let new_value = $(element).attr('new_value');
-
-    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-    
-     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-     var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-    });
-    catalog_edit_item_url(doc_id, 1);
-    //  alert('salio todo ok')
-
-};
+*/
 
 
 // Boton traigo las catgorias //NO SEE
+/*
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
@@ -886,24 +821,137 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
-
+*/
 
 // FUNCIONES NUEVO PRODUCTO EDITAR CATEGORIAS 2023
 
 
+// Search Input de categorias
+/*
+async function add_new_cat_press(e, element) {
+    var key = e.keyCode || e.which;
+    //tomo el key code para saber si es el enter o un caracter
+    if (key == 13) {
+        // alert($(element).val());
+        add_new_cat(element);
+        catalog_edit_item_url($(element).attr('doc_id'));
+        $('#edit-item-description-body').addClass('in');
+    } else {
+        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
+        var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $(element).val();
+        var select_div_id = "#select_category_list_" + doc_id;
+        var new_cat = String(new_cat_val);
+        if (new_cat) {
+            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get('category_list');
+            //Filstro con una busqueda que incluya las palabras que ingreso al input
+            const filterItems = query => {
+                return doc.category_list.filter((el) =>
+                    el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+                );
+            }
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                _id: doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                cat_find_list: filterItems(new_cat)
+            }
+            //renderizo las categorias nuevas filtradas
+            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+        }
+    }
+}
+*/
+
+// Tomo la seleccion nueva y edito el documento
+/*
+async function cat_edit_product_category(element) {
+    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+    const input_value = $(element).attr('input_value'); //Id del documento a edita
+
+    let input_id = $(element).attr('input_id');
+    let new_value = $(element).attr('new_value');
+
+    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+
+    doc[input_id] = { 'id': input_value, 'value': new_value };//BUSCO EL OBJETO Y LO EDITO
+    var response = await L_catalog_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    catalog_edit_item_url(doc_id, 1);
+    //  alert('salio todo ok')
+
+}
+*/
+
+//AGREGAR CATEGORIAS 2023
+// Search Input de categorias
+async function catalog_search_cat(e, element) {
+    //traigo el resultado mas parecido con find
+    //  var doc_id = $(element).attr('doc_id');
+    var new_cat_val = $(element).val();
+    var select_div_id = "#catalog_select_new_cat_list";
+    var new_cat = String(new_cat_val);
+    if (new_cat) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_cat);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                cat_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                no_result: true
+            }
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+
+
+    }
+
+}
 // Elimino una Categoria
 async function catalog_dell_cat(element) {
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
         let value = $(element).attr('value');
-        Snackbar.show({  
-            text: '<span class="material-icons">delete</span> Quieres eliminar la categoria ' +value+' ?',
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar la categoria ' + value + ' ?',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {   
+            onActionClick: async function (element) {
                 //Efecto y verificacion del tag
                 let doc_id_s = String(doc_id);
                 //Traigo el documento actualizado
@@ -938,16 +986,15 @@ async function catalog_dell_cat(element) {
                 }
                 //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 //$('#' + item_cart_id).remove();
-               // $(element).css('opacity', 0);      
+                // $(element).css('opacity', 0);      
             }
         });
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
-
-// Agrego un Categoria
-async function catalog_add_new_cat(element) {    
+// Agrego un Categoria nueva
+async function catalog_add_new_cat(element) {
     try {
         var doc_id = $(element).attr('doc_id');
         var new_cat_val = $('#catalog_new_cat_input').val();
@@ -961,7 +1008,7 @@ async function catalog_add_new_cat(element) {
             let doc = await L_catalog_db.get(doc_id_s);
             const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
             if (tag_index) {
-                Snackbar.show({  
+                Snackbar.show({
                     text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
                     width: '475px',
                     pos: 'bottom-right',
@@ -970,11 +1017,11 @@ async function catalog_add_new_cat(element) {
             }
             else {
                 var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
-                var arr_number_id_valid  = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-                if(!arr_number_id_valid){
+                var arr_number_id_valid = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
                     var new_item = {
-                        id:arr_number_id,
-                        value:new_cat,
+                        id: arr_number_id,
+                        value: new_cat,
                         sub_category: []
                     }
                 }
@@ -995,80 +1042,37 @@ async function catalog_add_new_cat(element) {
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
-                    catalog_edit_item_url(doc_id, 1);
+                   
+                    catalog_select_new_cat(element, new_cat);
                 } else {
                     alert("no se actualizo");
                 }
             }
         }
         else {
-            Snackbar.show({  
+            Snackbar.show({
                 text: ' La categoria no puede estar bacia',
                 width: '475px',
                 pos: 'bottom-right',
                 actionTextColor: "#4CAF50"
             });
         }
-    }catch (err) {
-     
+    } catch (err) {
+
     }
 }
-// Search Input de categorias
-async function catalog_search_cat(e, element) {
-    
 
-        //traigo el resultado mas parecido con find
-      //  var doc_id = $(element).attr('doc_id');
-        var new_cat_val = $(element).val();
-        var select_div_id  = "#catalog_select_new_cat_list";
-        var new_cat = String(new_cat_val);
-        if (new_cat) {
-           // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
-            let doc = await L_catalog_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
-            
-            const filterItems = query => {
-            return doc.category_list.filter((el) =>
-                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );}
-
-            var search_list = filterItems(new_cat);
-
-                if(search_list.length >= 1){
-                        // creo un array con los datos del producto y la lista de categorias actualizadas
-                        var cat_list_search = {
-                            ws_lang_data: ws_lang_data,
-                            user_roles: user_Ctx.userCtx.roles,
-                            cat_find_list: search_list
-                        }
-                        //renderizo las categorias nuevas filtradas
-                      
-                }else if (search_list == null){
-                    var cat_list_search = {
-                        ws_lang_data: ws_lang_data,
-                        user_roles: user_Ctx.userCtx.roles,
-                        cat_find_list: doc.category_list
-                    }
-                }
-                else{
-                    var cat_list_search = {
-                        ws_lang_data: ws_lang_data,
-                        user_roles: user_Ctx.userCtx.roles,
-                        no_result: true
-                    }
-                }
-               renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
-
-            
-            }
-    
-}
-
-async function catalog_select_new_cat(element) {
-
+// Selecciono una categoria
+async function catalog_select_new_cat(element, new_cat) {
     let item_value_id = $(element).attr('item_value_id');
-    let item_value = $(element).attr('item_value');
+    var new_item = new_cat;
+    if (new_item) {
+        var item_value = new_item;
+    } else {
+        var item_value = $(element).attr('item_value');
+    }
     try {
-        $('#catalog_select_cat_value').attr('catalog_select_cat_value',item_value_id);
+        $('#catalog_select_cat_value').attr('catalog_select_cat_value', item_value_id);
         $('#catalog_select_cat_value').html(item_value);
         $('#catalog_select_cat_tittle').html(item_value);
         //traigo el documento a editar
@@ -1079,24 +1083,94 @@ async function catalog_select_new_cat(element) {
 }
 
 
-/// MARCA 2022
+//MARCAS 2023
+// Search Input de categorias
+async function catalog_search_trade(e, element) {
 
-// Agrego un Categoria
-async function add_new_trade(element) {    
+
+    //traigo el resultado mas parecido con find
+    //  var doc_id = $(element).attr('doc_id');
+    var new_trade_val = $(element).val();
+    var select_div_id = "#catalog_select_new_trade_list";
+    var new_trade = String(new_trade_val);
+    if (new_trade) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('trade_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.trade_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_trade);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                trade_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                no_result: true
+            }
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', select_div_id, trade_list_search);
+
+
+    }
+
+}
+// Selecciono una categoria
+async function catalog_select_new_trade(element, new_trade) {
+
+    var item_value_id = $(element).attr('item_value_id');
+    var new_item = new_trade;
+    if (new_item) {
+        var item_value = new_item;
+    } else {
+        var item_value = $(element).attr('item_value');
+    }
+    try {
+        $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
+        $('#catalog_select_trade_value').html(item_value);
+        $('#catalog_select_trade_tittle').html(item_value);
+        //traigo el documento a editar
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Agrego un Categoria nueva
+async function catalog_add_new_trade(element) {
     try {
         var doc_id = $(element).attr('doc_id');
-        var new_trade_val = $(element).val();
+        var new_trade_val = $('#catalog_new_trade_input').val();
+        alert(new_trade_val);
         //  var input_value = $(element).attr('input_value');
         //var input_id = $(element).attr('doc_id');
         var new_trade = String(new_trade_val);
-       // .toLowerCase()
+        // .toLowerCase()
         // Filtro si el input esta bacio
         if (new_trade) {
             let doc_id_s = String('trade_list');  // Me aseguro q sea un string
             let doc = await L_catalog_db.get(doc_id_s);
             const tag_index = doc.trade_list.find((objeto) => objeto.value == new_trade);  // Verigico q el item a agregar ya no este repetido
             if (tag_index) {
-                Snackbar.show({  
+                Snackbar.show({
                     text: ' <span class="material-icons">category</span> La marca ' + new_trade_val + ' ya existe!',
                     width: '475px',
                     pos: 'bottom-right',
@@ -1105,12 +1179,12 @@ async function add_new_trade(element) {
             }
             else {
                 var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
-                var arr_number_id_valid  = doc.trade_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-                if(!arr_number_id_valid){
+                var arr_number_id_valid = doc.trade_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
                     var new_item = {
-                        id:arr_number_id,
-                        value:new_trade,
-                       // sub_category: []
+                        id: arr_number_id,
+                        value: new_trade,
+                        sub_category: []
                     }
                 }
                 //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
@@ -1130,74 +1204,39 @@ async function add_new_trade(element) {
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
-                    catalog_edit_item_url(doc_id, 1);
+                    catalog_select_new_trade(element, new_trade);
+                    //catalog_search_trade(e, element);
+                    //  catalog_edit_item_url(doc_id, 1);
                 } else {
                     alert("no se actualizo");
                 }
             }
         }
         else {
-            Snackbar.show({  
-                text: ' La marca no puede estar bacia',
+            Snackbar.show({
+                text: ' La categoria no puede estar bacia',
                 width: '475px',
                 pos: 'bottom-right',
                 actionTextColor: "#4CAF50"
             });
         }
-    }catch (err) {
-     
+    } catch (err) {
+
     }
 }
-
-// Search Input de categorias
-async function add_new_trade_press(e, element) {
-    var key = e.keyCode || e.which;
-    //tomo el key code para saber si es el enter o un caracter
-    if (key == 13) {
-       // alert($(element).val());
-        add_new_trade(element);
-        catalog_edit_item_url($(element).attr('doc_id'));
-        $('#edit-item-description-body').addClass('in');
-    }else{
-        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
-        var doc_id = $(element).attr('doc_id');
-        var new_trade_val = $(element).val();
-        var select_div_id  = "#select_trade_list_"+doc_id;
-        var new_trade = String(new_trade_val);
-        if (new_trade) {
-            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
-            let doc = await L_catalog_db.get('trade_list');
-            //Filstro con una busqueda que incluya las palabras que ingreso al input
-            const filterItems = query => {
-            return doc.trade_list.filter((el) =>
-                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );}
-           // creo un array con los datos del producto y la lista de categorias actualizadas
-            var trade_list_search = {
-                _id: doc_id,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-                trade_find_list: filterItems(new_trade)
-            }
-            //renderizo las categorias nuevas filtradas
-            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, trade_list_search);
-      }
-    }
-}
-
 // Elimino una Categoria
 async function catalog_dell_trade(element) {
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
         let value = $(element).attr('value');
-        Snackbar.show({  
-            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' +value+' ?',
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' + value + ' ?',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {   
+            onActionClick: async function (element) {
                 //Efecto y verificacion del tag
                 let doc_id_s = String(doc_id);
                 //Traigo el documento actualizado
@@ -1205,7 +1244,7 @@ async function catalog_dell_trade(element) {
                 let doc = await L_catalog_db.get('trade_list');
                 console.log(doc);
                 //Filtro los resultados del array menos el que quiero eliminar
-                const new_trade_list = doc.trade_list.filter(word => word.value != value);
+                const new_cat_list = doc.trade_list.filter(word => word.value != value);
                 //Reemplazo el array por el filtrado
                 console.log(new_trade_list);
                 doc['trade_list'] = new_trade_list;
@@ -1219,7 +1258,6 @@ async function catalog_dell_trade(element) {
                     if (response) {
                         //Limpio el item de la pantalla
                         catalog_edit_item_url(doc_id, 1);
-
                         $(element).parent('li').remove();
                     } else {
                         //Si no se grabo tira un error en pantalla
@@ -1228,54 +1266,95 @@ async function catalog_dell_trade(element) {
                 }
                 //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 //$('#' + item_cart_id).remove();
-               // $(element).css('opacity', 0);      
+                // $(element).css('opacity', 0);      
             }
         });
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
 
-// Tomo la seleccion nueva y edito el documento
-async function catalog_edit_trade(element){
-    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-    const input_value =  $(element).attr('input_value'); //Id del documento a edita
 
-    let input_id = $(element).attr('input_id');
-    let new_value = $(element).attr('new_value');
+// MODELOS 2023
+// Search Input
+async function catalog_search_model(e, element) {
+    //traigo el resultado mas parecido con find
+    var new_model_val = $(element).val();
+    var select_div_id = "#catalog_select_new_model_list";
+    var new_model = String(new_model_val);
+    if (new_model) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('model_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
 
-    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-    
-     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-     var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-    });
-    catalog_edit_item_url(doc_id, 1);
-    //  alert('salio todo ok')
+        const filterItems = query => {
+            return doc.model_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
 
-};
+        var search_list = filterItems(new_model);
 
-// MODELOS 2022
-// Agrego un Categoria
-async function add_new_model(element) {    
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                trade_find_list: search_list
+            }
+        } else if (search_list == null) {
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                model_find_list: doc.model_list
+            }
+        }
+        else {
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                no_result: true
+            }
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', select_div_id, list_search);
+    }
+}
+// Selecciono
+async function catalog_select_new_model(element, new_model) {
+    let item_value_id = $(element).attr('item_value_id');
+    var new_item = new_model;
+    if (new_item) {
+        var item_value = new_item;
+    } else {
+        var item_value = $(element).attr('item_value');
+    }
     try {
-        var doc_id = $(element).attr('doc_id');
-        var new_model_val = $(element).val();
-        //  var input_value = $(element).attr('input_value');
+        $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
+        $('#catalog_select_trade_value').html(item_value);
+        $('#catalog_select_trade_tittle').html(item_value);
+        //traigo el documento a editar
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+// Agrego
+async function catalog_add_new_model(element) {
+    try {
+        //var doc_id = $(element).attr('doc_id');
+        var new_model_val = $('#catalog_new_model_input').val();
+        alert(new_model_val);
+        //var input_value = $(element).attr('input_value');
         //var input_id = $(element).attr('doc_id');
         var new_model = String(new_model_val);
-       // .toLowerCase()
+        alert(new_model);
+        // .toLowerCase()
         // Filtro si el input esta bacio
         if (new_model) {
             let doc_id_s = String('model_list');  // Me aseguro q sea un string
             let doc = await L_catalog_db.get(doc_id_s);
             const tag_index = doc.model_list.find((objeto) => objeto.value == new_model);  // Verigico q el item a agregar ya no este repetido
             if (tag_index) {
-                Snackbar.show({  
+                Snackbar.show({
                     text: ' <span class="material-icons">category</span> La marca ' + new_model_val + ' ya existe!',
                     width: '475px',
                     pos: 'bottom-right',
@@ -1284,12 +1363,12 @@ async function add_new_model(element) {
             }
             else {
                 var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
-                var arr_number_id_valid  = doc.model_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-                if(!arr_number_id_valid){
+                var arr_number_id_valid = doc.model_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
                     var new_item = {
-                        id:arr_number_id,
-                        value:new_model,
-                       // sub_category: []
+                        id: arr_number_id,
+                        value: new_model,
+                        sub_category: []
                     }
                 }
                 //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
@@ -1304,79 +1383,43 @@ async function add_new_model(element) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
                     Snackbar.show({
-                        text: 'La marca ' + new_model_val + ' se agrego!',
+                        text: 'El modelo ' + new_model_val + ' se agrego!',
                         actionText: 'ok',
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
-                    catalog_edit_item_url(doc_id, 1);
+                    catalog_select_new_model(element, new_model);
+                    //catalog_select_new_model(element, new_model);
                 } else {
                     alert("no se actualizo");
                 }
             }
         }
         else {
-            Snackbar.show({  
-                text: ' La marca no puede estar bacia',
+            Snackbar.show({
+                text: ' El modelo no puede estar bacio',
                 width: '475px',
                 pos: 'bottom-right',
                 actionTextColor: "#4CAF50"
             });
         }
-    }catch (err) {
-     
+    } catch (err) {
+
     }
 }
-
-// Search Input de categorias
-async function add_new_model_press(e, element) {
-    var key = e.keyCode || e.which;
-    //tomo el key code para saber si es el enter o un caracter
-    if (key == 13) {
-       // alert($(element).val());
-        add_new_model(element);
-        catalog_edit_item_url($(element).attr('doc_id'));
-        $('#edit-item-description-body').addClass('in');
-    }else{
-        //Si el evento de teclado no es 13 que lo busque en el doc de las categorias y traiga el resultado mas parecido con find
-        var doc_id = $(element).attr('doc_id');
-        var new_model_val = $(element).val();
-        var select_div_id  = "#select_model_list_"+doc_id;
-        var new_model = String(new_model_val);
-        if (new_model) {
-            let doc_id_s = String(doc_id);  // Me aseguro q sea un string
-            let doc = await L_catalog_db.get('model_list');
-            //Filstro con una busqueda que incluya las palabras que ingreso al input
-            const filterItems = query => {
-            return doc.model_list.filter((el) =>
-                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
-            );}
-           // creo un array con los datos del producto y la lista de categorias actualizadas
-            var model_list_search = {
-                _id: doc_id,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-                model_find_list: filterItems(new_model)
-            }
-            //renderizo las categorias nuevas filtradas
-            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, model_list_search);
-      }
-    }
-}
-
 // Elimino una Categoria
 async function catalog_dell_model(element) {
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
         let value = $(element).attr('value');
-        Snackbar.show({  
-            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' +value+' ?',
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar el modelo ' + value + ' ?',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {   
+            onActionClick: async function (element) {
                 //Efecto y verificacion del tag
                 let doc_id_s = String(doc_id);
                 //Traigo el documento actualizado
@@ -1398,7 +1441,6 @@ async function catalog_dell_model(element) {
                     if (response) {
                         //Limpio el item de la pantalla
                         catalog_edit_item_url(doc_id, 1);
-
                         $(element).parent('li').remove();
                     } else {
                         //Si no se grabo tira un error en pantalla
@@ -1407,60 +1449,15 @@ async function catalog_dell_model(element) {
                 }
                 //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 //$('#' + item_cart_id).remove();
-               // $(element).css('opacity', 0);      
+                // $(element).css('opacity', 0);      
             }
         });
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
 
-// Tomo la seleccion nueva y edito el documento
-async function catalog_edit_model(element){
-    const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-    const input_value =  $(element).attr('input_value'); //Id del documento a edita
 
-    let input_id = $(element).attr('input_id');
-    let new_value = $(element).attr('new_value');
-
-    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-    
-     doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-     var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-    });
-    catalog_edit_item_url(doc_id, 1);
-    //  alert('salio todo ok')
-
-};
-
-//   SUB CATERGORIAS 2022
-// FUERON ELIMINADAS LAS SUB CATEGORIAS
-// FIN FUNCIONES CATEGORIAS
-// Boton Agregar catgorias
-/*
-function catalog_new_cat(element) {
-    let product_id = $(element).attr('product_id');
-    let variant_id = $(element).attr('variant_id');
-    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#view_item_variant_' + product_id; // ID DE COMPILACION // 
-    L_catalog_db.get(product_id, function (err, doc) {
-        if (err) { return console.log(err); }
-        const variant_array = {
-            variant_id: variant_id,
-            _id: doc._id,
-            _rev: doc._rev,
-            variations: doc.variations,
-            name: doc.name,
-        }
-        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    });
-}
-*/
 // EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 async function cat_edit_product(element) {
 
@@ -1469,19 +1466,19 @@ async function cat_edit_product(element) {
         const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
         const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
         const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        const input_status_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id+'_status'; //Armo la id del checkbox
-        const input_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id; // Armo la id del input
-        const new_input_status =  $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
+        const input_status_html_id = '#' + doc_id + '_' + variant_id + '_' + input_id + '_status'; //Armo la id del checkbox
+        const input_html_id = '#' + doc_id + '_' + variant_id + '_' + input_id; // Armo la id del input
+        const new_input_status = $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
         //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
-        if(new_input_status === false){
+        if (new_input_status === false) {
             var input_status = true;
             $(input_html_id).prop('disabled', true);
             $(input_html_id).prop('status', true);
-        }else if(new_input_status === true){
+        } else if (new_input_status === true) {
             var input_status = false;
             $(input_html_id).prop('disabled', false);
             $(input_html_id).prop('status', false);
-        }else{
+        } else {
             var input_status = true;
         }
         var doc_id_s = String(doc_id); //Combierto el id del doc en un string
@@ -1490,11 +1487,11 @@ async function cat_edit_product(element) {
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             const new_objet_input = item; //Traigo el ojeto especifico 
-            new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
+            new_objet_input[input_id] = { 'status': input_status, 'value': new_value }; //Si existe el objeto Edito el valor del value por el valor nuevo
         }
         // Si la edicion es fuera de una variable
         else {
-         doc[input_id] = new_value ;//BUSCO EL OBJETO Y LO EDITO
+            doc[input_id] = new_value;//BUSCO EL OBJETO Y LO EDITO
         }
         //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
@@ -1531,99 +1528,90 @@ function form_new_product(ws_info, ws_lang_data) {
 //*** Imprimir configuracion  */
 async function catalog_config(tab_id) {
     try {
-       var price_list = await L_catalog_db.get('price_list');
-       var currency_list = await L_catalog_db.get('currency_list');
+        var price_list = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
 
-       var tax_list = await L_catalog_db.get('tax_list');
+        var tax_list = await L_catalog_db.get('tax_list');
         var catalog_config = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            price_list :price_list.price_list,
-            currency_list:currency_list.currency_list,
-            tax_list:tax_list.tax,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            tax_list: tax_list.tax,
         }
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
-      //  $('#['+ tab_id +']').class('active in'); 
+        //  $('#['+ tab_id +']').class('active in'); 
 
     } catch (err) {
-    console.log(err);
-}
+        console.log(err);
+    }
 }
 
 /*** Editar lista de precios */
 async function catalog_config_show_edit(element) {
     try {
         //Traigo los valores
-        let price_id =  $(element).attr('price_id'); 
-        let new_value =  $(element).attr('price_value'); 
-        let new_currency_id =  $(element).attr('price_currency_id'); 
+        let price_id = $(element).attr('price_id');
+        let new_value = $(element).attr('price_value');
+        let new_currency_id = $(element).attr('price_currency_id');
         //Filtro los resultados
-        const price_id_n =  Number(price_id);
+        const price_id_n = Number(price_id);
         var new_value_n = Number(new_value);
         var new_currency_id_n = Number(new_currency_id);
         //Modifico el dom
         $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
-        $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
-        $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
-        $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_price_list_name_value').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
+        $("#new_price_list_money_value option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
+        $("#edit_panel_config_name_price_list").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_price_list_name_value').focus(); //llevo el foco al input 
 
     } catch (err) {
-    console.log(err);
-}
+        console.log(err);
+    }
 }
 
 async function catalog_config_save_edit(element) {
     try {
 
-        let price_id =  $('#new_price_list_name_value').attr('price_id');  
-        let new_name = $('#new_price_list_name_value').val(); 
-        let new_money_id = $('#new_price_list_money_value').val(); 
-        const price_id_n =  Number(price_id);
+        let price_id = $('#new_price_list_name_value').attr('price_id');
+        let new_name = $('#new_price_list_name_value').val();
+        let new_money_id = $('#new_price_list_money_value').val();
+        const price_id_n = Number(price_id);
         var new_name_n = String(new_name);
         var new_money_id_n = Number(new_money_id);
         //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
         var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
         //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-        if(price_array){
-                const price = price_array;//Traigo el ojeto especifico 
-                price.value = new_name_n; //Edito el valor del value por el valor nuevo
-                price.id = price_id_n;//Edito el valor del value por el valor nuevo
-                price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
-                price.status = 'active';//Edito el valor del value por el valor nuevo
-                price.delete = false;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-                //Acutualizo el documento
-                var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        if (price_array) {
+            const price = price_array;//Traigo el ojeto especifico 
+            price.value = new_name_n; //Edito el valor del value por el valor nuevo
+            price.id = price_id_n;//Edito el valor del value por el valor nuevo
+            price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+            price.status = 'active';//Edito el valor del value por el valor nuevo
+            price.delete = false;//Edito el valor del value por el valor nuevo
+            price.updateDate = newDate;
+            price.updateUser = userName;
+            //Acutualizo el documento
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                var print_item = await catalog_config(); //Refrezco la pantalla
+                Snackbar.show({
+                    text: 'Se actualizo con exito!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
                 });
-                if (response) {
-                    var print_item = await catalog_config(); //Refrezco la pantalla
-                    Snackbar.show({
-                        text: 'Se actualizo con exito!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                } else {
-                    Snackbar.show({
-                        text: 'NO actualizo!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                }
-
-            }else{
+            } else {
                 Snackbar.show({
                     text: 'NO actualizo!!',
                     actionText: 'ok',
@@ -1631,67 +1619,68 @@ async function catalog_config_save_edit(element) {
                     actionTextColor: "#0575e6",
                 });
             }
-        } catch (err) {
-            console.log(err);
+
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
 async function catalog_config_save_block(element) {
     try {
         //Traigo los valores
-        let price_id =  $(element).attr('price_id'); 
-        price_status = $(element).attr('price_status'); 
+        let price_id = $(element).attr('price_id');
+        price_status = $(element).attr('price_status');
         //alert(price_status);
 
-        if(price_status  === 'active'){
+        if (price_status === 'active') {
             var price_status = 'inactive';
-            
-           // alert(price_status);
-        }else{
-                var price_status = 'active';
-               // alert(price_status);
+
+            // alert(price_status);
+        } else {
+            var price_status = 'active';
+            // alert(price_status);
         }
         //Filtro los resultados
-        const price_id_n =  Number(price_id);
+        const price_id_n = Number(price_id);
         //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
         var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
         //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-        if(price_array){
-                const price = price_array;//Traigo el ojeto especifico 
-                //price.value = new_name_n; //Edito el valor del value por el valor nuevo
-             //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
-             //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
-                price.status = price_status;//Edito el valor del value por el valor nuevo
-              //  price.delete = false;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-                //Acutualizo el documento
-                var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        if (price_array) {
+            const price = price_array;//Traigo el ojeto especifico 
+            //price.value = new_name_n; //Edito el valor del value por el valor nuevo
+            //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
+            //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+            price.status = price_status;//Edito el valor del value por el valor nuevo
+            //  price.delete = false;//Edito el valor del value por el valor nuevo
+            price.updateDate = newDate;
+            price.updateUser = userName;
+            //Acutualizo el documento
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                var print_item = await catalog_config(); //Refrezco la pantalla
+                Snackbar.show({
+                    text: 'Se actualizo con exito!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
                 });
-                if (response) {
-                    var print_item = await catalog_config(); //Refrezco la pantalla
-                    Snackbar.show({
-                        text: 'Se actualizo con exito!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                } else {
-                    Snackbar.show({
-                        text: 'NO actualizo!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                }
-            }else{
+            } else {
                 Snackbar.show({
                     text: 'NO actualizo!!',
                     actionText: 'ok',
@@ -1699,67 +1688,67 @@ async function catalog_config_save_block(element) {
                     actionTextColor: "#0575e6",
                 });
             }
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
     } catch (err) {
-    console.log(err);
+        console.log(err);
     }
 }
 
 async function catalog_config_money_block(element) {
     try {
         //Traigo los valores
-        let price_id =  $(element).attr('price_id'); 
-        price_status = $(element).attr('price_status'); 
+        let price_id = $(element).attr('price_id');
+        price_status = $(element).attr('price_status');
         //alert(price_status);
 
-        if(price_status  === 'active'){
+        if (price_status === 'active') {
             var price_status = 'inactive';
-            
-           // alert(price_status);
-        }else{
-                var price_status = 'active';
-               // alert(price_status);
+
+            // alert(price_status);
+        } else {
+            var price_status = 'active';
+            // alert(price_status);
         }
         //Filtro los resultados
-        const price_id_n =  Number(price_id);
+        const price_id_n = Number(price_id);
         //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
         var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
         //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-        if(price_array){
-                const price = price_array;//Traigo el ojeto especifico 
-                //price.value = new_name_n; //Edito el valor del value por el valor nuevo
-             //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
-             //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
-                price.status = price_status;//Edito el valor del value por el valor nuevo
-              //  price.delete = false;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-                //Acutualizo el documento
-                var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        if (price_array) {
+            const price = price_array;//Traigo el ojeto especifico 
+            //price.value = new_name_n; //Edito el valor del value por el valor nuevo
+            //   price.id = price_id_n;//Edito el valor del value por el valor nuevo
+            //   price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
+            price.status = price_status;//Edito el valor del value por el valor nuevo
+            //  price.delete = false;//Edito el valor del value por el valor nuevo
+            price.updateDate = newDate;
+            price.updateUser = userName;
+            //Acutualizo el documento
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                var print_item = await catalog_config(); //Refrezco la pantalla
+                Snackbar.show({
+                    text: 'Se actualizo con exito!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
                 });
-                if (response) {
-                    var print_item = await catalog_config(); //Refrezco la pantalla
-                    Snackbar.show({
-                        text: 'Se actualizo con exito!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                } else {
-                    Snackbar.show({
-                        text: 'NO actualizo!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                }
-            }else{
+            } else {
                 Snackbar.show({
                     text: 'NO actualizo!!',
                     actionText: 'ok',
@@ -1767,8 +1756,16 @@ async function catalog_config_money_block(element) {
                     actionTextColor: "#0575e6",
                 });
             }
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
     } catch (err) {
-    console.log(err);
+        console.log(err);
     }
 }
 
@@ -1776,29 +1773,29 @@ async function catalog_config_money_block(element) {
 async function catalog_config_show_money_edit(element) {
     try {
         //Traigo los valores
-        let price_id =  $(element).attr('price_id'); 
-        let new_value =  $(element).attr('price_value'); 
-        let new_currency_id =  $(element).attr('price_currency_id'); 
+        let price_id = $(element).attr('price_id');
+        let new_value = $(element).attr('price_value');
+        let new_currency_id = $(element).attr('price_currency_id');
         //Filtro los resultados
-        const price_id_n =  Number(price_id);
+        const price_id_n = Number(price_id);
         var new_value_n = Number(new_value);
         var new_currency_id_n = Number(new_currency_id);
         //Modifico el dom
         $('#new_price_list_name_value').val(new_value); //Tomo el valor de input
-        $('#new_price_list_name_value').attr('price_id',  price_id_n); //Grabo el valor en un attr en el input
-        $("#new_price_list_money_value option[value='"+ new_currency_id_n +"']").attr("selected",true); // cambio el valor del select
-        $( "#edit_panel_config_name_price_list" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $('#new_price_list_name_value').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
+        $("#new_price_list_money_value option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
+        $("#edit_panel_config_name_price_list").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_price_list_name_value').focus(); //llevo el foco al input 
 
         $('#new_price_list_name_value').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
 
-       // $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
-        
+        // $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+
 
 
     } catch (err) {
-    console.log(err);
-}
+        console.log(err);
+    }
 }
 
 ///** MONEDAS CATALOGO 
@@ -1807,20 +1804,20 @@ async function catalog_config_show_tax_edit(element) {
     try {
 
         //Traigo los valores
-        let id =  $(element).attr('id'); 
-        let new_value =  $(element).attr('value'); 
-        let new_name =  $(element).attr('name'); 
+        let id = $(element).attr('id');
+        let new_value = $(element).attr('value');
+        let new_name = $(element).attr('name');
 
         //Filtro los resultados
-        const id_n =  Number(id);
+        const id_n = Number(id);
         var value_n = Number(new_value);
         var name_n = Number(new_name);
 
         //Modifico el dom
         $('#new_value_tax_edit').val(new_value); //Tomo el valor de input
-        $('#new_value_tax_edit').attr('tax_id',  id); //Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('tax_id', id); //Grabo el valor en un attr en el input
         $("#new_name_tax_input").val(new_name); // cambio el valor del select
-        $("#edit_panel_config_tax" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $("#edit_panel_config_tax").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_value_tax_edit').focus(); //llevo el foco al input 
         $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_money_edit(this)'); //Grabo el valor en un attr en el input
 
@@ -1828,17 +1825,17 @@ async function catalog_config_show_tax_edit(element) {
         $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
 
     } catch (err) {
-    console.log(err);
-}
+        console.log(err);
+    }
 }
 
 async function catalog_config_tax_money_edit(element) {
     try {
 
-        let id =  $('#new_value_tax_edit').attr('tax_id');  
-        let value = $('#new_value_tax_edit').val(); 
-        let name = $('#new_name_tax_input').val(); 
-        const id_n =  Number(id);
+        let id = $('#new_value_tax_edit').attr('tax_id');
+        let value = $('#new_value_tax_edit').val();
+        let name = $('#new_name_tax_input').val();
+        const id_n = Number(id);
         var value_n = String(value);
         var name_n = String(name);
         //PRUEBAS NUEVAS
@@ -1849,39 +1846,30 @@ async function catalog_config_tax_money_edit(element) {
         var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
         var final_id_tax = doc.tax[doc.tax.length - 1].id //Traigo el ultimo id tax
         //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-        if(tax_array){
-                const tax = tax_array;//Traigo el ojeto especifico 
-                tax.value = value_n; //Edito el valor del value por el valor nuevo
-                //tax.id = name_n;//Edito el valor del value por el valor nuevo
-                tax.name = name_n;
-                tax.status = 'active';//Edito el valor del value por el valor nuevo
-                tax.delete = false;//Edito el valor del value por el valor nuevo
-                tax.updateDate = newDate;
-                tax.updateUser = userName;
-                //Acutualizo el documento
-                var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        if (tax_array) {
+            const tax = tax_array;//Traigo el ojeto especifico 
+            tax.value = value_n; //Edito el valor del value por el valor nuevo
+            //tax.id = name_n;//Edito el valor del value por el valor nuevo
+            tax.name = name_n;
+            tax.status = 'active';//Edito el valor del value por el valor nuevo
+            tax.delete = false;//Edito el valor del value por el valor nuevo
+            tax.updateDate = newDate;
+            tax.updateUser = userName;
+            //Acutualizo el documento
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                var print_item = await catalog_config(); //Refrezco la pantalla
+                Snackbar.show({
+                    text: 'Se actualizo con exito!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
                 });
-                if (response) {
-                    var print_item = await catalog_config(); //Refrezco la pantalla
-                    Snackbar.show({
-                        text: 'Se actualizo con exito!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                } else {
-                    Snackbar.show({
-                        text: 'NO actualizo!!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                }
-
-            }else{
+            } else {
                 Snackbar.show({
                     text: 'NO actualizo!!',
                     actionText: 'ok',
@@ -1889,8 +1877,17 @@ async function catalog_config_tax_money_edit(element) {
                     actionTextColor: "#0575e6",
                 });
             }
-        } catch (err) {
-            console.log(err);
+
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -1899,30 +1896,30 @@ async function catalog_config_tax_money_edit(element) {
 async function catalog_config_new_tax(element) {
     try {
         //Traigo los valores
-        var id =  $(element).attr('id'); 
-        let new_value =  $(element).attr('value'); 
-        let new_name =  $(element).attr('name'); 
+        var id = $(element).attr('id');
+        let new_value = $(element).attr('value');
+        let new_name = $(element).attr('name');
         //Filtro los resultados
-        var id_n =  Number(id);
+        var id_n = Number(id);
         var value_n = Number(new_value);
         var name_n = Number(new_name);
         //Modifico el dom
         var doc = await L_catalog_db.get('tax_list');
-       
-        if(id){
+
+        if (id) {
             var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
             var final_id_tax = doc.tax[doc.tax.length - 1]//Traigo el ultimo id tax
             alert(final_id_tax);
         }
-        else{
+        else {
             var final_id_tax = 1;
             var id = 0;
         }
 
         $('#new_value_tax_edit').val(); //Tomo el valor de input
-        $('#new_value_tax_edit').attr('tax_id',  id); //Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('tax_id', id); //Grabo el valor en un attr en el input
         $("#new_name_tax_input").val(new_name); // cambio el valor del select
-        $("#edit_panel_config_tax" ).first().fadeIn( "slow" );// Muestro el div con efecto
+        $("#edit_panel_config_tax").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_value_tax_edit').focus(); //llevo el foco al input 
         $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
         // new_value_tax_edit
@@ -1931,14 +1928,14 @@ async function catalog_config_new_tax(element) {
         $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
 
     } catch (err) {
-    console.log(err);
+        console.log(err);
     }
 }
 
 async function catalog_config_tax_new(element) {
     try {
-        let value = $('#new_value_tax_edit').val(); 
-        let name = $('#new_name_tax_input').val(); 
+        let value = $('#new_value_tax_edit').val();
+        let name = $('#new_name_tax_input').val();
         $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
         $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
         var value_n = String(value);
@@ -1948,86 +1945,86 @@ async function catalog_config_tax_new(element) {
         var doc = await L_catalog_db.get('tax_list'); //Traigo el documento
         var id_tax = doc.tax[doc.tax.length - 1];
         //Si Id_tax es nulo o esta vacio 
-        if(id_tax){
-            var new_id = id_tax.id 
-            var  sum_id = new_id + 1;// Veo el ultimo id y le agrego 1
-            var final_id =  Number(sum_id); 
-        }else{
+        if (id_tax) {
+            var new_id = id_tax.id
+            var sum_id = new_id + 1;// Veo el ultimo id y le agrego 1
+            var final_id = Number(sum_id);
+        } else {
             var final_id = 1; //Defino la id 1 como incial
         }
         var new_tax = {
-            id:final_id ,
-            value:value_n,
-            name:name_n,
-            status:'active', 
-            delete:false, 
-            create:newDate,
-            updateDate : newDate,
-            updateUser : userName
-                
+            id: final_id,
+            value: value_n,
+            name: name_n,
+            status: 'active',
+            delete: false,
+            create: newDate,
+            updateDate: newDate,
+            updateUser: userName
+
         };
         var tax_array = doc.tax.push(new_tax);  //Envio los datos editados al documento
         //Envio el documento
         var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
         });
-if (response) {
-    var print_item = await catalog_config(); //Refrezco la pantalla
-    Snackbar.show({
-        text: 'Se actualizo con exito!!',
-        actionText: 'ok',
-        pos: 'bottom-right',
-        actionTextColor: "#0575e6",
-    });
-} else {
-    Snackbar.show({
-        text: 'NO actualizo!!',
-        actionText: 'ok',
-        pos: 'bottom-right',
-        actionTextColor: "#0575e6",
-    });
-}
-} catch (err) {
-    console.log(err);
+        if (response) {
+            var print_item = await catalog_config(); //Refrezco la pantalla
+            Snackbar.show({
+                text: 'Se actualizo con exito!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
 async function catalog_config_tax_delete(element) {
     try {
-       
-           //Traigo los valores
-           let id =  $(element).attr('id'); 
-           const id_n =  Number(id);
-            var doc = await L_catalog_db.get('tax_list');
-            const new_price_list = doc.tax.filter(response => response.id != id_n);
-            //Reemplazo el array por el filtrado
-            doc.tax = new_price_list;
-            //Acutualizo el documento
-            var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+
+        //Traigo los valores
+        let id = $(element).attr('id');
+        const id_n = Number(id);
+        var doc = await L_catalog_db.get('tax_list');
+        const new_price_list = doc.tax.filter(response => response.id != id_n);
+        //Reemplazo el array por el filtrado
+        doc.tax = new_price_list;
+        //Acutualizo el documento
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+        if (response) {
+            var print_item = await catalog_config(); //Refrezco la pantalla
+            Snackbar.show({
+                text: 'Se actualizo con exito!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
             });
-if (response) {
-    var print_item = await catalog_config(); //Refrezco la pantalla
-    Snackbar.show({
-        text: 'Se actualizo con exito!!',
-        actionText: 'ok',
-        pos: 'bottom-right',
-        actionTextColor: "#0575e6",
-    });
-} else {
-    Snackbar.show({
-        text: 'NO actualizo!!',
-        actionText: 'ok',
-        pos: 'bottom-right',
-        actionTextColor: "#0575e6",
-    });
-}
-} catch (err) {
-    console.log(err);
+        } else {
+            Snackbar.show({
+                text: 'NO actualizo!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -2038,48 +2035,48 @@ async function new_price_list(element) {
         const price_id = $(element).attr('price_id');
         // let input_id = $(element).attr('input_id');
         //Nuevos valores
-        let new_value = $('#new_price_list_value'+variant_id).val();
-        let price_list_id =  $('#new_price_list_id'+variant_id).val(); //Id del documento a edita
+        let new_value = $('#new_price_list_value' + variant_id).val();
+        let price_list_id = $('#new_price_list_id' + variant_id).val(); //Id del documento a edita
 
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
         var price_list_id_s = Number(price_list_id)
 
-            //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        //PRUEBAS NUEVAS
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
 
         //console.log(user_Ctx, 'USER CTX');
-       // console.log(userName, 'USER userName');
-       var doc = await L_catalog_db.get(doc_id_s);
+        // console.log(userName, 'USER userName');
+        var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
 
             var price_list = doc.price_list.find(response => response.id == price_id);// Traigo el elemento por la id variant
-             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if(price_list){
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            if (price_list) {
                 const price = price_list;//Traigo el ojeto especifico 
                 price.value = new_value_s; //Edito el valor del value por el valor nuevo
                 price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
                 price.updateDate = newDate;
                 price.updateUser = userName;
-            }else{
+            } else {
                 var new_item = {
-                        id:price_list_id_s,
-                        value:new_value,
-                        create:newDate,
-                        updateDate : newDate,
-                        updateUser : userName
-                            
+                    id: price_list_id_s,
+                    value: new_value,
+                    create: newDate,
+                    updateDate: newDate,
+                    updateUser: userName
+
                 };
-              //  console.log(userName, 'else userName',new_item,'new_item');
+                //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
             }
             var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
             });
             if (response) {
                 Snackbar.show({
@@ -2107,43 +2104,43 @@ async function new_price_var(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-        let new_value = $('#new_price_var_'+variant_id).val();
-        let price_list_id =  $('#price_list_var_'+variant_id).val(); //Id del documento a edita
+        let new_value = $('#new_price_var_' + variant_id).val();
+        let price_list_id = $('#price_list_var_' + variant_id).val(); //Id del documento a edita
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
         var price_list_id_s = Number(price_list_id)
         //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
+            var price_list = item[input_id].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if(price_list){
+            if (price_list) {
                 const price = price_list;//Traigo el ojeto especifico 
                 price.value = new_value_s; //Edito el valor del value por el valor nuevo
                 price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
                 price.updateDate = newDate;
                 price.updateUser = userName;
-            }else{
+            } else {
                 var new_item = {
-                        id:price_list_id_s,
-                        value:new_value,
-                        create:newDate,
-                        updateDate : newDate,
-                        updateUser : userName
-                            
+                    id: price_list_id_s,
+                    value: new_value,
+                    create: newDate,
+                    updateDate: newDate,
+                    updateUser: userName
+
                 };
-              //  console.log(userName, 'else userName',new_item,'new_item');
+                //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
             }
             var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
             });
             if (response) {
                 // load_all_cat(doc_id,arr_number_id );
@@ -2173,20 +2170,20 @@ async function dell_price_var(element) {
         // Traigo los valores de los atributos
         const variant_id = $(element).attr('variant_id');
         const input_id = $(element).attr('input_id');
-        const new_value = $('#new_price_var_'+variant_id).val();
+        const new_value = $('#new_price_var_' + variant_id).val();
         const price_list_id = $(element).attr('price_id');
         const price_list_value = $(element).attr('price_value');
 
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
         let value = $(element).attr('value');
-        Snackbar.show({  
-            text: '<span class="material-icons">delete</span> Quieres eliminar el precio' + price_list_value+' ID: '+price_list_id +'?',
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar el precio' + price_list_value + ' ID: ' + price_list_id + '?',
             width: '475px',
             pos: 'bottom-center',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {   
+            onActionClick: async function (element) {
                 //Efecto y verificacion del tag
                 let doc_id_s = String(doc_id);
                 //Traigo el documento actualizado
@@ -2215,7 +2212,7 @@ async function dell_price_var(element) {
                 }
             }
         });
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
 }
@@ -2229,9 +2226,9 @@ async function edit_price_var(element) {
         const variant_id = $(element).attr('variant_id');
         const price_id = $(element).attr('price_id');
         const price_value = $(element).attr('price_value');
-       $('#new_price_var_'+variant_id).focus();
-       $('#new_price_var_'+variant_id).val(price_value);
-       $("#price_list_var_"+ variant_id +" option[value="+ price_id +"]").attr("selected",true);
+        $('#new_price_var_' + variant_id).focus();
+        $('#new_price_var_' + variant_id).val(price_value);
+        $("#price_list_var_" + variant_id + " option[value=" + price_id + "]").attr("selected", true);
     } catch (err) {
         console.log(err);
     }
@@ -2279,46 +2276,46 @@ async function add_stock_var(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-        let new_value = $('#add_stock_var_'+variant_id).val();
-        let new_cost_stock =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
-        var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
+        let new_value = $('#add_stock_var_' + variant_id).val();
+        let new_cost_stock = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
+        var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
 
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
         var new_cost_stock_s = Number(new_cost_stock);
         //PRUEBAS NUEVAS
-        var user_Ctx =  userCtx;
+        var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list  = item[input_id].find(response => response.id ==   add_stock_variant_id);// Compruebo q el id lista existe 
+            var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if(price_list){
+            if (price_list) {
                 var add_stock_variant_id = Math.floor(Math.random() * (+'100000000' - +'1')) + +'1';
-            }else{
+            } else {
                 var new_item = {
-                    id:add_stock_variant_id,
-                    create:newDate,
+                    id: add_stock_variant_id,
+                    create: newDate,
                     in_datetime: newDate,
                     update_datetime: newDate,
-                    updateUser : userName,
+                    updateUser: userName,
                     type: 'in',
                     in_stock: new_value_s,
-                    out_stock: 0, 
+                    out_stock: 0,
                     real_stock: new_value_s,
-                    cost_price:new_cost_stock_s,
-                    location_id:1
+                    cost_price: new_cost_stock_s,
+                    location_id: 1
                 };
-              //  console.log(userName, 'else userName',new_item,'new_item');
+                //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
             }
             var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
             });
             if (response) {
                 // load_all_cat(doc_id,arr_number_id );
@@ -2351,10 +2348,10 @@ async function dell_stock_var(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-        var out_stock_input = $('#dell_stock_var_'+variant_id).val();
-        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1'; 
-        let price_list_id =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
-       
+        var out_stock_input = $('#dell_stock_var_' + variant_id).val();
+        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1';
+        let price_list_id = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
+
         /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
@@ -2384,12 +2381,12 @@ async function dell_stock_var(element) {
         var stock_invetary = get_variant_id['stock_invetary'];
         var count_out_stock = out_stock_s;
 
-       // console.log('(ARRAY INICIAL  stock_invetary):', stock_invetary);
-      //  console.log('RETIRO INICIAL:',out_stock_s);
-     //   console.log('CONTADOR INCIAL:',count_out_stock);
+        // console.log('(ARRAY INICIAL  stock_invetary):', stock_invetary);
+        //  console.log('RETIRO INICIAL:',out_stock_s);
+        //   console.log('CONTADOR INCIAL:',count_out_stock);
 
-       for (var i = stock_invetary.length - 1; i >= 0; i--) {
-        
+        for (var i = stock_invetary.length - 1; i >= 0; i--) {
+
             //Compruebo q tenga stock mayor a 1
             var real_stock = stock_invetary[i].real_stock;
             var out_stock = stock_invetary[i].out_stock;
@@ -2402,46 +2399,46 @@ async function dell_stock_var(element) {
             console.log('RESTAN RETIRAR:',count_out_stock);
 */
             //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
-            if(real_stock >= 1 && count_out_stock >= 1 ){
+            if (real_stock >= 1 && count_out_stock >= 1) {
 
-                    // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
-                    for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
+                // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
+                for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
 
-                     //   console.log('------ RECORRO Y DESCUENTO ---------');
-                        var real_stock = real_stock - 1;
-                        var out_stock = out_stock += 1;
-                        var count_out_stock = count_out_stock - 1 ;
+                    //   console.log('------ RECORRO Y DESCUENTO ---------');
+                    var real_stock = real_stock - 1;
+                    var out_stock = out_stock += 1;
+                    var count_out_stock = count_out_stock - 1;
 
-                        //Compruebo que queda stock disponible
-                        if(real_stock <= 0 ){
-                            // Si no hay mas stock paro y guardo el resultado en el array
-                            var stock_invetary_new = stock_invetary[i];
-                            stock_invetary_new.real_stock = real_stock;
-                            stock_invetary_new.out_stock = out_stock;
-                            stock_invetary_new.update_datetime = newDate;
-                            stock_invetary_new.updateUser = userName;
-                            break
-                        }else{
-                            continue;
-                        }
+                    //Compruebo que queda stock disponible
+                    if (real_stock <= 0) {
+                        // Si no hay mas stock paro y guardo el resultado en el array
+                        var stock_invetary_new = stock_invetary[i];
+                        stock_invetary_new.real_stock = real_stock;
+                        stock_invetary_new.out_stock = out_stock;
+                        stock_invetary_new.update_datetime = newDate;
+                        stock_invetary_new.updateUser = userName;
+                        break
+                    } else {
+                        continue;
                     }
-                   
-                    // EDITO EL ARRAY 
-                    var stock_invetary_new = stock_invetary[i];
-                    stock_invetary_new.real_stock = real_stock;
-                    stock_invetary_new.out_stock = out_stock;
-                    stock_invetary_new.update_datetime = newDate;
-                    stock_invetary_new.updateUser = userName;
-                 }
+                }
 
-       }
-       //Modifico los datos del array viejo por el nuevo
-       var stock_invetary = stock_invetary;
-       // Lo guardo
-       var response = await L_catalog_db.put({
-        _id: doc._id,
-        _rev: doc._rev,
-        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                // EDITO EL ARRAY 
+                var stock_invetary_new = stock_invetary[i];
+                stock_invetary_new.real_stock = real_stock;
+                stock_invetary_new.out_stock = out_stock;
+                stock_invetary_new.update_datetime = newDate;
+                stock_invetary_new.updateUser = userName;
+            }
+
+        }
+        //Modifico los datos del array viejo por el nuevo
+        var stock_invetary = stock_invetary;
+        // Lo guardo
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
         });
         if (response) {
             // load_all_cat(doc_id,arr_number_id );
@@ -2456,8 +2453,8 @@ async function dell_stock_var(element) {
         } else {
             alert("no se actualizo");
         }
-       
-       console.log('(ARRAY MODIFICADO stock_invetary ):', stock_invetary);
+
+        console.log('(ARRAY MODIFICADO stock_invetary ):', stock_invetary);
     } catch (err) {
         console.log(err);
     }
@@ -2471,10 +2468,10 @@ async function dell_stock_var_ok_old(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-        let new_value = $('#dell_stock_var_'+variant_id).val();
-        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1'; 
-        let price_list_id =  $('#new_cost_stock_var_'+variant_id).val(); //Id del documento a edita
-       
+        let new_value = $('#dell_stock_var_' + variant_id).val();
+        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1';
+        let price_list_id = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
+
         /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
@@ -2490,16 +2487,16 @@ async function dell_stock_var_ok_old(element) {
 
         // var check_first_date = check_old_date_inventary ;
         var check_now_date = newDate;
-        
+
         //Buscar el primer array (mas viejo) con stock disponible y tomar el valor de costo de referencia
         var get_variant_id = doc.variations.find(response => response.id == variant_id);
-        var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create <  newDate);// Compruebo q el id lista existe 
-       
-        console.log( 'old_inventary',old_inventary);
-        console.log( 'get_variant_id',get_variant_id);
-        console.log( 'newDate',newDate);
-        console.log( 'get_variant_id',get_variant_id);
-        
+        var old_inventary = get_variant_id['stock_invetary'].find(response => response.create < newDate);// Compruebo q el id lista existe 
+
+        console.log('old_inventary', old_inventary);
+        console.log('get_variant_id', get_variant_id);
+        console.log('newDate', newDate);
+        console.log('get_variant_id', get_variant_id);
+
         //var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
         /* if (check_first_date < check_now_date) {
             console.log(`${check_first_date} is less than ${check_now_date}`);
@@ -2515,36 +2512,36 @@ async function dell_stock_var_ok_old(element) {
         //Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list  = item[input_id].find(response => response.id ==  price_list_id_s);// Compruebo q el id lista existe 
+            var price_list = item[input_id].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if(price_list){
+            if (price_list) {
                 const price = price_list;//Traigo el ojeto especifico 
                 price.value = new_value_s; //Edito el valor del value por el valor nuevo
                 price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
                 price.updateDate = newDate;
                 price.updateUser = userName;
-            }else{
+            } else {
                 var available_stok = available_stok;
                 var new_item = {
-                    id:new_stock_variant_id,
-                    create:newDate,
+                    id: new_stock_variant_id,
+                    create: newDate,
                     in_datetime: newDate,
                     update_datetime: newDate,
-                    updateUser : userName,
+                    updateUser: userName,
                     type: 'out',
                     in_stock: 0,
-                    out_stock: new_value, 
+                    out_stock: new_value,
                     real_stock: 0,
-                    cost_price:null,
-                    location_id:1
+                    cost_price: null,
+                    location_id: 1
                 };
-              //  console.log(userName, 'else userName',new_item,'new_item');
+                //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
             }
             var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
             });
             if (response) {
                 // load_all_cat(doc_id,arr_number_id );
@@ -2576,22 +2573,22 @@ async function cat_edit_chekbox(element) {
         const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
         const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
         const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
-        const input_status_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id+'_checkbox'; //Armo la id del checkbox
-        const input_html_id = '#'+doc_id+'_'+variant_id+'_'+input_id +'_input'; // Armo la id del input
-        const new_input_status =  $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
+        const input_status_html_id = '#' + doc_id + '_' + variant_id + '_' + input_id + '_checkbox'; //Armo la id del checkbox
+        const input_html_id = '#' + doc_id + '_' + variant_id + '_' + input_id + '_input'; // Armo la id del input
+        const new_input_status = $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
         //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
-        if(new_input_status === false){
+        if (new_input_status === false) {
             var input_status = false;
             $(input_html_id).addClass('bg-gray', true);
-           // $(input_html_id).prop('disabled', true);
-           // $(input_html_id).prop('status', true);
-        }else if(new_input_status === true){
+            // $(input_html_id).prop('disabled', true);
+            // $(input_html_id).prop('status', true);
+        } else if (new_input_status === true) {
             var input_status = true;
 
             $(input_html_id).removeClass('bg-gray');
             //$(input_html_id).prop('disabled', false);
             //$(input_html_id).prop('status', false);
-        }else{
+        } else {
             var input_status = true;
         }
         var doc_id_s = String(doc_id); //Combierto el id del doc en un string
@@ -2600,18 +2597,18 @@ async function cat_edit_chekbox(element) {
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             const new_objet_input = item; //Traigo el ojeto especifico 
-            new_objet_input[input_id] = {'status':input_status,'value':new_value}; //Si existe el objeto Edito el valor del value por el valor nuevo
+            new_objet_input[input_id] = { 'status': input_status, 'value': new_value }; //Si existe el objeto Edito el valor del value por el valor nuevo
             console.log('DOCUMENTO ACTUALIZADO');
             console.log(input_status);
         }
         // Si la edicion es fuera de una variable
         else {
-         doc[input_id] = new_value ;//BUSCO EL OBJETO Y LO EDITO
+            doc[input_id] = new_value;//BUSCO EL OBJETO Y LO EDITO
         }
         //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
-           // console.log('EDICION DE:new_value');
-           // console.log(new_value);
+            // console.log('EDICION DE:new_value');
+            // console.log(new_value);
             //console.log('EDICION DE:new_value');
             //console.log();
             var response = await L_catalog_db.put({
@@ -2636,99 +2633,99 @@ async function cat_new_variant(element) {
         //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
         var doc_id_s = String(doc_id); //Combierto el id del doc en un string
         var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento actualizado
-        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1'; 
-       // var new_variant_id = doc.variations.length + 1; //Cuento el numero variables q hau y le sumo uno para dar el nuevo numero de id
+        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+        // var new_variant_id = doc.variations.length + 1; //Cuento el numero variables q hau y le sumo uno para dar el nuevo numero de id
         var doc_varian_id = doc.variations.find(response => response.id == new_variant_id);// Compruebo q el id no exista
-            
-        if(!doc_varian_id){
 
-        var new_variant = {
-        "id": new_variant_id,
-        "tax": [
-          {
-            "id": "0",
-            "value": "21"
-          },
-          {
-            "id": "1",
-            "value": "10"
-          }
-        ],
-        "sku": {
-          "status": true,
-          "value": ""
-        },
-        "pictures": [
-          {
-            "max": "/public/img/catalog/product/max/remera_azul.jpg",
-            "min": "/public/img/catalog/product/max/remera_azul.jpg"
-          }
-        ],
-        "attribute_combinations": [
-          {
-            "id": "COLOR",
-            "id_name": "Color",
-            "name": "Roja",
-            "value": "EF5350"
-          },
-          {
-            "id": "SIZE",
-            "id_name": "Talle",
-            "name": "Medium",
-            "value": "M"
-          }
-        ],
-        "price_list": [
-          {
-            "id": 1,
-            "value": 150
-          },
-          {
-            "id": 2,
-            "value": 100
-          }
-        ],
-        "stock_invetary": [
-         
-        ],
-        "sold_quantity": 0,
-        "description": {
-          "status": true,
-          "value": "Nueva Descripcion"
-        },
-        "color": {
-          "status": false,
-          "value": "#4f78ba"
-        },
-        "size": {
-          "status": false,
-          "value": ""
-        },
-        "status": {
-          "status": true,
-          "value": ""
-        }
-        };
-        //   console.log('ANTES DE EDITAR');
-        //   console.log(doc.variations);
-        doc.variations.push(new_variant);
-        //  console.log('DESPUES DE EDITAR CON PUSH');
-        //  console.log(doc.variations);
-        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (!doc_varian_id) {
+
+            var new_variant = {
+                "id": new_variant_id,
+                "tax": [
+                    {
+                        "id": "0",
+                        "value": "21"
+                    },
+                    {
+                        "id": "1",
+                        "value": "10"
+                    }
+                ],
+                "sku": {
+                    "status": true,
+                    "value": ""
+                },
+                "pictures": [
+                    {
+                        "max": "/public/img/catalog/product/max/remera_azul.jpg",
+                        "min": "/public/img/catalog/product/max/remera_azul.jpg"
+                    }
+                ],
+                "attribute_combinations": [
+                    {
+                        "id": "COLOR",
+                        "id_name": "Color",
+                        "name": "Roja",
+                        "value": "EF5350"
+                    },
+                    {
+                        "id": "SIZE",
+                        "id_name": "Talle",
+                        "name": "Medium",
+                        "value": "M"
+                    }
+                ],
+                "price_list": [
+                    {
+                        "id": 1,
+                        "value": 150
+                    },
+                    {
+                        "id": 2,
+                        "value": 100
+                    }
+                ],
+                "stock_invetary": [
+
+                ],
+                "sold_quantity": 0,
+                "description": {
+                    "status": true,
+                    "value": "Nueva Descripcion"
+                },
+                "color": {
+                    "status": false,
+                    "value": "#4f78ba"
+                },
+                "size": {
+                    "status": false,
+                    "value": ""
+                },
+                "status": {
+                    "status": true,
+                    "value": ""
+                }
+            };
+            //   console.log('ANTES DE EDITAR');
+            //   console.log(doc.variations);
+            doc.variations.push(new_variant);
+            //  console.log('DESPUES DE EDITAR CON PUSH');
+            //  console.log(doc.variations);
+            //ENVIO El NUEVO DOCUMENTO EDITADO
             if (doc) {
                 var response = await L_catalog_db.put({
                     _id: doc._id,
                     _rev: doc._rev,
                     ...doc,// trae todos los datos del doc y los pega en la raiz
                 });
-            if(response){
-             var print_item = await catalog_edit_item_url(doc_id,new_variant_id);// Refrezco la vista de las variables de nuevo
-            // console.log('PRINT ITEM BORRADO')
-             //console.log(print_item)
-                return print_item;
+                if (response) {
+                    var print_item = await catalog_edit_item_url(doc_id, new_variant_id);// Refrezco la vista de las variables de nuevo
+                    // console.log('PRINT ITEM BORRADO')
+                    //console.log(print_item)
+                    return print_item;
                 }
             }
-        }else{
+        } else {
 
         }
     } catch (err) {
@@ -2754,9 +2751,9 @@ async function cat_delete_variant(element) {
                 _rev: doc._rev,
                 ...doc,// trae todos los datos del doc y los pega en la raiz
             });
-           if(response){
-            catalog_edit_item_url(doc_id,variant_id);// Refrezco la vista de las variables de nuevo
-           }
+            if (response) {
+                catalog_edit_item_url(doc_id, variant_id);// Refrezco la vista de las variables de nuevo
+            }
         }
     } catch (err) {
         console.log(err);
@@ -2791,9 +2788,9 @@ async function cat_edit_variations(element) {
                 _rev: doc._rev,
                 ...doc,
             });
-           // console.log('DOC DATA RESPONSE EDITADO');
-          //  console.log(doc);
-          //  console.log(response);
+            // console.log('DOC DATA RESPONSE EDITADO');
+            //  console.log(doc);
+            //  console.log(response);
         }
     } catch (err) {
         console.log(err);

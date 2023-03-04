@@ -5,58 +5,12 @@
 //// --- Top Bar ---- Left Nav --- Cart -- Fav -- Search --- acount --  buy 
 
 //###--- Conection y Sync a la base de datos local ---#####
-//ws_info_db = 'ws_info_' + ws_id;
 ws_info = null; // Doc con la info y configuracion del Ws
 ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 
-//Creo la base de datos local info_db
-/*
-L_ws_info_db = new PouchDB(ws_info_db, { skip_setup: true });
-user_Ctx = null;
-//sincronizo
-//Creo y conecto con userDB local 
-L_ws_info_db.sync(url_R_db+ws_info_db, {
-    live: true,
-    retry: true,
-    // skip_setup: true
-}).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
-  }).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-  }).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-  }).on('error', function (err) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
-  });
-/*
-  user_db.getSession(function (err, response) {
-    if (err) {
-        console.log('ERROR DE SESSION');
-        console.log(err);
-        // network error
-    } else if (!response.userCtx.name) {
-        console.log('esponse.userCtx');
-        console.log(esponse.userCtx);
-        // nobody's logged in
-       // setTimeout(function () { window.location = "/login"; }, 2000);
-    } else {
-        var userCtx = response.userCtx;
-        console.log('USER SESSSIONNNN AAAA BBBBB ');
-        console.log(userCtx);
-        return userCtx;
-    }
-});
-*/
-
 //###--- Conection y Sync a la base de datos local ---#####
 var ws_search_db = 'ws_collections_' + ws_id;
-//var ws_info = null;
-//var ws_lang_data = null;
 //Creo la base de datos local info_db
 L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
 //sincronizo
@@ -89,8 +43,6 @@ L_catalog_db.sync(url_R_db+ws_search_db, {
                         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });      
                         //Mapeo el contenido del objeto ws_left_nav M
                         ws_left_nav_data = ws_left_nav['ws_left_nav'];
-                       // console.log(' AAAAAAA LEFTTT DATAAAAAAaaaaaaaaaa aaaaaaaaasasasasassa');
-                       // console.log(ws_left_nav_data);
                         // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
                         ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
                         // Mapeo el objeto
@@ -264,6 +216,7 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
         //Si el nombre del modulo esta en el listado de permisos de
         if(array[i].m_url === ws_module_name ){
             ws_module_select = array[i].m_url;
+            console.log(ws_module_array);
           return  get_module_function(ws_module_select,m_t_id,m_id,m_var_id);
         }
         else{
@@ -274,9 +227,12 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
 //Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
 async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
          const ws_m_s = ws_module_select;
+
+         console.log(ws_module_select);
          //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
         if(ws_m_s == 'catalog'){
                await get_catalog();
+             //  alert('traogo el catalogo')
                 //Si el tipo de modulo es producto envia los parametros a la funcion constructora
             if( m_t_id == 'product'){
                 catalog_view_item_url(m_id,m_var_id, userCtx);
@@ -287,7 +243,11 @@ async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
                 //updateHistory();
             }
             //  get_items_catalog();
-        }else if(ws_m_s == 'box'){
+        }
+        else  if(ws_m_s == 'account'){
+            alert('TRAIGO EL account');
+        }
+        else if(ws_m_s == 'box'){
             alert('TRAIGO EL box');
            // get_box();
         }

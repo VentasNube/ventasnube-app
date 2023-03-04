@@ -16,53 +16,56 @@
 
        {{#with user}}
                                
-                <div class="user-body-workspace">
-                        <div class="text-center user-body-workspace-title  {{{workspace_color}}}">
-                                                <div class="round-icon user-top">
-                                                    {{user_name}}
-                                                </div>
-                                                <p>{{user_name}}</p>
-                                                <p>{{user_email}}</p>
-                                            <!-- Menu Footer-->
-                                               
-                        </div>
-                            <div class="text-center user-body-workspace-title">
+                <div class="user-body-workspace padding-b-5 row">
+                            <div class="text-center user-body-workspace-title padding-b-10 row {{{../ws_info.workspace_color}}}">
+                                                    <div class="round-icon user-top"> {{user_name}} </div>
+                                                    <p>{{user_name}}</p>
+                                                    <p>{{user_email}}</p>
+                                                     <p>
+                                <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+                                    <a href="/workspace/home" class="btn btn-default">
+                                        <span class="material-icons">
+                                            {{#with ../ws_lang_data}} {{ws_home_icon}}{{/with}}
+                                        </span>
+                                            {{#with ../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                    </a>
+                                    <button  class="config_workspace_btn btn btn-default">
+                                        <span class="material-icons">
+                                            {{#with ../ws_lang_data}} {{ws_config_icon}}{{/with}}
+                                        </span>
+                                            {{#with ../ws_lang_data}} {{m_config_workspace}}{{/with}}
+                                    </button>
+                                </div>
 
-                                <a href="/workspace/home" class="btn btn-default">
-                                    <span class="material-icons">
-                                         {{#with ../ws_lang_data}} {{ws_home_icon}}{{/with}}
-                                    </span>
-                                         {{#with ../ws_lang_data}} {{m_my_workspace}}{{/with}}
-                                </a>
-                                <br>
-                                <br>
-                                 <button  class="config_workspace_btn btn btn-default">
-                                    <span class="material-icons">
-                                         {{#with ../ws_lang_data}} {{ws_config_icon}}{{/with}}
-                                    </span>
-                                        {{#with ../ws_lang_data}} {{m_config_workspace}}{{/with}}
-                                </button>
+                                </p>
                             </div>
-                        </div>
+                           
                         
-                    <div class="pull-left">
-                            <a href="/account" class="btn btn-default">
-                               <span class="material-icons">
+                       
+                                <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button--> 
+                               
+
+                                  
+                        
+
+                        <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button--> 
+                                <button onclick="account()"  type="button" class="cobrar-btn btn btn-default">
+                                    <span class="material-icons">
                                 {{#with ../ws_lang_data}} {{m_account_tittle_icon}}{{/with}}
                                 </span>
                            
                                 {{#with ../ws_lang_data}} {{b_myaccount}}{{/with}}
-                            </a>
+                           
+                                </button>
+                                <button onclick="logout()" type="button" class="btn btn-default">
+                                      <span class="material-icons">
+                                        {{#with ../ws_lang_data}} {{b_exit_icon}}{{/with}}
+                                      </span>
+                                        {{#with ../ws_lang_data}} {{b_exit}}{{/with}}
+                                </button>
                         </div>
-                        <div class="pull-right">
-                            <button onclick="logout()" class="btn btn-default">
-                                <span class="material-icons">
-                                      {{#with ../ws_lang_data}} {{b_exit_icon}}{{/with}}
-                                </span>
-                                {{#with ../ws_lang_data}} {{b_exit}}{{/with}}
-                            </button >
-                        </div>
-
+                                 
                 {{/with}}
 
 </div>

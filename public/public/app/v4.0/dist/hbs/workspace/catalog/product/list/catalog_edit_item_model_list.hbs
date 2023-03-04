@@ -1,0 +1,24 @@
+{{#each model_find_list }}
+    <li>
+        <div class="dropdown-item">
+                <a item_id="model" href="#"  onclick='catalog_select_new_model(this)' item_value_id="{{model.id}}" item_value="{{value}}">
+                    {{value}}
+                </a>
+            {{#userCtx 'catalog' 'admin'}}
+                <button>
+                    <span doc_id="{{../_id }}" value="{{value}}" class="material-icons" onclick='catalog_dell_model(this)'>delete</span>
+                </button>
+            {{/userCtx}}
+        </div>  
+    </li>
+{{/each}}
+
+{{#if no_result }}
+    <div class="padding-30 margin-t-30 text-center">
+         <button onclick="catalog_add_new_model(this)" class="btn btn-default" >
+                <span class="material-icons">add_circle_outline</span>
+                {{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_model}}} {{/with}}
+        </button>
+
+    </div>
+{{/if}}
