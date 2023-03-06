@@ -890,6 +890,62 @@ async function cat_edit_product_category(element) {
 }
 */
 
+//AGREGAR #TAGS 2023
+
+// Tomo el enter si esta en el input
+function catalog_add_new_tag_press(e, element) {
+    var key = e.keyCode || e.which;
+    if (key == 13) {
+        catalog_add_new_tag(element);
+    }
+}
+// Agrego un tag
+async function catalog_add_new_tag(element) {
+    try {
+        // Datos del cocumento y el id 
+        let new_tag_val = $(element).val();
+        let new_tag = String(new_tag_val);
+        // Filtro si el input esta bacio
+        if (new_tag != '') {
+         let catalog_new_tag_item = $('.catalog_new_tag_item_input_'+new_tag);
+         var tag_item = $(".catalog_new_tag_item").toArray().length;
+            // var tag_item_array = $(".catalog_new_tag_item").text().toArray();
+            //  var tag_item_array_chips_text = $(".chips_text").toArray();
+            //console.log(tag_item_array);
+            // Si encuentra un duplicado devuelve el indice del array para mostrar en pantalla el error
+            if(tag_item >= 3){
+                Snackbar.show({
+                    text: 'No puedes agregar mas de '+tag_item+' categorias!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }else if (catalog_new_tag_item.length == 0 ) {
+                $(element).prev('div').append('<div class="catalog_new_tag_item_input_'+ new_tag +' catalog_new_tag_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="catolog_dell_new_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
+            }
+            else {
+                    //si esta todo ok cargo el nuevo valor al final del array
+                    $('.catalog_new_tag_item_input_'+new_tag).css("color", "red");
+            }
+        }
+        else {
+            $(element).css("color", "red");
+        }
+    } catch (err) {
+        console.log(err);
+        $(element).css("color", "red");
+    }
+}
+// Elimino un tag
+async function catolog_dell_new_tag(element) {
+    try {
+      //Limpio el item de la pantalla
+       $(element).parent('div').remove();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 //AGREGAR CATEGORIAS 2023
 // Search Input de categorias
 async function catalog_search_cat(e, element) {
@@ -1299,7 +1355,7 @@ async function catalog_search_model(e, element) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                trade_find_list: search_list
+                model_find_list: search_list
             }
         } else if (search_list == null) {
             var list_search = {
@@ -1315,7 +1371,9 @@ async function catalog_search_model(e, element) {
                 no_result: true
             }
         }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', select_div_id, list_search);
+
+        console.log('list_search',list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', select_div_id, list_search);
     }
 }
 // Selecciono
@@ -1328,9 +1386,9 @@ async function catalog_select_new_model(element, new_model) {
         var item_value = $(element).attr('item_value');
     }
     try {
-        $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
-        $('#catalog_select_trade_value').html(item_value);
-        $('#catalog_select_trade_tittle').html(item_value);
+        $('#catalog_select_model_value').attr('catalog_select_model_value', item_value_id);
+        $('#catalog_select_model_value').html(item_value);
+        $('#catalog_select_model_tittle').html(item_value);
         //traigo el documento a editar
     } catch (err) {
         console.log(err);

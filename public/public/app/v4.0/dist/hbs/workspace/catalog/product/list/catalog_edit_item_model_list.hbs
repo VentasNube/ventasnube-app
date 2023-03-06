@@ -1,7 +1,7 @@
 {{#each model_find_list }}
-    <li>
+    <li onclick='catalog_select_new_model(this)'item_value_id="{{id}}" item_value="{{value}}" item_id="model" >
         <div class="dropdown-item">
-                <a item_id="model" href="#"  onclick='catalog_select_new_model(this)' item_value_id="{{model.id}}" item_value="{{value}}">
+                <a  href="#"  >
                     {{value}}
                 </a>
             {{#userCtx 'catalog' 'admin'}}
