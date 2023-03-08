@@ -3,7 +3,7 @@
       
       
     
-      const version = 663121212122121322;
+      const version = 6211121223121213222;
       
       
     
@@ -23,39 +23,6 @@
         }
       });
       
-        /*
-
-        self.addEventListener('message', function(event){
-        msg = event.data;
-        console.log("SW Received Message: " + msg);
-
-            if ( msg === 'clearCache' ) {
-                    console.log('Clearing Workbox Cache.');
-                    WorkBoxCache = new workbox.expiration.Plugin;
-                    WorkBoxCache.expirationPlugin.deleteCacheAndMetadata();
-                    WorkBoxCacheServer.clear();
-            }
-
-            if (event.data.action === 'skipWaiting') {
-                self.skipWaiting();
-            }
-
-        });
-     
-        self.addEventListener('activate', (event) => {
-        var cacheKeeplist = ['v2'];
-        event.waitUntil(
-          caches.keys().then((keyList) => {
-            return Promise.all(keyList.map((key) => {
-              if (cacheKeeplist.indexOf(key) === -1) {
-                return caches.delete(key);
-              }
-            })
-          );
-        });
-
-      */
-
     workbox.core.setCacheNameDetails({
         prefix: 'ventasnube',
         suffix: 'v1'+version,
@@ -143,7 +110,9 @@
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', revision: version },
           
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },

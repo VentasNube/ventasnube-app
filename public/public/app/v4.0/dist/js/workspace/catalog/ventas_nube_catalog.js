@@ -1,14 +1,6 @@
-//Funciones que pueden servir para Importar productos desde otra base de datos
-// CARGO LOS PRODUCTOS DE SQL EN LA DB LOCAL y COUCHDB
-function charge_all_docs_local(remote_items) {
-    L_catalog_db.bulkDocs({ docs: remote_items },
-        function (err, response) {
-            // handle err or response
-        });
-}
 
-all_items_array = {};
-search_fuse = null;
+var all_items_array = {};
+var search_fuse = null;
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
@@ -83,41 +75,11 @@ async function get_all_catalog_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
+//////////////////////////////
+// CATALOGO ( PRODUCTOS ) 2023 //
+//////////////////////////////
 
-//// FUNCION PARA TRAER TODAS LAS CONSULTAS DE MODULOS GET EN AJAX CON SU TEMPLATE Y SU CONTRUCTOR /////
-function get_items_sql_db(controler_data, data) { // Ejemplo : body, top_bar, top_bar_template, ##top_nav-bar-copiled
-    // ID DE COMPILACION //      
-    var id_copiled = $(id_copiled);
-    var search_m_input = '*';
-    //// CONTRUCTOR de URLS /// 
-    var controler_data = 'search/search_item_data_sql'; //NOMBRE DE CONTROLADOR DATA
-    //  var controler_template = 'search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
-    var id_copiled = '#card_product_result_items'; // ID DE COMPILACION //  
-    // console.log('GET MODULO DOMAIN: ' + domain_pacht);
-    var data = search_m_input;
-    $.ajax({
-        url: 'search/search_item_data_sql', //Trae todos los modulos de usuario de la secion
-        data: data,
-        type: "POST",
-        dataType: "json",
-        success: function (response) {
-            if (response) { ///// IMPRIME ////     
-                charge_all_docs_local(response);
-                console.log(response);
-            } else {
-                return response, // Devulevo el array resultado    
-                    Snackbar.show({
-                        text: 'No hay resultados',
-                        actionText: 'ok',
-                        actionTextColor: "#0575e6",
-                    });
-            };
-        }
-    });
-};
-
-/**** Nuevo catalogo ****/
-//Cargo la variable catalog 
+// TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_catalog(ws_info, ws_lang_data) {
     var ws_catalog_data = {
         ws_info: ws_info,
@@ -129,7 +91,7 @@ function get_nav_catalog(ws_info, ws_lang_data) {
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
-
+// TRAIGO LOS PRODUCTOS DEL CATALOGO
 function get_items_catalog(ws_id) {
     var ws_catalog = {
         ws_info: ws_info,
@@ -141,9 +103,7 @@ function get_items_catalog(ws_id) {
     //console.log('GET ITEMS CATALOG');
 }
 
-
-
-//* CATALOGO 2021 Tarjetas materiales  **/
+// TARJETAS DE PRODUCTOS
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function print_catalog_item(new_items) {
     var search_result = {
@@ -291,7 +251,7 @@ function cat_variations_select(element) {
     });
 }
 
-
+// ARMO LA URL DEL NAVEGADOR
 async function post_url_history(module, id) {
     try {
         var product_id = $(element).attr('product_id');
@@ -316,6 +276,7 @@ async function post_url_history(module, id) {
         console.log(err);
     }
 }
+
 
 // FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
 async function catalog_view_item(element) {
@@ -472,7 +433,6 @@ async function catalog_edit_item_url(product_id, variant_id) {
     }
 }
 
-
 //Leer sub categorias
 //Crear sub categorias
 //Eliminar sub categorias
@@ -554,8 +514,6 @@ $(document).on('click', '.view_variant', function (element) {
     catalog_view_item(product_id);
 });
 
-
-
 // TRAIGO EL CATALOGO Y IMPRIMO
 async function get_catalog(ws_id) {
     var ws_cart = {
@@ -583,8 +541,11 @@ async function put_catalog(doc_id, my_doc) {
     }
 }
 
-/**** NUEVO PRODUCTO */
-// FUNCION PARA CREAR PRODUCTO
+//////////////////////////////
+// NUEVO ( PRODUCTO ) 2023 //
+//////////////////////////////
+
+// TRAE EL FORMULARIO
 async function catalog_new_item(element) {
     try {
 
@@ -605,11 +566,11 @@ async function catalog_new_item(element) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list: attributes,
+            attributes_list: attributes
         }
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', '#new_variations_main', product_doc_array);
         console.log('product_doc_array', product_doc_array);
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -622,26 +583,28 @@ async function catalog_new_item(element) {
     }
 }
 
-// BOTON CREAR
+
+
+// BOTON CREAR PRODUCTO
 $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
     // get_catalog_new_item();
-    catalog_new_item(ws_info, ws_lang_data);
+    catalog_new_item();
 
 });
 
-
-// EDITAR PRODUCTOS
-// TAGS
-// Tomo el enter si esta en el input
+//////////////////////////////
+// EDITAR ( PRODUCTO ) 2023 //
+//////////////////////////////
+// CRUD #TAGS 2023
+// INPUT ENTER 
 function add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
     if (key == 13) {
         add_new_tag(element);
     }
 }
-
-// Agrego un tag
+// AGREGO
 async function add_new_tag(element) {
     try {
         // Datos del cocumento y el id 
@@ -694,8 +657,7 @@ async function add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
-
-// Elimino un tag
+// ELIMINO
 async function dell_tag(element) {
     try {
         //Datos del cocumento y el id 
@@ -728,11 +690,8 @@ async function dell_tag(element) {
         console.log(err);
     }
 }
-
-// FUNCIONES EDITAR CATEGORIAS 2023
-
-// Agrego un Categoria
-/*
+// CRUD CATEGORIAS 2023 
+// AGREGO
 async function add_new_cat(element) {
     try {
         var doc_id = $(element).attr('doc_id');
@@ -799,11 +758,7 @@ async function add_new_cat(element) {
 
     }
 }
-*/
-
-
-// Boton traigo las catgorias //NO SEE
-/*
+// TRAIGO LAS CATEGORIAS
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
@@ -821,13 +776,7 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
-*/
-
-// FUNCIONES NUEVO PRODUCTO EDITAR CATEGORIAS 2023
-
-
-// Search Input de categorias
-/*
+/// BUSCADOR 
 async function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
     //tomo el key code para saber si es el enter o un caracter
@@ -863,21 +812,14 @@ async function add_new_cat_press(e, element) {
         }
     }
 }
-*/
-
-// Tomo la seleccion nueva y edito el documento
-/*
+/// SELECCIONO
 async function cat_edit_product_category(element) {
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value = $(element).attr('input_value'); //Id del documento a edita
-
     let input_id = $(element).attr('input_id');
     let new_value = $(element).attr('new_value');
-
-    // const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
     var doc_id_s = String(doc_id); //Combierto el id del doc en un string
     var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
-
     doc[input_id] = { 'id': input_value, 'value': new_value };//BUSCO EL OBJETO Y LO EDITO
     var response = await L_catalog_db.put({
         _id: doc._id,
@@ -885,21 +827,20 @@ async function cat_edit_product_category(element) {
         ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
     });
     catalog_edit_item_url(doc_id, 1);
-    //  alert('salio todo ok')
-
 }
-*/
 
-//AGREGAR #TAGS 2023
-
-// Tomo el enter si esta en el input
+////////////////////////////////////
+// CREAR NUEVO ( PRODUCTO ) 2023 //
+///////////////////////////////////
+/// CRUD #TAGS 2023
+// INPUT ENTER
 function catalog_add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
     if (key == 13) {
         catalog_add_new_tag(element);
     }
 }
-// Agrego un tag
+// AGREGO
 async function catalog_add_new_tag(element) {
     try {
         // Datos del cocumento y el id 
@@ -936,7 +877,7 @@ async function catalog_add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
-// Elimino un tag
+// ELIMINO
 async function catolog_dell_new_tag(element) {
     try {
       //Limpio el item de la pantalla
@@ -946,8 +887,8 @@ async function catolog_dell_new_tag(element) {
     }
 }
 
-//AGREGAR CATEGORIAS 2023
-// Search Input de categorias
+// CRUD CATEG0RIAS #TAGS 2023
+// BUSCO
 async function catalog_search_cat(e, element) {
     //traigo el resultado mas parecido con find
     //  var doc_id = $(element).attr('doc_id');
@@ -989,13 +930,13 @@ async function catalog_search_cat(e, element) {
                 no_result: true
             }
         }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
 
 
     }
 
 }
-// Elimino una Categoria
+// ELIMINO
 async function catalog_dell_cat(element) {
     try {
         //Datos del cocumento y el id 
@@ -1049,7 +990,7 @@ async function catalog_dell_cat(element) {
         console.log(err);
     }
 }
-// Agrego un Categoria nueva
+// AGREGO
 async function catalog_add_new_cat(element) {
     try {
         var doc_id = $(element).attr('doc_id');
@@ -1117,8 +1058,7 @@ async function catalog_add_new_cat(element) {
 
     }
 }
-
-// Selecciono una categoria
+// SELECCIONO
 async function catalog_select_new_cat(element, new_cat) {
     let item_value_id = $(element).attr('item_value_id');
     var new_item = new_cat;
@@ -1138,9 +1078,8 @@ async function catalog_select_new_cat(element, new_cat) {
 
 }
 
-
-//MARCAS 2023
-// Search Input de categorias
+// CRUD MARCAS 2023
+// BUSCO 
 async function catalog_search_trade(e, element) {
 
 
@@ -1190,7 +1129,7 @@ async function catalog_search_trade(e, element) {
     }
 
 }
-// Selecciono una categoria
+// SELECCIONO
 async function catalog_select_new_trade(element, new_trade) {
 
     var item_value_id = $(element).attr('item_value_id');
@@ -1209,8 +1148,7 @@ async function catalog_select_new_trade(element, new_trade) {
         console.log(err);
     }
 }
-
-// Agrego un Categoria nueva
+// AGREGO
 async function catalog_add_new_trade(element) {
     try {
         var doc_id = $(element).attr('doc_id');
@@ -1280,7 +1218,7 @@ async function catalog_add_new_trade(element) {
 
     }
 }
-// Elimino una Categoria
+// ELIMINO 
 async function catalog_dell_trade(element) {
     try {
         //Datos del cocumento y el id 
@@ -1330,9 +1268,8 @@ async function catalog_dell_trade(element) {
     }
 }
 
-
-// MODELOS 2023
-// Search Input
+// CRUD MODELOS 2023
+// BUSCADOR
 async function catalog_search_model(e, element) {
     //traigo el resultado mas parecido con find
     var new_model_val = $(element).val();
@@ -1376,7 +1313,7 @@ async function catalog_search_model(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', select_div_id, list_search);
     }
 }
-// Selecciono
+// SELECCIONO
 async function catalog_select_new_model(element, new_model) {
     let item_value_id = $(element).attr('item_value_id');
     var new_item = new_model;
@@ -1395,7 +1332,7 @@ async function catalog_select_new_model(element, new_model) {
     }
 
 }
-// Agrego
+// AGREGO
 async function catalog_add_new_model(element) {
     try {
         //var doc_id = $(element).attr('doc_id');
@@ -1465,7 +1402,7 @@ async function catalog_add_new_model(element) {
 
     }
 }
-// Elimino una Categoria
+// ELIMINO
 async function catalog_dell_model(element) {
     try {
         //Datos del cocumento y el id 
@@ -1514,7 +1451,6 @@ async function catalog_dell_model(element) {
         console.log(err);
     }
 }
-
 
 // EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 async function cat_edit_product(element) {
@@ -1565,25 +1501,10 @@ async function cat_edit_product(element) {
 
 }
 
-// CONFIGURACION DE CATALOGO
-// EDICION DE LISTA DE PRECIOS GENERAL
-/*
-function form_new_product(ws_info, ws_lang_data) {
-    var ws_cart = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', '#right_main_compiled', ws_cart);
-    // $('#cart_user_input').focus();
-    console.log('FORM NEW PRODUCT');
-};
-
-*/
-/***  CONFIGURACION DE CATALOGO  ****/
-
-
-//*** Imprimir configuracion  */
+/////////////////////////////////////
+// CONFIGURACION ( CATALOGO ) 2023 //
+/////////////////////////////////////
+// ABRE CONFIGURACION
 async function catalog_config(tab_id) {
     try {
         var price_list = await L_catalog_db.get('price_list');
@@ -1606,8 +1527,8 @@ async function catalog_config(tab_id) {
         console.log(err);
     }
 }
-
-/*** Editar lista de precios */
+// LISTAS DE PRECIOS
+// ABRE EDITAR
 async function catalog_config_show_edit(element) {
     try {
         //Traigo los valores
@@ -1629,7 +1550,7 @@ async function catalog_config_show_edit(element) {
         console.log(err);
     }
 }
-
+// EDITAR
 async function catalog_config_save_edit(element) {
     try {
 
@@ -1690,7 +1611,7 @@ async function catalog_config_save_edit(element) {
         console.log(err);
     }
 }
-
+// BLOCKEAR LISTA
 async function catalog_config_save_block(element) {
     try {
         //Traigo los valores
@@ -1758,7 +1679,7 @@ async function catalog_config_save_block(element) {
         console.log(err);
     }
 }
-
+// MONEDAS BLOCKEA
 async function catalog_config_money_block(element) {
     try {
         //Traigo los valores
@@ -1826,8 +1747,7 @@ async function catalog_config_money_block(element) {
         console.log(err);
     }
 }
-
-
+// EDITAR MONEDAS
 async function catalog_config_show_money_edit(element) {
     try {
         //Traigo los valores
@@ -1856,8 +1776,8 @@ async function catalog_config_show_money_edit(element) {
     }
 }
 
-///** MONEDAS CATALOGO 
-
+///// CONFIG MONEDAS
+// TRAE LOS DATOS
 async function catalog_config_show_tax_edit(element) {
     try {
 
@@ -1886,7 +1806,7 @@ async function catalog_config_show_tax_edit(element) {
         console.log(err);
     }
 }
-
+// GUARDAR CAMBIOS
 async function catalog_config_tax_money_edit(element) {
     try {
 
@@ -1948,48 +1868,9 @@ async function catalog_config_tax_money_edit(element) {
         console.log(err);
     }
 }
+///// CONFIG IMPUESTOS 2023
 
-// *** NUEVO IMPUESTO 
-
-async function catalog_config_new_tax(element) {
-    try {
-        //Traigo los valores
-        var id = $(element).attr('id');
-        let new_value = $(element).attr('value');
-        let new_name = $(element).attr('name');
-        //Filtro los resultados
-        var id_n = Number(id);
-        var value_n = Number(new_value);
-        var name_n = Number(new_name);
-        //Modifico el dom
-        var doc = await L_catalog_db.get('tax_list');
-
-        if (id) {
-            var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
-            var final_id_tax = doc.tax[doc.tax.length - 1]//Traigo el ultimo id tax
-            alert(final_id_tax);
-        }
-        else {
-            var final_id_tax = 1;
-            var id = 0;
-        }
-
-        $('#new_value_tax_edit').val(); //Tomo el valor de input
-        $('#new_value_tax_edit').attr('tax_id', id); //Grabo el valor en un attr en el input
-        $("#new_name_tax_input").val(new_name); // cambio el valor del select
-        $("#edit_panel_config_tax").first().fadeIn("slow");// Muestro el div con efecto
-        $('#new_value_tax_edit').focus(); //llevo el foco al input 
-        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
-        // new_value_tax_edit
-        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
-        $('#new_value_tax_edit').attr('type', 'number'); //Grabo el valor en un attr en el input
-        $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
-
-    } catch (err) {
-        console.log(err);
-    }
-}
-
+// AGREGO
 async function catalog_config_tax_new(element) {
     try {
         let value = $('#new_value_tax_edit').val();
@@ -2048,7 +1929,46 @@ async function catalog_config_tax_new(element) {
         console.log(err);
     }
 }
+// EDITAR 
+async function catalog_config_new_tax(element) {
+    try {
+        //Traigo los valores
+        var id = $(element).attr('id');
+        let new_value = $(element).attr('value');
+        let new_name = $(element).attr('name');
+        //Filtro los resultados
+        var id_n = Number(id);
+        var value_n = Number(new_value);
+        var name_n = Number(new_name);
+        //Modifico el dom
+        var doc = await L_catalog_db.get('tax_list');
 
+        if (id) {
+            var tax_array = doc.tax.find(response => response.id == id_n);// Traigo el elemento por la id variant
+            var final_id_tax = doc.tax[doc.tax.length - 1]//Traigo el ultimo id tax
+            alert(final_id_tax);
+        }
+        else {
+            var final_id_tax = 1;
+            var id = 0;
+        }
+
+        $('#new_value_tax_edit').val(); //Tomo el valor de input
+        $('#new_value_tax_edit').attr('tax_id', id); //Grabo el valor en un attr en el input
+        $("#new_name_tax_input").val(new_name); // cambio el valor del select
+        $("#edit_panel_config_tax").first().fadeIn("slow");// Muestro el div con efecto
+        $('#new_value_tax_edit').focus(); //llevo el foco al input 
+        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
+        // new_value_tax_edit
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('type', 'number'); //Grabo el valor en un attr en el input
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); //Grabo el valor en un attr en el input
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+// ELIMINO
 async function catalog_config_tax_delete(element) {
     try {
 
@@ -2154,7 +2074,7 @@ async function new_price_list(element) {
 
 }
 
-// EDICION DE PRECIOS DEL PRODUCTO
+// AGREGO
 async function new_price_var(element) {
 
     try {
@@ -2219,10 +2139,24 @@ async function new_price_var(element) {
     }
 
 }
+// EDITO
+async function edit_price_var(element) {
 
-// EDICION DE PRECIOS DEL PRODUCTO
-// Elimino una Categoria
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const price_id = $(element).attr('price_id');
+        const price_value = $(element).attr('price_value');
+        $('#new_price_var_' + variant_id).focus();
+        $('#new_price_var_' + variant_id).val(price_value);
+        $("#price_list_var_" + variant_id + " option[value=" + price_id + "]").attr("selected", true);
+    } catch (err) {
+        console.log(err);
+    }
 
+}
+// ELIMINO
 async function dell_price_var(element) {
     try {
         // Traigo los valores de los atributos
@@ -2275,78 +2209,40 @@ async function dell_price_var(element) {
     }
 }
 
-// EDICION DE PRECIOS DEL PRODUCTO
-async function edit_price_var(element) {
+////////////////////////////////////////
+// MOVIMIENTO STOCK ( PRODUCTO ) 2023 //
+////////////////////////////////////////
 
-    try {
-        //traigo el documento a editar
-        const doc_id = $(element).attr('doc_id');
-        const variant_id = $(element).attr('variant_id');
-        const price_id = $(element).attr('price_id');
-        const price_value = $(element).attr('price_value');
-        $('#new_price_var_' + variant_id).focus();
-        $('#new_price_var_' + variant_id).val(price_value);
-        $("#price_list_var_" + variant_id + " option[value=" + price_id + "]").attr("selected", true);
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-// ### Movimientos de stock #####
 // Los movimientos no se pueden editar se puen hacer nuevos ingresos y egresos de mercaderia
 // Los movimientos de stock se editan de los primeros mas viejos q fueron ingrasados 
 // se usa ese precio de costo, para sumar las ganancias
+/// EDICION DE PRECIOS DEL PRODUCTO
+// LOGICA :
+// 1: Recorro los objetos, y busco el ultimo con stock disponible, le descuento el stock al real_stock
+// si no alcanza sigo y descuento el objeto con disponible q sigue hasta no tener mas para descontar
+// 2 : Por final creo un nuevo objeto con q registra el movimiento, y lo guardo ahi.
 
-// Hacer un ingreso de stock (abre formulario)
-async function add_stock_form(element) {
-
-    try {
-        //traigo el documento a editar
-
-
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-// Hacer un egreso de stock de stock (abre formulario)
-
-async function dell_stock_form(element) {
-
-    try {
-        //traigo el documento a editar
-
-
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-
-// AGREGAR STOCK AL PRODUCTO
+/// AGREGAR 
 async function add_stock_var(element) {
 
     try {
-        //traigo el documento a editar
+        // traigo el documento a editar
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
         let new_value = $('#add_stock_var_' + variant_id).val();
         let new_cost_stock = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
         var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
-
+        // FILTRO LOS INPUT
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
         var new_cost_stock_s = Number(new_cost_stock);
-        //PRUEBAS NUEVAS
+        // PRUEBAS NUEVAS
         var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
-        //Busco dentro de las variables
+        // Busco dentro de las variables
         if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
@@ -2393,80 +2289,42 @@ async function add_stock_var(element) {
         console.log(err);
     }
 }
-
-// EDICION DE PRECIOS DEL PRODUCTO
-// LOGICA :
-// 1: Recorro los objetos, y busco el ultimo con stock disponible, le descuento el stock al real_stock
-// si no alcanza sigo y descuento el objeto con disponible q sigue hasta no tener mas para descontar
-// 2 : Por final creo un nuevo objeto con q registra el movimiento, y lo guardo ahi.
+// ELIMINAR
 async function dell_stock_var(element) {
 
     try {
         //traigo el documento a editar
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
-        let input_id = $(element).attr('input_id');
         var out_stock_input = $('#dell_stock_var_' + variant_id).val();
-        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1';
-        let price_list_id = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
-
         /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
         const doc_id_s = String(doc_id);
         var out_stock_s = Number(out_stock_input);
-        var price_list_id_s = Number(price_list_id);
-
         //PRUEBAS NUEVAS
         // var user_Ctx =  userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
         // var check_first_date = check_old_date_inventary ;
-
-        var check_now_date = newDate;
-        var get_old_stock = 0;
-
         // Buscar el objeto (con create mas viejo) con y real_stock >= 1 ( y restar) - out_stock guardar
         // hay que hacer un bucle para poder ir verificando q el real_stock que pare cuando llegue a 0
         // Y continuar con el proximo objeto, repertir el filtro y la operacion hasta q out_stock quede en 0
-
-        // New Variables globales
-        //  var create_date = create;
-        // var real_stock = 0;
-
         var get_variant_id = doc.variations.find(response => response.id == variant_id);
         var stock_invetary = get_variant_id['stock_invetary'];
         var count_out_stock = out_stock_s;
-
-        // console.log('(ARRAY INICIAL  stock_invetary):', stock_invetary);
-        //  console.log('RETIRO INICIAL:',out_stock_s);
-        //   console.log('CONTADOR INCIAL:',count_out_stock);
-
         for (var i = stock_invetary.length - 1; i >= 0; i--) {
-
             //Compruebo q tenga stock mayor a 1
             var real_stock = stock_invetary[i].real_stock;
             var out_stock = stock_invetary[i].out_stock;
-            //  var stock_inventary_doc = stock_invetary[i];
-            //var stock_invetary_item = stock_invetary[i];
-            /*
-            console.log('------ RECORRO LOS ITEMS ---------');
-            console.log('ITEM NUMERO ID:',stock_invetary[i].id);
-            console.log('DISPONIBLE:',real_stock);
-            console.log('RESTAN RETIRAR:',count_out_stock);
-*/
             //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
             if (real_stock >= 1 && count_out_stock >= 1) {
-
                 // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
                 for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
-
-                    //   console.log('------ RECORRO Y DESCUENTO ---------');
                     var real_stock = real_stock - 1;
                     var out_stock = out_stock += 1;
                     var count_out_stock = count_out_stock - 1;
-
                     //Compruebo que queda stock disponible
                     if (real_stock <= 0) {
                         // Si no hay mas stock paro y guardo el resultado en el array
@@ -2480,7 +2338,6 @@ async function dell_stock_var(element) {
                         continue;
                     }
                 }
-
                 // EDITO EL ARRAY 
                 var stock_invetary_new = stock_invetary[i];
                 stock_invetary_new.real_stock = real_stock;
@@ -2496,7 +2353,7 @@ async function dell_stock_var(element) {
         var response = await L_catalog_db.put({
             _id: doc._id,
             _rev: doc._rev,
-            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            ...doc,
         });
         if (response) {
             // load_all_cat(doc_id,arr_number_id );
@@ -2519,111 +2376,8 @@ async function dell_stock_var(element) {
 
 }
 
-async function dell_stock_var_ok_old(element) {
 
-    try {
-        //traigo el documento a editar
-        const doc_id = $(element).attr('doc_id');
-        const variant_id = $(element).attr('variant_id');
-        let input_id = $(element).attr('input_id');
-        let new_value = $('#dell_stock_var_' + variant_id).val();
-        var new_stock_variant_id = Math.floor(Math.random() * (+'100000' - +'1')) + +'1';
-        let price_list_id = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
-
-        /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
-        // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
-        // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
-        const doc_id_s = String(doc_id);
-        var new_value_s = Number(new_value);
-        var price_list_id_s = Number(price_list_id);
-
-        //PRUEBAS NUEVAS
-        // var user_Ctx =  userCtx;
-        var newDate = new Date(); //fecha actual del navegador
-        var userName = userCtx.userCtx.name;
-        var doc = await L_catalog_db.get(doc_id_s);
-
-        // var check_first_date = check_old_date_inventary ;
-        var check_now_date = newDate;
-
-        //Buscar el primer array (mas viejo) con stock disponible y tomar el valor de costo de referencia
-        var get_variant_id = doc.variations.find(response => response.id == variant_id);
-        var old_inventary = get_variant_id['stock_invetary'].find(response => response.create < newDate);// Compruebo q el id lista existe 
-
-        console.log('old_inventary', old_inventary);
-        console.log('get_variant_id', get_variant_id);
-        console.log('newDate', newDate);
-        console.log('get_variant_id', get_variant_id);
-
-        //var old_inventary  = get_variant_id['stock_invetary'].find(response => response.create ==  price_list_id_s);// Compruebo q el id lista existe 
-        /* if (check_first_date < check_now_date) {
-            console.log(`${check_first_date} is less than ${check_now_date}`);
-        }
-        else if (check_first_date > check_now_date) {
-            console.log(`${check_first_date} is greater than ${check_now_date}`);
-        }
-        else {
-            console.log(`${check_first_date} is equal to ${check_now_date}`);
-        }
-        */
-        // alert(price_list_id_s);
-        //Busco dentro de las variables
-        if (variant_id) {
-            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list = item[input_id].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if (price_list) {
-                const price = price_list;//Traigo el ojeto especifico 
-                price.value = new_value_s; //Edito el valor del value por el valor nuevo
-                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-            } else {
-                var available_stok = available_stok;
-                var new_item = {
-                    id: new_stock_variant_id,
-                    create: newDate,
-                    in_datetime: newDate,
-                    update_datetime: newDate,
-                    updateUser: userName,
-                    type: 'out',
-                    in_stock: 0,
-                    out_stock: new_value,
-                    real_stock: 0,
-                    cost_price: null,
-                    location_id: 1
-                };
-                //  console.log(userName, 'else userName',new_item,'new_item');
-                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-            }
-            var response = await L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-            });
-            if (response) {
-                // load_all_cat(doc_id,arr_number_id );
-                // catalog_edit_item_url(doc_id, 1);
-                Snackbar.show({
-                    text: 'El stock se actualizo!',
-                    actionText: 'ok',
-                    pos: 'bottom-right',
-                    actionTextColor: "#0575e6",
-                });
-                catalog_edit_item_url(doc_id, 1);
-            } else {
-                alert("no se actualizo");
-            }
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-// Hacer movimiento Positivo (Envia ale formulario)
-// Hacer movimiento Negativo (Envia el formulario )
-// EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
+/// EDICION GENERAL DE IMPUTS CHEKBOX Y SWICHETS
 async function cat_edit_chekbox(element) {
 
     try {
@@ -2679,10 +2433,12 @@ async function cat_edit_chekbox(element) {
     } catch (err) {
         console.log(err);
     }
-
 }
 
-// CREO NUEVA VARIABLE
+//////////////////////////////////////
+// NUEVA VARIABLE ( PRODUCTO ) 2023 //
+//////////////////////////////////////
+// AGREGAR
 async function cat_new_variant(element) {
 
     try {
@@ -2791,7 +2547,7 @@ async function cat_new_variant(element) {
     }
 
 }
-
+// ELIMINAR
 async function cat_delete_variant(element) {
 
     try {
@@ -2818,7 +2574,7 @@ async function cat_delete_variant(element) {
     }
 
 }
-
+// EDITAR 
 async function cat_edit_variations(element) {
 
     try {
