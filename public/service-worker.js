@@ -2,8 +2,7 @@
       importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
       
       
-    
-      const version = 6211121223121213222;
+      const version = 6222232222;
       
       
     
@@ -115,7 +114,10 @@
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', revision: version },
           
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
+         // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
+
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
 
           
           

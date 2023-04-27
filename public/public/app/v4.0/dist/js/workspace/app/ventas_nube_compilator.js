@@ -13,49 +13,33 @@ function getTemplateAjax(path, callback) {
             });
             
             //Permissions 2023 update
-            /*
-            Handlebars.registerHelper("userCtx", function(modulo, rol, roles, options) {
-                //Recorro el array para buscar coincidencias del valor de ID
-                var rol = modulo +'_'+ rol +'_'+ ws_id ;
-                var roles = user_Ctx.userCtx.roles; //traigo los roles actualizados
-                var rol_admin = modulo +'_admin_'+ ws_id ;
-                var rol_edit = modulo +'_edit_'+ ws_id ;
-                 console.log('roles roles', roles);
-
-                 console.log('rol_admin rol_admin', rol_admin);
-                    for (var i = 0, j = roles.length; i < j; i++) {
-                        if (roles[i] === rol_admin) {
-                            //Si tengo coincidencias
-                           //return options.fn(roles[i]);
-                           console.log('roles[i]',roles[i]);
-                           return options.fn(modulo);
-                           //  return options.fn(this);
-                           //  return true ;
-                        }
-                        else if(roles[i] === rol_edit){
-                            //return options.fn(roles[i]);
-                            return options.fn(modulo);
-                        }
-                    }
-                    //Si no tengo resultados
-                   return options.inverse(roles[i]);
-                   // return false ;
-                    //return options.inverse(roles[i]);
-            });
-*/
             Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
                 //Recorro el array para buscar coincidencias del valor de ID
                 var rol = modulo +'_'+ rol +'_'+ ws_id ;
+
                 var roles = user_Ctx.userCtx.roles; //traigo los roles actualizados
+
                 var rol_admin = modulo +'_admin_'+ ws_id ;
                 var rol_edit = modulo +'_edit_'+ ws_id ;
+                var rol_create = modulo +'_create_'+ ws_id ;
+                var rol_reed = modulo +'_redd_'+ ws_id ;
+
                  console.log('roles roles', roles);
                  console.log('rol_admin rol_admin', rol_admin);
+                 console.log('user_Ctx', user_Ctx);
+                // console.log('COMO VIENE EL roles', roles ,'COMO TOMO EL roladmin', rol_admin);
+                // console.log('COMO esta armado el rol', rol ,'COMO TOMO EL roledit', rol_edit);
                     for (var i = 0, j = roles.length; i < j; i++) {
                         if (roles[i] === rol_admin) {
                            return options.fn(roles[i]);
                         }
                         else if(roles[i] === rol_edit){
+                            return options.fn(roles[i]);
+                        }
+                        else if(roles[i] === rol_create){
+                            return options.fn(roles[i]);
+                        }
+                        else if(roles[i] === rol_reed){
                             return options.fn(roles[i]);
                         }
                     }

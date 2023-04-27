@@ -26,7 +26,7 @@
                                             drive_file_rename_outline
                                         </span>
                                     </span>
-                                    <input input_id="name" value="{{name}}" placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
+                                    <input id="catalog_new_product_name_input" input_id="name" value="{{name}}" placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
                                         class="form-control" type="text" data-toggle="tooltip" data-placement="bottom"
                                         title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}" data-original-title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}">
                                 </div>
@@ -281,10 +281,12 @@
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit' }}
-            <button onclick="cat_new_variant(this)" doc_id="" variant_id="{{id}}" type="button" class="btn btn-primary">
+            <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary">
                 {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_variant}}} {{/with}}
             </button>
             {{/userCtx}}
+
+
         </div>
     </div>
 

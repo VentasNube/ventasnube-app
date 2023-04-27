@@ -569,8 +569,8 @@ async function catalog_new_item(element) {
             attributes_list: attributes
         }
 
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', '#new_variations_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
+        //renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', '#new_variations_main', product_doc_array);
         console.log('product_doc_array', product_doc_array);
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -583,8 +583,6 @@ async function catalog_new_item(element) {
     }
 }
 
-
-
 // BOTON CREAR PRODUCTO
 $(document).on('click', '.catalog_new_item', function (event) {
     //  $('#master_popup').modal('show');
@@ -592,6 +590,355 @@ $(document).on('click', '.catalog_new_item', function (event) {
     catalog_new_item();
 
 });
+
+// Crear variable (Carga todos los datos generales en un nuevo documento con el nombre y crea 1 sola variable )
+
+///////////////////////////////////////////////
+// NUEVA VARIABLE EN NUEVO ( PRODUCTO ) 2023 //
+//////////////////////////////////////////////
+
+// AGREGAR variable al producto 
+async function catalog_new_item_new_product(element) {
+
+    try {
+        const new_doc_name = $("#catalog_new_product_name_input").val(); //Id del documento a editar
+        const new_doc_time = new Date(); //Id del documento a editar
+        const new_doc_author = user_Ctx.userCtx.name; //Id del documento a editar
+        const new_doc_workspace_id = ws_id; //Id del documento a editar
+      //  const doc_id = new_doc_name;
+        var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
+        var new_doc_id_random = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+
+        const new_doc_id = new_doc_name +"-"+ new_doc_id_random;
+
+        alert(new_doc_id);
+        console.log('new_doc_id',new_doc_id);
+        
+        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+        // Documento variable template
+        var variations = [{
+            "id": new_variant_id,
+            "tax": [
+                {
+                    "id": "0",
+                    "value": "21"
+                },
+                {
+                    "id": "1",
+                    "value": "10"
+                }
+            ],
+            "sku": {
+                "status": true,
+                "value": ""
+            },
+            "pictures": [
+                {
+                    "max": "/public/img/catalog/product/max/remera_azul.jpg",
+                    "min": "/public/img/catalog/product/max/remera_azul.jpg"
+                }
+            ],
+            "attribute_combinations": [
+                {
+                    "id": "COLOR",
+                    "id_name": "Color",
+                    "name": "Roja",
+                    "value": "EF5350"
+                },
+                {
+                    "id": "SIZE",
+                    "id_name": "Talle",
+                    "name": "Medium",
+                    "value": "M"
+                }
+            ],
+            "price_list": [
+                {
+                    "id": 1,
+                    "value": 150
+                },
+                {
+                    "id": 2,
+                    "value": 100
+                }
+            ],
+            "stock_invetary": [
+
+            ],
+            "sold_quantity": 0,
+            "description": {
+                "status": true,
+                "value": "Nueva Descripcion"
+            },
+            "color": {
+                "status": false,
+                "value": "#4f78ba"
+            },
+            "size": {
+                "status": false,
+                "value": ""
+            },
+            "status": {
+                "status": true,
+                "value": ""
+            }
+        }];
+        // Documento template producto
+        var response = await L_catalog_db.put({
+            _id:new_doc_id,
+            "name": new_doc_name,
+            "author": new_doc_author,
+            "workspace_id":new_doc_workspace_id,
+            "status": {
+              "value": "active"
+            },
+            "condition": "new",
+            "type": "product",
+            "tags": [
+            ],
+            "category": {
+              "id": null,
+              "value": null
+            },
+            "trade": {
+              "id": null,
+              "value": null
+            },
+            "model": {
+              "id": null,
+              "value": null
+            },
+            "available_quantity": null,
+            "sold_quantity": null,
+            "limit_discount": null,
+            "permalink": null,
+            "descriptions": [
+              null
+            ],
+            "last_update_at": [
+              {
+                "username": new_doc_author,
+                "datetime": new_doc_time
+              }
+            ],
+            "start_time": new_doc_time,
+            "stop_time": null,
+            "end_time": null,
+            "expiration_time": null,
+            variations,
+        });
+        if (response) {
+            //Imprimo el item en la pantalla 
+            $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_name +"-"+ new_doc_id_random+'</span></div>');
+           
+          //  var print_item = await catalog_edit_item_url(doc_id, new_variant_id);// Refrezco la vista de las variables de nuevo
+            // console.log('PRINT ITEM BORRADO')
+            //console.log(print_item)
+          //  return print_item;
+            //limpio el imput 
+            //   $(element).val('');
+        } else {
+            //Si no se grabo tira un error en pantalla
+            $(element).css("color", "red");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// AGREGAR variable al producto 
+async function catalog_new_item_new_variant(element) {
+
+    try {
+
+        const new_doc_name = $("#catalog_new_product_name_input").val(); //Id del documento a editar
+        const new_doc_tags = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
+
+        const new_doc_cat = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
+        const new_doc_trade = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
+        const new_doc_model = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
+
+
+
+        //alert(new_doc_id);
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        //  const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento actualizado
+        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+        // var new_variant_id = doc.variations.length + 1; //Cuento el numero variables q hau y le sumo uno para dar el nuevo numero de id
+        var doc_varian_id = doc.variations.find(response => response.id == new_variant_id);// Compruebo q el id no exista
+
+        if (!doc_varian_id) {
+
+            var new_variant = {
+                "id": new_variant_id,
+                "tax": [
+                    {
+                        "id": "0",
+                        "value": "21"
+                    },
+                    {
+                        "id": "1",
+                        "value": "10"
+                    }
+                ],
+                "sku": {
+                    "status": true,
+                    "value": ""
+                },
+                "pictures": [
+                    {
+                        "max": "/public/img/catalog/product/max/remera_azul.jpg",
+                        "min": "/public/img/catalog/product/max/remera_azul.jpg"
+                    }
+                ],
+                "attribute_combinations": [
+                    {
+                        "id": "COLOR",
+                        "id_name": "Color",
+                        "name": "Roja",
+                        "value": "EF5350"
+                    },
+                    {
+                        "id": "SIZE",
+                        "id_name": "Talle",
+                        "name": "Medium",
+                        "value": "M"
+                    }
+                ],
+                "price_list": [
+                    {
+                        "id": 1,
+                        "value": 150
+                    },
+                    {
+                        "id": 2,
+                        "value": 100
+                    }
+                ],
+                "stock_invetary": [
+
+                ],
+                "sold_quantity": 0,
+                "description": {
+                    "status": true,
+                    "value": "Nueva Descripcion"
+                },
+                "color": {
+                    "status": false,
+                    "value": "#4f78ba"
+                },
+                "size": {
+                    "status": false,
+                    "value": ""
+                },
+                "status": {
+                    "status": true,
+                    "value": ""
+                }
+            };
+            //   console.log('ANTES DE EDITAR');
+            //   console.log(doc.variations);
+            doc.variations.push(new_variant);
+            //  console.log('DESPUES DE EDITAR CON PUSH');
+            //  console.log(doc.variations);
+            //ENVIO El NUEVO DOCUMENTO EDITADO
+            if (doc) {
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// trae todos los datos del doc y los pega en la raiz
+                });
+                if (response) {
+                    var print_item = await catalog_edit_item_url(doc_id, new_variant_id);// Refrezco la vista de las variables de nuevo
+                    // console.log('PRINT ITEM BORRADO')
+                    //console.log(print_item)
+                    return print_item;
+                }
+            }
+        } else {
+
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// ELIMINAR
+async function catalog_new_item_delete_variant(element) {
+
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento actualizado
+        var new_variations = doc.variations.filter(response => response.id != variant_id); //Traigo el array variant filtrado por el variant_id que quiero eliminar
+        doc.variations = new_variations;
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (doc) {
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+            if (response) {
+                catalog_edit_item_url(doc_id, variant_id);// Refrezco la vista de las variables de nuevo
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// EDITAR 
+async function catalog_new_item_edit_variations(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_id = $(element).attr('input_id');
+        const new_value = $(element).val();
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            const value = item[input_id]; //Traigo el ojeto especifico 
+            value.value = new_value; //Edito el valor del value por el valor nuevo
+        }
+        else {
+            doc[input_id] = new_value;
+        }
+
+
+        if (item) {
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,
+            });
+            // console.log('DOC DATA RESPONSE EDITADO');
+            //  console.log(doc);
+            //  console.log(response);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
+
+
+
+
 
 //////////////////////////////
 // EDITAR ( PRODUCTO ) 2023 //
@@ -1929,6 +2276,7 @@ async function catalog_config_tax_new(element) {
         console.log(err);
     }
 }
+
 // EDITAR 
 async function catalog_config_new_tax(element) {
     try {
@@ -1968,6 +2316,7 @@ async function catalog_config_new_tax(element) {
         console.log(err);
     }
 }
+
 // ELIMINO
 async function catalog_config_tax_delete(element) {
     try {
@@ -2007,6 +2356,7 @@ async function catalog_config_tax_delete(element) {
 }
 
 /*** FIN CONFIGURACION DE CATALOGO  ****/
+
 async function new_price_list(element) {
     try {
         const doc_id = ('price_list');    //traigo el documento a editar
@@ -2139,6 +2489,7 @@ async function new_price_var(element) {
     }
 
 }
+
 // EDITO
 async function edit_price_var(element) {
 
@@ -2156,6 +2507,7 @@ async function edit_price_var(element) {
     }
 
 }
+
 // ELIMINO
 async function dell_price_var(element) {
     try {
@@ -2289,6 +2641,7 @@ async function add_stock_var(element) {
         console.log(err);
     }
 }
+
 // ELIMINAR
 async function dell_stock_var(element) {
 
@@ -2438,6 +2791,7 @@ async function cat_edit_chekbox(element) {
 //////////////////////////////////////
 // NUEVA VARIABLE ( PRODUCTO ) 2023 //
 //////////////////////////////////////
+
 // AGREGAR
 async function cat_new_variant(element) {
 
@@ -2547,6 +2901,7 @@ async function cat_new_variant(element) {
     }
 
 }
+
 // ELIMINAR
 async function cat_delete_variant(element) {
 
@@ -2574,6 +2929,7 @@ async function cat_delete_variant(element) {
     }
 
 }
+
 // EDITAR 
 async function cat_edit_variations(element) {
 

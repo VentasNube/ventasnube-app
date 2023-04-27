@@ -54,12 +54,12 @@
                                 </div>
                                 <div class="pull-right padding-10">
                                     {{#with ws_lang_data}} Stock: {{/with}}
-                                    {{#available_stock stock_invetary}}{{/available_stock}}
+                                   0
                     
                                     <div class="round-icon pr"><span> {{../product_doc/currency.value}} </span></div>
-                                    {{#first price_list}}
-                                    <span iid="total_neto_prod"> {{value}}</span>
-                                    {{/first}}
+                                  
+                                    <span iid="total_neto_prod"> 0</span>
+                              
                                 </div>
                             </a>
                         </h4>
@@ -79,7 +79,7 @@
                                                 <span class="material-icons">
                                                     production_quantity_limits
                                                 </span>
-                                                <span class=""> {{#available_stock stock_invetary}}{{/available_stock}}</span>
+                                                <span class=""> 0</span>
                                                 {{#with ../ws_lang_data}} {{{m_catalog_edit_stock}}} {{/with}}
                                             </a>
                                         </li>
@@ -389,22 +389,22 @@
                                             add_a_photo
                                         </span>
                                     </button>
-                                    {{#first pictures}}
-                                        <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card">
+                                  
+                                        <div style="width: 100%; background-image: url('');" class="parallax img_card">
                                             <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
                                             <div class=" mini-carrousel-img ">
-                                                {{#each ../pictures }}
+                                         
                                                 <div class="mini-card-img-s">
                                                     <div class="img">
-                                                        <a target="_blank" href="{{min}}">
-                                                            <img src="{{min}}" alt="">
+                                                        <a target="_blank" href="">
+                                                            <img src="" alt="">
                                                         </a>
                                                     </div>
                                                 </div>
-                                                {{/each}}
+                                               
                                             </div>
                                         </div>
-                                    {{/first }}
+
                                         </div>
                                     <!-- DETALLE  COLOR ETC TALLE -->
                                         <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -416,13 +416,12 @@
                                                     description
                                                 </span>
                                             </span>
-                                            <input  doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id=""  input_id="description"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_description}}} {{/with}}"
+                                            <input  doc_id="" variant_id=""  input_id="description"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_description}}} {{/with}}"
                                                 value="{{description.value}}">
                                             <!--- ATRIBUTOS DE LA VARIABLE -->
                                         </div>
                                     </div>
                                     <!---COLOR-->
-                                    {{#with color }}
                                         <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -433,8 +432,6 @@
                                                             </label>
                                                         </div>
                                         </div>
-                                    {{/with}} 
-                                    {{#with size }}
                                         <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                                                     <div class="input-group">
                                                                                         <span class="input-group-addon">
@@ -475,7 +472,7 @@
                                                                                         </span>
                                                                                     </div>
                                         </div>
-                                    {{/with}}                                           
+                                                             
                                     {{#each attribute_combinations as | ac |}}
                                             <!--- weight --->
                                             {{#ifEquals id 'WEIGHT' }}
