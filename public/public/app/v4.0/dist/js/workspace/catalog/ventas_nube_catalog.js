@@ -1176,6 +1176,10 @@ async function cat_edit_product_category(element) {
     catalog_edit_item_url(doc_id, 1);
 }
 
+
+
+
+
 ////////////////////////////////////
 // CREAR NUEVO ( PRODUCTO ) 2023 //
 ///////////////////////////////////
