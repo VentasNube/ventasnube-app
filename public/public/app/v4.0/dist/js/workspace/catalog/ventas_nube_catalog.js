@@ -662,8 +662,8 @@ async function catalog_new_item_new_product(element) {
             },
             "pictures": [
                 {
-                    "max": "/public/img/catalog/product/max/remera_azul.jpg",
-                    "min": "/public/img/catalog/product/max/remera_azul.jpg"
+                    "max": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png",
+                    "min": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png"
                 }
             ],
             "attribute_combinations": [
@@ -753,20 +753,44 @@ async function catalog_new_item_new_product(element) {
         });
         if (response) {
             //Imprimo el item en la pantalla 
-            $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_name +"-"+ new_doc_id_random+'</span></div>');
+           // $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_id +'</span></div>');
             
-
-            var product_doc_array = await L_catalog_db.get(new_doc_id);
-
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
-
-
-            console.log('product_doc_array', product_doc_array);
-            // alert('Holaaaaaa');
+            var product_doc = await L_catalog_db.get(new_doc_id);
+            var new_category_list = await L_catalog_db.get('category_list');
+            var new_trade_list = await L_catalog_db.get('trade_list');
+            var new_model_list = await L_catalog_db.get('model_list');
+            var price_doc = await L_catalog_db.get('price_list');
+            var currency_doc = await L_catalog_db.get('currency_list');
+            var user_roles_permisions = user_Ctx.userCtx.roles;
     
+            console.log('user_roles_permisions', user_roles_permisions);
+    
+            var product_doc_array = {
+                product_doc:product_doc,
+                price_list: price_doc.price_list,
+                currency_list: currency_doc.currency_list,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_roles_permisions,
+                category_list: new_category_list,
+                trade_list: new_trade_list,
+                model_list: new_model_list,
+                attributes_list: attributes
+            }
+
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
+
+            Snackbar.show({
+                text: 'Se creo con exito!'+ new_doc_id,
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+
+            console.log('product_doc', product_doc_array);
+           // alert('Holaaaaaa');
             createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
-            var m_url = '?type=catalog&?t=create&?id=' + product_id + '&?v=' + variant_id;
+            var m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
             history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
             //new_variations_main
         } else {
@@ -1009,6 +1033,7 @@ async function add_new_tag(element) {
                 if (response) {
                     //Imprimo el item en la pantalla 
                     $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a doc_id="' + doc._id + '" new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
+                    
                     //limpio el imput 
                     //   $(element).val('');
                 } else {
