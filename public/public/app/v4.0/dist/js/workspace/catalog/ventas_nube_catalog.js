@@ -605,15 +605,43 @@ async function catalog_new_item_new_product(element) {
         const new_doc_time = new Date(); //Id del documento a editar
         const new_doc_author = user_Ctx.userCtx.name; //Id del documento a editar
         const new_doc_workspace_id = ws_id; //Id del documento a editar
-      //  const doc_id = new_doc_name;
+        // Seleccionar el elemento div con el id "new_prod_tag_main" y la clase "chips_items_main"
+        const divTags = document.querySelector('div#new_prod_tag_main.chips_items_main');
+        //Cat
+        const new_doc_cat_value = $('#catalog_select_cat_value').html();
+        const new_doc_cat_id =   $('#catalog_select_cat_value').attr('catalog_select_cat_value');
+        //Trade
+        const new_doc_trade_value = $('#catalog_select_trade_value').html();
+        const new_doc_trade_id =   $('#catalog_select_trade_value').attr('catalog_select_trade_value');
+        //Trade
+        const new_doc_model_value = $('#catalog_select_model_value').html();
+        const new_doc_model_id =   $('#catalog_select_model_value').attr('catalog_select_model_value');
+        const category = [
+            {id:new_doc_cat_id, value:new_doc_cat_value},
+        ];
+        const trade = [
+            {id:new_doc_trade_id, value:new_doc_trade_value},
+        ];
+        const model = [
+            {id:new_doc_model_id, value:new_doc_model_value},
+        ];
+        // Obtener el texto de cada hijo del elemento div
+        const textoTags = [];
+        divTags.childNodes.forEach(childNode => {
+        if (childNode.nodeType === Node.ELEMENT_NODE) {
+            const span = childNode.querySelector('span.chips_text');
+            if (span) {
+            textoTags.push(span.textContent);
+            }
+        }
+        });
+        const new_doc_tags = textoTags
         var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
-        var new_doc_id_random = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+        var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
+   
 
-        const new_doc_id = new_doc_name +"-"+ new_doc_id_random;
-
-        alert(new_doc_id);
-        console.log('new_doc_id',new_doc_id);
-        
+        let textoSinEspacios = new_doc_name.replace(/\s+/g, '-');
+        const new_doc_id = textoSinEspacios +"-"+ new_doc_id_random;
         var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
         // Documento variable template
         var variations = [{
@@ -655,11 +683,20 @@ async function catalog_new_item_new_product(element) {
             "price_list": [
                 {
                     "id": 1,
-                    "value": 150
+                    "value": 150,
+                    "currency": {
+                        "id": "ARS",
+                        "value": "$"
+                      },
+
                 },
                 {
                     "id": 2,
-                    "value": 100
+                    "value": 100,
+                    "currency": {
+                        "id": "USA",
+                        "value": "u$s"
+                      },
                 }
             ],
             "stock_invetary": [
@@ -688,26 +725,23 @@ async function catalog_new_item_new_product(element) {
             _id:new_doc_id,
             "name": new_doc_name,
             "author": new_doc_author,
+            "start_time": new_doc_time,
             "workspace_id":new_doc_workspace_id,
+            "last_update_at": [
+                {
+                  "username": new_doc_author,
+                  "datetime": new_doc_time
+                }
+              ],
             "status": {
               "value": "active"
             },
             "condition": "new",
             "type": "product",
-            "tags": [
-            ],
-            "category": {
-              "id": null,
-              "value": null
-            },
-            "trade": {
-              "id": null,
-              "value": null
-            },
-            "model": {
-              "id": null,
-              "value": null
-            },
+            "tags": new_doc_tags,
+            category,
+            trade,
+            model,
             "available_quantity": null,
             "sold_quantity": null,
             "limit_discount": null,
@@ -715,28 +749,26 @@ async function catalog_new_item_new_product(element) {
             "descriptions": [
               null
             ],
-            "last_update_at": [
-              {
-                "username": new_doc_author,
-                "datetime": new_doc_time
-              }
-            ],
-            "start_time": new_doc_time,
-            "stop_time": null,
-            "end_time": null,
-            "expiration_time": null,
             variations,
         });
         if (response) {
             //Imprimo el item en la pantalla 
             $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_name +"-"+ new_doc_id_random+'</span></div>');
-           
-          //  var print_item = await catalog_edit_item_url(doc_id, new_variant_id);// Refrezco la vista de las variables de nuevo
-            // console.log('PRINT ITEM BORRADO')
-            //console.log(print_item)
-          //  return print_item;
-            //limpio el imput 
-            //   $(element).val('');
+            
+
+            var product_doc_array = await L_catalog_db.get(new_doc_id);
+
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
+
+
+            console.log('product_doc_array', product_doc_array);
+            // alert('Holaaaaaa');
+    
+            createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+            $('#right_main').removeClass('move-right');
+            var m_url = '?type=catalog&?t=create&?id=' + product_id + '&?v=' + variant_id;
+            history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
+            //new_variations_main
         } else {
             //Si no se grabo tira un error en pantalla
             $(element).css("color", "red");
@@ -759,9 +791,6 @@ async function catalog_new_item_new_variant(element) {
         const new_doc_trade = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
         const new_doc_model = $("#catalog_new_product_name_tags").val(); //Id del documento a editar
 
-
-
-        //alert(new_doc_id);
         const doc_id = $(element).attr('doc_id'); //Id del documento a editar
         //  const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
         //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
@@ -867,7 +896,6 @@ async function catalog_new_item_new_variant(element) {
     }
 
 }
-
 // ELIMINAR
 async function catalog_new_item_delete_variant(element) {
 
@@ -895,7 +923,6 @@ async function catalog_new_item_delete_variant(element) {
     }
 
 }
-
 // EDITAR 
 async function catalog_new_item_edit_variations(element) {
 
@@ -933,17 +960,11 @@ async function catalog_new_item_edit_variations(element) {
     }
 }
 
-
-
-
-
-
-
-
 //////////////////////////////
 // EDITAR ( PRODUCTO ) 2023 //
 //////////////////////////////
 // CRUD #TAGS 2023
+
 // INPUT ENTER 
 function add_new_tag_press(e, element) {
     var key = e.keyCode || e.which;
@@ -1037,6 +1058,9 @@ async function dell_tag(element) {
         console.log(err);
     }
 }
+
+
+
 // CRUD CATEGORIAS 2023 
 // AGREGO
 async function add_new_cat(element) {
@@ -1067,7 +1091,7 @@ async function add_new_cat(element) {
                     var new_item = {
                         id: arr_number_id,
                         value: new_cat,
-                        sub_category: []
+                        //sub_category: []
                     }
                 }
                 //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
@@ -1081,6 +1105,8 @@ async function add_new_cat(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
+                   
+                    
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
@@ -1159,7 +1185,7 @@ async function add_new_cat_press(e, element) {
         }
     }
 }
-/// SELECCIONO
+/// SELECCIONO y GUARDO
 async function cat_edit_product_category(element) {
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
     const input_value = $(element).attr('input_value'); //Id del documento a edita
@@ -1175,8 +1201,6 @@ async function cat_edit_product_category(element) {
     });
     catalog_edit_item_url(doc_id, 1);
 }
-
-
 
 
 
@@ -1384,6 +1408,9 @@ async function catalog_add_new_cat(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
+                    $('#catalog_select_cat_value').html(new_cat);
+                    $('#catalog_select_cat_value').attr('catalog_select_cat_value',arr_number_id);
+                  
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
@@ -1481,20 +1508,25 @@ async function catalog_search_trade(e, element) {
 
 }
 // SELECCIONO
-async function catalog_select_new_trade(element, new_trade) {
+async function catalog_select_new_trade(element,new_item) {
 
     var item_value_id = $(element).attr('item_value_id');
-    var new_item = new_trade;
+    var new_item = new_item;
     if (new_item) {
         var item_value = new_item;
     } else {
         var item_value = $(element).attr('item_value');
     }
     try {
+       // console.log('id',item_value_id);
+      //  console.log('value',item_value);
+        //alert('item_value_id',item_value_id);
         $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
         $('#catalog_select_trade_value').html(item_value);
         $('#catalog_select_trade_tittle').html(item_value);
-        //traigo el documento a editar
+        $('#catalog_select_trade_tittle').attr('item_value_id',item_value_id);
+
+        
     } catch (err) {
         console.log(err);
     }
@@ -1504,9 +1536,6 @@ async function catalog_add_new_trade(element) {
     try {
         var doc_id = $(element).attr('doc_id');
         var new_trade_val = $('#catalog_new_trade_input').val();
-        alert(new_trade_val);
-        //  var input_value = $(element).attr('input_value');
-        //var input_id = $(element).attr('doc_id');
         var new_trade = String(new_trade_val);
         // .toLowerCase()
         // Filtro si el input esta bacio
@@ -1543,6 +1572,9 @@ async function catalog_add_new_trade(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
+                    $('#catalog_select_trade_value').html(new_trade);
+                    $('#catalog_select_trade_value').attr('catalog_select_trade_value',arr_number_id);
+
                     Snackbar.show({
                         text: 'La marca ' + new_trade_val + ' se agrego!',
                         actionText: 'ok',
@@ -1688,11 +1720,7 @@ async function catalog_add_new_model(element) {
     try {
         //var doc_id = $(element).attr('doc_id');
         var new_model_val = $('#catalog_new_model_input').val();
-        alert(new_model_val);
-        //var input_value = $(element).attr('input_value');
-        //var input_id = $(element).attr('doc_id');
         var new_model = String(new_model_val);
-        alert(new_model);
         // .toLowerCase()
         // Filtro si el input esta bacio
         if (new_model) {
@@ -1728,6 +1756,9 @@ async function catalog_add_new_model(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
+                    $('#catalog_select_model_value').html(new_model);
+                    $('#catalog_select_model_value').attr('catalog_select_model_value',arr_number_id);
+
                     Snackbar.show({
                         text: 'El modelo ' + new_model_val + ' se agrego!',
                         actionText: 'ok',

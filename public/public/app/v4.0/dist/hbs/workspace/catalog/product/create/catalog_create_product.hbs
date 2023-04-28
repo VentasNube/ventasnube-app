@@ -47,7 +47,7 @@
                                         data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_tags}}} {{/with}}">
                                         tag
                                     </span>
-                                    <div class="chips_items_main">
+                                    <div id="new_prod_tag_main" class="chips_items_main">
 
                                     </div>
                                     <input doc_id="" input_id="tags" class="chips_input form-control"
@@ -108,7 +108,7 @@
                                                     <div id="catalog_select_new_cat_list" >
                                                         {{#each category_list/category_list }}
                                                         <li onclick='catalog_select_new_cat(this)'
-                                                                    item_value_id="{{category.id}}"
+                                                                    item_value_id="{{id}}"
                                                                     item_value="{{value}}" item_id="category" >
                                                             <div class="dropdown-item">
                                                                 <a href="#">
@@ -173,7 +173,7 @@
                                                     <div id="catalog_select_new_trade_list">
                                                         {{#each trade_list/trade_list }}
                                                         <li onclick='catalog_select_new_trade(this)'
-                                                                    item_value_id="{{trade.id}}"
+                                                                    item_value_id="{{id}}"
                                                                     item_value="{{value}}"
                                                                      item_id="trade">
                                                             <div class="dropdown-item">
@@ -273,7 +273,7 @@
 
     {{#with ws_lang_data}} <h3> {{{m_catalog_edit_variant}}} </h3>{{/with}}
     <!--- MAIN VARIACIONES imprimo el catalog_new_variaton -->
-    <div id="new_variations_main" class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div id="create_prod_new_variations_main" class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
     </div>
     <!--- FOOTER BOTONES  -->
@@ -281,12 +281,10 @@
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit' }}
-            <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary">
-                {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_variant}}} {{/with}}
-            </button>
+                <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary">
+                    {{#with ../ws_lang_data}} {{{t_new_product}}}{{/with}}
+                </button>
             {{/userCtx}}
-
-
         </div>
     </div>
 
