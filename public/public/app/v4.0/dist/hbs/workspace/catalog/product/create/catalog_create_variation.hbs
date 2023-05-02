@@ -392,32 +392,53 @@
                                                             delete_forever
                                                         </span>
                                                     </button>
-                                                    <button data-toggle="tooltip" data-placement="bottom" title="{{#with ../ws_lang_data}} {{{m_catalog_edit_add_pic}}} {{/with}}"
-                                                        data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_add_pic}}} {{/with}}" type="button"
-                                                        class="margin-10 round btn btn-transparent btn-default pull-left ">
-                                                        <span class="material-icons">
-                                                            add_a_photo
-                                                        </span>
-                                                    </button>
-                                                    {{#first pictures}}
-                                                    <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card">
-                                                            <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
-                                                            <div class=" mini-carrousel-img ">
-                                                                {{#each ../pictures }}
-                                                                <div class="mini-card-img-s">
-                                                                    <div class="img">
-                                                                        <a target="_blank" href="{{min}}">
-                                                                            <img src="{{min}}" alt="">
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                                {{/each}}
-                                                            </div>
+<!-- FOTOS  new 2023 -->
+                                                    
+                                    {{#first pictures}}
+                                        <div id="paralax-pic-varian-{{{id}}}"  style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card">
+                                            <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                                            <div class=" mini-carrousel-img ">
+                                                {{#each ../pictures }}
+                                                <div class="mini-card-img-s">
+                                                    <div  class="img">
+                                                        <a target="_blank" href="{{min}}">
+                                                            <img src="{{min}}" >
+                                                        </a>
                                                     </div>
-                                                    {{/first }}
                                                 </div>
+                                                {{/each}}
+                                                  <div id="preloader" style="display:none;" class="mini-card-img-s">
+                                                    <div  class="img">
+                                                        <a id="preloader" target="_blank" href="{{min}}">
+                                                            <img src="" alt="Preloader">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/first }}
+
+                                        <div id="message"></div>
+                                         <!-- Aquí se muestra el preloader mientras se sube la imagen -->
+                                        <div id="preloader" style="display: none;">
+                                                <img src="" alt="Preloader">
+                                        </div>
+                                        <!-- Aquí se mostrará el mensaje de éxito o error -->
+                                        <input type="file" name="userfile" id="img-file-input-{{{id}}}">
+                                           
+                                        <button doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" onclick="uploadImage(this)" class="margin-10 round btn btn-transparent btn-default pull-left ">
+                                                <span class="material-icons">
+                                                    upload
+                                                </span>
+                                        </button>
+                                            
+                                            
+
+
+
+                                            </div>
                                                 <!-- DETALLE  COLOR ETC TALLE -->
-                                                <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <!--- DETALLE -->
                                                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                         <div class="input-group">
@@ -578,7 +599,7 @@
                                                         <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id="{{id}}"  input_id="sku"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
                                                             value="{{sku.value}}">
                                                     </div>
-                                                </div>
+                                            </div>
                                             </div>
                                         <!--tab-content--->
                                     </div>

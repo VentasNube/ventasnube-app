@@ -376,8 +376,8 @@ async function catalog_edit_item(element) {
             attributes_list: attributes,
         }
 
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
 
         // console.log('product_doc_array', product_doc_array);
@@ -616,15 +616,9 @@ async function catalog_new_item_new_product(element) {
         //Trade
         const new_doc_model_value = $('#catalog_select_model_value').html();
         const new_doc_model_id =   $('#catalog_select_model_value').attr('catalog_select_model_value');
-        const category = [
-            {id:new_doc_cat_id, value:new_doc_cat_value},
-        ];
-        const trade = [
-            {id:new_doc_trade_id, value:new_doc_trade_value},
-        ];
-        const model = [
-            {id:new_doc_model_id, value:new_doc_model_value},
-        ];
+        const category = {id:new_doc_cat_id, value:new_doc_cat_value} ;
+        const trade =  {id:new_doc_trade_id, value:new_doc_trade_value};
+        const model =  {id:new_doc_model_id, value:new_doc_model_value};
         // Obtener el texto de cada hijo del elemento div
         const textoTags = [];
         divTags.childNodes.forEach(childNode => {
@@ -753,7 +747,7 @@ async function catalog_new_item_new_product(element) {
         });
         if (response) {
             //Imprimo el item en la pantalla 
-           // $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_id +'</span></div>');
+            // $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_id +'</span></div>');
             
             var product_doc = await L_catalog_db.get(new_doc_id);
             var new_category_list = await L_catalog_db.get('category_list');
@@ -787,7 +781,7 @@ async function catalog_new_item_new_product(element) {
             });
 
             console.log('product_doc', product_doc_array);
-           // alert('Holaaaaaa');
+            // alert('Holaaaaaa');
             createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
             var m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
@@ -1085,7 +1079,6 @@ async function dell_tag(element) {
 }
 
 
-
 // CRUD CATEGORIAS 2023 
 // AGREGO
 async function add_new_cat(element) {
@@ -1226,8 +1219,6 @@ async function cat_edit_product_category(element) {
     });
     catalog_edit_item_url(doc_id, 1);
 }
-
-
 
 ////////////////////////////////////
 // CREAR NUEVO ( PRODUCTO ) 2023 //
@@ -3010,8 +3001,6 @@ async function cat_edit_variations(element) {
         else {
             doc[input_id] = new_value;
         }
-
-
         if (item) {
             var response = await L_catalog_db.put({
                 _id: doc._id,
@@ -3026,5 +3015,63 @@ async function cat_edit_variations(element) {
         console.log(err);
     }
 }
+
+
+////// UPLOAD IMAGEN PRODUCTO ///
+  async function uploadImage(element) {
+
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const input_id = 'pictures';
+
+    const input = document.getElementById('img-file-input-'+variant_id);
+
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('userfile', file);
+    const preloader = document.getElementById('preloader');
+    preloader.style.display = 'block';
+    try {
+      const response = await fetch('img_product_upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      preloader.style.display = 'none';
+      //Actualizo el linck del docuemento
+     
+      var doc_id_s = String(doc_id);
+      var doc = await L_catalog_db.get(doc_id_s);
+      //Busco dentro de las variables
+      if (variant_id) {
+          var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+          var value = item[input_id]; //Traigo el ojeto especifico 
+          value[0] =  {
+            max: data.new_name,
+            min: data.new_name
+          } ;
+      //Edito el valor del value por el valor nuevo
+        if (item) {
+            L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,
+              });
+
+              const img1 = document.querySelector('#paralax-pic-varian-'.variant_id);
+             // img.src = data.new_name;
+              img2.style.backgroundImage = `url('${data.new_name}')`;
+
+              
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      preloader.style.display = 'none';
+    }
+  }
+ 
+
+  
 
 

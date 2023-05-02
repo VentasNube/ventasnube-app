@@ -2,7 +2,7 @@
       importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
       
       
-      const version =2332222222;
+      const version = 242222222321332121222222422222222;
       
       
     
@@ -103,8 +103,7 @@
          // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_edit_item.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
+                { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
@@ -113,11 +112,15 @@
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', revision: version },
           
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', revision: version },
-         // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', revision: version },
+    
+          // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
 
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', revision: version },
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
+         // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', revision: version },
+         { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
+         
+         { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
 
           
           

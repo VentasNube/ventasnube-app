@@ -41,6 +41,7 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     //$routes->get('App', 'App::index', ['filter' => 'role:plan-starter-free']);
     //$routes->get('/', 'workspace::index',['filter' => 'login']);
     $routes->get('/', 'Home::index');
+    $routes->get('/uploads', 'uploads::index');     
     //$routes->get('/myapp', 'Home::app');
     //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.

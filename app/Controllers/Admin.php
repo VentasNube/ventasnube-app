@@ -1173,6 +1173,308 @@ class Admin extends BaseController
         }
     }
 
+    public function ws_delete_all_db_ws($workspace_id = 0)
+    {
+
+        // || $Workspace === false
+        if (!logged_in() || !in_groups('admin')) {
+            // $previus_url == previous_url();
+            return redirect()->to(base_url('/login'));
+            //return redirect()->to($previus_url);
+        } else {
+            $db = \Config\Database::connect();
+            $workspace_id = $this->request->getPost("ws_id");
+            // $user_id = user_id(); //Usuario
+            //   $Workspace = $this->WorkspaceModel->get_ws_id_user_id($user_id, $workspace_id);            
+            $ws_db = $db->table('workspace');
+            $ws_user = $db->table('users_workspace');
+            $users_workspace_permission = $db->table('users_workspace_permission');
+            $db->transBegin();
+            //Elimino el workspace de sql
+            $Workspace = $ws_db->delete(['workspace_id' => $workspace_id]);
+            //Elimino los permisos de SQL
+            $users_ws_per = $users_workspace_permission->delete(['ws_id' => $workspace_id]);
+            $ws_user = $ws_user->delete(['workspace_id' => $workspace_id]);
+
+
+            $ws_info = true; //Todas las configuracinoes del workspace
+            $ws_collections = true; //Catalogo de productos y servicios
+            $ws_collections_img = true; //Base de datos de imagenes en formato blob o base64
+            $ws_contact = true; //Catalogo de contactos
+            $ws_mov = true; //Control de movimientos cajas diario
+            $ws_local_sell = true; //Ventas del local
+            ///Movimientos de caja (plan-professional) (SUMO LOS MODULOS)
+            //Ordenes (plan-business)  //Activar dependiendo el modulo seleccionado  Maximo (3)
+            $ws_order_buy = true; //Orden de Compras
+            $ws_order_sell = true; //Ordenes de ventas
+            $ws_mov_box = true; //Control de movimientos cajas diario
+            $ws_statistics = true; //Estadisticas (no es una DB)
+            //Plan (plan-business-service)
+            //Ordenes de Servicios (plan-business)
+            $ws_reports = true; //Reportes (No es una DB)
+            $ws_order_pro_service = true; //Ordenes de servicios profecionales
+            $ws_order_tecnic_service = true; //Ordenes de servicio tecnico
+            $ws_order_app = true; //
+            // $Workspace = $this->WorkspaceModel->dell('workspace', 'workspace_id', $workspace_id); //Creo el workspace
+            // $ws_user = $this->WorkspaceModel->dell('users_workspace', 'workspace_id', $workspace_id); //Asigno el usuario propietario para ese nuevo workspace
+
+            if ($Workspace || $ws_user) {
+                $db_delete = 0;
+                $db_error = 0;
+                if ($ws_info) {
+                    $db_name = "ws_info_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+
+                if ($ws_collections) {
+                    $db_name = "/ws_collections_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+
+                if ($ws_collections_img) {
+                    $db_name = "ws_collections_img_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+
+                if ($ws_contact) {
+                    $db_name = "ws_contact_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+
+                if ($ws_mov) {
+                    $db_name = "ws_mov_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+
+                if ($ws_local_sell) {
+                    $db_name = "ws_local_sell_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                //Creo las DB dependiendo si fueron seleccionadas
+                //Ordenes (plan-business)
+                if ($ws_order_sell) {
+                    $db_name = "ws_order_sell_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                if ($ws_order_buy) {
+                    $db_name = "ws_order_buy_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                if ($ws_mov_box) {
+                    $db_name = "ws_mov_box_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                //Ordenes de Servicios (plan-business)
+                if ($ws_order_pro_service) {
+                    $db_name = "ws_order_pro_service_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                if ($ws_order_tecnic_service) {
+                    $db_name = "ws_order_tecnic_service_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+                //Ordenes de Servicios (plan-business-shop)
+                if ($ws_order_app) {
+                    $db_name = "ws_order_app_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                    //Order colection
+                    $db_name = "ws_order_app_collections_" . $workspace_id;
+                    $response_code = $this->WorkspaceModel->curl_delete_db($db_name); //Creo la base de dato
+                    if ($response_code = '200') {
+                        $db_delete += 1;
+                    } elseif ($response_code == '404') {
+                        $db_error += 1;
+                    }
+                }
+            }
+            if ($db->transStatus() === false) {
+                $db->transRollback();
+                $return = ['msj' => 'No ingresastes el workspace ID o algo salio mal y no se pudo Eliminar!', 'result' => false];
+                return json_encode($return);
+            } else {
+                $db->transCommit();
+                $return = ['msj' => 'Salio todo bieen se eliminaron! [' . $response_code . '] DBS DBS ELiminadas:' . $db_delete . ' DBS Error 404:' . $db_error, 'result' => true];
+                // $return = ['msj' => 'Algo salio mal!', 'result' => false];
+                return json_encode($return);
+                //$return = ['msj' => 'Se creo todo con exito!', 'result' => true];
+                // return json_encode($return);
+            }
+        }
+    }
+
+    public function delete_databasesNO1()
+    {
+         // || $Workspace === false
+         if (!logged_in() || !in_groups('admin')) {
+            // $previus_url == previous_url();
+            return redirect()->to(base_url('/login'));
+            //return redirect()->to($previus_url);
+        } else {
+       // $db = \Config\Database::connect();
+        $serverUrl = 'http://localhost:5984';
+        $prefix = 'ws_'; // La cadena de prefijo que queremos filtrar
+        $ch = curl_init();
+        
+        // Obtener la lista de bases de datos
+        curl_setopt($ch, CURLOPT_URL, "$serverUrl/_all_dbs");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $databases = json_decode(curl_exec($ch));
+        
+        foreach ($databases as $dbName) {
+            // Si el nombre de la base de datos comienza con el prefijo, eliminarla
+            if (strpos($dbName, $prefix) === 0) {
+                curl_setopt($ch, CURLOPT_URL, "$serverUrl/$dbName");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+            
+                if (curl_errno($ch)) {
+                    echo "Error deleting database $dbName: " . curl_error($ch) . "\n";
+                } else {
+                    echo "Database $dbName deleted successfully.\n";
+                }
+            }
+        }
+        
+        curl_close($ch);
+
+       }
+    }
+
+    public function delete_databasesNO()
+{
+    $serverUrl = 'http://localhost:5984';
+    $prefix = 'ws_'; // La cadena de prefijo que queremos filtrar
+    $ch = curl_init();
+    
+    // Obtener la lista de bases de datos
+    curl_setopt($ch, CURLOPT_URL, "$serverUrl/_all_dbs");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $databases = json_decode(curl_exec($ch));
+    
+    foreach ($databases as $dbName) {
+        // Si el nombre de la base de datos comienza con el prefijo, eliminarla
+        if (strpos($dbName, $prefix) === 0) {
+            curl_setopt($ch, CURLOPT_URL, "$serverUrl/$dbName");
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+        
+            if (curl_errno($ch)) {
+                echo "Error deleting database $dbName: " . curl_error($ch) . "\n";
+            } else {
+                echo "Database $dbName deleted successfully.\n";
+            }
+        }
+    }
+    
+    curl_close($ch);
+}
+
+
+public function delete_databases()
+{
+    $db = \Config\Database::connect();
+      $client = \Config\Services::curlrequest();
+    $serverUrl = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/';
+    $prefix = 'ws_'; // La cadena de prefijo que queremos filtrar
+    $ch = curl_init();
+    
+
+    // Obtener la lista de bases de datos
+    curl_setopt($ch, CURLOPT_URL, "$serverUrl/_all_dbs");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+
+
+    
+    $databases = json_decode($response);
+
+
+    
+    if (is_array($databases)) {
+        foreach ($databases as $dbName) {
+            // Si el nombre de la base de datos comienza con el prefijo, eliminarla
+            if (strpos($dbName, $prefix) === 0) {
+                curl_setopt($ch, CURLOPT_URL, "$serverUrl/$dbName");
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+            
+                if (curl_errno($ch)) {
+                    echo "Error deleting database $dbName: " . curl_error($ch) . "\n";
+                } else {
+                    echo "Database $dbName deleted successfully.\n";
+                }
+            }
+        }
+    } else {
+        echo "Error getting database list: " . curl_error($ch) . "\n";
+    }
+    
+    curl_close($ch);
+}
+
     //MODULES
     //PAGOS
     // GET user AJAX PARA DATATABLE

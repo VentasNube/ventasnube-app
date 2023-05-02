@@ -79,6 +79,14 @@ L_catalog_db.sync(url_R_db+ws_search_db, {
  ////----(1 LEFT NAV)---/////
  //Creo el doc y lo guardo el la db
 function put_left_nav_doc() {
+
+
+      // DOC DE NAVEGACION
+      ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });      
+                     
+    if(ws_left_nav ){
+
+    }
     $.ajax({
         url: "/body/left_nav",
         type: "POST",
@@ -87,11 +95,32 @@ function put_left_nav_doc() {
             if (ws_left_nav.result == true) {
                         console.log('Solicitud ajax ws_left_nav ok! ws_id:'+ ws_id);
                         // console.log('userCtx L nav doc 1');
-                        //console.log(userCtx);
+                        console.log(userCtx);
                         ///// IMPRIME ////
                         user_db.get('ws_left_nav_' + ws_id, function(err, doc) {
                             if (err) {
                                 msj_alert(err);
+                                alert('Falta el archivo ws_left_nav');
+
+                                user_db.put({
+                                    _id: 'ws_left_nav_' + ws_id,
+                                    ws_left_nav: ws_left_nav,
+                                    userCtx: userCtx
+                                  });
+
+                                  user_db.changes().on('change', function() {
+                                    Snackbar.show({
+                                           text:  'New changes in (Ws_left_nav)',
+                                            width: '475px',
+                                            actionTextColor: '#ff0000',
+                                            actionText: 'Refrezcar',
+                                            pos: 'bottom-center',
+                                           onActionClick: function(element) {           
+                                               $(element).css('opacity', 0);
+                                               location.reload();
+                                           }
+                                        });
+                                  });
                             }
                             user_db.put({
                               _id: 'ws_left_nav_' + ws_id,
@@ -131,6 +160,7 @@ function put_left_nav_doc() {
                              // handle response
                             });
                         });
+
             }else{
                     //console.log('ws_left_nav 2');
                    // console.log(ws_left_nav);
@@ -239,6 +269,10 @@ async function get_module_function(ws_module_select,m_t_id,m_id,m_var_id) {
                 //updateHistory();
             }
             if( m_t_id == 'edit'){
+                catalog_edit_item_url(m_id,m_var_id, userCtx);
+                //updateHistory();
+            }
+            if( m_t_id == 'create'){
                 catalog_edit_item_url(m_id,m_var_id, userCtx);
                 //updateHistory();
             }

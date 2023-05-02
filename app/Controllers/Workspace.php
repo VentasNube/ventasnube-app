@@ -7,10 +7,15 @@ use App\Models\OwnerModel;
 use App\Models\UserModel;
 use App\Models\WorkspaceModel;
 
+use CodeIgniter\Files\File;
+use CodeIgniter\HTTP\Traits\Writable;
+
 class Workspace extends BaseController
 {
     protected $WorkspaceModel;
     protected $request;
+
+    
 
     public function __construct()
     {
@@ -19,27 +24,6 @@ class Workspace extends BaseController
         $this->session = service('session');
     }
     //Inicio de WS
-    /*
-    function index()
-    {
-        if (!logged_in()) {
-            return redirect()->to(base_url('/workspace/login'));
-        }
-        $user_id = user_id();
-        $Workspace = new WorkspaceModel(); //traigo al modelo
-        $Workspace = $Workspace->get_all_ws_user($user_id); //cargo la data en un array
-        //  $ws_id = session('ws_id');
-        //  $ws_id = $this->session->set($ws_select_data);
-        if ($Workspace) {
-            $model = new OwnerModel(); //traigo al modelo		
-            $data['owner'] = $model->getOwner(); //cargo la data en un array
-            return view('/workspace/body/body.hbs', $data);
-            //   return redirect()->to(base_url('/workspace/home'));
-        } else {
-            return redirect()->to(base_url('/workspace/welcome'));
-        }
-    }
-*/
     function index()
     {
         return redirect()->to(base_url('/workspace/app'));
@@ -53,6 +37,7 @@ class Workspace extends BaseController
         return json_encode(view('/workspace/js/service-worker.js'));
         //return view('/workspace/js/service-worker.js');
     }
+    // VISTA APP
     function app()
     {
       //  if (!logged_in()) {
@@ -72,25 +57,7 @@ class Workspace extends BaseController
        //     return redirect()->to(base_url('/workspace/welcome'));
       //  }
     }
-    function appOLD()
-    {
-        if (!logged_in()) {
-            return redirect()->to(base_url('/workspace/login'));
-        }
-        $user_id = user_id();
-        $Workspace = new WorkspaceModel(); //traigo al modelo
-        $Workspace = $Workspace->get_all_ws_user($user_id); //cargo la data en un array
-        //  $ws_id = session('ws_id');
-        //  $ws_id = $this->session->set($ws_select_data);
-        if ($Workspace) {
-            $model = new OwnerModel(); //traigo al modelo		
-            $data['owner'] = $model->getOwner(); //cargo la data en un array
-            return view('/workspace/body/body.hbs', $data);
-            //   return redirect()->to(base_url('/workspace/home'));
-        } else {
-            return redirect()->to(base_url('/workspace/welcome'));
-        }
-    }
+
     // Vista Home ws
     public function home()
     {
@@ -268,7 +235,7 @@ class Workspace extends BaseController
         //echo view('login/login', $data);
         return view('home/login/reset-pasword', $data);
     }
-
+   
    
     //FUNCIONES 2022 Edicion roles de usuarios a WS y eliminacion
     // Creo un nuevo WS Completo
@@ -284,7 +251,7 @@ class Workspace extends BaseController
             // $Body_model = new BodyModel(); // traigo el modelo
 
             helper('date');       // Libreria de tiempo 
-            // R
+
             $user_id = user_id(); // Usuario
             $user_email = $UserModel->getUserData($user_id, 'email'); // Traigo el email del usuario
 
@@ -570,6 +537,10 @@ class Workspace extends BaseController
                     ======== */
 
                 //DB de catalogo productos y sericios
+
+           
+
+
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id_hex;
                     $module_name = "catalog";
@@ -600,8 +571,8 @@ class Workspace extends BaseController
                     $ws_collection_get = [
                         '_id' => '_design/get',
                         'views' => [
-                            'seach' => [
-                                'map' => "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n      var price_list = doc.variations[0].price_list;\n var stock_list =  doc.variations[0].stock_list;\n  var pictures_min = doc.variations[0].pictures[0].min;\n      var pictures_max = doc.variations[0].pictures[0].max;\n                  var sku = doc.variations[0].sku.value_name;\n                  var variant_id = doc.variations[0].id;\n                  var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.currency.value,\n                    'available_quantity': doc.available_quantity,\n                    'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    'limit_discount': doc.limit_discount,\n                    'price':doc.variations[0].price_list[0].value,\n                    'price_list':price_list,\n  'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                            'seach'=> [
+                                'map'=> "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n   for(var i=0, length=doc.variations.length; i<length; i++){\n                var price_list = doc.variations[0].price_list;\n                 var stock_list =  doc.variations[0].stock_list;\n                 var pictures_min = doc.variations[0].pictures[0].min;\n                 var pictures_max = doc.variations[0].pictures[0].max;\n                 var sku = doc.variations[0].sku.value_name;\n                 var variant_id = doc.variations[0].id;\n                 var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags':  doc.tags,\n                    'currency':null,\n                    'available_quantity': null,\n                    'sold_quantity': null,\n                    'cost_price': null,\n                    'limit_discount': null,\n                    'price':null,\n                    'price_list':price_list,\n                    'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n                    'attribute_combinations':attribute_combinations,\n });\n}\n}\n"
                             ],
                         ]
                     ];
@@ -1629,19 +1600,80 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/currency_list', $currency_list); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/attributes', $attributes); //Creo un doc con la informacion del workspace
-
-
-
                     $this->WorkspaceModel->curl_put($db_name . '/trade_list', $trade_list); //Creo un doc con la informacion las listas de marcas
                     $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
-
                     $this->WorkspaceModel->curl_put($db_name . '/tax_list', $tax_list); //Creo un doc con la informacion las listas de modelos
-
-                    
-
                     //DOC EJEMPLO PRODUCTOS
                     $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
+                   
+                    //Creo una carpeta para subir las fotos del catalogo
+
+                   
+
+
+
+
+                   // $carpetaDestino = FCPATH . 'uploads/catalog/'.$db_name;
+                    //  $carpetaDestino = WRITEPATH . 'catalog/'.$db_name;
+                    // $filesystem = new Filesystem();
+                    //$filesystem->mkdir($carpetaDestino, 0777);
+
+                    //$files = new Files();
+
+                   /* $folderPath = FCPATH . 'public/catalog/img/'.$db_name;
+
+                    if (!file_exists($folderPath)) {
+                        $file = new File($folderPath, true);
+                    }
+
+                    
+*/
+
+
+                   
+
+                    /*
+                    $dir = '/var/www/html/ventasnube-app/writable/uploads/catalog/img/ws_collections_323836';
+                    
+                    // Crea el directorio si no existe
+                    if (!file_exists($dir)) {
+                        mkdir($dir, 0777, true);
+                    }
+
+                    // Verifica los permisos del directorio
+                    if (!is_writable($dir)) {
+                        chmod($dir, 0777);
+                    }
+                    *
+
+
+
+
+
+
+                  /*  $folderPath = WRITEPATH . 'uploads/catalog/img/';
+                    if (!is_dir($folderPath)) {
+                        mkdir($folderPath, 0644, true); // Crea la carpeta y establece permisos a 0777
+                    } else {
+                        chmod($folderPath, 0644); // Cambia los permisos de la carpeta a 0777
+                    }
+*/
+                    
+
+
+                    /*   $path = WRITEPATH . 'uploads/'; // ruta donde se almacenarán los archivos
+                    
+                    $file = new CodeIgniter\Files\File($path, true);
+
+                    if (!$files->isDirectory($path)) {
+                       $files->createDirectory($path, 0755, true); // crea la carpeta si no existe
+                    }
+                    // $data = 'Hola, mundo!'; // contenido del archivo
+                    $filename = 'miarchivo.txt'; // nombre del archivo
+                    $files->write($path . $filename, $data); // escribe el archivo
+                    */
+              
                 }
 
                     /* ========== 
@@ -1932,4 +1964,159 @@ class Workspace extends BaseController
         //  $response = 'Hola';           
         return $response;
     }
+
+    //Funciones 2023
+
+
+    function up_pic_async() {
+        $config = [
+            'upload_path' => './archivos/fotos/',
+            'allowed_types' => 'jpg|jpeg|png',
+            'max_size' => '5000',
+            'file_ext_tolower' => true,
+            'encrypt_name' => true
+        ];
+    
+        $this->load->library('upload', $config);
+    
+        if (!$this->upload->do_upload('foto')) {
+            $error = $this->upload->display_errors();
+            echo json_encode(['status' => 'error', 'message' => $error]);
+            return;
+        }
+        
+        
+
+        $data = $this->upload->data();
+        $ruta = $data['file_name'];
+
+        $newName = $file->getRandomName(); 
+    
+        $titulo = $this->input->post('titulo');
+        $descripcion = $this->input->post('descripcion');
+    
+        // Verificar que el tamaño del archivo sea menor a 5MB
+        $fileSize = filesize($ruta);
+        if ($fileSize > 5000000) {
+            unlink($ruta);
+            echo json_encode(['status' => 'error', 'message' => 'El tamaño del archivo es demasiado grande']);
+            return;
+        }
+    
+        // Verificar que el tipo de archivo sea imagen JPEG o PNG
+        $fileType = mime_content_type($ruta);
+        if ($fileType !== 'image/jpeg' && $fileType !== 'image/png') {
+            unlink($ruta);
+            echo json_encode(['status' => 'error', 'message' => 'Solo se permiten archivos de imagen JPEG o PNG']);
+            return;
+        }
+    
+        // Mover el archivo a una carpeta segura
+        $carpetaDestino = './archivos/fotos/';
+        $nombreArchivo = uniqid() . '_' . $data['orig_name'];
+        $rutaFinal = $carpetaDestino . $nombreArchivo;
+        if (!move_uploaded_file($ruta, $rutaFinal)) {
+            echo json_encode(['status' => 'error', 'message' => 'Error al mover el archivo']);
+            return;
+        }
+    
+        // Eliminar el archivo temporal
+        unlink($ruta);
+    
+        // Validar los datos de entrada
+        $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_STRING);
+        $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
+    
+        // Insertar los datos en la base de datos
+        $data = [
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'foto' => $nombreArchivo
+        ];
+        $this->db->insert('fotos', $data);
+    
+        echo json_encode(['status' => 'success', 'message' => 'Archivo cargado correctamente']);
+    }
+    
+    public function img_product_upload()
+    {
+        if (!logged_in()) {
+            return redirect()->to(base_url('/workspace/login'));
+        } else {
+
+            
+
+            $validationRule = [
+                'userfile' => [
+                    'label' => 'Image File',
+                    'rules' => [
+                        'uploaded[userfile]',
+                        'is_image[userfile]',
+                        'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+                        'max_size[userfile,10000]',
+                        //'max_dims[userfile,1024,768]',
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($validationRule)) {
+                $data = ['errors' => $this->validator->getErrors()];
+                return $this->response->setJSON($data);
+            }
+            $ws_id = session('ws_id');
+            $img = $this->request->getFile('userfile');
+            $name = $img->getName();
+
+            $newName = $img->getRandomName(); 
+
+            //$newName = $name;
+            $img->move('./public/img/catalog/ws_collection_'.$ws_id, $newName);
+
+
+            //   $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
+            
+            $data = [
+                'success' => 'Image uploaded successfully',
+                'new_name' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName,
+                'path' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName
+            ];
+            return $this->response->setJSON($data);
+        }
+    }
+
+    public function img_product_upload_OLD_ok()
+    {
+        if (!logged_in()) {
+            return redirect()->to(base_url('/workspace/login'));
+        } else {
+
+        $validationRule = [
+            'userfile' => [
+                'label' => 'Image File',
+                'rules' => [
+                    'uploaded[userfile]',
+                    'is_image[userfile]',
+                    'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+                    'max_size[userfile,100]',
+                    'max_dims[userfile,1024,768]',
+                ],
+            ],
+        ];
+        if (! $this->validate($validationRule)) {
+            $data = ['errors' => $this->validator->getErrors()];
+            echo('Error de validacion');
+        }
+        $img = $this->request->getFile('userfile');
+        $name = $img->getName();
+        //$ext = $img->getClientExtension();
+        // Get random file name
+        //  $newName = $file->getRandomName(); 
+        $newName = $name; 
+        // Store file in public/uploads/ folder
+        $img->move('../public/public/img/catalog/ws_collection_2023', $name);
+        echo('Se cargo con exito');
+    }
+    }
+
+
 }
