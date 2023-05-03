@@ -66,7 +66,7 @@ php_errors.log
 #-------------------------
 # IMAGENES DEL PUBLIC Files
 #-------------------------
-public/img/catalog/*
+public/public/img/catalog/*
 
 #-------------------------
 # User Guide Temp Files
