@@ -3018,28 +3018,109 @@ async function cat_edit_variations(element) {
 
 
 ////// UPLOAD IMAGEN PRODUCTO ///
-  async function uploadImage(element) {
 
+
+
+
+async function uploadImageInputOLD(element) {
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+
+    const input = document.getElementById('img-file-input-'+variant_id);
+
+    if (input.files.length > 0) {
+        console.log("Se ha cargado un archivo.");
+        const preloader = document.getElementById('upload-btn-'+doc_id+'-'+variant_id);
+        preloader.style.display = 'block';
+
+    } else {
+        console.log("No se ha cargado ningún archivo.");
+        const preloader = document.getElementById('upload-btn-'+doc_id+'-'+variant_id);
+        preloader.style.display = 'none';
+    }
+
+}
+async function uploadImageInputNO(element) {
+
+    //const input = document.querySelector('input[type="file"]');
+    //const botonSubir = document.querySelector('#boton-subir');
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const input = document.getElementById('img-file-input-'+variant_id);
+    const botonSubir = document.getElementById('upload-btn-'+doc_id+ '-' +variant_id);
+
+
+    input.addEventListener('change', async () => {
+      const archivo = input.files[0];
+      
+      const lector = new FileReader();
+      
+      await new Promise(resolve => lector.addEventListener('load', resolve));
+      
+      console.log(lector.result);
+      
+      // Muestra el botón de subir archivo
+      botonSubir.classList.remove('d-none');
+    });
+  }
+
+async function uploadImageInput3(element) {
+   // const input = document.querySelector('input[type="file"]');
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const input = document.getElementById('img-file-input-'+variant_id);
+    // Se añade un listener para el evento "change" del input
+    input.addEventListener('change', async () => {
+      const archivo = input.files[0];
+      // Se crea una nueva instancia de FileReader()
+      const lector = new FileReader();
+      // Se espera a que se termine de cargar el archivo
+      await new Promise(resolve => lector.addEventListener('load', resolve));
+      // Una vez que se ha cargado el archivo, se puede acceder a los datos utilizando la propiedad "result"
+      if(lector.result){
+        const preloader = document.getElementById('upload-btn-'+doc_id+'-'+variant_id);
+        preloader.style.display = 'block';
+      }else{
+        const preloader = document.getElementById('upload-btn-'+doc_id+'-'+variant_id);
+        preloader.style.display = 'none';
+      }
+      console.log(lector.result);
+    });
+  }
+
+  async function uploadImage(element) {
+    //const fileInput = document.getElementById("fileInput");
     const doc_id = $(element).attr('doc_id');
     const variant_id = $(element).attr('variant_id');
     const input_id = 'pictures';
 
     const input = document.getElementById('img-file-input-'+variant_id);
 
+    if (input.files.length > 0) {
+    //console.log("Se ha cargado un archivo.");
     const file = input.files[0];
     const formData = new FormData();
     formData.append('userfile', file);
-    const preloader = document.getElementById('preloader');
-    preloader.style.display = 'block';
+
+    //const preloader = document.getElementById('preloader');
+    //preloader.style.display = 'block';
+
+    //$('#preloader').attr('hidden','');
+    $('#preloader_finish').hide();
+    $('#preloader_up_pic').show();
+
     try {
       const response = await fetch('img_product_upload', {
         method: 'POST',
         body: formData
       });
       const data = await response.json();
-      preloader.style.display = 'none';
-      //Actualizo el linck del docuemento
-     
+
+      $('#preloader_up_pic').hide();
+      $('#preloader_finish').show();
+
+      // preloader.style.display = 'none';
+      /// Actualizo el linck del docuemento 
       var doc_id_s = String(doc_id);
       var doc = await L_catalog_db.get(doc_id_s);
       //Busco dentro de las variables
@@ -3057,18 +3138,20 @@ async function cat_edit_variations(element) {
                 _rev: doc._rev,
                 ...doc,
               });
-
-              const img1 = document.querySelector('#paralax-pic-varian-'.variant_id);
-             // img.src = data.new_name;
-              img2.style.backgroundImage = `url('${data.new_name}')`;
-
-              
+             $("#img-card-"+variant_id+"-"+doc._id).css("background-image", "url('"+data.new_name+"')");
+             $("#mini-card-img-card-"+variant_id+"-"+doc._id).attr( "src",data.new_name);
+             
+             console.log(data.new_name,doc._id ,variant_id );
         }
       }
     } catch (error) {
       console.error(error);
       preloader.style.display = 'none';
     }
+    } else {
+    console.log("No se ha cargado ningún archivo.");
+  }
+
   }
  
 

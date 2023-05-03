@@ -12576,15 +12576,14 @@ board-item-content
     position: relative;
     display: flex;
     width: 100%;
-    top: 30px;
-    margin: 0 0 0 10px;
+    margin: 0 0 20px 20px;
 }
 
 .mini-carrousel-img .mini-card-img-s {
     width: 100%;
     /* object-fit: contain; */
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     display: inline-block;
     position: relative;
     border-radius: 50%;

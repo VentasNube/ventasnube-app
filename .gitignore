@@ -63,6 +63,10 @@ writable/uploads/*
 writable/debugbar/*
 
 php_errors.log
+#-------------------------
+# IMAGENES DEL PUBLIC Files
+#-------------------------
+public/img/catalog/*
 
 #-------------------------
 # User Guide Temp Files
