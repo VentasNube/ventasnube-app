@@ -2038,7 +2038,7 @@ class Workspace extends BaseController
         echo json_encode(['status' => 'success', 'message' => 'Archivo cargado correctamente']);
     }
     
-    public function img_product_upload()
+    public function img_product_uploadOldOk()
     {
         if (!logged_in()) {
             return redirect()->to(base_url('/workspace/login'));
@@ -2084,11 +2084,62 @@ class Workspace extends BaseController
         }
     }
 
-    public function img_product_upload_OLD_ok()
+    public function img_product_uploadOK2()
     {
-        if (!logged_in()) {
-            return redirect()->to(base_url('/workspace/login'));
-        } else {
+            if (!logged_in()) {
+                return redirect()->to(base_url('/workspace/login'));
+            } else {
+
+                $validationRule = [
+                    'userfile' => [
+                        'label' => 'Image File',
+                        'rules' => [
+                            'uploaded[userfile]',
+                            'is_image[userfile]',
+                            'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+                            'max_size[userfile,10000]',
+                            //'max_dims[userfile,1024,768]',
+                        ],
+                    ],
+                ];
+
+                if (!$this->validate($validationRule)) {
+                    $data = ['errors' => $this->validator->getErrors()];
+                    return $this->response->setJSON($data);
+                }
+                $ws_id = session('ws_id');
+                $img = $this->request->getFile('userfile');
+                $name = $img->getName();
+                $newName = $img->getRandomName(); 
+
+                // Obtener el nombre de la imagen vieja
+                $variant_id = $this->request->getPost('variant_id');
+                $doc_id = $this->request->getPost('doc_id');
+                $oldImgPath = './public/img/catalog/ws_collection_'.$ws_id.'/'.$variant_id.'-'.$doc_id.'.jpg';
+
+                // Eliminar la imagen vieja si es necesario
+                if ($name != $newName && file_exists($oldImgPath)) {
+                    unlink($oldImgPath);
+                }
+
+                // Mover la nueva imagen
+                $img->move('./public/img/catalog/ws_collection_'.$ws_id, $newName);
+
+                // Actualizar la información del producto
+                $data = [
+                    'success' => 'Image uploaded successfully',
+                    'new_name' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName,
+                    'path' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName
+                ];
+                return $this->response->setJSON($data);
+            }
+    }
+
+    public function img_product_upload()
+{
+    if (!logged_in()) {
+        return redirect()->to(base_url('/workspace/login'));
+    } else {
 
         $validationRule = [
             'userfile' => [
@@ -2097,26 +2148,128 @@ class Workspace extends BaseController
                     'uploaded[userfile]',
                     'is_image[userfile]',
                     'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-                    'max_size[userfile,100]',
-                    'max_dims[userfile,1024,768]',
+                    'max_size[userfile,10000]',
+                    //'max_dims[userfile,1024,768]',
                 ],
             ],
         ];
-        if (! $this->validate($validationRule)) {
+
+        if (!$this->validate($validationRule)) {
             $data = ['errors' => $this->validator->getErrors()];
-            echo('Error de validacion');
+            return $this->response->setJSON($data);
         }
+        $ws_id = session('ws_id');
         $img = $this->request->getFile('userfile');
         $name = $img->getName();
-        //$ext = $img->getClientExtension();
-        // Get random file name
-        //  $newName = $file->getRandomName(); 
-        $newName = $name; 
-        // Store file in public/uploads/ folder
-        $img->move('../public/public/img/catalog/ws_collection_2023', $name);
-        echo('Se cargo con exito');
+        $newName = $img->getRandomName(); 
+
+        // Obtener el nombre de la imagen vieja
+        $variant_id = $this->request->getPost('variant_id');
+        $doc_id = $this->request->getPost('doc_id');
+        $oldImgPath = './public/img/catalog/ws_collection_'.$ws_id.'/'.$variant_id.'-'.$doc_id.'.jpg';
+
+        // Iniciar una transacción
+        $db = db_connect();
+        $db->transStart();
+
+        try {
+            // Eliminar la imagen vieja si es necesario
+            if ($name != $newName && file_exists($oldImgPath)) {
+                unlink($oldImgPath);
+            }
+
+            // Mover la nueva imagen
+            $img->move('./public/img/catalog/ws_collection_'.$ws_id, $newName);
+
+            // Actualizar la información del producto
+            $data = [
+                'success' => 'Image uploaded successfully',
+                'new_name' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName,
+                'path' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName
+            ];
+        } catch (\Exception $e) {
+            // En caso de error, deshacer la transacción y enviar el mensaje de error
+            $db->transRollback();
+            $data = [
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        // Finalizar la transacción
+        $db->transComplete();
+
+        return $this->response->setJSON($data);
     }
+}
+
+    public function img_product_uploadNO4()
+{
+    if (!logged_in()) {
+        return redirect()->to(base_url('/workspace/login'));
     }
+
+    $validationRule = [
+        'userfile' => [
+            'label' => 'Image File',
+            'rules' => [
+                'uploaded[userfile]',
+                'is_image[userfile]',
+                'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+                'max_size[userfile,10000]',
+                //'max_dims[userfile,1024,768]',
+            ],
+        ],
+    ];
+
+    if (!$this->validate($validationRule)) {
+        $data = ['errors' => $this->validator->getErrors()];
+        return $this->response->setJSON($data);
+    }
+
+    $ws_id = session('ws_id');
+    $img = $this->request->getFile('userfile');
+
+    // Establecer una extensión de archivo personalizada y agregarla al nombre aleatorio del archivo.
+    $newName = $img->getRandomName('prefix', ['png', 'jpg', 'jpeg', 'gif', 'webp']);
+
+    // Agregar la ruta completa al archivo.
+    $path = WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id.'/'.$newName;
+
+    // Comprimir la imagen y guardarla en el servidor.
+    if ($img->isValid() && !$img->hasMoved()) {
+        $img->move(WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id, $newName);
+
+        $img = \Config\Services::image()
+            ->withFile($path)
+            ->resize(1024, 1024, true, 'height')
+            ->save($path, 80);
+    }
+
+    // Obtener la imagen actual para compararla con la nueva imagen.
+    $product = $this->ProductModel->find($this->request->getPost('product_id'));
+    $old_img_path = WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id.'/'.$product->img;
+
+    // Si hay una imagen antigua, eliminarla o sobrescribirla.
+    if ($product->img && file_exists($old_img_path) && is_file($old_img_path)) {
+        if ($old_img_path != $path) {
+            unlink($old_img_path);
+        }
+    }
+
+    // Actualizar el modelo con la información de la imagen.
+    $product->img = $newName;
+    $product->update();
+
+    // Devolver una respuesta JSON con la información de la imagen.
+    $data = [
+        'success' => 'Image uploaded successfully',
+        'new_name' => '/uploads/catalog/ws_collection_'.$ws_id.'/'.$newName,
+        'path' => '/uploads/catalog/ws_collection_'.$ws_id.'/'.$newName
+    ];
+    return $this->response->setJSON($data);
+}
+
+
 
 
 }

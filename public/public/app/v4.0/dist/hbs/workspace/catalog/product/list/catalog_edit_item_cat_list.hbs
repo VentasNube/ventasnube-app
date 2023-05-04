@@ -1,12 +1,22 @@
 {{#each cat_find_list }}
 <li onclick='catalog_select_new_cat(this)' item_value_id="{{id}}" item_value="{{value}}" item_id="category">
     <div class="dropdown-item">
-        <a   href="#">
-            {{value}}
-        </a>
+         <a  new_value="{{value}}" onclick='catalog_product_edit_category(this)' 
+                 input_value="{{category.id}}" 
+                  input_id="category" href="#"  
+                   doc_id="{{../_id }}" 
+                    value="{{value}}">
+               {{value}}
+          </a>
         {{#userCtx 'catalog' 'admin'}}
         <button><span doc_id="{{../_id }}" value="{{value}}" class="material-icons"
                 onclick='catalog_dell_cat(this)'>delete</span></button>
+
+                 <button>
+                      <span doc_id="" value="{{value}}"
+                        class="material-icons"
+                        onclick='catalog_dell_cat(this)'>delete</span>
+                   </button>
         {{/userCtx}}
     </div>
 </li>
