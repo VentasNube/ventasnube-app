@@ -1328,7 +1328,7 @@ async function catolog_dell_new_tag(element) {
     }
 }
 
-// CRUD CATEG0RIAS #TAGS 2023
+// CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023
 // BUSCO
 async function catalog_search_cat(e, element) {
     //traigo el resultado mas parecido con find
@@ -1380,6 +1380,55 @@ async function catalog_search_cat(e, element) {
 
     }
 
+}
+///  LISTADO EN FORM NUEVO PRODUCTO
+async function catalog_search_new_prod_cat(e, element) {
+    //traigo el resultado mas parecido con find
+    var doc_id = $(element).attr('doc_id');
+    var new_cat_val = $(element).val();
+    var select_div_id = "#catalog_select_new_cat_list";
+    var new_cat = String(new_cat_val);
+    if (new_cat) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_cat);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                cat_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                no_result: true
+            }
+        }
+       // console.log('CAT LIST LIST LISTTTT', cat_list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_cat_list.hbs', select_div_id, cat_list_search);
+    }
 }
 // ELIMINO
 async function catalog_dell_cat(element) {
@@ -1568,6 +1617,58 @@ async function catalog_search_trade(e, element) {
             }
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', select_div_id, trade_list_search);
+
+
+    }
+
+}
+
+async function catalog_search_new_pro_trade(e, element) {
+
+    //traigo el resultado mas parecido con find
+      var doc_id = $(element).attr('doc_id');
+    var new_trade_val = $(element).val();
+    var select_div_id = "#catalog_select_new_trade_list";
+    var new_trade = String(new_trade_val);
+    if (new_trade) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('trade_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.trade_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_trade);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                trade_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var trade_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                no_result: true
+            }
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_trade_list.hbs', select_div_id, trade_list_search);
 
 
     }
@@ -1815,6 +1916,55 @@ async function catalog_search_model(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', select_div_id, list_search);
     }
 }
+
+async function catalog_search_new_pro_model(e, element) {
+    //traigo el resultado mas parecido con find
+    var doc_id = $(element).attr('doc_id');
+    var new_model_val = $(element).val();
+    var select_div_id = "#catalog_select_new_model_list";
+    var new_model = String(new_model_val);
+    if (new_model) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_catalog_db.get('model_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.model_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_model);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
+                model_find_list: search_list
+            }
+        } else if (search_list == null) {
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                doc_id:doc_id,
+                user_roles: user_Ctx.userCtx.roles,
+                model_find_list: doc.model_list
+            }
+        }
+        else {
+            var list_search = {
+                ws_lang_data: ws_lang_data,
+                doc_id:doc_id,
+                user_roles: user_Ctx.userCtx.roles,
+                no_result: true
+            }
+        }
+
+        console.log('list_search',list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_model_list.hbs', select_div_id, list_search);
+    }
+}
+
 // SELECCIONO
 async function catalog_select_new_model(element, new_model) {
     let item_value_id = $(element).attr('item_value_id');
