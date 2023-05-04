@@ -1332,7 +1332,7 @@ async function catolog_dell_new_tag(element) {
 // BUSCO
 async function catalog_search_cat(e, element) {
     //traigo el resultado mas parecido con find
-    //  var doc_id = $(element).attr('doc_id');
+    var doc_id = $(element).attr('doc_id');
     var new_cat_val = $(element).val();
     var select_div_id = "#catalog_select_new_cat_list";
     var new_cat = String(new_cat_val);
@@ -1353,6 +1353,7 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 cat_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1361,6 +1362,7 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1368,9 +1370,11 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 no_result: true
             }
         }
+       // console.log('CAT LIST LIST LISTTTT', cat_list_search);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
 
 
@@ -1520,9 +1524,8 @@ async function catalog_select_new_cat(element, new_cat) {
 // BUSCO 
 async function catalog_search_trade(e, element) {
 
-
     //traigo el resultado mas parecido con find
-    //  var doc_id = $(element).attr('doc_id');
+      var doc_id = $(element).attr('doc_id');
     var new_trade_val = $(element).val();
     var select_div_id = "#catalog_select_new_trade_list";
     var new_trade = String(new_trade_val);
@@ -1543,6 +1546,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 trade_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1551,6 +1555,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1558,6 +1563,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 no_result: true
             }
         }
@@ -1764,6 +1770,7 @@ async function catalog_dell_trade(element) {
 // BUSCADOR
 async function catalog_search_model(e, element) {
     //traigo el resultado mas parecido con find
+    var doc_id = $(element).attr('doc_id');
     var new_model_val = $(element).val();
     var select_div_id = "#catalog_select_new_model_list";
     var new_model = String(new_model_val);
@@ -1784,11 +1791,13 @@ async function catalog_search_model(e, element) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
+                doc_id:doc_id,
                 model_find_list: search_list
             }
         } else if (search_list == null) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
+                doc_id:doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 model_find_list: doc.model_list
             }
@@ -1796,6 +1805,7 @@ async function catalog_search_model(e, element) {
         else {
             var list_search = {
                 ws_lang_data: ws_lang_data,
+                doc_id:doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 no_result: true
             }
