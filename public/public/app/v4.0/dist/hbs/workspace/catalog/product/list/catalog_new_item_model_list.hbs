@@ -1,11 +1,9 @@
 {{#each model_find_list }}
     <li onclick='catalog_select_new_model(this)'item_value_id="{{id}}" item_value="{{value}}" item_id="model" >
         <div class="dropdown-item">
-                   <a  new_value="{{value}}" onclick='catalog_product_edit_model(this)' 
-                                                                    input_value="{{value}}" 
-                                                                    input_id="model" href="#"   doc_id="{{../doc_id }}"  value="{{value}}">
-                                                                    {{value}}
-                                                                    </a>
+                <a  href="#"  >
+                    {{value}}
+                </a>
             {{#userCtx 'catalog' 'admin'}}
                 <button>
                     <span doc_id="{{../_id }}" value="{{../value}}" class="material-icons" onclick='catalog_dell_model(this)'>delete</span>

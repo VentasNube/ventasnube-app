@@ -1,11 +1,9 @@
 {{#each trade_find_list }}
 <li onclick='catalog_select_new_trade(this)' item_id="trade" item_value_id="{{id}}" item_value="{{value}}" href="#">
     <div class="dropdown-item">
-        <a  new_value="{{value}}" onclick='catalog_product_edit_trade(this)' 
-                                                                    input_value="{{value}}" 
-                                                                    input_id="trade" href="#"   doc_id="{{../doc_id}}"  value="{{value}}">
-                                                                    {{value}}
-                                                                    </a>
+        <a  >
+            {{value}}
+        </a>
         {{#userCtx 'catalog' 'admin'}}
         <button><span doc_id="{{../_id }}" value="{{../value}}" class="material-icons"
                 onclick='catalog_dell_trade(this)'>delete</span></button>
