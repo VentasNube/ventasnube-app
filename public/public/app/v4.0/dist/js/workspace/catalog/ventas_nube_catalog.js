@@ -368,6 +368,7 @@ async function catalog_edit_item(element) {
             tags: product_doc.tags,
             price_list: price_doc.price_list,
             currency_list: currency_doc.currency_list,
+            currency_default: currency_doc.currency_default,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
@@ -380,7 +381,7 @@ async function catalog_edit_item(element) {
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
 
-        // console.log('product_doc_array', product_doc_array);
+        console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -391,6 +392,33 @@ async function catalog_edit_item(element) {
     } catch (err) {
         console.log(err);
     }
+}
+
+
+/// EDITAR LAS MONEDAS EN EL FORMULARIO
+
+
+
+// SELECCIONO
+async function catalog_product_select_currency(element, new_model) {
+    let item_value_id = $(element).attr('item_value_id');
+    var item_value = $(element).attr('item_value');
+    var item_value_name = $(element).attr('item_value_name');
+   // var product_id = $(element).attr('doc_id');
+    var variant_id = $(element).attr('variant_id');
+    try {
+        //console.log(item_value_id,variant_id,item_value);
+        $('#catalog_product_selected_currency_'+variant_id).attr('item_value_id', item_value_id);
+        $('#catalog_product_selected_currency_'+variant_id).attr('item_value', item_value);
+        $('#catalog_product_selected_currency_'+variant_id).html(item_value);
+
+        $('#catalog_product_selected_currency_title_value'+variant_id).html(item_value);
+        $('#catalog_product_selected_currency_title'+variant_id).html(item_value_name);
+        //traigo el documento a editar
+    } catch (err) {
+        console.log(err);
+    }
+
 }
 
 // FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
@@ -413,6 +441,7 @@ async function catalog_edit_item_url(product_id, variant_id) {
             tags: product_doc.tags,
             price_list: price_doc.price_list,
             currency_list: currency_doc.currency_list,
+            currency_default: currency_doc.currency_default,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             category_list: new_category_list,
@@ -961,8 +990,6 @@ async function catalog_new_item_edit_variations(element) {
         else {
             doc[input_id] = new_value;
         }
-
-
         if (item) {
             var response = await L_catalog_db.put({
                 _id: doc._id,
@@ -2980,6 +3007,10 @@ async function add_stock_var(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
+        let currency_id = $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id'); //Id del documento a edita
+        let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
+        let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
+       
         let new_value = $('#add_stock_var_' + variant_id).val();
         let new_cost_stock = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
         var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
@@ -2992,8 +3023,26 @@ async function add_stock_var(element) {
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
-        // Busco dentro de las variables
-        if (variant_id) {
+        //Hago comprobaciones 
+        if(new_cost_stock_s === 0){
+            $('#new_cost_stock_var_' + variant_id).css('border', '3px solid red'); 
+            Snackbar.show({
+                text: 'Falta completar el precio',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+       else if( new_value_s ===  0 ){
+            $('#add_stock_var_'+ variant_id).css('border', '3px solid red');
+            Snackbar.show({
+                text: 'Falta completar la cantidad',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } 
+        else if (variant_id ) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
@@ -3011,30 +3060,39 @@ async function add_stock_var(element) {
                     out_stock: 0,
                     real_stock: new_value_s,
                     cost_price: new_cost_stock_s,
+                    currency_id:currency_id,
+                    currency_value:currency_value,
+                    currency_name:currency_name,
                     location_id: 1
                 };
                 //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-            }
-            var response = await L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-            });
-            if (response) {
-                // load_all_cat(doc_id,arr_number_id );
-                // catalog_edit_item_url(doc_id, 1);
-                Snackbar.show({
-                    text: 'El precio se actualizo!',
-                    actionText: 'ok',
-                    pos: 'bottom-right',
-                    actionTextColor: "#0575e6",
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
                 });
-                catalog_edit_item_url(doc_id, 1);
-            } else {
-                alert("no se actualizo");
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    Snackbar.show({
+                        text: 'El stock se actualizo!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                    catalog_edit_item_url(doc_id, 1);
+                } else {
+                    alert("no se actualizo");
+                }
+
             }
+            
+        }else{
+
+
         }
+
     } catch (err) {
         console.log(err);
     }

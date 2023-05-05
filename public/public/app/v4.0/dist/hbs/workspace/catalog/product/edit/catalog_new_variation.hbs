@@ -56,7 +56,7 @@
                             </span>
                         </div>
                         <div class="pull-right padding-10">
-                            {{#with ws_lang_data}} Stock: {{/with}}
+                            {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}: {{/with}}
                             {{#available_stock stock_invetary}}{{/available_stock}}
 
                             <div class="round-icon pr"><span> {{../product_doc/currency.value}} </span></div>
@@ -141,8 +141,10 @@
                                             <div class="pull-right">
 
                                                 {{#ifEquals type "in" }}
-                                                <span class="margin-r-10">Costo: ${{cost_price}}</span>
-                                                <span class="pull-right">Disponible
+                                                <span class="margin-r-10">{{#with ../../ws_lang_data}}
+                                                    {{{m_catalog_edit_cost}}} {{/with}}: {{currency_value}}{{cost_price}}</span>
+                                                <span class="pull-right"> {{#with ../../ws_lang_data}}
+                                                    {{{m_catalog_edit_enable}}} {{/with}}
                                                     <span class="badge"> {{real_stock}}</span>
                                                 </span>
                                                 {{/ifEquals}}
@@ -152,34 +154,7 @@
                                         {{/each}}
                                     </ul>
 
-                                    <div
-                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                        <div
-                                            class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                            <button type="button" class="btn xl btn-more btn-primary line" role="button"
-                                                data-toggle="collapse" data-parent="#item-edit-variants"
-                                                href="#add_stock_form{{id}}" aria-expanded="true"
-                                                aria-controls="collapseOne">
-
-                                                <span class="material-icons">add_circle_outline</span>
-                                                <span class=""> Ingresar</span>
-
-                                            </button>
-                                        </div>
-
-                                        <div
-                                            class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                            <button type="button" class="btn xl btn-more btn-danger line" role="button"
-                                                data-toggle="collapse" data-parent="#item-edit-variants"
-                                                href="#dell_stock_form{{id}}" aria-expanded="true"
-                                                aria-controls="collapseOne">
-                                                <span class="material-icons">do_not_disturb_on</span>
-                                                <span class="">
-                                                    Retirar
-                                                </span>
-                                            </button>
-                                        </div>
+                                    <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                         <div id="dell_stock_form{{id}}" role="tabpanel"
                                             class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -193,7 +168,6 @@
                                                             inventory_2
                                                         </span>
                                                     </span>
-
                                                     <div class="input-group">
                                                         <input id="dell_stock_var_{{id}}" class="form-control"
                                                             type="number" placeholder="Cantidad" value="">
@@ -202,61 +176,124 @@
                                                                 id="dell_stock_var_{{id}}"
                                                                 doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"
                                                                 input_id="stock_invetary"
-                                                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-danger line pull-right "
+                                                                class="round xs padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-danger line pull-right "
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
                                                                 <span class="material-icons">do_not_disturb_on</span>
                                                             </button>
                                                         </span>
                                                     </div>
-
-
                                                 </div>
                                             </div>
 
                                         </div>
-
+                                        <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <button type="button" class="btn xl btn-more btn-danger line" role="button"
+                                                data-toggle="collapse" data-parent="#item-edit-variants"
+                                                href="#dell_stock_form{{id}}" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                <span class="material-icons">do_not_disturb_on</span>
+                                                <span class="">
+                                                    Retirar
+                                                </span>
+                                            </button>
+                                        </div>
                                         <div id="add_stock_form{{id}}" role="tabpanel"
                                             aria-labelledby="item-edit-variants" aria-expanded="true"
                                             class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                            <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <span class="material-icons" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Agregar precio">
-                                                            price_change
-                                                        </span>
-                                                    </span>
-                                                    <input id="new_cost_stock_var_{{id}}" class="col-sm-4 form-control"
-                                                        type="number" placeholder="Precio de costo" value="">
-                                                </div>
+                                          
+                                            <div class="padding-10 margin-0  col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                    <div class="input-group">
+                                                            <div class="btn-group dropleft">
+                                                                <button id="" type="button"
+                                                                    class=" padding-10 margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    <span id="catalog_select_trade_tittle">
+                                                                    {{#with ../currency_default}} 
+                                                                            <div id="" class="round-icon pr">
+                                                                                <span 
+                                                                                    item_value_id="{{id}}"
+                                                                                    item_value="{{value}}"
+                                                                                    currency_name ="{{currency_name}}"
+                                                                                    id="catalog_product_selected_currency_{{../id}}">
+                                                                                    {{value}} </span>
+                                                                            </div>
+                                                                      
+                                                                </button>
+                                                                <ul class="dropdown-menu xs pull-left">
+                                                                    <li  class="header">
+                                                                            <div id="" class="round-icon pr">
+                                                                                <span id="catalog_product_selected_currency_title_value{{../id}}">
+                                                                                    {{value}} 
+                                                                                </span>
+                                                                            </div>
+                                                                            <span id="catalog_product_selected_currency_title{{../id}}">
+                                                                                    {{currency_name}}
+                                                                            </span >
+                                                                            
+                                                                    </li>
+                                                                    {{/with}}
+                                                                    {{currency.currency_name}}</li>
+                                                                    {{#each ../currency_list }}
+                                                                        <li onclick="catalog_product_select_currency(this)"
+                                                                            item_value_id="{{id}}" variant_id="{{../id}}"
+                                                                            doc_id="{{{../product_doc/_id}}}"
+                                                                            item_value_name="{{currency_name}}"
+                                                                             item_value="{{value}}"
+                                                                              item_id="currency">
+                                                                            <div class="dropdown-item">
+                                                                                <a href="#" input_value=""
+                                                                                    input_id="currency">
+                                                                                    <span item_value_id="{{id}}"
+                                                                                        item_value="{{value}}"
+                                                                                        currency_name ="{{currency_name}}"
+                                                                                        id="catalog_product_selected_currency_{{id}}">
+                                                                                        {{value}} </span>
+                                                                                    {{currency_name}}
+                                                                                </a>
+                                                                            </div>
+                                                                        </li>
+                                                                    {{/each}}
+                                                                </ul>
+                                                            </div>
+                                                    </div>
                                             </div>
-
-                                            <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
+                                            <div class="padding-0 margin-0  col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                    <div class="input-group">
+                                                        <input id="new_cost_stock_var_{{id}}" 
+                                                            class="col-sm-4 form-control" type="number"
+                                                            placeholder="Precio de costo" value="">
+                                                    </div>
+                                            </div>
+                                            <div class="padding-0 col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                 <div class="input-group">
-                                                    <input id="add_stock_var_{{id}}" class="form-control" type="number"
+                                                    <input  id="add_stock_var_{{id}}"  class="form-control" type="number"
                                                         placeholder="Cantidad" value="">
                                                     <span class="input-group-addon">
                                                         <button type="button" onclick="add_stock_var(this)"
                                                             id="add_stock_var_{{id}}" doc_id="{{{../product_doc/_id}}}"
                                                             variant_id="{{id}}" input_id="stock_invetary"
-                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                                                            class="round xs padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
                                                             data-toggle="dropdown" aria-haspopup="true"
                                                             aria-expanded="false">
                                                             <span class="material-icons">add_circle</span>
                                                         </button>
                                                     </span>
                                                 </div>
-
                                             </div>
-
+                                        </div>
+                                        <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <button type="button" class="btn xl btn-more btn-primary line" role="button"
+                                                data-toggle="collapse" data-parent="#item-edit-variants"
+                                                href="#add_stock_form{{id}}" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                <span class="material-icons">add_circle_outline</span>
+                                                <span class=""> Ingresar</span>
+                                            </button>
                                         </div>
 
                                     </div>
-
                                 </div>
                                 <div id="edit_price_item_tab_{{id}}" class="tab-pane fade in">
                                     <!-- Precios del producto --->
@@ -398,7 +435,7 @@
                                             </span>
                                         </button>
                                         {{#first pictures}}
-                                       <div id="img-card-{{{../id}}}-{{{../../product_doc/_id}}}"
+                                        <div id="img-card-{{{../id}}}-{{{../../product_doc/_id}}}"
                                             style="width: 100%; background-image: url('{{{max}}}');"
                                             class="parallax img_card">
                                             <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
@@ -407,24 +444,26 @@
                                                 <div class="mini-card-img-s">
                                                     <div class="img">
                                                         <a target="_blank" href="{{min}}">
-                                                              <img id="mini-card-img-card-{{{../id}}}-{{{../../product_doc/_id}}}" src="{{min}}"  class="card_img_url">
+                                                            <img id="mini-card-img-card-{{{../id}}}-{{{../../product_doc/_id}}}"
+                                                                src="{{min}}" class="card_img_url">
                                                         </a>
                                                     </div>
                                                 </div>
                                                 {{/each}}
-                                                
-                                               
+
+
                                             </div>
                                         </div>
                                         {{/first }}
 
                                         <div id="message"></div>
-                                     
-                                            <div class="form-group">
-                                                <label for="fileInput">Selecciona un archivo:</label>
-                                                <input doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"  type="file" name="userfile" id="img-file-input-{{{id}}}">
-                                            </div>
-                                            <!--button id="upload-btn-{{{../product_doc/_id}}}-{{id}}" doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" onclick="uploadImage(this)" class="btn btn-primary">
+
+                                        <div class="form-group">
+                                            <label for="fileInput">Selecciona un archivo:</label>
+                                            <input doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" type="file"
+                                                name="userfile" id="img-file-input-{{{id}}}">
+                                        </div>
+                                        <!--button id="upload-btn-{{{../product_doc/_id}}}-{{id}}" doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" onclick="uploadImage(this)" class="btn btn-primary">
                                                 <i class="material-icons">cloud_upload</i> Subir
                                             </button>
                                             <div id="preloader" style="display: none;" class="icon_loading">
@@ -432,13 +471,16 @@
                                                         sync
                                                     </span>
                                             </div-->
-                                              <button id="upload-btn-{{{../product_doc/_id}}}-{{id}}" doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" onclick="uploadImage(this)" class="btn btn-primary">
-                                               
-                                                <span id="preloader_up_pic" style="display: none;" class="material-icons material-icon-spinner">sync</span>
-                                                <span id="preloader_finish" class="material-icons">cloud_upload</span> 
-                                                <span >Subir</span>
-                                            </button>
-                                           
+                                        <button id="upload-btn-{{{../product_doc/_id}}}-{{id}}"
+                                            doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"
+                                            onclick="uploadImage(this)" class="btn btn-primary">
+
+                                            <span id="preloader_up_pic" style="display: none;"
+                                                class="material-icons material-icon-spinner">sync</span>
+                                            <span id="preloader_finish" class="material-icons">cloud_upload</span>
+                                            <span>Subir</span>
+                                        </button>
+
                                     </div>
                                     <!-- DETALLE  COLOR ETC TALLE -->
                                     <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
