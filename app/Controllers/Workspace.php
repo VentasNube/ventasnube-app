@@ -683,6 +683,12 @@ class Workspace extends BaseController
                         'status' => 'active',
                         'currency_sell_default_id' => 1,
                         'currency_link_status' => 1,
+
+                        'currency_default' => [
+                            'id' => 2,
+                            'value' => '$',
+                            'currency_name' =>'Peso Argentino'
+                        ],
                         'currency_list' => [
                             
                             [
