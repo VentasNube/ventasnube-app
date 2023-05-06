@@ -426,7 +426,6 @@
                                 </div>
                                 <div id="edit_description_item_tab_{{id}}" class="tab-pane fade">
                                     <!-- FOTOS -->
-
                                     <div class="header">
                                         <button id="" type="button"
                                             class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
@@ -450,8 +449,6 @@
                                                     </div>
                                                 </div>
                                                 {{/each}}
-
-
                                             </div>
                                         </div>
                                         {{/first }}
@@ -463,14 +460,6 @@
                                             <input doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" type="file"
                                                 name="userfile" id="img-file-input-{{{id}}}">
                                         </div>
-                                        <!--button id="upload-btn-{{{../product_doc/_id}}}-{{id}}" doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" onclick="uploadImage(this)" class="btn btn-primary">
-                                                <i class="material-icons">cloud_upload</i> Subir
-                                            </button>
-                                            <div id="preloader" style="display: none;" class="icon_loading">
-                                                    <span class="material-icons material-icon-spinner">
-                                                        sync
-                                                    </span>
-                                            </div-->
                                         <button id="upload-btn-{{{../product_doc/_id}}}-{{id}}"
                                             doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"
                                             onclick="uploadImage(this)" class="btn btn-primary">
@@ -480,7 +469,7 @@
                                             <span id="preloader_finish" class="material-icons">cloud_upload</span>
                                             <span>Subir</span>
                                         </button>
-
+        <!--- CODIGO DE CHATGPT4 ------->
                                     </div>
                                     <!-- DETALLE  COLOR ETC TALLE -->
                                     <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">

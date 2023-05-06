@@ -95,5 +95,55 @@ function scrollerMove() {
 };
 
 
+///// BOARDS 2023 NEW FUNCTIONS ////
+
+
+// TRAIGO LA BARRA DE BUSQUEDA
+function get_nav_boards(ws_info, ws_lang_data) {
+    var ws_catalog_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
+    //alert('cargo el bucador');
+    // $('#cart_user_input').focus();
+    console.log('NAV BAR CATALOG');
+};
+// TRAIGO LOS PRODUCTOS DEL CATALOGO
+function get_items_boards(ws_id) {
+    var ws_catalog = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/catalog_items.hbs', '#content_catalog_commpiled', ws_catalog);
+    // $('#cart_user_input').focus();
+    //console.log('GET ITEMS CATALOG');
+}
+
+// TARJETAS DE PRODUCTOS
+//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+function print_item_boards(new_items) {
+    var search_result = {
+        search_product: new_items,
+        price_list: price_doc.price_list,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
+    }
+    console.log(search_result);
+    if (new_items.length > 0) {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
+}
+
+
+
+
+
+
+
 //scrollerMove();
 //get_board_module();

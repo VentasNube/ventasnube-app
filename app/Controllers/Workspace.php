@@ -1613,75 +1613,28 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                     $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
                    
-                    //Creo una carpeta para subir las fotos del catalogo
-
-                   
-
-
-
-
-                   // $carpetaDestino = FCPATH . 'uploads/catalog/'.$db_name;
-                    //  $carpetaDestino = WRITEPATH . 'catalog/'.$db_name;
-                    // $filesystem = new Filesystem();
-                    //$filesystem->mkdir($carpetaDestino, 0777);
-
-                    //$files = new Files();
-
-                   /* $folderPath = FCPATH . 'public/catalog/img/'.$db_name;
-
-                    if (!file_exists($folderPath)) {
-                        $file = new File($folderPath, true);
-                    }
-
-                    
-*/
-
-
-                   
-
-                    /*
-                    $dir = '/var/www/html/ventasnube-app/writable/uploads/catalog/img/ws_collections_323836';
-                    
-                    // Crea el directorio si no existe
-                    if (!file_exists($dir)) {
-                        mkdir($dir, 0777, true);
-                    }
-
-                    // Verifica los permisos del directorio
-                    if (!is_writable($dir)) {
-                        chmod($dir, 0777);
-                    }
-                    *
-
-
-
-
-
-
-                  /*  $folderPath = WRITEPATH . 'uploads/catalog/img/';
-                    if (!is_dir($folderPath)) {
-                        mkdir($folderPath, 0644, true); // Crea la carpeta y establece permisos a 0777
-                    } else {
-                        chmod($folderPath, 0644); // Cambia los permisos de la carpeta a 0777
-                    }
-*/
-                    
-
-
-                    /*   $path = WRITEPATH . 'uploads/'; // ruta donde se almacenarán los archivos
-                    
-                    $file = new CodeIgniter\Files\File($path, true);
-
-                    if (!$files->isDirectory($path)) {
-                       $files->createDirectory($path, 0755, true); // crea la carpeta si no existe
-                    }
-                    // $data = 'Hola, mundo!'; // contenido del archivo
-                    $filename = 'miarchivo.txt'; // nombre del archivo
-                    $files->write($path . $filename, $data); // escribe el archivo
-                    */
-              
+                    //Creo una carpeta para subir las fotos del catalog
                 }
-
+                // ECHO EL 4/5/23
+                //BOARDS ORDENES DE VENTA TODAS FILTRADAS POR TIPO, VENTA, COMPRA, SERVICIO, TURNO
+                if ($ws_boards) {
+                    $db_name = 'ws_boards_' . $workspace_id_hex;
+                    $ws_user_workspace_permission = [
+                        'ws_id' => $workspace_id_dec,
+                        'ws_id_hex' => $workspace_id_hex,
+                        'user_id' => $user_id,
+                        'module_id' => '1', //EL modulo que es
+                        'module_type_id' => '2', //el tipo de modulo
+                        'auth_permissions_id' => '1',//Nivel de permiso 1 mas alto 
+                    ];
+                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                    if ($result) {
+                        $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                    }
+                }
                     /* ========== 
                     INFO DB
                     Edit:10/10/21
