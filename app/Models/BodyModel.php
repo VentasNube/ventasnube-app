@@ -30,100 +30,8 @@ class BodyModel extends Model//Crea el nombre de el modelo
     //  protected $validationRules    = [];
     //  protected $validationMessages = [];
     //  protected $skipValidation     = false;
-
-/*
-    /// TRAE TODOS LOS MODULOS QUE TIENE USER PERMISION EL USUARIO(Se usa para la navegacion lateral)
-    public function get_group($user_id = false)
-    {
-        // $group_id = 2;
-        $db = \Config\Database::connect();
-        $builder = $db->table('auth_groups_users');
-        // $builder->db->table('blog');
-        $builder->select('*');
-        //  $builder->join(' module.m_id', ' module.m_id = modules_group_permission.m_id');
-        //$builder->join('modules_group_permission', 'modules_group_permission.m_id = module.m_id');
-        // $builder->orderBy('m_position', 'Asc');
-        $builder->where('user_id', $user_id);
-        $query = $builder->get()->getResultArray();
-        // lang('Auth.loginSuccess');
-        foreach ($query as $row) {
-            $group_id = $row['group_id'];
-        }
-        return $group_id;
-    }
-
-    /// GET MODULE PLAN
-    public function get_m_plan($plan_id = false)
-    {
-        // $group_id = 2;
-        $db = \Config\Database::connect();
-        $builder = $db->table('module');
-        $builder->select('*');
-        $builder->join('modules_group_permission', 'modules_group_permission.m_id = module.m_id');
-        $builder->orderBy('m_position', 'Asc');
-        $builder->where('a_p_g', $group_id);
-        $query = $builder->get()->getResultArray();
-        // lang('Auth.loginSuccess');
-        if ($query) {
-            foreach ($query as $row) {
-                //   $group_id = $row['group_id'];
-                $row_m[] = array(
-                    'm_id' => $row['m_id'],
-                    'm_type_action' => $row['m_type_action'],
-                    'm_color' => $row['m_color'],
-                    //Con el uso de lang puedo cambiar el texto de los botones internamente
-                    'm_name' => lang('Body.' . $row['m_name'] . ''),
-                    'm_url' => $row['m_url'],
-                    'm_icon' => $row['m_icon'],
-                );
-            }
-            //return   json_encode($row_m);
-            return $row_m;
-        } else {
-            return false;
-        }
-    }
-
-    ///  TRAE TODOS el Group ID (NO SE DONDE SE USA LO REEMPLAZE POR GET_M)
-    public function get_user_workspace_permission($user_id = false, $ws_id = false)
-    {
-
-        $db = \Config\Database::connect();
-        $module_db = $db->table('users_workspace_permission');
-        $module_db->select('*');
-
-        $module_db->join('module', 'module.m_id = users_workspace_permission.module_id');
-        $module_db->join('auth_permissions', 'auth_permissions.id = users_workspace_permission.auth_permissions_id');
-
-        $module_db->where('user_id', $user_id);
-        $module_db->where('ws_id', $ws_id);
-        //$module_db->where('module_type_id >=', 0);
-
-        //    $query = $plans_db->get()->getResult();
-        $query = $module_db->get()->getResultArray();
-
-        if ($query) {
-            foreach ($query as $row) {
-                if ($row['module_type_id'] == 0) {
-                    $row_m[] = array(
-                        'm_id' => $row['m_id'],
-                        'm_type_action' => $row['m_type_action'],
-                        'm_color' => $row['m_color'],
-                        'm_name' => lang('Body.' . $row['m_name'] . ''), //Con el uso de lang puedo cambiar el texto de los botones internamente
-                        'm_url' => $row['m_url'],
-                        'm_icon' => $row['m_icon'],
-                        // 'm_t_position' => $row['m_t_position'],
-                    );
-                }
-            }
-            return $row_m;
-        } else {
-            return false;
-        }
-    }
-*/
-    ////***** FUNCIONES 2021 finales NO SE SI SE USA  */
     
+    ////***** FUNCIONES 2021 finales NO SE SI SE USA  */
      ///  FILTRA LOS ESPACIOS DE TRABAJO Y VERIFICA QUE NO ESTE VENCIDO EL PAGO DEL SERVICIO
      public function get_ws($ws_id_hex = false)
      {
@@ -272,64 +180,7 @@ class BodyModel extends Model//Crea el nombre de el modelo
         }
     }
 
-
     ////***** finales NO SE SI SE USA  */
-
-
-/*
-    ///  TRAE TODOS LOS MODULOS QUE TIENE USER PERMISION EL USUARIO(Se usa para la navegacion lateral)
-    public function get_all_plan($group_id = false)
-    {
-        // $group_id = 2;
-        $db = \Config\Database::connect();
-        $builder = $db->table('plans');
-        // $builder->select('*');
-        //  $builder->join('modules_group_permission', 'modules_group_permission.m_id = module.m_id');
-        //   $builder->orderBy('m_position', 'Asc');
-        //   $builder->where('a_p_g', $group_id);
-        $plans_db = $db->table('plans');
-        $plans_db->select('*');
-        $plans_db->join('module_plan', 'module_plan.plan_id = plans.id');
-        $plans_db->join('module', 'module.m_id = module_plan.module_id');
-        $query = $plans_db->get()->getResult();
-
-        $data = [
-            'plans' => $plans_db->get()->getResult(),
-            'modules' => '',
-            'title' => 'Planes disponibles workspace',
-        ];
-
-        $plans_db = $db->table('plans');
-        $plans_db->select('*');
-        // $plans_db->join('module_plan', 'module_plan.plan_id = plans.id');
-        // $plans_db->join('module', 'module.m_id = module_plan.module_id');
-        $query = $plans_db->get()->getResult();
-        $query = $builder->get()->getResultArray();
-        // lang('Auth.loginSuccess');
-
-        if ($query) {
-            foreach ($query as $row) {
-                //   $group_id = $row['group_id'];
-                $row_m[] = array(
-                    'm_id' => $row['m_id'],
-                    'm_type_action' => $row['m_type_action'],
-                    'm_color' => $row['m_color'], //Con el uso de lang puedo cambiar el texto de los botones internamente
-                    'm_name' => lang('Body.' . $row['m_name'] . ''),
-                    'm_url' => $row['m_url'],
-                    'm_icon' => $row['m_icon'],
-                );
-            }
-            //return   json_encode($row_m);
-            return $row_m;
-        } else {
-            return false;
-        }
-    }
-
-    ///  TRAE TODOS EL MODULO ACTUAL SEGUN PARAMETROS USER PERMISION EL USUARIO(Se usa para la navegacion lateral, del boar etc)
-   
-   */
-
     public function get_m_now($user_id = false, $m_id = false, $m_t_id = false, $m_t_name = false)
     {
         $this->db->select('*');
