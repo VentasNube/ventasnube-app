@@ -1,6 +1,6 @@
 <section class="sidebar">
     <ul class="sidebar-menu">
-        {{#each m as |m_t|}}
+        {{#each m as |m_arr|}}
             <li class="treeview">
                  <a
                  {{#ifEquals m_type_action "1"}}   
@@ -13,8 +13,13 @@
                     <span>{{m_name}} </span>
                 </a>
                 <ul class="treeview-menu">
+
+                        <span> VENTAS SERIA</span>
                     {{#each ../m_t}}
-                         {{#ifEquals m_id m_t.m_id}}   
+                         <i class="material-icons">{{m_icon}}</i>
+                        <span> VENTAS SERIA</span>
+                        <span> {{m_arr.m_id}}</span>
+                         {{#ifEquals m_id m_arr.m_id}}   
                             <li class="active">
                                 <a class="l_nav_t_m"
                                     {{#ifEquals m_t_type_action "1"}}   

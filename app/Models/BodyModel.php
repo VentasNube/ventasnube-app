@@ -93,29 +93,31 @@ class BodyModel extends Model//Crea el nombre de el modelo
      }
 
     ///  TRAE TODOS LOS MODULOS AUTORIZADOS DEL USUARIO EN UN ARRAY (Se usa para la navegacion lateral)
+    // FUNCIONAMIENTO
+    // 1- Busco en la tabla ('users_workspace_permission') los permisos que tienen cada usuario
+    // 2- Uno la tabla ('Module') y ('module.m_id') con ('users_workspace_permission')
+    // 3- 
     public function get_m($user_id = null, $ws_id_hex = null)
     {
   
           $db = \Config\Database::connect();
           $module_db = $db->table('users_workspace_permission');
           $module_db->select('*');
-
-          //Uno los modulos con los id module de user permission 
+          // Uno los modulos con los id module de user permission 
           // $module_db->join('module', 'module.m_id = module_plan.module_id');
-
-          //Uno los modulos con los id module de user permission
+          // Uno los modulos con los id module de user permission
           $module_db->join('module', 'module.m_id = users_workspace_permission.module_id');
-          //Uno los modulos con los id module de user permission 
-          $module_db->join('module_plan', 'module_plan.module_id = users_workspace_permission.module_id');
-          //Uno los modulos con los id module de user permission 
+          // Uno los modulos con los id module de user permission 
+          //$module_db->join('module_plan', 'module_plan.module_id = users_workspace_permission.module_id');
+          // Uno los modulos con los id module de user permission 
           // $module_db->join('auth_permissions', 'auth_permissions.id = users_workspace_permission.auth_permissions_id');
-          //Uno los espacios de trabajos y sus planes id para filtrar los modulos que devuelve
+          // Uno los espacios de trabajos y sus planes id para filtrar los modulos que devuelve
           $module_db->where('user_id', $user_id);
           $module_db->where('ws_id_hex', $ws_id_hex);
           //comento el plan por qno es el id
           //$module_db->where('plan_id', $ws_plan_id);
           $module_db->groupBy('module.m_id');
-          // $module_db->orderBy('m_position','ASC');
+          $module_db->orderBy('m_position','ASC');
           // $module_db->where('module_type_id >=', 0);
           $query = $module_db->get()->getResultArray();
   
@@ -130,7 +132,7 @@ class BodyModel extends Model//Crea el nombre de el modelo
                           'm_name' => lang('Body.' . $row['m_name'] . ''), //Con el uso de lang puedo cambiar el texto de los botones internamente
                           'm_url' => $row['m_url'],
                           'm_icon' => $row['m_icon'],
-                          // 'm_t_position' => $row['m_t_position'],
+                          'm_position' => $row['m_position'],
                       );
                   }
               }

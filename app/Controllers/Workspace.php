@@ -1624,7 +1624,7 @@ class Workspace extends BaseController
                         'ws_id_hex' => $workspace_id_hex,
                         'user_id' => $user_id,
                         'module_id' => '1', //EL modulo que es
-                        'module_type_id' => '2', //el tipo de modulo
+                        'module_type_id' => '0', //el tipo de modulo
                         'auth_permissions_id' => '1',//Nivel de permiso 1 mas alto 
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
@@ -1635,6 +1635,12 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                 }
+
+
+
+
+                // ECHO EL 4/5/23
+              
                     /* ========== 
                     INFO DB
                     Edit:10/10/21
@@ -1678,34 +1684,9 @@ class Workspace extends BaseController
 
 
                 */
-                /*
-                //Contactos
-                if ($ws_contact) {
-                    $db_name = 'ws_contact_' . $workspace_id_hex;
-                    $ws_user_workspace_permission = [
-                        'ws_id' => $workspace_id_dec,
-                        'ws_id_hex' => $workspace_id_hex,
-                        'user_id' => $user_id,
-                        'module_id' => '3',
-                        'module_type_id' => '0',
-                        'auth_permissions_id' => '1',
-                    ];
-                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
-                        $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
-                    }
-                }
-                // Movimientos generales 
-                if ($ws_mov) {
-                    $db_name = 'ws_mov_' . $workspace_id_hex;
-                    $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                    $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                    $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-                    $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
-                }
+            
+               
+              
                 //Tableros
                 if ($ws_boards) {
                     $ws_user_workspace_permission = [
@@ -1730,12 +1711,13 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                  /*  if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get-type', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                 // Ordenes (plan-business)
                 if ($ws_order_sell) {
@@ -1749,12 +1731,13 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                 /*   if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                 //Ordenes de compra productos
                 if ($ws_order_buy) {
@@ -1768,12 +1751,13 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                /*    if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                 //Ordenes de Servicios tecnicos (plan-business)
                 if ($ws_order_tecnic_service) {
@@ -1787,12 +1771,13 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                   /* if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                   //Ordenes de Servicios professionales (plan-business)
                 if ($ws_order_pro_service) {
@@ -1806,12 +1791,13 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                 /*   if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                 //Ordenes del catalogo de pedidos (plan-business-shop)
                 if ($ws_order_app) {
@@ -1825,7 +1811,7 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                /*    if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
@@ -1838,7 +1824,28 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
+                 //Contactos
+                if ($ws_contact) {
+                    $db_name = 'ws_contact_' . $workspace_id_hex;
+                    $ws_user_workspace_permission = [
+                        'ws_id' => $workspace_id_dec,
+                        'ws_id_hex' => $workspace_id_hex,
+                        'user_id' => $user_id,
+                        'module_id' => '3',
+                        'module_type_id' => '0',
+                        'auth_permissions_id' => '1',
+                    ];
+                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                   /* if ($result) {
+                        $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                    }*/
+                }
+
                 // Control de caja  
                 if ($ws_mov_box) {
                     $db_name = "ws_mov_box_" . $workspace_id_hex;
@@ -1852,12 +1859,13 @@ class Workspace extends BaseController
                     ];
 
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    if ($result) {
+                    /*  if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
+                    */
                 }
                 // Estadisticas 
                 if ($ws_statistics) {
@@ -1884,7 +1892,14 @@ class Workspace extends BaseController
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
                 }
 
-                */
+                  // Movimientos generales 
+                /*  if ($ws_mov) {
+                    $db_name = 'ws_mov_' . $workspace_id_hex;
+                    $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+                    $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                    $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                    $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                }*/
             }
             if ($db->transStatus() === false) {
                 $db->transRollback();
