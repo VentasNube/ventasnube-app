@@ -30,6 +30,12 @@ return [
         'search_icon' => 'search',
         //BOARDS
         'm_board' => 'Tableros',
+        'm_board_new_item' => 'Tableros',
+        'm_board_filter' => 'Tableros',
+        'm_board_group' => 'Tableros',
+        'm_board_' => 'Tableros',
+
+
 
         //CATALOGO
         'm_catalog' => 'Catalogo',
@@ -188,7 +194,7 @@ return [
          'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a',
        
         // body modules name
-        'm_board' => 'Tablerosssss',
+        'm_board' => 'Tableros',
         'm_catalog' => 'Catalogo',
         'm_box' => 'Caja',
         'm_my_box' => 'Mi caja',
