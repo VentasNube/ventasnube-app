@@ -29,15 +29,11 @@
 <script>
 
     ////----( VISTA NAV )----/////
-    
-    function get_nav_board(m_id, m_t_id) {
+    /*
+    function get_nav_board_OLD(m_id, m_t_id) {
         var url_now = getUrl();
         var m_id = url_now.m_id;
         var m_t_id = url_now.m_t_id;
-        /*if(m_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
-              var m_id = url_now.m_id;
-         }if(m_t_id == null){//Compruebo que la funcion no trae datos y los cargo de la url actual
-         }*/
         var pacht = 'body'; //CONTROLADOR PRINCIPAL
         var controler_data = 'nav_bar'; //NOMBRE DE CONTROLADOR DATA
         var controler_template = 'nav_bar_template'; //NOMBRE CONTROLADOR TEMPLATE      
@@ -49,7 +45,7 @@
         console.log('Modulo id nav' + m_id);
         get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
     };
-   
+   */
     ////----( VISTA BOARD CONTENT  )----/////
     /*  function get_board_module(search_m_input, m_id) {
         var url_now = getUrl();
@@ -68,7 +64,7 @@
     };
     */
     ////----( VISTA BOARD GROUP   )----/////
-    function get_board_group(m_id, m_t_id) {
+    function get_board_group_OLD(m_id, m_t_id) {
         var url_now = getUrl();
         var m_id = url_now.m_id;
         var m_t_id = url_now.m_t_id;
@@ -90,7 +86,7 @@
         get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
     };
     
-    function get_search_board_items(search_m_input, m_id) {
+    function get_search_board_items_OLD(search_m_input, m_id) {
         var url_now = getUrl();
         var m_id = url_now.m_id;
         var m_t_id = url_now.m_t_id;
@@ -244,10 +240,12 @@
 
     ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
     $(document).ready(function () {
+        /*
         window.onload =
             scrollerMove();
             get_board_group();
             get_nav_board();
+        */
     });
 
 

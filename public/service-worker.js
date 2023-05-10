@@ -2,7 +2,7 @@
       importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
       
       
-      const version = 22256222232225123622221342267222222;
+      const version = 529823224221342222467222240982222222;
       
       
     
@@ -50,6 +50,9 @@
         { url: '/public/app/v4.0/dist/css/VentasNubeSkin.css', revision: version },
         { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.css', revision: version },
         { url: 'public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css', revision: version },
+
+        { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css', revision: version },
+        { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js', revision: version },
         // Fuentes js plugins
         { url: '/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js', revision: version },
         { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
@@ -95,15 +98,13 @@
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs', revision: version },
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs', revision: version },
         { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
-          //Template de catalog
-
-       
-          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
+        //CATALOG
+        { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
          // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
          // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/form_new_product.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', revision: version },
-                { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
+          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
@@ -114,16 +115,14 @@
           
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', revision: version },
           { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', revision: version },
-    
           // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
-
          // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', revision: version },
          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
-         
          { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
-
-          
-          
+         //BOARD
+         { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
+         { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
+         { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },
     ]);
 
     workbox.routing.registerRoute(

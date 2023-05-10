@@ -1,6 +1,6 @@
 <div class="row board-group ">
     <div class=" row board">
-        {{#each board_group as |orders|}}
+      <!--  {{#each board_group as |orders|}} -->
         <div class="board-column">
             <div class="board-column-header {{{board_group_color}}}">
                 <div class="board-column-header-tittle"> <span data-toggle="tooltip" data-placement="right"
@@ -30,9 +30,9 @@
             </div>
             <div class="board-column-content-wrapper">
                 <div id="board_card_group_compiled" class="board-column-content" group-id="1">
-                    {{#each ../orders}}
+                 <!--   {{#each ../orders}}
                     {{#ifEquals orders.board_group_id board_group_id}}
-
+                    -->
                     <div class="board-item" id="22" order="410">
                         <div class="board-item-content">
                             <div class="s-card ">
@@ -816,10 +816,10 @@
                             </div>
                         </div>
                     </div>
-
+                 <!--  
                     {{/ifEquals}}
                     {{/each}}
-
+                    -->
                 </div>
                 <div class="board-new-item">
                     <div class="icon">
@@ -830,14 +830,16 @@
                 </div>
             </div>
         </div>
-        {{/each}}
+     <!--   {{/each}} -->
     </div>
 </div>
 <!-- Bootstrap.min.JS -->
-<!-- VentasNubeSkin.css -->
+<!-- VentasNubeSkin.css
 <link rel="stylesheet" href="/public/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
 
 <script type="text/javascript" src="/public/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+ -->
 <script>
 
  $(document).on('click', '#edit_board_group_btn', function (event) {
@@ -872,9 +874,9 @@
         var board_new_group_size = colum_size * number_column;
         $('.board-group').width(board_new_group_size);
          console.log(board_new_group_size);
-        //    var divs = document.getElementsByClassName(".board-column").length;
+        //  var divs = document.getElementsByClassName(".board-column").length;
         //  console.log("Hay " + divs + " Etapas");
-        //   alert(board_new_group_size);
+        //  alert(board_new_group_size);
     }
     /*
   // BOARD VISTA  CONFIGURO LOS PARAMETROS DEL MODULO Y LO ENVIO AL COMPILADOR
@@ -896,6 +898,7 @@
   
   get_board_card_group();
       */
+    
     function board_shortable_show() {
         // Logica de Muui 
         var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
@@ -1013,11 +1016,11 @@
             switchOnClick: true
         });
     }
-    datetimePiker();
-
+   
+   // datetimePiker();
+   // get_board_group();
     get_board_group_size(); //Agranda el div para las etapas
     scrollerMove();// Movimiento orizontal
     board_shortable_show(); //constructor de vista de las etapas
- 
-//get_board_group();
+    
 </script>

@@ -17,27 +17,18 @@ function get_board_module(search_m_input, m_id) {
 };
 
 
-function get_board_group(m_id, m_t_id) {
-    var url_now = getUrl();
-    var m_id = url_now.m_id;
-    var m_t_id = url_now.m_t_id;
 
-    //  var pacht = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL
-    //var controler_m = url_now.pacht_m_url;
-    //alert(controler_m);
-    //  var controler_data = pacht + '_group_data'; //NOMBRE DE CONTROLADOR DATA
-    //  var controler_template = pacht+'_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-    var pacht = 'board'; //CONTROLADOR PRINCIPAL
-    var controler_data = 'board_group_data'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = 'board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-    var id_copiled = '#content_board_group_compiled'; // ID DE COMPILACION //  
-    var data = {
-        m_id: m_id,
-        m_t_id: m_t_id,
-        //  search_m_input: search_m_input,
+// TRAIGO LA BARRA DE BUSQUEDA
+function get_nav_board(ws_info, ws_lang_data) {
+    var ws_catalog_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
     }
-    console.log(data);
-    get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
+    //alert('cargo el bucador');
+    // $('#cart_user_input').focus();
+    console.log('NAV BAR BOARD');
 };
 
 ///----(Search function)-----/
@@ -157,6 +148,83 @@ board_db.sync(url_R_db + userDb, {
 ///// BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
 
+var all_items_array = {};
+var search_fuse = null;
+
+// Trae los datos de la local user DB filtrado por tipo cart-items
+async function get_all_board_intems(ws_id, filter) {
+    // Traigo los resultados de una vista
+    let response = await L_board_db.query(
+        'get/seach', {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const rows = response.rows;
+        //  console.log('Respuesta Origial'); // []
+        // console.log(response.rows);
+        // alert(ws_id);
+        //Filtro los items de este espacio de trabajo 
+        //  var filter = 'Remera';
+        /*   var filtered = rows.filter( 
+                row => row.value.tags === 'Remera'
+             ); 
+        //FILTROS
+        console.log('filtered ppppp');
+        console.log(filtered);
+        */
+        // new_items = {}; //creo el array con la variable global
+        all_items_array = await rows.map(item => {
+            new_items = {};
+            // Mapeo el array
+            new_items['name'] = item.value.name;
+            new_items['cats'] = item.value.cats;
+            new_items['tags'] = item.value.tags;
+            new_items['sku'] = item.value.sku;
+            new_items['attribute_combinations'] = item.value.attribute_combinations;
+            new_items['doc'] = item.value;
+            //Formateo el array final
+            //  all_items_map_array = {
+            //     item:new_items
+            // }
+            return new_items;
+        });
+
+        //Imprimo el resultado en patalla
+        print_catalog_item(all_items_array);
+        // CONFIGURO LA VARIABLE GLOBAL FUSE PARA USAR EN TODOS LADOS ya con el array de los resultados
+        var options = {
+            // isCaseSensitive: false,
+            // includeScore: false,
+            // shouldSort: true,
+            // includeMatches: false,
+            // findAllMatches: false,
+            // minMatchCharLength: 1,
+            // location: 0,
+            // threshold: 0.6,
+            // distance: 100,
+            // useExtendedSearch: false,
+            // ignoreLocation: false,
+            // ignoreFieldNorm: false,
+            includeScore: true,
+            useExtendedSearch: true,
+            keys: [
+                "name",
+                "sku",
+                "tags",
+                "cat"
+            ]
+        };
+        var myIndex = Fuse.createIndex(options.keys, all_items_array);
+        // initialize Fuse with the index
+        search_fuse = new Fuse(all_items_array, options, myIndex);
+    }
+    else {
+        //return all_cart_item(false);
+    }
+}
+
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_board(ws_info, ws_lang_data) {
     var ws_catalog_data = {
@@ -167,8 +235,9 @@ function get_nav_board(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
-    console.log('NAV BAR CATALOG');
+    console.log('NAV BAR BOARD');
 };
+
 // TRAIGO LAS ORDENES DEL BOARD
 function get_items_board(ws_id) {
     var ws_catalog = {
@@ -256,37 +325,84 @@ async function board_view_item(element) {
     }
 }
 
+
+  ////----( VISTA BOARD GROUP   )----/////
+  function get_board_groupOLD(m_id, m_t_id) {
+    var url_now = getUrl();
+    var m_id = url_now.m_id;
+    var m_t_id = url_now.m_t_id;
+    //  var pacht = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL
+    //var controler_m = url_now.pacht_m_url;
+    //alert(controler_m);
+    //  var controler_data = pacht + '_group_data'; //NOMBRE DE CONTROLADOR DATA
+    //  var controler_template = pacht+'_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var pacht = 'board'; //CONTROLADOR PRINCIPAL
+    var controler_data = 'board_group_data'; //NOMBRE DE CONTROLADOR DATA
+    var controler_template = 'board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var id_copiled = '#content_board_group_compiled'; // ID DE COMPILACION //  
+    var data = {
+        m_id: m_id,
+        m_t_id: m_t_id,
+        //  search_m_input: search_m_input,
+    }
+    console.log(data);
+    get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+};
+
+async function get_board_group(ws_id) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_cart);
+    alert('GET_BOARD_group');
+   // get_nav_board();
+   // get_all_board_intems();
+   // get_board();
+}
+
+
+
+function get_search_board_items(search_m_input, m_id) {
+    var url_now = getUrl();
+    var m_id = url_now.m_id;
+    var m_t_id = url_now.m_t_id;
+    var pacht = 'search'; //CONTROLADOR PRINCIPAL
+    var controler_data = 'search_card_product_data'; //NOMBRE DE CONTROLADOR DATA
+    var controler_template = 'search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var id_copiled = '#card_product_result_items'; // ID DE COMPILACION //  
+    var data = {
+        m_id: m_id,
+        search_m_input: search_m_input,
+    }
+    console.log(data);
+    //get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+};
+
+
+
+// TRAIGO EL BOARD Y IMPRIMO
+async function get_board(ws_id) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
+    alert('GET_BOARD');
+    get_nav_board();
+    get_board_group();
+   // get_all_board_intems();
+   // get_board();
+}
+
+
 // FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
-async function board_view_item_url(m_id, m_var_id) {
+async function board_view_item_url() {
     try {
-        var product_id = m_id;
-        var variant_id = m_var_id;
-        var product_doc = await L_catalog_db.get(product_id);
-        var var_doc = product_doc.variations.find(response => response.id == variant_id);
-        var product_doc_array = {
-            product_doc: product_doc,
-            product_variant: var_doc,
-            name: product_doc.name,
-            tags: product_doc.tags, // Etiquetas
-            // sku:product_doc.variations[variant_id].sku.value,
-            price_list: price_doc.price_list,   //Lista de precios
-            ws_lang_data: ws_lang_data, //Documento de lenguaje
-            user_roles: user_Ctx.userCtx.roles // User roles
-        }
-
-        console.log('VISTA DE PRODUCTO ROLES');
-        console.log(user_Ctx.userCtx.roles);
-        console.log('VISTA DE PRODUCTO ARRAY');
-        console.log(product_doc_array);
-
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-        $('#right_main').removeClass('move-right');
-        // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
-        // var m_url = url_app +'?type=catalog?=' + m_name; // Armo la url completa del linck
-        //  history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+        get_board(ws_id);
+        alert('Board_view_item_url');
     } catch (err) {
         console.log(err);
     }

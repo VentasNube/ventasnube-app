@@ -289,7 +289,9 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         if (m_t_id == '1') {
             alert('TRAIGO EL BOARD Ventas');
             // await get_board();
-            catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);
+            get_board(m_id, m_t_id, m_var_id, userCtx);
+            board_view_item_url(m_id, m_var_id, userCtx);
+            // catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);
             //updateHistory();
         }
         if (m_t_id == '2') {
