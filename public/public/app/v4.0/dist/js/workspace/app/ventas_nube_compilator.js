@@ -141,6 +141,24 @@ function getTemplateAjax(path, callback) {
                 }
             });
 
+
+            // Nuevo para relacionar los nombres de los modulos left nav
+            Handlebars.registerHelper('relatedData', function(ws_lang_data, ws_left_nav_data, options) {
+                let result = '';
+              
+                ws_left_nav_data.m_t.forEach(m_t_item => {
+                  const lang_data_values = Object.values(ws_lang_data);
+                  const relatedItem = lang_data_values.find(lang_data_item => m_t_item.m_t_name === lang_data_item.m_t_name);
+              
+                  if (relatedItem) {
+                    result += options.fn({ m_t_name: m_t_item.m_t_name, related_data: relatedItem });
+                  }
+                });
+              
+                return result;
+              });
+              
+
             // NO SE USA EN REVISION PARA PROXIMA ACTUALIZACION 
 
               // Para tomar los 0 como null en el if

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 use CodeIgniter\I18n\Time; // LIBRERIA PARA MANEJAR LAS FECHAS TIEMPO https://codeigniter4.github.io/userguide/libraries/time.html#instantiating
-
+use CodeIgniter\locale\lang;
 class BodyModel extends Model//Crea el nombre de el modelo
 
 {
@@ -143,7 +143,7 @@ class BodyModel extends Model//Crea el nombre de el modelo
     }
 
     ///  TRAE TODOS LOS MODULOS TYPE AUTORIZADOS DEL USUARIO EN UN ARRAY (Se usa para la navegacion lateral)
-    public function get_m_t($user_id = null, $ws_id_hex = null)
+    public function get_m_t_ok($user_id = null, $ws_id_hex = null)
     {
 
         $db = \Config\Database::connect();
@@ -164,11 +164,16 @@ class BodyModel extends Model//Crea el nombre de el modelo
             foreach ($query as $row) {
                 //   $group_id = $row['group_id'];
                 if ($row['module_type_id'] != 0) {
+
+                    $m_t_name = $row['m_t_name'];
+
                     $row_m[] = array(
                         'm_t_id' => $row['m_t_id'],
                         'm_t_type_action' => $row['m_t_type_action'],
                         'm_t_color' => $row['m_t_color'],
-                        'm_t_name' => $row['m_t_name'],
+                        //'m_t_name' => $row['m_t_name'],
+                        //'m_t_name' => lang($m_t_name), //Con el uso de lang puedo cambiar el texto de los botones internamente
+                        'm_name' => lang($row['m_t_name']), //Con el uso de lang puedo cambiar el texto de los botones internamente
                         'm_t_url' => $row['m_t_url'],
                         'm_t_icon' => $row['m_t_icon'],
                         'm_id' => $row['m_id'],
@@ -180,6 +185,25 @@ class BodyModel extends Model//Crea el nombre de el modelo
         } else {
             return false;
         }
+    }
+
+    public function get_m_t($user_id = null, $ws_id_hex = null)
+    {
+
+        $db = \Config\Database::connect();
+        $module_db = $db->table('users_workspace_permission');
+        $module_db->select('*');
+
+        $module_db->join('module_type', 'module_type.m_t_id = users_workspace_permission.module_type_id');
+        // $module_db->join('auth_permissions', 'auth_permissions.id = users_workspace_permission.auth_permissions_id');
+        $module_db->where('user_id', $user_id);
+        $module_db->where('ws_id_hex', $ws_id_hex);
+        $module_db->groupBy('module_type.m_t_id');
+        //$module_db->groupBy('module.m_id');
+        // $query = $plans_db->get()->getResult();
+        $query = $module_db->get()->getResultArray();
+        return $query;
+       
     }
 
     ////***** finales NO SE SI SE USA  */

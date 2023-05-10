@@ -48,6 +48,30 @@ class Body extends BaseController
                     $workspace_modules = $Body_model->get_m($user_id, $ws_id_hex);
                     $workspace_modules_type = $Body_model->get_m_t($user_id, $ws_id_hex);
 
+                    if ($workspace_modules_type) {
+                        foreach ($workspace_modules_type as $row) {
+                            //   $group_id = $row['group_id'];
+                            if ($row['module_type_id'] != 0) {
+                                $m_t_name = $row['m_t_name'];
+                                $row_m[] = array(
+                                    'm_t_id' => $row['m_t_id'],
+                                    'm_t_type_action' => $row['m_t_type_action'],
+                                    'm_t_color' => $row['m_t_color'],
+                                    'm_t_name' => lang('Body.' . $row['m_t_name'] . ''), //Con el uso de lang puedo cambiar el texto de los botones internamente
+                                    'm_t_url' => $row['m_t_url'],
+                                    'm_t_icon' => $row['m_t_icon'],
+                                    'm_id' => $row['m_id'],
+                                    // 'p_id' => $row['p_id'],
+                                );
+
+                                $workspace_modules_type = $row_m;
+
+                            }
+                        }
+                       
+                    } 
+
+
                     $data = array(
                         'm' => $workspace_modules, //Traigo todos los modulos segun los permisos de usuario
                         'm_t' => $workspace_modules_type, //Traigo todos los tipos de modulos segun los permisos de usuario

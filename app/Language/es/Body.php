@@ -2,6 +2,21 @@
 
 return [
 
+            //2023
+        // body modules name
+        'm_board' => 'Tableros',
+        'm_catalog' => 'Catalogo',
+        'm_box' => 'Caja',
+        'm_my_box' => 'Mi caja',
+        'm_all_box' => 'Todas las cajas',
+        'm_contact' => 'Contactos',
+        'm_reports' => 'Reportes',
+        'm_stats' => 'Estadisticas',
+        'm_cart' => 'Carrito',
+        'm_favorite' => 'Favoritos',
+        'm_myaccount' => 'Mi cuenta',
+        'm_myorders' => 'Mis compras',
+
     // body buttons
     'b_myaccount' => 'Mi cuenta',
     'b_exit' => 'Salir',
@@ -10,19 +25,27 @@ return [
     // Body tittles
     'b_tittle_workspace' => 'Mis espacios de trabajo',
 
-    // body modules name
-    'm_board' => 'Tableros',
-    'm_catalog' => 'Catalogo',
+ 
+
+    // MODULE 2023
+
+    'm_board_sales' => 'Ventas',
+    'm_board_buy' => 'Compras',
+    'm_board_service' => 'Servicios',
+    'm_board_turn' => 'Turnos',
+    'm_board_shop' => 'e comerce',
+    'm_users' => 'Usuarios',
+    //CAJA
     'm_box' => 'Caja',
     'm_my_box' => 'Mi caja',
-    'm_all_box' => 'Todas las cajas',
+    'm_box_histori' => 'Todas las cajas',
+    //CONTACTOS
     'm_contact' => 'Contactos',
+    //REPORTES
     'm_reports' => 'Reportes',
+    //ESTADISTICAS
     'm_stats' => 'Estadisticas',
-    'm_cart' => 'Carrito',
-    'm_favorite' => 'Favoritos',
-    'm_myaccount' => 'Mi cuenta',
-    'm_myorders' => 'Mis compras',
+
 
     //Alertas globales
     'b_ok' => 'Ok',

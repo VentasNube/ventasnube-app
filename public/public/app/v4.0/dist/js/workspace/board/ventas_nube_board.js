@@ -70,7 +70,7 @@ function scrollerMove() {
     } else {
         $("#move-left").show();
     }
-    $("#move-left").click(function() {
+    $("#move-left").click(function () {
         var leftPos = $('#scroller').scrollLeft();
         if (leftPos >= 0) {
             $("#move-right").show();
@@ -81,7 +81,7 @@ function scrollerMove() {
             scrollLeft: leftPos - scroll_px
         }, 200);
     });
-    $("#move-right").click(function() {
+    $("#move-right").click(function () {
         var leftPos = $('#scroller').scrollLeft();
         if (leftPos < 0) {
             $("#move-left").hide();
@@ -95,49 +95,6 @@ function scrollerMove() {
 };
 
 
-///// BOARDS 2023 NEW FUNCTIONS ////
-
-
-// TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_boards(ws_info, ws_lang_data) {
-    var ws_catalog_data = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
-    //alert('cargo el bucador');
-    // $('#cart_user_input').focus();
-    console.log('NAV BAR CATALOG');
-};
-// TRAIGO LOS PRODUCTOS DEL CATALOGO
-function get_items_boards(ws_id) {
-    var ws_catalog = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/catalog_items.hbs', '#content_catalog_commpiled', ws_catalog);
-    // $('#cart_user_input').focus();
-    //console.log('GET ITEMS CATALOG');
-}
-
-// TARJETAS DE PRODUCTOS
-//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function print_item_boards(new_items) {
-    var search_result = {
-        search_product: new_items,
-        price_list: price_doc.price_list,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-    }
-    console.log(search_result);
-    if (new_items.length > 0) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
-    } else {
-        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
-    }
-}
 
 
 //Creo y conecto con userDB local 
@@ -197,8 +154,146 @@ board_db.sync(url_R_db + userDb, {
 });
 
 
+///// BOARDS 2023 NEW FUNCTIONS ////
+///FUNCIONES BOARD 2023
+
+// TRAIGO LA BARRA DE BUSQUEDA
+function get_nav_board(ws_info, ws_lang_data) {
+    var ws_catalog_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
+    //alert('cargo el bucador');
+    // $('#cart_user_input').focus();
+    console.log('NAV BAR CATALOG');
+};
+// TRAIGO LAS ORDENES DEL BOARD
+function get_items_board(ws_id) {
+    var ws_catalog = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/card_order.hbs', '#content_catalog_commpiled', ws_catalog);
+    // $('#cart_user_input').focus();
+    //console.log('GET ITEMS CATALOG');
+}
+
+// TARJETAS DE ORDENES
+//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+function print_board_item(new_items) {
+    var search_result = {
+        search_product: new_items,
+        price_list: price_doc.price_list,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
+    }
+    console.log(search_result);
+    if (new_items.length > 0) {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
+}
+
+//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+async function search_board_item(search_val) {
+    //Armo el array para renderizar los items
+    var new_items_search = search_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
+    //Mapeo el resultado fuera de item
+    search_all_items_map_array = await new_items_search.map(it => {
+        new_items = {};
+        // Mapeo el array
+        new_items['name'] = it.item.name;
+        new_items['cats'] = it.item.cats;
+        new_items['tags'] = it.item.tags;
+        new_items['sku'] = it.item.sku;
+        new_items['attribute_combinations'] = it.item.attribute_combinations;
+        new_items['doc'] = it.item.doc;
+
+        //Formateo el array final
+        return new_items;
+    });
+    if (search_all_items_map_array.length > 0) {
+        print_catalog_item(search_all_items_map_array);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
+}
+
+// FUNCION PARA ARMAR LA VISTA DE EDITAR UNA ORDEN 
+async function board_view_item(element) {
+    try {
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
+        var product_doc = await L_catalog_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            price_list: price_doc.price_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: category_list
+        }
+        // console.log('price_doc.price_lis',price_doc.price_list);
+        // console.log('var_doc.price_list',var_doc.price_list);
+        // alert('Haaaaaaa');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=product&?id=' + product_id + '&?v=' + variant_id;
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion      
 
 
 
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
+async function board_view_item_url(m_id, m_var_id) {
+    try {
+        var product_id = m_id;
+        var variant_id = m_var_id;
+        var product_doc = await L_catalog_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags, // Etiquetas
+            // sku:product_doc.variations[variant_id].sku.value,
+            price_list: price_doc.price_list,   //Lista de precios
+            ws_lang_data: ws_lang_data, //Documento de lenguaje
+            user_roles: user_Ctx.userCtx.roles // User roles
+        }
+
+        console.log('VISTA DE PRODUCTO ROLES');
+        console.log(user_Ctx.userCtx.roles);
+        console.log('VISTA DE PRODUCTO ARRAY');
+        console.log(product_doc_array);
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
+        // var m_url = url_app +'?type=catalog?=' + m_name; // Armo la url completa del linck
+        //  history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion        
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+///// BOARDS 2023 NEW FUNCTIONS ////
+///FUNCIONES BOARD 2023
 //scrollerMove();
 //get_board_module();

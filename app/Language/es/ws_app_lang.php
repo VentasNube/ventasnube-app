@@ -186,20 +186,21 @@ return [
          'm_account_passwor_b' => 'Modificar contrase&ntilde;a',
          'm_account_passwor' => 'Nueva Contrase&ntilde;a',
          'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a',
-         //CAJA
+       
+        // body modules name
+        'm_board' => 'Tablerosssss',
+        'm_catalog' => 'Catalogo',
         'm_box' => 'Caja',
         'm_my_box' => 'Mi caja',
         'm_all_box' => 'Todas las cajas',
-        //CONTACTOS
         'm_contact' => 'Contactos',
-        //REPORTES
         'm_reports' => 'Reportes',
-        //ESTADISTICAS
-
         'm_stats' => 'Estadisticas',
+        'm_cart' => 'Carrito',
+        'm_favorite' => 'Favoritos',
+        'm_myaccount' => 'Mi cuenta',
+        'm_myorders' => 'Mis compras'
         
-  
-       
     ],
     'ws_lang_us' => [
        
