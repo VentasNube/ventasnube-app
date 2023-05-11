@@ -255,25 +255,24 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
 //Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
 async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     const ws_m_s = ws_module_select;
-
     console.log(ws_module_select);
     console.log(m_t_id);
     //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
     if (ws_m_s == 'catalog') {
         await get_catalog();
-        //  alert('traogo el catalogo')
-        //Si el tipo de modulo es producto envia los parametros a la funcion constructora
+            //  alert('traogo el catalogo')
+            //  Si el tipo de modulo es producto envia los parametros a la funcion constructora
         if (m_t_id == 'product') {
             catalog_view_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
+           // updateHistory();
         }
         if (m_t_id == 'edit') {
             catalog_edit_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
+          //  updateHistory();
         }
         if (m_t_id == 'create') {
             catalog_edit_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
+          //  updateHistory();
         }
         //  get_items_catalog();
     }
@@ -287,30 +286,33 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     else if (ws_m_s == 'board') {
         
         if (m_t_id == '1') {
-            alert('TRAIGO EL BOARD Ventas');
+            // alert('TRAIGO EL BOARD Ventas');
             // await get_board();
+            //   console.log('TRAIGO BOARD ')
             get_board(m_id, m_t_id, m_var_id, userCtx);
-            board_view_item_url(m_id, m_var_id, userCtx);
+            // board_view_item_url();
+            //board_view_item_url(m_id, m_var_id, userCtx);
             // catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);
-            //updateHistory();
+          //  updateHistory();
         }
         if (m_t_id == '2') {
-            alert('TRAIGO EL BOARD Compras');
+            //   console.log('TRAIGO BOARD ')
+            // alert('TRAIGO EL BOARD Compras');
             // await get_board();
             catalog_view_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
+           // updateHistory();
         }
         if (m_t_id == '3') {
-            alert('TRAIGO EL BOARD Servicios');
+            //  alert('TRAIGO EL BOARD Servicios');
             // await get_board();
             catalog_view_item_url(m_id, m_var_id, userCtx);
             //updateHistory();
         }
         if (m_t_id == '5') {
-            alert('TRAIGO EL BOARD TURNOS');
+            // alert('TRAIGO EL BOARD TURNOS');
             // await get_board();
             catalog_view_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
+            // updateHistory();
         }
         // get_box();
     }

@@ -27,65 +27,7 @@
 <!--script src="<?php echo base_url() ?>public/dist/js/ventas_nube_board.js"></script-->
 
 <script>
-
-    ////----( VISTA NAV )----/////
-    /*
-    function get_nav_board_OLD(m_id, m_t_id) {
-        var url_now = getUrl();
-        var m_id = url_now.m_id;
-        var m_t_id = url_now.m_t_id;
-        var pacht = 'body'; //CONTROLADOR PRINCIPAL
-        var controler_data = 'nav_bar'; //NOMBRE DE CONTROLADOR DATA
-        var controler_template = 'nav_bar_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var id_copiled = '#nav_bar_compiled'; // ID DE COMPILACION //  
-        var data = {
-            m_id: m_id,
-            m_t_id: m_t_id,
-        }
-        console.log('Modulo id nav' + m_id);
-        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-    };
-   */
-    ////----( VISTA BOARD CONTENT  )----/////
-    /*  function get_board_module(search_m_input, m_id) {
-        var url_now = getUrl();
-        var m_id = url_now.m_id;
-        var m_t_id = url_now.m_t_id;
-        var pacht = 'board'; //CONTROLADOR PRINCIPAL
-        var controler_data = 'board_m_data'; //NOMBRE DE CONTROLADOR DATA
-        var controler_template = 'board_m_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var id_copiled = '#content_compiled'; // ID DE COMPILACION //  
-        var data = {
-            m_id: m_id,
-            //  search_m_input: search_m_input,
-        }
-        console.log(data);
-        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-    };
-    */
-    ////----( VISTA BOARD GROUP   )----/////
-    function get_board_group_OLD(m_id, m_t_id) {
-        var url_now = getUrl();
-        var m_id = url_now.m_id;
-        var m_t_id = url_now.m_t_id;
-        //  var pacht = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL
-        //var controler_m = url_now.pacht_m_url;
-        //alert(controler_m);
-        //  var controler_data = pacht + '_group_data'; //NOMBRE DE CONTROLADOR DATA
-        //  var controler_template = pacht+'_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var pacht = 'board'; //CONTROLADOR PRINCIPAL
-        var controler_data = 'board_group_data'; //NOMBRE DE CONTROLADOR DATA
-        var controler_template = 'board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var id_copiled = '#content_board_group_compiled'; // ID DE COMPILACION //  
-        var data = {
-            m_id: m_id,
-            m_t_id: m_t_id,
-            //  search_m_input: search_m_input,
-        }
-        console.log(data);
-        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-    };
-    
+  
     function get_search_board_items_OLD(search_m_input, m_id) {
         var url_now = getUrl();
         var m_id = url_now.m_id;
@@ -140,7 +82,7 @@
         });
     };
 
-    ////----( POPUP AGREGAR COLABORADOR  )----/////
+     ///----( POPUP AGREGAR COLABORADOR  )----/////
     function get_board_group_Collaborator(m_id, m_t_id, m_s_id) {
         //  var url_now = getUrl();
         //  var m_id = url_now.m_id;
@@ -232,23 +174,12 @@
         var m_id = url_now.m_id;
         var m_t_id = url_now.m_t_id;
         var m_s_id = $(this).attr('m_s_id');
-
         $('#save-new-coll').attr('m_s_id', m_s_id);
-
         get_board_group_Collaborator(m_id, m_t_id, m_s_id);
     });
 
-    ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
-    $(document).ready(function () {
-        /*
-        window.onload =
-            scrollerMove();
-            get_board_group();
-            get_nav_board();
-        */
-    });
-
-
+scrollerMove();
+get_board_group_size()
+//board_shortable_show(); 
   
-
 </script>
