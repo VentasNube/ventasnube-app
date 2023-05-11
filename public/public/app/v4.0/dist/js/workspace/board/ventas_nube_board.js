@@ -1,21 +1,3 @@
-////----(1)----/////
-// BOARD VISTA  CONFIGURO LOS PARAMETROS DEL MODULO Y LO ENVIO AL COMPILADOR
-function get_board_module(search_m_input, m_id) {
-    var url_now = getUrl();
-    var m_id = url_now.m_id;
-    var m_t_id = url_now.m_t_id;
-    var pacht = 'board'; //CONTROLADOR PRINCIPAL
-    var controler_data = 'board_m_data'; //NOMBRE DE CONTROLADOR DATA
-    var controler_template = 'board_m_template'; //NOMBRE CONTROLADOR TEMPLATE      
-    var id_copiled = '#content_compiled'; // ID DE COMPILACION //  
-    var data = {
-        m_id: 1,
-        //  search_m_input: search_m_input,
-    }
-    console.log(data);
-    get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-};
-
 
 
 // TRAIGO LA BARRA DE BUSQUEDA
@@ -28,7 +10,7 @@ function get_nav_board(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
-    console.log('NAV BAR BOARD');
+    // console.log('NAV BAR BOARD');
 };
 
 ///----(Search function)-----/
@@ -84,8 +66,6 @@ function scrollerMove() {
         }, 200);
     });
 };
-
-
 
 
 //Creo y conecto con userDB local 
@@ -235,7 +215,7 @@ function get_nav_board(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
-    console.log('NAV BAR BOARD');
+    // console.log('NAV BAR BOARD');
 };
 
 // TRAIGO LAS ORDENES DEL BOARD
@@ -326,8 +306,8 @@ async function board_view_item(element) {
 }
 
 
-  ////----( VISTA BOARD GROUP   )----/////
-  function get_board_groupOLD(m_id, m_t_id) {
+////----( VISTA BOARD GROUP   )----/////
+function get_board_groupOLD(m_id, m_t_id) {
     var url_now = getUrl();
     var m_id = url_now.m_id;
     var m_t_id = url_now.m_t_id;
@@ -349,20 +329,6 @@ async function board_view_item(element) {
     get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
 };
 
-async function get_board_group(ws_id) {
-    var ws_cart = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_cart);
-    alert('GET_BOARD_group');
-   // get_nav_board();
-   // get_all_board_intems();
-   // get_board();
-}
-
-
 
 function get_search_board_items(search_m_input, m_id) {
     var url_now = getUrl();
@@ -380,7 +346,14 @@ function get_search_board_items(search_m_input, m_id) {
     //get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
 };
 
-
+async function get_board_group(ws_id) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_cart);
+}
 
 // TRAIGO EL BOARD Y IMPRIMO
 async function get_board(ws_id) {
@@ -390,26 +363,72 @@ async function get_board(ws_id) {
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
-    alert('GET_BOARD');
     get_nav_board();
     get_board_group();
-   // get_all_board_intems();
-   // get_board();
 }
-
 
 // FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function board_view_item_url() {
     try {
         get_board(ws_id);
-        alert('Board_view_item_url');
     } catch (err) {
         console.log(err);
     }
 }
 
-
-///// BOARDS 2023 NEW FUNCTIONS ////
+/////BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
-//scrollerMove();
-//get_board_module();
+
+///OLD FUNCTIONS PARA COMPROBAR
+////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
+function get_board_group_size() {
+    var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
+    var board_column_size = $('.board-column').first('.board-group').width();//Tomo el ancho de los grupos de ordenes
+    var number_column = $('.board-column').length;//Tomo la cantidad de grupos que hay
+    var colum_size = board_column_size + 20;
+    var board_new_group_size = colum_size * number_column;
+    $('.board-group').width(board_new_group_size);
+    console.log(board_new_group_size);
+    //  var divs = document.getElementsByClassName(".board-column").length;
+    //  console.log("Hay " + divs + " Etapas");
+    //  alert(board_new_group_size);
+}
+$(document).on('click', '#edit_board_group_btn', function (event) {
+    //  alert('holaaaa');
+    var url_now = getUrl();
+    var m_id = url_now.m_id;
+    var m_t_id = url_now.m_t_id;
+    var m_s_id = $(this).attr('m_s_id'); //Trae modulo id
+
+    // alert(m_s_id);
+    var pacht = 'board'; //CONTROLADOR PRINCIPAL
+    var controler_data = 'edit_board_group_template_data'; //NOMBRE DE CONTROLADOR DATA
+    var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+    var data = {
+        m_id: m_id,
+        m_t_id: m_t_id,
+        m_s_id: m_s_id,
+    }
+    console.log(data);
+    get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+    $('#master_popup').modal('show');
+});
+
+function datetimePiker() {
+    $('.datetimepicker').bootstrapMaterialDatePicker({
+        format: 'YYYY/MM/DD HH:mm',
+        //   format: 'DD/MM/YYYY HH:mm',
+        // Y-m-d H:i:s
+        lang: 'es',
+        weekStart: 1,
+        nowText: 'HOY',
+        cancelText: 'CANCELAR',
+        shortTime: true,
+        nowButton: true,
+        switchOnClick: true
+    });
+}
+
+scrollerMove();
+get_board_group_size()
