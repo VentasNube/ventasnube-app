@@ -216,5 +216,25 @@ async function _session(ws_lang_data) {
     return userCtx;
 }
 
+// Funcion para traer la hora minutoso segundos 
+// se usa asi
+// const { hour, minutes } = await getDateTimeMinutes();
+/// 
+async function getDateTimeMinutes() {
+    try {
+      const currentDate = new Date();
+      const hour = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+      
+      return { hour, minutes };
+    } catch (error) {
+      throw new Error('Error while retrieving date, hour, and minutes: ' + error.message);
+    }
+  }
+
+  
+
+
+
 _session();
 

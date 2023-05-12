@@ -70,8 +70,6 @@ async function ws_board_config() {
     }
 }
 
-//
-
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_board(ws_info, ws_lang_data) {
     var ws_catalog_data = {
@@ -138,7 +136,6 @@ function scrollerMove() {
         }, 200);
     });
 };
-
 
 ///// BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
@@ -451,6 +448,23 @@ get_board_group_size()
 
 //FUNCION CREAR ORDEN NUEVA
 
+//EDITAR BOARD
+// CREAR BOARD GROUP
+
+async function put_order_sell(doc) {
+    try {
+        console.log('Antes',doc);
+        // Generar un ID único
+        doc._id = 'sales_order_' + new Date().getTime() + Math.random().toString().slice(2);
+        console.log('Despues',doc);
+        // Crear un nuevo documento
+        let response = await L_board_db.put(doc);
+        console.log(response);
+        console.log(doc._id);
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 
 async function new_order(ws_id) {
@@ -463,13 +477,8 @@ async function new_order(ws_id) {
 }
 
 
-async function putDocument(doc) {
+async function put_order(doc) {
     try {
-        console.log('Antes',doc);
-        // Generar un ID único
-        doc._id = 'sales_order_' + new Date().getTime() + Math.random().toString().slice(2);
-
-        console.log('Despues',doc);
         // Crear un nuevo documento
         let response = await L_board_db.put(doc);
         console.log(response);
@@ -479,26 +488,87 @@ async function putDocument(doc) {
     }
 }
 
-// Llamar a la función con el documento
+// Recorrel el carrito y crea un array con los productos que hay
+async function get_cart_product() {
+    const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
+    const products = [];
+    for (const item of productItems) {
+      const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
+      const productName = item.querySelector('.s-card-actv-item-name').textContent.trim();
+      const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
+      const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
+
+      const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
+      const price = priceMatch ? parseFloat(priceMatch[1]) : null;
+  
+      const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
+      const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
+  
+      const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
+
+      const discount = discountMatch ? {
+        percentage: parseFloat(discountMatch[1]),
+        amount: parseFloat(discountMatch[2])
+      } : null;
+  
+      const subtotal = price * quantity;
+  
+      const product = {
+        product_id: productName,
+        name: productName,
+        variation_id: productName,
+        product_img: productImg,
+        price: price,
+        tax: tax,
+        quantity: quantity,
+        discount: discount,
+        subtotal: subtotal
+      };
+  
+      products.push(product);
+    }
+    return products;
+  }
+
+
 
 /// SELECCIONO y GUARDO MARCA
-async function new_order_sell(element) {
-   //  const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-    // const input_value = $(element).attr('input_value'); //Id del documento a edita
-   //  let input_id = $(element).attr('input_id');
-   // let new_value = $(element).attr('new_value');
-    // var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var order_01 = {
+async function  new_order(element) {
+
+    const category_id = $(element).attr('category_id'); //Id del documento a edita
+    const doc_id = category_id+'_order_' + new Date().getTime() + Math.random().toString().slice(2);
+    const workspace_id = ws_id; //Id del documento a edita
+    const group_id = '1'; //Id del documento a edita
+    const entry_date = { hour, minutes } = await getDateTimeMinutes(); 
+    const due_date = { hour, minutes } = await getDateTimeMinutes(); 
+    const comments = 'Sin comentarios'; 
+    try {
+        const products = await get_cart_product();
+        console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
+  
+
+    const customer = {
+                    id:'client_id_xxxx',
+                    name: 'Customer Name',
+                    address: 'Customer Address',
+                    phone: 'Customer Phone',
+                    email: 'Customer Email'
+                     };
+
+    //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var order_arr = {
         // _id: 'sales_order_001',
-         _id: '',
+         _id: doc_id,
          type: 'order',
-         category_id: 'sell',
-         status: 'pending',
-         workspace_id: 77,
-         author: 'smartmobile.com.ar@gmail.com',
+         category_id: category_id,
+         workspace_id: workspace_id,
+         status: 'new',
+         seen:false,
+         author: userCtx.email,
          group_id: 'group_123',
          order_id: '123',
          group_position: '1',
+         comments: comments,
          priority: {
              id: '1',
              value: 'urgente'
@@ -507,14 +577,19 @@ async function new_order_sell(element) {
          due_date: '2023-05-20',
          collaborators: [
              {
-                 name: 'Collaborator Name 1',
-                 role: 'Collaborator Role 1'
+                 name: 'smartmobile.com.ar@gmail.com',
+                 role: 'Rider'
              },
              {
                  name: 'Collaborator Name 2',
                  role: 'Collaborator Role 2'
              }
          ],
+         total_service: 39.95,
+         total_product: 39.95,
+         total_tax: 39.95,
+         total_discount: 39.95,
+         total: 39.95,
          payment_history: [
              {
                  id: 123,
@@ -531,47 +606,18 @@ async function new_order_sell(element) {
                  }
              }
          ],
-         comments: 'Additional information or comments about the order',
          update_history: [
              {
-                 id: 123,
                  update_datetime: '18/3/2021 18:45:10',
                  user: 'smartmobile.com@gmail.com',
              },
              {
-                 id: 231,
                  in_datetime: '18/3/2021 18:45:10',
                  update_datetime: '18/3/2021 18:45:10',
-                 quantity: 4,
-                 sold_quantity: 2,
-                 cost_price: 150
              }
          ],
-         customer: {
-             name: 'Customer Name',
-             address: 'Customer Address',
-             phone: 'Customer Phone',
-             email: 'Customer Email'
-         },
-         products: [
-             {
-                 product_id: 'Product 1',
-                 name: 'Product 1',
-                 variation_id: 'Product 1',
-                 product_img: 'Product 1',
-                 price: 10.99,
-                 tax: 21.00,
-                 quantity: 2,
-                 discount: 10,
-                 subtotal: 21.98
-             },
-             {
-                 name: 'Product 2',
-                 price: 5.99,
-                 quantity: 3,
-                 subtotal: 17.97
-             }
-         ],
+         customer: customer,
+         products: products,
          service: [
              {
                  product_id: 'Product 1',
@@ -596,11 +642,6 @@ async function new_order_sell(element) {
                  subtotal: 210.98
              }
          ],
-         total_service: 39.95,
-         total_product: 39.95,
-         total_tax: 39.95,
-         total_discount: 39.95,
-         total: 39.95,
          shipping: {
              address: 'Shipping Address',
              city: 'Shipping City',
@@ -614,10 +655,21 @@ async function new_order_sell(element) {
              }
          }
      };
-     
-    putDocument(order_01);
-    console.log(order_01);
+    // Generar un ID único 
+   
+    put_order(order_arr);
+    console.log(order_arr);
    // catalog_edit_item_url(doc_id, 1);
+} catch (error) {
+    Snackbar.show({
+        text:'Error al obtener los datos:', error,
+        actionText: 'ok',
+        actionTextColor: "#0575e6",
+        pos: 'bottom-left',
+        duration: 50000
+    });
+    console.error('Error al obtener los datos:', error);
+}
 }
 
 
