@@ -2,6 +2,8 @@
 
 Instalacion:
 
+INSTALAR DOCKER: Version 4.4.2.
+
 Clonar el repo de vnapp
 <pre>
 'sudo git clone https://github.com/VentasNube/vnapp.git'
