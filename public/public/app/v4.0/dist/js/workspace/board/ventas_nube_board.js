@@ -1,4 +1,76 @@
 
+//###--- Conection y Sync a la base de datos local ---#####
+//ws_info = null; // Doc con la info y configuracion del Ws
+//ws_lang_data = null; //Doc con el lenguaje
+
+//###--- Conection y Sync a la base de datos local ---#####
+var ws_board_db = 'ws_boards_' + ws_id;
+//Creo la base de datos local info_db
+L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+//sincronizo
+//Creo y conecto con userDB local 
+L_board_db.sync(url_R_db + ws_board_db, {
+    live: true,
+    retry: true,
+    //  skip_setup: true
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+}).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+}).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+}).on('error', function (err) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+});
+
+//Traigo los documentos necesarios generales para BOARD
+async function ws_board_config() {
+    try {
+        // userCtx variable global de permisos y roles para filtrar las vistas
+        // DOC DE CONFIGURACION GENERAL
+        ws_info = await L_catalog_db.get('ws_module_config', { include_docs: true, descending: true });
+        // DOC DE NAVEGACION
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el contenido del objeto ws_left_nav M
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];
+        // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
+        ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el objeto
+        var ws_lang = ws_lang_data_doc;
+        // SETEO EL ARRAY CON EL IDIOMA Con la variable
+        // Recorro el objeto y busco el nombre ws_lang_es o ws_lang_us dependiendo lo que configuro el admin
+        ws_lang_default = ws_lang['ws_land_default'];
+        // Recorro el objeto con la confuracion seteada en el DOC lang por default
+        ws_lang_data = ws_lang[ws_lang_default];
+        // Envio los datos a la funciones y imprimo
+        // Creo la variable userCtx apartir del doc left nav
+        user_Ctx = ws_left_nav.userCtx;
+        get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
+        get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
+        // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
+        get_right_cart(ws_info, ws_lang_data, user_Ctx);
+        // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
+        get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
+        put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
+        check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
+
+    } catch (err) {
+        put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+        Snackbar.show({
+            text: err.reason,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+//
 
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_board(ws_info, ws_lang_data) {
@@ -66,63 +138,6 @@ function scrollerMove() {
         }, 200);
     });
 };
-
-
-//Creo y conecto con userDB local 
-board_db = new PouchDB(u_db, { skip_setup: true });
-
-//getSession();
-
-board_db.sync(url_R_db + userDb, {
-    live: true,
-    retry: true,
-}).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
-}).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('error', function (err) {
-    if (err) {
-        $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-        //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
-        //logout()
-        var msj_error = "Hay un error inesperado";
-        if (err.status === 401) {
-            msj_error = '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...';
-        }
-        if (err.status != 401) {
-            msj_error = err.name;
-        }
-        //Imprimo el Mensaje de error en pantalla
-        $('#master_modal').modal('show', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            // var recipient = button.data('whatever') // Extract info from data-* attributes
-            var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title').text(recipient)
-            // modal.find('.modal-body input').val(recipient)
-            modal.find('.modal-body').html("<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>");
-        });
-        Snackbar.show({
-            text: msj_error,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Ingresar',
-            actionTextColor: "#4CAF50",
-            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);
-                logout()
-            }
-        });
-
-    }
-});
 
 
 ///// BOARDS 2023 NEW FUNCTIONS ////
@@ -376,6 +391,7 @@ async function board_view_item_url() {
     }
 }
 
+
 /////BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
 
@@ -432,3 +448,178 @@ function datetimePiker() {
 
 scrollerMove();
 get_board_group_size()
+
+//FUNCION CREAR ORDEN NUEVA
+
+
+
+async function new_order(ws_id) {
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_cart);
+}
+
+
+async function putDocument(doc) {
+    try {
+        console.log('Antes',doc);
+        // Generar un ID único
+        doc._id = 'sales_order_' + new Date().getTime() + Math.random().toString().slice(2);
+
+        console.log('Despues',doc);
+        // Crear un nuevo documento
+        let response = await L_board_db.put(doc);
+        console.log(response);
+        console.log(doc._id);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Llamar a la función con el documento
+
+/// SELECCIONO y GUARDO MARCA
+async function new_order_sell(element) {
+   //  const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+    // const input_value = $(element).attr('input_value'); //Id del documento a edita
+   //  let input_id = $(element).attr('input_id');
+   // let new_value = $(element).attr('new_value');
+    // var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var order_01 = {
+        // _id: 'sales_order_001',
+         _id: '',
+         type: 'order',
+         category_id: 'sell',
+         status: 'pending',
+         workspace_id: 77,
+         author: 'smartmobile.com.ar@gmail.com',
+         group_id: 'group_123',
+         order_id: '123',
+         group_position: '1',
+         priority: {
+             id: '1',
+             value: 'urgente'
+         },
+         entry_date: '2023-05-12',
+         due_date: '2023-05-20',
+         collaborators: [
+             {
+                 name: 'Collaborator Name 1',
+                 role: 'Collaborator Role 1'
+             },
+             {
+                 name: 'Collaborator Name 2',
+                 role: 'Collaborator Role 2'
+             }
+         ],
+         payment_history: [
+             {
+                 id: 123,
+                 payment_id: '21312312',
+                 payment_method: 'Credit Card',
+                 update_datetime: '18/3/2021 18:45:10',
+                 user: 'smartmobile.com@gmail.com',
+                 total_tax: 21.00,
+                 total_discount: 12.95,
+                 total: 339.95,
+                 currency: {
+                     id: 'ARS',
+                     value: '$'
+                 }
+             }
+         ],
+         comments: 'Additional information or comments about the order',
+         update_history: [
+             {
+                 id: 123,
+                 update_datetime: '18/3/2021 18:45:10',
+                 user: 'smartmobile.com@gmail.com',
+             },
+             {
+                 id: 231,
+                 in_datetime: '18/3/2021 18:45:10',
+                 update_datetime: '18/3/2021 18:45:10',
+                 quantity: 4,
+                 sold_quantity: 2,
+                 cost_price: 150
+             }
+         ],
+         customer: {
+             name: 'Customer Name',
+             address: 'Customer Address',
+             phone: 'Customer Phone',
+             email: 'Customer Email'
+         },
+         products: [
+             {
+                 product_id: 'Product 1',
+                 name: 'Product 1',
+                 variation_id: 'Product 1',
+                 product_img: 'Product 1',
+                 price: 10.99,
+                 tax: 21.00,
+                 quantity: 2,
+                 discount: 10,
+                 subtotal: 21.98
+             },
+             {
+                 name: 'Product 2',
+                 price: 5.99,
+                 quantity: 3,
+                 subtotal: 17.97
+             }
+         ],
+         service: [
+             {
+                 product_id: 'Product 1',
+                 name: 'Product 1',
+                 variation_id: 'Product 1',
+                 product_img: 'Product 1',
+                 price: 10.99,
+                 tax: 21.00,
+                 quantity: 2,
+                 discount: 10,
+                 subtotal: 21.98
+             },
+             {
+                 service_id: 'Service 2',
+                 name: 'Service 2',
+                 variation_id: '1',
+                 product_img: 'http:.//',
+                 price: 100.99,
+                 tax: 21.00,
+                 quantity: 2,
+                 discount: 10,
+                 subtotal: 210.98
+             }
+         ],
+         total_service: 39.95,
+         total_product: 39.95,
+         total_tax: 39.95,
+         total_discount: 39.95,
+         total: 39.95,
+         shipping: {
+             address: 'Shipping Address',
+             city: 'Shipping City',
+             postal_code: 'Postal Code',
+             shipping_date: '2023-05-15',
+             shipping_status: 'pending',
+             carrier: {
+                 name: 'Carrier Name',
+                 phone: 'Carrier Phone',
+                 vehicle: 'Carrier Vehicle'
+             }
+         }
+     };
+     
+    putDocument(order_01);
+    console.log(order_01);
+   // catalog_edit_item_url(doc_id, 1);
+}
+
+
+
+

@@ -1561,6 +1561,148 @@ class Workspace extends BaseController
                         ]
                     ];
 
+
+                    /// 
+                     //ORDEN DE EJEMPLO
+                  
+                    $order_01 = [
+                        '_id' => 'sales_order_001',
+                        'type' => 'order',
+                        'category_id' => 'sell',
+                        'status' => 'pending',
+                        'workspace_id' => 77,
+                        'author' => 'smartmobile.com.ar@gmail.com',
+                        'group_id' => 'group_123',
+                        'order_id' => '123',
+                        'group_position' => '1',
+                        'priority' => [
+                            'id' => '1',
+                            'value' => 'urgente'
+                        ],
+                        'entry_date' => '2023-05-12',
+                        'due_date' => '2023-05-20',
+                        'collaborators' => [
+                            [
+                                'name' => 'Collaborator Name 1',
+                                'role' => 'Collaborator Role 1'
+                            ],
+                            [
+                                'name' => 'Collaborator Name 2',
+                                'role' => 'Collaborator Role 2'
+                            ]
+                            ],
+                            
+
+                            'payment_history' => [
+                                [
+                                    'id' => 123,
+                                    'payment_id' => '21312312',
+                                    'payment_method' => 'Credit Card',
+                                    'update_datetime' => '18/3/2021 18:45:10',
+                                    'user' => 'smartmobile.com@gmail.com',
+                                    'total_tax' => 21.00,
+                                    'total_discount' => 12.95,
+                                    'total' => 339.95,
+                                    'currency' => [
+                                        'id' => 'ARS',
+                                        'value' => '$'
+                                    ],
+                                ],
+                         
+                            ],
+
+                        'comments' => 'Additional information or comments about the order',
+
+                        'update_history' => [
+                            [
+                                'id' => 123,
+                                'update_datetime' => '18/3/2021 18:45:10',
+                                'user' => 'smartmobile.com@gmail.com',
+                            ],
+                            [
+                                'id' => 231,
+                                'in_datetime' => '18/3/2021 18:45:10',
+                                'update_datetime' => '18/3/2021 18:45:10',
+                                'quantity' => 4,
+                                'sold_quantity' => 2,
+                                'cost_price' => 150
+                            ]
+                        ],
+
+                        'priority' => [
+                            'id' => '1',
+                            'value' => 'high'
+                        ],
+                        'customer' => [
+                            'name' => 'Customer Name',
+                            'address' => 'Customer Address',
+                            'phone' => 'Customer Phone',
+                            'email' => 'Customer Email'
+                        ],
+                        'products' => [
+                            [
+                                'product_id' => 'Product 1',
+                                'name' => 'Product 1',
+                                'variation_id' => 'Product 1',
+                                'product_img' => 'Product 1',
+                                'price' => 10.99,
+                                'tax' => 21.00,
+                                'quantity' => 2,
+                                'discount' => 10,
+                                'subtotal' => 21.98
+                            ],
+                            [
+                                'name' => 'Product 2',
+                                'price' => 5.99,
+                                'quantity' => 3,
+                                'subtotal' => 17.97
+                            ]
+                        ],
+                        'service' => [
+                            [
+                                'product_id' => 'Product 1',
+                                'name' => 'Product 1',
+                                'variation_id' => 'Product 1',
+                                'product_img' => 'Product 1',
+                                'price' => 10.99,
+                                'tax' => 21.00,
+                                'quantity' => 2,
+                                'discount' => 10,
+                                'subtotal' => 21.98
+                            ],
+                            [
+                                'service_id' => 'Service 2',
+                                'name' => 'Service 2',
+                                'variation_id' => '1',
+                                'product_img' => 'http:.//',
+                                'price' => 100.99,
+                                'tax' => 21.00,
+                                'quantity' => 2,
+                                'discount' => 10,
+                                'subtotal' => 210.98
+                            ]
+                        ],
+                        'total_service' => 39.95,
+                        'total_product' => 39.95,
+                        'total_tax' => 39.95,
+                        'total_discount' => 39.95,
+                        'total' => 39.95,
+                        'shipping' => [
+                            'address' => 'Shipping Address',
+                            'city' => 'Shipping City',
+                            'postal_code' => 'Postal Code',
+                            'shipping_date' => '2023-05-15',
+                            'shipping_status' => 'pending',
+                            'carrier' => [
+                                'name' => 'Carrier Name',
+                                'phone' => 'Carrier Phone',
+                                'vehicle' => 'Carrier Vehicle'
+                            ]
+                        ],
+                      
+
+                    ];
+
                     //SI SE CREARON CON EXITO CREO LA DB CATALOGO EN COUCHDB
                     $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                     //Agrego el rol del modulo admin al cliente que lo crea
@@ -1633,6 +1775,8 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/order_01', $order_01); //Creo un doc con la informacion de la primera orden
+                        
                     }
                 }
 
@@ -1698,6 +1842,12 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                    if ($result) {
+                        $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
+                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                    }
                 }
                 // Ventas locales directas
                 if ($ws_local_sell) {
