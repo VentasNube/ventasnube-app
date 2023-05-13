@@ -8,6 +8,7 @@
 ws_info = null; // Doc con la info y configuracion del Ws
 ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
+ws_left_nav_data = null;
 
 //###--- Conection y Sync a la base de datos local ---#####
 var ws_search_db = 'ws_collections_' + ws_id;
@@ -55,10 +56,10 @@ async function ws_module_config() {
         // Envio los datos a la funciones y imprimo
         // Creo la variable userCtx apartir del doc left nav
         user_Ctx = ws_left_nav.userCtx;
-        get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
+        get_top_bar(ws_info, ws_lang_data,ws_left_nav_data, user_Ctx); // Imprimo el top bar
         get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
         // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
-        get_right_cart(ws_info, ws_lang_data, user_Ctx);
+        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
         // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
         get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
         put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
@@ -202,11 +203,14 @@ function get_left_nav(ws_left_nav_data, ws_lang_data) {
 
 /// ENVIO LOS PARAMETROS DEL MODULO Y LO COMPILADO
 ////----(2 TOP BAR)---/////
-function get_top_bar(ws_info, ws_lang_data) {
+function get_top_bar(ws_info, ws_lang_data, ws_left_nav_data) {
+  
     var ws_top_bar = {
         ws_top_bar: ws_info,
         user: user_data,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        ws_left_nav_data:ws_left_nav_data
+        
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', '#top_nav_compiled', ws_top_bar);
 };
@@ -289,7 +293,7 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
             // alert('TRAIGO EL BOARD Ventas');
             // await get_board();
             //   console.log('TRAIGO BOARD ')
-            get_board(m_id, m_t_id, m_var_id, userCtx);
+            get_board(m_id, m_t_id, m_var_id,ws_left_nav_data, userCtx);
             // board_view_item_url();
             //board_view_item_url(m_id, m_var_id, userCtx);
             // catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);

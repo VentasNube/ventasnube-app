@@ -17,32 +17,31 @@
 //Inicializacion de APP WPA OFFLINE  2021
 //Instalacion de Dases de datos y documentos.
 //###########################################################################
+
+
+
+
 //Funcion que chekea el ultimo estado del cart
 function chek_cart_open_ws() {
 var cart_open = readCookie("left_nav_open_ws_"+ws_id);
     if (cart_open == 'true') {
         $('#right_main').addClass('move-right');
-      //  alert('Mueve a la derecha');
     } else if (cart_open == 'false') {
         $('#right_main').removeClass('move-right');
     }
 }
 
-function get_right_cart(ws_info, ws_lang_data) {
+function get_right_cart(ws_info, ws_lang_data,ws_left_nav_data) {
     var ws_cart = {
         ws_info: ws_info,
-        ws_lang_data: ws_lang_data
+        ws_lang_data: ws_lang_data,
+        ws_left_nav_data:ws_left_nav_data
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
-
     get_cart(ws_id);
     get_fav(ws_id);
     get_cart_change(ws_id);
     get_fav_change(ws_id);
-    
-    // $('#cart_user_input').focus();
-   // alert('Tight cart');
-   // console.log('CART in');
 };
 
 
@@ -367,38 +366,11 @@ async function dell_cart_item(element) {
     }
 }
 
-/*
-$(document).on('click', '.cart_open_button', function(event)
-  {
-      var state = $(this).data('state');
-      switch(state){
-          case 1 :
-          case undefined : 
-        //  alert('Cerrando'); 
-          $(this).data('state', 2); 
-          createCookie('cart_open_ws_' + ws_id, false), 30;
-            $('#right_main').removeClass('move-right');
-            $('#cart_user_input').focus();
-            get_cart(ws_id);
-            get_fav(ws_id);
-          break;
-          case 2 : 
-          //   alert('Abriendo');
-          createCookie('cart_open_ws_' + ws_id, true), 30;
-          $('#right_main').addClass('move-right');
-          $(this).data('state', 1);
-          break;
-      }
-});
-*/
-//Cierra el carrito
-
 $(document).on('click', '.right_nav_open', function(event) {
-        // var status_bar = readCookie('cart_open_ws_' + ws_id);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;
         $('#right_main').removeClass('move-right');
         $('#cart_user_input').focus();
-        get_right_cart(ws_info, ws_lang_data); 
+        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
 });
 
 
@@ -412,15 +384,7 @@ $(document).on('click', '.right_nav_close', function(event) {
 /** ############# FUCNIONES FAVORITOS  ############## *****/
 // Agreagar productos al favoritos
 // Trae los datos de la local user DB filtrado por tipo cart-items
-/*
-async function get_favOLD() {
-    // Traigo los resultados de una vista
-    let response = await user_db.query('get/fav-item', { include_docs: true, descending: true }); //Conceto con la vista de diseno
-    // Renderizo todos los resultados 
-    console.log(response)
-    return all_fav_item(response.rows);
-}
-*/
+
 async function get_fav(ws_id) {
     // Traigo los resultados de una vista
     let response = await user_db.query(
@@ -692,10 +656,6 @@ function cart_select_contact() {
     alert('seleccionado');
 }
 
-//$('#cart_select_contact').click('').alert('conctactos');
-//var contact = document.getElementById("cart_select_contact");
-
-/*
 function cart_user_input_in(element) {
     var form = document.getElementById("#cart_user_input");
     form.addEventListener("focus", function(event) {
@@ -706,16 +666,15 @@ function cart_user_input_in(element) {
         event.target.style.background = "";
       }, true);
 
-}*/
-/*
+}
+
 function cart_user_input_in() {
     $('#cart_user_input_subjet').addClass('in');
     //  alert('focusin');
 }
 
-
 function cart_user_input_out() {
     $('#cart_user_input_subjet').removeClass('in');
-};*/
+};
 // Abre el left nav cart
 

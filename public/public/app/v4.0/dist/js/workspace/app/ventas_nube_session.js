@@ -233,8 +233,5 @@ async function getDateTimeMinutes() {
   }
 
   
-
-
-
 _session();
 

@@ -30,10 +30,10 @@ return [
         'search_icon' => 'search',
         //BOARDS
         'm_board' => 'Tableros',
-        'm_board_new_item' => 'Tableros',
-        'm_board_filter' => 'Tableros',
-        'm_board_group' => 'Tableros',
-        'm_board_' => 'Tableros',
+        'm_board_new_item' => 'Nueva Orden',
+        'm_board_filter' => 'Filtrar',
+        'm_board_group' => 'Nuevo grupo',
+       // 'm_board_' => 'Tableros',
 
 
 

@@ -5,6 +5,8 @@
 
 //###--- Conection y Sync a la base de datos local ---#####
 var ws_board_db = 'ws_boards_' + ws_id;
+ws_left_nav_data = false;
+ws_lang_data = false;
 //Creo la base de datos local info_db
 L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 //sincronizo
@@ -71,10 +73,13 @@ async function ws_board_config() {
 }
 
 // TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_board(ws_info, ws_lang_data) {
+function get_nav_board(ws_info, ws_lang_data,ws_left_nav_data) {
+    console.log( 'ws_left_nav_data get_top_bar get_top_bar get_top_bar');
+    console.log( ws_left_nav_data);
     var ws_catalog_data = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
+        ws_left_nav_data:ws_left_nav_data,
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
@@ -218,17 +223,6 @@ async function get_all_board_intems(ws_id, filter) {
 }
 
 // TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_board(ws_info, ws_lang_data) {
-    var ws_catalog_data = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles
-    }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
-    //alert('cargo el bucador');
-    // $('#cart_user_input').focus();
-    // console.log('NAV BAR BOARD');
-};
 
 // TRAIGO LAS ORDENES DEL BOARD
 function get_items_board(ws_id) {
@@ -372,10 +366,11 @@ async function get_board(ws_id) {
     var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
+        ws_left_nav_data:ws_left_nav_data,
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
-    get_nav_board();
+    get_nav_board( ws_info, ws_lang_data, ws_left_nav_data,user_Ctx.userCtx.roles);
     get_board_group();
 }
 
