@@ -264,8 +264,6 @@ class Admin extends BaseController
     }
 
 
-
-
     public function ws_licence_update()
     {
         if (!logged_in() || !in_groups('admin')) {
@@ -1700,4 +1698,128 @@ public function delete_databases()
             return json_encode($result);
         }
     }
+
+    /// cosas 2023
+
+     //Vista de reset de pasword
+ public function ws_security_board_update_NO()
+ {
+     if (!logged_in() /*|| !in_groups('admin')*/ ) {
+         return redirect()->to(base_url('/workspace'));
+     }
+     helper('date');       // Libreria de tiempo 
+     $UserModel = new UserModel(); //traigo el modelo
+     $db = \Config\Database::connect();
+     // $user_id = $this->request->getPost("user_id");
+     $ws_id_dec = $this->session->get('ws_id');
+     //$ws_id = $session->get('ws_id');
+     // $u_name = $this->session->get('u_name');
+     // $user_id = user_id(); // Usuari
+     // $user_email = $this->request->getPost("user_email");
+     //$user_email = $UserModel->getUserData($user_id, 'email');// Traigo el email del usuario
+     //Transformo el email en hexadecimal por seguridad
+     //$user_email_hex = bin2hex($user_email);
+     //Armo la url de la User BD
+     $db_boards = 'ws_boards_' . $ws_id_dec;
+     // DATOS DEL FORMULARIO
+     //  $workspace_id_hex = $this->request->getPost("ws_id_ex");
+     //*** CODIFICO NOMBRE DE ID  workspace a exadecimal ***/
+     // Traigo la revision del documento y lo creo
+
+     
+     $doc_rev = $this->WorkspaceModel->curl_get_rev($db_boards . "_design/doc_security"); //Creo un doc con la informacion del workspace
+     //Creo el documento
+   
+    $doc_security = [
+        "_id" => "_design/doc_security",
+        "doc_rev" => $doc_rev,
+        "validate_doc_update" => "function (newDoc, oldDoc, userCtx) {
+            var isAdmin = userCtx.roles.indexOf('_admin') !== -1;
+            var isOwner = userCtx.roles.indexOf('owner') !== -1;
+            var isEdit = userCtx.roles.indexOf('edit') !== -1;
+            var isWrite = userCtx.roles.indexOf('write') !== -1;
+            var isReed = userCtx.roles.indexOf('reed') !== -1;
+            var isWsConfigDoc = newDoc._id.startsWith('ws_config_');
+            var isLoggedIn = userCtx.name !== null;
+            
+            if (isAdmin || isOwner) {
+              // El administrador o el propietario tienen acceso completo
+              if (newDoc._deleted) {
+                // Permitir eliminar documentos a los propietarios y administradores
+                return;
+              }
+              return; // Permitir editar documentos a los propietarios y administradores
+            }
+            
+            if (isEdit) {
+              // El usuario con el rol 'edit' puede ver y editar documentos propios y de otros
+              if (newDoc._deleted) {
+                // Restringir eliminación a propietarios y administradores solamente
+                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+              }
+              return; // Permitir ver y editar documentos propios y de otros
+            }
+            
+            if (isWrite) {
+              // El usuario con el rol 'write' puede ver y editar sus propios documentos, pero no eliminarlos
+              if (newDoc._deleted) {
+                // Restringir eliminación a propietarios y administradores solamente
+                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+              }
+              if (oldDoc && oldDoc._id === newDoc._id && oldDoc._rev === newDoc._rev) {
+                // El usuario puede editar su propio documento
+                return;
+              }
+              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+            }
+            
+            if (isReed) {
+              // El usuario con el rol 'reed' solo puede ver documentos y no puede editar ni crear
+              if (newDoc._deleted) {
+                // Restringir eliminación a propietarios y administradores solamente
+                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+              }
+              if (!oldDoc) {
+                // Restringir la lectura de documentos a propietarios y administradores solamente
+                throw({ forbidden: 'No tienes permiso para leer este documento.' });
+              }
+              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+            }
+            
+            if (isWsConfigDoc && isLoggedIn) {
+              // Permitir lectura de documentos a todos los usuarios logeados
+              if (!oldDoc) {
+                // Restringir la lectura de documentos a propietarios y administradores solamente
+                throw({ forbidden: 'No tienes permiso para leer este documento.' });
+              }
+              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+            }
+            
+            // Restricción para todos los demás usuarios
+            throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
+        }"
+    ];
+    
+     // Inicio la trasaccion
+     $db->transBegin();
+     //HAGO LOS PUT A COUCHDB CON CONFIGURACIONES EN LA DB USER
+     $result_doc = $this->WorkspaceModel->curl_update($db_boards . "_design/doc_security", $doc_security); //Creo un doc con la informacion del workspace
+     if ($db->transStatus() === false) {
+         $db->transRollback();
+         $return = ['msj' => 'Algo salio mal y no se pudo actualizar!' .  $db_boards .$db->transStatus(), 'result' => false];
+         return json_encode($return);
+     } else {
+         $db->transCommit();
+         $msj = ['msj' => 'Felicitades!  REV:' . $doc_rev . ' ------- RESULT UPDATE '. $db_boards . $result_doc  . '------- Codigo Status:' . $db->transStatus() . ' Se actualizo la app con exito!', 'result' => true];
+         return json_encode($msj);
+         // return json_encode($msj);
+     }
+     return json_encode($ws_lang);
+     //return true;
+ }
+
+
+
+
+
 }

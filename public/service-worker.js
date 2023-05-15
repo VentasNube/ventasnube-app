@@ -2,7 +2,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 52222272222646578222322;
+const version = 52222222322332232222322423322232232222;
 
 
 
@@ -50,6 +50,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/css/VentasNubeSkin.css', revision: version },
   { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.css', revision: version },
   { url: 'public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css', revision: version },
+  { url: '/public/app/v4.0/plugins/iCheck/square/blue.css', revision: version },
 
   { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css', revision: version },
   { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js', revision: version },
@@ -58,6 +59,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
   { url: '/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js', revision: version },
   { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js', revision: version },
+
+  { url: '/public/app/v4.0/plugins/iCheck/icheck.min.js', revision: version },
   // Fuentes js Handelbar POUCHDB
   { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
@@ -122,6 +125,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
   //BOARD
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },

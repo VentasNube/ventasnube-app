@@ -1730,6 +1730,107 @@ class Workspace extends BaseController
                         ],
                     ];
 
+
+
+                    $ws_validate_doc_edit_by_doc_user_roll_ = [
+                        "_id" => "_design/validate_edit_doc",
+                        "validate_doc_update" => "function(newDoc, oldDoc, userCtx) {
+                            var allowedRoles = [" . json_encode($allowed_roles) . "];
+                            var allowedUsers = [" . json_encode($allowed_users) . "];
+                    
+                            if (userCtx.roles.indexOf('_admin') === -1) {
+                                if (allowedRoles.length > 0) {
+                                    var hasRoleAccess = userCtx.roles.some(role => allowedRoles.includes(role));
+                                    if (!hasRoleAccess) {
+                                        throw({ forbidden: 'Solo los usuarios con los roles permitidos pueden editar este documento.' });
+                                    }
+                                }
+                    
+                                if (allowedUsers.length > 0) {
+                                    var hasUserAccess = allowedUsers.includes(userCtx.name);
+                                    if (!hasUserAccess) {
+                                        throw({ forbidden: 'Solo los usuarios permitidos pueden editar este documento.' });
+                                    }
+                                }
+                    
+                                // Denegar acceso a la visualización del documento
+                                throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
+                            }
+                        }"
+                    ];
+
+                    $doc_security_roll = [
+                        "_id" => "_design/doc_security",
+                        "validate_doc_update" => "function (newDoc, oldDoc, userCtx) {
+                            var isAdmin = userCtx.roles.indexOf('_admin') !== -1;
+                            var isOwner = userCtx.roles.indexOf('owner') !== -1;
+                            var isEdit = userCtx.roles.indexOf('edit') !== -1;
+                            var isWrite = userCtx.roles.indexOf('write') !== -1;
+                            var isReed = userCtx.roles.indexOf('reed') !== -1;
+                            var isWsConfigDoc = newDoc._id.startsWith('ws_config_');
+                            var isLoggedIn = userCtx.name !== null;
+                            
+                            if (isAdmin || isOwner) {
+                              // El administrador o el propietario tienen acceso completo
+                              if (newDoc._deleted) {
+                                // Permitir eliminar documentos a los propietarios y administradores
+                                return;
+                              }
+                              return; // Permitir editar documentos a los propietarios y administradores
+                            }
+                            
+                            if (isEdit) {
+                              // El usuario con el rol 'edit' puede ver y editar documentos propios y de otros
+                              if (newDoc._deleted) {
+                                // Restringir eliminación a propietarios y administradores solamente
+                                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+                              }
+                              return; // Permitir ver y editar documentos propios y de otros
+                            }
+                            
+                            if (isWrite) {
+                              // El usuario con el rol 'write' puede ver y editar sus propios documentos, pero no eliminarlos
+                              if (newDoc._deleted) {
+                                // Restringir eliminación a propietarios y administradores solamente
+                                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+                              }
+                              if (oldDoc && oldDoc._id === newDoc._id && oldDoc._rev === newDoc._rev) {
+                                // El usuario puede editar su propio documento
+                                return;
+                              }
+                              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+                            }
+                            
+                            if (isReed) {
+                              // El usuario con el rol 'reed' solo puede ver documentos y no puede editar ni crear
+                              if (newDoc._deleted) {
+                                // Restringir eliminación a propietarios y administradores solamente
+                                throw({ forbidden: 'No tienes permiso para eliminar este documento.' });
+                              }
+                              if (!oldDoc) {
+                                // Restringir la lectura de documentos a propietarios y administradores solamente
+                                throw({ forbidden: 'No tienes permiso para leer este documento.' });
+                              }
+                              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+                            }
+                            
+                            if (isWsConfigDoc && isLoggedIn) {
+                              // Permitir lectura de documentos a todos los usuarios logeados
+                              if (!oldDoc) {
+                                // Restringir la lectura de documentos a propietarios y administradores solamente
+                                throw({ forbidden: 'No tienes permiso para leer este documento.' });
+                              }
+                              throw({ forbidden: 'No tienes permiso para editar este documento.' });
+                            }
+                            
+                            // Restricción para todos los demás usuarios
+                            throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
+                        }"
+                    ];
+
+                
+                    
+                    
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
 
@@ -2088,10 +2189,7 @@ class Workspace extends BaseController
         //  $response = 'Hola';           
         return $response;
     }
-
     //Funciones 2023
-
-
     function up_pic_async() {
         $config = [
             'upload_path' => './archivos/fotos/',
@@ -2161,106 +2259,8 @@ class Workspace extends BaseController
     
         echo json_encode(['status' => 'success', 'message' => 'Archivo cargado correctamente']);
     }
-    
-    public function img_product_uploadOldOk()
-    {
-        if (!logged_in()) {
-            return redirect()->to(base_url('/workspace/login'));
-        } else {
-
-            
-
-            $validationRule = [
-                'userfile' => [
-                    'label' => 'Image File',
-                    'rules' => [
-                        'uploaded[userfile]',
-                        'is_image[userfile]',
-                        'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-                        'max_size[userfile,10000]',
-                        //'max_dims[userfile,1024,768]',
-                    ],
-                ],
-            ];
-
-            if (!$this->validate($validationRule)) {
-                $data = ['errors' => $this->validator->getErrors()];
-                return $this->response->setJSON($data);
-            }
-            $ws_id = session('ws_id');
-            $img = $this->request->getFile('userfile');
-            $name = $img->getName();
-
-            $newName = $img->getRandomName(); 
-
-            //$newName = $name;
-            $img->move('./public/img/catalog/ws_collection_'.$ws_id, $newName);
-
-
-            //   $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
-            
-            $data = [
-                'success' => 'Image uploaded successfully',
-                'new_name' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName,
-                'path' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName
-            ];
-            return $this->response->setJSON($data);
-        }
-    }
-
-    public function img_product_uploadOK2()
-    {
-            if (!logged_in()) {
-                return redirect()->to(base_url('/workspace/login'));
-            } else {
-
-                $validationRule = [
-                    'userfile' => [
-                        'label' => 'Image File',
-                        'rules' => [
-                            'uploaded[userfile]',
-                            'is_image[userfile]',
-                            'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-                            'max_size[userfile,10000]',
-                            //'max_dims[userfile,1024,768]',
-                        ],
-                    ],
-                ];
-
-                if (!$this->validate($validationRule)) {
-                    $data = ['errors' => $this->validator->getErrors()];
-                    return $this->response->setJSON($data);
-                }
-                $ws_id = session('ws_id');
-                $img = $this->request->getFile('userfile');
-                $name = $img->getName();
-                $newName = $img->getRandomName(); 
-
-                // Obtener el nombre de la imagen vieja
-                $variant_id = $this->request->getPost('variant_id');
-                $doc_id = $this->request->getPost('doc_id');
-                $oldImgPath = './public/img/catalog/ws_collection_'.$ws_id.'/'.$variant_id.'-'.$doc_id.'.jpg';
-
-                // Eliminar la imagen vieja si es necesario
-                if ($name != $newName && file_exists($oldImgPath)) {
-                    unlink($oldImgPath);
-                }
-
-                // Mover la nueva imagen
-                $img->move('./public/img/catalog/ws_collection_'.$ws_id, $newName);
-
-                // Actualizar la información del producto
-                $data = [
-                    'success' => 'Image uploaded successfully',
-                    'new_name' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName,
-                    'path' => '/public/img/catalog/ws_collection_'.$ws_id.'/'. $newName
-                ];
-                return $this->response->setJSON($data);
-            }
-    }
-
     public function img_product_upload()
-{
+    {
     if (!logged_in()) {
         return redirect()->to(base_url('/workspace/login'));
     } else {
@@ -2324,76 +2324,7 @@ class Workspace extends BaseController
 
         return $this->response->setJSON($data);
     }
-}
-
-    public function img_product_uploadNO4()
-{
-    if (!logged_in()) {
-        return redirect()->to(base_url('/workspace/login'));
     }
-
-    $validationRule = [
-        'userfile' => [
-            'label' => 'Image File',
-            'rules' => [
-                'uploaded[userfile]',
-                'is_image[userfile]',
-                'mime_in[userfile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-                'max_size[userfile,10000]',
-                //'max_dims[userfile,1024,768]',
-            ],
-        ],
-    ];
-
-    if (!$this->validate($validationRule)) {
-        $data = ['errors' => $this->validator->getErrors()];
-        return $this->response->setJSON($data);
-    }
-
-    $ws_id = session('ws_id');
-    $img = $this->request->getFile('userfile');
-
-    // Establecer una extensión de archivo personalizada y agregarla al nombre aleatorio del archivo.
-    $newName = $img->getRandomName('prefix', ['png', 'jpg', 'jpeg', 'gif', 'webp']);
-
-    // Agregar la ruta completa al archivo.
-    $path = WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id.'/'.$newName;
-
-    // Comprimir la imagen y guardarla en el servidor.
-    if ($img->isValid() && !$img->hasMoved()) {
-        $img->move(WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id, $newName);
-
-        $img = \Config\Services::image()
-            ->withFile($path)
-            ->resize(1024, 1024, true, 'height')
-            ->save($path, 80);
-    }
-
-    // Obtener la imagen actual para compararla con la nueva imagen.
-    $product = $this->ProductModel->find($this->request->getPost('product_id'));
-    $old_img_path = WRITEPATH . 'uploads/catalog/ws_collection_'.$ws_id.'/'.$product->img;
-
-    // Si hay una imagen antigua, eliminarla o sobrescribirla.
-    if ($product->img && file_exists($old_img_path) && is_file($old_img_path)) {
-        if ($old_img_path != $path) {
-            unlink($old_img_path);
-        }
-    }
-
-    // Actualizar el modelo con la información de la imagen.
-    $product->img = $newName;
-    $product->update();
-
-    // Devolver una respuesta JSON con la información de la imagen.
-    $data = [
-        'success' => 'Image uploaded successfully',
-        'new_name' => '/uploads/catalog/ws_collection_'.$ws_id.'/'.$newName,
-        'path' => '/uploads/catalog/ws_collection_'.$ws_id.'/'.$newName
-    ];
-    return $this->response->setJSON($data);
-}
-
-
 
 
 }

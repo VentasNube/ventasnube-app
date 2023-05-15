@@ -290,10 +290,11 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     else if (ws_m_s == 'board') {
         
         if (m_t_id == '1') {
-            // alert('TRAIGO EL BOARD Ventas');
+          //  alert('TRAIGO EL BOARD Ventas1');
             // await get_board();
             //   console.log('TRAIGO BOARD ')
-            get_board(m_id, m_t_id, m_var_id,ws_left_nav_data, userCtx);
+            get_board()
+           // get_board(m_id, m_t_id, m_var_id,ws_left_nav_data, userCtx);
             // board_view_item_url();
             //board_view_item_url(m_id, m_var_id, userCtx);
             // catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);

@@ -353,36 +353,25 @@ function get_search_board_items(search_m_input, m_id) {
 };
 
 
-async function get_board_group(board_group) {
-    var ws_board = {
+async function get_board_group(m_id, m_t_id) {
+    var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
-        board_group:board_group,
-        //m_id: m_id,
-        // m_t_id : m_t_id
+        m_id: m_id,
+        m_t_id : m_t_id
     }
-    console.log('ws_board');
-    console.log(ws_board);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_cart);
 }
 
 // TRAIGO EL BOARD Y IMPRIMO
 async function get_boardNEW(m_id, m_t_id) {
 
-    const board_doc = 'boar_group_sell';
-    var board_group_sell = await L_board_db.get(product_id);
-   // var var_doc = product_doc.board_group.find(response => response.id == variant_id);
-   var board_group = board_group_sell.board_group
-    var board_group = {
-        board_group: board_group,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-    }
-    //var url_now = getUrl();
-    //var m_id = url_now.type;
-   //var m_t_id = url_now.t;
-    var board_data = {
+    var url_now = getUrl();
+    var m_id = url_now.type;
+    var m_t_id = url_now.t;
+
+    var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         ws_left_nav_data:ws_left_nav_data,
@@ -390,17 +379,12 @@ async function get_boardNEW(m_id, m_t_id) {
         m_id: m_id,
         m_t_id : m_t_id
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
     get_nav_board( ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
-    get_board_group(board_group);
+    get_board_group();
 }
 
-async function get_board() {
-
-
-
-    var board_group_sell = await L_board_db.get('board_group_sell');
-    var board_group = board_group_sell.board_group;
+async function get_boardOK() {
     var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
@@ -409,20 +393,26 @@ async function get_board() {
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
     get_nav_board( ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
-    get_board_group(board_group);
+    get_board_group();
 }
 
 // FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function get_board_url(product_id, variant_id) {
     try {
-       // var product_id = product_id;
-      //  var variant_id = variant_id;
+        var product_id = product_id;
+        var variant_id = variant_id;
 
         var board_config = await L_board_db.get('board_config');
-        var board_group = await L_board_db.get('board_group_sell');
-        
-        //var product_doc = await L_board_db.get(product_id);
-        var var_doc = board_group.groups.find(response => response.id == group_id);
+        var board_group = await L_board_db.get('board_group_sell_');
+
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
+
+        var product_doc = await L_board_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+
+
+
 
         doc._id = 'ws_order_group' + new Date().getTime() + Math.random().toString().slice(2);
         console.log('Despues',doc);
@@ -431,6 +421,7 @@ async function get_board_url(product_id, variant_id) {
         var product_doc = await L_board_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
 
+     
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
         var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -456,6 +447,8 @@ async function board_view_item_url() {
 
 /////BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
+
+///OLD FUNCTIONS PARA COMPROBAR
 ////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
 function get_board_group_size() {
     var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
@@ -469,7 +462,6 @@ function get_board_group_size() {
     //  console.log("Hay " + divs + " Etapas");
     //  alert(board_new_group_size);
 }
-
 $(document).on('click', '#edit_board_group_btn', function (event) {
     //  alert('holaaaa');
     var url_now = getUrl();
@@ -512,6 +504,7 @@ get_board_group_size()
 
 
 // CREAR NUEVO TABLERO
+
 //Abro el popup 
 async function new_board_star_intro() {
     try {
@@ -609,6 +602,11 @@ async function new_group_order(element) {
         //  or_board_collect_and_deliver:or_board_collect_and_deliver,
     }
     console.log(data);
+
+
+
+
+
 
     try {
         const products = await get_cart_product();

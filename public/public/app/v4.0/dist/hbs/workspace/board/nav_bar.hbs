@@ -155,26 +155,41 @@
                     aria-expanded="true">
                     <span class="material-icons">settings</span>
                 </button>
+                 {{#with ws_lang_data}}
                 <ul class="dropdown-menu pull-right">
                     <li>
-                        <a onclick="catalog_config()">
+                        <a href="#" onclick="new_board_star_intro()">
+                            <i class="material-icons">dashboard</i>
+                           {{m_new_board}}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="catalog_config()">
                             <i class="material-icons">create</i>
-                            Editar tablero
+                           {{m_edit_board}}  
                         </a>
                     </li>
                      <li>
-                        <a onclick="catalog_config()">
+                        <a href="#" onclick="catalog_config()">
                                 <i class="material-icons"> view_carousel</i> 
-                            Agregar etapa
+                            {{m_new_board_group}}  
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="catalog_config()">
+                                <i class="material-icons"> create</i> 
+                            {{m_edit_board_group}}  
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button">
+                        <a href="#" id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button">
                             <i class="material-icons"> person_add</i> 
-                            Agregar colaborador
+                             {{m_add_board_group_collaborator}}
                         </a>
                     </li>
+
+{{/with}}
                 </ul>
             </div>
 

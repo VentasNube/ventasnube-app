@@ -28,14 +28,19 @@ return [
         't_search' => 'Busca lo que sea..',
         'b_search_tittle' => 'Buscar lo que sea..',
         'search_icon' => 'search',
+
         //BOARDS
+        //Editar board
+        'm_new_board' => 'Nuevo Tablero',
+        'm_edit_board' => 'Editar Tablero',
+        'm_new_board_group' => 'Nuevo grupo',
+        'm_edit_board_group' => 'Editar grupo',
+        'm_add_board_group_collaborator' => 'Agregar colaborador',
+
+        //nueva Ordenes
         'm_board' => 'Tableros',
         'm_board_new_item' => 'Nueva Orden',
         'm_board_filter' => 'Filtrar',
-        'm_board_group' => 'Nuevo grupo',
-       // 'm_board_' => 'Tableros',
-
-
 
         //CATALOGO
         'm_catalog' => 'Catalogo',
