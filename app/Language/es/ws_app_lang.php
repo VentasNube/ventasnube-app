@@ -37,6 +37,39 @@ return [
         'm_edit_board_group' => 'Editar grupo',
         'm_add_board_group_collaborator' => 'Agregar colaborador',
 
+        'm_list_board_group' => 'Descargar Listado',
+        /// BOARDS TEXTOS KAMBAN 
+
+    
+        'm_board_group_1' => 'Nuevos',
+        'm_board_group_1' => 'Presupuestado',
+        'm_board_group_1' => 'Finalizados',
+        // BOARD TOUR 
+
+
+        'm_board_tour_title' => 'Te vamos a guiar en unos simples pasos para crear tu nuevo tablero Kanban.',
+        'm_board_tour_title_sub' => ' Que tipo de actividad vas a organizar en este tablero?',
+
+        'm_board_tour_purchase' => ' Comprar',
+        'm_board_name_purchase' => 'Compras',
+        'm_board_tour_purchase_tittle' => 'Productos para mi catalogo.',
+
+        'm_board_tour_sell' => 'Vender',
+        'm_board_name_sell' => 'Ventas',
+        'm_board_tour_sell_tittle' => 'productos del catalogo.',
+
+
+        'm_board_tour_service-objet' => 'Servicios con Orden',
+        'm_board_name_service-objet' => 'Servicios',
+        'm_board_tour_service-objet_tittle' => ' para los objetos o pacientes que traen mis contactos. ',
+
+        'm_board_tour_service-contact' => 'Servicios con Turnos',
+        'm_board_name_service-contact' => 'Turnos',
+        'm_board_tour_service-contact_tittle' => ' para mis contactos. o pacientes que traen mis contactos.',
+        
+
+        'm_edit_board' => 'Editar Tablero',
+
         //nueva Ordenes
         'm_board' => 'Tableros',
         'm_board_new_item' => 'Nueva Orden',

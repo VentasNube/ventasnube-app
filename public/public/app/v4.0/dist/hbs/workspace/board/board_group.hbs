@@ -18,16 +18,16 @@
                                 <li>
                                     <a id="edit_board_group_btn" m_s_id="{{{board_group_id}}}" href="#master_popup"
                                         role="button" title="Retirar efectivo">
-                                        <i class="material-icons">settings</i> Editar grupo
+                                        <i class="material-icons">settings</i>  {{#with ws_lang_data}} {{{m_edit_board_group}}}{{/with}}
                                     </a>
                                 </li>
                                 <li><a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
                                         m_s_id="{{{board_group_id}}}" href="#" role="button"><i
-                                            class="material-icons">group_add</i> Agregar Miembro</a></li>
+                                            class="material-icons">group_add</i>   {{#with ws_lang_data}} {{{m_add_board_group_collaborator}}}{{/with}} </a></li>
                                 <li>
                                 <li class="divider"></li>
                                 <li><a href="#" data-toggle="modal" role="button"><i
-                                            class="material-icons">picture_as_pdf</i> Descargar listado</a>
+                                            class="material-icons">picture_as_pdf</i> {{#with ws_lang_data}}  {{{m_list_board_group}}}{{/with}} </a>
                                 </li>
                             </ul>
                         </div>

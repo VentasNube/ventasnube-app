@@ -73,13 +73,13 @@ async function ws_board_config() {
 }
 
 // TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_board(ws_info, ws_lang_data,ws_left_nav_data) {
-    console.log( 'ws_left_nav_data get_top_bar get_top_bar get_top_bar');
-    console.log( ws_left_nav_data);
+function get_nav_board(ws_info, ws_lang_data, ws_left_nav_data) {
+    console.log('ws_left_nav_data get_top_bar get_top_bar get_top_bar');
+    console.log(ws_left_nav_data);
     var ws_catalog_data = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
-        ws_left_nav_data:ws_left_nav_data,
+        ws_left_nav_data: ws_left_nav_data,
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
@@ -253,7 +253,7 @@ function print_board_item(new_items) {
     }
 }
 
-//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+//NOOOO Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_board_item(search_val) {
     //Armo el array para renderizar los items
     var new_items_search = search_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
@@ -278,7 +278,7 @@ async function search_board_item(search_val) {
     }
 }
 
-// FUNCION PARA ARMAR LA VISTA DE EDITAR UNA ORDEN 
+// FALTAAAAA FUNCION PARA ARMAR LA VISTA DE EDITAR UNA ORDEN 
 async function board_view_item(element) {
     try {
         var product_id = $(element).attr('product_id');
@@ -313,6 +313,282 @@ async function board_view_item(element) {
 
 
 ////----( VISTA BOARD GROUP   )----/////
+
+
+
+///// CREAR UN NUEVO BOARD 
+
+// CREAR NUEVA ORDEN EN LA DB
+async function put_new_boardOLDNO(board_name, data) {
+    try {
+     //   alert('PUT NEW');
+      //  alert(board_name);
+        const currentDateTime = new Date().toLocaleString('es-ES');
+        const docId = 'board_group_' + board_name; // Generar un ID único
+        let doc = {};
+     
+        doc = await L_board_db.get(docId); // Verificar si el documento ya existe
+
+        // Aquí puedes actualizar o modificar los datos del documento "doc" si es necesario
+        let response;
+        new_doc = {
+        //    "_id": docId,
+            "category_id": board_name,
+            "workspace_id": ws_id,
+            "status": "active",
+            data,
+            "board_group": [
+                {
+                    "id": "1",
+                    "name": 'Nuevos' ,
+                    "color": "bg-green"
+                },
+                {
+                    "id": "2",
+                    "name": 'Presupuestos',
+                    "color": "bg-red"
+                },
+                {
+                    "id": "3",
+                    "name": 'Finalizados' ,
+                    "color": "bg-green"
+                }
+            ],
+        }
+
+        console.log('new_doc');
+        console.log(new_doc);
+        console.log('doc')
+        console.log(doc)
+        console.log('doc._id')
+        console.log(doc._id)
+        console.log('doc._rev')
+        console.log(doc._rev)
+        if (doc._rev) {
+            // El documento ya existe, así que se debe actualizar
+            doc = new_doc;
+            doc._id = docId;
+            doc._rev = doc._rev;
+            //Edito el docuemento 
+            response = await L_board_db.put(doc); // Actualizar el documento existente
+
+
+        } else {
+            // El documento no existe, así que se debe crear uno nuevo
+            doc = new_doc;
+            doc._id = docId;
+           // var ws_lang_data = ws_lang_data;
+            console.log(" doc doc doc doc docdoc doc" )
+            console.log(doc)
+            response = await L_board_db.put(doc); // Crear un nuevo documento
+            console.log(" put_new_board response response response response" )
+            console.log(response)
+        }
+      
+        // Mostrar mensaje en un snackbar
+        Snackbar.show({
+            text: 'Documento guardado exitosamente',
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+        console.log(response);
+        console.log(doc._id);
+    } catch (error) {
+        // Mostrar mensaje de error en un snackbar
+        Snackbar.show({
+            text: error.message,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+
+async function put_new_board(board_name, data) {
+    try {
+        const currentDateTime = new Date().toLocaleString('es-ES');
+        const docId = 'board_group_' + board_name; // Generar un ID único
+        let doc = {};
+        
+        try {
+            doc = await L_board_db.get(docId); // Verificar si el documento ya existe
+        } catch (error) {
+            if (error.name !== 'not_found') {
+                throw error;
+            }
+        }
+
+        // Aquí puedes actualizar o modificar los datos del documento "doc" si es necesario
+        let response;
+        new_doc = {
+            "_id": docId,
+            "category_id": board_name,
+            "workspace_id": ws_id,
+            "status": "active",
+            "type":"board_config",
+            data,
+            "board_group": [
+                {
+                    "id": "1",
+                    "name": 'Nuevos' ,
+                    "color": "bg-green"
+                },
+                {
+                    "id": "2",
+                    "name": 'Presupuestos',
+                    "color": "bg-red"
+                },
+                {
+                    "id": "3",
+                    "name": 'Finalizados' ,
+                    "color": "bg-green"
+                }
+            ],
+        }
+
+        if (doc._rev) {
+            // El documento ya existe, así que se debe actualizar
+            new_doc._rev = doc._rev;
+            response = await L_board_db.put(new_doc); // Actualizar el documento existente
+        } else {
+            // El documento no existe, así que se debe crear uno nuevo
+            response = await L_board_db.put(new_doc); // Crear un nuevo documento
+        }
+      
+        // Mostrar mensaje en un snackbar
+        Snackbar.show({
+            text: 'Documento guardado exitosamente',
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+        console.log(response);
+        console.log(new_doc._id);
+    } catch (error) {
+        // Mostrar mensaje de error en un snackbar
+        Snackbar.show({
+            text: error.message,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+
+async function btn_next_new_board(board_name, data){
+    //VALORES SELECCIONADOS DEL FOMULARIO    
+    //STEP 1
+    var board_type = $('input:radio[name=board-type]:checked').val();
+    // var board_name = $('input[name=board-name]').val();
+    var board_name = $('.new_board_name').html();
+   // alert(board_name);
+    var board_icon = $("#bt-text-icon").children(':first').text();
+    var board_color = $("#bg-select-color").attr('bg-color');
+    //  STEP 2   
+    var board_mode = $('input:radio[name=board_mode]:checked').val();
+    var board_collect_and_deliver = $('input:radio[name=board_collect_and_deliver]:checked').val();
+    var board_delivery_place = $('input:radio[name=board_delivery_place]:checked').val();
+    var board_control_cash_close_box = $('input:radio[name=board_control_cash_close_box]:checked').val();
+    var board_control_stock = $('input:radio[name=board_control_stock]:checked').val();
+    var board_control_cash = $('input:radio[name=board_control_cash]:checked').val();
+    // STEP 3
+    var board_receipt_voucher = $('input[name=or_board_receipt_vouche]').val();
+    var board_payment_voucher = $('input[name=or_board_payment_voucher]').val();
+    var board_delivery_voucher = $('input[name=or_board_delivery_voucher]').val();
+    var board_credit_voucher = $('input[name=or_board_credit_voucher]').val();
+    var board_return_voucher = $('input[name=or_board_return_voucher]').val();
+
+    var step = $("#btn-previus").attr('step');
+    console.log(board_type + board_name + board_icon + board_color + step);
+    if (board_type != null || board_name != null || board_icon != null || board_color != null) {
+        //alert(step);
+        if (step == 1) {
+            $("#btn-next").text('Continuar');
+            $("#btn-previus").attr('step', '2');
+            $("#btn-previus").text('Volver');
+            $(".btn-previus").removeAttr('data-dismiss');
+            $(".btn-previus").removeAttr('aria-label');
+            $("#step-1").hide();
+            $("#step-2").show();
+        } else if (step == 2) {
+            $("#btn-previus").attr('step', '3');
+            $("#btn-next").text('Finalizar');
+            $("#step-2").hide();
+            $("#step-3").show();
+
+        }
+
+        else if (step == 3) {
+            $("#btn-previus").attr('step', '3');
+            $("#btn-next").text('Crear');
+            $("#step-2").hide();
+            $("#step-3").show();
+
+           //var url_now = getUrl();
+           // var m_id = url_now.m_id;
+            //var m_t_id = url_now.m_t_id;
+            //  var pacht = 'board'; //CONTROLADOR PRINCIPAL
+            //  var controler_data = 'new_board_data_post'; //NOMBRE DE CONTROLADOR DATA
+            // var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+            var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+            var data = {
+                //STEP 1
+               // m_id: m_id,
+                m_t_type_action: board_type,
+                m_t_name: board_name,
+                m_t_icon: board_icon,
+                m_t_color: board_color,
+                m_t_url: board_name,
+                //  STEP 2   
+                board_mode: board_mode,
+                board_collect_and_deliver: board_collect_and_deliver,
+                board_delivery_place: board_delivery_place,
+                board_control_cash_close_box: board_control_cash_close_box,
+                board_control_stock: board_control_stock,
+                board_control_cash: board_control_cash,
+                // STEP 3
+                board_receipt_voucher: board_receipt_voucher,
+                board_payment_voucher: board_payment_voucher,
+                board_delivery_voucher: board_delivery_voucher,
+                board_credit_voucher: board_credit_voucher,
+                board_return_voucher: board_return_voucher,
+            };
+           
+           console.log(' datadatadatadatadata datadata datadata data');
+           console.log(data);
+
+            console.log('board_name board_name board_name');
+            console.log(board_name);
+            put_new_board(board_type, data);
+            $('#master_popup').modal('hide');
+            
+            Snackbar.show({
+                text: 'Se creo el' + board_name + ' tablero con exito!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+
+        }
+        else {
+            Snackbar.show({
+                text: 'Falta completar los datos',
+                actionText: 'Falta completar',
+                actionTextColor: "#0575e6",
+            });
+        }
+    };
+};
+
+
+
+// PRUEBA
 function get_board_groupOLD(m_id, m_t_id) {
     var url_now = getUrl();
     var m_id = url_now.m_id;
@@ -320,8 +596,8 @@ function get_board_groupOLD(m_id, m_t_id) {
     var pacht = url_now.pacht_m_url; //CONTROLADOR PRINCIPAL
     var controler_m = url_now.pacht_m_url;
     alert(controler_m);
-  //var controler_data = pacht + '_group_data'; //NOMBRE DE CONTROLADOR DATA
-     var controler_template = pacht+'_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+    //var controler_data = pacht + '_group_data'; //NOMBRE DE CONTROLADOR DATA
+    var controler_template = pacht + '_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
     var pacht = 'board'; //CONTROLADOR PRINCIPAL
     var controler_data = 'board_group_data'; //NOMBRE DE CONTROLADOR DATA
     var controler_template = 'board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
@@ -358,7 +634,7 @@ async function get_board_group(board_group) {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
-        board_group:board_group,
+        board_group: board_group,
         //m_id: m_id,
         // m_t_id : m_t_id
     }
@@ -367,13 +643,13 @@ async function get_board_group(board_group) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
 }
 
-// TRAIGO EL BOARD Y IMPRIMO
+// PRUEBA
 async function get_boardNEW(m_id, m_t_id) {
 
     const board_doc = 'boar_group_sell';
     var board_group_sell = await L_board_db.get(product_id);
-   // var var_doc = product_doc.board_group.find(response => response.id == variant_id);
-   var board_group = board_group_sell.board_group
+    // var var_doc = product_doc.board_group.find(response => response.id == variant_id);
+    var board_group = board_group_sell.board_group
     var board_group = {
         board_group: board_group,
         ws_lang_data: ws_lang_data,
@@ -381,51 +657,48 @@ async function get_boardNEW(m_id, m_t_id) {
     }
     //var url_now = getUrl();
     //var m_id = url_now.type;
-   //var m_t_id = url_now.t;
+    //var m_t_id = url_now.t;
     var board_data = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
-        ws_left_nav_data:ws_left_nav_data,
+        ws_left_nav_data: ws_left_nav_data,
         user_roles: user_Ctx.userCtx.roles,
         m_id: m_id,
-        m_t_id : m_t_id
+        m_t_id: m_t_id
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
-    get_nav_board( ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
+    get_nav_board(ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
     get_board_group(board_group);
 }
-
+// TRAIGO EL BOARD Y IMPRIMO
 async function get_board() {
-
-
-
     var board_group_sell = await L_board_db.get('board_group_sell');
     var board_group = board_group_sell.board_group;
     var ws_cart = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
-        ws_left_nav_data:ws_left_nav_data,
+        ws_left_nav_data: ws_left_nav_data,
         user_roles: user_Ctx.userCtx.roles,
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', ws_cart);
-    get_nav_board( ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
+    get_nav_board(ws_info, ws_lang_data, ws_left_nav_data, user_Ctx.userCtx.roles);
     get_board_group(board_group);
 }
 
 // FUNCION QUE CREA LA VISTA TOMANDO LOS PARAMETROS DEL LA URL
 async function get_board_url(product_id, variant_id) {
     try {
-       // var product_id = product_id;
-      //  var variant_id = variant_id;
+        // var product_id = product_id;
+        //  var variant_id = variant_id;
 
         var board_config = await L_board_db.get('board_config');
         var board_group = await L_board_db.get('board_group_sell');
-        
+
         //var product_doc = await L_board_db.get(product_id);
         var var_doc = board_group.groups.find(response => response.id == group_id);
 
         doc._id = 'ws_order_group' + new Date().getTime() + Math.random().toString().slice(2);
-        console.log('Despues',doc);
+        console.log('Despues', doc);
         // Crear un nuevo documento
         let response = await L_board_db.put(doc);
         var product_doc = await L_board_db.get(product_id);
@@ -452,7 +725,6 @@ async function board_view_item_url() {
         console.log(err);
     }
 }
-
 
 /////BOARDS 2023 NEW FUNCTIONS ////
 ///FUNCIONES BOARD 2023
@@ -524,7 +796,7 @@ async function new_board_star_intro() {
         }
         console.log('ws_data');
         console.log(ws_data);
-      
+
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', '#master_popup', ws_data);
     } catch (err) {
         console.log(err);
@@ -571,12 +843,12 @@ $("#btn-submit").click(function () {
 async function new_group_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
-    const doc_id = category_id+'_order_' + new Date().getTime() + Math.random().toString().slice(2);
+    const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
     const workspace_id = ws_id; //Id del documento a edita
     const group_id = '1'; //Id del documento a edita
-    const entry_date = { hour, minutes } = await getDateTimeMinutes(); 
-    const due_date = { hour, minutes } = await getDateTimeMinutes(); 
-    const comments = 'Sin comentarios'; 
+    const entry_date = { hour, minutes } = await getDateTimeMinutes();
+    const due_date = { hour, minutes } = await getDateTimeMinutes();
+    const comments = 'Sin comentarios';
 
 
     var board_type = $('input:radio[name=board-type]:checked').val();
@@ -614,114 +886,114 @@ async function new_group_order(element) {
         const products = await get_cart_product();
         console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
 
-    //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var new_board_doc = {
-        // _id: 'sales_order_001',
-         _id: doc_id,
-         type: 'order',
-         category_id: category_id,
-         workspace_id: workspace_id,
-         seen:false,
-         author: userCtx.email,
-         group_id: 'group_123',
-         order_id: '123',
-         group_position: '1',
-         comments: comments,
-         print: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
-            postal_code: 'Postal Code',
-            shipping_date: '2023-05-15',
-            shipping_status: 'pending',
-            carrier: {
-                name: 'Carrier Name',
-                phone: 'Carrier Phone',
-                vehicle: 'Carrier Vehicle'
-            }
-        },
-        stock_control_conf: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
+        //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var new_board_doc = {
+            // _id: 'sales_order_001',
+            _id: doc_id,
+            type: 'order',
+            category_id: category_id,
+            workspace_id: workspace_id,
+            seen: false,
+            author: userCtx.email,
+            group_id: 'group_123',
+            order_id: '123',
+            group_position: '1',
+            comments: comments,
+            print: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
+                postal_code: 'Postal Code',
+                shipping_date: '2023-05-15',
+                shipping_status: 'pending',
+                carrier: {
+                    name: 'Carrier Name',
+                    phone: 'Carrier Phone',
+                    vehicle: 'Carrier Vehicle'
+                }
+            },
+            stock_control_conf: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
 
-        },
+            },
 
-        create_order_conf: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
+            create_order_conf: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
 
-        },
-        
+            },
 
-         shipping: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
 
-        },
-         collaborators: [
-             {
-                id:'smartmobile.com.ar@gmail.com',
-                 name: 'mariano',
-                 role: 'Rider'
-                 
-             },
-             {
-                id:'distripack@gmail.com',
-                 name: 'Federico',
-                 role: 'Rider'
-                 
-             }
+            shipping: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
 
-         ],
-         payment_config: [
-             {
-                 id: 123,
-                 payment_id: '21312312',
-                 payment_method: 'Credit Card',
-                 update_datetime: '18/3/2021 18:45:10',
-                 user: 'smartmobile.com@gmail.com',
-                 total_tax: 21.00,
-                 total_discount: 12.95,
-                 total: 339.95,
-                 currency: {
-                     id: 'ARS',
-                     value: '$'
-                 }
-             }
-         ],
-         update_history: [
-             {
-                 update_datetime: '18/3/2021 18:45:10',
-                 user: 'smartmobile.com@gmail.com',
-             },
-             {
-                 in_datetime: '18/3/2021 18:45:10',
-                 update_datetime: '18/3/2021 18:45:10',
-             }
-         ],
-     };
-    // Generar un ID único 
-   
-    new_board_put(new_board_doc);
-    console.log(order_arr);
-   // catalog_edit_item_url(doc_id, 1);
-} catch (error) {
-    Snackbar.show({
-        text:'Error al obtener los datos:', error,
-        actionText: 'ok',
-        actionTextColor: "#0575e6",
-        pos: 'bottom-left',
-        duration: 50000
-    });
-    console.error('Error al obtener los datos:', error);
-}
+            },
+            collaborators: [
+                {
+                    id: 'smartmobile.com.ar@gmail.com',
+                    name: 'mariano',
+                    role: 'Rider'
+
+                },
+                {
+                    id: 'distripack@gmail.com',
+                    name: 'Federico',
+                    role: 'Rider'
+
+                }
+
+            ],
+            payment_config: [
+                {
+                    id: 123,
+                    payment_id: '21312312',
+                    payment_method: 'Credit Card',
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    total_tax: 21.00,
+                    total_discount: 12.95,
+                    total: 339.95,
+                    currency: {
+                        id: 'ARS',
+                        value: '$'
+                    }
+                }
+            ],
+            update_history: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                },
+                {
+                    in_datetime: '18/3/2021 18:45:10',
+                    update_datetime: '18/3/2021 18:45:10',
+                }
+            ],
+        };
+        // Generar un ID único 
+
+        new_board_put(new_board_doc);
+        console.log(order_arr);
+        // catalog_edit_item_url(doc_id, 1);
+    } catch (error) {
+        Snackbar.show({
+            text: 'Error al obtener los datos:', error,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-left',
+            duration: 50000
+        });
+        console.error('Error al obtener los datos:', error);
+    }
 }
 
 async function new_board_put(doc) {
     try {
-        console.log('Antes',doc);
+        console.log('Antes', doc);
         // Generar un ID único
         doc._id = 'ws_order_group' + new Date().getTime() + Math.random().toString().slice(2);
-        console.log('Despues',doc);
+        console.log('Despues', doc);
         // Crear un nuevo documento
         let response = await L_board_db.put(doc);
         console.log(response);
@@ -746,195 +1018,197 @@ async function put_order_sell(doc) {
     try {
         doc._id = 'sales_order_' + new Date().getTime() + Math.random().toString().slice(2); // Generar un ID único
         let response = await L_board_db.put(doc); // Crear un nuevo documento
-       // console.log(response);
-       // console.log(doc._id);
+        // console.log(response);
+        // console.log(doc._id);
     } catch (err) {
         console.log(err);
     }
 }
+
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function new_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
-    const doc_id = category_id+'_order_' + new Date().getTime() + Math.random().toString().slice(2);
+    const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
     const workspace_id = ws_id; //Id del documento a edita
     const group_id = '1'; //Id del documento a edita
-    const entry_date = { hour, minutes } = await getDateTimeMinutes(); 
-    const due_date = { hour, minutes } = await getDateTimeMinutes(); 
-    const comments = 'Sin comentarios'; 
+    const entry_date = { hour, minutes } = await getDateTimeMinutes();
+    const due_date = { hour, minutes } = await getDateTimeMinutes();
+    const comments = 'Sin comentarios';
     try {
         const products = await get_cart_product();
         console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
-  
 
-    const customer = {
-                    id:'client_id_xxxx',
-                    name: 'Customer Name',
-                    address: 'Customer Address',
-                    phone: 'Customer Phone',
-                    email: 'Customer Email'
-                     };
 
-    //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
-    var order_arr = {
-        // _id: 'sales_order_001',
-         _id: doc_id,
-         type: 'order',
-         category_id: category_id,
-         workspace_id: workspace_id,
-         status: 'new',
-         seen:false,
-         author: userCtx.email,
-         group_id: 'group_123',
-         order_id: '123',
-         group_position: '1',
-         comments: comments,
-         priority: {
-             id: '1',
-             value: 'urgente'
-         },
-         entry_date: '2023-05-12',
-         due_date: '2023-05-20',
-         collaborators: [
-             {
-                 name: 'smartmobile.com.ar@gmail.com',
-                 role: 'Rider'
-             },
-             {
-                 name: 'Collaborator Name 2',
-                 role: 'Collaborator Role 2'
-             }
-         ],
-         total_service: 39.95,
-         total_product: 39.95,
-         total_tax: 39.95,
-         total_discount: 39.95,
-         total: 39.95,
-         payment_history: [
-             {
-                 id: 123,
-                 payment_id: '21312312',
-                 payment_method: 'Credit Card',
-                 update_datetime: '18/3/2021 18:45:10',
-                 user: 'smartmobile.com@gmail.com',
-                 total_tax: 21.00,
-                 total_discount: 12.95,
-                 total: 339.95,
-                 currency: {
-                     id: 'ARS',
-                     value: '$'
-                 }
-             }
-         ],
-         update_history: [
-             {
-                 update_datetime: '18/3/2021 18:45:10',
-                 user: 'smartmobile.com@gmail.com',
-             },
-             {
-                 in_datetime: '18/3/2021 18:45:10',
-                 update_datetime: '18/3/2021 18:45:10',
-             }
-         ],
-         customer: customer,
-         products: products,
-         service: [
-             {
-                 product_id: 'Product 1',
-                 name: 'Product 1',
-                 variation_id: 'Product 1',
-                 product_img: 'Product 1',
-                 price: 10.99,
-                 tax: 21.00,
-                 quantity: 2,
-                 discount: 10,
-                 subtotal: 21.98
-             },
-             {
-                 service_id: 'Service 2',
-                 name: 'Service 2',
-                 variation_id: '1',
-                 product_img: 'http:.//',
-                 price: 100.99,
-                 tax: 21.00,
-                 quantity: 2,
-                 discount: 10,
-                 subtotal: 210.98
-             }
-         ],
-         shipping: {
-             address: 'Shipping Address',
-             city: 'Shipping City',
-             postal_code: 'Postal Code',
-             shipping_date: '2023-05-15',
-             shipping_status: 'pending',
-             carrier: {
-                 name: 'Carrier Name',
-                 phone: 'Carrier Phone',
-                 vehicle: 'Carrier Vehicle'
-             }
-         }
-     };
-    // Generar un ID único 
-   
-    put_order(order_arr);
-    console.log(order_arr);
-   // catalog_edit_item_url(doc_id, 1);
-} catch (error) {
-    Snackbar.show({
-        text:'Error al obtener los datos:', error,
-        actionText: 'ok',
-        actionTextColor: "#0575e6",
-        pos: 'bottom-left',
-        duration: 50000
-    });
-    console.error('Error al obtener los datos:', error);
-}
-}
-// CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
-async function  get_cart_product() {
-    const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
-  
-    const products = [];
-  
-    for (const item of productItems) {
-      const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
-      const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
-      const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
-      const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
-  
-      const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
-      const price = priceMatch ? parseFloat(priceMatch[1]) : null;
-  
-      const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
-      const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
-  
-      const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
-      const discount = discountMatch ? {
-        percentage: parseFloat(discountMatch[1]),
-        amount: parseFloat(discountMatch[2])
-      } : null;
-  
-      const subtotal = price * quantity;
-  
-      const product = {
-        product_id: productName,
-        name: productName,
-        variation_id: productName,
-        product_img: productImg,
-        price: price,
-        tax: tax,
-        quantity: quantity,
-        discount: discount,
-        subtotal: subtotal
-      };
-  
-      products.push(product);
+        const customer = {
+            id: 'client_id_xxxx',
+            name: 'Customer Name',
+            address: 'Customer Address',
+            phone: 'Customer Phone',
+            email: 'Customer Email'
+        };
+
+        //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var order_arr = {
+            // _id: 'sales_order_001',
+            _id: doc_id,
+            type: 'order',
+            category_id: category_id,
+            workspace_id: workspace_id,
+            status: 'new',
+            seen: false,
+            author: userCtx.email,
+            group_id: 'group_123',
+            order_id: '123',
+            group_position: '1',
+            comments: comments,
+            priority: {
+                id: '1',
+                value: 'urgente'
+            },
+            entry_date: '2023-05-12',
+            due_date: '2023-05-20',
+            collaborators: [
+                {
+                    name: 'smartmobile.com.ar@gmail.com',
+                    role: 'Rider'
+                },
+                {
+                    name: 'Collaborator Name 2',
+                    role: 'Collaborator Role 2'
+                }
+            ],
+            total_service: 39.95,
+            total_product: 39.95,
+            total_tax: 39.95,
+            total_discount: 39.95,
+            total: 39.95,
+            payment_history: [
+                {
+                    id: 123,
+                    payment_id: '21312312',
+                    payment_method: 'Credit Card',
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    total_tax: 21.00,
+                    total_discount: 12.95,
+                    total: 339.95,
+                    currency: {
+                        id: 'ARS',
+                        value: '$'
+                    }
+                }
+            ],
+            update_history: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                },
+                {
+                    in_datetime: '18/3/2021 18:45:10',
+                    update_datetime: '18/3/2021 18:45:10',
+                }
+            ],
+            customer: customer,
+            products: products,
+            service: [
+                {
+                    product_id: 'Product 1',
+                    name: 'Product 1',
+                    variation_id: 'Product 1',
+                    product_img: 'Product 1',
+                    price: 10.99,
+                    tax: 21.00,
+                    quantity: 2,
+                    discount: 10,
+                    subtotal: 21.98
+                },
+                {
+                    service_id: 'Service 2',
+                    name: 'Service 2',
+                    variation_id: '1',
+                    product_img: 'http:.//',
+                    price: 100.99,
+                    tax: 21.00,
+                    quantity: 2,
+                    discount: 10,
+                    subtotal: 210.98
+                }
+            ],
+            shipping: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
+                postal_code: 'Postal Code',
+                shipping_date: '2023-05-15',
+                shipping_status: 'pending',
+                carrier: {
+                    name: 'Carrier Name',
+                    phone: 'Carrier Phone',
+                    vehicle: 'Carrier Vehicle'
+                }
+            }
+        };
+        // Generar un ID único 
+
+        put_order(order_arr);
+        console.log(order_arr);
+        // catalog_edit_item_url(doc_id, 1);
+    } catch (error) {
+        Snackbar.show({
+            text: 'Error al obtener los datos:', error,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-left',
+            duration: 50000
+        });
+        console.error('Error al obtener los datos:', error);
     }
-  
+}
+
+// CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
+async function get_cart_product() {
+    const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
+
+    const products = [];
+
+    for (const item of productItems) {
+        const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
+        const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
+        const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
+        const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
+
+        const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
+        const price = priceMatch ? parseFloat(priceMatch[1]) : null;
+
+        const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
+        const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
+
+        const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
+        const discount = discountMatch ? {
+            percentage: parseFloat(discountMatch[1]),
+            amount: parseFloat(discountMatch[2])
+        } : null;
+
+        const subtotal = price * quantity;
+
+        const product = {
+            product_id: productName,
+            name: productName,
+            variation_id: productName,
+            product_img: productImg,
+            price: price,
+            tax: tax,
+            quantity: quantity,
+            discount: discount,
+            subtotal: subtotal
+        };
+
+        products.push(product);
+    }
+
     return products;
-  }
-  
+}
+
 
 
 

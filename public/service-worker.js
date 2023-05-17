@@ -2,7 +2,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 52222222322332232222322423322232232222;
+const version = 52222222232221112221131111122211222112222232222;
 
 
 

@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-xl" role="document">
-
+    {{#with ws_lang_data}}
     <div class="modal-content">
         <form class="">
             <div class="modal-header">
@@ -19,192 +19,52 @@
                                         background-size: 230px 230px!important;
                                         background-position: 94% 15% !important; ">
                     <div class="text-left ">
-                        <h3 class="margin-20">Te vamos a guiar en unos simples pasos para crear tu nuevo tablero Kanban.
+                        <h3 class="margin-20">{{{m_board_tour_title}}}
                         </h3>
-                        <h4 class="margin-20"><strong> Que tipo de actividad vas a organizar en este tablero?</strong>
+                        <h4 class="margin-20"><strong> {{{m_board_tour_title_sub}}}</strong>
                         </h4>
                         <div class="margin-l-30">
                             <p>
                                 <input icon="local_shipping" bg-color="btn-danger" type="radio" name="board-type"
-                                    value="purchase" class="radio-chek" id="radio-1">
-                                <label for="radio-1"><strong> Comprar</strong> <small> productos para mi catalogo a mis
-                                        contactos.</small></label>
+                                    value="purchase" m_type="{{{m_board_name_purchase}}}" class="radio-chek"
+                                    id="radio-1">
+                                <label for="radio-1"><strong>{{{m_board_tour_purchase}}}</strong>
+                                    <small>{{{m_board_tour_purchase_tittle}}}</small></label>
                             </p>
                             <p>
                                 <input icon="shopping_cart" bg-color="btn-primary" type="radio" name="board-type"
-                                    value="sell" class="radio-chek" id="radio-2">
-                                <label for="radio-2"> <strong>Vender</strong> <small>productos del catalogo a mis
-                                        contactos.</small></label>
+                                    value="sell" m_type="{{{m_board_name_sell}}}" class="radio-chek" id="radio-2">
+                                <label for="radio-2"> <strong>{{{m_board_tour_sell}}}</strong>
+                                    <small>{{{m_board_tour_sell_tittle}}}</small></label>
                             </p>
                             <p>
                                 <input icon="airline_seat_flat" bg-color="btn-success" type="radio" name="board-type"
-                                    value="service-contact" class="radio-chek" id="radio-4">
-                                <label for="radio-4"> <strong>Atencion con servicios</strong> <small> a mis
-                                        contactos.</small></label>
+                                    value="service-contact" m_type="{{{m_board_name_service-objet}}}" class="radio-chek"
+                                    id="radio-4">
+                                <label for="radio-4"> <strong>{{{m_board_tour_service-objet}}}</strong> <small>
+                                        {{{m_board_tour_service-objet_tittle}}}</small></label>
                             </p>
                             <p>
                                 <input icon="devices_other" bg-color="btn-secondary" type="radio" name="board-type"
-                                    value="service-objet" class="radio-chek" id="radio-5">
-                                <label for="radio-5"> <strong>Atencion con servicios</strong><small> a los objetos o
-                                        pacientes que traen mis contactos. </small></label>
+                                    value="service-objet" m_type="{{{m_board_name_service-contact}}}" class="radio-chek"
+                                    id="radio-5">
+                                <label for="radio-5"> <strong>{{{m_board_tour_service-contact}}}</strong><small>
+                                        {{{m_board_tour_service-contact_tittle}}} </small></label>
                             </p>
                         </div>
-                        <div id="new-board-step-1">
-                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div id="new-board-step-1" class=" margin-20 ">
+
+                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label>
-                                    <strong> Como lo vas a llamar?</strong>
-                                </label>
-                                <input id="new-board-name" class="form-control" type="text"
-                                    placeholder="Compras, ventas etc.. " name="board-name" value="" />
-                            </div>
-                            <div id="board-type-icon" class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>
-                                    <strong> Elije un icono</strong>
+                                    <strong> Cambiar color</strong>
                                 </label>
                                 <button type="button" class="dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
-                                    <span id="bt-text-icon" class="btn btn-default">
-                                        Seleccionar
-                                        <span class="material-icons">arrow_drop_down</span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu mini">
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_shipping </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">add_shopping_cart </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">store </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_basket </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_cart</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_bag</span></li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">handyman</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">design_services</span></li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">cleaning_services</span></li>
-
-
-
-                                    <li board-icon="btn-primary" class=" board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">devices_other </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">computer</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">desktop_mac</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">tablet_mac</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">phone_iphone</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">videogame_asset</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">speaker</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">linked_camera</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">watch </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">kitchen </span></li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">monetization_on</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">headset_mic</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_activity</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_bike</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">two_wheeler</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_car</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_boat</span></li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">airport_shuttle</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">room_service</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">business_center</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">whatshot</span></li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_florist</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">cake</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">flash_on</span></li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">restaurant </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">fastfood </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_pizza </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_bar</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_cafe</span></li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_offer </span></li>
-
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">weekend </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">extension </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">domain </span></li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">airline_seat_flat </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">hot_tub</span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">pets </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">content_cut </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">fitness_center </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">sentiment_very_dissatisfied </span></li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">school </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">local_laundry_service </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">book_online </span></li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">biotech </span></li>
-                                </ul>
-                            </div>
-                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>
-                                    <strong> Selecciona un color</strong>
-                                </label>
-                                <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <span bg-color="" id="bg-select-color" class="btn btn-default">
                                         <span id="bg-select-color" class="material-icons">
                                             palette
                                         </span>
-                                        <span id="bg-select-text"> Seleccionar</span>
+                                        <span class="new_board_name" id="bg-select-text"> Seleccionar</span>
                                         <span class="material-icons">arrow_drop_down</span>
                                     </span>
                                 </button>
@@ -235,6 +95,197 @@
                                             class="material-icons">panorama_fish_eye</span></li>
 
                                 </ul>
+                            </div>
+                            <div id="board-type-icon" class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong> Cambiar icono</strong>
+                                </label>
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span id="bt-text-icon" class="btn btn-default">
+                                        <span class="material-icons">arrow_drop_down</span>
+                                        .
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_shipping </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">add_shopping_cart </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">store </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_basket </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_cart</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">shopping_bag</span>
+                                    </li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">handyman</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">design_services</span>
+                                    </li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">cleaning_services</span>
+                                    </li>
+
+
+
+                                    <li board-icon="btn-primary" class=" board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">devices_other </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">computer</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">desktop_mac</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">tablet_mac</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">phone_iphone</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">videogame_asset</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">speaker</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">linked_camera</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">watch </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">kitchen </span>
+                                    </li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">monetization_on</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">headset_mic</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_activity</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_bike</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">two_wheeler</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_car</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">directions_boat</span>
+                                    </li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">airport_shuttle</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">room_service</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">business_center</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">whatshot</span>
+                                    </li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_florist</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">cake</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">flash_on</span>
+                                    </li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">restaurant </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">fastfood </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_pizza </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_bar</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_cafe</span>
+                                    </li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">local_offer </span>
+                                    </li>
+
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">weekend </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">extension </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
+                                        <span class="material-icons">domain </span>
+                                    </li>
+
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">airline_seat_flat </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">hot_tub</span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">pets </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">content_cut </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">fitness_center </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">sentiment_very_dissatisfied </span>
+                                    </li>
+
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">school </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">local_laundry_service </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">book_online </span>
+                                    </li>
+                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
+                                        <span class="material-icons">biotech </span>
+                                    </li>
+                                </ul>
+
                             </div>
                         </div>
                     </div>
@@ -343,6 +394,16 @@
 
                                 <br>
                             </div>
+                        </div>
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch">
+                                    <input checked id="switch-34" name="board_control_cash_close_box" value="0"
+                                        type="checkbox" />
+                                    <label for="switch-34" class="label-primary"></label>
+                                </div>
+                                <strong>Habilitar el la carga de stock al cerrar orden?</strong>
+                            </h4>
                         </div>
                         <!--
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -477,13 +538,13 @@
                     aria-label="Close">
                     <span class="">Cancelar</span>
                 </button>
-                <button disabled="" id="btn-next" step="1" type="button" class="btn btn-primary ">
+                <button onclick="btn_next_new_board(this)" disabled="" id="btn-next" step="1" type="button" class="btn btn-primary ">
                     <span class="">Siguiente</span>
                 </button>
             </div>
         </form>
     </div>
-
+    {{/with}}
 </div>
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
@@ -507,20 +568,32 @@
         var select = $(this);
         var id = select.attr('id');
         $("#new-board-detail-1").show();
-        $("#new-board-name").focus();
         var board_type = $('input:radio[name=board-type]:checked').val();
         var board_icon = $(this).attr('icon');
         var board_bg = $(this).attr('bg-color');
-        console.log(board_icon + board_bg)
+        var board_name = $(this).attr('m_type');
+
+       // alert(board_name);
+        console.log(board_icon , board_bg)
+
         if (board_type) {
             $("#board-type-icon").show();
             $("#new-board-step-1").show();
-            $("#new-board-name").focus();
+            //$("#bg-select-text").html(board_name);
+            $(".new_board_name").html(board_name);
             $("#bt-text-icon").attr('icon', board_icon);
             $("#bt-text-icon").children('.material-icons:first').text(board_icon);
             $("#bg-select-color").children('.material-icons:first').text(board_icon);
             $("#bg-select-color").attr('bg-color', board_bg);
             $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
+            ///FILTRO
+            //COMPRUEBO Q TENGA EL NOMBRE Y HABILITO SIGUIENTE
+                $("#bg-select-text").html(board_name);
+                if (board_name.length >= 3) {
+                    $("#btn-next").removeAttr('disabled');
+                } else {
+                    $("#btn-next").attr('disabled', '');
+                }
         } else {
             $("#board-type-radio-5").hide();
         }
@@ -595,7 +668,8 @@
         .mouseover(function () {
             $("span", this).first().text("check_circle");
         });
-
+///NOOO
+/*
     $("#new-board-name").keyup(function () {
         var board_name = $(this).val();
         $("#bg-select-text").html(board_name);
@@ -607,7 +681,7 @@
         }
         //  $("#btn-next").attr('disabled','');
     });
-
+*/
     $(".item-select").click(function () {
         var bgColor = $(this).attr('item-select');
         var bgText = $(this).html();
@@ -658,116 +732,6 @@
             $('input.control_cash').iCheck('uncheck');
             $('input.control_cash').iCheck('disable');
         }
-    });
-
-    $("#btn-next").click(function () {
-
-        //VALORES SELECCIONADOS DEL FOMULARIO    
-        //STEP 1
-        var board_type = $('input:radio[name=board-type]:checked').val();
-        var board_name = $('input[name=board-name]').val();
-        var board_icon = $("#bt-text-icon").children(':first').text();
-        var board_color = $("#bg-select-color").attr('bg-color');
-        //  STEP 2   
-        var board_mode = $('input:radio[name=board_mode]:checked').val();
-        var board_collect_and_deliver = $('input:radio[name=board_collect_and_deliver]:checked').val();
-        var board_delivery_place = $('input:radio[name=board_delivery_place]:checked').val();
-        var board_control_cash_close_box = $('input:radio[name=board_control_cash_close_box]:checked').val();
-        var board_control_stock = $('input:radio[name=board_control_stock]:checked').val();
-        var board_control_cash = $('input:radio[name=board_control_cash]:checked').val();
-        // STEP 3
-        var board_receipt_voucher = $('input[name=or_board_receipt_vouche]').val();
-        var board_payment_voucher = $('input[name=or_board_payment_voucher]').val();
-        var board_delivery_voucher = $('input[name=or_board_delivery_voucher]').val();
-        var board_credit_voucher = $('input[name=or_board_credit_voucher]').val();
-        var board_return_voucher = $('input[name=or_board_return_voucher]').val();
-
-        var step = $("#btn-previus").attr('step');
-        console.log(board_type + board_name + board_icon + board_color + step);
-        if (board_type != null || board_name != null || board_icon != null || board_color != null) {
-            //alert(step);
-            if (step == 1) {
-                $("#btn-next").text('Continuar');
-                $("#btn-previus").attr('step', '2');
-                $("#btn-previus").text('Volver');
-                $(".btn-previus").removeAttr('data-dismiss');
-                $(".btn-previus").removeAttr('aria-label');
-                $("#step-1").hide();
-                $("#step-2").show();
-            } else if (step == 2) {
-                $("#btn-previus").attr('step', '3');
-                $("#btn-next").text('Finalizar');
-                $("#step-2").hide();
-                $("#step-3").show();
-
-            }
-
-            else if (step == 3) {
-                $("#btn-previus").attr('step', '3');
-                $("#btn-next").text('Crear');
-                $("#step-2").hide();
-                $("#step-3").show();
-
-                var url_now = getUrl();
-                var m_id = url_now.m_id;
-                //var m_t_id = url_now.m_t_id;
-                var pacht = 'board'; //CONTROLADOR PRINCIPAL
-                var controler_data = 'new_board_data_post'; //NOMBRE DE CONTROLADOR DATA
-                var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
-                var id_copiled = '#master_popup'; // ID DE COMPILACION //  
-                var data = {
-                    //STEP 1
-                    m_id: m_id,
-                    m_t_type_action: board_type,
-                    m_t_name: board_name,
-                    m_t_icon: board_icon,
-                    m_t_color: board_color,
-                    m_t_url: board_name,
-                    //  STEP 2   
-                    board_mode: board_mode,
-                    board_collect_and_deliver: board_collect_and_deliver,
-                    board_delivery_place: board_delivery_place,
-                    board_control_cash_close_box: board_control_cash_close_box,
-                    board_control_stock: board_control_stock,
-                    board_control_cash: board_control_cash,
-                    // STEP 3
-                    board_receipt_voucher: board_receipt_voucher,
-                    board_payment_voucher: board_payment_voucher,
-                    board_delivery_voucher: board_delivery_voucher,
-                    board_credit_voucher: board_credit_voucher,
-                    board_return_voucher: board_return_voucher,
-
-                };
-                //console.log(data);
-                var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-
-
-                //   console.log(url_now);
-                //return url_now;
-                // var url_now = getUrl();
-                var m_id = url_now.m_id;
-                // var m_t_id = new_module.m_t_id;
-                alert(new_module);
-                console.log(new_module);
-                get_board_group(m_id);
-                get_nav_bar(); // Recargo los datos del modulos al copilador handelbars del modulo.
-                //   get_board_group(m_id, m_t_id);
-                $('#master_popup').modal('hide');
-                Snackbar.show({
-                    text: 'Se creo el nuevo tablero con exito!',
-                    actionText: 'ok',
-                    actionTextColor: "#0575e6",
-                });
-
-            }
-            else {
-                Snackbar.show({
-                    text: 'Falta completar los datos',
-                    actionText: 'Falta completar',
-                    actionTextColor: "#0575e6",
-                });
-            }
-        };
     });
 
     $(".btn-previus").click(function () {

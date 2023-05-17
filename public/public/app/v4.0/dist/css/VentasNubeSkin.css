@@ -10515,12 +10515,15 @@ h1 span{
     position: absolute;
     text-align: center;
 }
+
 .dropdown-menu.mini li {
     text-align: center;
     margin: 4px;
     padding: 10px;
+    display: inline-block;
     /*display: block;*/
 }
+
 .dropdown-menu.xs {
     min-width: 200px;
 }
@@ -10581,6 +10584,9 @@ h1 span{
     color: #424242;
     white-space: nowrap;
      padding: 0;
+}
+.dropdown-menu li.in-blk {
+    display: inline-block!important;
 }
 
 .dropdown-menu li .dropdown-item {
