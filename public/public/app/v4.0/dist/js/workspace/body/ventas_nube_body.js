@@ -10,12 +10,11 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 ws_left_nav_data = null;
 
-//###--- Conection y Sync a la base de datos local ---#####
+//CONCETO CON LA DB
 var ws_search_db = 'ws_collections_' + ws_id;
-//Creo la base de datos local info_db
+//CREO LA DB
 L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
-//sincronizo
-//Creo y conecto con userDB local 
+/// SYNC
 L_catalog_db.sync(url_R_db + ws_search_db, {
     live: true,
     retry: true,
@@ -34,7 +33,7 @@ L_catalog_db.sync(url_R_db + ws_search_db, {
     //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
 });
 
-
+/// MODULE CONFIG
 async function ws_module_config() {
     try {
         // userCtx variable global de permisos y roles para filtrar las vistas
@@ -191,7 +190,6 @@ function put_left_nav_doc() {
     });
 };
 
-
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data, ws_lang_data) {
     var ws_left_nav_doc = {
@@ -224,7 +222,7 @@ function get_right_nav(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
 };
 
-
+// ACTUALIZO EL HISTORIAL DE NAVEGACION 
 function updateHistory(curr) {
     window.location.lasthash.Push(window.location.hash);
     window.location.hash = curr;
@@ -235,6 +233,7 @@ async function check_url_module() {
     var m_var_id = getParameterByName('v'); //Trae una variable del modulo idel modulo id
     var m_id = getParameterByName('id'); //Trae el modulo id
     var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
+    var m_t_name = getParameterByName('t'); //Trae el Tipo de modulo id
     var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
     check_content_module(m_name, m_t_id, m_id, m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
     //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
@@ -249,8 +248,6 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
     for (const module of array) {
         if (module.m_url === ws_module_name) {
             ws_module_select = module.m_url;
-            console.log(ws_module_array);
-            console.log('m_t_id DDDD',m_t_id);
             return get_module_function(ws_module_select, m_t_id, m_id, m_var_id);
         }
     }
@@ -259,8 +256,6 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
 //Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
 async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     const ws_m_s = ws_module_select;
-    console.log(ws_module_select);
-    console.log(m_t_id);
     //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
     if (ws_m_s == 'catalog') {
         await get_catalog();
@@ -280,6 +275,10 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         }
         //  get_items_catalog();
     }
+    else if (ws_m_s == 'board') {
+        get_board(ws_module_select,m_t_id)
+        // get_box();
+    }
     else if (ws_m_s == 'account') {
         alert('TRAIGO EL account');
     }
@@ -287,83 +286,25 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         alert('TRAIGO EL box');
         // get_box();
     }
-    else if (ws_m_s == 'board') {
-        
-        if (m_t_id == '1') {
-          //  alert('TRAIGO EL BOARD Ventas1');
-            // await get_board();
-            //   console.log('TRAIGO BOARD ')
-            get_board()
-           // get_board(m_id, m_t_id, m_var_id,ws_left_nav_data, userCtx);
-            // board_view_item_url();
-            //board_view_item_url(m_id, m_var_id, userCtx);
-            // catalog_view_item_url(m_id, m_t_id, m_var_id, userCtx);
-          //  updateHistory();
-        }
-        if (m_t_id == '2') {
-            //   console.log('TRAIGO BOARD ')
-            // alert('TRAIGO EL BOARD Compras');
-            // await get_board();
-            catalog_view_item_url(m_id, m_var_id, userCtx);
-           // updateHistory();
-        }
-        if (m_t_id == '3') {
-            //  alert('TRAIGO EL BOARD Servicios');
-            // await get_board();
-            catalog_view_item_url(m_id, m_var_id, userCtx);
-            //updateHistory();
-        }
-        if (m_t_id == '5') {
-            // alert('TRAIGO EL BOARD TURNOS');
-            // await get_board();
-            catalog_view_item_url(m_id, m_var_id, userCtx);
-            // updateHistory();
-        }
-        // get_box();
-    }
 };
 
-//// BOTON SELECT MODULO LEFT BAR //
-// Logica q trae el modulos con handelbars no el linck
-$(document).on('click', 'a.l_nav_m', function (event) {
-    var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
+//// BOTON TRAE MODULO LEFT BAR //
+async function get_module_nav(event) {
+    var m_name = $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/    
     var m_url = url_app + '?type=' + m_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
     check_content_module(m_name, ws_left_nav, ws_lang_data);
-});
-
-$(document).on('click', 'a.l_nav_t_m', function (event) {
-    var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
-    var m= $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
-    var m_t_id = $(this).attr('m_t_id'); //Trae Pacht url /pacht/
-    var m_url = url_app + '?type=' + m_name+ '?t=' + m_t_id; // Armo la url completa del linck
+}
+/// FUNCION TRAE MODULE TIPE NAV BAR
+async function get_module_type_nav(event) {
+    var m_name = $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/
+    var m_type_name = $(event).attr('m_t_url'); //Trae Pacht url /pacht/
+    //  var m= $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/
+    // var m_t_id = $(event).attr('m_t_id'); //Trae Pacht url /pacht/
+    var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
-    check_content_module(m_name, m_t_id, ws_lang_data);
-});
-
-//// BOTON SELECT TYPO DE MODULO LEFT BAR///
-/*
-$(document).on('click', 'a.l_nav_t_m', function (event) {
-    // var url_now = getUrl();
-    // var m_id = url_now.m_id;
-    // var m_t_id = url_now.m_t_id;
-    // var pacht = $(this).attr('m_url'); //CONTROLADOR PRINCIPAL
-    var m_t_icon = $(this).children('span.material-icons').text(); //Trae texto html del icono
-    var m_t_name = $(this).children('span.this_m_t_name').text(); //Trae texto html del btn
-    var m_id = $(this).attr('m_id'); //Trae modulo id
-    var m_t_id = $(this).attr('m_t_id'); //Trae module tipo id
-    var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/ 
-    var s_url = window.location.host; // Trae dominio url www.dominio/
-    var s_url_t_m = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/
-    var m_url = s_url_t_m + '?m=' + m_id + '&?t=' + m_t_id + '&?type=' + m_t_name; // Armo la url completa del linck
-    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
-    //   get_nav_bar(m_id, m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-    // get_board_group(m_id, m_t_id);
-    return get_module_function(m_name, m_t_id, m_id);
-   // check_content_module(m_name, ws_left_nav, ws_lang_data);
-   // get_content_module();
-});
-*/
+    check_content_module(m_name,m_type_name);
+}
 
 ////----(OTRAS COSAS)----/////
 //Efecto material de los Label imput 2021

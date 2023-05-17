@@ -1,13 +1,10 @@
 <div class="row board-group ">
     <div class=" row board">
-
-
-
          {{#each board_group}}
             <div class="board-column">
                 <div class="board-column-header bg-danger {{{color}}}">
                     <div class="board-column-header-tittle"> <span data-toggle="tooltip" data-placement="right"
-                            data-original-title="Cantidad de Ordenes">{{counter @index}}</span>{{{name}}}</div>
+                            data-original-title="Cantidad de Ordenes">{{counter @index}}</span> {{{name}}}</div>
                     <div class="board-column-header-button">
                         <div class="btn-group ">
                             <button type="button" class="btn btn-round xl text-white dropdown-toggle" data-toggle="dropdown"
@@ -35,9 +32,6 @@
                 </div>
                 <div class="board-column-content-wrapper">
                     <div id="board_card_group_compiled" class="board-column-content" group-id="1">
-
-
-
                         <div class="board-item" id="22" order="410">
                             <div class="board-item-content">
                                 <div class="s-card ">
@@ -823,8 +817,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="board-new-item">
                         <div class="icon">
@@ -835,17 +827,11 @@
                     </div>
                 </div>
             </div>
-
         {{/each}}
     </div>
 </div>
-<!-- Bootstrap.min.JS -->
-<!-- VentasNubeSkin.css
-<link rel="stylesheet" href="/public/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
-<script type="text/javascript" src="/public/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
- -->
-<script>
 
+<script>
     /*
   // BOARD VISTA  CONFIGURO LOS PARAMETROS DEL MODULO Y LO ENVIO AL COMPILADOR
   function get_board_card_group( m_id,m_t_id) {
@@ -974,10 +960,5 @@
     };
 
     board_shortable_show();
-
-    // datetimePiker();
-    // get_board_group();
-    // get_board_group_size(); //Agranda el div para las etapas
     scrollerMove();// Movimiento orizontal
-
 </script>

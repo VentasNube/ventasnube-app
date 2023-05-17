@@ -195,3 +195,21 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+// GET URL by PARAMETRO
+
+async function getUrlVal(nombreParametro) {
+    return new Promise((resolve, reject) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const parametros = Array.from(urlParams.entries());
+  
+      for (const [nombre, valor] of parametros) {
+        if (nombre === nombreParametro) {
+          resolve(valor);
+          return;
+        }
+      }
+  
+      reject(`El parámetro '${nombreParametro}' no se encuentra en la URL.`);
+    });
+  }

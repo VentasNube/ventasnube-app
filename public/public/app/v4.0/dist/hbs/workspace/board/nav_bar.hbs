@@ -9,22 +9,22 @@
                         class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
                         data-toggle="dropdown" aria-expanded="true">
                         <span class="material-icons">
-                            dashboard</span>
-                        <span class="this_m_t_name">Ventas</span>
+                           {{#with module_info.data}} {{m_t_icon}}{{/with}}</span>
+                        <span class="this_m_t_name"> {{#with module_info.data}} {{m_t_name}}{{/with}}</span>
                         <i class="material-icons">expand_more</i>
                     </button>
 
                     <ul class="dropdown-menu pull-right">
                         {{#each ws_left_nav_data.m_t}}
 
-                        <li class="margin-5">
-                            <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{m_url}}}"
-                                class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
-                                data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
-                                <span class="material-icons">{{m_t_icon}}</span>
-                                <span class="this_m_t_name">{{m_t_name}}</span>
-                            </a>
-                        </li>
+                            <li class="margin-5">
+                                <a onclick="get_module_type_nav(this)"  m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{../m_url}}}" m_t_url="{{{m_t_url}}}" 
+                                    class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                                    data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                                    <span class="material-icons">{{m_t_icon}}</span>
+                                    <span class="this_m_t_name">{{m_t_name}}</span>
+                                </a>
+                            </li>
 
                         {{/each}}
                     </ul>
@@ -162,19 +162,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="catalog_config()">
+                        <a href="#" onclick="edit_board_star_intro()">
                             <i class="material-icons">create</i>
                            {{m_edit_board}}  
                         </a>
                     </li>
                      <li>
-                        <a href="#" onclick="catalog_config()">
+                        <a href="#" onclick="new_board_group()">
                                 <i class="material-icons"> view_carousel</i> 
                             {{m_new_board_group}}  
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="catalog_config()">
+                        <a href="#" onclick="edit_board_group()">
                                 <i class="material-icons"> create</i> 
                             {{m_edit_board_group}}  
                         </a>
