@@ -538,9 +538,6 @@ class Workspace extends BaseController
 
                 //DB de catalogo productos y sericios
 
-           
-
-
                 if ($ws_collections) {
                     $db_name = "ws_collections_" . $workspace_id_hex;
                     $module_name = "catalog";
@@ -1561,8 +1558,6 @@ class Workspace extends BaseController
                         ]
                     ];
 
-
-                    /// 
                      //ORDEN DE EJEMPLO
                   
                     $order_01 = [
@@ -1730,35 +1725,6 @@ class Workspace extends BaseController
                         ],
                     ];
 
-
-
-                    $ws_validate_doc_edit_by_doc_user_roll_ = [
-                        "_id" => "_design/validate_edit_doc",
-                        "validate_doc_update" => "function(newDoc, oldDoc, userCtx) {
-                            var allowedRoles = [" . json_encode($allowed_roles) . "];
-                            var allowedUsers = [" . json_encode($allowed_users) . "];
-                    
-                            if (userCtx.roles.indexOf('_admin') === -1) {
-                                if (allowedRoles.length > 0) {
-                                    var hasRoleAccess = userCtx.roles.some(role => allowedRoles.includes(role));
-                                    if (!hasRoleAccess) {
-                                        throw({ forbidden: 'Solo los usuarios con los roles permitidos pueden editar este documento.' });
-                                    }
-                                }
-                    
-                                if (allowedUsers.length > 0) {
-                                    var hasUserAccess = allowedUsers.includes(userCtx.name);
-                                    if (!hasUserAccess) {
-                                        throw({ forbidden: 'Solo los usuarios permitidos pueden editar este documento.' });
-                                    }
-                                }
-                    
-                                // Denegar acceso a la visualización del documento
-                                throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
-                            }
-                        }"
-                    ];
-
                     $doc_security_roll = [
                         "_id" => "_design/doc_security",
                         "validate_doc_update" => "function (newDoc, oldDoc, userCtx) {
@@ -1827,10 +1793,6 @@ class Workspace extends BaseController
                             throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
                         }"
                     ];
-
-                
-                    
-                    
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
 

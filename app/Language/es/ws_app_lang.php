@@ -12,6 +12,9 @@ return [
         'b_reload' => 'Reintentar',
         'b_undo' => 'Deshacer',
         'b_error' => 'Error',
+        'b_next' => 'Siguiente',
+        'b_prev' => 'Atras',
+        'b_cancelar' => 'Atras',
         //CONFIRMACION GENERALES
         'a_add_confirm' => 'Agregado con exito!',
         'a_add_conflict' => 'No se pudo agregar!',
@@ -45,10 +48,15 @@ return [
         'm_board_group_1' => 'Presupuestado',
         'm_board_group_1' => 'Finalizados',
         // BOARD TOUR 
+        'm_board_icon_select' => 'Seleccionar',
+        'm_board_color_title' => 'Cambiar color',
+        'm_board_icon_title' => 'Cambiar icono',
 
 
+
+        'm_board_tour_title_welcome' => 'Bienvenido a tus tableros!',
         'm_board_tour_title' => 'Te vamos a guiar en unos simples pasos para crear tu nuevo tablero Kanban.',
-        'm_board_tour_title_sub' => ' Que tipo de actividad vas a organizar en este tablero?',
+        'm_board_tour_title_sub' => 'Que tipo de actividad vas a organizar?',
 
         'm_board_tour_purchase' => ' Comprar',
         'm_board_name_purchase' => 'Compras',
@@ -66,10 +74,58 @@ return [
         'm_board_tour_service-contact' => 'Servicios con Turnos',
         'm_board_name_service-contact' => 'Turnos',
         'm_board_tour_service-contact_tittle' => ' para mis contactos. o pacientes que traen mis contactos.',
+        'm_board_tour_security_title' => ' Algunas Configuraciones de seguridad...',
+        'm_board_tour_security_sub_title' => 'Si no estas seguro, siempre podras modificar estas opciones.',
+
+
+        'm_board_tour_collect_and_deliver_tittle' => 'Cuando se pueden cerrar las ordenes?',
+        'm_board_tour_collect_and_deliver_option_1' => 'Solo saldando el total.',
+        'm_board_tour_collect_and_deliver_option_2' => 'Sin saldar el total.',
+
+        'm_board_tour_collect_and_close_tittle' => 'Cuando se pueden entregar las ordenes?',
+        'm_board_tour_collect_and_close_option_1' => 'Solo saldando el total.',
+        'm_board_tour_collect_and_close_option_2' => 'Con cuenta corriente.',
+        //Delivery
+        'm_board_delivery_place' => 'Habilitar delibery',
+
+
+        'board_control_stock' => 'Habilitar el controlor de stock?',
+        'board_control_stock_block' => '(SI) Bloquear la orden si no hay stock suficiente.',
+        'board_control_stock_negative' => '(NO) Solo avisar si no hay stock suficiente.',
+        'board_control_update_stock_close' => 'Habilitar el la actualizacion de stock al cerrar orden?',
+
+         //BOX config
+        'board_control_cash' => 'Habilitar la apertura y cierre de la caja?',
+        'board_control_cash_flow' => 'Habilitar ingreso y egreso de movimientos de caja?',
+
         
 
-        'm_edit_board' => 'Editar Tablero',
+        'board_control_cash_close_box_tittle' => 'Habilitar la apertura y cierre de la caja?',
+        'board_control_cash_close_box_option_1' => 'Si es obligatorio.',
+        'board_control_cash_close_box_option_sub_tiitle_1' => 'Se tiene q abrir la caja antes de cobrar y cerrar la caja cuando se rinde el efectivo. ',
 
+        'board_control_cash_close_box_option_2' => 'No es opcional.',
+        'board_control_cash_close_box_option_sub_tiitle_2' => 'No realizar control se puede vender si tener que abrir ni cerrar la caja. ',
+        
+        'board_control_cash_tittle' => 'Habilitar movimientos de caja.',
+        'board_control_cash_out_sub_tittle' => 'Habilitar movimientos de caja.',
+        'board_control_cash_out_tittle' => ' Pueden ingresar gastos solo los usuarios autorizados en la ultima etapa..',
+        'board_control_cash_out' => 'Gastos.',
+        //'board_control_cash_out_tittle' => 'Solo los usuarios autorizados en la ultima etapa.',
+        'board_control_cash_in' => ' Ingreso de cambio.',
+        'board_control_cash_in_tittle' => ' Pueden ingresar dinero solo los usuarios autorizados en la ultima etapa.',
+        'board_control_cash_out_box' => ' Retiros parciales de efectivo.',
+        'board_control_cash_out_box_tittle' => ' Retiros parciales de efectivo a la caja chica',
+
+        'board_voucher_tittle' => ' Configura los nombres de los comprobantes.',
+        'or_board_receipt_voucher' => 'Comprobante de (Cobro)',
+        'or_board_payment_voucher' => 'Comprobante de (pago)',
+        'or_board_payment_receipt_voucher' => 'Comprobante de (entrega) Nota de Entrega de Mercadería, Equipo...',
+        'or_board_credit_voucher' => 'Nota de credito de (Devolucion)',
+        'or_board_return_voucher' => 'Comprobante de (Devolucion)',
+
+        //'m_edit_board' => 'Editar Tablero',
+        'm_edit_board' => 'Editar Tablero',
         //nueva Ordenes
         'm_board' => 'Tableros',
         'm_board_new_item' => 'Nueva Orden',

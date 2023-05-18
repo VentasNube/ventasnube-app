@@ -155,32 +155,31 @@ function datetimePiker() {
 }
 
 scrollerMove();
-get_board_group_size()
+//get_board_group_size()
 ws_board_config();
 /// FUNCIONES NEW 2023
 
 // CREAR NUEVO TABLERO 2023
 // NEW BOARD POPUP START
-async function new_board_star_intro() {
+async function new_board_star_intro(board_type_name) {
     try {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
-        var ws_data = {
+        var data = {
+            board_type_name: board_type_name,
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles
         }
-        alert('abro el popup')
-        console.log('ws_data');
-        console.log(ws_data);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', '#master_popup', ws_data);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', '#master_popup', data);
     } catch (err) {
         console.log(err);
     }
 }
 
+
 // TRAIGO EL BOARD Y IMPRIMO
-async function get_board(board_name,board_type_name) {
+async function get_boardOLDOK(board_name,board_type_name) {
     try {
 
        // if(!board_name){
@@ -204,19 +203,90 @@ async function get_board(board_name,board_type_name) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
         get_nav_board(board_data);
         get_board_group(board_group);
+      //  calcularAnchoTotalBoard();
 
     } catch (error) {
-          new_board_star_intro();
+          new_board_star_intro(board_type_name);
         if (error.name !== 'not_found') {
-            new_board_star_intro();
+            new_board_star_intro(board_type_name);
             throw error;
         }else if(error.name == 'deleted'){
-            new_board_star_intro();
+            new_board_star_intro(board_type_name);
+            throw error;
+        }
+    }
+}
+async function get_board(board_name, board_type_name) {
+    let parametroUrl;
+
+    try {
+        if (!board_type_name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('t')) {
+                parametroUrl = urlParams.get('t');
+            } else {
+                // Manejar el caso en el que el parámetro 't' no está presente en la URL
+                // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada
+                return;
+            }
+        } else {
+            parametroUrl = board_type_name;
+        }
+
+        const board_group_conf = await L_board_db.get('board_group_' + parametroUrl);
+        const board_group = board_group_conf.board_group;
+
+        const board_data = {
+            module_info: board_group_conf,
+            board_type_name: board_group_conf.name,
+            ws_lang_data: ws_lang_data,
+            ws_left_nav_data: ws_left_nav_data,
+            user_roles: user_Ctx.userCtx.roles,
+        };
+
+        console.log("board_data board_data board_data");
+        console.log(board_data);
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
+        get_nav_board(board_data);
+        get_board_group(board_group);
+        // calcularAnchoTotalBoard();
+
+    } catch (error) {
+        new_board_star_intro(parametroUrl || board_type_name);
+
+        if (error.name !== 'not_found') {
+            new_board_star_intro(parametroUrl || board_type_name);
+            throw error;
+        } else if (error.name === 'deleted') {
+            new_board_star_intro(parametroUrl || board_type_name);
             throw error;
         }
     }
 }
 
+
+// Calculo el ancho del BOARD dependiendo la cantidad de grupos que hay
+/*
+async function calcularAnchoTotalBoard() {
+    const divs = document.querySelectorAll('.board-column'); // Reemplaza '.mi-div' con el selector correspondiente a tus divs
+  
+    let totalAncho = 0;
+    for (const div of divs) {
+      await new Promise(resolve => {
+        setTimeout(() => {
+          const ancho = div.clientWidth;
+          totalAncho += ancho;
+          resolve();
+        }, 0);
+      });
+    }
+    const totalEnPixels = `${totalAncho}px`;
+    const contenedor = document.querySelector('.board-group'); // Reemplaza '.mi-contenedor' con el selector correspondiente a tu div contenedor
+    contenedor.style.width = totalEnPixels;
+  }
+  */
+//calcularAnchoTotalBoard();
 
 // PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
@@ -446,13 +516,17 @@ async function btn_next_new_board(board_name, data) {
     var board_icon = $("#bt-text-icon").children(':first').text();
     var board_color = $("#bg-select-color").attr('bg-color');
     //  STEP 2   
-    var board_mode = $('input:radio[name=board_mode]:checked').val();
+    //BOARD
+    var board_mode = board_type;
+    var board_collect_and_close = $('input:radio[name=board_collect_and_close]:checked').val();
     var board_collect_and_deliver = $('input:radio[name=board_collect_and_deliver]:checked').val();
     var board_delivery_place = $('input:radio[name=board_delivery_place]:checked').val();
+    //BOX
     var board_control_cash_close_box = $('input:radio[name=board_control_cash_close_box]:checked').val();
     var board_control_stock = $('input:radio[name=board_control_stock]:checked').val();
     var board_control_cash = $('input:radio[name=board_control_cash]:checked').val();
     // STEP 3
+    //Documentos facturas
     var board_receipt_voucher = $('input[name=or_board_receipt_vouche]').val();
     var board_payment_voucher = $('input[name=or_board_payment_voucher]').val();
     var board_delivery_voucher = $('input[name=or_board_delivery_voucher]').val();
@@ -460,7 +534,7 @@ async function btn_next_new_board(board_name, data) {
     var board_return_voucher = $('input[name=or_board_return_voucher]').val();
 
     var step = $("#btn-previus").attr('step');
-    console.log(board_type + board_name + board_icon + board_color + step);
+   // console.log(board_type + board_name + board_icon + board_color + step);
     if (board_type != null || board_name != null || board_icon != null || board_color != null) {
         //alert(step);
         if (step == 1) {
@@ -500,10 +574,13 @@ async function btn_next_new_board(board_name, data) {
                 m_t_icon: board_icon,
                 m_t_color: board_color,
                 m_t_url: board_name,
-                //  STEP 2   
+                //  STEP 2
+                //BOARD
                 board_mode: board_mode,
+                board_collect_and_close:board_collect_and_close,
                 board_collect_and_deliver: board_collect_and_deliver,
                 board_delivery_place: board_delivery_place,
+                //BOX
                 board_control_cash_close_box: board_control_cash_close_box,
                 board_control_stock: board_control_stock,
                 board_control_cash: board_control_cash,

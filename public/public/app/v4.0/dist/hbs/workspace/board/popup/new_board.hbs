@@ -19,52 +19,65 @@
                                         background-size: 230px 230px!important;
                                         background-position: 94% 15% !important; ">
                     <div class="text-left ">
-                        <h3 class="margin-20">{{{m_board_tour_title}}}
-                        </h3>
-                        <h4 class="margin-20"><strong> {{{m_board_tour_title_sub}}}</strong>
-                        </h4>
+                        <h2 class="margin-20">{{{m_board_tour_title_welcome}}}</h2>
+                        <h3 class="margin-20">{{{m_board_tour_title}}}</h3>
+                        <h4 class="margin-20"><strong>{{{m_board_tour_title_sub}}}</strong></h4>
                         <div class="margin-l-30">
+                            {{#ifEquals ../board_type_name 'purcharse'}}
                             <p>
-                                <input icon="local_shipping" bg-color="btn-danger" type="radio" name="board-type"
-                                    value="purcharse" m_type="{{{m_board_name_purchase}}}" class="radio-chek"
-                                    id="radio-1">
-                                <label for="radio-1"><strong>{{{m_board_tour_purchase}}}</strong>
-                                    <small>{{{m_board_tour_purchase_tittle}}}</small></label>
+                                <input module_type="{{m_board_name_purchase}}" icon="local_shipping" bg-color="btn-danger" type="radio" name="board-type"
+                                    value="purcharse" id="radio-1">
+                                <label for="radio-1">
+                                    <strong>{{{m_board_tour_purchase}}}</strong>
+                                    <small>{{{m_board_tour_purchase_tittle}}}</small>
+                                </label>
                             </p>
+                            {{/ifEquals}}
+                            {{#ifEquals ../board_type_name 'sell'}}
                             <p>
-                                <input icon="shopping_cart" bg-color="btn-primary" type="radio" name="board-type"
-                                    value="sell" m_type="{{{m_board_name_sell}}}" class="radio-chek" id="radio-2">
-                                <label for="radio-2"> <strong>{{{m_board_tour_sell}}}</strong>
-                                    <small>{{{m_board_tour_sell_tittle}}}</small></label>
+                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary" type="radio" name="board-type"
+                                    value="sell" id="radio-2">
+                                <label for="radio-2">
+                                    <strong>{{{m_board_tour_sell}}}</strong>
+                                    <small>{{{m_board_tour_sell_tittle}}}</small>
+                                </label>
                             </p>
+                            {{/ifEquals}}
+                            {{#ifEquals ../board_type_name 'service_order'}}
                             <p>
-                                <input icon="airline_seat_flat" bg-color="btn-success" type="radio" name="board-type"
-                                    value="service_order" m_type="{{{m_board_name_service-objet}}}" class="radio-chek"
-                                    id="radio-4">
-                                <label for="radio-4"> <strong>{{{m_board_tour_service-objet}}}</strong> <small>
-                                        {{{m_board_tour_service-objet_tittle}}}</small></label>
+                                <input module_type="{{m_board_name_service-objet}}" icon="airline_seat_flat" bg-color="btn-success" type="radio" name="board-type"
+                                    value="service_order" id="radio-4">
+                                <label for="radio-4">
+                                    <strong>{{{m_board_tour_service-objet}}}</strong>
+                                    <small>{{{m_board_tour_service-objet_tittle}}}</small>
+                                </label>
                             </p>
+                            {{/ifEquals}}
+                            {{#ifEquals ../board_type_name 'service_turn'}}
                             <p>
-                                <input icon="devices_other" bg-color="btn-secondary" type="radio" name="board-type"
-                                    value="service_turn" m_type="{{{m_board_name_service-contact}}}" class="radio-chek"
-                                    id="radio-5">
-                                <label for="radio-5"> <strong>{{{m_board_tour_service-contact}}}</strong><small>
-                                        {{{m_board_tour_service-contact_tittle}}} </small></label>
+                                <input module_type="{{m_board_name_service-contact}}" icon="devices_other" bg-color="btn-secondary" type="radio" name="board-type"
+                                    value="service_turn" id="radio-5">
+                                <label for="radio-5">
+                                    <strong>{{{m_board_tour_service-contact}}}</strong>
+                                    <small>{{{m_board_tour_service-contact_tittle}}}</small>
+                                </label>
                             </p>
+                            {{/ifEquals}}
                         </div>
+
                         <div id="new-board-step-1" class=" margin-20 ">
 
                             <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label>
-                                    <strong> Cambiar color</strong>
+                                    <strong>{{m_board_color_title}}</strong>
                                 </label>
                                 <button type="button" class="dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
                                     <span bg-color="" id="bg-select-color" class="btn btn-default">
-                                        <span id="bg-select-color" class="material-icons">
+                                        <span id="bg-select-icon" class="material-icons">
                                             palette
                                         </span>
-                                        <span class="new_board_name" id="bg-select-text"> Seleccionar</span>
+                                        <span class="new_board_name" id="bg-select-text"> {{m_board_icon_select}}</span>
                                         <span class="material-icons">arrow_drop_down</span>
                                     </span>
                                 </button>
@@ -98,7 +111,7 @@
                             </div>
                             <div id="board-type-icon" class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label>
-                                    <strong> Cambiar icono</strong>
+                                    <strong> {{m_board_icon_title}}</strong>
                                 </label>
                                 <button type="button" class="dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
@@ -292,120 +305,95 @@
                 </div>
                 <div id="step-2" class="modal-body text-left col-sm-12 col-md-12 col-xs-12">
                     <h3 class="margin-20 text-left">
-                        Algunas opciones de seguridad...<p>
+                        {{m_board_tour_security_title}}
+                        <p>
                         </p>
-                        <small>Si no estas seguro, siempre podras modificar estas opciones. </small>
+                        <small> {{m_board_tour_security_sub_title}}</small>
                         </p>
                     </h3>
 
                     <div class="margin-l-10">
-                        <!--div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <h4><strong>Quienes van a ingresen las ordenes?</strong></h4>
-                            <div class="margin-l-10">
-                                <p>
-                                    <input type="radio" checked="" name="board_mode" value="1" class="radio-chek"
-                                        id="radio-6">
-                                    <label for="radio-6">
-                                        <strong>Los usuarios</strong> <small data-toggle="tooltip" data-html="true"
-                                            data-placement="bottom"
-                                            data-original-title="<em> Las ordenes son creadas por un usuario autorizado del sistema</em><b> ( Obligatorio ) </b> ">
-                                            autorizados en la primer etapa.</small>
-                                    </label>
-                                </p>
-                                
-                                <p>
-                                    <input type="radio" name="board_mode" value="2" class="radio-chek" id="radio-7">
-                                    <label for="radio-7" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Las ordenes son creadas por tus contacto que ser registran por mi tienda en VentasNube.</em><b> ( Obligatorio ) </b> ">
-                                        <strong>Mi tienda web</strong> <small>las personas que se
-                                            registren.</small></label>
-                                </p>
-                                <p>
-                                    <input type="radio" name="board_mode" value="3" class="radio-chek" id="radio-8">
-                                    <label for="radio-8" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Las ordenes pueden ser creadas por un usuario autorizado del sistema, o por tus contactos registrados por mi tienda en VentasNube.</em><b> ( Opcional )  </b> ">
-                                        <strong> Las dos formas.</strong> <small>mis usuarios y mi tienda.</small>
-                                    </label>
-                                </p>
-                            </div>
-                        </div-->
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <h4><strong>Cuando se pueden entregar y cerrar las ordenes?</strong></h4>
+                            <h4><strong>{{m_board_tour_collect_and_deliver_tittle}}</strong></h4>
                             <div class="margin-l-10">
                                 <p>
-                                    <input type="radio" name="board_collect_and_deliver" value="1" class="radio-chek"
-                                        id="radio-12">
-                                    <label for="radio-12" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Para entregar y cerrar la orden, hay q saldar el total</em><br><b> ( Obligatorio ) </b> ">
-                                        <strong>Al saldar el total</strong>
-                                        <small> Se puede entregar y cerrar la orden.</small>
+                                    <input checked="" type="radio" name="board_collect_and_deliver" value="true"
+                                        class="radio-chek" id="radio-10">
+                                    <label for="radio-10">
+                                        <small>{{m_board_tour_collect_and_deliver_option_1}}</small>
                                     </label>
                                 </p>
                                 <p>
-                                    <input checked="" type="radio" name="board_collect_and_deliver" value="2"
-                                        class="radio-chek" id="radio-13">
-                                    <label for="radio-13" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Se puede entregar o recivir el pedido, pero queda la orden abierta hasta saldar el total.</em><br><b> ( Opcional ) </b> ">
-                                        <strong>Con cuenta corriente</strong>
-                                        <small>Se pueden entregar, pero no se puede cerrar hasta saldar el
-                                            total.</small>
+                                    <input type="radio" name="board_collect_and_deliver" value="true" class="radio-chek"
+                                        id="radio-11">
+                                    <label for="radio-11">
+                                        <small> {{m_board_tour_collect_and_deliver_option_2}}</small>
                                     </label>
                                 </p>
                             </div>
                         </div>
-                        <!--div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <h4>
-                                <div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                    data-original-title="<em> Los pedidos se van a retirar o entregar el el domicilio del contacto</em><br><b> ( Opcional )  </b> ">
-                                    <input checked id="switch-9" name="board_delivery_place" type="checkbox" />
-                                    <label for="switch-9" class="label-primary"></label>
-                                </div>
-                                <strong>Habilitar delibery </strong><small> Habilita el seguimiento de la
-                                    entrega.</small>
-                            </h4>
-                        </div-->
+                        <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4><strong>{{m_board_tour_collect_and_close_tittle}}</strong></h4>
+                            <div class="margin-l-10">
+                                <p>
+                                    <input type="radio" name="board_collect_and_close" value="1" class="radio-chek"
+                                        id="radio-12">
+                                    <label for="radio-12">
+                                        <strong>{{m_board_tour_collect_and_close_option_1}}</strong>
+                                    </label>
+                                </p>
+                                <p>
+                                    <input checked="" type="radio" name="board_collect_and_close" value="2"
+                                        class="radio-chek" id="radio-13">
+                                    <label for="radio-13">
+                                        <strong>{{m_board_tour_collect_and_close_option_2}}</strong>
+                                    </label>
+                                </p>
+                            </div>
+                        </div>
+                      
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <h4>
                                 <div class="Switch">
-                                    <input checked id="switch-16" name="board_control_cash_close_box" value="0"
+                                    <input checked id="switch-16" name="board_control_stock" value="0"
                                         type="checkbox" />
                                     <label for="switch-16" class="label-primary"></label>
                                 </div>
-                                <strong>Habilitar el controlor de stock?</strong>
+                                <strong>{{board_control_stock}}</strong>
                             </h4>
                             <div class="margin-l-10">
                                 <p>
-                                    <input type="radio" checked="" name="board_control_stock" value="1"
-                                        class="radio-chek" id="radio-16">
-                                    <label for="radio-16" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em>Confirmar stock antes de hacer el movimiento.</em><br><b> ( Obligatorio ) </b> ">
-                                        <strong>Si </strong><small>Bloquear la orden si no hay stock
-                                            suficiente.</small></label>
-                                </p>
-                                <p>
-                                    <input type="radio" name="board_control_stock" value="3" class="radio-chek"
-                                        id="radio-17">
-                                    <label for="radio-17" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em>Realiza los movimientos de stock en negativo o positivo sin confirmarlo.</em><br><b> ( Opcional ) </b> ">
-                                        <strong>No </strong><small>Solo avisar si no hay stock suficiente. (Mover en
-                                            negativo).</small>
+                                    <input type="radio" checked="" name="board_control_stock"
+                                        value="board_control_stock_block" id="radio-16">
+                                    <label for="radio-16">
+                                        <strong> {{board_control_stock_block}}</strong>
                                     </label>
                                 </p>
-
+                                <p>
+                                    <input type="radio" name="board_control_stock" value="board_control_stock_negative"
+                                        id="radio-17">
+                                    <label for="radio-17">
+                                        <strong> {{board_control_stock_negative}}</strong>
+                                        </small>
+                                    </label>
+                                </p>
                                 <br>
                             </div>
                         </div>
+                      
+                        {{#ifEquals ../board_type_name 'purcharse' }}
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <h4>
                                 <div class="Switch">
-                                    <input checked id="switch-34" name="board_control_cash_close_box" value="0"
+                                    <input checked id="switch-34" name="board_control_update_stock_close" value="0"
                                         type="checkbox" />
                                     <label for="switch-34" class="label-primary"></label>
                                 </div>
-                                <strong>Habilitar el la carga de stock al cerrar orden?</strong>
+                                <strong>{{board_control_update_stock_close}}</strong>
                             </h4>
                         </div>
-                        <!--
+                        {{/ifEquals}}
+
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <h4>
                                 <div class="Switch">
@@ -413,24 +401,36 @@
                                         type="checkbox" />
                                     <label for="switch-18" class="label-primary"></label>
                                 </div>
-                                <strong>Habilitar la apertura y cierre de la caja?</strong>
+                                <strong>{{board_control_cash_close_box_tittle}}</strong>
                             </h4>
                             <div class="margin-l-10">
                                 <p>
                                     <input checked="" type="radio" name="board_control_cash_close_box" value="1"
                                         class="radio-chek" id="radio-19">
                                     <label for="radio-19" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Se tiene q abrir la caja antes de cobrar y cerrar la caja cuando se rinde el efectivo. </em><br><b> ( Obligatorio ) </b> ">
-                                        <strong> Si es obligatorio.</strong></label>
+                                        data-original-title="">
+                                        <strong> {{board_control_cash_close_box_option_1}}</strong>
+                                        <small>{{board_control_cash_close_box_option_sub_tiitle_1}}</small>
+                                    </label>
                                 </p>
                                 <p>
                                     <input type="radio" name="board_control_cash_close_box" value="2" class="radio-chek"
                                         id="radio-20">
-                                    <label for="radio-20" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> No realizar control se puede vender si tener que abrir ni cerrar la caja. </em><br><b> ( Opcional ) </b> ">
-                                        <strong>No es opcional. </strong></label>
+                                    <label for="radio-20">
+                                        <strong> {{board_control_cash_close_box_option_2}} </strong>
+                                        <small>{{board_control_cash_close_box_option_sub_tiitle_2}}</small>
+                                    </label>
                                 </p>
                             </div>
+                        </div>
+                           <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>
+                                <div class="Switch">
+                                    <input checked id="switch-9" name="board_delivery_place" type="checkbox" />
+                                    <label for="switch-9" class="label-primary"></label>
+                                </div>
+                                <strong>{{m_board_delivery_place}} </strong>
+                            </h4>
                         </div>
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <h4>
@@ -438,15 +438,15 @@
                                     <input checked="" id="switch-19" name="board_control_cash" type="checkbox" />
                                     <label for="switch-19" class="label-primary"></label>
                                 </div>
-                                <strong>Habilitar movimientos de caja.</strong>
+                                <strong>{{board_control_cash_flow}}</strong>
                             </h4>
                             <div class="margin-l-10">
                                 <p>
                                     <input checked="" type="checkbox" name="board_control_cash_out" value="1"
                                         class="control_cash radio-chek" id="radio-22">
-                                    <label for="radio-22" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Pueden ingresar gastos solo los usuarios autorizados en la ultima etapa.. </em><br><b> ( Obligatorio ) </b> ">
-                                        <strong> Gastos. </strong>
+                                    <label for="radio-22">
+                                        <strong> {{board_control_cash_out}} </strong>
+                                        <small> {{board_control_cash_out_tittle}}</small>
                                     </label>
                                 </p>
                                 <p>
@@ -454,57 +454,60 @@
                                         class="control_cash radio-chek" id="radio-23">
                                     <label for="radio-23" data-toggle="tooltip" data-html="true" data-placement="bottom"
                                         data-original-title="<em> Pueden ingresar dinero solo los usuarios autorizados en la ultima etapa.</em><br><b> ( Opcional ) </b> ">
-                                        <strong> Ingreso de cambio. </strong>
+                                        <strong> {{board_control_cash_in}} </strong>
+                                        <small> {{board_control_cash_in_tittle}} </small>
                                     </label>
                                 </p>
                                 <p>
                                     <input checked="" type="checkbox" name="board_control_cash_out_box" value="3"
                                         class="control_cash radio-chek" id="radio-24">
-                                    <label for="radio-24" data-toggle="tooltip" data-html="true" data-placement="bottom"
-                                        data-original-title="<em> Solo los usuarios autorizados en la ultima etapa. </em><br><b> ( Opcional ) </b> ">
-                                        <strong> Retiros parciales de efectivo. </strong>
+                                    <label for="radio-24">
+                                        <strong> {{board_control_cash_out_box}} </strong>
+                                        <small> {{board_control_cash_out_box_tittle}} </small>
                                     </label>
                                 </p>
                             </div>
                         </div>
-                        -->
+                        
+   
+
                     </div>
                 </div>
                 <div id="step-3" class="modal-body text-left col-sm-12 col-md-12 col-xs-12">
                     <h3 class="margin-20 text-left">
-                        <strong> Configura los nombres de los comprobantes.</strong>
+                        <strong> {{board_voucher_tittle}}</strong>
                     </h3>
                     <div class="margin-l-10">
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
 
                             <p>
-                            <h4 class="margin-0"> <strong>Comprobante de (Cobro)</strong> </h4>
-                            <input type="text" placeholder="Recibo..." name="or_board_receipt_voucher" value="Recibo"
+                            <h4 class="margin-0"> <strong>{{or_board_receipt_voucher}}</strong> </h4>
+                            <input type="text" placeholder="..." name="or_board_receipt_voucher" value="Recibo"
                                 class="s-card-actv-input" id="">
                             </p>
                             <p>
-                            <h4 class="margin-0"> <strong>Comprobante de (pago)</strong> </h4>
+                            <h4 class="margin-0"> <strong>{{or_board_payment_voucher}}</strong> </h4>
 
-                            <input type="text" placeholder="Remito.." name="or_board_payment_voucher" value="Remito"
+                            <input type="text" placeholder="..." name="or_board_payment_voucher" value="Remito"
                                 class="s-card-actv-input" id="">
 
                             </p>
                             <p>
-                            <h4 class="margin-0"> <strong>Comprobante de (entrega).</strong> </h4>
-                            <input type="text" placeholder="Nota de Entrega de Mercadería, Equipo..."
-                                name="or_board_delivery_voucher" value="Entrega" class="s-card-actv-input" id="">
+                            <h4 class="margin-0"> <strong>{{or_board_payment_receipt_voucher}}</strong> </h4>
+                            <input type="text" name="or_board_payment_receipt_voucher" value="Entrega"
+                                class="s-card-actv-input" id="">
 
                             </p>
                         </div>
 
                         <div class="text-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <p>
-                            <h4 class="margin-0"><strong>Nota de credito de (Devolucion)</strong></h4>
+                            <h4 class="margin-0"><strong>{{or_board_credit_voucher}}</strong></h4>
                             <input type="text" placeholder="Recibo..." name="or_board_credit_voucher"
                                 value="Nota de credito" class="s-card-actv-input" id="">
                             </p>
                             <p>
-                            <h4 class="margin-0"> <strong>Comprobante de (Devolucion)</strong> </h4>
+                            <h4 class="margin-0"> <strong>{{or_board_return_voucher}}</strong> </h4>
 
                             <input type="text" placeholder="Remito.." name="or_board_return_voucher"
                                 value="Remito devolucion" class="s-card-actv-input" id="">
@@ -536,10 +539,11 @@
             <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
                 <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
                     aria-label="Close">
-                    <span class="">Cancelar</span>
+                    <span class="">{{b_cancelar}}</span>
                 </button>
-                <button onclick="btn_next_new_board(this)" disabled="" id="btn-next" step="1" type="button" class="btn btn-primary ">
-                    <span class="">Siguiente</span>
+                <button onclick="btn_next_new_board(this)" disabled="" id="btn-next" step="1" type="button"
+                    class="btn btn-primary ">
+                    <span class="">{{b_next}}</span>
                 </button>
             </div>
         </form>
@@ -550,54 +554,48 @@
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
 <script>
     $('[data-toggle="tooltip"]').tooltip()
-    $('.radio-chek').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        handle: '',
-        increaseArea: '20%' // optional
-    });
-
     $("#new-board-step-1").hide();
     $("#board-type-radio-4").hide();
     $("#board-type-radio-5").hide();
     $("#board-type-icon").hide();
     $("#step-2").hide();
     $("#step-3").hide();
-
-    $('input').on('ifChecked', function (event) {
+    // ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
+    $('.radio-chek').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        handle: '',
+        increaseArea: '20%' // optional
+    });
+   $('input[type="radio"]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // Ajusta el área de clic para ser más grande que el propio elemento
+    });
+     // FIN ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
+  
+    // NEW 2023
+    $('input:radio[name=board-type]').on('ifChecked', function (event) {
         var select = $(this);
         var id = select.attr('id');
         $("#new-board-detail-1").show();
-        var board_type = $('input:radio[name=board-type]:checked').val();
-        var board_icon = $(this).attr('icon');
-        var board_bg = $(this).attr('bg-color');
-        var board_name = $(this).attr('m_type');
-
-       // alert(board_name);
-        console.log(board_icon , board_bg)
-
-        if (board_type) {
+        var board_type = select.val();
+        var board_icon = select.attr('icon');
+        var board_bg = select.attr('bg-color');
+        var board_name = select.attr('module_type');
             $("#board-type-icon").show();
             $("#new-board-step-1").show();
-            //$("#bg-select-text").html(board_name);
             $(".new_board_name").html(board_name);
-            $("#bt-text-icon").attr('icon', board_icon);
-            $("#bt-text-icon").children('.material-icons:first').text(board_icon);
-            $("#bg-select-color").children('.material-icons:first').text(board_icon);
-            $("#bg-select-color").attr('bg-color', board_bg);
+            $("#bt-text-icon").attr('icon', board_icon).children('.material-icons:first').text(board_icon);
+            $("#bg-select-color").children('.material-icons:first').text(board_icon).attr('bg-color', board_bg);
             $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
-            ///FILTRO
-            //COMPRUEBO Q TENGA EL NOMBRE Y HABILITO SIGUIENTE
-                $("#bg-select-text").html(board_name);
-                if (board_name.length >= 3) {
-                    $("#btn-next").removeAttr('disabled');
-                } else {
-                    $("#btn-next").attr('disabled', '');
-                }
-        } else {
-            $("#board-type-radio-5").hide();
-        }
+            $("#bg-select-text").html(board_name);
+            $("#btn-next").removeAttr('disabled');
+
+    }).on('ifUnchecked', function (event) {
+        $("#btn-next").attr('disabled', 'disabled');
     });
+
 
     $(".board-icon").click(function () {
         var bgColor = $(this).attr('board-icon');
@@ -611,7 +609,6 @@
         $("#input-select-icon").val(bgColor);
         $("#bg-select-color").children('.material-icons:first').text(icon);
     });
-
     $(".board-type").click(function () {
         var bgColor = $(this).attr('board-type');
         var bgText = $(this).html();
@@ -630,7 +627,6 @@
             $("#new-board-step-objects").hide();
         }
     });
-
     $(".board-type-2").click(function () {
         var bgColor = $(this).attr('board-type');
         var bgText = $(this).html();
@@ -652,14 +648,12 @@
             $("#new-board-step-objects").hide();
         }
     });
-
     $("li.bg-color").click(function () {
         var bgColor = $(this).attr('bg-color');
         $("#bg-select-color").removeClass();
         $("#bg-select-color").addClass('btn ' + bgColor + ' line');
         $("#bg-select").val(bgColor);
         $("#bg-select-color").attr('bg-color', bgColor);
-        // $("#bg-select-color").attr('bg-color').html(bgColor);
     })
         .mouseout(function () {
             $("span", this).first().text("panorama_fish_eye");
@@ -668,20 +662,6 @@
         .mouseover(function () {
             $("span", this).first().text("check_circle");
         });
-///NOOO
-/*
-    $("#new-board-name").keyup(function () {
-        var board_name = $(this).val();
-        $("#bg-select-text").html(board_name);
-
-        if (board_name.length >= 3) {
-            $("#btn-next").removeAttr('disabled');
-        } else {
-            $("#btn-next").attr('disabled', '');
-        }
-        //  $("#btn-next").attr('disabled','');
-    });
-*/
     $(".item-select").click(function () {
         var bgColor = $(this).attr('item-select');
         var bgText = $(this).html();
@@ -692,7 +672,6 @@
 
         // $("#input-select-3").val(bgColor);    
     });
-
     $('#switch-9').click(function () {
         // Si esta seleccionado (si la propiedad checked es igual a true)
         if ($(this).prop('checked')) {
@@ -733,7 +712,6 @@
             $('input.control_cash').iCheck('disable');
         }
     });
-
     $(".btn-previus").click(function () {
         var step = $("#btn-previus").attr('step');
         if (step == 1) {
@@ -756,5 +734,5 @@
         }
     });
 
-  
+
 </script>

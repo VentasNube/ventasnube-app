@@ -11362,12 +11362,10 @@ h2 {
     background-color: #bdbdbd;
 }
 .board-group {
-    /* width: 2000px;*/
+    width: 2000px!important;
     /* width: 100%;*/
-    
     width: auto;
-    /*  min-height: 600px;
-    min-width: 1300px*/
+   /* min-height: 600px;*/
 }
 .board-group>.board {
     overflow-x: auto;
