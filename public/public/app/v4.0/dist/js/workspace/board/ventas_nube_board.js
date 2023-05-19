@@ -76,17 +76,17 @@ async function ws_board_config() {
 
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_board(module_info) {
-  
-  /*  var ws_board_data = {
-        module_info: module_info,
-        ws_lang_data: ws_lang_data,
-        ws_left_nav_data: ws_left_nav_data,
-        user_roles: user_Ctx.userCtx.roles
-    }*/
+
+    /*  var ws_board_data = {
+          module_info: module_info,
+          ws_lang_data: ws_lang_data,
+          ws_left_nav_data: ws_left_nav_data,
+          user_roles: user_Ctx.userCtx.roles
+      }*/
     console.log('module_info module_info module_info module_info');
     console.log(module_info);
-   // console.log(ws_catalog_data);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled',module_info);
+    // console.log(ws_catalog_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', module_info);
 };
 // ADAPTO LA PANTALLA A LO ANCHO DEL NAVEGADOR O CREO UN SCROlL
 function scrollerMove() {
@@ -179,10 +179,10 @@ async function new_board_star_intro(board_type_name) {
 
 
 // TRAIGO EL BOARD Y IMPRIMO
-async function get_boardOLDOK(board_name,board_type_name) {
+async function get_boardOLDOK(board_name, board_type_name) {
     try {
 
-       // if(!board_name){
+        // if(!board_name){
         const parametroUrl = await getUrlVal('t');
         // alert(parametroUrl);
         var board_name = board_name;
@@ -198,24 +198,25 @@ async function get_boardOLDOK(board_name,board_type_name) {
             ws_left_nav_data: ws_left_nav_data,
             user_roles: user_Ctx.userCtx.roles,
         }
-        console.log("board_data board_data board_data" )
+        console.log("board_data board_data board_data")
         console.log(board_data)
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
         get_nav_board(board_data);
         get_board_group(board_group);
-      //  calcularAnchoTotalBoard();
+        //  calcularAnchoTotalBoard();
 
     } catch (error) {
-          new_board_star_intro(board_type_name);
+        new_board_star_intro(board_type_name);
         if (error.name !== 'not_found') {
             new_board_star_intro(board_type_name);
             throw error;
-        }else if(error.name == 'deleted'){
+        } else if (error.name == 'deleted') {
             new_board_star_intro(board_type_name);
             throw error;
         }
     }
 }
+
 async function get_board(board_name, board_type_name) {
     let parametroUrl;
 
@@ -291,174 +292,15 @@ async function calcularAnchoTotalBoard() {
 // PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
     try {
-      //  const currentDateTime = new Date().toLocaleString('es-ES');
+        //  const currentDateTime = new Date().toLocaleString('es-ES');
         const docId = 'board_group_' + board_name; // Generar un ID único
         let doc = {};
-         /*
-          if (board_name == 'sell') {
-  
-              new_doc = {
-                  "_id": docId,
-                  "category_id": board_name,
-                  "name": 'Ventas',
-                  "name_url": board_name,
-                  "icon": board_name,
-                  "workspace_id": ws_id,
-                  "status": "active",
-                  "type": "board_config",
-                  data,
-                  "board_group": [
-                      {
-                          "id": "1",
-                          "name": 'Nuevas pedidos',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "2",
-                          "name": 'Presupuestos',
-                          "color": "bg-red"
-                      },
-                      {
-                          "id": "3",
-                          "name": 'Aceptados',
-                          "color": "bg-red"
-                      },
-                      {
-                          "id": "4",
-                          "name": 'Finalizados',
-                          "color": "bg-green"
-                      }
-                  ]
-              }
-  
-          } else if (board_name == 'purcharse') {
-  
-              new_doc = {
-                  "_id": docId,
-                  "category_id": board_name,
-                  "name": 'Compras',
-                  "name_url": board_name,
-                  "icon": board_name,
-                  "workspace_id": ws_id,
-                  "status": "active",
-                  "type": "board_config",
-                  data,
-                  "board_group": [
-                      {
-                          "id": "1",
-                          "name": 'Nuevas compras',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "2",
-                          "name": 'Pedidos',
-                          "color": "bg-red"
-                      },
-                      {
-                          "id": "3",
-                          "name": 'Finalizados',
-                          "color": "bg-green"
-                      }
-                  ]
-              }
-          } else if (board_name == 'service_order') {
-  
-              new_doc = {
-                  "_id": docId,
-                  "category_id": board_name,
-                  "name": 'Servicios',
-                  "name_url": board_name,
-                  "icon": board_name,
-                  "workspace_id": ws_id,
-                  "status": "active",
-                  "type": "board_config",
-                  data,
-                  "board_group": [
-                      {
-                          "id": "1",
-                          "name": 'Presupuestar',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "2",
-                          "name": 'Presupuestados',
-                          "color": "bg-yellow"
-                      },
-                      {
-                          "id": "3",
-                          "name": 'Aceptados',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "4",
-                          "name": 'En curso',
-                          "color": "bg-purple"
-                      },
-                      {
-                          "id": "5",
-                          "name": 'Finalizados',
-                          "color": "bg-blue"
-                      }
-                  ]
-              }
-          } else if (board_name == 'service_turn') {
-  
-              new_doc = {
-                  "_id": docId,
-                  "category_id": board_name,
-                  "name": 'Turnos',
-                  "name_url": board_name,
-                  "icon": board_name,
-                  "workspace_id": ws_id,
-                  "status": "active",
-                  "type": "board_config",
-                  data,
-                  "board_group": [
-                      {
-                          "id": "1",
-                          "name": 'Nuevos',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "2",
-                          "name": 'Asignados',
-                          "color": "bg-red"
-                      },
-                      {
-                          "id": "3",
-                          "name": 'Para hoy',
-                          "color": "bg-green"
-                      },
-                      {
-                          "id": "4",
-                          "name": 'Finalizados',
-                          "color": "bg-green"
-                      }
-                  ]
-              }
-          }
-          */
-        
-        try {
-            doc = await L_board_db.get(docId); // Verificar si el documento ya existe
-        } catch (error) {
-            if (error.name !== 'not_found') {
-                throw error;
-            }
-        }
-
-        // Aquí puedes actualizar o modificar los datos del documento "doc" si es necesario
-        let response;
-        new_doc = {
-            "_id": docId,
-            "category_id": board_name,
-            "workspace_id": ws_id,
-            "status": "active",
-            data,
-            "board_group": [
+        var board_name
+        if (board_name == 'sell') {
+            var board_group = [
                 {
                     "id": "1",
-                    "name": 'Nuevos' ,
+                    "name": 'Nuevas pedidos',
                     "color": "bg-green"
                 },
                 {
@@ -468,12 +310,102 @@ async function put_new_board(board_name, data) {
                 },
                 {
                     "id": "3",
-                    "name": 'Finalizados' ,
+                    "name": 'Aceptados',
+                    "color": "bg-red"
+                },
+                {
+                    "id": "4",
+                    "name": 'Finalizados',
                     "color": "bg-green"
                 }
-            ],
+            ]
+        } else if (board_name == 'purcharse') {
+            var board_group = [
+                {
+                    "id": "1",
+                    "name": 'Nuevas compras',
+                    "color": "bg-green"
+                },
+                {
+                    "id": "2",
+                    "name": 'Pedidos',
+                    "color": "bg-red"
+                },
+                {
+                    "id": "3",
+                    "name": 'Finalizados',
+                    "color": "bg-green"
+                }
+            ]
+        } else if (board_name == 'service_order') {
+            var board_group = [
+                {
+                    "id": "1",
+                    "name": 'Presupuestar',
+                    "color": "bg-green"
+                },
+                {
+                    "id": "2",
+                    "name": 'Presupuestados',
+                    "color": "bg-yellow"
+                },
+                {
+                    "id": "3",
+                    "name": 'Aceptados',
+                    "color": "bg-green"
+                },
+                {
+                    "id": "4",
+                    "name": 'En curso',
+                    "color": "bg-purple"
+                },
+                {
+                    "id": "5",
+                    "name": 'Finalizados',
+                    "color": "bg-blue"
+                }
+            ]
+        } else if (board_name == 'service_turn') {
+            var board_group = [
+                {
+                    "id": "1",
+                    "name": 'Nuevos',
+                    "color": "bg-green"
+                },
+                {
+                    "id": "2",
+                    "name": 'Asignados',
+                    "color": "bg-red"
+                },
+                {
+                    "id": "3",
+                    "name": 'Para hoy',
+                    "color": "bg-green"
+                },
+                {
+                    "id": "4",
+                    "name": 'Finalizados',
+                    "color": "bg-green"
+                }
+            ]
         }
-
+        try {
+            doc = await L_board_db.get(docId); // Verificar si el documento ya existe
+        } catch (error) {
+            if (error.name !== 'not_found') {
+                throw error;
+            }
+        }
+        // Aquí puedes actualizar o modificar los datos del documento "doc" si es necesario
+        let response;
+        new_doc = {
+            "_id": docId,
+            "category_id": board_name,
+            "workspace_id": ws_id,
+            "status": "active",
+            data,
+            board_group
+        }
         if (doc._rev) {
             // El documento ya existe, así que se debe actualizar
             new_doc._rev = doc._rev;
@@ -482,18 +414,15 @@ async function put_new_board(board_name, data) {
             // El documento no existe, así que se debe crear uno nuevo
             response = await L_board_db.put(new_doc); // Crear un nuevo documento
         }
-      
+        console.log(ws_lang_data);
         // Mostrar mensaje en un snackbar
         Snackbar.show({
-            text: 'Documento guardado exitosamente',
+            text: 'Se creo el board con exito!',
             actionText: 'Ok',
             actionTextColor: '#0575e6',
             pos: 'bottom-left',
             duration: 5000
         });
-        console.log("PUT NEW BOARD");
-        console.log(response);
-        console.log(new_doc._id);
     } catch (error) {
         // Mostrar mensaje de error en un snackbar
         Snackbar.show({
@@ -505,6 +434,7 @@ async function put_new_board(board_name, data) {
         });
     }
 }
+
 /// BOTON NEXT NEW BOARD
 async function btn_next_new_board(board_name, data) {
     //VALORES SELECCIONADOS DEL FOMULARIO    
@@ -515,18 +445,18 @@ async function btn_next_new_board(board_name, data) {
     // alert(board_name);
     var board_icon = $("#bt-text-icon").children(':first').text();
     var board_color = $("#bg-select-color").attr('bg-color');
-    //  STEP 2   
-    //BOARD
+    // STEP 2   
+    // BOARD
     var board_mode = board_type;
     var board_collect_and_close = $('input:radio[name=board_collect_and_close]:checked').val();
     var board_collect_and_deliver = $('input:radio[name=board_collect_and_deliver]:checked').val();
     var board_delivery_place = $('input:radio[name=board_delivery_place]:checked').val();
-    //BOX
+    // BOX
     var board_control_cash_close_box = $('input:radio[name=board_control_cash_close_box]:checked').val();
     var board_control_stock = $('input:radio[name=board_control_stock]:checked').val();
     var board_control_cash = $('input:radio[name=board_control_cash]:checked').val();
     // STEP 3
-    //Documentos facturas
+    // Documentos facturas
     var board_receipt_voucher = $('input[name=or_board_receipt_vouche]').val();
     var board_payment_voucher = $('input[name=or_board_payment_voucher]').val();
     var board_delivery_voucher = $('input[name=or_board_delivery_voucher]').val();
@@ -534,7 +464,7 @@ async function btn_next_new_board(board_name, data) {
     var board_return_voucher = $('input[name=or_board_return_voucher]').val();
 
     var step = $("#btn-previus").attr('step');
-   // console.log(board_type + board_name + board_icon + board_color + step);
+    // console.log(board_type + board_name + board_icon + board_color + step);
     if (board_type != null || board_name != null || board_icon != null || board_color != null) {
         //alert(step);
         if (step == 1) {
@@ -577,7 +507,7 @@ async function btn_next_new_board(board_name, data) {
                 //  STEP 2
                 //BOARD
                 board_mode: board_mode,
-                board_collect_and_close:board_collect_and_close,
+                board_collect_and_close: board_collect_and_close,
                 board_collect_and_deliver: board_collect_and_deliver,
                 board_delivery_place: board_delivery_place,
                 //BOX
@@ -598,6 +528,7 @@ async function btn_next_new_board(board_name, data) {
             console.log('board_name board_name board_name');
             console.log(board_name);
             put_new_board(board_type, data);
+
             $('#master_popup').modal('hide');
 
             Snackbar.show({
@@ -628,13 +559,10 @@ async function get_board_group(board_group) {
         //m_id: m_id,
         // m_t_id : m_t_id
     }
-  //  console.log('ws_board');
-  //  console.log(ws_board);
+    //  console.log('ws_board');
+    //  console.log(ws_board);
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
 }
-
-
-
 
 async function new_group_order(element) {
 
@@ -799,7 +727,91 @@ async function new_board_put(doc) {
     }
 }
 
+//EDITAR GROUP POPUP
+// NEW BOARD POPUP START
 
+async function board_edit_group(element, board_type_name) {
+    try {
+        const modal = document.getElementById('master_popup');
+        const group_id = $(element).attr('group_id'); //Id del documento a edita
+        const parametroUrl = await getUrlVal('t');
+        var board_name = board_name;
+        var board_type_name = parametroUrl;
+        var board_group_conf = await L_board_db.get('board_group_' + board_type_name);
+        var board_group = board_group_conf.board_group;
+        const selected_group = board_group.find(group => group.id === group_id);
+        const data = {
+            board_group: selected_group,
+            group_id: group_id,
+            board_type_name: board_type_name,
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles
+        }
+        $(modal).modal('show');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/edit_group.hbs', '#master_popup', data);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function edit_board_group_put(element) {
+    try {
+        var board_name = $(element).attr('board_name'); //Id del documento a edita
+       // var board_group_id = $(element).attr('group_id'); //Id del documento a edita
+        const parametroUrl = await getUrlVal('t');
+        var board_name = board_name;
+
+
+        const docId = 'board_group_' + board_name; // Generar un ID único
+        const doc = await L_board_db.get(docId); // Verificar si el documento ya existe
+
+        const group_id = $(element).attr('group_id'); //Id del documento a edita
+
+        var board_type_name = parametroUrl;
+        // Valores seleccionados del formulario
+        const board_group_name = $('input[name=board_group_name]').val();
+        const board_group_color = $("#bg-select-color-group").attr('bg-color');
+        const board_group_web_acept = $('input:checkbox[name=board_group_web_acept]:checked').val();
+        const board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();
+        const board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();
+        const board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
+      // const m_s_id = $(this).attr('m_s_id');
+
+        if (board_group_name != null) {
+            const board_group = doc.board_group;
+            const selected_group = board_group.find(group => group.id === group_id);
+
+            if (selected_group) {
+                selected_group.name = board_group_name;
+                selected_group.color = board_group_color;
+                selected_group.web_acept = board_group_web_acept;
+                selected_group.stock = board_group_stock;
+                selected_group.sell = board_group_sell;
+                selected_group.deliver = board_group_deliver;
+
+            }
+
+            doc._rev = doc._rev;
+            const response = await L_board_db.put(doc); // Actualizar el documento existente
+
+            $('#master_popup').modal('hide');
+            Snackbar.show({
+                text: 'Se editó la sección del tablero con éxito!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            Snackbar.show({
+                text: 'Falta completar el nombre',
+                actionText: 'Falta completar',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 ///NUEVAS ORDENES 2023
 

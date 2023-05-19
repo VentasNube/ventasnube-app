@@ -14,19 +14,17 @@ return [
         'b_error' => 'Error',
         'b_next' => 'Siguiente',
         'b_prev' => 'Atras',
-        'b_cancelar' => 'Atras',
+        'b_cancel' => 'Cancelar',
+        'b_save' => 'Guardar',
         //CONFIRMACION GENERALES
         'a_add_confirm' => 'Agregado con exito!',
         'a_add_conflict' => 'No se pudo agregar!',
         'a_dell_confirm' => 'Se elimino con exito!',
         'a_dell_conflict' => 'No se pudo eliminar!',
-        //MODULOS
-
         //ACCOUNT
         'b_myaccount' => 'Mi cuenta',
         'b_exit_icon' => 'logout',
         'b_exit' => 'Salir',
-
         //BUSCADOR
         't_search' => 'Busca lo que sea..',
         'b_search_tittle' => 'Buscar lo que sea..',
@@ -39,104 +37,93 @@ return [
         'm_new_board_group' => 'Nuevo grupo',
         'm_edit_board_group' => 'Editar grupo',
         'm_add_board_group_collaborator' => 'Agregar colaborador',
-
         'm_list_board_group' => 'Descargar Listado',
         /// BOARDS TEXTOS KAMBAN 
 
-    
         'm_board_group_1' => 'Nuevos',
         'm_board_group_1' => 'Presupuestado',
         'm_board_group_1' => 'Finalizados',
         // BOARD TOUR 
+        'm_board_edit_name' => 'Nombre ',
         'm_board_icon_select' => 'Seleccionar',
         'm_board_color_title' => 'Cambiar color',
         'm_board_icon_title' => 'Cambiar icono',
-
-
-
         'm_board_tour_title_welcome' => 'Bienvenido a tus tableros!',
         'm_board_tour_title' => 'Te vamos a guiar en unos simples pasos para crear tu nuevo tablero Kanban.',
         'm_board_tour_title_sub' => 'Que tipo de actividad vas a organizar?',
-
         'm_board_tour_purchase' => ' Comprar',
         'm_board_name_purchase' => 'Compras',
         'm_board_tour_purchase_tittle' => 'Productos para mi catalogo.',
-
         'm_board_tour_sell' => 'Vender',
         'm_board_name_sell' => 'Ventas',
         'm_board_tour_sell_tittle' => 'productos del catalogo.',
-
-
         'm_board_tour_service-objet' => 'Servicios con Orden',
         'm_board_name_service-objet' => 'Servicios',
         'm_board_tour_service-objet_tittle' => ' para los objetos o pacientes que traen mis contactos. ',
-
         'm_board_tour_service-contact' => 'Servicios con Turnos',
         'm_board_name_service-contact' => 'Turnos',
         'm_board_tour_service-contact_tittle' => ' para mis contactos. o pacientes que traen mis contactos.',
         'm_board_tour_security_title' => ' Algunas Configuraciones de seguridad...',
         'm_board_tour_security_sub_title' => 'Si no estas seguro, siempre podras modificar estas opciones.',
-
-
         'm_board_tour_collect_and_deliver_tittle' => 'Cuando se pueden cerrar las ordenes?',
         'm_board_tour_collect_and_deliver_option_1' => 'Solo saldando el total.',
         'm_board_tour_collect_and_deliver_option_2' => 'Sin saldar el total.',
-
         'm_board_tour_collect_and_close_tittle' => 'Cuando se pueden entregar las ordenes?',
         'm_board_tour_collect_and_close_option_1' => 'Solo saldando el total.',
         'm_board_tour_collect_and_close_option_2' => 'Con cuenta corriente.',
         //Delivery
         'm_board_delivery_place' => 'Habilitar delibery',
-
-
+        //CONTROL STOCK
         'board_control_stock' => 'Habilitar el controlor de stock?',
         'board_control_stock_block' => '(SI) Bloquear la orden si no hay stock suficiente.',
         'board_control_stock_negative' => '(NO) Solo avisar si no hay stock suficiente.',
         'board_control_update_stock_close' => 'Habilitar el la actualizacion de stock al cerrar orden?',
-
          //BOX config
         'board_control_cash' => 'Habilitar la apertura y cierre de la caja?',
         'board_control_cash_flow' => 'Habilitar ingreso y egreso de movimientos de caja?',
-
-        
-
         'board_control_cash_close_box_tittle' => 'Habilitar la apertura y cierre de la caja?',
         'board_control_cash_close_box_option_1' => 'Si es obligatorio.',
         'board_control_cash_close_box_option_sub_tiitle_1' => 'Se tiene q abrir la caja antes de cobrar y cerrar la caja cuando se rinde el efectivo. ',
-
         'board_control_cash_close_box_option_2' => 'No es opcional.',
         'board_control_cash_close_box_option_sub_tiitle_2' => 'No realizar control se puede vender si tener que abrir ni cerrar la caja. ',
-        
         'board_control_cash_tittle' => 'Habilitar movimientos de caja.',
         'board_control_cash_out_sub_tittle' => 'Habilitar movimientos de caja.',
         'board_control_cash_out_tittle' => ' Pueden ingresar gastos solo los usuarios autorizados en la ultima etapa..',
         'board_control_cash_out' => 'Gastos.',
-        //'board_control_cash_out_tittle' => 'Solo los usuarios autorizados en la ultima etapa.',
         'board_control_cash_in' => ' Ingreso de cambio.',
         'board_control_cash_in_tittle' => ' Pueden ingresar dinero solo los usuarios autorizados en la ultima etapa.',
         'board_control_cash_out_box' => ' Retiros parciales de efectivo.',
         'board_control_cash_out_box_tittle' => ' Retiros parciales de efectivo a la caja chica',
-
         'board_voucher_tittle' => ' Configura los nombres de los comprobantes.',
+        //EDITAR DOCUMENTOS
         'or_board_receipt_voucher' => 'Comprobante de (Cobro)',
         'or_board_payment_voucher' => 'Comprobante de (pago)',
         'or_board_payment_receipt_voucher' => 'Comprobante de (entrega) Nota de Entrega de Mercadería, Equipo...',
         'or_board_credit_voucher' => 'Nota de credito de (Devolucion)',
         'or_board_return_voucher' => 'Comprobante de (Devolucion)',
 
+        //EDITAR GROUP BOARD
+        'm_edit_board_group_tittle' => 'Editar etapa',
+        'm_edit_board_group_sub_tittle' => 'Como la vas a llamar?',
+        'm_edit_board_group_name' => 'Como la vas a llamar?',
+        'm_edit_board_group_color' => 'Cambiar el color',
+        'm_edit_board_group_intro' => ' Algunas opciones que puedes configurar en esta etapa...',
+        'm_edit_board_group_sub_intro' => ' Si no estas seguro, siempre podras modificar estas opciones.',
+        'm_edit_board_group_auto_web' => 'Habilitar que el contacto pueda aceptar el presupuesto por la web.?',
+        'm_edit_board_group_confirm_stock' => 'Habilitar popup de confirmar stock.',
+        'm_edit_board_group_cash' => 'Habilitar popup de cobrar.',
+        'm_edit_board_group_deliver' => 'Habilitar popup de entrega.',
         //'m_edit_board' => 'Editar Tablero',
         'm_edit_board' => 'Editar Tablero',
         //nueva Ordenes
         'm_board' => 'Tableros',
         'm_board_new_item' => 'Nueva Orden',
         'm_board_filter' => 'Filtrar',
-
         //CATALOGO
         'm_catalog' => 'Catalogo',
         'm_catalog_icon' => 'collections',
         't_new_product' => 'Crear producto',
         'a_dell_product' => 'Quieres eliminar el producto?',
-
         //Editar producto
         'm_catalog_edit_tittle' => 'Editar producto',
         'm_catalog_edit_sub_tittle' => 'Informacion General',
@@ -162,7 +149,6 @@ return [
         'm_catalog_edit_peso' => 'Peso',
         'm_catalog_edit_barcode' => 'Codigo de barras',
         //
-        
         'm_catalog_edit_price' => 'Precios',
         'm_catalog_edit_stock' => 'Stock',
         'm_catalog_edit_inicial_stock' => 'Stock Inicial',
@@ -173,20 +159,15 @@ return [
         'm_catalog_edit_contity' => 'Cantidad',
         'm_catalog_edit_price_update' => 'Actualizar Lista de precios',
         'm_catalog_edit_stock_update' => 'Actualizar Stock',
-
-
         'm_catalog_edit_price_list' => 'Listas de precios',
         'm_catalog_edit_price_list_update' => 'Actualizar Listas de precios',
         'm_catalog_edit_price_list' => 'Listas de precios',
-        //
         'm_catalog_edit_new' => 'Nueva',
         'm_catalog_edit_add' => 'Agregar',
         'm_catalog_edit_edit' => 'Editar',
         'm_catalog_edit_delete' => 'Eliminar',
-
         'm_catalog_edit_inactive' => 'Desactivar',
         'm_catalog_edit_active' => 'Activar',
-        
         //CARRITO
         'm_cart' => 'Carrito',
         't_cart' => 'Carrito',
@@ -222,43 +203,31 @@ return [
         'm_config_workspace' => 'Configurar Workspace',    
         'm_config_workspace_icon' => 'group_work',
         'b_tittle_workspace' => 'Mis espacios de trabajo',
-
         'ws_panel_settings_general' => 'General',
         'ws_panel_settings_users' => 'Colaboradores',
         'ws_panel_settings_update' => 'Actualizaciones',
-
         'ws_panel_settings_lang_label' => 'Modificar Idioma', 
-
         'ws_panel_settings_lang_es' => 'Espa&ntilde;ol',
         'ws_panel_settings_lang_us' => 'Ingles',
         'ws_panel_settings_lang_por' => 'Portugues',
         //BOTONES
-        
         'ws_settings_update_btn' => 'Actualizar',
-
         //ICONOS
-    
         'ws_config_icon' => 'tune',
         'ws_home_icon' => 'group_work',
-
         'ws_panel_settings_icon' => 'admin_panel_settings',
         'ws_panel_settings_users_icon' => 'people',
         'ws_panel_settings_update_icon' => 'browser_updated',
-
         'ws_panel_settings_lang_icon' => 'translate',
-
         // CONFIGURACION CATALOGO
         //'m_my_catalog' => 'Configuar',
         'm_config_catalog' => 'Configurar Catalogo',    
         'm_config_catalog_icon' => 'collections',
-
         //BOTONES
         'ws_catalog_settings_add' => 'Agregar',
         'ws_catalog_settings_add_icon' => 'check_circle',
-
         'ws_catalog_settings_edit' => 'Editar',
         'ws_catalog_settings_delete' => 'Eliminar',
-
         //TITULOS
         'ws_catalog_settings_list' => 'Listas de precios',
         'ws_catalog_settings_money' => 'Monedas',
@@ -267,13 +236,9 @@ return [
         'm_config_catalog_list_icon' => 'format_list_numbered',
         'm_config_catalog_list_money_icon' => 'paid',
         'm_config_catalog_list_tax_icon' => 'corporate_fare',
-
-
-
          //MI CUENTA
          'm_account_tittle' => 'Mis datos',
          'm_account_tittle_icon' => 'app_settings_alt',
-
          'm_account_tittle_buy' => 'Mis compras',
          'm_account_edit_b' => 'Modificar datos',
          'm_account_save_b' => 'Guardar cambios',
@@ -286,7 +251,6 @@ return [
          'm_account_passwor_b' => 'Modificar contrase&ntilde;a',
          'm_account_passwor' => 'Nueva Contrase&ntilde;a',
          'm_account_passwor_repet' => 'Volver a escribir Contrase&ntilde;a',
-       
         // body modules name
         'm_board' => 'Tableros',
         'm_catalog' => 'Catalogo',
@@ -300,7 +264,6 @@ return [
         'm_favorite' => 'Favoritos',
         'm_myaccount' => 'Mi cuenta',
         'm_myorders' => 'Mis compras'
-        
     ],
     'ws_lang_us' => [
        

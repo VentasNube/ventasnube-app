@@ -2,7 +2,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 71231232211231231232154645621122;
+const version = 7123123229098712222;
 
 
 
@@ -126,6 +126,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
+
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/edit_group.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },

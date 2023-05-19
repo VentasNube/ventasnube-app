@@ -2,7 +2,7 @@
     <div class=" row board">
          {{#each board_group}}
             <div class="board-column">
-                <div class="board-column-header bg-danger {{{color}}}">
+                <div class="board-column-header {{{color}}}">
                     <div class="board-column-header-tittle"> <span data-toggle="tooltip" data-placement="right"
                             data-original-title="Cantidad de Ordenes">{{counter @index}}</span> {{{name}}}</div>
                     <div class="board-column-header-button">
@@ -13,18 +13,23 @@
                             </button>
                             <ul class="dropdown-menu pull-right">
                                 <li>
-                                    <a id="edit_board_group_btn" m_s_id="{{{board_group_id}}}" href="#master_popup"
+                                    <a onclick="board_edit_group(this)"  group_id="{{id}}" board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}" href="#master_popup"
                                         role="button" title="Retirar efectivo">
-                                        <i class="material-icons">settings</i>  {{#with ws_lang_data}} {{{m_edit_board_group}}}{{/with}}
+                                        <i class="material-icons">settings</i>  {{#with ../ws_lang_data}} {{{m_edit_board_group}}}{{/with}}
                                     </a>
                                 </li>
-                                <li><a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                                        m_s_id="{{{board_group_id}}}" href="#" role="button"><i
-                                            class="material-icons">group_add</i>   {{#with ws_lang_data}} {{{m_add_board_group_collaborator}}}{{/with}} </a></li>
                                 <li>
+                                    <a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                        m_s_id="{{{board_group_id}}}" href="#" role="button">
+                                        <i class="material-icons">group_add</i>   {{#with ../ws_lang_data}} {{{m_add_board_group_collaborator}}}{{/with}} 
+                                    </a>
+                                </li>
                                 <li class="divider"></li>
-                                <li><a href="#" data-toggle="modal" role="button"><i
-                                            class="material-icons">picture_as_pdf</i> {{#with ws_lang_data}}  {{{m_list_board_group}}}{{/with}} </a>
+                                <li>
+                                    <a href="#" data-toggle="modal" role="button">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                     {{#with ../ws_lang_data}}  {{{m_list_board_group}}}{{/with}} 
+                                    </a>
                                 </li>
                             </ul>
                         </div>
