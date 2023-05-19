@@ -2,7 +2,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 7123123229098712222;
+const version = 711212111211221211209722;
 
 
 
@@ -67,7 +67,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
   // Fuentes js plugins
   { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
-  { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js', revision: version },
+  { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.5/dist/muuri.min.js', revision: version },
   { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },
   //Funciones Compilador y maqueta
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js', revision: version },
@@ -126,6 +126,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', revision: version },
+  
 
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/edit_group.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },

@@ -729,7 +729,142 @@ async function new_board_put(doc) {
 
 //EDITAR GROUP POPUP
 // NEW BOARD POPUP START
+async function new_board_group(element, board_type_name) {
+    try {
+        const modal = document.getElementById('master_popup');
+        const group_id = $(element).attr('group_id'); //Id del documento a edita
+        const parametroUrl = await getUrlVal('t');
+        var board_name = board_name;
+        var board_type_name = parametroUrl;
+        var board_group_conf = await L_board_db.get('board_group_' + board_type_name);
+        var board_group = board_group_conf.board_group;
 
+        const selected_group = board_group.find(group => group.id === group_id);
+
+        const data = {
+            board_group: selected_group,
+            group_id: group_id,
+            board_type_name: board_type_name,
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles
+        }
+        $(modal).modal('show');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', '#master_popup', data);
+    }
+    catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
+// EDIT BOARD GROUP EDITO
+async function new_board_group_put(element) {
+    try {
+        const parametroUrl = await getUrlVal('t');
+        const board_name = $(element).attr('board_name');
+        const group_id = $(element).attr('group_id');
+        const board_type_name = parametroUrl;
+        const board_group_name = $('input[name=board_group_name]').val();
+        const board_group_color = $("#bg-select-color-group").attr('bg-color');
+        const board_group_web_acept = $('input:checkbox[name=board_group_web_acept]:checked').val();
+        const board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();
+        const board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();
+        const board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
+
+        if (board_group_name != null) {
+            const docId = 'board_group_' + board_name;
+            const doc = await L_board_db.get(docId);
+            const board_group = doc.board_group || []; // Si el array no existe, crear uno vacío
+            const newGroup = {
+                id: group_id,
+                name: board_group_name,
+                color: board_group_color,
+                web_acept: board_group_web_acept,
+                stock: board_group_stock,
+                sell: board_group_sell,
+                deliver: board_group_deliver
+            };
+            board_group.push(newGroup); // Agregar el nuevo objeto al array
+            doc.board_group = board_group;
+            const response = await L_board_db.put(doc);
+            get_board(board_name, board_type_name);
+            $('#master_popup').modal('hide');
+            Snackbar.show({
+                text: 'Se creó la sección del tablero con éxito!',
+                actionText: 'Ok',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            Snackbar.show({
+                text: 'Falta completar el nombre',
+                actionText: 'Falta completar',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
+async function delete_board_group(element, board_type_name) {
+    try {
+        const modal = document.getElementById('master_popup');
+        const group_id = $(element).attr('group_id');
+        const board_name = $(element).attr('board_name');
+       // const parametroUrl = await getUrlVal('t');
+        //const board_type_name = parametroUrl;
+        const board_group_conf = await L_board_db.get('board_group_' + board_name);
+        const board_group = board_group_conf.board_group;
+       // const selected_group = board_group.find(group => group.id === group_id);
+
+        Snackbar.show({
+            text: '¿Estás seguro de que deseas eliminar esta etapa?',
+            actionText: 'Confirmar',
+            actionTextColor: "#0575e6",
+            onActionClick: async () => {
+                const updated_board_group = board_group.filter(group => group.id !== group_id);
+                board_group_conf.board_group = updated_board_group;
+                const response = await L_board_db.put(board_group_conf);
+                if (response.ok) {
+                    get_board(board_name, board_type_name);
+                    $('#master_popup').modal('hide');
+                    Snackbar.show({
+                        text: 'Etapa eliminada con éxito',
+                        actionText: 'Ok',
+                        actionTextColor: "#0575e6",
+                    });
+                } else {
+                    Snackbar.show({
+                        text: 'Error al actualizar el documento',
+                        actionText: 'Ok',
+                        actionTextColor: "#0575e6",
+                    });
+                }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
+
+
+// EDIT BOARD GROUP POPUP
 async function board_edit_group(element, board_type_name) {
     try {
         const modal = document.getElementById('master_popup');
@@ -754,7 +889,7 @@ async function board_edit_group(element, board_type_name) {
         console.log(err);
     }
 }
-
+// EDIT BOARD GROUP EDITO
 async function edit_board_group_put(element) {
     try {
         var board_name = $(element).attr('board_name'); //Id del documento a edita
@@ -795,6 +930,7 @@ async function edit_board_group_put(element) {
             doc._rev = doc._rev;
             const response = await L_board_db.put(doc); // Actualizar el documento existente
 
+            get_board(board_name, board_type_name);
             $('#master_popup').modal('hide');
             Snackbar.show({
                 text: 'Se editó la sección del tablero con éxito!',
@@ -810,10 +946,16 @@ async function edit_board_group_put(element) {
         }
     } catch (err) {
         console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
+        });
     }
 }
 
 ///NUEVAS ORDENES 2023
+
 
 // CREAR NUEVA ORDEN EN LA DB
 async function put_order_sell(doc) {
@@ -1011,6 +1153,49 @@ async function get_cart_product() {
     return products;
 }
 
+////  FUNCION DE CHATGTP 2023 SIN PROBAR ES PARA ACTUALIZAR EL STOCK DE UN DOCUMENTO DESPUES DE UNA VENTA
+/// (NO SE USA TODAVIA EXPERIMENTAL)
 
+async function tryUpdate(doc, retryCount = 0) {
+    const maxRetries = 5;
+
+    try {
+        await db.put(updateDoc(doc));
+    } catch (err) {
+        if (err.name === 'conflict') {
+            if (retryCount < maxRetries) {
+                let latestDoc = await db.get(doc._id);
+                return await tryUpdate(latestDoc, retryCount + 1);
+            } else {
+                return Promise.reject('Max retries exceeded for document ' + doc._id);
+            }
+        } else {
+            console.error('Unexpected error in tryUpdate:', err);
+            return Promise.reject('Unexpected error updating document');
+        }
+    }
+}
+
+// Supongamos que tienes una función de actualización en tu componente que maneja la interfaz de usuario:
+async function updateDocuments() {
+    // Lee los documentos a actualizar
+    let docs = await Promise.all(docIds.map(id => db.get(id)));
+
+    // Intenta actualizar cada documento
+    try {
+        let results = await Promise.all(docs.map(doc => tryUpdate(doc)));
+    } catch (err) {
+        // Si alguna actualización falla, muestra el Snackbar aquí
+        Snackbar.show({
+            text: err,
+            actionText: 'Retry',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+            action: () => { updateDocuments() }
+        });
+    }
+}
+
+/// (NO SE USA TODAVIA EXPERIMENTAL)
 
 

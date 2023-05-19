@@ -101,6 +101,10 @@ return [
         'or_board_payment_receipt_voucher' => 'Comprobante de (entrega) Nota de Entrega de Mercadería, Equipo...',
         'or_board_credit_voucher' => 'Nota de credito de (Devolucion)',
         'or_board_return_voucher' => 'Comprobante de (Devolucion)',
+        // NEW BOARD
+
+        'new_board_group_tittle' => 'Crear nueva etapa',
+        'nwq_board_group_sub_tittle' => 'Editar etapa',
 
         //EDITAR GROUP BOARD
         'm_edit_board_group_tittle' => 'Editar etapa',

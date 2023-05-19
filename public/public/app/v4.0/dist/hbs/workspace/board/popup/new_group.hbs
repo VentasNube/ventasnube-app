@@ -9,14 +9,13 @@
                         <span class="material-icons">arrow_back</span>
                     </span>
                     <span class="modal-title">
-                       {{{m_edit_board_group_tittle}}}
-                       
+                       {{{new_board_group_tittle}}}
                     </span>
                 </div>
             </div>
             <div id="modal-body" class="">
                 <div id="step-1" class="modal-body text-left col-sm-12 col-md-12 col-xs-12" style="
-                                        background-image: url(/public/app/v4.0/dist/img/tuto/board-edit-group.svg)!important;
+                                        background-image: url(/public/app/v4.0/dist/img/tuto/board-graf.svg)!important;
                                         background-repeat: no-repeat!important;
                                         background-size: 230px 230px!important;
                                         background-position: 94% 15% !important; ">
@@ -130,13 +129,13 @@
             </div>
 
             <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
-                <button   onclick="delete_board_group(this)" group_id="{{{../board_group.id}}}" board_name="{{../board_type_name}}"   m_s_id="{{../board_group_id}}"   id="btn-save"  m_s_id="{{ board_group_id}}"  id="btn-delete" type="button"board_group_id="{{ board_group_id}}" class="btn btn-default">
+                <button id="btn-delete" type="button"board_group_id="{{ board_group_id}}" class="btn btn-default">
                     <span class="">{{b_dell}}</span>
                 </button>
                 <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
                     <span class="">{{b_cancel}}</span>
                 </button>
-                <button    onclick="edit_board_group_put(this)" group_id="{{{../board_group.id}}}" board_name="{{../board_type_name}}"   m_s_id="{{../board_group_id}}"   id="btn-save"  m_s_id="{{ board_group_id}}" type="button" class="btn btn-primary ">
+                <button    onclick="new_board_group_put(this)" group_id="{{{../board_group.id}}}" board_name="{{../board_type_name}}"   m_s_id="{{../board_group_id}}"   id="btn-save"  m_s_id="{{ board_group_id}}" type="button" class="btn btn-primary ">
                     <span class="">{{b_save}}</span>
                 </button>
             </div>
@@ -257,105 +256,8 @@
         }
     });
    
-    /*$("#btn-save").click(function () {
-        //VALORES SELECCIONADOS DEL FOMULARIO    
-         var board_group_name = $('input[name=board_group_name]').val();
-         var board_group_color = $("#bg-select-color-group").attr('bg-color');
-         var board_group_web_acept = $('input:checkbox[name=board_group_web_acept]:checked').val();         
-         var board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();         
-         var board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();         
-         var board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
-         var m_s_id = $(this).attr('m_s_id');      
-        if (board_group_name != null) {
-                var url_now = getUrl();
-                var m_id = url_now.m_id;
-                var m_t_id = url_now.m_t_id;
-                var pacht = 'board'; //CONTROLADOR PRINCIPAL
-                var controler_data = 'edit_board_group_data_post'; //NOMBRE DE CONTROLADOR DATA
-                var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-                var id_copiled = '#master_popup'; // ID DE COMPILACION //  
-                var data = {
-                    //STEP 1
-                    m_id: m_id,
-                    m_t_id: m_t_id,
-                    m_s_id: m_s_id,
-                    board_group_name: board_group_name,
-                    board_group_color: board_group_color,
-                    board_group_web_acept: board_group_web_acept,
-                    board_group_stock: board_group_stock,
-                    board_group_sell:board_group_sell,
-                    board_group_deliver:board_group_deliver,
-                };             
-                var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data);
-                get_board_group(m_id);
-                get_nav_bar(m_id,m_t_id);
-                get_left_nav(m_id,m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-                $('#master_popup').modal('hide');
-                Snackbar.show({
-                      text: 'Se edito la seccion del tablero con exito!',
-                    actionText: 'ok',
-                    actionTextColor: "#0575e6",
-                });
-         
-        }
-         else {
-                Snackbar.show({
-                    text: 'Falta completar el nombre',
-                    actionText: 'Falta completar',
-                    actionTextColor: "#0575e6",
-                });
-            }
-    });
-    */
-    $(".btn-previus").click(function () {
-        var step = $("#btn-previus").attr('step');
-        if (step == 1) {
-            $("#btn-next").text('Siguiente');
-            $("#btn-previus").text('Cancelar');
-            $(".btn-previus").attr('data-dismiss', 'modal');
-            $(".btn-previus").attr('aria-label', 'Close');
-        }
-        else if (step == 2) {
-            $("#btn-previus").attr('step', '1');
-            $("#btn-previus").text('Volver');
-            $("#step-1").show();
-            $("#step-2").hide();
-        }
-        else if (step == 3) {
-            $("#btn-next").text('Continuar');
-            $("#btn-previus").attr('step', '2');
-            $("#step-2").show();
-            $("#step-3").hide();
-        }
-    });
-    $("#btn-delete").click(function () {
 
-        var url_now = getUrl();
-        var m_id = url_now.m_id;
-        var m_t_id = url_now.m_t_id;
-
-        var board_group_id =  $(this).attr('board_group_id');
-        var pacht = 'board'; //CONTROLADOR PRINCIPAL
-        var controler_data = 'edit_board_group_data_delete'; //NOMBRE DE CONTROLADOR DATA
-        var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
-        var data = {
-            //STEP 1
-            m_id: m_id,
-            m_t_id: m_t_id,
-             board_group_id: board_group_id,
-        };
-        //console.log(data);
-        var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-        get_board_group(m_id);
-        get_nav_bar(m_id,m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
-        $('#master_popup').modal('hide');
-        Snackbar.show({
-            text: 'Se elimino el tablero con exito!',
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-        });
-    });
+   
 
 
 </script>
