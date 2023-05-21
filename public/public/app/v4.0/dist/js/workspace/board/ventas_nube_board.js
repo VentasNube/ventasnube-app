@@ -4,6 +4,8 @@ var ws_board_db = 'ws_boards_' + ws_id;
 ws_left_nav_data = false;
 ws_lang_data = false;
 module_info = false;
+columnGrids = [];  // Aquí se almacenarán todas las grillas
+
 // CREO LA DB
 L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 
@@ -74,6 +76,58 @@ async function ws_board_config() {
     }
 }
 
+/// Ordenes GET MAP REDUCE FILTRO POR TIPO
+async function query_orders_change(orderType) {
+    try {
+        orderType = 'order'
+        catergory_id = 'sell'
+        const result = await L_board_db.query('get_orders/getOrders', {
+            startkey: orderType,
+            endkey: orderType + '\uffff',
+            include_docs: true
+        });
+        const rows = result.rows;
+        console.log('QUERY ORDERS rows.doc  rows.doc rows.doc ');
+        console.log(rows.doc);
+        console.log(result);
+        rows.forEach(row => {
+            console.log(row.doc);
+        });
+    } catch (err) {
+        // Maneja cualquier error que pueda ocurrir
+        console.error(err);
+    }
+}
+
+async function query_orders(type, category_id) {
+    try {
+
+        const result = await L_board_db.changes({
+            filter: 'get_orders/order_change_2',
+            include_docs: true, // Incluye esta línea
+            query_params: { type: type, category_id: category_id } //Envio los paramentros a filtrar 
+        });
+
+        const rows = result.rows;
+        console.log('QUERRY ORDERR');
+        console.log(result);
+        if (rows) {
+            rows.forEach(row => {
+                console.log('QUERRY ORDERR');
+                console.log(result);
+                console.log(row.doc);
+            });
+        } else {
+            console.log('rows is undefined');
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_board(module_info) {
 
@@ -88,6 +142,7 @@ function get_nav_board(module_info) {
     // console.log(ws_catalog_data);
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', module_info);
 };
+
 // ADAPTO LA PANTALLA A LO ANCHO DEL NAVEGADOR O CREO UN SCROlL
 function scrollerMove() {
     var ventana_ancho = $(window).width();
@@ -125,6 +180,7 @@ function scrollerMove() {
         }, 200);
     });
 };
+
 ////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
 function get_board_group_size() {
     var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
@@ -138,6 +194,7 @@ function get_board_group_size() {
     //  console.log("Hay " + divs + " Etapas");
     //  alert(board_new_group_size);
 }
+
 // DATE TIME PICKER
 function datetimePiker() {
     $('.datetimepicker').bootstrapMaterialDatePicker({
@@ -153,6 +210,7 @@ function datetimePiker() {
         switchOnClick: true
     });
 }
+
 
 scrollerMove();
 //get_board_group_size()
@@ -173,59 +231,26 @@ async function new_board_star_intro(board_type_name) {
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', '#master_popup', data);
     } catch (err) {
-        console.log(err);
+        Snackbar.show({
+            text: error.message,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
     }
 }
-
 
 // TRAIGO EL BOARD Y IMPRIMO
-async function get_boardOLDOK(board_name, board_type_name) {
-    try {
-
-        // if(!board_name){
-        const parametroUrl = await getUrlVal('t');
-        // alert(parametroUrl);
-        var board_name = board_name;
-        var board_type_name = parametroUrl;
-
-        var board_group_conf = await L_board_db.get('board_group_' + board_type_name);
-        var board_group = board_group_conf.board_group;
-
-        var board_data = {
-            module_info: board_group_conf,
-            board_type_name: board_group_conf.name,
-            ws_lang_data: ws_lang_data,
-            ws_left_nav_data: ws_left_nav_data,
-            user_roles: user_Ctx.userCtx.roles,
-        }
-        console.log("board_data board_data board_data")
-        console.log(board_data)
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
-        get_nav_board(board_data);
-        get_board_group(board_group);
-        //  calcularAnchoTotalBoard();
-
-    } catch (error) {
-        new_board_star_intro(board_type_name);
-        if (error.name !== 'not_found') {
-            new_board_star_intro(board_type_name);
-            throw error;
-        } else if (error.name == 'deleted') {
-            new_board_star_intro(board_type_name);
-            throw error;
-        }
-    }
-}
-
 async function get_board(board_name, board_type_name) {
     let parametroUrl;
-
     try {
         if (!board_type_name) {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('t')) {
                 parametroUrl = urlParams.get('t');
             } else {
+                $('#master_popup').modal('hide');
                 // Manejar el caso en el que el parámetro 't' no está presente en la URL
                 // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada
                 return;
@@ -233,10 +258,8 @@ async function get_board(board_name, board_type_name) {
         } else {
             parametroUrl = board_type_name;
         }
-
         const board_group_conf = await L_board_db.get('board_group_' + parametroUrl);
         const board_group = board_group_conf.board_group;
-
         const board_data = {
             module_info: board_group_conf,
             board_type_name: board_group_conf.name,
@@ -244,14 +267,13 @@ async function get_board(board_name, board_type_name) {
             ws_left_nav_data: ws_left_nav_data,
             user_roles: user_Ctx.userCtx.roles,
         };
-
-        console.log("board_data board_data board_data");
-        console.log(board_data);
-
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
+
         get_nav_board(board_data);
         get_board_group(board_group);
-        // calcularAnchoTotalBoard();
+        paginate_orders(L_board_db);
+    
+        //  query_orders('board', board_type_name);
 
     } catch (error) {
         new_board_star_intro(parametroUrl || board_type_name);
@@ -265,29 +287,6 @@ async function get_board(board_name, board_type_name) {
         }
     }
 }
-
-
-// Calculo el ancho del BOARD dependiendo la cantidad de grupos que hay
-/*
-async function calcularAnchoTotalBoard() {
-    const divs = document.querySelectorAll('.board-column'); // Reemplaza '.mi-div' con el selector correspondiente a tus divs
-  
-    let totalAncho = 0;
-    for (const div of divs) {
-      await new Promise(resolve => {
-        setTimeout(() => {
-          const ancho = div.clientWidth;
-          totalAncho += ancho;
-          resolve();
-        }, 0);
-      });
-    }
-    const totalEnPixels = `${totalAncho}px`;
-    const contenedor = document.querySelector('.board-group'); // Reemplaza '.mi-contenedor' con el selector correspondiente a tu div contenedor
-    contenedor.style.width = totalEnPixels;
-  }
-  */
-//calcularAnchoTotalBoard();
 
 // PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
@@ -414,7 +413,7 @@ async function put_new_board(board_name, data) {
             // El documento no existe, así que se debe crear uno nuevo
             response = await L_board_db.put(new_doc); // Crear un nuevo documento
         }
-        console.log(ws_lang_data);
+
         // Mostrar mensaje en un snackbar
         Snackbar.show({
             text: 'Se creo el board con exito!',
@@ -521,22 +520,13 @@ async function btn_next_new_board(board_name, data) {
                 board_credit_voucher: board_credit_voucher,
                 board_return_voucher: board_return_voucher,
             };
-
-            console.log(' datadatadatadatadata datadata datadata data');
-            console.log(data);
-
-            console.log('board_name board_name board_name');
-            console.log(board_name);
             put_new_board(board_type, data);
-
             $('#master_popup').modal('hide');
-
             Snackbar.show({
                 text: 'Se creo el' + board_name + ' tablero con exito!',
                 actionText: 'ok',
                 actionTextColor: "#0575e6",
             });
-
         }
         else {
             Snackbar.show({
@@ -549,8 +539,70 @@ async function btn_next_new_board(board_name, data) {
 };
 
 
+
+function board_shortable_show(columnGrids) {
+    const dragStartData = new Map();
+    const dragContainer = document.querySelector('.drag-container');
+    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
+    let boardGrid;
+  
+    itemContainers.forEach(function (container) {
+      // ... El resto de tu código para configurar la grilla ...
+  
+      const grid = new Muuri(container, {
+        // Configuración de tu grilla
+      });
+  
+      columnGrids.push(grid);
+    });
+    console.log('columnGrids columnGrids columnGrids columnGrids columnGrids');
+    console.log(columnGrids);
+    // Tu código para la grilla del tablero ...
+
+    boardGrid = new Muuri('.board', {
+        dragEnabled: true,
+        dragHandle: '.board-drag-handle'
+        });
+  }
+
+    // Ahora inicializa cada grid.
+ function board_shortable_goup_OK(columnGrids) {
+    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
+    // Reinicia columnGrids.
+    console.log('GET BOARD GROUP GET BOARD GROUP  GET BOARD GROUP  GET BOARD GROUP COLUM GRID');
+    console.log(columnGrids);
+    // Crea un nuevo grid Muuri para cada contenedor de elementos.
+    for (let i = 0; i < itemContainers.length; i++) {
+        const muuriGrid = new Muuri(itemContainers[i], {
+            items: '.item',
+            layoutDuration: 400,
+            layoutEasing: 'ease',
+            dragEnabled: true,
+            dragSort: () => columnGrids, // Permite arrastrar elementos entre columnas.
+            dragReleaseDuration: 400,
+            dragReleaseEasing: 'ease'
+        });
+
+        // Agrega la instancia del grid a columnGrids.
+        columnGrids.push(muuriGrid);
+
+        console.log('GET BOARD GROUP GET BOARD GROUP  GET BOARD GROUP  GET BOARD GROUP COLUM GRID');
+        console.log(columnGrids);
+    }
+
+    boardGrid = new Muuri('.board', {
+    dragEnabled: true,
+    dragHandle: '.board-drag-handle'
+    });
+}
+
+//board_shortable_colum();
+
+  //board_shortable_show(columnGrids);
+  columnGrids = [];
+
 // IMPRIME EL BOARD GRUP
-async function get_board_group(board_group) {
+async function get_board_groupOK(board_group) {
     var ws_board = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
@@ -561,8 +613,29 @@ async function get_board_group(board_group) {
     }
     //  console.log('ws_board');
     //  console.log(ws_board);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
+   let result = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
+   board_shortable_goup(columnGrids);
+    if(result){
+        alert("se cargo el grupo ahora lo activo ")
+        board_shortable_goup();
+    }
+   
 }
+
+
+
+async function get_board_group(board_group) {
+    var ws_board = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
+        board_group: board_group,
+    }
+
+    await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
+    board_shortable_goup(columnGrids);
+}
+
 
 async function new_group_order(element) {
 
@@ -767,7 +840,10 @@ async function new_board_group_put(element) {
     try {
         const parametroUrl = await getUrlVal('t');
         const board_name = $(element).attr('board_name');
-        const group_id = $(element).attr('group_id');
+        //const group_id = $(element).attr('group_id');
+
+        const group_id = new Date().getTime() + Math.random().toString().slice(2);
+
         const board_type_name = parametroUrl;
         const board_group_name = $('input[name=board_group_name]').val();
         const board_group_color = $("#bg-select-color-group").attr('bg-color');
@@ -821,11 +897,11 @@ async function delete_board_group(element, board_type_name) {
         const modal = document.getElementById('master_popup');
         const group_id = $(element).attr('group_id');
         const board_name = $(element).attr('board_name');
-       // const parametroUrl = await getUrlVal('t');
+        // const parametroUrl = await getUrlVal('t');
         //const board_type_name = parametroUrl;
         const board_group_conf = await L_board_db.get('board_group_' + board_name);
         const board_group = board_group_conf.board_group;
-       // const selected_group = board_group.find(group => group.id === group_id);
+        // const selected_group = board_group.find(group => group.id === group_id);
 
         Snackbar.show({
             text: '¿Estás seguro de que deseas eliminar esta etapa?',
@@ -862,8 +938,6 @@ async function delete_board_group(element, board_type_name) {
     }
 }
 
-
-
 // EDIT BOARD GROUP POPUP
 async function board_edit_group(element, board_type_name) {
     try {
@@ -893,7 +967,7 @@ async function board_edit_group(element, board_type_name) {
 async function edit_board_group_put(element) {
     try {
         var board_name = $(element).attr('board_name'); //Id del documento a edita
-       // var board_group_id = $(element).attr('group_id'); //Id del documento a edita
+        // var board_group_id = $(element).attr('group_id'); //Id del documento a edita
         const parametroUrl = await getUrlVal('t');
         var board_name = board_name;
 
@@ -911,7 +985,7 @@ async function edit_board_group_put(element) {
         const board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();
         const board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();
         const board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
-      // const m_s_id = $(this).attr('m_s_id');
+        // const m_s_id = $(this).attr('m_s_id');
 
         if (board_group_name != null) {
             const board_group = doc.board_group;
@@ -955,35 +1029,26 @@ async function edit_board_group_put(element) {
 }
 
 ///NUEVAS ORDENES 2023
-
-
 // CREAR NUEVA ORDEN EN LA DB
-async function put_order_sell(doc) {
-    try {
-        doc._id = 'sales_order_' + new Date().getTime() + Math.random().toString().slice(2); // Generar un ID único
-        let response = await L_board_db.put(doc); // Crear un nuevo documento
-        // console.log(response);
-        // console.log(doc._id);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function new_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
     const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
     const workspace_id = ws_id; //Id del documento a edita
-    const group_id = '1'; //Id del documento a edita
+    // Comprobacion de datos de grupo 
+    const board_group_conf = await L_board_db.get('board_group_' + category_id);
+    const board_group = board_group_conf.board_group;
+
+    const board_group_first = board_group[0]; // traigo el primer grupo de ordenes q esta disponible y guardo la id
+    //  console.log(board_group_first)
+    const group_id = board_group_first.id; //Id del documento a edita
     const entry_date = { hour, minutes } = await getDateTimeMinutes();
     const due_date = { hour, minutes } = await getDateTimeMinutes();
     const comments = 'Sin comentarios';
     try {
         const products = await get_cart_product();
-        console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
-
-
+        // console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
         const customer = {
             id: 'client_id_xxxx',
             name: 'Customer Name',
@@ -991,8 +1056,6 @@ async function new_order(element) {
             phone: 'Customer Phone',
             email: 'Customer Email'
         };
-
-        //  var doc_id_s = String(doc_id); //Combierto el id del doc en un string
         var order_arr = {
             // _id: 'sales_order_001',
             _id: doc_id,
@@ -1002,7 +1065,7 @@ async function new_order(element) {
             status: 'new',
             seen: false,
             author: userCtx.email,
-            group_id: 'group_123',
+            group_id: group_id,
             order_id: '123',
             group_position: '1',
             comments: comments,
@@ -1092,11 +1155,18 @@ async function new_order(element) {
                 }
             }
         };
-        // Generar un ID único 
+        let response = await L_board_db.put(order_arr); // Crear un nuevo documento
+        if (response.ok) {
+            console.log(response)
+            Snackbar.show({
+                text: 'Se creo la orden con exito!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 50000
+            });
+        }
 
-        put_order(order_arr);
-        console.log(order_arr);
-        // catalog_edit_item_url(doc_id, 1);
     } catch (error) {
         Snackbar.show({
             text: 'Error al obtener los datos:', error,
@@ -1108,7 +1178,393 @@ async function new_order(element) {
         console.error('Error al obtener los datos:', error);
     }
 }
+/// BOARD TARJETAS TRAE LAS ORDENES
 
+async function paginate_ordersNO(L_board_db, startkey, startkey_docid) {
+    const pageSize = 2;  // Número de resultados por página.
+
+    const options = {
+        startkey: startkey,
+        startkey_docid: startkey_docid,
+        limit: pageSize + 1,  // Se agrega 1 para saber si hay una siguiente página.
+        include_docs: true,
+        descending: false
+    };
+
+    const result = await L_board_db.query('order_view/by_type_and_category', options);
+
+    let nextStartkey;
+    let nextStartkeyDocid;
+    if (result.rows.length > pageSize) {
+        // Guarda la última clave y id de documento para la próxima página.
+        const lastRow = result.rows[pageSize - 1];
+        nextStartkey = lastRow.key;
+        nextStartkeyDocid = lastRow.id;
+        // Elimina la última fila, ya que fue solo para verificar si hay una próxima página.
+        result.rows.splice(pageSize, 1);
+    }
+
+    return {
+        rows: result.rows,
+        nextStartkey: nextStartkey,
+        nextStartkeyDocid: nextStartkeyDocid
+    };
+}
+
+
+async function paginate_ordersNO2(L_board_db, startkey, startkey_docid) {
+    const pageSize = 20;  // Número de resultados por página.
+
+    const options = {
+        startkey: startkey,
+        startkey_docid: startkey_docid,
+        limit: pageSize + 1,  // Se agrega 1 para saber si hay una siguiente página.
+        include_docs: true,
+        descending: false
+    };
+
+    const result = await L_board_db.query('order_view/by_type_and_category', options);
+
+    let nextStartkey;
+    let nextStartkeyDocid;
+    if (result.rows.length > pageSize) {
+        // Guarda la última clave y id de documento para la próxima página.
+        const lastRow = result.rows[pageSize - 1];
+        nextStartkey = lastRow.key;
+        nextStartkeyDocid = lastRow.id;
+        // Elimina la última fila, ya que fue solo para verificar si hay una próxima página.
+        result.rows.splice(pageSize, 1);
+    }
+
+    return {
+        rows: result.rows,
+        nextStartkey: nextStartkey,
+        nextStartkeyDocid: nextStartkeyDocid
+    };
+}
+
+// Llama a la función asincrónica y especifica el tipo de orden a filtrar
+
+/// DETECTA EL SCROLL INFINITO PARA TRAER LAS ORDENES CARDS
+
+async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startkey_docid = null) {
+    const pageSize = 20;  // Número de resultados por página.
+
+    const options = {
+        startkey: startkey,
+        startkey_docid: startkey_docid,
+        limit: pageSize + 1,  // Se agrega 1 para saber si hay una siguiente página.
+        include_docs: true,
+        descending: false
+    };
+
+    const result = await L_board_db.query('order_view/by_type_and_category', options);
+
+    if (result.rows.length > pageSize) {
+        // Guarda la última clave y id de documento para la próxima página.
+        const lastRow = result.rows[pageSize - 1];
+        startkey = lastRow.key;
+        startkey_docid = lastRow.id;
+        // Elimina la última fila, ya que fue solo para verificar si hay una próxima página.
+        result.rows.splice(pageSize, 1);
+    } else {
+        // No hay más páginas.
+        startkey = null;
+        startkey_docid = null;
+    }
+
+    // Retorna las filas y la próxima startkey y startkey_docid para la paginación.
+    return {
+        rows: result.rows,
+        nextStartkey: startkey,
+        nextStartkeyDocid: startkey_docid
+    };
+}
+
+async function loadTemplate(path) {
+    const response = await fetch(path);
+    const templateText = await response.text();
+    const template = Handlebars.compile(templateText);
+    return template;
+}
+
+
+
+
+  
+  // A continuación, la definición de updateMuuriInstance:
+  /*
+  function updateMuuriInstance(columnGrids, id) {
+    if (!Array.isArray(columnGrids)) {
+      throw new Error("Invalid columnGrids provided");
+    }
+    // Busca la grilla que corresponde a este id
+    const grid = columnGrids.find(grid => grid.getElement().id === id);
+    if (!grid) {
+      throw new Error(`No grid found with id: ${id}`);
+    }
+    // Agrega el nuevo elemento a la grilla y actualiza la grilla
+    const element = document.querySelector(`#${id} .board-item:last-child`);
+    grid.add(element);
+    grid.refreshItems().layout();
+  }
+
+*/
+/*
+  function updateMuuriInstance(columnGrids, containerSelector) {
+    // Busca el grid correspondiente al selector de contenedor.
+    let gridInstance = columnGrids.find(grid => grid.getElement() === document.querySelector(containerSelector));
+  
+    // Si no se encontró una instancia de grid correspondiente, muestra un error.
+    if (!gridInstance) {
+      throw new Error(`No grid found with id: ${containerSelector}`);
+    }
+  
+    // Actualiza el grid.
+    gridInstance.refreshItems().layout();
+  }
+
+*/
+
+//// NUEVO CHAT COMPLETO 
+let nextStartkey = ['order', 'sell'];
+let nextStartkeyDocid = null;
+let isLoading = false;
+
+async function updateMuuriInstanceNO(columnGrids, containerSelector) {
+    let containerElement = document.querySelector(containerSelector);
+    if (!containerElement) {
+        alert(`No DOM element found with selector: ${containerSelector}`)
+        throw new Error(`No DOM element found with selector: ${containerSelector}`);
+    }
+
+    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
+
+    if (!gridInstance) {
+        throw new Error(`No grid found with id: ${containerSelector}`);
+    }
+  
+    // Refresh the grid.
+    gridInstance.refreshItems().layout();
+}
+
+function updateMuuriInstance(columnGrids, containerSelector) {
+    let containerElement = document.querySelector(containerSelector);
+    if (!containerElement) {
+        alert(`No DOM element found with selector: ${containerSelector}`)
+        throw new Error(`No DOM element found with selector: ${containerSelector}`);
+    }
+
+    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
+
+    if (!gridInstance) {
+        // Si no se encontró una instancia de grid correspondiente, crea una nueva.
+        gridInstance = new Muuri(containerSelector, {
+            items: '.board-item',
+            layoutDuration: 400,
+            layoutEasing: 'ease',
+            dragEnabled: true,
+            dragSort: () => columnGrids,
+            dragReleaseDuration: 400,
+            dragReleaseEasing: 'ease'
+        });
+        // Agrega la nueva instancia al array columnGrids.
+       
+        columnGrids.push(gridInstance);
+    }
+  
+    // Actualiza el grid.
+    gridInstance.refreshItems().layout();
+    alert('agregar Refresh layout');
+}
+
+
+async function fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+    nextStartkey = result.nextStartkey;
+    nextStartkeyDocid = result.nextStartkeyDocid;
+
+    for (const row of result.rows) {
+        const card_data = {
+            doc: row.doc
+        };
+
+        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', '#board_card_group_compiled_' + row.doc.group_id, card_data);
+        updateMuuriInstance(columnGrids, '#board_card_group_compiled_' + row.doc.group_id);
+    }
+
+    return {
+        nextStartkey: nextStartkey,
+        nextStartkeyDocid: nextStartkeyDocid
+    };
+}
+
+
+window.onscroll = async function (){
+    if (isLoading) return;
+
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        isLoading = true;
+        try {
+            const result = await fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+            nextStartkey = result.nextStartkey;
+            nextStartkeyDocid = result.nextStartkeyDocid;
+
+            if (!nextStartkey) {
+                window.onscroll = null;
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+};   
+
+
+
+function board_shortable_goup(columnGrids) {
+    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
+
+    for (let i = 0; i < itemContainers.length; i++) {
+        const existingGrid = columnGrids.find(grid => grid.getElement().isEqualNode(itemContainers[i]));
+        if (!existingGrid) {
+            const muuriGrid = new Muuri(itemContainers[i], {
+                items: '.board-item',
+                //items: '.item',
+                layoutDuration: 400,
+                layoutEasing: 'ease',
+                dragEnabled: true,
+                dragSort: () => columnGrids,
+                dragReleaseDuration: 400,
+                dragReleaseEasing: 'ease'
+            });
+
+            columnGrids.push(muuriGrid);
+        }
+    }
+/*
+    boardGrid = new Muuri('.board', {
+        dragEnabled: true,
+        dragHandle: '.board-drag-handle'
+    });*/
+}
+
+
+
+//// NUEVO CHAT COMPLETO
+
+
+/*
+  function updateMuuriInstance(columnGrids, containerSelector) {
+
+
+    console.log('columnGrids updateMuuriInstance updateMuuriInstance');
+    console.log(columnGrids);
+    // Verificar si el elemento con el selector de contenedor existe
+    let containerElement = document.querySelector(containerSelector);
+    if (!containerElement) {
+        alert(`No DOM element found with selector: ${containerSelector}`)
+        throw new Error(`No DOM element found with selector: ${containerSelector}`);
+    }
+
+    // Busca el grid correspondiente al selector de contenedor.
+   // let gridInstance = columnGrids.find(grid => grid.getElement() === containerElement);
+    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
+
+   
+
+
+    console.log('columnGrids updateMuuriInstance updateMuuriInstance');
+    console.log(columnGrids);
+    console.log('gcontainerElement updateMuuriInstance updateMuuriInstance');
+    console.log(containerElement);
+    console.log('gridInstance updateMuuriInstance updateMuuriInstance');
+    console.log(gridInstance);
+
+    console.log('All column grids and their elements:');
+    columnGrids.forEach(grid => console.log(grid, grid.getElement()));
+
+     console.log('columnGrids updateMuuriInstance updateMuuriInstance');
+    console.log(columnGrids);
+    // Si no se encontró una instancia de grid correspondiente, muestra un error.
+    if (!gridInstance) {
+        throw new Error(`No grid found with id: ${containerSelector}`);
+    }
+  
+    // Actualiza el grid.
+    gridInstance.refreshItems().layout();
+}
+
+
+async function fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+    nextStartkey = result.nextStartkey;
+    nextStartkeyDocid = result.nextStartkeyDocid;
+
+    for (const row of result.rows) {
+        const card_data = {
+            doc: row.doc
+        };
+
+        // Renderiza la tarjeta.
+        console.log('row.doc.group_id');
+        console.log(row.doc.group_id);
+
+        console.log('columnGrids fetchOrders fetchOrders fetchOrders');
+        console.log(columnGrids);
+       // alert('#board_card_group_compiled_' + row.doc.group_id,)
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', '#board_card_group_compiled_' + row.doc.group_id, card_data);
+        updateMuuriInstance(columnGrids, '#board_card_group_compiled_' + row.doc.group_id);
+
+        
+    }
+
+    return {
+        nextStartkey: nextStartkey,
+        nextStartkeyDocid: nextStartkeyDocid
+    };
+}
+
+let nextStartkey = ['order', 'sell'];
+let nextStartkeyDocid = null;
+let isLoading = false;
+
+window.onscroll = async function (){
+    // Evita que se hagan múltiples solicitudes mientras ya se está cargando.
+    if (isLoading) return;
+
+    console.log('columnGrids SCROLLLL SCROLLLLLLLLL');
+
+    columnGrids 
+    console.log(columnGrids);
+    
+    // Comprueba si hemos llegado al final de la página.
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        isLoading = true;
+        try {
+            // const result = await fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid);
+            const result = await fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+            nextStartkey = result.nextStartkey;
+            nextStartkeyDocid = result.nextStartkeyDocid;
+
+            // Procesa los resultados aquí.
+            // ...
+
+            // No hay más páginas, desactiva el desplazamiento infinito.
+            if (!nextStartkey) {
+                window.onscroll = null;
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+};
+*/
+
+////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
 async function get_cart_product() {
     const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
@@ -1158,7 +1614,6 @@ async function get_cart_product() {
 
 async function tryUpdate(doc, retryCount = 0) {
     const maxRetries = 5;
-
     try {
         await db.put(updateDoc(doc));
     } catch (err) {

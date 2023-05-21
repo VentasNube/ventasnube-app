@@ -181,10 +181,25 @@ function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
         var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
         targetDiv.html(template(withData));
         if (callback) {
-            callback()
+            return callback()
         }
     })
 };
+
+/// ADAPTACION QUE DEVUELVE EL OBJETO DEO DOM Q RENDERIZA SE USA EN CARD
+function renderHandlebarsTemplateCard(withTemplate, withData, callback) {
+    return new Promise((resolve, reject) => {
+        getTemplateAjax(withTemplate, function(template) {
+            // Crea un nuevo div para alojar el template.
+            var newElement = document.createElement('div');
+            // Renderiza el template en el nuevo elemento.
+            newElement.innerHTML = template(withData);
+            // Resuelve la promesa con el nuevo elemento.
+            resolve(newElement);
+        })
+    });
+}
+
 
 // LOGICA PARA LEER LOS PARAMETROS DE LA URL
 function getParameterByName(name, url = window.location.href) {

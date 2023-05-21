@@ -75,6 +75,10 @@ async function get_all_catalog_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
+
+L_catalog_db.on('error', function(err) {
+    debugger;
+  });
 //////////////////////////////
 // CATALOGO ( PRODUCTOS ) 2023 //
 //////////////////////////////

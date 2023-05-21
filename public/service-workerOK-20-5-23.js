@@ -1,25 +1,19 @@
+// importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 712111231212121221212212234;
+
+const version = 7112121112112212121211209722;
+
+
 
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
-  self.skipWaiting();
+  self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (!expectedCaches.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+
 });
 
 self.addEventListener('message', function (event) {
@@ -36,10 +30,8 @@ workbox.core.setCacheNameDetails({
 });
 
 workbox.precaching.precacheAndRoute([
-  // Rutas de archivos para precachear
-
-  // Rutas de archivos para precachear
-   //{ url: '/login', revision: version },
+  // { url: '/', revision: version },
+  //{ url: '/login', revision: version },
   //{ url: '/workspace/home', revision: version }, 
   { url: '/workspace/app/?type=catalog', revision: version },
   { url: '/workspace/app', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
@@ -135,8 +127,6 @@ workbox.precaching.precacheAndRoute([
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', revision: version },
-
-  { url: '/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', revision: version },
   
 
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/edit_group.hbs', revision: version },
@@ -146,27 +136,15 @@ workbox.precaching.precacheAndRoute([
 ]);
 
 workbox.routing.registerRoute(
-  /ruta\/al\/archivo\/config.json/,
-  new workbox.strategies.NetworkFirst({
-    cacheName: 'ventasnube-config-' + version,
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 1,
-        purgeOnQuotaError: true,
-      }),
-    ],
-  })
-);
-
-workbox.routing.registerRoute(
   ({ request }) => request.destination === 'image',
   new workbox.strategies.CacheFirst({
+    //new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'vnapp-images-' + version,
     plugins: [
       new workbox.expiration.ExpirationPlugin({
         maxEntries: 1000,
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-      }),
-    ],
+      })
+    ]
   })
 );
