@@ -25,22 +25,6 @@
 
 <script>
   
-    function get_search_board_items_OLD(search_m_input, m_id) {
-        var url_now = getUrl();
-        var m_id = url_now.m_id;
-        var m_t_id = url_now.m_t_id;
-        var pacht = 'search'; //CONTROLADOR PRINCIPAL
-        var controler_data = 'search_card_product_data'; //NOMBRE DE CONTROLADOR DATA
-        var controler_template = 'search_card_product_template'; //NOMBRE CONTROLADOR TEMPLATE      
-        var id_copiled = '#card_product_result_items'; // ID DE COMPILACION //  
-        var data = {
-            m_id: m_id,
-            search_m_input: search_m_input,
-        }
-        console.log(data);
-        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
-    };
-
     ////----( CARRUSEL DE CROLL  )----/////
     function scrollerMove() {
         var ventana_ancho = $(window).width();
@@ -176,7 +160,7 @@
     });
 
 scrollerMove();
-get_board_group_size()
+//get_board_group_size()
 //board_shortable_show(); 
   
 </script>

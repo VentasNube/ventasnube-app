@@ -11370,7 +11370,7 @@ h2 {
 .board-group>.board {
     overflow-x: auto;
     white-space: nowrap;
-    min-height: 600px;
+   /* min-height: 600px;*/
 }
 .board-group>.board>.board-column {
     flex: 0 0 auto;
@@ -11389,7 +11389,6 @@ h2 {
     background: #f0f0f0;
     z-index: 1;
     /*min-height: 600px;*/
-    
     border-radius: 15px;
 }
 .board-column.muuri-item-releasing {
@@ -11448,7 +11447,7 @@ to the muuri element, stuff will break */
 .board-column-content {
     position: relative;
     border: 10px solid transparent;
-    /*  min-height: 700px!important;*/
+    min-height: 250px!important;
     /* padding-bottom: 100px;*/
     
     border-top: 0;

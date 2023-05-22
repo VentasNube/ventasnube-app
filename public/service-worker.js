@@ -1,8 +1,10 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 12112121223121212121212121234;
+const version = 1123211212122332412121212323231212323121234;
 
 const expectedCaches = ['ventasnube-v-' + version];
+
+
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -26,6 +28,11 @@ self.addEventListener('message', function (event) {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
+});
+
+
+workbox.setConfig({
+  debug: false
 });
 
 workbox.core.setCacheNameDetails({

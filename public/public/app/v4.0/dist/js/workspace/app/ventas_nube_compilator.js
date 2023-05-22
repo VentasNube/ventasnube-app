@@ -12,6 +12,20 @@ function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
     })
 };
 
+function renderHandlebarsTemplatePromise(withTemplate, inElement, withData) {
+    return new Promise((resolve, reject) => {
+        getTemplateAjax(withTemplate, function(template) {
+            var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
+            if (!targetDiv.html) {
+                reject('targetDiv.html is not a function');
+            }
+            targetDiv.html(template(withData));
+            resolve();
+        });
+    });
+};
+
+
 ////-----(MOTOR AJAX)-----////
 // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
 function getTemplateAjax(path, callback) {
@@ -187,6 +201,7 @@ function getTemplateAjax(path, callback) {
         }
     });
 }
+
 /// ADAPTACION QUE DEVUELVE EL OBJETO DEO DOM Q RENDERIZA SE USA EN CARD
 function renderHandlebarsTemplateReturn(withTemplate, withData, parentElement, id, className) {
     return new Promise((resolve, reject) => {
@@ -197,15 +212,10 @@ function renderHandlebarsTemplateReturn(withTemplate, withData, parentElement, i
         getTemplateAjax(withTemplate, function(template) {
             // Crea un nuevo div para alojar el template.
             var newElement = document.createElement('div');
-            // Asigna el id y la clase al div, si se proporcionan.
-            //    newElement.id = '';
-            //    newElement.className = 'board-item';
-            // Renderiza el template en el nuevo elemento.
             newElement.innerHTML = template(withData);
             // Inserta el nuevo elemento en el DOM.
             parentElement.appendChild(newElement);
             // Puedes agregarlo a una instancia existente de Muuri así:
-          
             // Resuelve la promesa con el nuevo elemento.
             resolve(newElement);
         })

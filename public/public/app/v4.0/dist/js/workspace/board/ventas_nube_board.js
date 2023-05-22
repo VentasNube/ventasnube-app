@@ -267,11 +267,18 @@ async function get_board(board_name, board_type_name) {
             ws_left_nav_data: ws_left_nav_data,
             user_roles: user_Ctx.userCtx.roles,
         };
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
+        await renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
+        await get_nav_board(board_data);
+        await get_board_group(board_group);
 
-        get_nav_board(board_data);
-        get_board_group(board_group);
-        paginate_orders(L_board_db);
+       /* renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data)
+        .then(() => {
+            board_start_muuri(columnGrids);
+            resolve();
+        })
+        .catch(error => reject(error));
+       */
+       // paginate_orders(L_board_db);
     
         //  query_orders('board', board_type_name);
 
@@ -537,91 +544,6 @@ async function btn_next_new_board(board_name, data) {
         }
     };
 };
-
-
-
-function board_shortable_show(columnGrids) {
-    const dragStartData = new Map();
-    const dragContainer = document.querySelector('.drag-container');
-    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
-    let boardGrid;
-  
-    itemContainers.forEach(function (container) {
-      // ... El resto de tu código para configurar la grilla ...
-  
-      const grid = new Muuri(container, {
-        // Configuración de tu grilla
-      });
-  
-      columnGrids.push(grid);
-    });
-    console.log('columnGrids columnGrids columnGrids columnGrids columnGrids');
-    console.log(columnGrids);
-    // Tu código para la grilla del tablero ...
-
-    boardGrid = new Muuri('.board', {
-        dragEnabled: true,
-        dragHandle: '.board-drag-handle'
-        });
-  }
-
-    // Ahora inicializa cada grid.
- function board_shortable_goup_OK(columnGrids) {
-    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
-    // Reinicia columnGrids.
-    console.log('GET BOARD GROUP GET BOARD GROUP  GET BOARD GROUP  GET BOARD GROUP COLUM GRID');
-    console.log(columnGrids);
-    // Crea un nuevo grid Muuri para cada contenedor de elementos.
-    for (let i = 0; i < itemContainers.length; i++) {
-        const muuriGrid = new Muuri(itemContainers[i], {
-            items: '.item',
-            layoutDuration: 400,
-            layoutEasing: 'ease',
-            dragEnabled: true,
-            dragSort: () => columnGrids, // Permite arrastrar elementos entre columnas.
-            dragReleaseDuration: 400,
-            dragReleaseEasing: 'ease'
-        });
-
-        // Agrega la instancia del grid a columnGrids.
-        columnGrids.push(muuriGrid);
-
-        console.log('GET BOARD GROUP GET BOARD GROUP  GET BOARD GROUP  GET BOARD GROUP COLUM GRID');
-        console.log(columnGrids);
-    }
-
-    boardGrid = new Muuri('.board', {
-    dragEnabled: true,
-    dragHandle: '.board-drag-handle'
-    });
-}
-
-//board_shortable_colum();
-
-  //board_shortable_show(columnGrids);
-  columnGrids = [];
-
-// IMPRIME EL BOARD GRUP
-async function get_board_groupOK(board_group) {
-    var ws_board = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-        board_group: board_group,
-        //m_id: m_id,
-        // m_t_id : m_t_id
-    }
-    //  console.log('ws_board');
-    //  console.log(ws_board);
-   let result = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
-   board_shortable_goup(columnGrids);
-    if(result){
-        alert("se cargo el grupo ahora lo activo ")
-        board_shortable_goup();
-    }
-   
-}
-
 
 
 async function new_group_order(element) {
@@ -1168,10 +1090,19 @@ async function new_order(element) {
 /// BOARD TARJETAS TRAE LAS ORDENES
 
 
-// Llama a la función asincrónica y especifica el tipo de orden a filtrar
+
+
+//// VARIABLES GLOBALES 
+let nextStartkey = ['order', 'sell'];
+let nextStartkeyDocid = null;
+let isLoading = false;
+var boardsInitialized = false;
+var columnGrids = [];
+let boardGrid;
 
 /// DETECTA EL SCROLL INFINITO PARA TRAER LAS ORDENES CARDS
 
+// Hago la query y pagino los resultados 
 async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startkey_docid = null) {
     const pageSize = 20;  // Número de resultados por página.
 
@@ -1206,228 +1137,98 @@ async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startke
     };
 }
 
-
-var boardsInitialized = false;
-
-function board_shortable_show() {
-    const dragStartData = new Map();
-    const dragContainer = document.querySelector('.drag-container');
-    const itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
-    const columnGrids = [];
-    let boardGrid;
-
-    // Init the column grids so we can drag those items around.
-    itemContainers.forEach(function (container) {
-        const grid = new Muuri(container, {
-            layoutDuration: 400,
-            layoutEasing: 'ease',
-            itemPlaceholderClass: 'board-item-placeholder',
-            items: '.board-item',
-            dragEnabled: true,
-            dragSort: function () {
-                return columnGrids;
-            },
-            dragContainer: dragContainer,
-            dragCssProps: {
-                touchAction: 'auto',
-                userSelect: 'none',
-                userDrag: 'none',
-                tapHighlightColor: 'rgba(0, 0, 0, 0)',
-                touchCallout: 'none',
-                contentZooming: 'none'
-            },
-            dragStartPredicate: function (item, e) {
-                // On touch, let's allow dragging if the delay between
-                // touchstart and touchmove event is 250ms or more.
-                // Note that we need to explicitly prevent scrolling
-                // after we start the drag delayed.
-                if (e.pointerType === 'touch') {
-                    // On first event (touchstart) we need to store the
-                    // drag start data and bind listeners for touchmove
-                    // and contextmenu.
-                    if (e.isFirst) {
-                        const contextMenuListener = e => e.preventDefault();
-                        const touchMoveListener = (e) => {
-                            const data = dragStartData.get(item);
-                            if (data) {
-                                if (data.dragAllowed) {
-                                    e.cancelable && e.preventDefault();
-                                } else if (data.dragAllowed === undefined) {
-                                    if (e.cancelable && e.timeStamp - data.startTimeStamp > 250) {
-                                        data.dragAllowed = true;
-                                        e.preventDefault();
-                                    } else {
-                                        data.dragAllowed = false;
-                                    }
-                                }
-                            }
-                        };
-
-                        // Store drag start data.x
-                        dragStartData.set(item, {
-                            dragAllowed: undefined,
-                            startTimeStamp: e.srcEvent.timeStamp,
-                            touchMoveListener,
-                            contextMenuListener
-                        });
-
-                        // We need to bind the touch move listener to every scrollable ancestor
-                        // of the dragged item. You probably want to create a method for
-                        // querying such elements, but in this example we know the specific
-                        // elements so we explicitly define the listeners for those.
-                        // Also note that it's important to bind the listeners with
-                        // capture:true and passive:false options.
-                        container.parentNode.addEventListener('touchmove', touchMoveListener, { passive: false, capture: true });
-                        window.addEventListener('touchmove', touchMoveListener, { passive: false, capture: true });
-
-                        // Prevent context menu popping up.
-                        item.getElement().addEventListener('contextmenu', contextMenuListener);
-
-                        // Let's keep the drag start predicate in "pending" state.
-                        return undefined;
-                    }
-
-                    // On final event (touchend/touchcancel) we just need to
-                    // remove the listeners and delete the item's drag data.
-                    if (e.isFinal) {
-                        const data = dragStartData.get(item);
-                        if (data) {
-                            container.parentNode.removeEventListener('touchmove', data.touchMoveListener, { passive: false, capture: true });
-                            window.removeEventListener('touchmove', data.touchMoveListener, { passive: false, capture: true });
-                            item.getElement().removeEventListener('contextmenu', data.contextMenuListener);
-                            dragStartData.delete(item);
-                        }
-                        return undefined;
-                    }
-                    // On move (touchmove) event let's check the drag state from
-                    // our drag data and return it for the predicate.
-                    const data = dragStartData.get(item);
-                    return data ? data.dragAllowed : undefined;
-                }
-
-                // On mouse let's allow starting drag immediately
-                // if mouse's left button is pressed down.
-                if (e.isFirst && e.srcEvent.button) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            dragAutoScroll: {
-                targets: (item) => {
-                    return [
-                        { element: window, priority: 0 },
-                        { element: item.getGrid().getElement().parentNode, priority: 1 },
-                    ];
-                }
-            },
-        })
-            .on('dragInit', function (item) {
-                item.getElement().style.width = item.getWidth() + 'px';
-                item.getElement().style.height = item.getHeight() + 'px';
-            })
-            .on('dragReleaseEnd', function (item) {
-                item.getElement().style.width = '';
-                item.getElement().style.height = '';
-                item.getGrid().refreshItems([item]);
-            })
-            .on('layoutStart', function () {
-                if (boardGrid) {
-                    boardGrid.refreshItems().layout();
-                }
+// Creo la instancia muuri con la carga del tablero
+function board_start_muuri(columnGrids) {
+    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
+    for (let i = 0; i < itemContainers.length; i++) {
+        if (itemContainers[i]) {
+            const muuriGrid = new Muuri(itemContainers[i], {
+                items: '.item',
+                layoutDuration: 400,
+                layoutEasing: 'ease',
+                dragEnabled: true,
+                dragSort: () => columnGrids,
+                dragReleaseDuration: 400,
+                dragReleaseEasing: 'ease'
             });
+            columnGrids.push(muuriGrid);
+            // Si es la primera instancia de Muuri, también la guarda en boardGrid
+            if (!boardGrid) {
+                boardGrid = muuriGrid;
+            }
+            console.log(`Grid initialized for itemContainers[${i}]`);
+        } else {
+            console.error(`No DOM element found for itemContainers[${i}]`);
+        
+        }
+    }
+}
 
-        columnGrids.push(grid);
+function get_board_group(board_group) {
+    // ESTA FUNCION DEVUELVE UNA PROMESA CUANDO LA LLAMA CON AWAIT DEESDE UNA FUNCION ASYC QUE ESTA EN GET_BOARD, 
+    // LA USO PARA QUE LA FUNCION CONSTRUCTORA QUE LE SIGUE ESPERE A QUE EL DOM SE ALLA CARGADO CON EXITO
+    return new Promise((resolve, reject) => {
+        var ws_board = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            board_group: board_group,
+        }
+        //VERIFICA Q EL DIB SE ALLA CARGADO AL DOM ANTES DE SEGUIR
+       let parentElement = document.querySelector('#content_board_group_compiled');
+        if (parentElement) {
+            renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board)
+                .then(() => {
+                    board_start_muuri(columnGrids);
+                    resolve();
+                })
+                .catch(error => reject(error));
+        } else {
+            console.error("No se encontró el elemento #content_board_group_compiled");
+            reject(new Error("No se encontró el elemento #content_board_group_compiled"));
+        }
     });
-
-    if (boardsInitialized) {
-        // Actualiza los tableros aquí
-    // Init board grid so we can drag those columns around.
-        boardGrid = new Muuri('.board', {
-            dragEnabled: true,
-            dragHandle: '.board-drag-handle'
-        });
-      }
-      // Marca los tableros como inicializados
-      boardsInitialized = true;
 }
 
+// Agrego la tarjeta al muuri
+function add_new_item_muuri(newElement) {
+        if (!boardGrid) {
+          console.error('Board grid has not been initialized yet.');
+          return;
+        }
+    //   const newElement = document.createElement('div');
+       // newElement.className = 'board-item';
+      //  newElement.textContent = itemContent;
+        console.log('newElement');
+        console.log(newElement);
 
-async function get_board_group(board_group) {
-    var ws_board = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-        board_group: board_group,
-    }
-
-    await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board);
-    board_shortable_goup(columnGrids);
+        boardGrid.add(newElement);
+        // Refresca la grilla y vuelve a organizarla
+       // gridInstance.refreshItems(columnGrids).layout();
+        boardGrid.refreshItems().layout();
+        // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
+        boardGrid.synchronize();
+       // boardGrid.refreshItems().layout();
 }
 
-
-//// NUEVO CHAT COMPLETO 
-let nextStartkey = ['order', 'sell'];
-let nextStartkeyDocid = null;
-let isLoading = false;
-
-
-
-function updateMuuriInstance(columnGrids, containerSelector,newElement) {
-    let containerElement = document.querySelector(containerSelector);
-    if (!containerElement) {
-        alert(`No DOM element found with selector: ${containerSelector}`)
-        throw new Error(`No DOM element found with selector: ${containerSelector}`);
-    }
-    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
-    if (!gridInstance) {
-        // Si no se encontró una instancia de grid correspondiente, crea una nueva.
-        gridInstance = new Muuri(containerSelector, {
-            items: '.board-item',
-            layoutDuration: 400,
-            layoutEasing: 'ease',
-            dragEnabled: true,
-            dragSort: () => columnGrids,
-            dragReleaseDuration: 400,
-            dragReleaseEasing: 'ease'
-        });
-        // Agrega la nueva instancia al array columnGrids.
-        columnGrids.push(gridInstance);
-    }
-    // Actualiza el grid.
-    gridInstance.add(newElement);
-    // Refresca la grilla y vuelve a organizarla
-    gridInstance.refreshItems(columnGrids).layout();
-    // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
-    gridInstance.synchronize();
-
-   // gridInstance.refreshItems().layout();
- //  alert('agregar Refresh layout');
-}
-
-
-async function fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+//AGREGO LA NUEVA TARJETA AL DOM
+async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
     const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
     nextStartkey = result.nextStartkey;
     nextStartkeyDocid = result.nextStartkeyDocid;
-
+    console.log(result);
     for (const row of result.rows) {
         const card_data = {
             doc: row.doc
         };
-
         // Obtiene el contenedor al que se quiere añadir la nueva tarjeta
         let containerSelector = '#board_card_group_compiled_' + row.doc.group_id;
         let parentElement = document.querySelector(containerSelector);
-        
         // Renderiza la tarjeta.
         let newElement = await renderHandlebarsTemplateReturn('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
-        
         // Ya que renderHandlebarsTemplateReturn devuelve el nuevo elemento en un div,
         // se debe añadir el primerChild (la tarjeta) al grid de Muuri
-        let gridInstance = await updateMuuriInstance(columnGrids, containerSelector,newElement);
-        // Asegúrate de que el nuevo elemento se añade a la grilla
-       
+        add_new_item_muuri(newElement.firstChild);
     }
 
     return {
@@ -1436,7 +1237,7 @@ async function fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGr
     };
 }
 
-
+// FUNCION Q CAPTURA EL MOVIMIENTO DEL SCROLL IN
 
 window.onscroll = async function (){
     if (isLoading) return;
@@ -1444,7 +1245,7 @@ window.onscroll = async function (){
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
         isLoading = true;
         try {
-            const result = await fetchOrders(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+            const result = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
             nextStartkey = result.nextStartkey;
             nextStartkeyDocid = result.nextStartkeyDocid;
 
@@ -1461,34 +1262,75 @@ window.onscroll = async function (){
 
 
 
-function board_shortable_goup(columnGrids) {
-    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
 
-    for (let i = 0; i < itemContainers.length; i++) {
-        const existingGrid = columnGrids.find(grid => grid.getElement().isEqualNode(itemContainers[i]));
-        if (!existingGrid) {
-            const muuriGrid = new Muuri(itemContainers[i], {
-                items: '.board-item',
-                //items: '.item',
-                layoutDuration: 400,
-                layoutEasing: 'ease',
-                dragEnabled: true,
-                dragSort: () => columnGrids,
-                dragReleaseDuration: 400,
-                dragReleaseEasing: 'ease'
+//AGREGO LA NUEVA TARJETA A MUURI
+function add_new_item_muuriNO(columnGrids, containerSelector,newElement) {
+    let containerElement = document.querySelector(containerSelector);
+    if (!containerElement) {
+        alert(`No DOM element found with selector: ${containerSelector}`)
+        throw new Error(`No DOM element found with selector: ${containerSelector}`);
+    }
+    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
+   // const dragStartData = new Map();
+   // const dragContainer = document.querySelector('.drag-container');
+    let boardGrid;
+    //const itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
+
+    if (!gridInstance) {
+        gridInstance = new Muuri(containerSelector, {
+            layoutDuration: 400,
+            layoutEasing: 'ease',
+          //  itemPlaceholderClass: 'board-item-placeholder',
+            items: '.board-item',
+            dragEnabled: true,
+         //   dragContainer: dragContainer,
+            fillGaps: true,
+            horizontal: false,
+            alignRight: false,
+            alignBottom: false,
+            rounding: false,
+            dragSort: function () {
+                return columnGrids;
+            },
+            dragCssProps: {
+                touchAction: 'auto',
+                userSelect: 'none',
+                userDrag: 'none',
+                tapHighlightColor: 'rgba(0, 0, 0, 0)',
+                touchCallout: 'none',
+                contentZooming: 'none'
+            }
+        })/*
+          .on('dragInit', function (item) {
+                item.getElement().style.width = item.getWidth() + 'px';
+                item.getElement().style.height = item.getHeight() + 'px';
+            })
+            .on('dragReleaseEnd', function (item) {
+                item.getElement().style.width = '';
+                item.getElement().style.height = '';
+                item.getGrid().refreshItems([item]);
+            })
+            .on('layoutStart', function () {
+                if (boardGrid) {
+                    boardGrid.refreshItems().layout();
+                }
             });
 
-            columnGrids.push(muuriGrid);
-        }
+*/
+            columnGrids.push(gridInstance);
+
     }
-/*
-    boardGrid = new Muuri('.board', {
-        dragEnabled: true,
-        dragHandle: '.board-drag-handle'
-    });*/
+    // Actualiza el grid.
+    gridInstance.add(newElement);
+    // Refresca la grilla y vuelve a organizarla
+   // gridInstance.refreshItems(columnGrids).layout();
+    gridInstance.refreshItems().layout();
+    // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
+    gridInstance.synchronize();
+   // board_start_muuri()
+    // gridInstance.refreshItems().layout();
+    //  alert('agregar Refresh layout');
 }
-
-
 
 ////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
