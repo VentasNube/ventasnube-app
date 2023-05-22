@@ -1,6 +1,6 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 712111231212121221212212234;
+const version = 12112121223121212121212121234;
 
 const expectedCaches = ['ventasnube-v-' + version];
 

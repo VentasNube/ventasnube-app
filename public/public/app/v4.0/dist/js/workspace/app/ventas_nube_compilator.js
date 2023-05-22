@@ -1,4 +1,17 @@
 //**** VARIABLES GLOBALES */
+
+
+// ARMA EL TEMPLATE PARA COMPILAR 
+function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
+    getTemplateAjax(withTemplate, function(template) {
+        var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
+        targetDiv.html(template(withData));
+        if (callback) {
+            return callback()
+        }
+    })
+};
+
 ////-----(MOTOR AJAX)-----////
 // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
 function getTemplateAjax(path, callback) {
@@ -174,26 +187,25 @@ function getTemplateAjax(path, callback) {
         }
     });
 }
-
-// ARMA EL TEMPLATE PARA COMPILAR 
-function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
-    getTemplateAjax(withTemplate, function(template) {
-        var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
-        targetDiv.html(template(withData));
-        if (callback) {
-            return callback()
-        }
-    })
-};
-
 /// ADAPTACION QUE DEVUELVE EL OBJETO DEO DOM Q RENDERIZA SE USA EN CARD
-function renderHandlebarsTemplateCard(withTemplate, withData, callback) {
+function renderHandlebarsTemplateReturn(withTemplate, withData, parentElement, id, className) {
     return new Promise((resolve, reject) => {
+        if (!parentElement || typeof parentElement.appendChild !== 'function') {
+            reject(new Error('parentElement must be a DOM node'));
+            return;
+        }
         getTemplateAjax(withTemplate, function(template) {
             // Crea un nuevo div para alojar el template.
             var newElement = document.createElement('div');
+            // Asigna el id y la clase al div, si se proporcionan.
+            //    newElement.id = '';
+            //    newElement.className = 'board-item';
             // Renderiza el template en el nuevo elemento.
             newElement.innerHTML = template(withData);
+            // Inserta el nuevo elemento en el DOM.
+            parentElement.appendChild(newElement);
+            // Puedes agregarlo a una instancia existente de Muuri así:
+          
             // Resuelve la promesa con el nuevo elemento.
             resolve(newElement);
         })

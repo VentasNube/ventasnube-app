@@ -11455,7 +11455,7 @@ to the muuri element, stuff will break */
     /*  border-bottom: 50px solid transparent;*/
 }
 .board-item {
-    position: absolute;
+   /* position: absolute; */
     width: 100%;
     margin: 0;
     /*z-index: 9998;*/
