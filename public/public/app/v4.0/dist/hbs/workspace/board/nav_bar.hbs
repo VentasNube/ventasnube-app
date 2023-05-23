@@ -1,15 +1,16 @@
 <!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  --->
+
 <div class="box">
     <div class="box-header">
         <div class="nav-header nav_bar_catalog_header">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 
                 <div class="btn-group dopdown">
                     <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
                         class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
                         data-toggle="dropdown" aria-expanded="true">
                         <span class="material-icons">
-                           {{#with module_info.data}} {{m_t_icon}}{{/with}}</span>
+                            {{#with module_info.data}} {{m_t_icon}}{{/with}}</span>
                         <span class="this_m_t_name"> {{#with module_info.data}} {{m_t_name}}{{/with}}</span>
                         <i class="material-icons">expand_more</i>
                     </button>
@@ -17,19 +18,20 @@
                     <ul class="dropdown-menu pull-right">
                         {{#each ws_left_nav_data.m_t}}
 
-                            <li class="margin-5">
-                                <a onclick="get_module_type_nav(this)"  m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{../m_url}}}" m_t_url="{{{m_t_url}}}" 
-                                    class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
-                                    data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
-                                    <span class="material-icons">{{m_t_icon}}</span>
-                                    <span class="this_m_t_name">{{m_t_name}}</span>
-                                </a>
-                            </li>
+                        <li class="margin-5">
+                            <a onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                s_url_t_m="{{{../m_url}}}" m_t_url="{{{m_t_url}}}"
+                                class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
+                                data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
+                                <span class="material-icons">{{m_t_icon}}</span>
+                                <span class="this_m_t_name">{{m_t_name}}</span>
+                            </a>
+                        </li>
 
                         {{/each}}
                     </ul>
                 </div>
-        </div>
+            </div>
             <div class="padding-0 col-xs-7 col-sm-7 col-md-7 col-lg-7">
                 <div class="nav_bar_catalog_search">
                     <div class="input-filters">
@@ -43,7 +45,8 @@
                                 <ul class="dropdown-menu xl pull-left">
                                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                                     <div class="body">
-                                        <li class="header"> <span> {{#with ws_lang_data}} {{b_myaccount}}{{/with}}</span> Filtrar ordenes</li>
+                                        <li class="header"> <span> {{#with ws_lang_data}}
+                                                {{b_myaccount}}{{/with}}</span> Filtrar ordenes</li>
                                         <li class="divider"></li>
                                         <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
                                             <li>
@@ -124,7 +127,8 @@
                                 </ul>
                             </div>
                         </div>
-                        <input class="catalog_search search-input s-card-actv-input" autocomplete="off" type="text" id="" name="catalog_search" placeholder="Buscar..">
+                        <input class="catalog_search search-input s-card-actv-input" autocomplete="off" type="text"
+                            id="" name="catalog_search" placeholder="Buscar..">
                     </div>
                 </div>
             </div>
@@ -153,45 +157,44 @@
                     aria-expanded="true">
                     <span class="material-icons">settings</span>
                 </button>
-                 {{#with ws_lang_data}}
+                {{#with ws_lang_data}}
                 <ul class="dropdown-menu pull-right">
                     <li>
                         <a href="#" onclick="new_board_star_intro()">
                             <i class="material-icons">dashboard</i>
-                           {{m_new_board}}
+                            {{m_new_board}}
                         </a>
                     </li>
                     <li>
                         <a href="#" onclick="edit_board_star_intro()">
                             <i class="material-icons">create</i>
-                           {{m_edit_board}}  
+                            {{m_edit_board}}
                         </a>
                     </li>
-                     <li>
+                    <li>
                         <a href="#" onclick="new_board_group()">
-                                <i class="material-icons"> view_carousel</i> 
-                            {{m_new_board_group}}  
+                            <i class="material-icons"> view_carousel</i>
+                            {{m_new_board_group}}
                         </a>
                     </li>
                     <li>
                         <a href="#" onclick="edit_board_group()">
-                                <i class="material-icons"> create</i> 
-                            {{m_edit_board_group}}  
+                            <i class="material-icons"> create</i>
+                            {{m_edit_board_group}}
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <a href="#" id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button">
-                            <i class="material-icons"> person_add</i> 
-                             {{m_add_board_group_collaborator}}
+                            <i class="material-icons"> person_add</i>
+                            {{m_add_board_group_collaborator}}
                         </a>
                     </li>
 
-{{/with}}
+                    {{/with}}
                 </ul>
             </div>
 
         </div>
     </div>
-</div>
 </div>

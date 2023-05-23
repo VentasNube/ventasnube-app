@@ -33,6 +33,40 @@ L_catalog_db.sync(url_R_db + ws_search_db, {
     //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
 });
 
+
+
+// ACTUALIZO EL HISTORIAL DE NAVEGACION 
+function updateHistory(curr) {
+    window.location.lasthash.Push(window.location.hash);
+    window.location.hash = curr;
+}
+
+//LEE LOS PARAMETROS DE LA URL Y LOS ENVIA A UN CHECK de Permisos
+async function check_url_module() {
+    var m_var_id = getParameterByName('v'); //Trae una variable del modulo idel modulo id
+    var m_id = getParameterByName('id'); //Trae el modulo id
+    var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
+   // var m_t_name = getParameterByName('t'); //Trae el Tipo de modulo id
+    var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
+    check_content_module(m_name, m_t_id, m_id, m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+    //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
+}
+
+//Chekea q los modulos del la URL tengan permisos de lectura
+async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
+    //Traigo el documento actualizado y lo recorro
+    ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+    var array = ws_module_array.ws_left_nav.m;
+    //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
+    for (const module of array) {
+        if (module.m_url === ws_module_name) {
+            ws_module_select = module.m_url;
+            return get_module_function(ws_module_select, m_t_id, m_id, m_var_id);
+        }
+    }
+};
+
+
 /// MODULE CONFIG
 async function ws_module_config() {
     try {
@@ -55,17 +89,18 @@ async function ws_module_config() {
         // Envio los datos a la funciones y imprimo
         // Creo la variable userCtx apartir del doc left nav
         user_Ctx = ws_left_nav.userCtx;
-        get_top_bar(ws_info, ws_lang_data,ws_left_nav_data, user_Ctx); // Imprimo el top bar
+        registerHandlebarsHelpers();
         get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
-        // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
+        get_top_bar(ws_info, ws_lang_data,ws_left_nav_data, user_Ctx); // Imprimo el top bar
         get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
-        // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
         get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
-        put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
+        put_left_nav_doc(); // Actualizo o envio la cokkie de navegacion lateral
         check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
 
     } catch (err) {
         put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+        console.log('ws_module_config() err');
+        console.log(err);
         Snackbar.show({
             text: err.reason,
             actionText: 'ok',
@@ -76,9 +111,49 @@ async function ws_module_config() {
     }
 }
 
+
+
+//Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
+async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
+    const ws_m_s = ws_module_select;
+    //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
+    if (ws_m_s == 'catalog') {
+        await get_catalog();
+            //  alert('traogo el catalogo')
+            //  Si el tipo de modulo es producto envia los parametros a la funcion constructora
+        if (m_t_id == 'product') {
+            catalog_view_item_url(m_id, m_var_id, userCtx);
+           // updateHistory();
+        }
+        if (m_t_id == 'edit') {
+            catalog_edit_item_url(m_id, m_var_id, userCtx);
+          //  updateHistory();
+        }
+        if (m_t_id == 'create') {
+            catalog_edit_item_url(m_id, m_var_id, userCtx);
+          //  updateHistory();
+        }
+        //  get_items_catalog();
+    }
+    else if (ws_m_s == 'board') {
+      
+       //alert('GET MODULE FUNCION OK');
+       console.log('GET MODULE FUNCION OK');
+       get_board(m_t_id);
+        // get_box();
+    }
+    else if (ws_m_s == 'account') {
+        alert('TRAIGO EL account');
+    }
+    else if (ws_m_s == 'box') {
+        alert('TRAIGO EL box');
+        // get_box();
+    }
+};
+
 ////----(1 LEFT NAV)---/////
 //Creo el doc y lo guardo el la db
-function put_left_nav_doc() {
+function put_left_nav_docOLDOK() {
     // DOC DE NAVEGACION
     ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
     if (ws_left_nav) {
@@ -190,6 +265,122 @@ function put_left_nav_doc() {
     });
 };
 
+
+function put_left_nav_doc() {
+    // DOC DE NAVEGACION
+    ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    // Verificar si el documento ya existe y tiene una revisión (_rev)
+    if (ws_left_nav && ws_left_nav._rev) {
+        // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
+        alert('El documento ya ha sido editado. Se encontró un conflicto de documentos.');
+        return;
+    }
+    //Hago la consulta de permisos al serverer
+    fetch("/body/left_nav", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(ws_left_nav)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === true) {
+            console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
+            console.log(userCtx);
+            console.log(data);
+           // console.log('ws_left_nav');
+
+            user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
+                if (err) {
+                    msj_alert(err);
+                   // alert('Falta el archivo ws_left_nav');
+                    user_db.put({
+                        _id: 'ws_left_nav_' + ws_id,
+                        ws_left_nav: data,
+                        userCtx: userCtx
+                    });
+                    user_db.changes().on('change', function () {
+                        Snackbar.show({
+                            text: 'HAY CANBIOS El LEFT NAV',
+                            width: '475px',
+                            actionTextColor: '#ff0000',
+                            actionText: 'Refrescar',
+                            pos: 'bottom-center',
+                            onActionClick: function (element) {
+                                $(element).css('opacity', 0);
+                                location.reload();
+                            }
+                        });
+                    });
+                } else {
+                    user_db.put({
+                        _id: 'ws_left_nav_' + ws_id,
+                        _rev: doc._rev,
+                        ws_left_nav: data,
+                        userCtx: userCtx
+                    }, function (err, response) {
+                        if (response) {
+                            createCookie('ws_install-' + ws_id, true, 30);
+                        } else if (err) {
+                            Snackbar.show({
+                                text: err.reason,
+                                width: '475px',
+                                actionTextColor: '#ff0000',
+                                actionText: 'Refrescar',
+                                pos: 'bottom-center',
+                                onActionClick: function (element) {
+                                    $(element).css('opacity', 0);
+                                    location.reload();
+                                }
+                            });
+                            console.log(err);
+                        }
+                        console.log('SE ACTUALIZO EL LEFT NAV');
+                        console.log(userCtx);
+                        console.log(data);
+                       // console.log(response);
+                    });
+                }
+            });
+        } else {
+            Snackbar.show({
+                text: err.reason,
+                width: '475px',
+                actionTextColor: '#ff0000',
+                actionText: 'Refrescar',
+                pos: 'bottom-center',
+                onActionClick: function (element) {
+                    $(element).css('opacity', 0);
+                    location.reload();
+                }
+            });
+            //alert(data.msj + 'Workspace ID: ' + data.ws_id);
+        }
+    })
+    .catch(error => {
+        Snackbar.show({
+            text: error.reason,
+            width: '475px',
+            actionTextColor: '#ff0000',
+            actionText: 'Refrescar',
+            pos: 'bottom-center',
+            onActionClick: function (element) {
+                $(element).css('opacity', 0);
+                location.reload();
+            }
+        });
+        if (error.name === 'AbortError') {
+            // La solicitud fue cancelada
+            return;
+        }
+        // Manejar errores de Fetch
+        console.log('Error de Fetch:', error);
+    });
+}
+
+
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data, ws_lang_data) {
     var ws_left_nav_doc = {
@@ -222,71 +413,6 @@ function get_right_nav(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
 };
 
-// ACTUALIZO EL HISTORIAL DE NAVEGACION 
-function updateHistory(curr) {
-    window.location.lasthash.Push(window.location.hash);
-    window.location.hash = curr;
-}
-
-//LEE LOS PARAMETROS DE LA URL Y LOS ENVIA A UN CHECK de Permisos
-async function check_url_module() {
-    var m_var_id = getParameterByName('v'); //Trae una variable del modulo idel modulo id
-    var m_id = getParameterByName('id'); //Trae el modulo id
-    var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
-    var m_t_name = getParameterByName('t'); //Trae el Tipo de modulo id
-    var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
-    check_content_module(m_name, m_t_id, m_id, m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
-    //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
-}
-
-//Chekea q los modulos del la URL tengan permisos de lectura
-async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
-    //Traigo el documento actualizado y lo recorro
-    ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-    var array = ws_module_array.ws_left_nav.m;
-    //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
-    for (const module of array) {
-        if (module.m_url === ws_module_name) {
-            ws_module_select = module.m_url;
-            return get_module_function(ws_module_select, m_t_id, m_id, m_var_id);
-        }
-    }
-};
-
-//Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
-async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
-    const ws_m_s = ws_module_select;
-    //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
-    if (ws_m_s == 'catalog') {
-        await get_catalog();
-            //  alert('traogo el catalogo')
-            //  Si el tipo de modulo es producto envia los parametros a la funcion constructora
-        if (m_t_id == 'product') {
-            catalog_view_item_url(m_id, m_var_id, userCtx);
-           // updateHistory();
-        }
-        if (m_t_id == 'edit') {
-            catalog_edit_item_url(m_id, m_var_id, userCtx);
-          //  updateHistory();
-        }
-        if (m_t_id == 'create') {
-            catalog_edit_item_url(m_id, m_var_id, userCtx);
-          //  updateHistory();
-        }
-        //  get_items_catalog();
-    }
-    else if (ws_m_s == 'board') {
-        get_board(ws_module_select,m_t_id)
-        // get_box();
-    }
-    else if (ws_m_s == 'account') {
-        alert('TRAIGO EL account');
-    }
-    else if (ws_m_s == 'box') {
-        alert('TRAIGO EL box');
-        // get_box();
-    }
-};
 
 //// BOTON TRAE MODULO LEFT BAR //
 async function get_module_nav(event) {
@@ -309,24 +435,11 @@ async function get_module_type_nav(event) {
 ////----(OTRAS COSAS)----/////
 //Efecto material de los Label imput 2021
 ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
-$(document).ready(function (ws_left_nav, ws_lang_data) {
-    window.onload =
-        $(".material_input").focusout(function () {
-            var input_tex = $(this).children('input').val();
-            if (!input_tex) {
-                $(this).children('label').css({ "top": "15px", "font-size": "18px" });
-                $(this).children('label').children('span').css({ "font-size": "24px" });
-                //$(this).prev('label span').css({ "font-size": "10px" });
-            }
-        });
-    $(".material_input").focusin(function () {
-        $(this).children('label').css({ "top": "5px", "font-size": "13px" });
-        $(this).children('label').children('span').css({ "font-size": "18px" });
-    });
 
+$(document).ready(function () {
+    window.onload = ws_module_config();// Ejecuto todas las funciones del espacio de trabajo
 });
 
 
-ws_module_config();// Ejecuto todas las funciones del espacio de trabajo
 
 

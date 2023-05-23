@@ -1,10 +1,19 @@
 ////// BOARDS MODULE 2023 ////////////
 
-var ws_board_db = 'ws_boards_' + ws_id;
-ws_left_nav_data = false;
-ws_lang_data = false;
-module_info = false;
-columnGrids = [];  // Aquí se almacenarán todas las grillas
+ws_board_db = 'ws_boards_' + ws_id;
+board_group_info =  null;
+ws_left_nav_data =  null;
+ws_lang_data = null;
+module_info =  null;
+//// VARIABLES GLOBALES 
+var nextStartkey = ['order', 'sell'];
+var nextStartkeyDocid = null;
+var isLoading = false;
+var boardsInitialized = false;
+var columnGrids = [];
+var boardElements =  null;
+var boardGrid =  null;
+
 
 // CREO LA DB
 L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
@@ -29,13 +38,14 @@ L_board_db.sync(url_R_db + ws_board_db, {
 });
 
 //COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
-async function ws_board_config() {
+async function ws_board_start() {
     try {
 
         const parametroUrl = await getUrlVal('t');
         // alert(parametroUrl);
         var board_name = parametroUrl;
         module_info = await L_board_db.get('board_group_' + board_name);
+
         // userCtx variable global de permisos y roles para filtrar las vistas
         // DOC DE CONFIGURACION GENERAL
         // ws_info = await L_board_db.get('ws_module_config', { include_docs: true, descending: true });
@@ -55,17 +65,17 @@ async function ws_board_config() {
         // Envio los datos a la funciones y imprimo
         // Creo la variable userCtx apartir del doc left nav
         user_Ctx = ws_left_nav.userCtx;
-        get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
-        get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
+       //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
+        //  get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
         // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
-        get_right_cart(ws_info, ws_lang_data, user_Ctx);
+      //  get_right_cart(ws_info, ws_lang_data, user_Ctx);
         // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
-        get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
-        put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
-        check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
+        //get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
+        //  put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
+       // check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
 
     } catch (err) {
-        put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+       // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
         Snackbar.show({
             text: err.reason,
             actionText: 'ok',
@@ -75,7 +85,7 @@ async function ws_board_config() {
         });
     }
 }
-
+/*
 /// Ordenes GET MAP REDUCE FILTRO POR TIPO
 async function query_orders_change(orderType) {
     try {
@@ -98,7 +108,7 @@ async function query_orders_change(orderType) {
         console.error(err);
     }
 }
-
+*/
 async function query_orders(type, category_id) {
     try {
 
@@ -127,21 +137,6 @@ async function query_orders(type, category_id) {
 }
 
 
-
-// TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_board(module_info) {
-
-    /*  var ws_board_data = {
-          module_info: module_info,
-          ws_lang_data: ws_lang_data,
-          ws_left_nav_data: ws_left_nav_data,
-          user_roles: user_Ctx.userCtx.roles
-      }*/
-    console.log('module_info module_info module_info module_info');
-    console.log(module_info);
-    // console.log(ws_catalog_data);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', '#nav_bar_compiled', module_info);
-};
 
 // ADAPTO LA PANTALLA A LO ANCHO DEL NAVEGADOR O CREO UN SCROlL
 function scrollerMove() {
@@ -181,6 +176,7 @@ function scrollerMove() {
     });
 };
 
+/*
 ////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
 function get_board_group_size() {
     var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
@@ -210,11 +206,10 @@ function datetimePiker() {
         switchOnClick: true
     });
 }
-
+*/
 
 scrollerMove();
 //get_board_group_size()
-ws_board_config();
 /// FUNCIONES NEW 2023
 
 // CREAR NUEVO TABLERO 2023
@@ -241,59 +236,6 @@ async function new_board_star_intro(board_type_name) {
     }
 }
 
-// TRAIGO EL BOARD Y IMPRIMO
-async function get_board(board_name, board_type_name) {
-    let parametroUrl;
-    try {
-        if (!board_type_name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('t')) {
-                parametroUrl = urlParams.get('t');
-            } else {
-                $('#master_popup').modal('hide');
-                // Manejar el caso en el que el parámetro 't' no está presente en la URL
-                // Puedes mostrar un mensaje de error o tomar alguna otra acción apropiada
-                return;
-            }
-        } else {
-            parametroUrl = board_type_name;
-        }
-        const board_group_conf = await L_board_db.get('board_group_' + parametroUrl);
-        const board_group = board_group_conf.board_group;
-        const board_data = {
-            module_info: board_group_conf,
-            board_type_name: board_group_conf.name,
-            ws_lang_data: ws_lang_data,
-            ws_left_nav_data: ws_left_nav_data,
-            user_roles: user_Ctx.userCtx.roles,
-        };
-        await renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data);
-        await get_nav_board(board_data);
-        await get_board_group(board_group);
-
-       /* renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', '#content_compiled', board_data)
-        .then(() => {
-            board_start_muuri(columnGrids);
-            resolve();
-        })
-        .catch(error => reject(error));
-       */
-       // paginate_orders(L_board_db);
-    
-        //  query_orders('board', board_type_name);
-
-    } catch (error) {
-        new_board_star_intro(parametroUrl || board_type_name);
-
-        if (error.name !== 'not_found') {
-            new_board_star_intro(parametroUrl || board_type_name);
-            throw error;
-        } else if (error.name === 'deleted') {
-            new_board_star_intro(parametroUrl || board_type_name);
-            throw error;
-        }
-    }
-}
 
 // PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
@@ -1090,15 +1032,193 @@ async function new_order(element) {
 /// BOARD TARJETAS TRAE LAS ORDENES
 
 
+function renderHandlebarsTemplateReturnCARD(withTemplate, withData, parentElement) {
+    return new Promise((resolve, reject) => {
+        if (!parentElement || typeof parentElement.appendChild !== 'function') {
+            reject(new Error('parentElement must be a DOM node'));
+            return;
+        }
+        getTemplateAjax(withTemplate, function(template) {
+            var newElement = document.createElement('div');
+            newElement.innerHTML = template(withData);
+            parentElement.appendChild(newElement);
+            // Puedes agregarlo a una instancia existente de Muuri así:
+            // Resuelve la promesa con el nuevo elemento.
+            parentElement.appendChild(newElement.firstChild);
+
+            boardGrid.add(newElement);
+           // boardGrid.refreshItems().layout();
+          // boardGrid.synchronize();
+            
+            resolve(parentElement);
+        });
+    });
+}
 
 
-//// VARIABLES GLOBALES 
-let nextStartkey = ['order', 'sell'];
-let nextStartkeyDocid = null;
-let isLoading = false;
-var boardsInitialized = false;
-var columnGrids = [];
-let boardGrid;
+function initializeMuuriGrids() {
+    // Obtener el contenedor principal
+    var contentBoardGroup = document.getElementById('content_board_group_compiled');
+    // Selecciono el DIV que mueve Las colum
+    var dragContainer = document.querySelector('.drag-container');
+    // Obtener los elementos de las columnas
+    var columnElements = contentBoardGroup.querySelectorAll('.board');
+    // Crear un arreglo para almacenar los columnGrids
+    var columnGrids = [];
+    // Recorrer los elementos de las columnas y crear los columnGrids
+    columnElements.forEach(function (columnElement) {
+      var columnGrid = new Muuri(columnElement, {
+        items: '.board-column',
+        layoutDuration: 400,
+        layoutEasing: 'ease',
+        dragContainer: dragContainer,
+        dragEnabled: false,
+        dragSort: () => columnGrids,
+        dragReleaseDuration: 400,
+        dragReleaseEasing: 'ease'
+      });
+      // Agregar el columnGrid al arreglo columnGrids
+      columnGrids.push(columnGrid);
+    });
+
+    // Obtener los elementos de los boards
+    var boardElements = contentBoardGroup.querySelectorAll('.board-column-content');
+    // Crear un objeto para almacenar el boardGrid
+   //var boardGrid = null;
+    // Recorrer los elementos de los boards y crear el boardGrid
+    boardElements.forEach(function (boardElement) {
+      boardGrid = new Muuri(boardElement, {
+        items: '.board-card-item',
+        layoutDuration: 400,
+        layoutEasing: 'ease',
+        dragEnabled: true,
+        dragSort: () => columnGrids,
+        dragReleaseDuration: 400,
+        dragReleaseEasing: 'ease'
+      });
+    });
+
+        console.log('columnGrids:', columnGrids);
+        console.log('boardGrid:', boardGrid);
+    
+
+  }
+
+
+
+// Agrego la tarjeta al muuri
+function add_new_item_muuri(newElement) {
+    if (!boardGrid) {
+      console.error('Board grid has not been initialized yet.');
+      return;
+    }
+//   const newElement = document.createElement('div');
+   // newElement.className = 'board-item';
+  //  newElement.textContent = itemContent;
+   // console.log('add_new_item_muuri FIRST CHILL newElement');
+  //  console.log(newElement.firstChild);
+  //  newElement.firstChild.classList.add('board-card-item');
+  //  console.log('add_new_item_muuri EDITADO newElement',newElement);
+   
+   // boardGrid.add(newElement.firstChild);
+    
+    // Refresca la grilla y vuelve a organizarla
+    // gridInstance.refreshItems(columnGrids).layout();
+    //boardGrid.refreshItems().layout();
+    // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
+   // boardGrid.synchronize();
+   // boardGrid.refreshItems().layout();
+}
+
+//AGREGO LA NUEVA TARJETA AL DOM
+async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+    nextStartkey = result.nextStartkey;
+    nextStartkeyDocid = result.nextStartkeyDocid;
+    console.log(result);
+    for (const row of result.rows) {
+        const card_data = {
+            doc: row.doc
+        };
+        // Obtiene el contenedor al que se quiere añadir la nueva tarjeta
+        let containerSelector = '#board_card_group_compiled_' + row.doc.group_id;
+        let parentElement = document.querySelector(containerSelector);
+        // Renderiza la tarjeta.
+        // let newElement = await renderHandlebarsTemplateReturn('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
+        // Ya que renderHandlebarsTemplateReturn devuelve el nuevo elemento en un div,
+        // se debe añadir el primerChild (la tarjeta) al grid de Muuri
+        renderHandlebarsTemplateReturnCARD('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
+       // add_new_item_muuri(newElement);
+    }
+
+    return {
+        nextStartkey: nextStartkey,
+        nextStartkeyDocid: nextStartkeyDocid
+    };
+}
+
+
+
+async function get_board(board_type_name) {
+
+    board_group_info = await L_board_db.get('board_group_' + board_type_name);
+    console.log( 'board_group_info:', board_group_info);
+    const board_group = board_group_info.board_group;
+    const board_data = {
+      module_info: module_info,
+      board_group: board_group,
+      board_group_info: board_group_info,
+      board_type_name: board_type_name,
+      ws_lang_data: ws_lang_data,
+      ws_left_nav_data: ws_left_nav_data,
+      user_roles: user_Ctx.userCtx.roles,
+    };
+  
+    let parentElement = document.querySelector('#content_compiled');
+    let id_compiled = '#' + parentElement.id;
+    console.log('get_board parentElement:', parentElement);
+    console.log('GET BOARD id_compiled:', id_compiled);
+  
+    if (id_compiled) {
+
+      renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
+
+        initializeMuuriGrids(columnGrids);
+        let parentElement_nav = document.querySelector('#nav_bar_compiled');
+        let id_compiled_nav = '#' + parentElement_nav.id;
+        console.log('get_nav_board parentElement TRAE:', parentElement_nav);
+        console.log('get_nav_board id_compiled TRAE:', id_compiled);
+
+        if (id_compiled_nav) {
+          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
+           // initializeMuuriGrids();
+            window.onscroll = async function() {if (isLoading) return;
+                
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                    isLoading = true;
+                    try {
+                        const result = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                        nextStartkey = result.nextStartkey;
+                        nextStartkeyDocid = result.nextStartkeyDocid;   
+                        
+                        if (!nextStartkey) {
+                            window.onscroll = null;
+                        }
+                    } catch (error) {
+                        console.error('An error occurred:', error);
+                    } finally {
+                        isLoading = false;
+                    }
+                }
+            };
+          });
+        }
+      });
+    } else {
+      alert('get_board parentElement NO ES un elemento DOM');
+      console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+    }
+  }
 
 /// DETECTA EL SCROLL INFINITO PARA TRAER LAS ORDENES CARDS
 
@@ -1138,6 +1258,11 @@ async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startke
 }
 
 // Creo la instancia muuri con la carga del tablero
+  
+  // Llamar a la función para inicializar los grids de Muuri
+  //initializeMuuriGrids();
+  
+  /*
 function board_start_muuri(columnGrids) {
     const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
     for (let i = 0; i < itemContainers.length; i++) {
@@ -1164,101 +1289,10 @@ function board_start_muuri(columnGrids) {
     }
 }
 
-function get_board_group(board_group) {
-    // ESTA FUNCION DEVUELVE UNA PROMESA CUANDO LA LLAMA CON AWAIT DEESDE UNA FUNCION ASYC QUE ESTA EN GET_BOARD, 
-    // LA USO PARA QUE LA FUNCION CONSTRUCTORA QUE LE SIGUE ESPERE A QUE EL DOM SE ALLA CARGADO CON EXITO
-    return new Promise((resolve, reject) => {
-        var ws_board = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            board_group: board_group,
-        }
-        //VERIFICA Q EL DIB SE ALLA CARGADO AL DOM ANTES DE SEGUIR
-       let parentElement = document.querySelector('#content_board_group_compiled');
-        if (parentElement) {
-            renderHandlebarsTemplatePromise('/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', '#content_board_group_compiled', ws_board)
-                .then(() => {
-                    board_start_muuri(columnGrids);
-                    resolve();
-                })
-                .catch(error => reject(error));
-        } else {
-            console.error("No se encontró el elemento #content_board_group_compiled");
-            reject(new Error("No se encontró el elemento #content_board_group_compiled"));
-        }
-    });
-}
-
-// Agrego la tarjeta al muuri
-function add_new_item_muuri(newElement) {
-        if (!boardGrid) {
-          console.error('Board grid has not been initialized yet.');
-          return;
-        }
-    //   const newElement = document.createElement('div');
-       // newElement.className = 'board-item';
-      //  newElement.textContent = itemContent;
-        console.log('newElement');
-        console.log(newElement);
-
-        boardGrid.add(newElement);
-        // Refresca la grilla y vuelve a organizarla
-       // gridInstance.refreshItems(columnGrids).layout();
-        boardGrid.refreshItems().layout();
-        // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
-        boardGrid.synchronize();
-       // boardGrid.refreshItems().layout();
-}
-
-//AGREGO LA NUEVA TARJETA AL DOM
-async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-    nextStartkey = result.nextStartkey;
-    nextStartkeyDocid = result.nextStartkeyDocid;
-    console.log(result);
-    for (const row of result.rows) {
-        const card_data = {
-            doc: row.doc
-        };
-        // Obtiene el contenedor al que se quiere añadir la nueva tarjeta
-        let containerSelector = '#board_card_group_compiled_' + row.doc.group_id;
-        let parentElement = document.querySelector(containerSelector);
-        // Renderiza la tarjeta.
-        let newElement = await renderHandlebarsTemplateReturn('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
-        // Ya que renderHandlebarsTemplateReturn devuelve el nuevo elemento en un div,
-        // se debe añadir el primerChild (la tarjeta) al grid de Muuri
-        add_new_item_muuri(newElement.firstChild);
-    }
-
-    return {
-        nextStartkey: nextStartkey,
-        nextStartkeyDocid: nextStartkeyDocid
-    };
-}
-
+*/
 // FUNCION Q CAPTURA EL MOVIMIENTO DEL SCROLL IN
 
-window.onscroll = async function (){
-    if (isLoading) return;
 
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        isLoading = true;
-        try {
-            const result = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-            nextStartkey = result.nextStartkey;
-            nextStartkeyDocid = result.nextStartkeyDocid;
-
-            if (!nextStartkey) {
-                window.onscroll = null;
-            }
-        } catch (error) {
-            console.error('An error occurred:', error);
-        } finally {
-            isLoading = false;
-        }
-    }
-};   
 
 
 
@@ -1421,4 +1455,8 @@ async function updateDocuments() {
 
 /// (NO SE USA TODAVIA EXPERIMENTAL)
 
+$(document).ready(function () {
+    window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
+  
+});
 

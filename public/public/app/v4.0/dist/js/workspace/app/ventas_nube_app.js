@@ -711,6 +711,7 @@ function msj_alert(msj, pos) {
         duration: 50000
     });
 }
+/*
 window.onload =
     $(".material_input").focusout(function() {
         var input_tex = $(this).children('input').val();
@@ -729,7 +730,20 @@ $(".material_input").focusin(function() {
 
     $(this).children('label').children('span').animate({ "font-size": "18px" }, 150, "linear");;
 });
+*/
 
+window.onload = $(".material_input").focusout(function () {
+    var input_tex = $(this).children('input').val();
+    if (!input_tex) {
+        $(this).children('label').css({ "top": "15px", "font-size": "18px" });
+        $(this).children('label').children('span').css({ "font-size": "24px" });
+        //$(this).prev('label span').css({ "font-size": "10px" });
+    }
+});
+$(".material_input").focusin(function () {
+    $(this).children('label').css({ "top": "5px", "font-size": "13px" });
+    $(this).children('label').children('span').css({ "font-size": "18px" });
+});
 
 
 

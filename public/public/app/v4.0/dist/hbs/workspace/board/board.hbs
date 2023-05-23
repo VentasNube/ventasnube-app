@@ -3,7 +3,65 @@
 <div class="container-fluid" id="scroller">
     <!--Kanban template-->
     <div id="content_board_group_compiled" class="content-board-group">
-
+        <div class="row board-group ">
+            <div class=" row board">
+                {{#each board_group}}
+                <div class="board-column">
+                    <div class=" board-column-header {{{color}}}">
+                        <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
+                        <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
+                                data-placement="right" data-original-title="Cantidad de Ordenes">{{counter
+                                @index}}</span>
+                            {{{name}}}</div>
+                        <div class="board-column-header-button">
+                            <div class="btn-group ">
+                                <button type="button" class="btn btn-round xl text-white dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="true">
+                                    <span class="material-icons">more_horiz</span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a onclick="board_edit_group(this)" group_id="{{id}}"
+                                            board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
+                                            href="#master_popup" role="button" title="Retirar efectivo">
+                                            <i class="material-icons">settings</i> {{#with ../ws_lang_data}}
+                                            {{{m_edit_board_group}}}{{/with}}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                            m_s_id="{{{board_group_id}}}" href="#" role="button">
+                                            <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
+                                            {{{m_add_board_group_collaborator}}}{{/with}}
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#" data-toggle="modal" role="button">
+                                            <i class="material-icons">picture_as_pdf</i>
+                                            {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="board-column-content-wrapper">
+                        <div id="board_card_group_compiled_{{id}}" class="board-column-content" group-id="{{id}}">
+                            <!---- CARD MAIN ---->
+                        </div>
+                        <div class="board-new-item">
+                            <div class="icon">
+                                <span class="material-icons">
+                                    add_circle_outline
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
     </div>
     <!--Kanban template-->
 </div>
@@ -24,7 +82,7 @@
 <!--script src="<?php echo base_url() ?>public/dist/js/ventas_nube_board.js"></script-->
 
 <script>
-  
+
     ////----( CARRUSEL DE CROLL  )----/////
     function scrollerMove() {
         var ventana_ancho = $(window).width();
@@ -63,7 +121,7 @@
         });
     };
 
-     ///----( POPUP AGREGAR COLABORADOR  )----/////
+    ///----( POPUP AGREGAR COLABORADOR  )----/////
     function get_board_group_Collaborator(m_id, m_t_id, m_s_id) {
         //  var url_now = getUrl();
         //  var m_id = url_now.m_id;
@@ -82,7 +140,7 @@
         $('#master_popup').modal('show');
     };
 
-     ////----( POPUP AGREGAR COLABORADOR  )----/////
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
     $(document).on('click', '#new_board-btn', function (event) {
         var url_now = getUrl();
         //  var m_id = url_now.m_id;
@@ -159,8 +217,9 @@
         get_board_group_Collaborator(m_id, m_t_id, m_s_id);
     });
 
-scrollerMove();
+
+    scrollerMove();
 //get_board_group_size()
 //board_shortable_show(); 
-  
+
 </script>
