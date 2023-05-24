@@ -1,0 +1,240 @@
+<!--div id="nav-bar-copiled"></div-->
+<!--MODULE NAV BAR COPILED-->
+<div class="container-fluid" id="scroller">
+    <!--Kanban template-->
+    <div id="content_board_group_compiled" class="content-board-group">
+        <div class=" row board">
+            {{#each board_group}}
+            <div class="board-column">
+                <div class=" board-column-header {{{color}}}">
+                    <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
+                    <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
+                            data-placement="right" data-original-title="Cantidad de Ordenes">{{counter
+                            @index}}</span>
+                        {{{name}}}</div>
+                    <div class="board-column-header-button">
+                        <div class="btn-group ">
+                            <button type="button" class="btn btn-round xl text-white dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="true">
+                                <span class="material-icons">more_horiz</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a onclick="board_edit_group(this)" group_id="{{id}}"
+                                        board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
+                                        href="#master_popup" role="button" title="Retirar efectivo">
+                                        <i class="material-icons">settings</i> {{#with ../ws_lang_data}}
+                                        {{{m_edit_board_group}}}{{/with}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                        m_s_id="{{{board_group_id}}}" href="#" role="button">
+                                        <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
+                                        {{{m_add_board_group_collaborator}}}{{/with}}
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#" data-toggle="modal" role="button">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                        {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="board-column-content-wrapper">
+                    <div  class="board-column-content"  id="board_card_group_compiled_{{id}}"group-id="{{id}}">
+                        <!---- CARD MAIN ---->
+                        <div class="board-item">
+                            <!--div class="board-item" id="22" order="410"-->
+                            <div class="board-item-content">
+                                <div class="s-card ">
+                                    <!--s-card-body--->
+                                    <div class="s-card-body br-primary ">
+                                        <!-- s-card-header--->
+                                        <h1>TAJETA BOARD</h1>
+                                        <!--s-card-body--->
+                                    </div>
+                                    <!--s-card --->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="board-new-item">
+                        <div class="icon">
+                            <span class="material-icons">
+                                add_circle_outline
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <!--Kanban template-->
+
+    
+</div>
+
+
+<div id="move-left" class="btn btn-default fixed-center l">
+    <i class="material-icons">
+        keyboard_arrow_left
+    </i>
+</div>
+<div id="move-right" class="btn btn-default fixed-center r">
+    <i class="material-icons">
+        keyboard_arrow_right
+    </i>
+</div>
+
+<!--- PLANTILLA  BODY NAVEGACION -->
+<!--script src="<?php echo base_url() ?>public/dist/js/ventas_nube_board.js"></script-->
+
+<script>
+
+    ////----( CARRUSEL DE CROLL  )----/////
+    function scrollerMove() {
+        var ventana_ancho = $(window).width();
+        var leftPos = $('#scroller').scrollLeft();
+        if (ventana_ancho >= 600) {
+            var scroll_px = 350;
+        } else {
+            var scroll_px = 150;
+        }
+        if (leftPos >= 0) {
+            $("#move-left").hide();
+        } else {
+            $("#move-left").show();
+        }
+        $("#move-left").click(function () {
+            var leftPos = $('#scroller').scrollLeft();
+            if (leftPos >= 0) {
+                $("#move-right").show();
+            } else {
+                $("#move-right").hide();
+            }
+            $("#scroller").animate({
+                scrollLeft: leftPos - scroll_px
+            }, 200);
+        });
+        $("#move-right").click(function () {
+            var leftPos = $('#scroller').scrollLeft();
+            if (leftPos < 0) {
+                $("#move-left").hide();
+            } else {
+                $("#move-left").show();
+            }
+            $("#scroller").animate({
+                scrollLeft: leftPos + scroll_px
+            }, 200);
+        });
+    };
+
+    ///----( POPUP AGREGAR COLABORADOR  )----/////
+    function get_board_group_Collaborator(m_id, m_t_id, m_s_id) {
+        //  var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'collaborator_board_group_template_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'collaborator_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+            m_s_id: m_s_id,
+        }
+        console.log('llamada ajax 1');
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    };
+
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#new_board-btn', function (event) {
+        var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'new_board_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            //  m_id: m_id,
+            //    search_m_input: search_m_input,
+            /*    m_name: m_name,
+           m_icon: m_icon,
+           m_color: m_color,
+           m_position: m_position,
+           m_url: m_url,
+               */
+            /* or_board_finality:or_board_finality,
+             or_board_type:or_board_type,
+             or_board_color:or_board_color,
+             or_board_icon:or_board_icon,
+             */
+            //  or_board_mode:or_board_mode,
+            //  or_board_delivery_place:or_board_delivery_place,
+            //  or_board_collect_and_deliver:or_board_collect_and_deliver,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#new_board_group_btn', function (event) {
+        var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'new_board_group_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'new_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            //  m_id: m_id,
+            //    search_m_input: search_m_input,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#edit_board-btn', function (event) {
+        //  alert('holaaaa');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        //  alert(m_id+ m_t_id);
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'edit_board_template_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'edit_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', 'a.buttonNewCollaborator', function (event) {
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        var m_s_id = $(this).attr('m_s_id');
+        $('#save-new-coll').attr('m_s_id', m_s_id);
+        get_board_group_Collaborator(m_id, m_t_id, m_s_id);
+    });
+
+
+    scrollerMove();
+//get_board_group_size()
+//board_shortable_show(); 
+
+</script>

@@ -1,6 +1,7 @@
-{{#with doc}}
 
-<!---- CARD MAIN ---->
+ {{#with doc}}
+                                   
+<div id="{{_id}}" data-id="{{_id}}" class="board-item">
     <!--div class="board-item" id="22" order="410"-->
     <div class="board-item-content">
         <div class="s-card ">
@@ -15,7 +16,7 @@
                                 <h5>
                                     <div class="round-icon pr xd"><span> P </span></div>
                                     <!--div class="round-icon client xs">E</div-->
-                                    {{customer.name}}
+                                   {{customer.name}}
                                 </h5>
                             </button>
                             <ul class="dropdown-menu card pull-left">
@@ -70,7 +71,7 @@
                                             <span class="material-icons">
                                                 home
                                             </span>
-                                            {{customer.address}} {{contact_number}} <br>
+                                            {{customer.address}}  {{contact_number}} <br>
                                             {{contact_floor}},
                                             {{contact_district}},{{contact_city}},
                                             {{contact_state}}
@@ -104,20 +105,15 @@
                                     Prioridad
                                 </li>
                                 <li role="separator" class="divider"></li>
-                                <li {{#ifEquals priority.id 1}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_very_satisfied</span>
+                                <li    {{#ifEquals priority.id 1}} class="active"  {{/ifEquals}}><a href="#" class=""><span class="material-icons">sentiment_very_satisfied</span>
                                         <small>Normal</small></a></li>
-                                <li {{#ifEquals priority.id 2}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_satisfied</span>
+                                <li  {{#ifEquals priority.id 2}} class="active"  {{/ifEquals}}><a href="#" class=""><span class="material-icons">sentiment_satisfied</span>
                                         <small>Apurado</small></a></li>
-                                <li {{#ifEquals priority.id 3}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_dissatisfied</span>
+                                <li    {{#ifEquals priority.id 3}} class="active"  {{/ifEquals}}   ><a href="#" class=""><span class="material-icons">sentiment_dissatisfied</span>
                                         <small>Urgente</small></a></li>
-                                <li {{#ifEquals priority.id 4}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_very_dissatisfied</span>
+                                <li   {{#ifEquals priority.id 4}} class="active"  {{/ifEquals}}><a href="#" class=""><span class="material-icons">sentiment_very_dissatisfied</span>
                                         <small>Enojado</small></a></li>
-                                <li {{#ifEquals priority.id 5}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">bug_report</span>
+                                <li   {{#ifEquals priority.id 5}} class="active"  {{/ifEquals}}><a href="#" class=""><span class="material-icons">bug_report</span>
                                         <small>Garantia</small></a></li>
                             </ul>
                         </div>
@@ -174,7 +170,7 @@
                         <h4>
                             ORDEN
                         </h4>
-                        <span> {{order_id}} </span>
+                        <span> {{order_id}}  </span>
                     </div>
                     <!--s-card-content--->
                     <div class="s-card-content col-xs-8 col-sm-8 col-md-8 col-lg-8">
@@ -735,5 +731,5 @@
             <!--s-card --->
         </div>
     </div>
-
+</div>
 {{/with}}

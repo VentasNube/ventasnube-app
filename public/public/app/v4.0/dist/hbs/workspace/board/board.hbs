@@ -1,69 +1,221 @@
 <!--div id="nav-bar-copiled"></div-->
 <!--MODULE NAV BAR COPILED-->
+<style>
+    .drag-container {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .board {
+        position: relative;
+        margin-left: 0;
+    }
+
+    .board-column {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0;
+        /* width: calc(100% / 3);*/
+        width: 400px;
+        z-index: 1;
+    }
+
+    .board-column.muuri-item-releasing {
+        z-index: 2;
+    }
+
+    .board-column.muuri-item-dragging {
+        z-index: 3;
+        cursor: move;
+    }
+
+    .board-column-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .board-column-header {
+        position: relative;
+        /* height: 50px; */
+        /* line-height: 50px; */
+        overflow: hidden;
+        padding: 10;
+        text-align: center;
+        /* background: #333; */
+        /* color: #fff; */
+        border-radius: 5px 5px 0 0;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+        .board-column-header {
+            text-indent: -1000px;
+        }
+    }
+
+    /*
+.board-column.todo .board-column-header {
+  background: #4A9FF9;
+}
+.board-column.working .board-column-header {
+  background: #f9944a;
+}
+.board-column.done .board-column-header {
+  background: #2ac06d;
+}
+*/
+    .board-column-content-wrapper {
+        position: relative;
+        padding: 8px;
+        background: #f0f0f0;
+        height: calc(100vh - 90px);
+        overflow-y: auto;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .board-column-content {
+        position: relative;
+        min-height: 100%;
+    }
+
+    .board-item {
+        position: absolute;
+        width: calc(100% - 16px);
+        margin: 8px;
+    }
+
+    .board-item.muuri-item-releasing {
+        z-index: 9998;
+    }
+
+    .board-item.muuri-item-dragging {
+        z-index: 9999;
+        cursor: move;
+    }
+
+    .board-item.muuri-item-hidden {
+        z-index: 0;
+    }
+
+    .board-item-content {
+        position: relative;
+        /* padding: 20px; 
+    background: #fff;
+    border-radius: 4px;
+    font-size: 17px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+    border-left: 3px solid #415eff!important;
+    */
+    }
+
+    @media (max-width: 600px) {
+        .board-item-content {
+            text-align: center;
+        }
+
+        .board-item-content span {
+            display: none;
+        }
+    }
+
+    /* NEW 2023 */
+
+    .s-card {
+        /*  display: block;
+   padding: 5px;*/
+        /* z-index: 998; */
+    }
+
+    .s-card-body {
+        position: relative;
+        display: inline-block;
+        border-radius: 10px;
+        background-color: #fff;
+        margin: 0;
+        /* margin: 5px 0; */
+        padding: 10px;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05), 0 1px 3px 0 rgba(0, 0, 0, .25);
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        width: 100%;
+        cursor: pointer;
+        -webkit-box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+        border-left: 3px solid #415eff !important;
+    }
+</style>
 <div class="container-fluid" id="scroller">
     <!--Kanban template-->
+    <div class="drag-container"></div>
     <div id="content_board_group_compiled" class="content-board-group">
-        <div class="row board-group ">
-            <div class=" row board">
-                {{#each board_group}}
-                <div class="board-column">
-                    <div class=" board-column-header {{{color}}}">
-                        <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
-                        <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
-                                data-placement="right" data-original-title="Cantidad de Ordenes">{{counter
-                                @index}}</span>
-                            {{{name}}}</div>
-                        <div class="board-column-header-button">
-                            <div class="btn-group ">
-                                <button type="button" class="btn btn-round xl text-white dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="true">
-                                    <span class="material-icons">more_horiz</span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li>
-                                        <a onclick="board_edit_group(this)" group_id="{{id}}"
-                                            board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
-                                            href="#master_popup" role="button" title="Retirar efectivo">
-                                            <i class="material-icons">settings</i> {{#with ../ws_lang_data}}
-                                            {{{m_edit_board_group}}}{{/with}}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                                            m_s_id="{{{board_group_id}}}" href="#" role="button">
-                                            <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
-                                            {{{m_add_board_group_collaborator}}}{{/with}}
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#" data-toggle="modal" role="button">
-                                            <i class="material-icons">picture_as_pdf</i>
-                                            {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="board-column-content-wrapper">
-                        <div id="board_card_group_compiled_{{id}}" class="board-column-content" group-id="{{id}}">
-                            <!---- CARD MAIN ---->
-                        </div>
-                        <div class="board-new-item">
-                            <div class="icon">
-                                <span class="material-icons">
-                                    add_circle_outline
-                                </span>
-                            </div>
+        <div class=" row board">
+            {{#each board_group}}
+            <div class="board-column">
+                <div class=" board-column-header {{{color}}}">
+                    <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
+                    <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
+                            data-placement="right" data-original-title="Cantidad de Ordenes">{{counter
+                            @index}}</span>
+                        {{{name}}}</div>
+                    <div class="board-column-header-button">
+                        <div class="btn-group ">
+                            <button type="button" class="btn btn-round xl text-white dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="true">
+                                <span class="material-icons">more_horiz</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a onclick="board_edit_group(this)" group_id="{{id}}"
+                                        board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
+                                        href="#master_popup" role="button" title="Retirar efectivo">
+                                        <i class="material-icons">settings</i> {{#with ../ws_lang_data}}
+                                        {{{m_edit_board_group}}}{{/with}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="buttonNewCollaborator" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                        m_s_id="{{{board_group_id}}}" href="#" role="button">
+                                        <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
+                                        {{{m_add_board_group_collaborator}}}{{/with}}
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#" data-toggle="modal" role="button">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                        {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                {{/each}}
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="board_card_group_compiled_{{id}}" group-id="{{id}}">
+
+                    </div>
+                    <div class="board-new-item">
+                        <div class="icon">
+                            <span class="material-icons">
+                                add_circle_outline
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {{/each}}
         </div>
     </div>
     <!--Kanban template-->
+
+
 </div>
 
 
@@ -217,9 +369,167 @@
         get_board_group_Collaborator(m_id, m_t_id, m_s_id);
     });
 
+    // VARIABLES GLOBALES 
+    var dragContainer = document.querySelector('.drag-container');
+    var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
+    var columnGrids = [];
+    var boardGrid;
+    var grid;
 
+    // CREA LA PRIMER INSTANCIA MUURI
+    function up_muuri_kanban() {
+
+        // Init the column grids so we can drag those items around.
+        itemContainers.forEach(function (container) {
+            grid = new Muuri(container, {
+                items: '.board-item',
+                dragEnabled: true,
+                dragSort: function () {
+                    return columnGrids;
+                },
+                dragContainer: dragContainer,
+                dragAutoScroll: {
+                    targets: (item) => {
+                        return [
+                            { element: window, priority: 0 },
+                            { element: item.getGrid().getElement().parentNode, priority: 1 },
+                        ];
+                    }
+                },
+            })
+                .on('dragInit', function (item) {
+                    item.getElement().style.width = item.getWidth() + 'px';
+                    item.getElement().style.height = item.getHeight() + 'px';
+                })
+                .on('dragReleaseEnd', function (item) {
+                    item.getElement().style.width = '';
+                    item.getElement().style.height = '';
+                    item.getGrid().refreshItems([item]);
+                })
+                .on('layoutStart', function () {
+                    boardGrid.refreshItems().layout();
+                });
+
+            columnGrids.push(grid);
+        });
+
+        // Init board grid so we can drag those columns around.
+        boardGrid = new Muuri('.board', {
+            dragEnabled: true,
+            dragHandle: '.board-column-header'
+        });
+
+    }
+
+    // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
+    function getTemplateAjaxCARD(path, callback) {
+        var source, template;
+        $.ajax({
+            url: path,
+            dataType: "html",
+            success: function (data) {
+
+                source = data;
+                template = Handlebars.compile(source);
+                if (callback) callback(template);
+            }
+        });
+    }
+
+    // COLOCO LOS ITEMS EN EL DOM CREO EL TEMPLATE Y LO AGREGO AL MUURI
+    function add_new_card(template_hbs, card_data, board_gorup_id) {
+        //Evio los parametros del template car data y la id del grupo
+
+        let board_gorup_element = document.querySelector(board_gorup_id); // traigo los elementos q estan el el grupo
+        //Devielvo una promesa
+        return new Promise((resolve, reject) => {
+            //llamo la funcion get Ajax para armar el template con la data
+            getTemplateAjaxCARD(template_hbs, function (template) {
+                //Creo un div para guardar la nueva card
+                new_card = document.createElement('div');
+                //Le agrego la clase board-item dinamicamente, ya q creo un div para el objeto y tiene q tener una sola clase board-item
+                new_card.classList.add('board-item');
+                //Agrego la data al template .hbs para renderizar la vista
+                new_card.innerHTML = template(card_data);
+                // Agrego el nuevo card al board_group del DOM 
+                board_gorup_element.appendChild(new_card);
+                // Agrego el card a la instacia muuri 
+                grid.add(new_card);
+                // boardGrid.refreshItems().layout();
+                // boardGrid.synchronize();
+
+                resolve(new_card);
+            });
+        });
+    }
+
+    // Hago la query y pagino los resultados 
+    async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startkey_docid = null) {
+        const pageSize = 2;  // Número de resultados por página.
+
+        const options = {
+            startkey: startkey,
+            startkey_docid: startkey_docid,
+            limit: pageSize + 1,  // Se agrega 1 para saber si hay una siguiente página.
+            include_docs: true,
+            descending: false
+        };
+
+        const result = await L_board_db.query('order_view/by_type_and_category', options);
+
+        if (result.rows.length > pageSize) {
+            // Guarda la última clave y id de documento para la próxima página.
+            const lastRow = result.rows[pageSize - 1];
+            startkey = lastRow.key;
+            startkey_docid = lastRow.id;
+            // Elimina la última fila, ya que fue solo para verificar si hay una próxima página.
+            result.rows.splice(pageSize, 1);
+        } else {
+            // No hay más páginas.
+            startkey = null;
+            startkey_docid = null;
+        }
+
+        // Retorna las filas y la próxima startkey y startkey_docid para la paginación.
+        return {
+            rows: result.rows,
+            nextStartkey: startkey,
+            nextStartkeyDocid: startkey_docid
+        };
+    }
+
+    //AGREGO LA NUEVA TARJETA AL DOM
+    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+        const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+        try {
+            nextStartkey = result.nextStartkey;
+            nextStartkeyDocid = result.nextStartkeyDocid;
+            // console.log(result);
+            for (const row of result.rows) {
+                const card_data = {
+                    doc: row.doc
+                };
+                // Obtiene el contenedor al que se quiere añadir la nueva tarjeta
+                let board_gorup_id = '#board_card_group_compiled_' + row.doc.group_id;
+                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id);
+            }
+            return {
+                nextStartkey: nextStartkey,
+                nextStartkeyDocid: nextStartkeyDocid
+            };
+
+        } catch (error) {
+            Snackbar.show({
+                text: err.reason,
+                actionText: '<span class="material-symbols-outlined">refresh</span> Refresh ',
+                actionTextColor: "#0575e6",
+                duration: Snackbar.LENGTH_INDEFINITE,
+                action: () => { updateDocuments() }
+            });
+        }
+    }
+
+    up_muuri_kanban();
     scrollerMove();
-//get_board_group_size()
-//board_shortable_show(); 
 
 </script>

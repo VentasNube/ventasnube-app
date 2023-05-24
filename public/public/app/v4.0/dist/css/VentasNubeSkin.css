@@ -9446,8 +9446,8 @@ h1 span{
 
 /* Diseno Cards **/
 .s-card {
-    display: block;
-    padding: 5px;
+   /* display: block;
+    padding: 5px;*/
     /* z-index: 998;*/
 }
 .s-card-body {
@@ -10094,6 +10094,8 @@ h1 span{
 .s-card-actv-input::-ms-input-placeholder {
     color: #424242;
 }
+
+
 .btn.btn-round {
     padding: 0 5px 0 5px;
     font-size: 16px;
@@ -11346,7 +11348,7 @@ h2 {
     }
 */
 .container-fluid {
-    overflow-x: auto;
+  /*  overflow-x: auto; */
     white-space: nowrap;
 }
 .container-fluid::-webkit-scrollbar {
@@ -11368,7 +11370,7 @@ h2 {
    /* min-height: 600px;*/
 }
 .board-group>.board {
-    overflow-x: auto;
+   /* overflow-x: auto;*/
     white-space: nowrap;
    /* min-height: 600px;*/
 }
@@ -11449,7 +11451,6 @@ to the muuri element, stuff will break */
     border: 10px solid transparent;
     min-height: 250px!important;
     /* padding-bottom: 100px;*/
-    
     border-top: 0;
     /*  border-bottom: 50px solid transparent;*/
 }
@@ -11595,7 +11596,6 @@ board-item-content
     display: inline-block;
     position: relative;
     /* height: 9px; */
-    
     padding: 5px 0px 6px 5px;
     width: 50px;
 }

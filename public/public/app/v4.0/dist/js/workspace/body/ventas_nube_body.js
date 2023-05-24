@@ -42,14 +42,13 @@ function updateHistory(curr) {
 }
 
 //LEE LOS PARAMETROS DE LA URL Y LOS ENVIA A UN CHECK de Permisos
-async function check_url_module() {
+function check_url_module() {
     var m_var_id = getParameterByName('v'); //Trae una variable del modulo idel modulo id
     var m_id = getParameterByName('id'); //Trae el modulo id
     var m_t_id = getParameterByName('t'); //Trae el Tipo de modulo id
-   // var m_t_name = getParameterByName('t'); //Trae el Tipo de modulo id
+    // var m_t_name = getParameterByName('t'); //Trae el Tipo de modulo id
     var m_name = getParameterByName('type'); //Trae el nombre del tipo de modulo
     check_content_module(m_name, m_t_id, m_id, m_var_id); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
-    //check_content_module(m_name, ws_left_nav, ws_lang_data); //Envio el nomrbre de la url el array del leftnav el ws_lang_data al controlador q arma cekea los permisos
 }
 
 //Chekea q los modulos del la URL tengan permisos de lectura
@@ -136,7 +135,6 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         //  get_items_catalog();
     }
     else if (ws_m_s == 'board') {
-      
        //alert('GET MODULE FUNCION OK');
        console.log('GET MODULE FUNCION OK');
        get_board(m_t_id);
@@ -150,6 +148,8 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         // get_box();
     }
 };
+
+
 
 ////----(1 LEFT NAV)---/////
 //Creo el doc y lo guardo el la db

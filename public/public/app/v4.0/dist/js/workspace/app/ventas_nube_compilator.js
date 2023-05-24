@@ -1,4 +1,4 @@
-//**** VARIABLES GLOBALES */
+//**** VARIABLES GLOBALES ****/
 // NEW 2023 CHATGPT
 
 // Registro de los helpers de Handlebars
@@ -134,9 +134,9 @@ function registerHandlebarsHelpers() {
   
     // Puedes registrar aquí otros helpers adicionales
   }
-  // Llamada a la función de registro de helpers antes de realizar las solicitudes AJAX
+// Llamada a la función de registro de helpers antes de realizar las solicitudes AJAX
 
-  // CHATGTP 2023
+// CHATGTP 2023
 function getTemplateFetch(path, callback) {
     fetch(path)
       .then(response => response.text())
@@ -151,20 +151,10 @@ function getTemplateFetch(path, callback) {
         console.error("Error al obtener el template:", error);
       });
   }
+
 // ARMA EL TEMPLATE PARA COMPILAR 
 function renderHandlebarsTemplate(withTemplate, inElement, withData, callback) {
     getTemplateFetch(withTemplate, function(template) {
-        var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
-        targetDiv.html(template(withData));
-        if (callback) {
-            return callback()
-        }
-    })
-};
-
-// ARMA EL TEMPLATE PARA COMPILAR 
-function renderHandlebarsTemplateNO(withTemplate, inElement, withData, callback) {
-    getTemplateAjax(withTemplate, function(template) {
         var targetDiv = (typeof inElement == 'string') ? $(inElement) : inElement;
         targetDiv.html(template(withData));
         if (callback) {
@@ -198,9 +188,26 @@ function renderHandlebarsTemplatePromise(withTemplate, inElement, withData) {
     });
 };
 
+
 ////-----(MOTOR AJAX)-----////
 // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
 function getTemplateAjax(path, callback) {
+    var source, template;
+    $.ajax({
+        url: path,
+        dataType: "html",
+        success: function(data) {
+            
+            source = data;
+            template = Handlebars.compile(source);
+            if (callback) callback(template);
+        }
+    });
+}
+
+////-----(MOTOR AJAX)-----////
+// TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
+function getTemplateAjaxOK(path, callback) {
     var source, template;
     $.ajax({
         url: path,
@@ -394,7 +401,6 @@ function renderHandlebarsTemplateReturn(withTemplate, withData, parentElement) {
         })
     });
 }
-
 
 // LOGICA PARA LEER LOS PARAMETROS DE LA URL
 function getParameterByName(name, url = window.location.href) {

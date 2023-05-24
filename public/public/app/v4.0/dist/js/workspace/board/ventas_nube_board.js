@@ -6,13 +6,14 @@ ws_left_nav_data =  null;
 ws_lang_data = null;
 module_info =  null;
 //// VARIABLES GLOBALES 
-var nextStartkey = ['order', 'sell'];
+/*var nextStartkey = ['order', 'sell'];
 var nextStartkeyDocid = null;
 var isLoading = false;
 var boardsInitialized = false;
 var columnGrids = [];
 var boardElements =  null;
 var boardGrid =  null;
+*/
 
 
 // CREO LA DB
@@ -78,10 +79,10 @@ async function ws_board_start() {
        // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
         Snackbar.show({
             text: err.reason,
-            actionText: 'ok',
+            actionText: '<span class="material-symbols-outlined">refresh</span> Refresh ',
             actionTextColor: "#0575e6",
-            pos: 'bottom-left',
-            duration: 50000
+            duration: Snackbar.LENGTH_INDEFINITE,
+            action: () => { updateDocuments() }
         });
     }
 }
@@ -1032,137 +1033,20 @@ async function new_order(element) {
 /// BOARD TARJETAS TRAE LAS ORDENES
 
 
-function renderHandlebarsTemplateReturnCARD(withTemplate, withData, parentElement) {
-    return new Promise((resolve, reject) => {
-        if (!parentElement || typeof parentElement.appendChild !== 'function') {
-            reject(new Error('parentElement must be a DOM node'));
-            return;
-        }
-        getTemplateAjax(withTemplate, function(template) {
-            var newElement = document.createElement('div');
-            newElement.innerHTML = template(withData);
-            parentElement.appendChild(newElement);
-            // Puedes agregarlo a una instancia existente de Muuri así:
-            // Resuelve la promesa con el nuevo elemento.
-            parentElement.appendChild(newElement.firstChild);
-
-            boardGrid.add(newElement);
-           // boardGrid.refreshItems().layout();
-          // boardGrid.synchronize();
-            
-            resolve(parentElement);
-        });
-    });
-}
-
-
-function initializeMuuriGrids() {
-    // Obtener el contenedor principal
-    var contentBoardGroup = document.getElementById('content_board_group_compiled');
-    // Selecciono el DIV que mueve Las colum
-    var dragContainer = document.querySelector('.drag-container');
-    // Obtener los elementos de las columnas
-    var columnElements = contentBoardGroup.querySelectorAll('.board');
-    // Crear un arreglo para almacenar los columnGrids
-    var columnGrids = [];
-    // Recorrer los elementos de las columnas y crear los columnGrids
-    columnElements.forEach(function (columnElement) {
-      var columnGrid = new Muuri(columnElement, {
-        items: '.board-column',
-        layoutDuration: 400,
-        layoutEasing: 'ease',
-        dragContainer: dragContainer,
-        dragEnabled: false,
-        dragSort: () => columnGrids,
-        dragReleaseDuration: 400,
-        dragReleaseEasing: 'ease'
-      });
-      // Agregar el columnGrid al arreglo columnGrids
-      columnGrids.push(columnGrid);
-    });
-
-    // Obtener los elementos de los boards
-    var boardElements = contentBoardGroup.querySelectorAll('.board-column-content');
-    // Crear un objeto para almacenar el boardGrid
-   //var boardGrid = null;
-    // Recorrer los elementos de los boards y crear el boardGrid
-    boardElements.forEach(function (boardElement) {
-      boardGrid = new Muuri(boardElement, {
-        items: '.board-card-item',
-        layoutDuration: 400,
-        layoutEasing: 'ease',
-        dragEnabled: true,
-        dragSort: () => columnGrids,
-        dragReleaseDuration: 400,
-        dragReleaseEasing: 'ease'
-      });
-    });
-
-        console.log('columnGrids:', columnGrids);
-        console.log('boardGrid:', boardGrid);
-    
-
-  }
-
-
-
-// Agrego la tarjeta al muuri
-function add_new_item_muuri(newElement) {
-    if (!boardGrid) {
-      console.error('Board grid has not been initialized yet.');
-      return;
-    }
-//   const newElement = document.createElement('div');
-   // newElement.className = 'board-item';
-  //  newElement.textContent = itemContent;
-   // console.log('add_new_item_muuri FIRST CHILL newElement');
-  //  console.log(newElement.firstChild);
-  //  newElement.firstChild.classList.add('board-card-item');
-  //  console.log('add_new_item_muuri EDITADO newElement',newElement);
-   
-   // boardGrid.add(newElement.firstChild);
-    
-    // Refresca la grilla y vuelve a organizarla
-    // gridInstance.refreshItems(columnGrids).layout();
-    //boardGrid.refreshItems().layout();
-    // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
-   // boardGrid.synchronize();
-   // boardGrid.refreshItems().layout();
-}
-
-//AGREGO LA NUEVA TARJETA AL DOM
-async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-    nextStartkey = result.nextStartkey;
-    nextStartkeyDocid = result.nextStartkeyDocid;
-    console.log(result);
-    for (const row of result.rows) {
-        const card_data = {
-            doc: row.doc
-        };
-        // Obtiene el contenedor al que se quiere añadir la nueva tarjeta
-        let containerSelector = '#board_card_group_compiled_' + row.doc.group_id;
-        let parentElement = document.querySelector(containerSelector);
-        // Renderiza la tarjeta.
-        // let newElement = await renderHandlebarsTemplateReturn('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
-        // Ya que renderHandlebarsTemplateReturn devuelve el nuevo elemento en un div,
-        // se debe añadir el primerChild (la tarjeta) al grid de Muuri
-        renderHandlebarsTemplateReturnCARD('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, parentElement);
-       // add_new_item_muuri(newElement);
-    }
-
-    return {
-        nextStartkey: nextStartkey,
-        nextStartkeyDocid: nextStartkeyDocid
-    };
-}
-
+nextStartkey = ['order', 'sell'];
+nextStartkeyDocid = null;
+isLoading = false;
+boardsInitialized = false;
+columnGrids = [];
+boardElements = null;
+boardGrid = null;
+muuri = null;
 
 
 async function get_board(board_type_name) {
 
     board_group_info = await L_board_db.get('board_group_' + board_type_name);
-    console.log( 'board_group_info:', board_group_info);
+  //  console.log( 'board_group_info:', board_group_info);
     const board_group = board_group_info.board_group;
     const board_data = {
       module_info: module_info,
@@ -1176,22 +1060,24 @@ async function get_board(board_type_name) {
   
     let parentElement = document.querySelector('#content_compiled');
     let id_compiled = '#' + parentElement.id;
-    console.log('get_board parentElement:', parentElement);
-    console.log('GET BOARD id_compiled:', id_compiled);
+   // console.log('get_board parentElement:', parentElement);
+  //  console.log('GET BOARD id_compiled:', id_compiled);
   
     if (id_compiled) {
 
       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
 
-        initializeMuuriGrids(columnGrids);
+        //initializeMuuriGrids(columnGrids);
+        //start_kanban(columnGrids);
         let parentElement_nav = document.querySelector('#nav_bar_compiled');
         let id_compiled_nav = '#' + parentElement_nav.id;
-        console.log('get_nav_board parentElement TRAE:', parentElement_nav);
-        console.log('get_nav_board id_compiled TRAE:', id_compiled);
+      //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
+      //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
 
         if (id_compiled_nav) {
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
            // initializeMuuriGrids();
+           //start_board_kanban(columnGrids)
             window.onscroll = async function() {if (isLoading) return;
                 
                 if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
@@ -1215,156 +1101,12 @@ async function get_board(board_type_name) {
         }
       });
     } else {
+
+
       alert('get_board parentElement NO ES un elemento DOM');
       console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
     }
   }
-
-/// DETECTA EL SCROLL INFINITO PARA TRAER LAS ORDENES CARDS
-
-// Hago la query y pagino los resultados 
-async function paginate_orders(L_board_db, startkey = ['order', 'sell'], startkey_docid = null) {
-    const pageSize = 20;  // Número de resultados por página.
-
-    const options = {
-        startkey: startkey,
-        startkey_docid: startkey_docid,
-        limit: pageSize + 1,  // Se agrega 1 para saber si hay una siguiente página.
-        include_docs: true,
-        descending: false
-    };
-
-    const result = await L_board_db.query('order_view/by_type_and_category', options);
-
-    if (result.rows.length > pageSize) {
-        // Guarda la última clave y id de documento para la próxima página.
-        const lastRow = result.rows[pageSize - 1];
-        startkey = lastRow.key;
-        startkey_docid = lastRow.id;
-        // Elimina la última fila, ya que fue solo para verificar si hay una próxima página.
-        result.rows.splice(pageSize, 1);
-    } else {
-        // No hay más páginas.
-        startkey = null;
-        startkey_docid = null;
-    }
-
-    // Retorna las filas y la próxima startkey y startkey_docid para la paginación.
-    return {
-        rows: result.rows,
-        nextStartkey: startkey,
-        nextStartkeyDocid: startkey_docid
-    };
-}
-
-// Creo la instancia muuri con la carga del tablero
-  
-  // Llamar a la función para inicializar los grids de Muuri
-  //initializeMuuriGrids();
-  
-  /*
-function board_start_muuri(columnGrids) {
-    const itemContainers = Array.from(document.querySelectorAll('.board-column-content'));
-    for (let i = 0; i < itemContainers.length; i++) {
-        if (itemContainers[i]) {
-            const muuriGrid = new Muuri(itemContainers[i], {
-                items: '.item',
-                layoutDuration: 400,
-                layoutEasing: 'ease',
-                dragEnabled: true,
-                dragSort: () => columnGrids,
-                dragReleaseDuration: 400,
-                dragReleaseEasing: 'ease'
-            });
-            columnGrids.push(muuriGrid);
-            // Si es la primera instancia de Muuri, también la guarda en boardGrid
-            if (!boardGrid) {
-                boardGrid = muuriGrid;
-            }
-            console.log(`Grid initialized for itemContainers[${i}]`);
-        } else {
-            console.error(`No DOM element found for itemContainers[${i}]`);
-        
-        }
-    }
-}
-
-*/
-// FUNCION Q CAPTURA EL MOVIMIENTO DEL SCROLL IN
-
-
-
-
-
-
-//AGREGO LA NUEVA TARJETA A MUURI
-function add_new_item_muuriNO(columnGrids, containerSelector,newElement) {
-    let containerElement = document.querySelector(containerSelector);
-    if (!containerElement) {
-        alert(`No DOM element found with selector: ${containerSelector}`)
-        throw new Error(`No DOM element found with selector: ${containerSelector}`);
-    }
-    let gridInstance = columnGrids.find(grid => grid.getElement().isEqualNode(containerElement));
-   // const dragStartData = new Map();
-   // const dragContainer = document.querySelector('.drag-container');
-    let boardGrid;
-    //const itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
-
-    if (!gridInstance) {
-        gridInstance = new Muuri(containerSelector, {
-            layoutDuration: 400,
-            layoutEasing: 'ease',
-          //  itemPlaceholderClass: 'board-item-placeholder',
-            items: '.board-item',
-            dragEnabled: true,
-         //   dragContainer: dragContainer,
-            fillGaps: true,
-            horizontal: false,
-            alignRight: false,
-            alignBottom: false,
-            rounding: false,
-            dragSort: function () {
-                return columnGrids;
-            },
-            dragCssProps: {
-                touchAction: 'auto',
-                userSelect: 'none',
-                userDrag: 'none',
-                tapHighlightColor: 'rgba(0, 0, 0, 0)',
-                touchCallout: 'none',
-                contentZooming: 'none'
-            }
-        })/*
-          .on('dragInit', function (item) {
-                item.getElement().style.width = item.getWidth() + 'px';
-                item.getElement().style.height = item.getHeight() + 'px';
-            })
-            .on('dragReleaseEnd', function (item) {
-                item.getElement().style.width = '';
-                item.getElement().style.height = '';
-                item.getGrid().refreshItems([item]);
-            })
-            .on('layoutStart', function () {
-                if (boardGrid) {
-                    boardGrid.refreshItems().layout();
-                }
-            });
-
-*/
-            columnGrids.push(gridInstance);
-
-    }
-    // Actualiza el grid.
-    gridInstance.add(newElement);
-    // Refresca la grilla y vuelve a organizarla
-   // gridInstance.refreshItems(columnGrids).layout();
-    gridInstance.refreshItems().layout();
-    // Sincroniza el orden de los elementos en el DOM con el orden en la grilla de Muuri
-    gridInstance.synchronize();
-   // board_start_muuri()
-    // gridInstance.refreshItems().layout();
-    //  alert('agregar Refresh layout');
-}
 
 ////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
