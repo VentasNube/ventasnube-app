@@ -220,6 +220,18 @@ async function _session(ws_lang_data) {
 // se usa asi
 // const { hour, minutes } = await getDateTimeMinutes();
 /// 
+
+async function getDateTime() {
+let dateTimeStr = new Date(); // este es el formato original DD/MM/YYYY HH:MM:SS
+let [day, month, yearTime] = dateTimeStr.split("/");
+let [year, time] = yearTime.split(" ");
+let isoDateTimeStr = `${year}-${month}-${day}T${time}Z`; // esto da "2021-03-18T18:45:10Z"
+//const hour = currentDate.getHours();
+//const minutes = currentDate.getMinutes();
+console.log(isoDateTimeStr);
+return { isoDateTimeStr };
+}   
+
 async function getDateTimeMinutes() {
     try {
       const currentDate = new Date();

@@ -137,82 +137,6 @@ async function query_orders(type, category_id) {
     }
 }
 
-
-
-// ADAPTO LA PANTALLA A LO ANCHO DEL NAVEGADOR O CREO UN SCROlL
-function scrollerMove() {
-    var ventana_ancho = $(window).width();
-    var leftPos = $('#scroller').scrollLeft();
-    if (ventana_ancho >= 600) {
-        var scroll_px = 350;
-    } else {
-        var scroll_px = 150;
-    }
-    if (leftPos >= 0) {
-        $("#move-left").hide();
-    } else {
-        $("#move-left").show();
-    }
-    $("#move-left").click(function () {
-        var leftPos = $('#scroller').scrollLeft();
-        if (leftPos >= 0) {
-            $("#move-right").show();
-        } else {
-            $("#move-right").hide();
-        }
-        $("#scroller").animate({
-            scrollLeft: leftPos - scroll_px
-        }, 200);
-    });
-    $("#move-right").click(function () {
-        var leftPos = $('#scroller').scrollLeft();
-        if (leftPos < 0) {
-            $("#move-left").hide();
-        } else {
-            $("#move-left").show();
-        }
-        $("#scroller").animate({
-            scrollLeft: leftPos + scroll_px
-        }, 200);
-    });
-};
-
-/*
-////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
-function get_board_group_size() {
-    var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
-    var board_column_size = $('.board-column').first('.board-group').width();//Tomo el ancho de los grupos de ordenes
-    var number_column = $('.board-column').length;//Tomo la cantidad de grupos que hay
-    var colum_size = board_column_size + 20;
-    var board_new_group_size = colum_size * number_column;
-    $('.board-group').width(board_new_group_size);
-    console.log(board_new_group_size);
-    //  var divs = document.getElementsByClassName(".board-column").length;
-    //  console.log("Hay " + divs + " Etapas");
-    //  alert(board_new_group_size);
-}
-
-// DATE TIME PICKER
-function datetimePiker() {
-    $('.datetimepicker').bootstrapMaterialDatePicker({
-        format: 'YYYY/MM/DD HH:mm',
-        //   format: 'DD/MM/YYYY HH:mm',
-        // Y-m-d H:i:s
-        lang: 'es',
-        weekStart: 1,
-        nowText: 'HOY',
-        cancelText: 'CANCELAR',
-        shortTime: true,
-        nowButton: true,
-        switchOnClick: true
-    });
-}
-*/
-
-scrollerMove();
-//get_board_group_size()
-/// FUNCIONES NEW 2023
-
 // CREAR NUEVO TABLERO 2023
 // NEW BOARD POPUP START
 async function new_board_star_intro(board_type_name) {
@@ -237,7 +161,6 @@ async function new_board_star_intro(board_type_name) {
     }
 }
 
-
 // PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
     try {
@@ -245,6 +168,7 @@ async function put_new_board(board_name, data) {
         const docId = 'board_group_' + board_name; // Generar un ID único
         let doc = {};
         var board_name
+        const group_id = 'board_group_id'+ new Date().getTime() + Math.random().toString().slice(2);
         if (board_name == 'sell') {
             var board_group = [
                 {
@@ -271,17 +195,17 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'purcharse') {
             var board_group = [
                 {
-                    "id": "1",
+                    "id": group_id,
                     "name": 'Nuevas compras',
                     "color": "bg-green"
                 },
                 {
-                    "id": "2",
+                    "id": group_id,
                     "name": 'Pedidos',
                     "color": "bg-red"
                 },
                 {
-                    "id": "3",
+                    "id":group_id,
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -289,27 +213,27 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_order') {
             var board_group = [
                 {
-                    "id": "1",
+                    "id":group_id,
                     "name": 'Presupuestar',
                     "color": "bg-green"
                 },
                 {
-                    "id": "2",
+                    "id": group_id,
                     "name": 'Presupuestados',
                     "color": "bg-yellow"
                 },
                 {
-                    "id": "3",
+                    "id": group_id,
                     "name": 'Aceptados',
                     "color": "bg-green"
                 },
                 {
-                    "id": "4",
+                    "id":group_id,
                     "name": 'En curso',
                     "color": "bg-purple"
                 },
                 {
-                    "id": "5",
+                    "id": group_id,
                     "name": 'Finalizados',
                     "color": "bg-blue"
                 }
@@ -317,22 +241,22 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_turn') {
             var board_group = [
                 {
-                    "id": "1",
+                    "id":group_id,
                     "name": 'Nuevos',
                     "color": "bg-green"
                 },
                 {
-                    "id": "2",
+                    "id":group_id,
                     "name": 'Asignados',
                     "color": "bg-red"
                 },
                 {
-                    "id": "3",
+                    "id": group_id,
                     "name": 'Para hoy',
                     "color": "bg-green"
                 },
                 {
-                    "id": "4",
+                    "id":group_id,
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -351,7 +275,7 @@ async function put_new_board(board_name, data) {
             "_id": docId,
             "category_id": board_name,
             "workspace_id": ws_id,
-            "status": "active",
+            "status": "open",
             data,
             board_group
         }
@@ -488,7 +412,7 @@ async function btn_next_new_board(board_name, data) {
     };
 };
 
-
+//Creo nuevo grupo de ordenes
 async function new_group_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
@@ -694,7 +618,7 @@ async function new_board_group_put(element) {
         const board_name = $(element).attr('board_name');
         //const group_id = $(element).attr('group_id');
 
-        const group_id = new Date().getTime() + Math.random().toString().slice(2);
+        const group_id = 'board_group_id'+ new Date().getTime() + Math.random().toString().slice(2);
 
         const board_type_name = parametroUrl;
         const board_group_name = $('input[name=board_group_name]').val();
@@ -886,7 +810,11 @@ async function edit_board_group_put(element) {
 async function new_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
-    const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
+    //const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
+
+    const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
+
+
     const workspace_id = ws_id; //Id del documento a edita
     // Comprobacion de datos de grupo 
     const board_group_conf = await L_board_db.get('board_group_' + category_id);
@@ -897,7 +825,7 @@ async function new_order(element) {
     const group_id = board_group_first.id; //Id del documento a edita
     const entry_date = { hour, minutes } = await getDateTimeMinutes();
     const due_date = { hour, minutes } = await getDateTimeMinutes();
-    const comments = 'Sin comentarios';
+    const comments = '';
     try {
         const products = await get_cart_product();
         // console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
@@ -914,27 +842,25 @@ async function new_order(element) {
             type: 'order',
             category_id: category_id,
             workspace_id: workspace_id,
-            status: 'new',
+            status: 'open',
             seen: false,
             author: userCtx.email,
             group_id: group_id,
             order_id: '123',
             group_position: '1',
+            customer: customer,
             comments: comments,
             priority: {
                 id: '1',
                 value: 'urgente'
             },
-            entry_date: '2023-05-12',
-            due_date: '2023-05-20',
+            entry_date: entry_date,
+            due_date:  due_date,
             collaborators: [
                 {
-                    name: 'smartmobile.com.ar@gmail.com',
-                    role: 'Rider'
-                },
-                {
-                    name: 'Collaborator Name 2',
-                    role: 'Collaborator Role 2'
+                    name: userCtx.name,
+                    email: userCtx.email,
+                    role: userCtx.role
                 }
             ],
             total_service: 39.95,
@@ -948,7 +874,7 @@ async function new_order(element) {
                     payment_id: '21312312',
                     payment_method: 'Credit Card',
                     update_datetime: '18/3/2021 18:45:10',
-                    user: 'smartmobile.com@gmail.com',
+                    user: userCtx.email,
                     total_tax: 21.00,
                     total_discount: 12.95,
                     total: 339.95,
@@ -962,13 +888,8 @@ async function new_order(element) {
                 {
                     update_datetime: '18/3/2021 18:45:10',
                     user: 'smartmobile.com@gmail.com',
-                },
-                {
-                    in_datetime: '18/3/2021 18:45:10',
-                    update_datetime: '18/3/2021 18:45:10',
                 }
             ],
-            customer: customer,
             products: products,
             service: [
                 {
@@ -1033,16 +954,23 @@ async function new_order(element) {
 /// BOARD TARJETAS TRAE LAS ORDENES
 
 
-nextStartkey = ['order', 'sell'];
-nextStartkeyDocid = null;
-isLoading = false;
-boardsInitialized = false;
 columnGrids = [];
 boardElements = null;
 boardGrid = null;
 muuri = null;
 
 
+nextStartkey = ['open', 'order', 'sell'];
+nextStartkeyDocid = null;
+isLoading = false;
+boardsInitialized = false;
+
+
+
+
+
+
+// CREO EL BOARD 
 async function get_board(board_type_name) {
 
     board_group_info = await L_board_db.get('board_group_' + board_type_name);
@@ -1060,37 +988,129 @@ async function get_board(board_type_name) {
   
     let parentElement = document.querySelector('#content_compiled');
     let id_compiled = '#' + parentElement.id;
-   // console.log('get_board parentElement:', parentElement);
-  //  console.log('GET BOARD id_compiled:', id_compiled);
+    // console.log('get_board parentElement:', parentElement);
+    //  console.log('GET BOARD id_compiled:', id_compiled);
   
     if (id_compiled) {
 
-      renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
 
         //initializeMuuriGrids(columnGrids);
         //start_kanban(columnGrids);
         let parentElement_nav = document.querySelector('#nav_bar_compiled');
         let id_compiled_nav = '#' + parentElement_nav.id;
-      //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
-      //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
+        //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
+        //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
+
+        if (id_compiled_nav) {
+          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
+           // initializeMuuriGrids();
+           //start_board_kanban(columnGrids)
+         
+
+
+            // Then in get_board function, you handle pagination like this:
+window.onscroll = async function() {
+    if (isLoading) return;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        isLoading = true;
+        try {
+            let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+            nextStartkey = paginationData.nextStartkey;
+            nextStartkeyDocid = paginationData.nextStartkeyDocid;      
+
+            console.log('get_board / nextStartkey:', nextStartkey);
+            console.log('get_board / nextStartkeyDocid:', nextStartkeyDocid);
+            if (!nextStartkey) {
+                window.onscroll = null;
+            }
+        } 
+        catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+};
+
+
+          });
+        }
+      });
+    } else {
+
+
+      alert('get_board parentElement NO ES un elemento DOM');
+      console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+    }
+}
+
+
+
+// CREO EL BOARD 
+async function get_board(board_type_name) {
+
+    board_group_info = await L_board_db.get('board_group_' + board_type_name);
+  //  console.log( 'board_group_info:', board_group_info);
+    const board_group = board_group_info.board_group;
+    const board_data = {
+      module_info: module_info,
+      board_group: board_group,
+      board_group_info: board_group_info,
+      board_type_name: board_type_name,
+      ws_lang_data: ws_lang_data,
+      ws_left_nav_data: ws_left_nav_data,
+      user_roles: user_Ctx.userCtx.roles,
+    };
+  
+    let parentElement = document.querySelector('#content_compiled');
+    let id_compiled = '#' + parentElement.id;
+    // console.log('get_board parentElement:', parentElement);
+    //  console.log('GET BOARD id_compiled:', id_compiled);
+  
+    if (id_compiled) {
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
+
+        //initializeMuuriGrids(columnGrids);
+        //start_kanban(columnGrids);
+        let parentElement_nav = document.querySelector('#nav_bar_compiled');
+        let id_compiled_nav = '#' + parentElement_nav.id;
+        //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
+        //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
 
         if (id_compiled_nav) {
           renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
            // initializeMuuriGrids();
            //start_board_kanban(columnGrids)
             window.onscroll = async function() {if (isLoading) return;
-                
                 if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
                     isLoading = true;
                     try {
-                        const result = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-                        nextStartkey = result.nextStartkey;
-                        nextStartkeyDocid = result.nextStartkeyDocid;   
-                        
+
+                        let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                       // console.log('get_board / paginationData:', paginationData);
+                       // console.log('get_board / paginationData.nextStartkey:', paginationData.nextStartkey);
+                       // console.log('get_board / paginationData.nextStartkeyDocid:', paginationData.nextStartkeyDocid);
+
+                        if (!paginationData) {
+                        console.error("No se pudo obtener los siguientes elementos.");
+                        paginationData = { nextStartkey: null, nextStartkeyDocid: null };
+                        window.onscroll = null;
+                        }
+
+                        nextStartkey = paginationData.nextStartkey;
+                        nextStartkeyDocid = paginationData.nextStartkeyDocid;      
+
+                        console.log('get_board / nextStartkey:', nextStartkey);
+                        console.log('get_board / nextStartkeyDocid:', nextStartkeyDocid);
+                       // console.log('get_board / paginationData.nextStartkeyDocid:', paginationData.nextStartkeyDocid);
                         if (!nextStartkey) {
                             window.onscroll = null;
                         }
-                    } catch (error) {
+                    } 
+                    
+                    catch (error) {
                         console.error('An error occurred:', error);
                     } finally {
                         isLoading = false;
@@ -1106,7 +1126,7 @@ async function get_board(board_type_name) {
       alert('get_board parentElement NO ES un elemento DOM');
       console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
     }
-  }
+}
 
 ////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
@@ -1153,50 +1173,75 @@ async function get_cart_product() {
     return products;
 }
 
-////  FUNCION DE CHATGTP 2023 SIN PROBAR ES PARA ACTUALIZAR EL STOCK DE UN DOCUMENTO DESPUES DE UNA VENTA
-/// (NO SE USA TODAVIA EXPERIMENTAL)
-
-async function tryUpdate(doc, retryCount = 0) {
-    const maxRetries = 5;
-    try {
-        await db.put(updateDoc(doc));
-    } catch (err) {
-        if (err.name === 'conflict') {
-            if (retryCount < maxRetries) {
-                let latestDoc = await db.get(doc._id);
-                return await tryUpdate(latestDoc, retryCount + 1);
-            } else {
-                return Promise.reject('Max retries exceeded for document ' + doc._id);
-            }
+// ADAPTO LA PANTALLA A LO ANCHO DEL NAVEGADOR O CREO UN SCROlL
+function scrollerMove() {
+    var ventana_ancho = $(window).width();
+    var leftPos = $('#scroller').scrollLeft();
+    if (ventana_ancho >= 600) {
+        var scroll_px = 350;
+    } else {
+        var scroll_px = 150;
+    }
+    if (leftPos >= 0) {
+        $("#move-left").hide();
+    } else {
+        $("#move-left").show();
+    }
+    $("#move-left").click(function () {
+        var leftPos = $('#scroller').scrollLeft();
+        if (leftPos >= 0) {
+            $("#move-right").show();
         } else {
-            console.error('Unexpected error in tryUpdate:', err);
-            return Promise.reject('Unexpected error updating document');
+            $("#move-right").hide();
         }
-    }
+        $("#scroller").animate({
+            scrollLeft: leftPos - scroll_px
+        }, 200);
+    });
+    $("#move-right").click(function () {
+        var leftPos = $('#scroller').scrollLeft();
+        if (leftPos < 0) {
+            $("#move-left").hide();
+        } else {
+            $("#move-left").show();
+        }
+        $("#scroller").animate({
+            scrollLeft: leftPos + scroll_px
+        }, 200);
+    });
+};
+
+////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
+function get_board_group_size() {
+    var board_group_size = $('.board-group').width(); //Tomo el ancho total del div contenedor
+    var board_column_size = $('.board-column').first('.board-group').width();//Tomo el ancho de los grupos de ordenes
+    var number_column = $('.board-column').length;//Tomo la cantidad de grupos que hay
+    var colum_size = board_column_size + 20;
+    var board_new_group_size = colum_size * number_column;
+    $('.board-group').width(board_new_group_size);
+    console.log(board_new_group_size);
+    //  var divs = document.getElementsByClassName(".board-column").length;
+    //  console.log("Hay " + divs + " Etapas");
+    //  alert(board_new_group_size);
 }
 
-// Supongamos que tienes una función de actualización en tu componente que maneja la interfaz de usuario:
-async function updateDocuments() {
-    // Lee los documentos a actualizar
-    let docs = await Promise.all(docIds.map(id => db.get(id)));
-
-    // Intenta actualizar cada documento
-    try {
-        let results = await Promise.all(docs.map(doc => tryUpdate(doc)));
-    } catch (err) {
-        // Si alguna actualización falla, muestra el Snackbar aquí
-        Snackbar.show({
-            text: err,
-            actionText: 'Retry',
-            actionTextColor: "#0575e6",
-            duration: Snackbar.LENGTH_INDEFINITE,
-            action: () => { updateDocuments() }
-        });
-    }
+// DATE TIME PICKER
+function datetimePiker() {
+    $('.datetimepicker').bootstrapMaterialDatePicker({
+        format: 'YYYY/MM/DD HH:mm',
+        //   format: 'DD/MM/YYYY HH:mm',
+        // Y-m-d H:i:s
+        lang: 'es',
+        weekStart: 1,
+        nowText: 'HOY',
+        cancelText: 'CANCELAR',
+        shortTime: true,
+        nowButton: true,
+        switchOnClick: true
+    });
 }
 
-/// (NO SE USA TODAVIA EXPERIMENTAL)
-
+scrollerMove();
 $(document).ready(function () {
     window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
   
