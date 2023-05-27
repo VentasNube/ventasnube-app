@@ -1,10 +1,10 @@
 ////// BOARDS MODULE 2023 ////////////
 
 ws_board_db = 'ws_boards_' + ws_id;
-board_group_info =  null;
-ws_left_nav_data =  null;
+board_group_info = null;
+ws_left_nav_data = null;
 ws_lang_data = null;
-module_info =  null;
+module_info = null;
 //// VARIABLES GLOBALES 
 /*var nextStartkey = ['order', 'sell'];
 var nextStartkeyDocid = null;
@@ -66,17 +66,17 @@ async function ws_board_start() {
         // Envio los datos a la funciones y imprimo
         // Creo la variable userCtx apartir del doc left nav
         user_Ctx = ws_left_nav.userCtx;
-       //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
+        //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
         //  get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
         // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
-      //  get_right_cart(ws_info, ws_lang_data, user_Ctx);
+        //  get_right_cart(ws_info, ws_lang_data, user_Ctx);
         // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
         //get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
         //  put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
-       // check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
+        // check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
 
     } catch (err) {
-       // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+        // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
         Snackbar.show({
             text: err.reason,
             actionText: '<span class="material-symbols-outlined">refresh</span> Refresh ',
@@ -168,7 +168,7 @@ async function put_new_board(board_name, data) {
         const docId = 'board_group_' + board_name; // Generar un ID único
         let doc = {};
         var board_name
-        const group_id = 'board_group_id'+ new Date().getTime() + Math.random().toString().slice(2);
+        const group_id = 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2);
         if (board_name == 'sell') {
             var board_group = [
                 {
@@ -205,7 +205,7 @@ async function put_new_board(board_name, data) {
                     "color": "bg-red"
                 },
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -213,7 +213,7 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_order') {
             var board_group = [
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'Presupuestar',
                     "color": "bg-green"
                 },
@@ -228,7 +228,7 @@ async function put_new_board(board_name, data) {
                     "color": "bg-green"
                 },
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'En curso',
                     "color": "bg-purple"
                 },
@@ -241,12 +241,12 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_turn') {
             var board_group = [
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'Nuevos',
                     "color": "bg-green"
                 },
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'Asignados',
                     "color": "bg-red"
                 },
@@ -256,7 +256,7 @@ async function put_new_board(board_name, data) {
                     "color": "bg-green"
                 },
                 {
-                    "id":group_id,
+                    "id": group_id,
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -618,7 +618,7 @@ async function new_board_group_put(element) {
         const board_name = $(element).attr('board_name');
         //const group_id = $(element).attr('group_id');
 
-        const group_id = 'board_group_id'+ new Date().getTime() + Math.random().toString().slice(2);
+        const group_id = 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2);
 
         const board_type_name = parametroUrl;
         const board_group_name = $('input[name=board_group_name]').val();
@@ -746,13 +746,9 @@ async function edit_board_group_put(element) {
         // var board_group_id = $(element).attr('group_id'); //Id del documento a edita
         const parametroUrl = await getUrlVal('t');
         var board_name = board_name;
-
-
         const docId = 'board_group_' + board_name; // Generar un ID único
         const doc = await L_board_db.get(docId); // Verificar si el documento ya existe
-
         const group_id = $(element).attr('group_id'); //Id del documento a edita
-
         var board_type_name = parametroUrl;
         // Valores seleccionados del formulario
         const board_group_name = $('input[name=board_group_name]').val();
@@ -855,7 +851,7 @@ async function new_order(element) {
                 value: 'urgente'
             },
             entry_date: entry_date,
-            due_date:  due_date,
+            due_date: due_date,
             collaborators: [
                 {
                     name: userCtx.name,
@@ -964,167 +960,106 @@ nextStartkey = ['open', 'order', 'sell'];
 nextStartkeyDocid = null;
 isLoading = false;
 boardsInitialized = false;
+isFetching = false; // Este es el semáforo o el bloqueo.
+totalDocs = null;
 
+async function get_board_onscrollNOSE(board_type_name) {
 
-
-
-
-
-// CREO EL BOARD 
-async function get_board(board_type_name) {
-
-    board_group_info = await L_board_db.get('board_group_' + board_type_name);
-  //  console.log( 'board_group_info:', board_group_info);
-    const board_group = board_group_info.board_group;
-    const board_data = {
-      module_info: module_info,
-      board_group: board_group,
-      board_group_info: board_group_info,
-      board_type_name: board_type_name,
-      ws_lang_data: ws_lang_data,
-      ws_left_nav_data: ws_left_nav_data,
-      user_roles: user_Ctx.userCtx.roles,
-    };
-  
-    let parentElement = document.querySelector('#content_compiled');
-    let id_compiled = '#' + parentElement.id;
-    // console.log('get_board parentElement:', parentElement);
-    //  console.log('GET BOARD id_compiled:', id_compiled);
-  
-    if (id_compiled) {
-
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
-
-        //initializeMuuriGrids(columnGrids);
-        //start_kanban(columnGrids);
-        let parentElement_nav = document.querySelector('#nav_bar_compiled');
-        let id_compiled_nav = '#' + parentElement_nav.id;
-        //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
-        //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
-
-        if (id_compiled_nav) {
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
-           // initializeMuuriGrids();
-           //start_board_kanban(columnGrids)
-         
-
-
-            // Then in get_board function, you handle pagination like this:
-window.onscroll = async function() {
-    if (isLoading) return;
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        isLoading = true;
-        try {
-            let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-            nextStartkey = paginationData.nextStartkey;
-            nextStartkeyDocid = paginationData.nextStartkeyDocid;      
-
-            console.log('get_board / nextStartkey:', nextStartkey);
-            console.log('get_board / nextStartkeyDocid:', nextStartkeyDocid);
-            if (!nextStartkey) {
-                window.onscroll = null;
+    window.onscroll = async function () {
+        if (isLoading) return;
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            isLoading = true;
+            try {
+                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                if (!paginationData) {
+                    console.error("No se pudo obtener los siguientes elementos.");
+                    paginationData = { nextStartkey: null, nextStartkeyDocid: null };
+                    window.onscroll = null;
+                }
+                nextStartkey = paginationData.nextStartkey;
+                nextStartkeyDocid = paginationData.nextStartkeyDocid;
+                if (!nextStartkey) {
+                    window.onscroll = null;
+                }
             }
-        } 
-        catch (error) {
-            console.error('An error occurred:', error);
-        } finally {
-            isLoading = false;
+            catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                isLoading = false;
+            }
         }
-    }
-};
 
-
-          });
-        }
-      });
-    } else {
-
-
-      alert('get_board parentElement NO ES un elemento DOM');
-      console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
-    }
+    };
 }
 
+async function get_board_onscroll() {
+    window.onscroll = async function () {
+      if (isLoading) return;
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        isLoading = true;
+        try {
+          let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+          if (paginationData) {
+            nextStartkey = paginationData.nextStartkey;
+            nextStartkeyDocid = paginationData.nextStartkeyDocid;
+            if (!nextStartkey) {
+              window.onscroll = null;
+            }
+          } else {
+            console.error("No se pudo obtener los siguientes elementos.");
+            window.onscroll = null;
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+        } finally {
+          isLoading = false;
+        }
+      }
+    };
+  }
 
 
+async function get_total_orders_group() {
+
+     // let result = await db.allDocs(options);
+     let result = await L_board_db.query('order_view/by_type_category_status', options);
+
+
+
+}
+  
 // CREO EL BOARD 
 async function get_board(board_type_name) {
-
     board_group_info = await L_board_db.get('board_group_' + board_type_name);
-  //  console.log( 'board_group_info:', board_group_info);
+    //  console.log( 'board_group_info:', board_group_info);
     const board_group = board_group_info.board_group;
     const board_data = {
-      module_info: module_info,
-      board_group: board_group,
-      board_group_info: board_group_info,
-      board_type_name: board_type_name,
-      ws_lang_data: ws_lang_data,
-      ws_left_nav_data: ws_left_nav_data,
-      user_roles: user_Ctx.userCtx.roles,
+        module_info: module_info,
+        board_group: board_group,
+        board_group_info: board_group_info,
+        board_type_name: board_type_name,
+        ws_lang_data: ws_lang_data,
+        ws_left_nav_data: ws_left_nav_data,
+        user_roles: user_Ctx.userCtx.roles,
     };
-  
     let parentElement = document.querySelector('#content_compiled');
     let id_compiled = '#' + parentElement.id;
-    // console.log('get_board parentElement:', parentElement);
-    //  console.log('GET BOARD id_compiled:', id_compiled);
-  
     if (id_compiled) {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
+            let parentElement_nav = document.querySelector('#nav_bar_compiled');
+            let id_compiled_nav = '#' + parentElement_nav.id;
+            if (id_compiled_nav) {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
 
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function() {
+                    get_board_onscroll();//activa el evento scroll para graer mas ordenes
 
-        //initializeMuuriGrids(columnGrids);
-        //start_kanban(columnGrids);
-        let parentElement_nav = document.querySelector('#nav_bar_compiled');
-        let id_compiled_nav = '#' + parentElement_nav.id;
-        //  console.log('get_nav_board parentElement TRAE:', parentElement_nav);
-        //  console.log('get_nav_board id_compiled TRAE:', id_compiled);
 
-        if (id_compiled_nav) {
-          renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function() {
-           // initializeMuuriGrids();
-           //start_board_kanban(columnGrids)
-            window.onscroll = async function() {if (isLoading) return;
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-                    isLoading = true;
-                    try {
-
-                        let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-                       // console.log('get_board / paginationData:', paginationData);
-                       // console.log('get_board / paginationData.nextStartkey:', paginationData.nextStartkey);
-                       // console.log('get_board / paginationData.nextStartkeyDocid:', paginationData.nextStartkeyDocid);
-
-                        if (!paginationData) {
-                        console.error("No se pudo obtener los siguientes elementos.");
-                        paginationData = { nextStartkey: null, nextStartkeyDocid: null };
-                        window.onscroll = null;
-                        }
-
-                        nextStartkey = paginationData.nextStartkey;
-                        nextStartkeyDocid = paginationData.nextStartkeyDocid;      
-
-                        console.log('get_board / nextStartkey:', nextStartkey);
-                        console.log('get_board / nextStartkeyDocid:', nextStartkeyDocid);
-                       // console.log('get_board / paginationData.nextStartkeyDocid:', paginationData.nextStartkeyDocid);
-                        if (!nextStartkey) {
-                            window.onscroll = null;
-                        }
-                    } 
-                    
-                    catch (error) {
-                        console.error('An error occurred:', error);
-                    } finally {
-                        isLoading = false;
-                    }
-                }
-            };
-          });
-        }
-      });
+                });
+            }
+        });
     } else {
-
-
-      alert('get_board parentElement NO ES un elemento DOM');
-      console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+        // alert('get_board parentElement NO ES un elemento DOM');
+        console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
     }
 }
 
@@ -1244,6 +1179,6 @@ function datetimePiker() {
 scrollerMove();
 $(document).ready(function () {
     window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
-  
+
 });
 
