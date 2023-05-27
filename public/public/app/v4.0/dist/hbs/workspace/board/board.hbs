@@ -161,37 +161,40 @@
                 <div class=" board-column-header {{{color}}}">
                     <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
                     <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
-                            data-placement="right" data-original-title="Cantidad de Ordenes">{{counter
-                            @index}}</span>
+                            data-placement="right" data-original-title="Cantidad de Ordenes">
+                            {{counter @index}}
+                        </span>
                         {{{name}}}</div>
                     <div class="board-column-header-button">
                         <div class="btn-group ">
-                            <button role="button" data-toggle="collapse" data-parent="#accordion_{{{id}}}" href="#board_group_config_{{{id}}}" aria-expanded="true" aria-controls="board_group_config_{{{id}}}" 
-                                 type="button" class="btn btn-round xl text-white dropdown-toggle">
+                            <button role="button" data-toggle="collapse" data-parent="#accordion_{{{id}}}"
+                                href="#board_group_config_{{{id}}}" aria-expanded="true"
+                                aria-controls="board_group_config_{{{id}}}" type="button"
+                                class="btn btn-round xl text-white dropdown-toggle">
                                 <span class="material-icons">expand_more</span>
                             </button>
                         </div>
                     </div>
-                    <div id="board_group_config_{{{id}}}" class="panel-collapse collapse panel-group" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" >
+                    <div id="board_group_config_{{{id}}}" class="panel-collapse collapse panel-group" role="tabpanel"
+                        aria-labelledby="headingOne" aria-expanded="true">
                         <div class="panel panel-default">
-                            <div  class="padding-0 text-left panel-body" >
+                            <div class="padding-0 text-left panel-body">
 
                                 <div class="padding-b-0 padding-t-0 margin-b-0 text-left panel-body row list-group">
-                                        <a onclick="board_edit_group(this)" group_id="{{id}}"
-                                            board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
-                                            href="#master_popup" role="button" title="Retirar efectivo"
-                                            class="list-group-item"><i class="material-icons">settings</i> 
-                                            {{#with ../ws_lang_data}}  {{{m_edit_board_group}}}{{/with}}</a>
-                                        <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                                            m_s_id="{{{board_group_id}}}" href="#" role="button"
-                                            class="list-group-item">
-                                            <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
-                                            {{{m_add_board_group_collaborator}}}{{/with}}
-                                        </a>
-                                        <a href="#" data-toggle="modal" role="button" class="list-group-item">
-                                            <i class="material-icons">picture_as_pdf</i>
-                                            {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
-                                        </a>
+                                    <a onclick="board_edit_group(this)" group_id="{{id}}"
+                                        board_type_name="{{{../name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
+                                        href="#master_popup" role="button" title="Retirar efectivo"
+                                        class="list-group-item"><i class="material-icons">settings</i>
+                                        {{#with ../ws_lang_data}} {{{m_edit_board_group}}}{{/with}}</a>
+                                    <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_s_id="{{{board_group_id}}}" href="#"
+                                        role="button" class="list-group-item">
+                                        <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
+                                        {{{m_add_board_group_collaborator}}}{{/with}}
+                                    </a>
+                                    <a href="#" data-toggle="modal" role="button" class="list-group-item">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                        {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
+                                    </a>
                                 </div>
 
                             </div>
@@ -215,8 +218,6 @@
         </div>
     </div>
     <!--Kanban template-->
-
-
 </div>
 
 
@@ -374,17 +375,43 @@
 
     //nextStartkey = ['open', 'order', 'sell'];
     //nextStartkeyDocid = null;
-   // isLoading = false;
+    // isLoading = false;
     boardsInitialized = false;
     var dragContainer = document.querySelector('.drag-container');
     var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
     var columnGrids = [];
     var boardGrid;
     var grid;
+    processedRows = 0;
+    var isFetching = false;
+    var totalDocs = null;
+    //Edito El paso de etapas 
+    async function edit_order_group(board_name, order_id, group_id) {
+        try {
+            const doc = await L_board_db.get(order_id); // Verificar si el documento ya existe
+            doc._rev = doc._rev;
+            doc.group_id = group_id;
+            const response = await L_board_db.put(doc); // Actualizar el documento existen
+            if (response) {
+                Snackbar.show({
+                    text: 'Se editó orden con exito!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        }
+        catch (err) {
+            console.log(err);
+            Snackbar.show({
+                text: err.name,
+                actionText: 'Ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    };
 
     // CREA LA PRIMER INSTANCIA MUURI
-    function up_muuri_kanban() {
-
+    function up_ventasnube_kanban() {
         // Init the column grids so we can drag those items around.
         itemContainers.forEach(function (container) {
             grid = new Muuri(container, {
@@ -406,19 +433,36 @@
                 .on('dragInit', function (item) {
                     item.getElement().style.width = item.getWidth() + 'px';
                     item.getElement().style.height = item.getHeight() + 'px';
+                    console.log('dragInit');
+                    // var element = item.getElement();
+                    // var orderId = element.getAttribute('id');
+                    // var groupId = element.getAttribute('group_id');
+                    // var boardName = element.getAttribute('category_id');
                 })
                 .on('dragReleaseEnd', function (item) {
                     item.getElement().style.width = '';
                     item.getElement().style.height = '';
                     item.getGrid().refreshItems([item]);
+                  //  console.log('dragReleaseEnd');
+                    var element = item.getElement();
+                    var orderId = element.getAttribute('id');
+                    var boardName = element.getAttribute('category_id');
+                    var originalGroup = item._drag._gridId;
+                    // Para obtener el nuevo group_id:
+                    var newGroupElement = item.getGrid().getElement();
+                    // Si el atributo 'id' contiene el group_id, podemos obtenerlo de la siguiente manera:
+                    var newGroupId = newGroupElement.id;
+                    // Si el atributo 'id' contiene el group_id, podemos obtenerlo de la siguiente manera:
+                    // console.log('END orderId:', orderId);
+                    //console.log('END groupId:', newGroupId);
+                    edit_order_group(boardName, orderId, newGroupId);
                 })
                 .on('layoutStart', function () {
                     boardGrid.refreshItems().layout();
                 });
-             console.log('GRIDDDDDD  up_muuri_kanban ',grid);
+            //console.log('GRIDDDDDD  up_muuri_kanban ', grid);
             columnGrids.push(grid);
         });
-
         // Init board grid so we can drag those columns around.
         boardGrid = new Muuri('.board', {
             dragEnabled: true,
@@ -434,7 +478,6 @@
             url: path,
             dataType: "html",
             success: function (data) {
-
                 source = data;
                 template = Handlebars.compile(source);
                 if (callback) callback(template);
@@ -443,195 +486,214 @@
     }
 
     // COLOCO LOS ITEMS EN EL DOM CREO EL TEMPLATE Y LO AGREGO AL MUURI
-    function add_new_card(template_hbs, card_data, board_gorup_id, grid) {
+    function add_new_card(template_hbs, card_data = null, board_gorup_id = null, grid) {
         return new Promise((resolve, reject) => {
-            getTemplateAjaxCARD(template_hbs, function (template) {
-                let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
-                new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
-                new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
-               // console.log('ADD NEW CARD group_id:',board_gorup_id);
-                new_card.innerHTML = template(card_data);    //Uno el template con al data 
-                document.querySelector(board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
-               // console.log('GRIDDDDDD add_new_card',grid);
-                grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
-                grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
-                resolve(new_card);
-            });
+            //  console.log('board_gorup_id', board_gorup_id);
+            if (board_gorup_id == null) {
+                //  console.log('NULL board_gorup_id', board_gorup_id)
+                // alert('No hay mas resultados')
+            } else {
+                getTemplateAjaxCARD(template_hbs, function (template) {
+                    let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
+                    new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
+                    new_card.setAttribute('group_id', card_data.doc.group_id); //Le agrego la id 
+                    new_card.setAttribute('category_id', card_data.doc.category_id); //Le agrego la id 
+                    new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
+                    // console.log('ADD NEW CARD group_id:',board_gorup_id);
+                    new_card.innerHTML = template(card_data);    //Uno el template con al data 
+                    document.querySelector('#' + board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
+                    // console.log('GRIDDDDDD add_new_card',grid);
+                    grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
+                    grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
+                    resolve(new_card);
+                });
+            }
         });
     }
 
-async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-    console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
-    console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkeyDocid);
 
-    try {
-        for (const row of result.rows) {
-            // Process each row as before...
-                const card_data = { doc: row.doc }; //cargo el documento en un objeto
-                let board_gorup_id = row.doc.group_id; //creo la id sin el prefijo
-                let board_gorup_id_selector = '#' + row.doc.group_id;//Creo la id con el prefijo
-                // console.log('itemContainers:',itemContainers);
-                //Busco el grid espesifico a agregar en MUURi 
-                let groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); // Busco en el columnGris el id seleccionado
-                //console.log('GROUPID INDEX', groupIndex);
-                var grid = columnGrids[groupIndex]; //Agrego el gupo selecionado al grid
-                // console.log('GRIDDDDDD NEW',grid);
-                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id_selector, grid);// Imprimo la tarjeta nueva y el muuri instancia
-
+    //IMPRIME LAS TARJETAS EN EL DOM
+    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+        // Si ya se está ejecutando una búsqueda, sal de la función.
+        if (isFetching) {
+            return;
         }
-        return result;  // Return the result from paginate_orders directly.
-    } catch (error) {
-        console.error("Error in add_new_item_DOM: ", error);
-        throw error;
-    }
-}
-
-    //Hago el get a paginate orders y envio a add new card
-    async function add_new_item_DOMOK(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-
-        const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-              //console.log(' paginate_orders RETURN RESULT', result);
-              console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
-              console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkeyDocid);
+        // Marca que estamos empezando una búsqueda.
+        isFetching = true;
         try {
-            nextStartkey = result.nextStartkey;
-            nextStartkeyDocid = result.nextStartkeyDocid;
-
-          
-            //     console.log('GAGINATE_ORDERS: 2 for', result);
-            //     console.log('nextStartkey: 2 for', nextStartkey);
-            //     console.log('nextStartkeyDocid: 2 for', nextStartkeyDocid);
-            //     console.log(itemContainers);
-            //     console.log('GRIDDDDDD add_new_item_DOM',grid);
+            const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+            console.log('RESULT:',result)
+            //console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
+           // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
             for (const row of result.rows) {
-                const card_data = { doc: row.doc }; //cargo el documento en un objeto
-                let board_gorup_id = row.doc.group_id; //creo la id sin el prefijo
-                let board_gorup_id_selector = '#' + row.doc.group_id;//Creo la id con el prefijo
-                // console.log('itemContainers:',itemContainers);
-                //Busco el grid espesifico a agregar en MUURi 
-                let groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); // Busco en el columnGris el id seleccionado
-                //console.log('GROUPID INDEX', groupIndex);
-                var grid = columnGrids[groupIndex]; //Agrego el gupo selecionado al grid
-                // console.log('GRIDDDDDD NEW',grid);
-                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id_selector, grid);// Imprimo la tarjeta nueva y el muuri instancia
+                var group_id = row.doc.group_id;
+                var card_data = { doc: row.doc };
+                var board_gorup_id = row.doc.group_id;
+                var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
+                var grid = columnGrids[groupIndex];
+                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
             }
-
-              console.log('add_new_item_DOM / nextStartkey:', nextStartkey);
-            console.log('add_new_item_DOM / nextStartkeyDocid:', nextStartkeyDocid);
-            
-            return {
-                nextStartkey: nextStartkey,
-                nextStartkeyDocid: nextStartkeyDocid
-            };
-        }catch (error) {
+            return result;
+        } catch (error) {
             console.error("Error in add_new_item_DOM: ", error);
-            throw error; // This will reject the promise with the error
+            throw error;
+        } finally {
+            // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
+            isFetching = false;
         }
     }
 
 
-    async function paginate_orders(L_board_db, startkey = null, startkey_docid = null) {
-    console.log('paginate_orders / startkey: 1 for', startkey);
-    console.log('paginate_orders /startkey_docid: 1 for', startkey_docid);
-    const pageSize = 2;  
-    const options = {
-        startkey: startkey,
-        startkey_docid: startkey_docid,
-        limit: pageSize,  // Don't add 1 here.
+
+    //HACE QUERY Y LA PAGINACION TRAE LOS RESULTADOS DE LA DB
+    async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
+        let options = {
         include_docs: true,
-        descending: false,
-    };
-    // If startkey is provided, skip the first document
-    if (startkey) {
-       // options.skip = 1;
-    }
-    const result = await L_board_db.query('order_view/by_type_category_status', options);
-    console.log('paginate_orders / GET RESULT QUERY', result);
-
-    let nextStartkey = null;
-    let nextStartkeyDocid = null;
-    // If there might be a next page...
-    if (result.rows.length === pageSize) {
-        const optionsNextPage = {
-            startkey: startkey,
-            startkey_docid: startkey_docid,
-            limit: 1,
-            //skip: pageSize,
-            include_docs: true,
-            descending: false,
+        limit: 50, // Cambia el límite para obtener todos los documentos en una sola consulta
+        group: true,
+        group_level: 1,
         };
-        const resultNextPage = await L_board_db.query('order_view/by_type_category_status', optionsNextPage);
-        if (resultNextPage.rows.length > 0) {
-            const firstRowNextPage = resultNextPage.rows[0];
-            nextStartkey = firstRowNextPage.key;
-            nextStartkeyDocid = firstRowNextPage.id;
+        if (nextStartkey && nextStartkeyDocid) {
+            options.startkey = [nextStartkey];
+            options.startkey_docid = nextStartkeyDocid;
         }
-    }
-    
-    var respon = {
-        rows: result.rows,
-        nextStartkey: nextStartkey,
-        nextStartkeyDocid: nextStartkeyDocid
-    }
-    console.log('paginate_orders / return',  respon);
-    return respon;
-}
 
+       // let result = await db.allDocs(options);
+        let result = await L_board_db.query('order_view/by_type_category_status', options);
 
-    // Hago la query y pagino los resultados 
-    async function paginate_ordersOK(L_board_db, startkey = null, startkey_docid = null) {
-         console.log('paginate_orders / startkey: 1 for', startkey);
-         console.log('paginate_orders /startkey_docid: 1 for', startkey_docid);
-            const pageSize = 2;  // Number of results per page.
-            const options = {
-            startkey: startkey,
-            startkey_docid: startkey_docid,
-            limit: pageSize + 1,  // Add 1 to know if there is a next page.
-            include_docs: true,
-            descending: false,
-             skip: 1,  // Skip the first document, which is the one we already have from the previous page.
-            };
-        const result = await L_board_db.query('order_view/by_type_category_status', options);
-        // const result = await L_board_db.query('order_view/by_type_and_category', options);
-         console.log('paginate_orders / GET RESULT QUERY', result);
-        // console.log('GET DB by_type_category_status', resultOLD);
-        // If there is a next page...
-        if (result.rows.length > pageSize) {
-            console.log('paginate_orders / pageSize 1',pageSize);
-            // Save the last key and doc id for the next page.
-            const lastRow = result.rows[pageSize];
-            console.log('paginate_orders / lastRow', lastRow);
-            startkey = lastRow.key;
-            console.log('paginate_orders / startkey',  startkey);
-            startkey_docid = lastRow.id;
-            console.log('paginate_orders / startkey_docid',  startkey_docid);
-            // Remove the last row, since it was only to check if there is a next page.
-            result.rows.splice(pageSize, 1);
-            console.log('paginate_orders / pageSize 2;',pageSize);
-
-        } else {
-            // There are no more pages.
-            startkey = null;
-            startkey_docid = null;
+        if (result && result.rows && result.rows.length > 0) {
+            nextStartkey = result.rows[result.rows.length - 1].key;
+            nextStartkeyDocid = result.rows[result.rows.length - 1].id;
         }
-        var respon = {
-            rows: result.rows,
-            nextStartkey: startkey,
-            nextStartkeyDocid: startkey_docid
-            }
-console.log('paginate_orders / return',  respon);
-        // Return the rows and the next startkey and startkey_docid for pagination.
+        // Si el número de resultados es menor que el límite, estamos en la última página.
+        if (!result || !result.rows || result.rows.length < options.limit) {
+            nextStartkey = null;
+            nextStartkeyDocid = null;
+        }
+
         return {
             rows: result.rows,
-            nextStartkey: startkey,
-            nextStartkeyDocid: startkey_docid
+            nextStartkey: nextStartkey,
+            nextStartkeyDocid: nextStartkeyDocid
         };
     }
 
 
 
-    up_muuri_kanban();
+/*
+
+    //IMPRIME LAS TARJETAS EN EL DOM
+    async function add_new_item_DOM_OK_no_borrar(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+        // Si ya se está ejecutando una búsqueda, sal de la función.
+        if (isFetching) {
+            return;
+        }
+        // Marca que estamos empezando una búsqueda.
+        isFetching = true;
+        try {
+            const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+            console.log('RESULT:',result)
+            //console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
+           // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
+            for (const row of result.rows) {
+                var group_id = row.doc.group_id;
+                var card_data = { doc: row.doc };
+                var board_gorup_id = row.doc.group_id;
+                var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
+                var grid = columnGrids[groupIndex];
+                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+            }
+            return result;
+        } catch (error) {
+            console.error("Error in add_new_item_DOM: ", error);
+            throw error;
+        } finally {
+            // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
+            isFetching = false;
+        }
+    }
+
+
+async function add_new_item_DOM_no(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+  // Si ya se está ejecutando una búsqueda, sal de la función.
+  if (isFetching) {
+    return;
+  }
+  // Marca que estamos empezando una búsqueda.
+  isFetching = true;
+
+  try {
+
+    const dbInfo = await L_board_db.info();
+    const totalDocs = dbInfo.doc_count;
+
+    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+    console.log('RESULT:', result);
+    var totalDocs = result.total_rows; 
+
+    for (const row of result.rows) {
+      const group_id = row.doc.group_id;
+      const card_data = { doc: row.doc };
+      const board_gorup_id = row.doc.group_id;
+      const groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
+      const grid = columnGrids[groupIndex];
+      add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+    }
+
+    if (result.rows.length < totalDocs) {
+      // Si aún no se han obtenido todos los documentos, continúa la paginación
+      await add_new_item_DOM(L_board_db, result.nextStartkey, result.nextStartkeyDocid, columnGrids);
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error in add_new_item_DOM: ", error);
+    throw error;
+  } finally {
+    // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
+    isFetching = false;
+  }
+}
+
+async function paginate_orders_no3(db, nextStartkey, nextStartkeyDocid, category_id) {
+  let options = {
+    include_docs: true,
+    limit: 2,
+  };
+
+  if (nextStartkey && nextStartkeyDocid) {
+    options.startkey = [nextStartkey];
+    options.startkey_docid = nextStartkeyDocid;
+  }
+
+  // Agrega la condición de category_id = "sell" en la consulta
+  options.startkey = [category_id, options.startkey];
+
+  let result = await db.allDocs(options);
+
+  if (result && result.rows && result.rows.length > 0) {
+    const totalDocs = result.total_rows; // Obtén el número total de documentos en la base de datos
+    const nextStartkey = result.rows[result.rows.length - 1].key[1]; // Obtén el siguiente startkey sin la condición de category_id
+    const nextStartkeyDocid = result.rows[result.rows.length - 1].id;
+
+    return {
+      rows: result.rows,
+      nextStartkey,
+      nextStartkeyDocid,
+      totalDocs,
+    };
+  } else {
+    return {
+      rows: [],
+      nextStartkey: null,
+      nextStartkeyDocid: null,
+      totalDocs: 0,
+    };
+  }
+}
+*/
+
+    up_ventasnube_kanban();
     scrollerMove();
 
 </script>
