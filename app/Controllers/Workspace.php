@@ -1804,7 +1804,10 @@ class Workspace extends BaseController
                                         });
                                     }
                                 }"
-                            ]
+                            ],
+                            "by_order_index"=> [
+                                "map"=>"function(doc) { if(doc.order_index) emit(doc.order_index, null); }"
+                                ]
                         ]
                     ];
 
@@ -1825,8 +1828,9 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
 
                         $this->WorkspaceModel->curl_put($db_name . '/_design/order_view', $order_view); //Creo el documento de diseno par filtrar documentos por tipo
-
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+                        
+                        $this->WorkspaceModel->curl_put($db_name . '/order_index', $order_index); //Documento de indice q usan los demas para consultar 
                         $this->WorkspaceModel->curl_put($db_name . '/order_01', $order_01); //Creo un doc con la informacion de la primera orden
                         
                     }

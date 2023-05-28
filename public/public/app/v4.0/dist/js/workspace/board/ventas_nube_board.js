@@ -800,6 +800,114 @@ async function edit_board_group_put(element) {
     }
 }
 
+
+/// BOARD TARJETAS TRAE LAS ORDENES
+
+
+columnGrids = [];
+boardElements = null;
+boardGrid = null;
+muuri = null;
+
+
+nextStartkey = ['open', 'order', 'sell'];
+nextStartkeyDocid = null;
+isLoading = false;
+boardsInitialized = false;
+isFetching = false; // Este es el semáforo o el bloqueo.
+totalDocs = null;
+
+//// NUEVAS FUNCIONES INDEX DOC
+
+// Función para obtener el índice de pedido actual
+async function getOrderIndex(board_type_name) {
+    let orderIndexDoc;
+    try {
+      // Intenta obtener el documento de índice de la base de datos local
+      //orderIndexDoc = await localDb.get('order_index');
+      orderIndexDoc = await L_board_db.get('order_' + board_type_name + '_index');
+    } catch (error) {
+      if (error.name === 'not_found') {
+        // Si el documento de índice no existe, créalo con un índice inicial de 0
+        orderIndexDoc = { _id: 'order_' + board_type_name + '_index', index: 0 };
+        await L_board_db.put(orderIndexDoc);
+      } else {
+        throw error;
+      }
+    }
+    return orderIndexDoc.index;
+  }
+  
+  // Función para incrementar el índice de pedido
+  async function incrementOrderIndex(board_type_name) {
+    console.log('board_type_name',board_type_name);
+    let orderIndexDoc = await  L_board_db.get('order_' + board_type_name + '_index');
+    orderIndexDoc.index++;
+    await  L_board_db.put(orderIndexDoc);
+  }
+  
+  // Función para crear una nueva orden
+  async function createOrder() {
+
+    let orderIndex = await getOrderIndex();
+    incrementOrderIndex();
+  
+    let order = {
+      _id: 'order_' + orderIndex,
+      //...
+    };
+  
+    try {
+      // Guarda la nueva orden en la base de datos local
+      let response = await localDb.put(order);
+      console.log("Orden creada con éxito, ID del documento: ", response.id);
+    } catch (error) {
+      console.error("Error al crear la orden: ", error);
+      throw error;
+    }
+  }
+  
+
+
+  async function resolveConflicts(docId) {
+    try {
+      // Obtiene todas las revisiones conflictivas de un documento
+      let doc = await localDb.get(docId, { conflicts: true });
+  
+      if (doc._conflicts) {
+        let conflictRevs = doc._conflicts;
+  
+        // Resuelve cada conflicto
+        for (let rev of conflictRevs) {
+          let conflictDoc = await localDb.get(docId, { rev: rev });
+  
+          // Compara las marcas de tiempo de los documentos y mantiene la más reciente
+          if (parseInt(conflictDoc._id.split('_')[0]) > parseInt(doc._id.split('_')[0])) {
+            doc = conflictDoc;
+          } else {
+            // Si el documento local es más antiguo, crea un nuevo ID basado en la marca de tiempo actual
+            // y luego intenta poner el documento nuevamente
+            let newId = Date.now() + '_' + doc._id.split('_')[1];
+            doc._id = newId;
+            
+            // Elimina la revisión conflictiva
+            await localDb.remove(docId, rev);
+            
+            // Intenta poner el documento nuevamente
+            await localDb.put(doc);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error al resolver conflictos: ", error);
+      throw error;
+    }
+  }
+
+
+
+/// NUEVAS FUNCIONES CREAR ORDEN
+
 ///NUEVAS ORDENES 2023
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
@@ -824,6 +932,10 @@ async function new_order(element) {
     const comments = '';
     try {
         const products = await get_cart_product();
+        // Llamo al nuevo indice
+        let orderIndex = await getOrderIndex(category_id);
+         incrementOrderIndex(category_id);
+
         // console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
         const customer = {
             id: 'client_id_xxxx',
@@ -842,7 +954,7 @@ async function new_order(element) {
             seen: false,
             author: userCtx.email,
             group_id: group_id,
-            order_id: '123',
+            order_id: orderIndex,
             group_position: '1',
             customer: customer,
             comments: comments,
@@ -947,50 +1059,6 @@ async function new_order(element) {
         console.error('Error al obtener los datos:', error);
     }
 }
-/// BOARD TARJETAS TRAE LAS ORDENES
-
-
-columnGrids = [];
-boardElements = null;
-boardGrid = null;
-muuri = null;
-
-
-nextStartkey = ['open', 'order', 'sell'];
-nextStartkeyDocid = null;
-isLoading = false;
-boardsInitialized = false;
-isFetching = false; // Este es el semáforo o el bloqueo.
-totalDocs = null;
-
-async function get_board_onscrollNOSE(board_type_name) {
-
-    window.onscroll = async function () {
-        if (isLoading) return;
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-            isLoading = true;
-            try {
-                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-                if (!paginationData) {
-                    console.error("No se pudo obtener los siguientes elementos.");
-                    paginationData = { nextStartkey: null, nextStartkeyDocid: null };
-                    window.onscroll = null;
-                }
-                nextStartkey = paginationData.nextStartkey;
-                nextStartkeyDocid = paginationData.nextStartkeyDocid;
-                if (!nextStartkey) {
-                    window.onscroll = null;
-                }
-            }
-            catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                isLoading = false;
-            }
-        }
-
-    };
-}
 
 async function get_board_onscroll() {
     window.onscroll = async function () {
@@ -1018,16 +1086,11 @@ async function get_board_onscroll() {
     };
   }
 
-
 async function get_total_orders_group() {
-
      // let result = await db.allDocs(options);
      let result = await L_board_db.query('order_view/by_type_category_status', options);
-
-
-
 }
-  
+
 // CREO EL BOARD 
 async function get_board(board_type_name) {
     board_group_info = await L_board_db.get('board_group_' + board_type_name);

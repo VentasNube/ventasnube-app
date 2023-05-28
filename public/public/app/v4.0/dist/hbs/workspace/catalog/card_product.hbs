@@ -19,7 +19,7 @@
                         <img class="card_img_url"    src="{{{doc.picture_min}}}" alt="200x200">
                     </a>
                     {{#userCtx 'catalog' 'edit'}}
-                                        <div onclick="catalog_edit_item(this)" variant_id="{{{../doc.variant_id}}}"  id="variations_set_{{{../doc._id}}}" class="indicator one" product_id="{{{../doc._id}}}">
+                                        <div onclick="catalog_edit_item(this)" variant_id="{{{doc.variant_id}}}"  id="variations_set_{{{doc._id}}}" class="indicator one" product_id="{{{doc._id}}}">
                                             <div class="open_detail" width="18" height="27">
                                                 <span class=" material-icons">create</span>
                                                 <span class="quantity">9999</span>

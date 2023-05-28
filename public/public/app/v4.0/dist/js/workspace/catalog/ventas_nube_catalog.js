@@ -75,10 +75,6 @@ async function get_all_catalog_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
-
-L_catalog_db.on('error', function(err) {
-    debugger;
-  });
 //////////////////////////////
 // CATALOGO ( PRODUCTOS ) 2023 //
 //////////////////////////////
@@ -339,7 +335,7 @@ async function catalog_view_item_url(m_id, m_var_id) {
         console.log(product_doc_array);
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -381,8 +377,8 @@ async function catalog_edit_item(element) {
             attributes_list: attributes,
         }
 
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+       await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
+       await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
 
 
         console.log('product_doc_array', product_doc_array);
@@ -392,7 +388,7 @@ async function catalog_edit_item(element) {
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-      //  return item_print;
+        return item_print;
     } catch (err) {
         console.log(err);
     }
