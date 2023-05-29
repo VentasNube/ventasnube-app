@@ -160,8 +160,8 @@
             <div class="board-column">
                 <div class=" board-column-header {{{color}}}">
                     <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
-                    <div class="board-drag-handle board-column-header-tittle"> <span data-toggle="tooltip"
-                            data-placement="right" data-original-title="Cantidad de Ordenes">
+                    <div class="board-drag-handle board-column-header-tittle"> 
+                        <span class="board-item-conunt_{{id}}" data-toggle="tooltip" data-placement="right" data-original-title="Cantidad de Ordenes">
                             {{counter @index}}
                         </span>
                         {{{name}}}</div>
@@ -412,7 +412,7 @@
     };
 
     // CREA LA PRIMER INSTANCIA MUURI
-    function up_ventasnube_kanban() {
+    function up_ventasnube_kanban(board_group) {
         // Init the column grids so we can drag those items around.
         itemContainers.forEach(function (container) {
             grid = new Muuri(container, {
@@ -457,6 +457,7 @@
                     // console.log('END orderId:', orderId);
                     //console.log('END groupId:', newGroupId);
                     edit_order_group(boardName, orderId, newGroupId);
+                    coun_items_broup(boardName);
                 })
                 .on('layoutStart', function () {
                     boardGrid.refreshItems().layout();
@@ -556,8 +557,12 @@
             options.startkey_docid = nextStartkeyDocid;
         }
 
-       // let result = await db.allDocs(options);
+        // let result = await db.allDocs(options);
         let result = await L_board_db.query('order_view/by_type_category_status', options);
+
+
+
+
 
         if (result && result.rows && result.rows.length > 0) {
             nextStartkey = result.rows[result.rows.length - 1].key;

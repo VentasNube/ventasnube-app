@@ -5,7 +5,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 12123121212312122122123412112122353412122;
+const version = 1245222112312661212121212121212121253412122;
 
 
 

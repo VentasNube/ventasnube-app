@@ -740,6 +740,7 @@ async function new_group_order(element) {
     }
 }
 
+/// EDITAR GROUP POPUP
 async function new_board_put(doc) {
     try {
         console.log('Antes', doc);
@@ -754,9 +755,8 @@ async function new_board_put(doc) {
         console.log(err);
     }
 }
-//EDITAR GROUP POPUP
 
-// NEW BOARD POPUP START
+/// NEW BOARD POPUP START
 async function new_board_group(element, board_type_name) {
     try {
         const modal = document.getElementById('master_popup');
@@ -790,7 +790,7 @@ async function new_board_group(element, board_type_name) {
     }
 }
 
-// EDIT BOARD GROUP EDITO
+/// EDIT BOARD GROUP EDITO
 async function new_board_group_put(element) {
     try {
         const parametroUrl = await getUrlVal('t');
@@ -918,6 +918,7 @@ async function board_edit_group(element, board_type_name) {
         console.log(err);
     }
 }
+
 // EDIT BOARD GROUP EDITO
 async function edit_board_group_put(element) {
     try {
@@ -979,8 +980,6 @@ async function edit_board_group_put(element) {
     }
 }
 
-
-
 /// NUEVAS FUNCIONES CREAR ORDEN
 async function new_order(element) {
     const category_id = $(element).attr('category_id');
@@ -991,7 +990,7 @@ async function new_order(element) {
     const total_tax = $('#total_neto_tax').html();
 
     //const productItems = document.querySelectorAll('#total_cart_neto');
-   
+
     const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
     const workspace_id = ws_id;
     const board_group_conf = await L_board_db.get('board_group_' + category_id);
@@ -1039,7 +1038,7 @@ async function new_order(element) {
         total_product: total_product,
         total_tax: total_tax,
         total_discount: total_discount,
-        total:total_neto,
+        total: total_neto,
         payment_history: [
             {
                 id: 123,
@@ -1067,7 +1066,7 @@ async function new_order(element) {
                 addon: 'cargador bateria',
             }
         ],
-        
+
         failure: [
             {
                 update_datetime: '18/3/2021 18:45:10',
@@ -1075,7 +1074,7 @@ async function new_order(element) {
                 name: 'No enciende no carga',
             }
         ],
-           
+
         solutions: [
             {
                 update_datetime: '18/3/2021 18:45:10',
@@ -1088,10 +1087,10 @@ async function new_order(element) {
                 update_datetime: '18/3/2021 18:45:10',
                 user: 'smartmobile.com@gmail.com',
                 type: 'msj',
-                content:'El cliente dejo una contrasena 123421'
+                content: 'El cliente dejo una contrasena 123421'
             }
         ],
-        
+
         update_history: [
             {
                 update_datetime: '18/3/2021 18:45:10',
@@ -1152,6 +1151,8 @@ async function new_order(element) {
         var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
         var grid = columnGrids[groupIndex];
         add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+        coun_items_broup(board_group, category_id);
+
         Snackbar.show({
             text: 'Se creó la orden con éxito!',
             actionText: 'OK',
@@ -1318,7 +1319,7 @@ async function new_orderNOindiceincremental(element) {
 async function get_board_onscroll() {
     window.onscroll = async function () {
         if (isLoading) return;
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
             isLoading = true;
             try {
                 let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
@@ -1346,6 +1347,76 @@ async function get_total_orders_group() {
     let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
 
+function coun_items_broup3(grupos) {
+
+    console.log('grupos', grupos);
+    grupos.forEach(function (grupo) {
+        const group_id = grupo.id;
+        const elementoSuma = document.querySelector('.board-item-conunt_' + group_id);
+        console.log(`.board-item-conunt_${group_id}`);
+
+        L_board_db.createIndex({ group_id: group_id, estado: 'open' })
+            .then(function () {
+                return L_board_db.find({
+                    selector: {
+                        group_id: group_id,
+                        estado: "open"
+                    }
+                });
+            }).then(function (result) {
+                console.log('result', result);
+
+                const totalOrdenes = result.docs.length;
+
+                elementoSuma.innerHTML = totalOrdenes.toString()
+
+                // elementoSuma.textContent = totalOrdenes.toString();
+            }).catch(function (err) {
+                console.log(err);
+            });
+    });
+}
+
+async function coun_items_broup(board_type_name) {
+
+    var grupos_arr = await L_board_db.get('board_group_' + board_type_name);
+    //  console.log( 'board_group_info:', board_group_info);
+    const grupos = grupos_arr.board_group;
+    try {
+        console.log('grupos', grupos);
+        await L_board_db.createIndex({
+            index: {
+                fields: ['order_id']
+            }
+        });
+        // Buscar documentos que necesitan actualización
+        grupos.forEach(async function (grupo) {
+            const group_id = grupo.id;
+            const elementoSuma = document.querySelector('.board-item-conunt_' + group_id);
+            console.log(`.board-item-conunt_${group_id}`);
+            const result_items = await L_board_db.find({
+                selector: {
+                    type: 'order',
+                    status: "open",
+                    category_id: board_type_name,
+                    group_id: group_id
+                }
+            });
+            console.log('result', result_items);
+            const totalOrdenes = result_items.docs.length;
+            elementoSuma.innerHTML = totalOrdenes.toString();
+        });
+    }
+    catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
 // CREO EL BOARD 
 async function get_board(board_type_name) {
     board_group_info = await L_board_db.get('board_group_' + board_type_name);
@@ -1363,11 +1434,14 @@ async function get_board(board_type_name) {
     let parentElement = document.querySelector('#content_compiled');
     let id_compiled = '#' + parentElement.id;
     if (id_compiled) {
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
             let parentElement_nav = document.querySelector('#nav_bar_compiled');
             let id_compiled_nav = '#' + parentElement_nav.id;
             if (id_compiled_nav) {
-                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
+                    coun_items_broup(board_type_name);
+                   // add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+
                     get_board_onscroll();//activa el evento scroll para graer mas ordenes
                 });
             }
