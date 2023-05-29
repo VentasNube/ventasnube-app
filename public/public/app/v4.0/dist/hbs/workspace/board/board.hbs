@@ -385,7 +385,8 @@
     processedRows = 0;
     var isFetching = false;
     var totalDocs = null;
-    //Edito El paso de etapas 
+
+    // Edito El paso de etapas 
     async function edit_order_group(board_name, order_id, group_id) {
         try {
             const doc = await L_board_db.get(order_id); // Verificar si el documento ya existe
@@ -511,7 +512,6 @@
         });
     }
 
-
     //IMPRIME LAS TARJETAS EN EL DOM
     async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
         // Si ya se está ejecutando una búsqueda, sal de la función.
@@ -542,8 +542,6 @@
             isFetching = false;
         }
     }
-
-
 
     //HACE QUERY Y LA PAGINACION TRAE LOS RESULTADOS DE LA DB
     async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
@@ -577,121 +575,6 @@
             nextStartkeyDocid: nextStartkeyDocid
         };
     }
-
-
-
-/*
-
-    //IMPRIME LAS TARJETAS EN EL DOM
-    async function add_new_item_DOM_OK_no_borrar(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-        // Si ya se está ejecutando una búsqueda, sal de la función.
-        if (isFetching) {
-            return;
-        }
-        // Marca que estamos empezando una búsqueda.
-        isFetching = true;
-        try {
-            const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-            console.log('RESULT:',result)
-            //console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
-           // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
-            for (const row of result.rows) {
-                var group_id = row.doc.group_id;
-                var card_data = { doc: row.doc };
-                var board_gorup_id = row.doc.group_id;
-                var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
-                var grid = columnGrids[groupIndex];
-                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
-            }
-            return result;
-        } catch (error) {
-            console.error("Error in add_new_item_DOM: ", error);
-            throw error;
-        } finally {
-            // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
-            isFetching = false;
-        }
-    }
-
-
-async function add_new_item_DOM_no(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
-  // Si ya se está ejecutando una búsqueda, sal de la función.
-  if (isFetching) {
-    return;
-  }
-  // Marca que estamos empezando una búsqueda.
-  isFetching = true;
-
-  try {
-
-    const dbInfo = await L_board_db.info();
-    const totalDocs = dbInfo.doc_count;
-
-    const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-    console.log('RESULT:', result);
-    var totalDocs = result.total_rows; 
-
-    for (const row of result.rows) {
-      const group_id = row.doc.group_id;
-      const card_data = { doc: row.doc };
-      const board_gorup_id = row.doc.group_id;
-      const groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
-      const grid = columnGrids[groupIndex];
-      add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
-    }
-
-    if (result.rows.length < totalDocs) {
-      // Si aún no se han obtenido todos los documentos, continúa la paginación
-      await add_new_item_DOM(L_board_db, result.nextStartkey, result.nextStartkeyDocid, columnGrids);
-    }
-
-    return result;
-  } catch (error) {
-    console.error("Error in add_new_item_DOM: ", error);
-    throw error;
-  } finally {
-    // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
-    isFetching = false;
-  }
-}
-
-async function paginate_orders_no3(db, nextStartkey, nextStartkeyDocid, category_id) {
-  let options = {
-    include_docs: true,
-    limit: 2,
-  };
-
-  if (nextStartkey && nextStartkeyDocid) {
-    options.startkey = [nextStartkey];
-    options.startkey_docid = nextStartkeyDocid;
-  }
-
-  // Agrega la condición de category_id = "sell" en la consulta
-  options.startkey = [category_id, options.startkey];
-
-  let result = await db.allDocs(options);
-
-  if (result && result.rows && result.rows.length > 0) {
-    const totalDocs = result.total_rows; // Obtén el número total de documentos en la base de datos
-    const nextStartkey = result.rows[result.rows.length - 1].key[1]; // Obtén el siguiente startkey sin la condición de category_id
-    const nextStartkeyDocid = result.rows[result.rows.length - 1].id;
-
-    return {
-      rows: result.rows,
-      nextStartkey,
-      nextStartkeyDocid,
-      totalDocs,
-    };
-  } else {
-    return {
-      rows: [],
-      nextStartkey: null,
-      nextStartkeyDocid: null,
-      totalDocs: 0,
-    };
-  }
-}
-*/
 
     up_ventasnube_kanban();
     scrollerMove();

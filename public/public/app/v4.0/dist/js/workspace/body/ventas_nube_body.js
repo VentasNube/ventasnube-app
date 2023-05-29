@@ -268,6 +268,12 @@ function put_left_nav_docOLDOK() {
 
 function put_left_nav_doc() {
     // DOC DE NAVEGACION
+
+    try {
+        // Código que puede generar errores en PouchDB
+        // ...
+      
+   
     ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
 
     // Verificar si el documento ya existe y tiene una revisión (_rev)
@@ -378,6 +384,11 @@ function put_left_nav_doc() {
         // Manejar errores de Fetch
         console.log('Error de Fetch:', error);
     });
+} catch (error) {
+    console.error('Se produjo un error en ws_left_nav:', error);
+    // Maneja el error según tus necesidades
+  }
+
 }
 
 

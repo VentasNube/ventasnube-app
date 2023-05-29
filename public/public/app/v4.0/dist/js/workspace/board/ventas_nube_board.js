@@ -6,6 +6,19 @@ ws_left_nav_data = null;
 ws_lang_data = null;
 module_info = null;
 //// VARIABLES GLOBALES 
+
+/// BOARD TARJETAS TRAE LAS ORDENES
+columnGrids = [];
+boardElements = null;
+boardGrid = null;
+muuri = null;
+nextStartkey = ['open', 'order', 'sell'];
+nextStartkeyDocid = null;
+isLoading = false;
+boardsInitialized = false;
+isFetching = false; // Este es el semáforo o el bloqueo.
+totalDocs = null;
+
 /*var nextStartkey = ['order', 'sell'];
 var nextStartkeyDocid = null;
 var isLoading = false;
@@ -16,10 +29,20 @@ var boardGrid =  null;
 */
 
 
-// CREO LA DB
-L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+// Definiendo la URL de la base de datos remota
+//const url_R_db = 'http://<username>:<password>@localhost:5984/'; // Reemplaza con tus propios valores
+// Creando una instancia de la base de datos remota
+//const R_board_db = new PouchDB(url_R_db + ws_board_db);
+// Creando la base de datos local
+const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 
+
+// Variable para controlar el estado de conexión
+let isOnline = true;
+// CREO LA DB
+//L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 //SYNCRONIZO LOS DATOS 
+/*
 L_board_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true,
@@ -37,6 +60,162 @@ L_board_db.sync(url_R_db + ws_board_db, {
     $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
     //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
 });
+*/
+
+
+/*
+async function up_new_order_index(category_id) {
+    const doc_index = 'order_' + category_id + '_index'; // Reemplaza con el ID de tu documento
+    try {
+        const lastIndex = await R_board_db.get(doc_index);
+        lastIndex.index++;
+        await R_board_db.put(lastIndex);
+        console.log('UP NEW INDEX:', lastIndex.index);
+    } catch (err) {
+        if (err.name === 'not_found') {
+            console.error(`Documento con ID "${doc_index}" no encontrado`);
+        } else if (err.name === 'unknown_error') {
+            console.error('Ocurrió un error desconocido:', err);
+        } else {
+            console.error('Ocurrió un error:', err);
+        }
+    }
+}
+
+async function get_order_index(category_id) {
+    const doc_index = 'order_' + category_id + '_index'; // Reemplaza con el ID de tu documento
+    try {
+        const lastIndex = await R_board_db.get(doc_index);
+        up_new_order_index(category_id);
+        console.log(lastIndex);
+        console.log('LAST INDEX:', lastIndex.index);
+        return lastIndex.index;
+    } catch (err) {
+        if (err.name === 'not_found') {
+            console.error(`Documento con ID "${doc_index}" no encontrado`);
+        } else if (err.name === 'unknown_error') {
+            console.error('Ocurrió un error desconocido:', err);
+        } else {
+            return null;
+            console.error('Ocurrió un error:', err);
+        }
+    }
+}
+
+async function update_all_index_orders() {
+    try {
+        // Crear un índice
+        await L_board_db.createIndex({
+            index: {
+                fields: ['order_id']
+            }
+        });
+        // Buscar documentos que necesitan actualización
+        const result = await L_board_db.find({
+            selector: {
+                type: 'order',
+                order_id: null // Reemplaza 'fieldname' y 'value' por tus propios valores
+            }
+        });
+        console.log('UPDATE ORDERS NULL', result.docs);
+        const ordersToUpdate = result.docs;
+        const promises = [];
+        const parametroUrl = await getUrlVal('t');
+        var category_id = parametroUrl;
+        const doc_index = 'order_' + category_id + '_index'; // Reemplaza con el ID de tu documento
+        // Actualizar cada documento
+        console.log('doc_index', doc_index);
+        const lastIndex = await R_board_db.get(doc_index);
+        for (const order of ordersToUpdate) {
+            // const remoteOrderIndex = await R_board_db.get(doc_index);
+            // const remoteOrderIndex = get_order_index(category_id);
+            // console.log('remoteOrderIndex',remoteOrderIndex);
+            new_index = lastIndex.index++;
+            order.order_id = new_index;
+            console.log('NEW INDEX', new_index);
+            promises.push(L_board_db.put(order));
+            //const lastIndex = await R_board_db.get(doc_index);
+            //     lastIndex.index++;
+            //await R_board_db.put(lastIndex);
+        }
+        // Esperar a que todas las promesas se completen
+        await Promise.all(promises);
+        console.log('All updates completed');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function update_all_index_orders2() {
+//  const doc_index = 'order_' + category_id + '_index'; // Reemplaza con el ID de tu documento
+    try {
+
+        const lastIndex = await L_board_db.createIndex({
+            index: {
+                fields: ['fieldname']
+            }
+        }).then(() => {
+            // Luego puedes usar el método find() para buscar documentos
+            L_board_db.find({
+                selector: {
+                    order_id: null // Reemplaza 'fieldname' y 'value' por tus propios valores
+                }
+            }).then(result => {
+                console.log('UPDATE ORDERS NULL', result.docs);
+
+                const ordersToUpdate = result.docs;
+                const promises = [];
+                const parametroUrl = getUrlVal('t');
+                var board_type_name = parametroUrl;
+
+
+                // Reemplaza 'URL_DEL_SERVIDOR' con la URL correspondiente
+                ordersToUpdate.forEach(order => {
+                    const remoteOrderIndex = get_order_index(board_type_name);
+                    console.log('remoteOrderIndex', remoteOrderIndex);
+                    order.order_id = remoteOrderIndex;
+                    promises.push(L_board_db.put(order));
+                });
+
+            }).catch(err => {
+                console.error(err);
+            });
+        }).catch(err => {
+            console.error(err);
+        });
+
+
+
+    } catch {
+    }
+}*/
+
+//SYNCRONIZO LOS DATOS
+
+L_board_db.sync(url_R_db + ws_board_db, {
+    live: true,
+    retry: true
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+    // Evento de cambio
+}).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    // Evento de pausa
+    isOnline = false; // No hay conexión
+}).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    // Evento de activación
+    isOnline = true; // Hay conexión
+}).on('error', function (err) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+    // Evento de error
+    isOnline = false; // No hay conexión
+}).on('complete', function () {
+    // Evento de sincronización completada
+
+});
+
+
 
 //COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
 async function ws_board_start() {
@@ -46,7 +225,6 @@ async function ws_board_start() {
         // alert(parametroUrl);
         var board_name = parametroUrl;
         module_info = await L_board_db.get('board_group_' + board_name);
-
         // userCtx variable global de permisos y roles para filtrar las vistas
         // DOC DE CONFIGURACION GENERAL
         // ws_info = await L_board_db.get('ws_module_config', { include_docs: true, descending: true });
@@ -77,9 +255,10 @@ async function ws_board_start() {
 
     } catch (err) {
         // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+        console.log('ERROR BOARD START', err)
         Snackbar.show({
             text: err.reason,
-            actionText: '<span class="material-symbols-outlined">refresh</span> Refresh ',
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
             actionTextColor: "#0575e6",
             duration: Snackbar.LENGTH_INDEFINITE,
             action: () => { updateDocuments() }
@@ -137,8 +316,8 @@ async function query_orders(type, category_id) {
     }
 }
 
-// CREAR NUEVO TABLERO 2023
-// NEW BOARD POPUP START
+/// CREAR NUEVO TABLERO 2023
+/// NEW BOARD POPUP START
 async function new_board_star_intro(board_type_name) {
     try {
         const modal = document.getElementById('master_popup');
@@ -161,7 +340,7 @@ async function new_board_star_intro(board_type_name) {
     }
 }
 
-// PUT NUEVO BOARD 
+/// PUT NUEVO BOARD 
 async function put_new_board(board_name, data) {
     try {
         //  const currentDateTime = new Date().toLocaleString('es-ES');
@@ -412,7 +591,7 @@ async function btn_next_new_board(board_name, data) {
     };
 };
 
-//Creo nuevo grupo de ordenes
+/// Creo nuevo grupo de ordenes
 async function new_group_order(element) {
 
     const category_id = $(element).attr('category_id'); //Id del documento a edita
@@ -575,8 +754,8 @@ async function new_board_put(doc) {
         console.log(err);
     }
 }
-
 //EDITAR GROUP POPUP
+
 // NEW BOARD POPUP START
 async function new_board_group(element, board_type_name) {
     try {
@@ -801,294 +980,370 @@ async function edit_board_group_put(element) {
 }
 
 
-/// BOARD TARJETAS TRAE LAS ORDENES
-
-
-columnGrids = [];
-boardElements = null;
-boardGrid = null;
-muuri = null;
-
-
-nextStartkey = ['open', 'order', 'sell'];
-nextStartkeyDocid = null;
-isLoading = false;
-boardsInitialized = false;
-isFetching = false; // Este es el semáforo o el bloqueo.
-totalDocs = null;
-
-//// NUEVAS FUNCIONES INDEX DOC
-
-// Función para obtener el índice de pedido actual
-async function getOrderIndex(board_type_name) {
-    let orderIndexDoc;
-    try {
-      // Intenta obtener el documento de índice de la base de datos local
-      //orderIndexDoc = await localDb.get('order_index');
-      orderIndexDoc = await L_board_db.get('order_' + board_type_name + '_index');
-    } catch (error) {
-      if (error.name === 'not_found') {
-        // Si el documento de índice no existe, créalo con un índice inicial de 0
-        orderIndexDoc = { _id: 'order_' + board_type_name + '_index', index: 0 };
-        await L_board_db.put(orderIndexDoc);
-      } else {
-        throw error;
-      }
-    }
-    return orderIndexDoc.index;
-  }
-  
-  // Función para incrementar el índice de pedido
-  async function incrementOrderIndex(board_type_name) {
-    console.log('board_type_name',board_type_name);
-    let orderIndexDoc = await  L_board_db.get('order_' + board_type_name + '_index');
-    orderIndexDoc.index++;
-    await  L_board_db.put(orderIndexDoc);
-  }
-  
-  // Función para crear una nueva orden
-  async function createOrder() {
-
-    let orderIndex = await getOrderIndex();
-    incrementOrderIndex();
-  
-    let order = {
-      _id: 'order_' + orderIndex,
-      //...
-    };
-  
-    try {
-      // Guarda la nueva orden en la base de datos local
-      let response = await localDb.put(order);
-      console.log("Orden creada con éxito, ID del documento: ", response.id);
-    } catch (error) {
-      console.error("Error al crear la orden: ", error);
-      throw error;
-    }
-  }
-  
-
-
-  async function resolveConflicts(docId) {
-    try {
-      // Obtiene todas las revisiones conflictivas de un documento
-      let doc = await localDb.get(docId, { conflicts: true });
-  
-      if (doc._conflicts) {
-        let conflictRevs = doc._conflicts;
-  
-        // Resuelve cada conflicto
-        for (let rev of conflictRevs) {
-          let conflictDoc = await localDb.get(docId, { rev: rev });
-  
-          // Compara las marcas de tiempo de los documentos y mantiene la más reciente
-          if (parseInt(conflictDoc._id.split('_')[0]) > parseInt(doc._id.split('_')[0])) {
-            doc = conflictDoc;
-          } else {
-            // Si el documento local es más antiguo, crea un nuevo ID basado en la marca de tiempo actual
-            // y luego intenta poner el documento nuevamente
-            let newId = Date.now() + '_' + doc._id.split('_')[1];
-            doc._id = newId;
-            
-            // Elimina la revisión conflictiva
-            await localDb.remove(docId, rev);
-            
-            // Intenta poner el documento nuevamente
-            await localDb.put(doc);
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error al resolver conflictos: ", error);
-      throw error;
-    }
-  }
-
-
 
 /// NUEVAS FUNCIONES CREAR ORDEN
-
-///NUEVAS ORDENES 2023
-// CREAR NUEVA ORDEN EN LA DB
-/// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function new_order(element) {
+    const category_id = $(element).attr('category_id');
+    const total_neto = $('#total_cart_neto').html();
+    const total_product = $('#total_neto_prod').html();
+    const total_discount = $('#total_neto_discount').html();
+    const total_service = $('#total_neto_service').html();
+    const total_tax = $('#total_neto_tax').html();
 
-    const category_id = $(element).attr('category_id'); //Id del documento a edita
-    //const doc_id = category_id + '_order_' + new Date().getTime() + Math.random().toString().slice(2);
-
+    //const productItems = document.querySelectorAll('#total_cart_neto');
+   
     const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
-
-
-    const workspace_id = ws_id; //Id del documento a edita
-    // Comprobacion de datos de grupo 
+    const workspace_id = ws_id;
     const board_group_conf = await L_board_db.get('board_group_' + category_id);
     const board_group = board_group_conf.board_group;
-
-    const board_group_first = board_group[0]; // traigo el primer grupo de ordenes q esta disponible y guardo la id
-    //  console.log(board_group_first)
-    const group_id = board_group_first.id; //Id del documento a edita
+    const board_group_first = board_group[0];
+    const group_id = board_group_first.id;
     const entry_date = { hour, minutes } = await getDateTimeMinutes();
     const due_date = { hour, minutes } = await getDateTimeMinutes();
     const comments = '';
-    try {
-        const products = await get_cart_product();
-        // Llamo al nuevo indice
-        let orderIndex = await getOrderIndex(category_id);
-         incrementOrderIndex(category_id);
-
-        // console.log(products); // Puedes hacer lo que desees con los datos, como almacenarlos en una variable
-        const customer = {
-            id: 'client_id_xxxx',
-            name: 'Customer Name',
-            address: 'Customer Address',
-            phone: 'Customer Phone',
-            email: 'Customer Email'
-        };
-        var order_arr = {
-            // _id: 'sales_order_001',
-            _id: doc_id,
-            type: 'order',
-            category_id: category_id,
-            workspace_id: workspace_id,
-            status: 'open',
-            seen: false,
-            author: userCtx.email,
-            group_id: group_id,
-            order_id: orderIndex,
-            group_position: '1',
-            customer: customer,
-            comments: comments,
-            priority: {
-                id: '1',
-                value: 'urgente'
-            },
-            entry_date: entry_date,
-            due_date: due_date,
-            collaborators: [
-                {
-                    name: userCtx.name,
-                    email: userCtx.email,
-                    role: userCtx.role
-                }
-            ],
-            total_service: 39.95,
-            total_product: 39.95,
-            total_tax: 39.95,
-            total_discount: 39.95,
-            total: 39.95,
-            payment_history: [
-                {
-                    id: 123,
-                    payment_id: '21312312',
-                    payment_method: 'Credit Card',
-                    update_datetime: '18/3/2021 18:45:10',
-                    user: userCtx.email,
-                    total_tax: 21.00,
-                    total_discount: 12.95,
-                    total: 339.95,
-                    currency: {
-                        id: 'ARS',
-                        value: '$'
-                    }
-                }
-            ],
-            update_history: [
-                {
-                    update_datetime: '18/3/2021 18:45:10',
-                    user: 'smartmobile.com@gmail.com',
-                }
-            ],
-            products: products,
-            service: [
-                {
-                    product_id: 'Product 1',
-                    name: 'Product 1',
-                    variation_id: 'Product 1',
-                    product_img: 'Product 1',
-                    price: 10.99,
-                    tax: 21.00,
-                    quantity: 2,
-                    discount: 10,
-                    subtotal: 21.98
-                },
-                {
-                    service_id: 'Service 2',
-                    name: 'Service 2',
-                    variation_id: '1',
-                    product_img: 'http:.//',
-                    price: 100.99,
-                    tax: 21.00,
-                    quantity: 2,
-                    discount: 10,
-                    subtotal: 210.98
-                }
-            ],
-            shipping: {
-                address: 'Shipping Address',
-                city: 'Shipping City',
-                postal_code: 'Postal Code',
-                shipping_date: '2023-05-15',
-                shipping_status: 'pending',
-                carrier: {
-                    name: 'Carrier Name',
-                    phone: 'Carrier Phone',
-                    vehicle: 'Carrier Vehicle'
+    const products = await get_cart_product();
+    const customer = {
+        id: 'client_id_xxxx',
+        name: 'Customer Name',
+        address: 'Customer Address',
+        phone: 'Customer Phone',
+        email: 'Customer Email'
+    };
+    var order_arr = {
+        _id: doc_id,
+        type: 'order',
+        category_id: category_id,
+        workspace_id: workspace_id,
+        status: 'open',
+        seen: false,
+        author: userCtx.email,
+        group_id: group_id,
+        order_id: null, // Inicialmente se establece como null
+        group_position: '1',
+        customer: customer,
+        comments: comments,
+        priority: {
+            id: '1',
+            value: 'urgente'
+        },
+        entry_date: entry_date,
+        due_date: due_date,
+        collaborators: [
+            {
+                name: userCtx.name,
+                email: userCtx.email,
+                role: userCtx.role
+            }
+        ],
+        total_service: total_service,
+        total_product: total_product,
+        total_tax: total_tax,
+        total_discount: total_discount,
+        total:total_neto,
+        payment_history: [
+            {
+                id: 123,
+                payment_id: '21312312',
+                payment_method: 'Credit Card',
+                update_datetime: '18/3/2021 18:45:10',
+                user: userCtx.email,
+                total_tax: 21.00,
+                total_discount: 12.95,
+                total: 339.95,
+                currency: {
+                    id: 'ARS',
+                    value: '$'
                 }
             }
-        };
-        let response = await L_board_db.put(order_arr); // Crear un nuevo documento
+        ],
+        equipment: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+                type: 'Notebook',
+                trade: 'Samsung',
+                model: 'np300',
+                serial: '',
+                addon: 'cargador bateria',
+            }
+        ],
+        
+        failure: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+                name: 'No enciende no carga',
+            }
+        ],
+           
+        solutions: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+                name: 'Hay que reparar la palaca madre',
+            }
+        ],
+        activity: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+                type: 'msj',
+                content:'El cliente dejo una contrasena 123421'
+            }
+        ],
+        
+        update_history: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+            }
+        ],
+        products: products,
+        service: [
+            {
+                product_id: 'Product 1',
+                name: 'Product 1',
+                variation_id: 'Product 1',
+                product_img: 'Product 1',
+                price: 10.99,
+                tax: 21.00,
+                quantity: 2,
+                discount: 10,
+                subtotal: 21.98
+            },
+            {
+                service_id: 'Service 2',
+                name: 'Service 2',
+                variation_id: '1',
+                product_img: 'http:.//',
+                price: 100.99,
+                tax: 21.00,
+                quantity: 2,
+                discount: 10,
+                subtotal: 210.98
+            }
+        ],
+        shipping: {
+            address: 'Shipping Address',
+            city: 'Shipping City',
+            postal_code: 'Postal Code',
+            shipping_date: '2023-05-15',
+            shipping_status: 'pending',
+            carrier: {
+                name: 'Carrier Name',
+                phone: 'Carrier Phone',
+                vehicle: 'Carrier Vehicle'
+            }
+        }
+    };
+    let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
+    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
+    const order_id_new = letters + '-' + timestamp;
+    // Asigna el número de orden nuevo al documento de la orden
+    order_arr.order_id = order_id_new;
+    // Incrementa el número de orden actual en la base de datos local
+    // Crea la orden en la base de datos local
+    let response = await L_board_db.put(order_arr);
+    if (response.ok) {
+        //Trae el doc actualizado y pega en el DOM la tarjeta y crea el MUURI kamban
+        const doc = await L_board_db.get(response.id); // Verificar si el documento ya existe
+        var card_data = { doc: doc };
+        var board_gorup_id = doc.group_id;
+        var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
+        var grid = columnGrids[groupIndex];
+        add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+        Snackbar.show({
+            text: 'Se creó la orden con éxito!',
+            actionText: 'OK',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-right',
+            duration: 50000
+        });
+    }
+
+}
+
+// NO Lo USO
+async function new_orderNOindiceincremental(element) {
+    const category_id = $(element).attr('category_id');
+    const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
+    const workspace_id = ws_id;
+    const board_group_conf = await L_board_db.get('board_group_' + category_id);
+    const board_group = board_group_conf.board_group;
+    const board_group_first = board_group[0];
+    const group_id = board_group_first.id;
+    const entry_date = { hour, minutes } = await getDateTimeMinutes();
+    const due_date = { hour, minutes } = await getDateTimeMinutes();
+    const comments = '';
+    const products = await get_cart_product();
+    const customer = {
+        id: 'client_id_xxxx',
+        name: 'Customer Name',
+        address: 'Customer Address',
+        phone: 'Customer Phone',
+        email: 'Customer Email'
+    };
+    var order_arr = {
+        _id: doc_id,
+        type: 'order',
+        category_id: category_id,
+        workspace_id: workspace_id,
+        status: 'open',
+        seen: false,
+        author: userCtx.email,
+        group_id: group_id,
+        order_id: null, // Inicialmente se establece como null
+        group_position: '1',
+        customer: customer,
+        comments: comments,
+        priority: {
+            id: '1',
+            value: 'urgente'
+        },
+        entry_date: entry_date,
+        due_date: due_date,
+        collaborators: [
+            {
+                name: userCtx.name,
+                email: userCtx.email,
+                role: userCtx.role
+            }
+        ],
+        total_service: 39.95,
+        total_product: 39.95,
+        total_tax: 39.95,
+        total_discount: 39.95,
+        total: 39.95,
+        payment_history: [
+            {
+                id: 123,
+                payment_id: '21312312',
+                payment_method: 'Credit Card',
+                update_datetime: '18/3/2021 18:45:10',
+                user: userCtx.email,
+                total_tax: 21.00,
+                total_discount: 12.95,
+                total: 339.95,
+                currency: {
+                    id: 'ARS',
+                    value: '$'
+                }
+            }
+        ],
+        update_history: [
+            {
+                update_datetime: '18/3/2021 18:45:10',
+                user: 'smartmobile.com@gmail.com',
+            }
+        ],
+        products: products,
+        service: [
+            {
+                product_id: 'Product 1',
+                name: 'Product 1',
+                variation_id: 'Product 1',
+                product_img: 'Product 1',
+                price: 10.99,
+                tax: 21.00,
+                quantity: 2,
+                discount: 10,
+                subtotal: 21.98
+            },
+            {
+                service_id: 'Service 2',
+                name: 'Service 2',
+                variation_id: '1',
+                product_img: 'http:.//',
+                price: 100.99,
+                tax: 21.00,
+                quantity: 2,
+                discount: 10,
+                subtotal: 210.98
+            }
+        ],
+        shipping: {
+            address: 'Shipping Address',
+            city: 'Shipping City',
+            postal_code: 'Postal Code',
+            shipping_date: '2023-05-15',
+            shipping_status: 'pending',
+            carrier: {
+                name: 'Carrier Name',
+                phone: 'Carrier Phone',
+                vehicle: 'Carrier Vehicle'
+            }
+        }
+    };
+
+    try {
+        // Consulta el número de orden actual desde la base de datos remota
+        const remoteOrderIndex = await get_order_index(category_id)
+        // Asigna el número de orden actual al documento de la orden
+        order_arr.order_id = remoteOrderIndex;
+        // Incrementa el número de orden actual en la base de datos local
+        // Crea la orden en la base de datos local
+        let response = await L_board_db.put(order_arr);
         if (response.ok) {
-            console.log(response)
+            console.log(response);
             Snackbar.show({
-                text: 'Se creo la orden con exito!',
-                actionText: 'ok',
+                text: 'Se creó la orden con éxito!',
+                actionText: 'OK',
                 actionTextColor: "#0575e6",
                 pos: 'bottom-right',
                 duration: 50000
             });
         }
-
     } catch (error) {
-        Snackbar.show({
-            text: 'Error al obtener los datos:', error,
-            actionText: 'ok',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-left',
-            duration: 50000
-        });
-        console.error('Error al obtener los datos:', error);
+        // Si no hay conexión o se produce un error al obtener el número de orden actual,
+        // se guarda la orden con el order_id como null o cualquier otro valor que indique que aún no se ha asignado un número de orden.
+        order_arr.order_id = null;
+        // Crea la orden en la base de datos local sin asignar un número de orden
+        let response = await L_board_db.put(order_arr);
+        if (response.ok) {
+            console.log(response);
+            Snackbar.show({
+                text: 'Se creó la orden sin asignar un número de orden',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 50000
+            });
+        }
     }
 }
 
+///NUEVAS ORDENES 2023
+// CREAR NUEVA ORDEN EN LA DB
+/// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function get_board_onscroll() {
     window.onscroll = async function () {
-      if (isLoading) return;
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        isLoading = true;
-        try {
-          let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-          if (paginationData) {
-            nextStartkey = paginationData.nextStartkey;
-            nextStartkeyDocid = paginationData.nextStartkeyDocid;
-            if (!nextStartkey) {
-              window.onscroll = null;
+        if (isLoading) return;
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            isLoading = true;
+            try {
+                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                if (paginationData) {
+                    nextStartkey = paginationData.nextStartkey;
+                    nextStartkeyDocid = paginationData.nextStartkeyDocid;
+                    if (!nextStartkey) {
+                        window.onscroll = null;
+                    }
+                } else {
+                    console.error("No se pudo obtener los siguientes elementos.");
+                    window.onscroll = null;
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                isLoading = false;
             }
-          } else {
-            console.error("No se pudo obtener los siguientes elementos.");
-            window.onscroll = null;
-          }
-        } catch (error) {
-          console.error('An error occurred:', error);
-        } finally {
-          isLoading = false;
         }
-      }
     };
-  }
+}
 
 async function get_total_orders_group() {
-     // let result = await db.allDocs(options);
-     let result = await L_board_db.query('order_view/by_type_category_status', options);
+    // let result = await db.allDocs(options);
+    let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
 
 // CREO EL BOARD 
@@ -1108,15 +1363,12 @@ async function get_board(board_type_name) {
     let parentElement = document.querySelector('#content_compiled');
     let id_compiled = '#' + parentElement.id;
     if (id_compiled) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
             let parentElement_nav = document.querySelector('#nav_bar_compiled');
             let id_compiled_nav = '#' + parentElement_nav.id;
             if (id_compiled_nav) {
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
-
+                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
                     get_board_onscroll();//activa el evento scroll para graer mas ordenes
-
-
                 });
             }
         });
@@ -1130,7 +1382,6 @@ async function get_board(board_type_name) {
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
 async function get_cart_product() {
     const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
-
     const products = [];
 
     for (const item of productItems) {
@@ -1241,7 +1492,7 @@ function datetimePiker() {
 
 scrollerMove();
 $(document).ready(function () {
-    window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
+    //  window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
 
 });
 

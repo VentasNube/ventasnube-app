@@ -1,26 +1,22 @@
+
+//Archivo recuperado el OK-20-5-23.
+
+// importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
-const version = 12123423122211212121223121211222334;
+
+
+const version = 12123121212312122122123412112122353412122;
+
+
 
 const expectedCaches = ['ventasnube-v-' + version];
 
-
-
 self.addEventListener('install', event => {
-  self.skipWaiting();
+  self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (!expectedCaches.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+
 });
 
 self.addEventListener('message', function (event) {
@@ -42,10 +38,8 @@ workbox.core.setCacheNameDetails({
 });
 
 workbox.precaching.precacheAndRoute([
-  // Rutas de archivos para precachear
-
-  // Rutas de archivos para precachear
-   //{ url: '/login', revision: version },
+  // { url: '/', revision: version },
+  //{ url: '/login', revision: version },
   //{ url: '/workspace/home', revision: version }, 
   { url: '/workspace/app/?type=catalog', revision: version },
   { url: '/workspace/app', revision: version }, //Con este / explicita que mostrar cuando no hay coneccion a la red y devuelve el contenido
@@ -77,7 +71,10 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/plugins/iCheck/icheck.min.js', revision: version },
   // Fuentes js Handelbar POUCHDB
   { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
+  { url: '/public/app/v4.0/plugins/pouchdb/pouchdb-8/pouchdb-8.0.1.min.js', revision: version },
+
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
+  
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
   // Fuentes js plugins
   { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
@@ -141,7 +138,7 @@ workbox.precaching.precacheAndRoute([
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', revision: version },
-
+  
   { url: '/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', revision: version },
   
 
@@ -150,6 +147,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },
 ]);
+
 
 workbox.routing.registerRoute(
   /ruta\/al\/archivo\/config.json/,
@@ -164,15 +162,17 @@ workbox.routing.registerRoute(
   })
 );
 
+
 workbox.routing.registerRoute(
   ({ request }) => request.destination === 'image',
   new workbox.strategies.CacheFirst({
+    //new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'vnapp-images-' + version,
     plugins: [
       new workbox.expiration.ExpirationPlugin({
         maxEntries: 1000,
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-      }),
-    ],
+      })
+    ]
   })
 );
