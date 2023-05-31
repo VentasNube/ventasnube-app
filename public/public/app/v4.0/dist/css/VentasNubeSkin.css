@@ -11363,6 +11363,8 @@ h2 {
     border-radius: 5px;
     background-color: #bdbdbd;
 }
+
+
 .board-group {
     width: 100%;
    /* width: auto;*/
@@ -11385,6 +11387,7 @@ h2 {
     margin-left: 0;
     min-height: 600px;
 }
+
 .board-column {
     position: absolute;
     left: 0;
@@ -11396,6 +11399,7 @@ h2 {
     /* min-height: 600px; */
     border-radius: 15px;
 }
+
 .board-column.muuri-item-releasing {
     z-index: 2;
 }
@@ -11449,6 +11453,8 @@ the "overflow: scroll/auto" */
 
 /* Never ever set "overflow: auto/scroll"
 to the muuri element, stuff will break */
+
+
 .board-column-content {
     position: relative;
     border: 2px solid transparent;
