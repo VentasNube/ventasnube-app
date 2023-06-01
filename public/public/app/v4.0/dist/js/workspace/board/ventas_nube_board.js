@@ -348,25 +348,26 @@ async function put_new_board(board_name, data) {
         let doc = {};
         var board_name
         const group_id = 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2);
+        //  const group_id = 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2);
         if (board_name == 'sell') {
             var board_group = [
                 {
-                    "id": "1",
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Nuevas pedidos',
                     "color": "bg-green"
                 },
                 {
-                    "id": "2",
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Presupuestos',
                     "color": "bg-red"
                 },
                 {
-                    "id": "3",
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Aceptados',
                     "color": "bg-red"
                 },
                 {
-                    "id": "4",
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -374,17 +375,17 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'purcharse') {
             var board_group = [
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Nuevas compras',
                     "color": "bg-green"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Pedidos',
                     "color": "bg-red"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -392,27 +393,27 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_order') {
             var board_group = [
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Presupuestar',
                     "color": "bg-green"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Presupuestados',
                     "color": "bg-yellow"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Aceptados',
                     "color": "bg-green"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'En curso',
                     "color": "bg-purple"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Finalizados',
                     "color": "bg-blue"
                 }
@@ -420,22 +421,22 @@ async function put_new_board(board_name, data) {
         } else if (board_name == 'service_turn') {
             var board_group = [
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Nuevos',
                     "color": "bg-green"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Asignados',
                     "color": "bg-red"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Para hoy',
                     "color": "bg-green"
                 },
                 {
-                    "id": group_id,
+                    "id": 'board_group_id' + new Date().getTime() + Math.random().toString().slice(2),
                     "name": 'Finalizados',
                     "color": "bg-green"
                 }
@@ -1151,8 +1152,7 @@ async function new_order(element) {
         var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
         var grid = columnGrids[groupIndex];
         add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
-        coun_items_broup(board_group, category_id);
-
+        coun_items_broup(category_id);
         Snackbar.show({
             text: 'Se creó la orden con éxito!',
             actionText: 'OK',
@@ -1346,47 +1346,14 @@ async function get_total_orders_group() {
     // let result = await db.allDocs(options);
     let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
-
-function coun_items_broup3(grupos) {
-
-    console.log('grupos', grupos);
-    grupos.forEach(function (grupo) {
-        const group_id = grupo.id;
-        const elementoSuma = document.querySelector('.board-item-conunt_' + group_id);
-        console.log(`.board-item-conunt_${group_id}`);
-
-        L_board_db.createIndex({ group_id: group_id, estado: 'open' })
-            .then(function () {
-                return L_board_db.find({
-                    selector: {
-                        group_id: group_id,
-                        estado: "open"
-                    }
-                });
-            }).then(function (result) {
-                console.log('result', result);
-
-                const totalOrdenes = result.docs.length;
-
-                elementoSuma.innerHTML = totalOrdenes.toString()
-
-                // elementoSuma.textContent = totalOrdenes.toString();
-            }).catch(function (err) {
-                console.log(err);
-            });
-    });
-}
-
+// Cuento los items totales en cada grupo
 async function coun_items_broup(board_type_name) {
-
-    var grupos_arr = await L_board_db.get('board_group_' + board_type_name);
-    //  console.log( 'board_group_info:', board_group_info);
-    const grupos = grupos_arr.board_group;
     try {
-        console.log('grupos', grupos);
+        var grupos_arr = await L_board_db.get('board_group_' + board_type_name);
+        const grupos = grupos_arr.board_group;
         await L_board_db.createIndex({
             index: {
-                fields: ['order_id']
+                fields: ['type', 'status', 'category_id']
             }
         });
         // Buscar documentos que necesitan actualización
@@ -1410,7 +1377,7 @@ async function coun_items_broup(board_type_name) {
     catch (err) {
         console.log(err);
         Snackbar.show({
-            text: err.name,
+            text: err,
             actionText: 'Ok',
             actionTextColor: "#0575e6",
         });
@@ -1419,36 +1386,46 @@ async function coun_items_broup(board_type_name) {
 
 // CREO EL BOARD 
 async function get_board(board_type_name) {
-    board_group_info = await L_board_db.get('board_group_' + board_type_name);
-    //  console.log( 'board_group_info:', board_group_info);
-    const board_group = board_group_info.board_group;
-    const board_data = {
-        module_info: module_info,
-        board_group: board_group,
-        board_group_info: board_group_info,
-        board_type_name: board_type_name,
-        ws_lang_data: ws_lang_data,
-        ws_left_nav_data: ws_left_nav_data,
-        user_roles: user_Ctx.userCtx.roles,
-    };
-    let parentElement = document.querySelector('#content_compiled');
-    let id_compiled = '#' + parentElement.id;
-    if (id_compiled) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
-            let parentElement_nav = document.querySelector('#nav_bar_compiled');
-            let id_compiled_nav = '#' + parentElement_nav.id;
-            if (id_compiled_nav) {
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
-                    coun_items_broup(board_type_name);
-                   // add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-
-                    get_board_onscroll();//activa el evento scroll para graer mas ordenes
-                });
-            }
+    try {
+        board_group_info = await L_board_db.get('board_group_' + board_type_name);
+        const board_group = board_group_info.board_group;
+        const board_data = {
+            module_info: module_info,
+            board_group: board_group,
+            board_group_info: board_group_info,
+            board_type_name: board_type_name,
+            ws_lang_data: ws_lang_data,
+            ws_left_nav_data: ws_left_nav_data,
+            user_roles: user_Ctx.userCtx.roles,
+        };
+        let parentElement = document.querySelector('#content_compiled');
+        let id_compiled = '#' + parentElement.id;
+        if (id_compiled) {
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/board.hbs', id_compiled, board_data, function () {
+                let parentElement_nav = document.querySelector('#nav_bar_compiled');
+                let id_compiled_nav = '#' + parentElement_nav.id;
+                if (id_compiled_nav) {
+                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
+                        coun_items_broup(board_type_name);
+                        // add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                        get_board_onscroll();//activa el evento scroll para graer mas ordenes
+                    });
+                }
+            });
+        } else {
+            // alert('get_board parentElement NO ES un elemento DOM');
+            console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+        }
+    }
+    catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: err.name,
+            actionText: 'Ok',
+            actionTextColor: "#0575e6",
         });
-    } else {
-        // alert('get_board parentElement NO ES un elemento DOM');
-        console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+        new_board_star_intro(board_type_name)
+
     }
 }
 
@@ -1457,27 +1434,21 @@ async function get_board(board_type_name) {
 async function get_cart_product() {
     const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
     const products = [];
-
     for (const item of productItems) {
         const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
         const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
         const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
         const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
-
         const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
         const price = priceMatch ? parseFloat(priceMatch[1]) : null;
-
         const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
         const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
-
         const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
         const discount = discountMatch ? {
             percentage: parseFloat(discountMatch[1]),
             amount: parseFloat(discountMatch[2])
         } : null;
-
         const subtotal = price * quantity;
-
         const product = {
             product_id: productName,
             name: productName,
@@ -1489,7 +1460,6 @@ async function get_cart_product() {
             discount: discount,
             subtotal: subtotal
         };
-
         products.push(product);
     }
 

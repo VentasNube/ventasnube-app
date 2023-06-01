@@ -5,6 +5,12 @@ var search_fuse = null;
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
+
+    L_catalog_db.on('error', function (err) { 
+        debugger; 
+        console.log(err);
+    });
+
     let response = await L_catalog_db.query(
         'get/seach', {
         include_docs: true,
