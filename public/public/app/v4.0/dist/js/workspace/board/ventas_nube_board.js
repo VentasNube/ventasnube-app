@@ -1390,14 +1390,17 @@ async function get_board(board_type_name) {
         board_group_info = await L_board_db.get('board_group_' + board_type_name);
         const board_group = board_group_info.board_group;
         const board_data = {
-            module_info: module_info,
+            module_info: board_group_info,
             board_group: board_group,
+            module_name: 'board',
             board_group_info: board_group_info,
             board_type_name: board_type_name,
             ws_lang_data: ws_lang_data,
             ws_left_nav_data: ws_left_nav_data,
             user_roles: user_Ctx.userCtx.roles,
         };
+
+        console.log('BOARD DATA',board_data);
         let parentElement = document.querySelector('#content_compiled');
         let id_compiled = '#' + parentElement.id;
         if (id_compiled) {

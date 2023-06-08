@@ -5,8 +5,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 12452345612312312121221121211788789412122;
-
+const version = 67091234187686112376812121121221212235121212211211211212121812522;
 
 
 const expectedCaches = ['ventasnube-v-' + version];
@@ -62,6 +61,7 @@ workbox.precaching.precacheAndRoute([
 
   { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css', revision: version },
   { url: 'public/app/v4.0/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js', revision: version },
+  
   // Fuentes js plugins
   { url: '/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js', revision: version },
   { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
@@ -99,6 +99,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/catalog/ventas_nube_catalog.js ', revision: version },
   //Board
   { url: '/public/app/v4.0/dist/js/workspace/board/ventas_nube_board.js ', revision: version },
+    //Contact
+    { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
 
   //Templates body de Top bar y left bar
   { url: '/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', revision: version },
@@ -146,6 +148,12 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },
+
+  //CONTACT
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', revision: version },
+
+  
+
 ]);
 
 

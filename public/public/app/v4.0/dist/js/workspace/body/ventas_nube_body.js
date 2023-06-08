@@ -137,7 +137,9 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     else if (ws_m_s == 'board') {
        //alert('GET MODULE FUNCION OK');
        console.log('GET MODULE FUNCION OK');
+       ws_board_start();
        get_board(m_t_id);
+       //ws_board_start();
         // get_box();
     }
     else if (ws_m_s == 'account') {
@@ -268,14 +270,10 @@ function put_left_nav_docOLDOK() {
 
 function put_left_nav_doc() {
     // DOC DE NAVEGACION
-
     try {
         // Código que puede generar errores en PouchDB
         // ...
-      
-   
     ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
     // Verificar si el documento ya existe y tiene una revisión (_rev)
     if (ws_left_nav && ws_left_nav._rev) {
         // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
@@ -351,7 +349,7 @@ function put_left_nav_doc() {
                 }
             });
         } else {
-            Snackbar.show({
+            /*Snackbar.show({
                 text: err.reason,
                 width: '475px',
                 actionTextColor: '#ff0000',
@@ -361,8 +359,8 @@ function put_left_nav_doc() {
                     $(element).css('opacity', 0);
                     location.reload();
                 }
-            });
-            //alert(data.msj + 'Workspace ID: ' + data.ws_id);
+            });*/
+            alert(data.msj + 'Workspace ID: ' + data.ws_id);
         }
     })
     .catch(error => {

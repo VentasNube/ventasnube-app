@@ -29,6 +29,14 @@ return [
         't_search' => 'Busca lo que sea..',
         'b_search_tittle' => 'Buscar lo que sea..',
         'search_icon' => 'search',
+        //CONTACTS
+
+        'address_title' => 'Nuevo Contacto',
+        'address_street' => 'Calle',
+        'address_number' => 'Número',
+        'address_floor' => 'Piso',
+        'address_city' => 'Ciudad',
+        'address_state' => 'Provincia/Estado',
 
         //BOARDS
         //Editar board

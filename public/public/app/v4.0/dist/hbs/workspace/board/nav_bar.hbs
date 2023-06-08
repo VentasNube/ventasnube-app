@@ -9,25 +9,31 @@
                     <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
                         class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
                         data-toggle="dropdown" aria-expanded="true">
-                        <span class="material-icons">
-                            {{#with module_info.data}} {{m_t_icon}}{{/with}}</span>
-                        <span class="this_m_t_name"> {{#with module_info.data}} {{m_t_name}}{{/with}}</span>
+
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../module_info.category_id }}
+                        <span class="material-icons">{{m_t_icon}}</span>
+                        <span class="this_m_t_name">{{m_t_name}}</span>
+                        {{/ifEquals}}
+                        {{/each}}
+
                         <i class="material-icons">expand_more</i>
                     </button>
-
                     <ul class="dropdown-menu pull-right">
                         {{#each ws_left_nav_data.m_t}}
+                            <li class="margin-5">
+                                <a class="" onclick="get_module_type_nav(this)" 
+                                    {{#ifEquals m_t_type_action "1" }}
+                                    href="{{m_t_url}}" 
+                                    {{else}}
+                                    m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                                    s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#" 
+                                    {{/ifEquals}}>
 
-                        <li class="margin-5">
-                            <a onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                                s_url_t_m="{{{../m_url}}}" m_t_url="{{{m_t_url}}}"
-                                class="l_nav_t_m btn-status btn {{{m_t_color}}} text" href="#" role="button"
-                                data-toggle="tooltip" data-placement="top" data-original-title="{{p_description}}">
-                                <span class="material-icons">{{m_t_icon}}</span>
-                                <span class="this_m_t_name">{{m_t_name}}</span>
-                            </a>
-                        </li>
-
+                                    <span class="material-icons">{{m_t_icon}}</span>
+                                    <span class="this_m_t_name">{{m_t_name}}</span>
+                                </a>
+                            </li>
                         {{/each}}
                     </ul>
                 </div>

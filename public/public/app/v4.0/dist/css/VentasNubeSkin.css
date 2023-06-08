@@ -12712,3 +12712,11 @@ board-item-content
     border-radius: 10px;
 }
 
+/* telefono stylo */
+
+.iti {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+

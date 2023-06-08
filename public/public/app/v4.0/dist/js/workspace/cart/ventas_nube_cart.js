@@ -31,8 +31,15 @@ var cart_open = readCookie("left_nav_open_ws_"+ws_id);
     }
 }
 
-function get_right_cart(ws_info, ws_lang_data,ws_left_nav_data) {
+async function get_right_cart(ws_info, ws_lang_data,ws_left_nav_data) {
+
+    // board_group_info = await L_board_db.get('board_group_' + board_type_name);
+    //const board_group = board_group_info.board_group;
+   // const board_name = await getUrlVal('t');
+
     var ws_cart = {
+        module_name: 'board',
+        board_type_name: 'sell',
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         ws_left_nav_data:ws_left_nav_data
