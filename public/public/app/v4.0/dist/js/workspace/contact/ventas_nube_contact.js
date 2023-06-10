@@ -16,6 +16,7 @@ module_info = null;
 // Creando la base de datos local
 const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
 
+
 //SYNCRONIZO LOS DATOS
 
 L_contact_db.sync(url_R_db + ws_board_db, {
@@ -82,7 +83,7 @@ async function ws_contact_start() {
 }
 
 /// Ordenes GET MAP REDUCE FILTRO POR TIPO
-async function query_orders(type, category_id) {
+async function query_ordersNO(type, category_id) {
     try {
 
         const result = await L_contact_db.changes({
@@ -147,7 +148,7 @@ async function add_new_contact(element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', '#master_popup', data);
        // save_new_conctact();
     } catch (err) {
-        console.log('ERROR BOARD START', err)
+        console.log('ERROR add_new_contact', err)
         Snackbar.show({
             text: err.reason,
             actionText: '<span class="material-icons">refresh</span> Refresh ',
@@ -160,22 +161,28 @@ async function add_new_contact(element) {
     // Guardo los datos del nuevo contacto
 async function new_contact_put(user_data) {
         try {
-            // console.log("new_contact_put formData",user_data);
-            var doc = {}
-            const doc_id = 'contact_' + new Date().getTime() + Math.random().toString().slice(2);
+            var doc = {};
+            const doc_id = 'contact_'+  + new Date().getTime() + Math.random().toString().slice(2);
             doc._id = doc_id;
-            doc.user_data = user_data;
-            // doc._rev = doc._rev;
-            //var validate = await save_new_conctact()
+            doc.type = 'contact';
+            doc.status = 'active';
+            doc.create_date = new Date(); //fecha actual del navegador
+            doc.create_user = user_Ctx.userCtx.roles.name; //fecha actual del navegador
+            //doc.user_data = user_data;
+            doc = {...doc, ...user_data};
             const response = await L_contact_db.put(doc);
-            $('#master_popup').modal('hide');
-            Snackbar.show({
-                text: 'Se creo el contacto con éxito!',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-            });
+
+            if(response.ok){
+                $('#master_popup').modal('hide');
+                Snackbar.show({
+                    text: 'Se creo el contacto con éxito!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+            }
+
         } catch (error) {
-            console.error('Error al crear el documento:', error);
+            console.error('Error al crear el contacto:', error);
         }
 }
 

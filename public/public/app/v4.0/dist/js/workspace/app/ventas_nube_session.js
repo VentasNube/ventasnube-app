@@ -208,7 +208,7 @@ user_db.sync(url_R_db + userDb, {
     }
 });
 
-var userCtx = '';
+var userCtx;
 //Creo y conecto con userDB local 
 u_session = new PouchDB(url_R_db, { skip_setup: true });
 async function _session(ws_lang_data) {

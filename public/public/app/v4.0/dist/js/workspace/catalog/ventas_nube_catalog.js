@@ -99,6 +99,9 @@ function get_nav_catalog(ws_info, ws_lang_data) {
 };
 // TRAIGO LOS PRODUCTOS DEL CATALOGO
 function get_items_catalog(ws_id) {
+
+    
+
     var ws_catalog = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,

@@ -32,12 +32,25 @@ return [
         //CONTACTS
 
         'address_title' => 'Nuevo Contacto',
+        'contact_first_name' => 'Nombre (Obligatorio)',
+        'contact_last_name' => 'Apellido (Obligatorio)',
+        'document_number' => 'Documento (opcional)',
+        'contact_email' => 'Email (opcional)',
+        'contact_phone' => 'Celular (opcional)',
+        //
         'address_street' => 'Calle',
         'address_number' => 'Número',
         'address_floor' => 'Piso',
         'address_city' => 'Ciudad',
         'address_state' => 'Provincia/Estado',
 
+       
+        
+        
+        
+        
+        
+   
         //BOARDS
         //Editar board
         'm_new_board' => 'Nuevo Tablero',

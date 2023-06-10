@@ -46,42 +46,8 @@
             <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
                 placeholder="Buscar contacto..">
         </div>
-        <ul class="dropdown-menu dropdown-subjet-div">
-            <!--li class="margin-5">
-                  <div class="text-center">
-                      No hay conicidencias :(
-                  </div>
-                </li-->
-            <li class="margin-5">
-                <a contact_id="{{{m_id}}}" class="" role="button" data-toggle="tooltip" data-placement="top"
-                    data-original-title="{{p_description}}">
-                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <!--img src="/public/dist/img/product/min/arroz.jpg" alt=""-->
-                        <div class="round-icon user m"><span> m </span></div>
-                    </div>
-                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <div class="s-card-actv-item-name">
-                            Carlos Alfonso Medinaaaaaaaaaaa
-                        </div>
-                        <div class="s-card-actv-item-name">carlosalfonso@gmail.com</div>
-                    </div>
-                </a>
-            </li>
-            <li class="margin-5">
-                <a contact_id="{{{m_id}}}" class="" role="button" data-toggle="tooltip" data-placement="top"
-                    data-original-title="{{p_description}}">
-                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <!--img src="/public/dist/img/product/min/arroz.jpg" alt=""-->
-                        <div class="round-icon user m"><span> m </span></div>
-                    </div>
-                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <div class="s-card-actv-item-name">
-                            Carlos Alfonso Medina
-                        </div>
-                        <div class="s-card-actv-item-name">carlosalfonsoo@gmail.com</div>
-                    </div>
-                </a>
-            </li>
+        <ul id="contact_auto_subjet" class="dropdown-menu dropdown-subjet-div">
+            
         </ul>
     </div>
 
@@ -256,19 +222,137 @@
     </div>
 </div>
 
-<script>
-    //#### EJECUTO EL CODIGO DEL CART APRA Q INICIALICE CUANDO LO CARGO///
-    /*  get_cart(ws_id);
-      get_fav(ws_id);
-      get_cart_change(ws_id);
-      get_fav_change(ws_id);
-   $("#t_cart").click(function () {
-          $('#cart_footer').show();
-      });
+
+<script id="contact_search_item_templateNO2" type="text/x-handlebars-template">
   
-      $("#t_fav").click(function () {
-          $('#cart_footer').hide();
-      });
-      */
+       {{#each this}}
+            <li class="margin-5">
+                <a contact_id="" class="" role="button" data-toggle="tooltip" data-placement="top"
+                    data-original-title="">
+                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <div class="round-icon user m"><span> </span></div>
+                    </div>
+                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <div class="s-card-actv-item-name">
+                            {{item.contact_first_name}}
+                        </div>
+                        <div class="s-card-actv-item-name"></div>
+                        <div class="s-card-actv-item-name"></div>
+                    </div>
+                </a>
+            </li>
+        {{/each}}
+ 
+</script>
+<script id="contact_search_item_templateOLNO" type="text/x-handlebars-template">
+  
+       {{#each this}}
+            <li class="margin-5">
+                <a contact_id="{{{item._id}}}" class="" role="button" data-toggle="tooltip" data-placement="top"
+                    data-original-title="{{item.address}} {{item.address_number}} {{item.address_floor}}{{item.address_state}}{{item.address_country}}">
+                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <div class="round-icon user m"><span> {{item.contact_last_name}} </span></div>
+                    </div>
+                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <div class="s-card-actv-item-name">
+                            {{item.contact_first_name}}{{item.contact_last_name}}
+                        </div>
+                        <div class="s-card-actv-item-name">{{item.document_number}}</div>
+                        <div class="s-card-actv-item-name">{{item.phone}}</div>
+                    </div>
+                </a>
+            </li>
+        {{/each}}
+ 
+</script>
+
+<script id="contact_search_item_template" type="text/x-handlebars-template">
+    <li class="margin-5">
+        <a contact_id="{{item._id}}" class="" role="button" data-toggle="tooltip" data-placement="top"
+            data-original-title="{{item.address}} {{item.address_number}} {{item.address_floor}}{{item.address_state}}{{item.address_country}}">
+            <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="round-icon user m"><span>{{item.contact_last_name}}</span></div>
+            </div>
+            <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                <div class="s-card-actv-item-name">
+                    {{item.contact_first_name}}{{item.contact_last_name}}
+                </div>
+                <div class="s-card-actv-item-name">{{item.document_number}}</div>
+                <div class="s-card-actv-item-name">{{item.contact_phone}}</div>
+            </div>
+        </a>
+    </li>
+</script>
+
+<script>
+// Este es tu método de búsqueda asíncrono
+async function searchContacts(query) {
+    try {
+
+        const contact_search_options = {
+            includeScore: true,
+            keys: ['contact_first_name', 'contact_last_name', 'document_number', 'phone']
+        };
+        let contact_search_fuse;
+        // Obtén todos los documentos que comienzan con 'contact_'
+        const allDocs = await L_contact_db.allDocs({ 
+            include_docs: true,
+            startkey: 'contact_',
+            endkey: 'contact_\ufff0'
+        });
+        console.log('AllDOCS',allDocs);
+        // Crea una nueva instancia de Fuse con los documentos obtenidos
+        contact_search_fuse = new Fuse(allDocs.rows.map(row => row.doc), contact_search_options);
+
+      
+        // Haz la búsqueda con Fuse
+        const data = contact_search_fuse.search(query);
+        /*
+        // Renderiza los resultados con Handlebars
+        const source = document.querySelector('#contact_search_item_template').innerHTML;
+        const template = Handlebars.compile(source);
+        const html = template({ user_data: result });
+        // Inserta el HTML en tu contenedor
+        console.log("RESULT SEARCH CONTACT", result);
+        console.log("html template", html);
+        document.querySelector('#contact_auto_subjet').innerHTML = html;
+        */
+
+
+        // Obtiene una referencia al contenedor
+     /*   const contactListContainer = document.querySelector('#contact_auto_subjet');
+        // Renderiza los resultados con Handlebars
+        const source = document.querySelector('#contact_search_item_template').innerHTML;
+        const template = Handlebars.compile(source);
+        const html = template(result);
+    */
+        const source = document.querySelector('#contact_search_item_template').innerHTML;
+        const template = Handlebars.compile(source);
+        const html = template(data);
+        document.querySelector('#contact_auto_subjet').innerHTML = html;
+
+
+
+        //console.log("RESULT SEARCH CONTACT", result);
+      //  console.log("html template", html);
+        // Reemplaza todo el contenido del contenedor con el HTML generado por Handlebars
+       // contactListContainer.innerHTML = html;
+
+    } catch (error) {
+        // Muestra el error en un Snackbar
+        Snackbar.show({
+            text: 'Hubo un error en la búsqueda: ' + error.message,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
+// Añade un event listener al input para que realice la búsqueda cada vez que cambie
+document.querySelector('#cart_user_input').addEventListener('input', (event) => {
+    searchContacts(event.target.value);
+});
+
 
 </script>
+
