@@ -2,6 +2,43 @@
 var all_items_array = {};
 var search_fuse = null;
 
+//CONCETO CON LA DB
+var ws_search_db = 'ws_collections_' + ws_id;
+//CREO LA DB
+L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
+
+
+//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
+const eventosCatalog =  L_catalog_db.eventNames();
+for (const evento of eventosCatalog) {
+  const oyentes = L_catalog_db.listeners(evento);
+  console.log(`Oyentes para '${evento}':`);
+  for (const oyente of oyentes) {
+    console.log(oyente.toString());
+  }
+}
+
+//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
+/// SYNC
+L_catalog_db.sync(url_R_db + ws_search_db, {
+    live: true,
+    retry: true,
+    //  skip_setup: true
+}).on('change', function (change) {
+    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+}).on('paused', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+}).on('active', function (info) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
+    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
+}).on('error', function (err) {
+    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
+});
+
+
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -286,7 +323,6 @@ async function post_url_history(module, id) {
     }
 }
 
-
 // FUNCION PARA ARMAR LA VISTA DE UN PRODUCTO NORMAL 
 async function catalog_view_item(element) {
     try {
@@ -405,9 +441,6 @@ async function catalog_edit_item(element) {
 
 
 /// EDITAR LAS MONEDAS EN EL FORMULARIO
-
-
-
 // SELECCIONO
 async function catalog_product_select_currency(element, new_model) {
     let item_value_id = $(element).attr('item_value_id');
@@ -594,7 +627,7 @@ async function catalog_new_item(element) {
         var currency_doc = await L_catalog_db.get('currency_list');
         var user_roles_permisions = user_Ctx.userCtx.roles;
 
-        console.log('user_roles_permisions', user_roles_permisions);
+       // console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
@@ -609,7 +642,7 @@ async function catalog_new_item(element) {
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
         //renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', '#new_variations_main', product_doc_array);
-        console.log('product_doc_array', product_doc_array);
+       // console.log('product_doc_array', product_doc_array);
 
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
