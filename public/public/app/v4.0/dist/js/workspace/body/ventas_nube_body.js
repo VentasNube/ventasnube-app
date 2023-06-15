@@ -10,29 +10,6 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 ws_left_nav_data = null;
 
-//CONCETO CON LA DB
-var ws_search_db = 'ws_collections_' + ws_id;
-//CREO LA DB
-L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
-/// SYNC
-L_catalog_db.sync(url_R_db + ws_search_db, {
-    live: true,
-    retry: true,
-    //  skip_setup: true
-}).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
-}).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('error', function (err) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-    //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>";
-});
-
 
 
 // ACTUALIZO EL HISTORIAL DE NAVEGACION 

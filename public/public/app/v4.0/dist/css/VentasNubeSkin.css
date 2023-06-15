@@ -12720,3 +12720,23 @@ board-item-content
     width: 100%;
 }
 
+/* Limpiar solo el primer caracter de un texto */
+
+
+  .first-letter {
+    position: relative;
+    display: inline-block;
+    font-weight: bold; /* Opcional: Aplica un estilo en negrita al primer carácter */
+  }
+
+  .first-letter::after {
+    content: attr(data-first-letter);
+    position: relative;
+    left: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 20px;
+    letter-spacing: 20px;
+    top: 1px;
+    text-align: left;
+  }

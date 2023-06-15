@@ -17,17 +17,17 @@
                 <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
                     <div id="new-contact-step-1">
                         <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input required="" id="contact_first_name" class="form-control" type="text"
+                            <input required="" id="first_name" class="form-control" type="text"
                                 placeholder="{{contact_first_name}}" name="first_name" />
-                            <input required="" id="contact_last_name" class="form-control" type="text"
+                            <input required="" id="last_name" class="form-control" type="text"
                                 placeholder="{{contact_last_name}}" name="last_name" />
                             <input required="" id="document_number" class="form-control" type="text"
                                 placeholder="{{document_number}}" name="document_number" />
-                            <input required="" id="contact_email" class="form-control" type="text"
+                            <input required="" id="email" class="form-control" type="text"
                                 placeholder="{{contact_email}}" name="email" />
                             <!-- Repite este bloque por cada número de teléfono que desees agregar -->
-                            <input required="" id="contact_phone" type="tel" class="form-control"
-                                placeholder="{{contact_phone}}" name="contact__phone">
+                            <input required="" id="phone" type="tel" class="form-control"
+                                placeholder="{{contact_phone}}" name="phone">
                             <!--div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label>{{m_account_phone}} </label>
                                 <div class="input-group">
@@ -114,9 +114,9 @@
 
                             <div class="col-lg-6 col-md-4 col-sm-4 col-xs-6">
                                 <label class="margin-t-20">{{ws_catalog_settings_list}} </label>
-                                <select class="form-control md " name="price_list_var_1" id="price_list_var_1">
+                                <select class="form-control md " name="price_list" id="price_list">
                                     {{#each ../ws_price_list.price_list}}
-                                    <option value="{{{id}}}">{{value}}</option>
+                                        <option value="{{{id}}}">{{value}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -146,7 +146,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 
 <script>
-    var input = document.querySelector("#contact_phone");
+    var input = document.querySelector("#phone");
     var codeCountry = null;
     var ipCountry = null;
     //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA IP
@@ -180,7 +180,6 @@
     }
 
     set_geolocation();
-
 
     function save_new_conctact() {
         // Obtener todos los elementos de entrada y select dentro del formulario

@@ -983,182 +983,201 @@ async function edit_board_group_put(element) {
 
 /// NUEVAS FUNCIONES CREAR ORDEN
 async function new_order(element) {
-    const category_id = $(element).attr('category_id');
-    const total_neto = $('#total_cart_neto').html();
-    const total_product = $('#total_neto_prod').html();
-    const total_discount = $('#total_neto_discount').html();
-    const total_service = $('#total_neto_service').html();
-    const total_tax = $('#total_neto_tax').html();
 
-    //const productItems = document.querySelectorAll('#total_cart_neto');
 
-    const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
-    const workspace_id = ws_id;
-    const board_group_conf = await L_board_db.get('board_group_' + category_id);
-    const board_group = board_group_conf.board_group;
-    const board_group_first = board_group[0];
-    const group_id = board_group_first.id;
-    const entry_date = { hour, minutes } = await getDateTimeMinutes();
-    const due_date = { hour, minutes } = await getDateTimeMinutes();
-    const comments = '';
-    const products = await get_cart_product();
-    const customer = {
-        id: 'client_id_xxxx',
-        name: 'Customer Name',
-        address: 'Customer Address',
-        phone: 'Customer Phone',
-        email: 'Customer Email'
-    };
-    var order_arr = {
-        _id: doc_id,
-        type: 'order',
-        category_id: category_id,
-        workspace_id: workspace_id,
-        status: 'open',
-        seen: false,
-        author: userCtx.email,
-        group_id: group_id,
-        order_id: null, // Inicialmente se establece como null
-        group_position: '1',
-        customer: customer,
-        comments: comments,
-        priority: {
-            id: '1',
-            value: 'urgente'
-        },
-        entry_date: entry_date,
-        due_date: due_date,
-        collaborators: [
-            {
-                name: userCtx.name,
-                email: userCtx.email,
-                role: userCtx.role
-            }
-        ],
-        total_service: total_service,
-        total_product: total_product,
-        total_tax: total_tax,
-        total_discount: total_discount,
-        total: total_neto,
-        payment_history: [
-            {
-                id: 123,
-                payment_id: '21312312',
-                payment_method: 'Credit Card',
-                update_datetime: '18/3/2021 18:45:10',
-                user: userCtx.email,
-                total_tax: 21.00,
-                total_discount: 12.95,
-                total: 339.95,
-                currency: {
-                    id: 'ARS',
-                    value: '$'
+    try {
+
+        const category_id = $(element).attr('category_id');
+        const total_neto = $('#total_cart_neto').html();
+        const total_product = $('#total_neto_prod').html();
+        const total_discount = $('#total_neto_discount').html();
+        const total_service = $('#total_neto_service').html();
+        const total_tax = $('#total_neto_tax').html();
+        const contact_id = $('#cart_button_new_order').attr('contact_id');
+
+        get_board(category_id);
+        //const productItems = document.querySelectorAll('#total_cart_neto');
+        const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
+        const workspace_id = ws_id;
+        const board_group_conf = await L_board_db.get('board_group_' + category_id);
+        const board_group = board_group_conf.board_group;
+        const board_group_first = board_group[0];
+        const group_id = board_group_first.id;
+        const entry_date = { hour, minutes } = await getDateTimeMinutes();
+        const due_date = { hour, minutes } = await getDateTimeMinutes();
+        const comments = '';
+        const products = await get_cart_product();
+        const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
+        console.log('contact_doc',contact_doc)
+        //const customer = contact_id,
+        const customer = {
+            id: contact_doc._id,
+            first_name: contact_doc.first_name,
+            last_name: contact_doc.last_name,
+            address: contact_doc.document_number,
+            phone: contact_doc.phone,
+            email: contact_doc.email,
+            price_list: contact_doc.price_list
+        };
+        var order_arr = {
+            _id: doc_id,
+            type: 'order',
+            category_id: category_id,
+            workspace_id: workspace_id,
+            status: 'open',
+            seen: false,
+            author: userCtx.email,
+            group_id: group_id,
+            order_id: null, // Inicialmente se establece como null
+            group_position: '1',
+            customer: customer,
+            comments: comments,
+            priority: {
+                id: '1',
+                value: 'urgente'
+            },
+            entry_date: entry_date,
+            due_date: due_date,
+            collaborators: [
+                {
+                    name: userCtx.name,
+                    email: userCtx.email,
+                    role: userCtx.role
+                }
+            ],
+            total_service: total_service,
+            total_product: total_product,
+            total_tax: total_tax,
+            total_discount: total_discount,
+            total: total_neto,
+            payment_history: [
+                {
+                    id: 123,
+                    payment_id: '21312312',
+                    payment_method: 'Credit Card',
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: userCtx.email,
+                    total_tax: 21.00,
+                    total_discount: 12.95,
+                    total: 339.95,
+                    currency: {
+                        id: 'ARS',
+                        value: '$'
+                    }
+                }
+            ],
+            equipment: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    type: 'Notebook',
+                    trade: 'Samsung',
+                    model: 'np300',
+                    serial: '',
+                    addon: 'cargador bateria',
+                }
+            ],
+
+            failure: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    name: 'No enciende no carga',
+                }
+            ],
+
+            solutions: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    name: 'Hay que reparar la palaca madre',
+                }
+            ],
+            activity: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                    type: 'msj',
+                    content: 'El cliente dejo una contrasena 123421'
+                }
+            ],
+
+            update_history: [
+                {
+                    update_datetime: '18/3/2021 18:45:10',
+                    user: 'smartmobile.com@gmail.com',
+                }
+            ],
+            products: products,
+            service: [
+                {
+                    product_id: 'Product 1',
+                    name: 'Product 1',
+                    variation_id: 'Product 1',
+                    product_img: 'Product 1',
+                    price: 10.99,
+                    tax: 21.00,
+                    quantity: 2,
+                    discount: 10,
+                    subtotal: 21.98
+                },
+                {
+                    service_id: 'Service 2',
+                    name: 'Service 2',
+                    variation_id: '1',
+                    product_img: 'http:.//',
+                    price: 100.99,
+                    tax: 21.00,
+                    quantity: 2,
+                    discount: 10,
+                    subtotal: 210.98
+                }
+            ],
+            shipping: {
+                address: 'Shipping Address',
+                city: 'Shipping City',
+                postal_code: 'Postal Code',
+                shipping_date: '2023-05-15',
+                shipping_status: 'pending',
+                carrier: {
+                    name: 'Carrier Name',
+                    phone: 'Carrier Phone',
+                    vehicle: 'Carrier Vehicle'
                 }
             }
-        ],
-        equipment: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-                type: 'Notebook',
-                trade: 'Samsung',
-                model: 'np300',
-                serial: '',
-                addon: 'cargador bateria',
-            }
-        ],
-
-        failure: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-                name: 'No enciende no carga',
-            }
-        ],
-
-        solutions: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-                name: 'Hay que reparar la palaca madre',
-            }
-        ],
-        activity: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-                type: 'msj',
-                content: 'El cliente dejo una contrasena 123421'
-            }
-        ],
-
-        update_history: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-            }
-        ],
-        products: products,
-        service: [
-            {
-                product_id: 'Product 1',
-                name: 'Product 1',
-                variation_id: 'Product 1',
-                product_img: 'Product 1',
-                price: 10.99,
-                tax: 21.00,
-                quantity: 2,
-                discount: 10,
-                subtotal: 21.98
-            },
-            {
-                service_id: 'Service 2',
-                name: 'Service 2',
-                variation_id: '1',
-                product_img: 'http:.//',
-                price: 100.99,
-                tax: 21.00,
-                quantity: 2,
-                discount: 10,
-                subtotal: 210.98
-            }
-        ],
-        shipping: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
-            postal_code: 'Postal Code',
-            shipping_date: '2023-05-15',
-            shipping_status: 'pending',
-            carrier: {
-                name: 'Carrier Name',
-                phone: 'Carrier Phone',
-                vehicle: 'Carrier Vehicle'
-            }
+        };
+        let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
+        let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
+        const order_id_new = letters + '-' + timestamp;
+        // Asigna el número de orden nuevo al documento de la orden
+        order_arr.order_id = order_id_new;
+        // Incrementa el número de orden actual en la base de datos local
+        // Crea la orden en la base de datos local
+        let response = await L_board_db.put(order_arr);
+        if (response.ok) {
+            //Trae el doc actualizado y pega en el DOM la tarjeta y crea el MUURI kamban
+            const doc = await L_board_db.get(response.id); // Verificar si el documento ya existe
+            var card_data = { doc: doc };
+            var board_gorup_id = doc.group_id;
+            var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
+            var grid = columnGrids[groupIndex];
+            add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+            coun_items_broup(category_id);
+            Snackbar.show({
+                text: 'Se creó la orden con éxito!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 50000
+            });
         }
-    };
-    let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
-    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
-    const order_id_new = letters + '-' + timestamp;
-    // Asigna el número de orden nuevo al documento de la orden
-    order_arr.order_id = order_id_new;
-    // Incrementa el número de orden actual en la base de datos local
-    // Crea la orden en la base de datos local
-    let response = await L_board_db.put(order_arr);
-    if (response.ok) {
-        //Trae el doc actualizado y pega en el DOM la tarjeta y crea el MUURI kamban
-        const doc = await L_board_db.get(response.id); // Verificar si el documento ya existe
-        var card_data = { doc: doc };
-        var board_gorup_id = doc.group_id;
-        var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
-        var grid = columnGrids[groupIndex];
-        add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
-        coun_items_broup(category_id);
+
+    } catch (err) {
+        console.log(err);
         Snackbar.show({
-            text: 'Se creó la orden con éxito!',
-            actionText: 'OK',
+            text: err.name,
+            actionText: 'Ok',
             actionTextColor: "#0575e6",
-            pos: 'bottom-right',
-            duration: 50000
         });
     }
 
@@ -1400,7 +1419,7 @@ async function get_board(board_type_name) {
             user_roles: user_Ctx.userCtx.roles,
         };
 
-        console.log('BOARD DATA',board_data);
+        console.log('BOARD DATA', board_data);
         let parentElement = document.querySelector('#content_compiled');
         let id_compiled = '#' + parentElement.id;
         if (id_compiled) {

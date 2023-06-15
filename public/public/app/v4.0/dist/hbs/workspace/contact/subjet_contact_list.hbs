@@ -1,0 +1,20 @@
+    {{#each user_data}}
+        <li class="margin-5">
+            <a onclick="select_contact(this)" contact_id="{{_id}}" class="" role="button" data-toggle="tooltip" data-placement="top"
+                data-original-title="{{address}} {{address_number}} {{address_floor}}{{address_state}}{{address_country}}">
+                <div class="first-letter s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <div class="round-icon user m">
+                        <span class="first-letter" data-first-letter="{{first_name}}"></span></div>
+                </div>
+                <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                    <div class="s-card-actv-item-name">
+                        {{first_name}} {{last_name}}
+                    </div>
+                    <div class="s-card-actv-item-name">
+                        <span class="text-blue" data-toggle="tooltip" data-placement="top" data-original-title="Descuento Unitario">{{phone}}</span>
+                        <span class="" data-toggle="tooltip" data-placement="top" data-original-title="Numero de Documento">{{document_number}}</span>
+                    </div>
+                </div>
+            </a>
+        </li>
+    {{/each}}

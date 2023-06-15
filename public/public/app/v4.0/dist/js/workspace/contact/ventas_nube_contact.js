@@ -16,6 +16,17 @@ module_info = null;
 // Creando la base de datos local
 const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
 
+//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
+const eventosContact = L_contact_db.eventNames();
+for (const evento of eventosContact) {
+  const oyentes = L_contact_db.listeners(evento);
+  console.log(`Oyentes para '${evento}':`);
+  for (const oyente of oyentes) {
+    console.log(oyente.toString());
+  }
+}
+
+//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 
 //SYNCRONIZO LOS DATOS
 
@@ -171,7 +182,7 @@ async function new_contact_put(user_data) {
             //doc.user_data = user_data;
             doc = {...doc, ...user_data};
             const response = await L_contact_db.put(doc);
-
+            console.log(doc);
             if(response.ok){
                 $('#master_popup').modal('hide');
                 Snackbar.show({
@@ -185,25 +196,6 @@ async function new_contact_put(user_data) {
             console.error('Error al crear el contacto:', error);
         }
 }
-
-
-
-/*
-async function getFormAsync(formId) {
-    var formData = {};
-    var form = $("#" + formId);
-    await Promise.all(
-      form.find(":input").map(async function() {
-        var name = $(this).attr("name");
-        var value = $(this).val();
-        formData[name] = value;
-      })
-    );
-    
-    return formData;
-  }
-*/
-
 
 
 

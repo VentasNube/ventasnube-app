@@ -5,7 +5,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 6709128121252121211212212122;
+const version = 67122145121212126121211291291212121212121212121212121221121229791222;
 
 
 const expectedCaches = ['ventasnube-v-' + version];
@@ -99,8 +99,10 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/catalog/ventas_nube_catalog.js ', revision: version },
   //Board
   { url: '/public/app/v4.0/dist/js/workspace/board/ventas_nube_board.js ', revision: version },
-    //Contact
-    { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
+  //Contact
+  { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
+
+  
 
   //Templates body de Top bar y left bar
   { url: '/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', revision: version },
@@ -151,7 +153,7 @@ workbox.precaching.precacheAndRoute([
 
   //CONTACT
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', revision: version },
-
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', revision: version },
   
 
 ]);

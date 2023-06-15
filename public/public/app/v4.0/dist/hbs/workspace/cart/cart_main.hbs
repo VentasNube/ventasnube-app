@@ -55,20 +55,23 @@
         <div class="btn-group dropright">
             <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="round-icon pr"><span> m </span></div>
+
+                <div class="round-icon pr">
+                    <span id="select_price_list_cart" price_list_id="" price_list_value="" > m </span>
+                </div>
+
             </button>
             <ul class="dropdown-menu pull-right">
-                <li class="header">Listas de precios</li>
-                <li>
-                    <a href="#">
-                        <div class="round-icon pr"><span> P </span></div> Lista Pubico
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <div class="round-icon pr"><span> m </span></div> Lista Mayorista
-                    </a>
-                </li>
+               
+                    <li class="header">Listas de precios</li>
+                {{#each price_doc.price_list}}
+                    <li>
+                        <a href="#">
+                            <div class="round-icon user-top"><span> {{value}} </span></div>  {{value}}
+                        </a>
+                    </li>
+                {{/each}}
+
             </ul>
         </div>
     </div>
@@ -215,7 +218,7 @@
         </div-->
     <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
-        <button onclick="new_order(this)" category_id="sell" type="button" class="cobrar-btn btn btn-primary">
+        <button id="cart_button_new_order" onclick="new_order(this)" contact_id="" category_id="sell" type="button" class="cobrar-btn btn btn-primary">
             <span class="material-icons">monetization_on</span>
             {{#with ws_lang_data}} {{b_add_order}}{{/with}}
         </button>
@@ -223,75 +226,14 @@
 </div>
 
 
-<script id="contact_search_item_templateNO2" type="text/x-handlebars-template">
-  
-       {{#each this}}
-            <li class="margin-5">
-                <a contact_id="" class="" role="button" data-toggle="tooltip" data-placement="top"
-                    data-original-title="">
-                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <div class="round-icon user m"><span> </span></div>
-                    </div>
-                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <div class="s-card-actv-item-name">
-                            {{item.contact_first_name}}
-                        </div>
-                        <div class="s-card-actv-item-name"></div>
-                        <div class="s-card-actv-item-name"></div>
-                    </div>
-                </a>
-            </li>
-        {{/each}}
- 
-</script>
-<script id="contact_search_item_templateOLNO" type="text/x-handlebars-template">
-  
-       {{#each this}}
-            <li class="margin-5">
-                <a contact_id="{{{item._id}}}" class="" role="button" data-toggle="tooltip" data-placement="top"
-                    data-original-title="{{item.address}} {{item.address_number}} {{item.address_floor}}{{item.address_state}}{{item.address_country}}">
-                    <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <div class="round-icon user m"><span> {{item.contact_last_name}} </span></div>
-                    </div>
-                    <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <div class="s-card-actv-item-name">
-                            {{item.contact_first_name}}{{item.contact_last_name}}
-                        </div>
-                        <div class="s-card-actv-item-name">{{item.document_number}}</div>
-                        <div class="s-card-actv-item-name">{{item.phone}}</div>
-                    </div>
-                </a>
-            </li>
-        {{/each}}
- 
-</script>
-
-<script id="contact_search_item_template" type="text/x-handlebars-template">
-    <li class="margin-5">
-        <a contact_id="{{item._id}}" class="" role="button" data-toggle="tooltip" data-placement="top"
-            data-original-title="{{item.address}} {{item.address_number}} {{item.address_floor}}{{item.address_state}}{{item.address_country}}">
-            <div class="s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                <div class="round-icon user m"><span>{{item.contact_last_name}}</span></div>
-            </div>
-            <div class="s-card-actv-item-prod col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                <div class="s-card-actv-item-name">
-                    {{item.contact_first_name}}{{item.contact_last_name}}
-                </div>
-                <div class="s-card-actv-item-name">{{item.document_number}}</div>
-                <div class="s-card-actv-item-name">{{item.contact_phone}}</div>
-            </div>
-        </a>
-    </li>
-</script>
-
 <script>
 // Este es tu método de búsqueda asíncrono
+
 async function searchContacts(query) {
     try {
-
         const contact_search_options = {
             includeScore: true,
-            keys: ['contact_first_name', 'contact_last_name', 'document_number', 'phone']
+            keys: ['first_name', 'last_name', 'document_number', 'phone']
         };
         let contact_search_fuse;
         // Obtén todos los documentos que comienzan con 'contact_'
@@ -300,44 +242,14 @@ async function searchContacts(query) {
             startkey: 'contact_',
             endkey: 'contact_\ufff0'
         });
-        console.log('AllDOCS',allDocs);
+       // console.log('AllDOCS',allDocs);
         // Crea una nueva instancia de Fuse con los documentos obtenidos
         contact_search_fuse = new Fuse(allDocs.rows.map(row => row.doc), contact_search_options);
-
-      
         // Haz la búsqueda con Fuse
-        const data = contact_search_fuse.search(query);
-        /*
-        // Renderiza los resultados con Handlebars
-        const source = document.querySelector('#contact_search_item_template').innerHTML;
-        const template = Handlebars.compile(source);
-        const html = template({ user_data: result });
-        // Inserta el HTML en tu contenedor
-        console.log("RESULT SEARCH CONTACT", result);
-        console.log("html template", html);
-        document.querySelector('#contact_auto_subjet').innerHTML = html;
-        */
-
-
-        // Obtiene una referencia al contenedor
-     /*   const contactListContainer = document.querySelector('#contact_auto_subjet');
-        // Renderiza los resultados con Handlebars
-        const source = document.querySelector('#contact_search_item_template').innerHTML;
-        const template = Handlebars.compile(source);
-        const html = template(result);
-    */
-        const source = document.querySelector('#contact_search_item_template').innerHTML;
-        const template = Handlebars.compile(source);
-        const html = template(data);
-        document.querySelector('#contact_auto_subjet').innerHTML = html;
-
-
-
-        //console.log("RESULT SEARCH CONTACT", result);
-      //  console.log("html template", html);
-        // Reemplaza todo el contenido del contenedor con el HTML generado por Handlebars
-       // contactListContainer.innerHTML = html;
-
+        const searchResults = contact_search_fuse.search(query);
+        const data = { user_data: searchResults.map(result => result.item) };
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', '#contact_auto_subjet', data);
+        console.log('DATA',data);
     } catch (error) {
         // Muestra el error en un Snackbar
         Snackbar.show({
@@ -348,11 +260,43 @@ async function searchContacts(query) {
     }
 }
 
-// Añade un event listener al input para que realice la búsqueda cada vez que cambie
 document.querySelector('#cart_user_input').addEventListener('input', (event) => {
     searchContacts(event.target.value);
 });
 
+
+async function select_contact(element) {
+     
+    try {
+        let _id = $(element).attr('contact_id');
+        contact_doc = await L_contact_db.get(_id, { include_docs: true, descending: true });
+        price_list_id = contact_doc.price_list
+        price_list_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+       // console.log('_id',_id)  
+       // console.log('contact_doc',contact_doc)     
+       // console.log('price_list_id',price_list_id)      
+       // console.log('price_list_doc',price_list_doc)        
+        const price_select = price_list_doc.price_list.find(element => element.id == price_list_id);
+      //  console.log('price_select',price_select) 
+        $('#cart_user_input').attr('contact_id', contact_doc._id);
+        $('#cart_user_input').val(contact_doc.first_name + " " + contact_doc.last_name);
+        $('#select_price_list_cart').attr('contact_id', contact_doc.price_list);
+        $('#select_price_list_cart').attr('contact_id', price_list_doc.price_list);
+
+        $('#cart_button_new_order').attr('contact_id', _id);
+        
+        const price_select_letra = price_select.value[0];
+         $('#select_price_list_cart').text(price_select_letra);
+       // console.log('select_contact price_select_letra',price_select_letra);
+    } catch (error) {
+        // Muestra el error en un Snackbar
+        Snackbar.show({
+            text: 'Error select_contact ' + error.message,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
 
 </script>
 

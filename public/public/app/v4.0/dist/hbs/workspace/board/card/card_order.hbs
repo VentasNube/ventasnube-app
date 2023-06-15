@@ -15,7 +15,7 @@
                                 <h5>
                                     <div class="round-icon pr xd"><span> P </span></div>
                                     <!--div class="round-icon client xs">E</div-->
-                                    {{customer.name}}
+                                   {{customer.first_name}} {{customer.last_name}}
                                 </h5>
                             </button>
                             <ul class="dropdown-menu card pull-left">
@@ -28,7 +28,7 @@
                                         <h4 class="">
                                             <span class="material-icons">
                                                 account_circle
-                                            </span> {{customer.name}}
+                                            </span> {{customer.first_name}}
                                         </h4>
                                     </li>
                                     {{#if customer.email}}
@@ -36,7 +36,7 @@
                                         <h4 class="">
                                             <span class="material-icons">
                                                 email
-                                            </span> {{contact_email}}
+                                            </span> {{email}}
                                         </h4>
                                     </li>
                                     {{/if}}
@@ -45,7 +45,7 @@
                                         <h4 class="">
                                             <span class="material-icons">
                                                 phone
-                                            </span> {{contact_phone}}
+                                            </span> {{phone}}
                                         </h4>
                                     </li>
                                     {{/if}}

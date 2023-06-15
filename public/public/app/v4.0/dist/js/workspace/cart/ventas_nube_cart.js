@@ -23,7 +23,7 @@
 
 //Funcion que chekea el ultimo estado del cart
 function chek_cart_open_ws() {
-var cart_open = readCookie("left_nav_open_ws_"+ws_id);
+    var cart_open = readCookie("left_nav_open_ws_" + ws_id);
     if (cart_open == 'true') {
         $('#right_main').addClass('move-right');
     } else if (cart_open == 'false') {
@@ -31,18 +31,27 @@ var cart_open = readCookie("left_nav_open_ws_"+ws_id);
     }
 }
 
-async function get_right_cart(ws_info, ws_lang_data,ws_left_nav_data) {
+async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
 
     // board_group_info = await L_board_db.get('board_group_' + board_type_name);
     //const board_group = board_group_info.board_group;
-   // const board_name = await getUrlVal('t');
+    // const board_name = await getUrlVal('t');
+
+
+
+    var price_doc = await L_catalog_db.get('price_list');
+    var currency_doc = await L_catalog_db.get('currency_list');
 
     var ws_cart = {
+        price_doc: price_doc,
+        currency_doc: currency_doc,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
         module_name: 'board',
         board_type_name: 'sell',
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
-        ws_left_nav_data:ws_left_nav_data
+        ws_left_nav_data: ws_left_nav_data
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
     get_cart(ws_id);
@@ -53,55 +62,55 @@ async function get_right_cart(ws_info, ws_lang_data,ws_left_nav_data) {
 
 
 
- $("#t_cart").click(function () {
-        $('#cart_footer').show();
-    });
+$("#t_cart").click(function () {
+    $('#cart_footer').show();
+});
 
 $("#t_fav").click(function () {
-        $('#cart_footer').hide();
-    });
+    $('#cart_footer').hide();
+});
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id) {
     // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get/cart-item',  {
-          include_docs: true,
-          descending: true 
-        }
-     ); //Conceto con la vista de diseno
-   if(response.rows){
-    const rows = response.rows;
-       //Filtro los items de este espacio de trabajo 
-    const result = rows.filter(row => row.doc.ws_id === ws_id);
-       // console.log('Respuesta FILTRADA'); // []
-       // console.log(result);
+        'get/cart-item', {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const rows = response.rows;
+        //Filtro los items de este espacio de trabajo 
+        const result = rows.filter(row => row.doc.ws_id === ws_id);
+        // console.log('Respuesta FILTRADA'); // []
+        // console.log(result);
         return all_cart_item(result);
-   }
-   else{
-    return all_cart_item(false);
-   }
+    }
+    else {
+        return all_cart_item(false);
+    }
 }
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cartOLD2() {
     // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get/cart-item',  {
-          include_docs: true,
-          startkey: 'cart_ws_id_'+ ws_id + '_',
-          endkey: 'cart_ws_id_'+ ws_id + '_\ufff0',
-          //filter: 'get_cart_ws/by_ws_id',
-          //query_params: { "ws_id": ws_id },
-          descending: true 
-        }
-     ); //Conceto con la vista de diseno
-   if(response.rows){
-    return all_cart_item(response.rows);
-   }
-   else{
-    return all_cart_item(false);
-   }
+        'get/cart-item', {
+        include_docs: true,
+        startkey: 'cart_ws_id_' + ws_id + '_',
+        endkey: 'cart_ws_id_' + ws_id + '_\ufff0',
+        //filter: 'get_cart_ws/by_ws_id',
+        //query_params: { "ws_id": ws_id },
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        return all_cart_item(response.rows);
+    }
+    else {
+        return all_cart_item(false);
+    }
 }
 
 // Creo los arrays con los datos de la BD
@@ -118,7 +127,7 @@ async function all_cart_item(todos) {
         var total_neto_discount = 0; //Descuentos
         var total_neto_pay = 0; //Abonado
 
-        todos.map(function(todo) {
+        todos.map(function (todo) {
             //let prod_img = todo.doc.img.min;
             //calculos matematicos para armar el Carrito
             var quantity = todo.doc.variant['quantity'];
@@ -165,7 +174,7 @@ async function all_cart_item(todos) {
         };
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
-       // chek_cart_open_ws();
+        // chek_cart_open_ws();
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (ex) {
         console.error('inner', ex.message);
@@ -195,7 +204,7 @@ async function get_cart_change() {
         since: 'now',
         include_docs: true,
         live: true
-    }).on('change', function(change) {
+    }).on('change', function (change) {
         if (change.deleted) {
             // alert('Docuento Eliminado' + change.id);
             //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
@@ -205,7 +214,7 @@ async function get_cart_change() {
             // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
             get_cart(ws_id);
         }
-    }).on('error', function(err) {
+    }).on('error', function (err) {
         // handle errors
         console.log(err);
     });
@@ -226,11 +235,11 @@ function variations_add_cart(element) {
     let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
     let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
     //Busco el doc por id actualizado y hago la carga de datos
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
-       // console.log(var_doc);
+        // console.log(var_doc);
         const new_variant_doc = {
             product_id: product_id,
             product_rev: var_doc._rev,
@@ -301,29 +310,29 @@ async function add_cart_item(data) {
             variant: data //Array new_variant_doc
         });
 
- //console.log('CART ADD ITEM ');
- //console.log(data);
-        Snackbar.show({  
+        //console.log('CART ADD ITEM ');
+        //console.log(data);
+        Snackbar.show({
             text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Deshacer ',
             actionTextColor: "#4CAF50",
-               onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);    
+            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
                 user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + response.id).remove();
             }
         });
     } catch (err) {
-        Snackbar.show({  
+        Snackbar.show({
             text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Recargar',
             actionTextColor: "#dd4b39",
-               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);    
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
                 add_cart_item(data);
             }
         });
@@ -339,16 +348,16 @@ async function dell_cart_item(element) {
     //dell_product(item_cart_id, item_cart_rev);
     try {
         //   get_cart()
-        Snackbar.show({  
+        Snackbar.show({
             text: '<span class="material-icons">delete</span> Eliminar producto?',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Eliminar',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {    
+            onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + item_cart_id).remove();
-                $(element).css('opacity', 0);      
+                $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
                 // dell_product(response.id, response.rev);
                 //  location.reload();   
@@ -356,14 +365,14 @@ async function dell_cart_item(element) {
         });
 
     } catch (err) {
-        Snackbar.show({  
+        Snackbar.show({
             text: 'Hay un conflicto',
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Recargar',
             actionTextColor: "#dd4b39",
-               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);      
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
                 //add_product(card_product_id, card_product_img_url, card_product_name, card_product_val, card_product_discount, card_product_quantity);
                 //  location.reload();   
@@ -373,18 +382,18 @@ async function dell_cart_item(element) {
     }
 }
 
-$(document).on('click', '.right_nav_open', function(event) {
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;
-        $('#right_main').removeClass('move-right');
-        $('#cart_user_input').focus();
-        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
+$(document).on('click', '.right_nav_open', function (event) {
+    createCookie('left_nav_open_ws_' + ws_id, false), 30;
+    $('#right_main').removeClass('move-right');
+    $('#cart_user_input').focus();
+    get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
 });
 
 
-$(document).on('click', '.right_nav_close', function(event) {
+$(document).on('click', '.right_nav_close', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, true), 30;
     $('#right_main').addClass('move-right');
-    
+
 });
 
 
@@ -395,26 +404,26 @@ $(document).on('click', '.right_nav_close', function(event) {
 async function get_fav(ws_id) {
     // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get/fav-item',  {
-          include_docs: true,
-          descending: true 
-        }
-     ); //Conceto con la vista de diseno
-   if(response.rows){
-    const rows = response.rows;
-      //  console.log('Respuesta Origial'); // []
-     //   console.log(response.rows);
-       // alert(ws_id);
-    const result = rows.filter(row => row.doc.ws_id === ws_id);
-      //  console.log('Respuesta FILTRADA'); // []
-       // console.log(result);
+        'get/fav-item', {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const rows = response.rows;
+        //  console.log('Respuesta Origial'); // []
+        //   console.log(response.rows);
+        // alert(ws_id);
+        const result = rows.filter(row => row.doc.ws_id === ws_id);
+        //  console.log('Respuesta FILTRADA'); // []
+        // console.log(result);
         //console.log(rows_items); // []
         return all_fav_item(result);
         //return all_cart_item(response.rows);
-   }
-   else{
-    return all_fav_item(false);
-   }
+    }
+    else {
+        return all_fav_item(false);
+    }
 }
 
 // Creo los arrays con los datos de la BD
@@ -431,7 +440,7 @@ async function all_fav_item(todos) {
         var total_neto_discount = 0; //Descuentos
         var total_neto_pay = 0; //Abonado
 
-        todos.map(function(todo) {
+        todos.map(function (todo) {
             //let prod_img = todo.doc.img.min;
             //calculos matematicos para armar el Carrito
             var quantity = todo.doc.variant['quantity'];
@@ -508,7 +517,7 @@ async function get_fav_change(ws_id) {
         since: 'now',
         include_docs: true,
         live: true
-    }).on('change', function(change) {
+    }).on('change', function (change) {
         if (change.deleted) {
             // alert('Docuento Eliminado' + change.id);
             //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
@@ -518,7 +527,7 @@ async function get_fav_change(ws_id) {
             // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
             get_fav(ws_id);
         }
-    }).on('error', function(err) {
+    }).on('error', function (err) {
         // handle errors
         console.log('' + err);
     });
@@ -540,7 +549,7 @@ function variations_add_fav(element) {
     let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
     //Busco el doc por id actualizado y hago la carga de datos
     console.log(element);
-    L_catalog_db.get(product_id, function(err, doc) {
+    L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
@@ -564,7 +573,7 @@ function variations_add_fav(element) {
             $(this_card_id).find(".ripple_div").addClass('add');
             $(this_card_id).find(".content").addClass('ripple_efect');
             add_fav_item(new_variant_doc);
-          //  console.log(new_variant_doc);
+            //  console.log(new_variant_doc);
         }
         //    renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
@@ -572,7 +581,7 @@ function variations_add_fav(element) {
 };
 
 async function add_fav_item(data) {
-   // console.log(data);
+    // console.log(data);
     try {
         var response = await user_db.put({
             _id: new Date().toISOString(),
@@ -592,28 +601,28 @@ async function add_fav_item(data) {
         $("#fav_item_tab").addClass('active in');
         $("#fav_item_tab_icon").addClass('active');
 
-        Snackbar.show({  
+        Snackbar.show({
             text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
             width: '475px',
             pos: 'bottom-right',
             actionText: 'Deshacer',
             actionTextColor: "#4CAF50",
-               onActionClick: function(element) {     //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);    
+            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
                 user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + response.id).remove();
             }
         });
     } catch (err) {
-        Snackbar.show({  
+        Snackbar.show({
             text: '<span class="round-icon pr">' + data.variant_quantity + '</span> ' + data.variant_name + '<?= lang("Body.b_error") ?>',
             width: '475px',
             pos: 'bottom-right',
             actionText: '<?= lang("Body.b_reload") ?>',
             actionTextColor: "#dd4b39",
-               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);    
-             //   add_cart_item(data);
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+                //   add_cart_item(data);
             }
         });
         console.log(err);
@@ -624,16 +633,16 @@ async function add_fav_item(data) {
 async function dell_fav_item(item_cart_id, item_cart_rev) {
     try {
         //   get_cart()
-        Snackbar.show({  
+        Snackbar.show({
             text: '<span class="material-icons">delete</span> <?= lang("Body.a_dell_product") ?>',
             width: '475px',
             pos: 'bottom-right',
             actionText: '<?= lang("Body.b_dell") ?>',
             actionTextColor: "#dd4b39",
-               onActionClick: async function(element) {    
+            onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + item_cart_id).remove();
-                $(element).css('opacity', 0);      
+                $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
                 // dell_product(response.id, response.rev);
                 //  location.reload();   
@@ -641,14 +650,14 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
         });
 
     } catch (err) {
-        Snackbar.show({  
+        Snackbar.show({
             text: '<?= lang("Body.a_dell_conflict") ?>',
             width: '475px',
             pos: 'bottom-right',
             actionText: '<?= lang("Body.b_reload") ?>',
             actionTextColor: "#dd4b39",
-               onActionClick: function(element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);      
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
                 //add_product(card_product_id, card_product_img_url, card_product_name, card_product_val, card_product_discount, card_product_quantity);
                 //  location.reload();   
@@ -665,13 +674,13 @@ function cart_select_contact() {
 
 function cart_user_input_in(element) {
     var form = document.getElementById("#cart_user_input");
-    form.addEventListener("focus", function(event) {
+    form.addEventListener("focus", function (event) {
         event.target.style.background = "pink";
         $('#cart_user_input_subjet').addClass('in');
     }, true);
-    form.addEventListener("blur", function( event ) {
+    form.addEventListener("blur", function (event) {
         event.target.style.background = "";
-      }, true);
+    }, true);
 
 }
 
