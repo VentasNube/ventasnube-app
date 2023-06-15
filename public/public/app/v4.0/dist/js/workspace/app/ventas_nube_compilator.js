@@ -9,7 +9,44 @@ function registerHandlebarsHelpers() {
       return options.fn(context);
     });
   
+
+    Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
+        var rol_admin = modulo + "_admin_" + ws_id;
+        var rol_edit = modulo + "_edit_" + ws_id;
+        var rol_create = modulo + "_create_" + ws_id;
+        var rol_reed = modulo + "_reed_" + ws_id;
+      
+        var userRoles = user_Ctx.userCtx.roles;
+
+        console.log();
+      
+        if (userRoles.includes(rol_admin)) {
+          // El usuario tiene el rol de administrador, se le permite todo
+          return options.fn(this);
+        } else if (userRoles.includes(rol_edit) && rol === 'edit') {
+          // El usuario tiene el rol de edición, se le permite editar
+          return options.fn(this);
+        } else if (userRoles.includes(rol_create) && rol === 'create') {
+          // El usuario tiene el rol de creación, se le permite crear
+          return options.fn(this);
+        } else if (userRoles.includes(rol_reed) && rol === 'reed') {
+          // El usuario tiene el rol de lectura, se le permite leer
+          return options.fn(this);
+        } else {
+          // El usuario no tiene los permisos necesarios, se muestra el bloque inverso
+          return options.inverse(this);
+        }
+      });
+      
+      
+
+
+
+
+
+
     // Helper "userCtx"
+    /*
     Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
       var rol_admin = modulo + "_admin_" + ws_id;
       var rol_edit = modulo + "_edit_" + ws_id;
@@ -26,7 +63,10 @@ function registerHandlebarsHelpers() {
   
       return options.inverse(this);
     });
-  
+  */
+
+
+
 
     Handlebars.registerHelper("stock", function(value) {
         var ret = 0;
@@ -128,10 +168,7 @@ function registerHandlebarsHelpers() {
       
         return result;
       });
-
-  
     // Otros helpers de Handlebars...
-  
     // Puedes registrar aquí otros helpers adicionales
   }
 // Llamada a la función de registro de helpers antes de realizar las solicitudes AJAX

@@ -54,95 +54,6 @@ L_contact_db.sync(url_R_db + ws_board_db, {
 });
 
 
-
-//COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
-async function ws_contact_start() {
-    try {
-
-        const parametroUrl = await getUrlVal('t');
-        // alert(parametroUrl);
-        var board_name = parametroUrl;
-       // module_info = await L_contact_db.get('board_group_' + board_name);
-        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-        
-        // Mapeo el contenido del objeto ws_left_nav M
-        ws_left_nav_data = ws_left_nav['ws_left_nav'];
-        // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
-        ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
-        // Mapeo el objeto
-        var ws_lang = ws_lang_data_doc;
-        // SETEO EL ARRAY CON EL IDIOMA Con la variable
-        // Recorro el objeto y busco el nombre ws_lang_es o ws_lang_us dependiendo lo que configuro el admin
-        ws_lang_default = ws_lang['ws_land_default'];
-        // Recorro el objeto con la confuracion seteada en el DOC lang por default
-        ws_lang_data = ws_lang[ws_lang_default];
-        // Envio los datos a la funciones y imprimo
-        // Creo la variable userCtx apartir del doc left nav
-        user_Ctx = ws_left_nav.userCtx;
-    } catch (err) {
-        // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
-        console.log('ERROR BOARD START', err)
-        Snackbar.show({
-            text: err.reason,
-            actionText: '<span class="material-icons">refresh</span> Refresh ',
-            actionTextColor: "#0575e6",
-            duration: Snackbar.LENGTH_INDEFINITE,
-            action: () => { updateDocuments() }
-        });
-    }
-}
-
-/// Ordenes GET MAP REDUCE FILTRO POR TIPO
-async function query_ordersNO(type, category_id) {
-    try {
-
-        const result = await L_contact_db.changes({
-            filter: 'get_orders/order_change_2',
-            include_docs: true, // Incluye esta línea
-            query_params: { type: type, category_id: category_id } //Envio los paramentros a filtrar 
-        });
-
-        const rows = result.rows;
-        console.log('QUERRY ORDERR');
-        console.log(result);
-        if (rows) {
-            rows.forEach(row => {
-                console.log('QUERRY ORDERR');
-                console.log(result);
-                console.log(row.doc);
-            });
-        } else {
-            console.log('rows is undefined');
-        }
-
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-
-    // Guardo los datos del nuevo contacto
-    async function new_contact_putOLD(user_data) {
-        try {
-            // console.log("new_contact_put formData",user_data);
-            var doc = {}
-            const doc_id = 'contact_' + new Date().getTime() + Math.random().toString().slice(2);
-            doc._id = doc_id;
-            doc.user_data = user_data;
-            // doc._rev = doc._rev;
-            const response = await L_contact_db.put(doc);
-            $('#master_popup').modal('hide');
-            Snackbar.show({
-                text: 'Se creo el contacto con éxito!',
-                actionText: 'ok',
-                actionTextColor: "#0575e6",
-            });
-        } catch (error) {
-            console.error('Error al crear el documento:', error);
-        }
-    }
-
 async function add_new_contact(element) {
     try {
         const modal = document.getElementById('master_popup');
@@ -169,7 +80,8 @@ async function add_new_contact(element) {
         });
     }
 }
-    // Guardo los datos del nuevo contacto
+
+// Guardo los datos del nuevo contacto
 async function new_contact_put(user_data) {
         try {
             var doc = {};
@@ -196,6 +108,177 @@ async function new_contact_put(user_data) {
             console.error('Error al crear el contacto:', error);
         }
 }
+
+
+
+// Trae los datos de la local user DB filtrado por tipo cart-items
+async function get_all_contact_intems(ws_id, filter) {
+    // Traigo los resultados de una vista
+    let response = await L_contact_db.query(
+        'contact_get/by_type_and_status', {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const rows = response.rows;
+        console.log('rows contact',rows);
+
+        all_items_array = await rows.map(item => {
+            new_items = {};
+            // Mapeo el array
+            new_items['first_name'] = item.value.first_name;
+            new_items['last_name'] = item.value.last_name;
+            new_items['phone'] = item.value.phone;
+            new_items['email'] = item.value.email;
+            new_items['document_number'] = item.value.document_number;
+            return new_items;
+        });
+
+        //Imprimo el resultado en patalla
+        print_contact_item(all_items_array);
+        // CONFIGURO LA VARIABLE GLOBAL FUSE PARA USAR EN TODOS LADOS ya con el array de los resultados
+        var options = {
+            // isCaseSensitive: false,
+            // includeScore: false,
+            // shouldSort: true,
+            // includeMatches: false,
+            // findAllMatches: false,
+            // minMatchCharLength: 1,
+            // location: 0,
+            // threshold: 0.6,
+            // distance: 100,
+            // useExtendedSearch: false,
+            // ignoreLocation: false,
+            // ignoreFieldNorm: false,
+            includeScore: true,
+            useExtendedSearch: true,
+            keys: [
+                "first_name",
+                "last_name",
+            ]
+        };
+        var myIndex = Fuse.createIndex(options.keys, all_items_array);
+        // initialize Fuse with the index
+        search_contact_fuse = new Fuse(all_items_array, options, myIndex);
+    }
+    else {
+        //return all_cart_item(false);
+    }
+}
+//////////////////////////////
+// CATALOGO ( PRODUCTOS ) 2023 //
+//////////////////////////////
+// TRAIGO LA BARRA DE BUSQUEDA
+function get_nav_contact(ws_info, ws_lang_data) {
+    var ws_contact_data = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/nav_bar.hbs', '#nav_bar_compiled', ws_contact_data);
+    //alert('cargo el bucador');
+    // $('#cart_user_input').focus();
+    console.log('NAV BAR CATALOG');
+};
+
+// TRAIGO LOS PRODUCTOS DEL CATALOGO
+function get_items_contact(ws_id) {
+
+    var ws_contact = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/contact_items.hbs', '#content_contact_commpiled', ws_contact);
+    // $('#cart_user_input').focus();
+    //console.log('GET ITEMS CATALOG');
+}
+
+// TARJETAS DE PRODUCTOS
+//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+function print_contact_item(new_items) {
+    var search_result = {
+        search_contact: new_items,
+        price_list: price_doc.price_list,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles,
+    }
+    console.log(search_result);
+    if (new_items.length > 0) {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', '#content_contact_commpiled', search_result);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
+}
+
+//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+async function search_contact_item(search_val) {
+    //Armo el array para renderizar los items
+    var new_items_search = search_contact_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
+    //Mapeo el resultado fuera de item
+    search_all_items_map_array = await new_items_search.map(it => {
+    
+        // Mapeo el array
+        /*   new_items['name'] = it.item.name;
+        new_items['cats'] = it.item.cats;
+        new_items['tags'] = it.item.tags;
+        new_items['sku'] = it.item.sku;
+        new_items['attribute_combinations'] = it.item.attribute_combinations;
+        new_items['doc'] = it.item.doc;
+        */
+        console.log('new_items_search',new_items_search)
+        new_items = {};
+        // Mapeo el array
+        new_items['first_name'] = it.item.first_name;
+        new_items['last_name'] = it.item.last_name;
+        new_items['phone'] = it.item.phone;
+        new_items['email'] = it.item.email;
+        new_items['document_number'] = it.item.document_number;
+        return new_items;
+        //Formateo el array final
+       //return new_items;
+    });
+
+    console.log('search_all_items_map_array',search_all_items_map_array);
+    if (search_all_items_map_array.length > 0) {
+        print_contact_item(search_all_items_map_array);
+    } else {
+        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+    }
+}
+
+// TRAIGO EL CATALOGO Y IMPRIMO
+async function get_contact(ws_id) {
+
+    //alert('Holaaa')
+    var ws_cart = {
+        ws_info: ws_info,
+        ws_lang_data: ws_lang_data,
+        user_roles: user_Ctx.userCtx.roles
+    }
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/contact.hbs', '#content_compiled', ws_cart);
+    get_nav_contact();
+    get_all_contact_intems();
+}
+
+
+$(document).on('focusin', '.contact_search', function (element) {
+    // cat_get_all_item_punchDb();
+    //  cat_search_item_js();
+    get_all_catalog_intems();
+});
+
+$(document).on('keyup', '.contact_search', function () {
+    var search_val = $(this).val();
+    var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+    //search_catalog_item(search_m_input);
+    console.log('all_items_array llll222');
+    console.log(all_items_array);
+    console.log('all_items_array llll2222');
+    console.log(search_val);
+    search_contact_item(search_val, all_items_array)
+});
 
 
 

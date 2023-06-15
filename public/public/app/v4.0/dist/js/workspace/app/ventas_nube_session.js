@@ -207,14 +207,48 @@ user_db.sync(url_R_db + userDb, {
 
     }
 });
-
+/*
 var userCtx;
 //Creo y conecto con userDB local 
 u_session = new PouchDB(url_R_db, { skip_setup: true });
-async function _session(ws_lang_data) {
+
+async function _session() {
     userCtx = await u_session.get('_session', { include_docs: true });
+    var userCtx;
+console.log('userCtx 1',userCtx)
     return userCtx;
 }
+
+_session();
+*/
+
+var userCtx;
+// Creo y conecto con userDB local 
+u_session = new PouchDB(url_R_db, { skip_setup: true });
+
+function _session(callback) {
+  u_session.get('_session', { include_docs: true })
+    .then(function(result) {
+      userCtx = result;
+      console.log('userCtx 1:', userCtx);
+      callback(null, userCtx);
+    })
+    .catch(function(error) {
+      callback(error, null);
+    });
+}
+
+_session(function(error, userCtx) {
+  if (error) {
+    console.error(error);
+    // Manejar el error de alguna manera
+  } else {
+    // Utilizar userCtx dentro de la función de callback
+  }
+});
+
+//console.log('userCtx 2:', userCtx);
+
 
 // Funcion para traer la hora minutoso segundos 
 // se usa asi
@@ -244,6 +278,5 @@ async function getDateTimeMinutes() {
     }
   }
 
-  
-_session();
+
 

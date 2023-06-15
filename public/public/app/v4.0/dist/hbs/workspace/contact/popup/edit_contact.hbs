@@ -1,0 +1,264 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+{{#with ws_lang_data }}
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <form id="new_contact_form" class="">
+            <div class="modal-header">
+                <div class="modal-nav">
+                    <span class="back-arrow btn-previus">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                        {{address_title}}
+                    </span>
+                </div>
+            </div>
+            <div id="modal-body" class="">
+                <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
+                    <div id="new-contact-step-1">
+                        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <input required="" id="first_name" class="form-control" type="text"
+                                placeholder="{{contact_first_name}}" name="first_name" />
+                            <input required="" id="last_name" class="form-control" type="text"
+                                placeholder="{{contact_last_name}}" name="last_name" />
+                            <input required="" id="document_number" class="form-control" type="text"
+                                placeholder="{{document_number}}" name="document_number" />
+                            <input required="" id="email" class="form-control" type="text"
+                                placeholder="{{contact_email}}" name="email" />
+                            <!-- Repite este bloque por cada número de teléfono que desees agregar -->
+                            <input required="" id="phone" type="tel" class="form-control"
+                                placeholder="{{contact_phone}}" name="phone">
+                            <!--div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label>{{m_account_phone}} </label>
+                                <div class="input-group">
+                                    <input id="phone" type="tel" class="form-control" autocomplete="off" name="whatsapp_number" type="text" placeholder="{{m_account_phone}}">
+                                    <span class="input-group-addon">
+                                        <button id="" type="button" tax_id=""
+                                            onclick="add_new_phone(this)"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right">
+                                            <span class="material-icons"> check_circle </span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div-->
+
+                        </div>
+                        <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input id="address" class="form-control " type="text" placeholder="{{address_street}}"
+                                    name="address_street" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <input id="address_number" class="form-control " type="number"
+                                    placeholder="{{address_number}}" name="address_number" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <input id="address_floor" class="form-control " type="text"
+                                    placeholder="{{address_floor}}" name="address_floor" />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                <input id="address_city" class="form-control" type="text" placeholder="{{address_city}}"
+                                    name="address_city" />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                <select class="form-control md " id="address_state" placeholder="{{address_state}}"
+                                    name="address_state" class="form-control">
+                                    <option value="">Provincia</option>
+                                    <option value="Buenos Aires">Buenos Aires</option>
+                                    <option value="Catamarca">Catamarca</option>
+                                    <option value="Chaco">Chaco</option>
+                                    <option value="Chubut">Chubut</option>
+                                    <option value="Córdoba">Córdoba</option>
+                                    <option value="Corrientes">Corrientes</option>
+                                    <option value="Entre Ríos">Entre Ríos</option>
+                                    <option value="Formosa">Formosa</option>
+                                    <option value="Jujuy">Jujuy</option>
+                                    <option value="La Pampa">La Pampa</option>
+                                    <option value="La Rioja">La Rioja</option>
+                                    <option value="Mendoza">Mendoza</option>
+                                    <option value="Misiones">Misiones</option>
+                                    <option value="Neuquén">Neuquén</option>
+                                    <option value="Río Negro">Río Negro</option>
+                                    <option value="Salta">Salta</option>
+                                    <option value="San Juan">San Juan</option>
+                                    <option value="San Luis">San Luis</option>
+                                    <option value="Santa Cruz">Santa Cruz</option>
+                                    <option value="Santa Fe">Santa Fe</option>
+                                    <option value="Santiago del Estero">Santiago del Estero</option>
+                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                                    <option value="Tucumán">Tucumán</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                <select class="form-control md " name="address_country" id="address_country">
+                                    <option value="AF">Afganistán</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="BR">Brasil</option>
+                                    <option value="CA">Canadá</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="CN">China</option>
+                                    <option value="DE">Alemania</option>
+                                    <option value="ES">España</option>
+                                    <option value="FR">Francia</option>
+                                    <option value="GB">Reino Unido</option>
+                                    <option value="IN">India</option>
+                                    <option value="IT">Italia</option>
+                                    <option value="JP">Japón</option>
+                                    <option value="MX">México</option>
+                                    <option value="RU">Rusia</option>
+                                    <option value="US">Estados Unidos</option>
+                                    <option value="ZA">Sudáfrica</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-4 col-sm-4 col-xs-6">
+                                <label class="margin-t-20">{{ws_catalog_settings_list}} </label>
+                                <select class="form-control md " name="price_list" id="price_list">
+                                    {{#each ../ws_price_list.price_list}}
+                                        <option value="{{{id}}}">{{value}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+            <span class="">{{b_cancel}}</span>
+        </button>
+        <button id="btn-save" onclick="save_new_conctact(this)" category_id="new_contact" type="button"
+            class="btn btn-primary ">
+            <span class="">{{b_save}}</span>
+        </button>
+    </div>
+    </form>
+</div>
+{{/with}}
+<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+
+<!-- CSS -->
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+
+<script>
+    var input = document.querySelector("#phone");
+    var codeCountry = null;
+    var ipCountry = null;
+    //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA IP
+    async function set_geolocation() {
+        const request = await fetch("https://ipinfo.io/json?token=b1b5f9b5d7dfea")
+        const jsonResponse = await request.json()
+        var ipCountry = jsonResponse.ip
+        var codeCountry = jsonResponse.country;
+        var cityLocation = jsonResponse.city;
+        var regionLocation = jsonResponse.region;
+        intlTelInput(input, {
+            initialCountry: codeCountry,
+            separateDialCode: true
+        });
+        var targetValue = regionLocation; // Valor a buscar
+        $("#address_state option").each(function () {
+            if ($(this).val() === targetValue) {
+                $(this).prop("selected", true);
+                return false; // Se encontró la coincidencia, se detiene el bucle each
+            }
+        });
+        console.log('codeCountry', codeCountry);
+        $("#address_country option").each(function () {
+            if ($(this).val() === codeCountry) {
+                $(this).prop("selected", true);
+                return false; // Se encontró la coincidencia, se detiene el bucle each
+            }
+        });
+        $("#address_city").val(cityLocation)
+        console.log(jsonResponse, jsonResponse.ip, jsonResponse.country)
+    }
+
+    set_geolocation();
+
+    function save_new_conctact() {
+        // Obtener todos los elementos de entrada y select dentro del formulario
+        const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
+        let formData = {};
+        // Recorrer todos los elementos
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            // Agregar el valor del elemento al objeto formData utilizando su id como clave
+            formData[input.id] = input.value;
+        }
+        // Convertir el objeto formData en una cadena JSON y devolverla
+        console.log('save_new_conctact', formData);
+        new_contact_put(formData);
+        return true
+        // formData;
+    }
+
+    /*
+        async function save_new_conctact() {
+            try {
+    
+                // Define las reglas de validación
+                //alert('save_new_conctact')
+                const rules = {
+                    name: {
+                        required: true,
+                        minlength: 2
+                    },
+                    // Agrega más reglas según necesites
+                };
+    
+                // Define los mensajes de error personalizados
+                const messages = {
+                    name: {
+                        required: "Por favor, introduce un nombre",
+                        minlength: "El nombre debe tener al menos 2 caracteres"
+                    },
+                    // Agrega más mensajes según necesites
+                };
+    
+                // Inicializa la validación en el formulario
+                $('#new_contact_form').validate({
+                    rules: rules,
+                    messages: messages,
+                    submitHandler: function () {
+                        // Obtener todos los elementos de entrada y select dentro del formulario
+                        const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
+                        let formData = {};
+                        // Recorrer todos los elementos
+                        for (let i = 0; i < inputs.length; i++) {
+                            const input = inputs[i];
+                            // Agregar el valor del elemento al objeto formData utilizando su id como clave
+                            formData[input.id] = input.value;
+                        }
+    
+                        console.log('save_new_conctact', formData);
+                        new_contact_put(formData);
+                        return true;
+                    },
+                    invalidHandler: function (event, validator) {
+                        var errors = validator.numberOfInvalids();
+                        if (errors) {
+                            Snackbar.show({
+                                text: "Por favor, corrige los errores en el formulario",
+                                actionText: 'ok',
+                                actionTextColor: "#0575e6",
+                            });
+                        }
+                    }
+                });
+    
+                 console.log('rules messages', rules, messages);
+    
+            } catch (error) {
+                console.error('Error al crear el documento:', error);
+            }
+        }
+    */
+
+
+</script>

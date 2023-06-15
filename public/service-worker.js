@@ -5,7 +5,7 @@
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
 
-const version = 67122145121212126121211291291212121212121212121212121221121229791222;
+const version = 67124212121222;
 
 
 const expectedCaches = ['ventasnube-v-' + version];
@@ -153,7 +153,12 @@ workbox.precaching.precacheAndRoute([
 
   //CONTACT
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/edit_contact.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', revision: version },
+
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/nav_bar.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/contact.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', revision: version },
   
 
 ]);

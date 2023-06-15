@@ -43,11 +43,11 @@ L_catalog_db.sync(url_R_db + ws_search_db, {
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
 
-    L_catalog_db.on('error', function (err) { 
+   /* L_catalog_db.on('error', function (err) { 
         debugger; 
         console.log(err);
     });
-
+*/
     let response = await L_catalog_db.query(
         'get/seach', {
         include_docs: true,
@@ -392,6 +392,7 @@ async function catalog_view_item_url(m_id, m_var_id) {
     }
 }
 
+
 // FUNCION PARA EDITAR PRODUCTO
 async function catalog_edit_item(element) {
     try {
@@ -438,7 +439,6 @@ async function catalog_edit_item(element) {
         console.log(err);
     }
 }
-
 
 /// EDITAR LAS MONEDAS EN EL FORMULARIO
 // SELECCIONO
@@ -722,7 +722,7 @@ async function catalog_new_item_new_product(element) {
                 }
             ],
             "sku": {
-                "status": true,
+                 "id": "EAN",
                 "value": ""
             },
             "pictures": [
@@ -748,24 +748,31 @@ async function catalog_new_item_new_product(element) {
             "price_list": [
                 {
                     "id": 1,
-                    "value": 150,
+                    "value": 100,
                     "currency": {
                         "id": "ARS",
                         "value": "$"
                       },
 
-                },
-                {
-                    "id": 2,
-                    "value": 100,
-                    "currency": {
-                        "id": "USA",
-                        "value": "u$s"
-                      },
                 }
             ],
             "stock_invetary": [
-
+                {
+                "id": 311,
+                "create": "2023-06-15T04:54:29.744Z",
+                "in_datetime": "2023-06-15T04:54:29.744Z",
+                "update_datetime": "2023-06-15T04:54:29.744Z",
+                "updateUser": "smartmobile.com.ar@gmail.com",
+                "type": "in",
+                "in_stock": 50,
+                "out_stock": 0,
+                "real_stock": 50,
+                "cost_price": 1000,
+                "currency_id": "2",
+                "currency_value": "$",
+                "currency_name": "Peso Argentino",
+                "location_id": 1
+                }
             ],
             "sold_quantity": 0,
             "description": {
@@ -798,9 +805,7 @@ async function catalog_new_item_new_product(element) {
                   "datetime": new_doc_time
                 }
               ],
-            "status": {
-              "value": "active"
-            },
+            "status":"active",
             "condition": "new",
             "type": "product",
             "tags": new_doc_tags,
@@ -828,7 +833,7 @@ async function catalog_new_item_new_product(element) {
             var currency_doc = await L_catalog_db.get('currency_list');
             var user_roles_permisions = user_Ctx.userCtx.roles;
     
-            console.log('user_roles_permisions', user_roles_permisions);
+          //  console.log('user_roles_permisions', user_roles_permisions);
     
             var product_doc_array = {
                 product_doc:product_doc,

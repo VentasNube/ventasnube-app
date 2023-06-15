@@ -271,9 +271,9 @@
     <div id="cart_footer">
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
-            {{#userCtx 'catalog' 'edit' }}
+            {{#userCtx 'catalog' 'edit'}}
                 <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary">
-                    {{#with ../ws_lang_data}} {{{t_new_product}}}{{/with}}
+                    {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
                 </button>
             {{/userCtx}}
         </div>

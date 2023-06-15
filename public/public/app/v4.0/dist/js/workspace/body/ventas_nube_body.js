@@ -119,6 +119,11 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
        //ws_board_start();
         // get_box();
     }
+    else if (ws_m_s == 'contact') {
+        //alert('GET MODULE FUNCION OK');
+        console.log('GET MODULE CONTACT OK');
+        get_contact(m_t_id);
+     }
     else if (ws_m_s == 'account') {
         alert('TRAIGO EL account');
     }
