@@ -4,10 +4,7 @@
 // importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-
-const version = 67124212121222;
-
-
+const version = 67124122121212121212112121222;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -24,10 +21,10 @@ self.addEventListener('message', function (event) {
   }
 });
 
-
 workbox.setConfig({
   debug: false
 });
+
 
 workbox.core.setCacheNameDetails({
   prefix: 'ventasnube',
@@ -35,6 +32,7 @@ workbox.core.setCacheNameDetails({
   precache: 'ventasnube-precache',
   runtime: 'ventasnube-runcache'
 });
+
 
 workbox.precaching.precacheAndRoute([
   // { url: '/', revision: version },
@@ -144,7 +142,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', revision: version },
   
   { url: '/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', revision: version },
-  
 
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/edit_group.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
@@ -191,3 +188,5 @@ workbox.routing.registerRoute(
     ]
   })
 );
+
+//# sourceMappingURL=workbox-sw.js.map

@@ -1,5 +1,6 @@
  <!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  --->
 <div class="box">
+    {{#with ws_lang_data }}
     <div class="box-header">
             <div class="nav-header nav_bar_catalog_header">
                 <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
@@ -58,26 +59,7 @@
                                                                             value="">
                                                                     </div>
                                                                 </li>
-                                                                <li>
-                                                                    <label>Equipo</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">devices_other</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
-                                                                            value="">
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <label>Fecha limite</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">event</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input datetimepicker"
-                                                                            placeholder="Fecha limite" value="">
-                                                                    </div>
-                                                                </li>
+                                                          
                                                                 <li>
                                                                     <label>Fecha de ingreso</label>
                                                                     <div class="input-group">
@@ -93,7 +75,7 @@
                                                     </ul>
                                                 </div>
                                     </div>
-                                     <input class="contact_search search-input s-card-actv-input" autocomplete="off" type="text" id="" name="catalog_search" placeholder="Buscar..">
+                                     <input class="contact_search s-card-actv-input" autocomplete="off" type="text" id="" name="contact_search" placeholder="{{input_contact_search}}">
                             </div>
                     </div>
                 </div>
@@ -137,5 +119,6 @@
                 
             </div>
         </div>
+    {{/with}}
     </div>
 </div>

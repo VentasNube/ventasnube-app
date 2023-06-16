@@ -1,13 +1,10 @@
 ////// BOARDS MODULE 2023 ////////////
-
 ws_board_db = 'ws_contact_' + ws_id;
-
 //board_group_info = null;
 ws_left_nav_data = null;
 ws_lang_data = null;
 module_info = null;
 //// VARIABLES GLOBALES 
-
 
 // Definiendo la URL de la base de datos remota
 //const url_R_db = 'http://<username>:<password>@localhost:5984/'; // Reemplaza con tus propios valores
@@ -27,7 +24,6 @@ for (const evento of eventosContact) {
 }
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-
 //SYNCRONIZO LOS DATOS
 
 L_contact_db.sync(url_R_db + ws_board_db, {
@@ -109,8 +105,6 @@ async function new_contact_put(user_data) {
         }
 }
 
-
-
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_contact_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -156,6 +150,9 @@ async function get_all_contact_intems(ws_id, filter) {
             keys: [
                 "first_name",
                 "last_name",
+                "phone",
+                "document_number",
+                "email"
             ]
         };
         var myIndex = Fuse.createIndex(options.keys, all_items_array);
@@ -166,6 +163,53 @@ async function get_all_contact_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
+
+///////// VERSION NUEVA 2023 SCROLL INFINITO /////
+
+const PAGE_SIZE = 10; // Ajusta este número a la cantidad de elementos que quieres cargar a la vez.
+
+let lastItemDate = null;
+
+async function getMoreItems() {
+    var options = {
+        limit: PAGE_SIZE,
+        include_docs: true,
+        descending: true
+    };
+
+    if (lastItemDate) {
+        options.endkey = lastItemDate;
+    }
+
+    let response = await L_contact_db.query('contact_get/by_type_and_status', options);
+    const rows = response.rows;
+
+    if (rows.length > 0) {
+        lastItemDate = rows[rows.length - 1].key; // Actualizar la fecha del último ítem.
+
+        const newItems = rows.map(item => ({
+            first_name: item.value.first_name,
+            last_name: item.value.last_name,
+            phone: item.value.phone,
+            email: item.value.email,
+            document_number: item.value.document_number
+        }));
+
+        print_contact_item(newItems); // Aquí puedes agregar los nuevos ítems a tu UI.
+
+        var options = {
+            includeScore: true,
+            useExtendedSearch: true,
+            keys: ["first_name", "last_name"]
+        };
+        var myIndex = Fuse.createIndex(options.keys, newItems);
+        search_contact_fuse = new Fuse(newItems, options, myIndex);
+    } else {
+        // No hay más datos para cargar.
+    }
+}
+
+// Llamar a `getMoreItems` cada vez que el usuario llega al final de la lista.
 //////////////////////////////
 // CATALOGO ( PRODUCTOS ) 2023 //
 //////////////////////////////
@@ -182,7 +226,7 @@ function get_nav_contact(ws_info, ws_lang_data) {
     console.log('NAV BAR CATALOG');
 };
 
-// TRAIGO LOS PRODUCTOS DEL CATALOGO
+// TRAIGO LOS CONTACTOS
 function get_items_contact(ws_id) {
 
     var ws_contact = {
@@ -218,15 +262,6 @@ async function search_contact_item(search_val) {
     var new_items_search = search_contact_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
     //Mapeo el resultado fuera de item
     search_all_items_map_array = await new_items_search.map(it => {
-    
-        // Mapeo el array
-        /*   new_items['name'] = it.item.name;
-        new_items['cats'] = it.item.cats;
-        new_items['tags'] = it.item.tags;
-        new_items['sku'] = it.item.sku;
-        new_items['attribute_combinations'] = it.item.attribute_combinations;
-        new_items['doc'] = it.item.doc;
-        */
         console.log('new_items_search',new_items_search)
         new_items = {};
         // Mapeo el array
@@ -236,8 +271,6 @@ async function search_contact_item(search_val) {
         new_items['email'] = it.item.email;
         new_items['document_number'] = it.item.document_number;
         return new_items;
-        //Formateo el array final
-       //return new_items;
     });
 
     console.log('search_all_items_map_array',search_all_items_map_array);
@@ -248,7 +281,7 @@ async function search_contact_item(search_val) {
     }
 }
 
-// TRAIGO EL CATALOGO Y IMPRIMO
+// TRAIGO EL MODULO Y LO IMPRIMO
 async function get_contact(ws_id) {
 
     //alert('Holaaa')

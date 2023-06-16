@@ -1803,6 +1803,7 @@ class Workspace extends BaseController
                         ]
                     ];
 
+
                     $ws_collection_get = [
                         '_id' => '_design/get',
                         'views' => [
@@ -1811,6 +1812,8 @@ class Workspace extends BaseController
                             ],
                             ]
                         ];
+
+
 
 
                     //$ws_module_name = "catalog";
@@ -1824,6 +1827,8 @@ class Workspace extends BaseController
 
                     // DOC DISEÑO PARA HACER GET CON FILTROS
                     $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_collection_get); //Docuento diseno get
+                    
+                   
 
                     //DOC COFIGURACIONES
                     $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
@@ -2085,6 +2090,17 @@ class Workspace extends BaseController
                     $db_name = 'ws_contact_' . $workspace_id_hex;
 
 
+
+                    $ws_contact_get = [
+                        '_id' => '_design/contact_get',
+                        'views' => [
+                            'by_type_and_status' => [
+                                'map' =>  "function(doc) {\n    if (doc.type === 'contact' && doc.status === 'active') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"
+                            ],
+                            ]
+                        ];
+
+
                     $ws_contact_doc = [
                         "_id" => "001",
                         "type" => "contact",
@@ -2148,6 +2164,9 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                          // DOC DISEÑO PARA HACER GET CON FILTROS
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/contact_get", $ws_contact_get); //Docuento diseno get
+
                         $this->WorkspaceModel->curl_put($db_name . '/', $ws_contact_doc); //Creo un doc con la informacion del workspace
                     }
                 }

@@ -4,12 +4,12 @@
             {{#each ws_left_nav_data.m}}
                 <li class="treeview">
                     <a class="" 
-                        onclick="get_module_nav(this)"
+                      href="#" 
+                      m_id="{{{m_id}}}"      
                         {{#ifEquals m_type_action "1"}} 
-                            m_id="{{{m_id}}}"  m_url="{{m_url}}" href="#"
-                            {{else}}
-
-                            m_id="{{{m_id}}}" s_url_t_m="{{{m_url}}}" href="#"                   
+                        {{else}}
+                           onclick="get_module_nav(this)"
+                           s_url_t_m="{{{m_url}}}"               
                         {{/ifEquals}}
                         >
                         <i class="material-icons">{{m_icon}}</i>

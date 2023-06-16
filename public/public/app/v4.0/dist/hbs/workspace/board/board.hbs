@@ -548,7 +548,7 @@
     async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
         let options = {
         include_docs: true,
-        limit: 50, // Cambia el límite para obtener todos los documentos en una sola consulta
+        limit: 3, // Cambia el límite para obtener todos los documentos en una sola consulta
         group: true,
         group_level: 1,
         };
@@ -556,14 +556,8 @@
             options.startkey = [nextStartkey];
             options.startkey_docid = nextStartkeyDocid;
         }
-
         // let result = await db.allDocs(options);
         let result = await L_board_db.query('order_view/by_type_category_status', options);
-
-
-
-
-
         if (result && result.rows && result.rows.length > 0) {
             nextStartkey = result.rows[result.rows.length - 1].key;
             nextStartkeyDocid = result.rows[result.rows.length - 1].id;
@@ -573,15 +567,12 @@
             nextStartkey = null;
             nextStartkeyDocid = null;
         }
-
         return {
             rows: result.rows,
             nextStartkey: nextStartkey,
             nextStartkeyDocid: nextStartkeyDocid
         };
     }
-
     up_ventasnube_kanban();
     scrollerMove();
-
 </script>

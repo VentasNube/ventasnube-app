@@ -26,10 +26,12 @@ return [
         'b_exit_icon' => 'logout',
         'b_exit' => 'Salir',
         //BUSCADOR
-        't_search' => 'Busca lo que sea..',
-        'b_search_tittle' => 'Buscar lo que sea..',
+        't_search' => 'Buscar..',
+        'b_search_tittle' => 'Buscar..',
         'search_icon' => 'search',
         //CONTACTS
+
+        'input_contact_search' => 'Buscar Contactos',
 
         'address_title' => 'Nuevo Contacto',
         'contact_first_name' => 'Nombre (Obligatorio)',
