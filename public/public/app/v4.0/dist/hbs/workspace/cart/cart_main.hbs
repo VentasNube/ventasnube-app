@@ -16,13 +16,13 @@
         </button>
         <ul class="dropdown-menu pull-left">
             {{#each ws_left_nav_data.m_t}}
-            <li class="margin-5">
-                <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                    s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
-                    <span class="material-icons">{{m_t_icon}}</span>
-                    <span class="this_m_t_name">{{m_t_name}}</span>
-                </a>
-            </li>
+                <li class="margin-5">
+                    <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                        s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
+                        <span class="material-icons">{{m_t_icon}}</span>
+                        <span class="this_m_t_name">{{m_t_name}}</span>
+                    </a>
+                </li>
             {{/each}}
         </ul>
     </div>

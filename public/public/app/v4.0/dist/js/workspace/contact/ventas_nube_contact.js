@@ -105,6 +105,50 @@ async function new_contact_put(user_data) {
         }
 }
 
+/// SELECCIONO y GUARDO MARCA
+async function contact_edit_put(formData,doc_id) {
+    try {
+    console.log('formData',formData);
+    console.log('formData',doc_id);
+    //const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+   // const input_value = $(element).attr('input_value'); //Id del documento a edita
+    //let input_id = $(element).attr('input_id');
+   // let new_value = $(element).attr('new_value');
+   //doc.user_data = user_data;
+   doc = {...formData};
+    var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+    var doc = await L_contact_db.get(doc_id_s); //Traigo el documento
+    var response = await L_contact_db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        type : 'contact',
+        status : 'active',
+        //create_date : new Date(); //fecha actual del navegador
+        ...formData,
+       // ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+    });
+    if(response.ok){
+        get_contact()
+        $('#master_popup').modal('hide');
+        Snackbar.show({
+            text: 'Se edito el contacto con éxito!',
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+    }  
+    catch (error) {
+        Snackbar.show({
+            text: error.reason,
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    }
+   // catalog_edit_item_url(doc_id, 1);
+}
+
+
+
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_contact_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -121,6 +165,8 @@ async function get_all_contact_intems(ws_id, filter) {
         all_items_array = await rows.map(item => {
             new_items = {};
             // Mapeo el array
+            new_items['_id'] = item.value._id;
+            new_items['_rev'] = item.value._rev;
             new_items['first_name'] = item.value.first_name;
             new_items['last_name'] = item.value.last_name;
             new_items['phone'] = item.value.phone;
@@ -170,7 +216,7 @@ const PAGE_SIZE = 10; // Ajusta este número a la cantidad de elementos que quie
 
 let lastItemDate = null;
 
-async function getMoreItems() {
+async function getMoreItemsOLD() {
     var options = {
         limit: PAGE_SIZE,
         include_docs: true,
@@ -190,6 +236,45 @@ async function getMoreItems() {
         const newItems = rows.map(item => ({
             first_name: item.value.first_name,
             last_name: item.value.last_name,
+            phone: item.value.phone,
+            email: item.value.email,
+            document_number: item.value.document_number
+        }));
+
+        print_contact_item(newItems); // Aquí puedes agregar los nuevos ítems a tu UI.
+
+        var options = {
+            includeScore: true,
+            useExtendedSearch: true,
+            keys: ["first_name", "last_name"]
+        };
+        var myIndex = Fuse.createIndex(options.keys, newItems);
+        search_contact_fuse = new Fuse(newItems, options, myIndex);
+    } else {
+        // No hay más datos para cargar.
+    }
+}
+
+async function getMoreItems() {
+    var options = {
+        limit: PAGE_SIZE,
+        include_docs: true,
+        descending: true
+    };
+
+    if (lastItemDate) {
+        options.endkey = lastItemDate;
+    }
+
+    let response = await L_contact_db.query('contact_get/by_type_and_status', options);
+    
+    if (response && response.rows && response.rows.length > 0) {
+        const rows = response.rows;
+        lastItemDate = rows[rows.length - 1].key; // Actualizar la fecha del último ítem.
+
+        const newItems = rows.map(item => ({
+            first_name: item.value.first_name,
+            last_item: item.value.last_name,
             phone: item.value.phone,
             email: item.value.email,
             document_number: item.value.document_number
@@ -248,7 +333,7 @@ function print_contact_item(new_items) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
     }
-    console.log(search_result);
+    console.log('print_contact_item:',search_result);
     if (new_items.length > 0) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', '#content_contact_commpiled', search_result);
     } else {
@@ -291,7 +376,7 @@ async function get_contact(ws_id) {
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/contact.hbs', '#content_compiled', ws_cart);
-    get_nav_contact();
+    get_nav_contact(ws_info,ws_lang_data);
     get_all_contact_intems();
 }
 

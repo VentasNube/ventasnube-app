@@ -8,6 +8,8 @@ return [
         'b_ok' => 'Ok',
         'b_dell' => 'Eliminar',
         'b_add' => 'Agregar',
+        'b_new' => 'Nuevo',
+        'b_filter'=>'Filtrar',
         'b_confirm' => 'Estas seguro?',
         'b_reload' => 'Reintentar',
         'b_undo' => 'Deshacer',
@@ -32,7 +34,9 @@ return [
         //CONTACTS
 
         'input_contact_search' => 'Buscar Contactos',
+        'contact_title' => 'Contactos',
 
+        'contact_list' => 'Lista de contactos',
         'address_title' => 'Nuevo Contacto',
         'contact_first_name' => 'Nombre (Obligatorio)',
         'contact_last_name' => 'Apellido (Obligatorio)',
@@ -45,13 +49,15 @@ return [
         'address_floor' => 'Piso',
         'address_city' => 'Ciudad',
         'address_state' => 'Provincia/Estado',
+        //Fomulario contactos
+        'form_valid_name' => 'Por favor, ingrese su nombre',
+        'form_valid_last_name' => 'Por favor, ingrese su apellido',
+        'form_valid_document' => 'Por favor, ingrese su documento',
+        'form_valid_email' =>'Por favor, ingrese su email valido',
+        'form_valid_phone' =>'Por favor, ingrese su numero',
+        'form_valid_phone_count' =>'El teléfono debe tener al menos 10 números',
+        
 
-       
-        
-        
-        
-        
-        
    
         //BOARDS
         //Editar board

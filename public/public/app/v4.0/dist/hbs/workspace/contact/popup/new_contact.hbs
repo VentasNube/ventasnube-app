@@ -18,15 +18,19 @@
                     <div id="new-contact-step-1">
                         <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <input required="" id="first_name" class="form-control" type="text"
-                                placeholder="{{contact_first_name}}" name="first_name" />
+                                data-msg-required="{{{form_valid_name}}}" placeholder="{{contact_first_name}}"
+                                name="first_name" />
                             <input required="" id="last_name" class="form-control" type="text"
-                                placeholder="{{contact_last_name}}" name="last_name" />
+                                data-msg-required="{{{form_valid_last_name}}}" placeholder="{{contact_last_name}}"
+                                name="last_name" />
                             <input required="" id="document_number" class="form-control" type="text"
-                                placeholder="{{document_number}}" name="document_number" />
+                                data-msg-required="{{{form_valid_document}}}" placeholder="{{document_number}}"
+                                name="document_number" />
                             <input required="" id="email" class="form-control" type="text"
-                                placeholder="{{contact_email}}" name="email" />
+                                data-msg-required="{{form_valid_email}}" placeholder="{{contact_email}}" name="email" />
                             <!-- Repite este bloque por cada número de teléfono que desees agregar -->
                             <input required="" id="phone" type="tel" class="form-control"
+                                data-msg-required="{{form_valid_phone}}" data-msg-minlength="{{form_valid_phone_count}}"
                                 placeholder="{{contact_phone}}" name="phone">
                             <!--div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label>{{m_account_phone}} </label>
@@ -116,7 +120,7 @@
                                 <label class="margin-t-20">{{ws_catalog_settings_list}} </label>
                                 <select class="form-control md " name="price_list" id="price_list">
                                     {{#each ../ws_price_list.price_list}}
-                                        <option value="{{{id}}}">{{value}}</option>
+                                    <option value="{{{id}}}">{{value}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -146,6 +150,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 
 <script>
+
     var input = document.querySelector("#phone");
     var codeCountry = null;
     var ipCountry = null;
@@ -181,7 +186,58 @@
 
     set_geolocation();
 
-    function save_new_conctact() {
+function save_new_conctact() {
+    // Recoge los mensajes desde los atributos de los campos
+    const first_name_msj = $("#first_name").attr('data-msg-required');
+    const last_name_msj = $("#last_name").attr('data-msg-required');
+    const document_number_msj = $("#document_number").attr('data-msg-required');
+    const email_msj = $("#email").attr('data-msg-required');
+    const phone_msj = $("#phone").attr('data-msg-required');
+    const phone_min_msj = $("#phone").attr('data-msg-minlength');
+
+    // Define las reglas y mensajes de validación en una sola llamada a validate
+    $("#new_contact_form").validate({
+        ignore: [],
+        rules: {
+            first_name: {
+                required: true
+            },
+            last_name: {
+                required: true
+            },
+            document_number: {
+                required: true
+            },
+             email: {
+                required: true
+            },
+            phone: {
+                required: true,
+                minlength: 10
+            },
+        },
+        messages: {
+            first_name: {
+                required: first_name_msj
+            },
+            last_name: {
+                required: last_name_msj
+            },
+            document_number: {
+                required: document_number_msj
+            },
+             email: {
+                required: email_msj
+            },
+            phone: {
+                required: phone_msj,
+                minlength: phone_min_msj
+            },
+        }
+    });
+
+    // Solo si el formulario es válido, recoger los datos y enviarlos
+    if ($("#new_contact_form").valid()) {
         // Obtener todos los elementos de entrada y select dentro del formulario
         const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
         let formData = {};
@@ -195,70 +251,9 @@
         console.log('save_new_conctact', formData);
         new_contact_put(formData);
         return true
-        // formData;
+    } else {
+        return false;
     }
-
-    /*
-        async function save_new_conctact() {
-            try {
-    
-                // Define las reglas de validación
-                //alert('save_new_conctact')
-                const rules = {
-                    name: {
-                        required: true,
-                        minlength: 2
-                    },
-                    // Agrega más reglas según necesites
-                };
-    
-                // Define los mensajes de error personalizados
-                const messages = {
-                    name: {
-                        required: "Por favor, introduce un nombre",
-                        minlength: "El nombre debe tener al menos 2 caracteres"
-                    },
-                    // Agrega más mensajes según necesites
-                };
-    
-                // Inicializa la validación en el formulario
-                $('#new_contact_form').validate({
-                    rules: rules,
-                    messages: messages,
-                    submitHandler: function () {
-                        // Obtener todos los elementos de entrada y select dentro del formulario
-                        const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
-                        let formData = {};
-                        // Recorrer todos los elementos
-                        for (let i = 0; i < inputs.length; i++) {
-                            const input = inputs[i];
-                            // Agregar el valor del elemento al objeto formData utilizando su id como clave
-                            formData[input.id] = input.value;
-                        }
-    
-                        console.log('save_new_conctact', formData);
-                        new_contact_put(formData);
-                        return true;
-                    },
-                    invalidHandler: function (event, validator) {
-                        var errors = validator.numberOfInvalids();
-                        if (errors) {
-                            Snackbar.show({
-                                text: "Por favor, corrige los errores en el formulario",
-                                actionText: 'ok',
-                                actionTextColor: "#0575e6",
-                            });
-                        }
-                    }
-                });
-    
-                 console.log('rules messages', rules, messages);
-    
-            } catch (error) {
-                console.error('Error al crear el documento:', error);
-            }
-        }
-    */
-
+}
 
 </script>

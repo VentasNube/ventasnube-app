@@ -2,7 +2,7 @@
 {{#with ws_lang_data }}
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-        <form id="new_contact_form" class="">
+        <form id="edit_contact_form" class="">
             <div class="modal-header">
                 <div class="modal-nav">
                     <span class="back-arrow btn-previus">
@@ -17,16 +17,20 @@
                 <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
                     <div id="new-contact-step-1">
                         <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input required="" id="first_name" class="form-control" type="text"
-                                placeholder="{{contact_first_name}}" name="first_name" />
-                            <input required="" id="last_name" class="form-control" type="text"
-                                placeholder="{{contact_last_name}}" name="last_name" />
-                            <input required="" id="document_number" class="form-control" type="text"
-                                placeholder="{{document_number}}" name="document_number" />
-                            <input required="" id="email" class="form-control" type="text"
-                                placeholder="{{contact_email}}" name="email" />
+                            <input value="{{../doc.first_name}}" required="" id="first_name" class="form-control" type="text"
+                                data-msg-required="{{{form_valid_name}}}" placeholder="{{contact_first_name}}"
+                                name="first_name" />
+                            <input  value="{{../doc.last_name}}"  required="" id="last_name" class="form-control" type="text"
+                                data-msg-required="{{{form_valid_last_name}}}" placeholder="{{contact_last_name}}"
+                                name="last_name" />
+                            <input  value="{{../doc.document_number}}"  required="" id="document_number" class="form-control" type="text"
+                                data-msg-required="{{{form_valid_document}}}" placeholder="{{document_number}}"
+                                name="document_number" />
+                            <input value="{{../doc.email}}"  required="" id="email" class="form-control" type="text"
+                                data-msg-required="{{form_valid_email}}" placeholder="{{contact_email}}" name="email" />
                             <!-- Repite este bloque por cada número de teléfono que desees agregar -->
-                            <input required="" id="phone" type="tel" class="form-control"
+                            <input value="{{../doc.phone}}" required="" id="phone" type="tel" class="form-control"
+                                data-msg-required="{{form_valid_phone}}" data-msg-minlength="{{form_valid_phone_count}}"
                                 placeholder="{{contact_phone}}" name="phone">
                             <!--div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label>{{m_account_phone}} </label>
@@ -45,24 +49,25 @@
                         </div>
                         <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-12">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <input id="address" class="form-control " type="text" placeholder="{{address_street}}"
+                                <input  value="{{../doc.address}}" id="address" class="form-control " type="text" placeholder="{{address_street}}"
                                     name="address_street" />
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                <input id="address_number" class="form-control " type="number"
+                                <input  value="{{../doc.address_number}}"  id="address_number" class="form-control " type="number"
                                     placeholder="{{address_number}}" name="address_number" />
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                <input id="address_floor" class="form-control " type="text"
+                                <input  value="{{../doc.address_floor}}"  id="address_floor" class="form-control " type="text"
                                     placeholder="{{address_floor}}" name="address_floor" />
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                <input id="address_city" class="form-control" type="text" placeholder="{{address_city}}"
+                                <input  value="{{../doc.address_city}}"  id="address_city" class="form-control" type="text" placeholder="{{address_city}}"
                                     name="address_city" />
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                 <select class="form-control md " id="address_state" placeholder="{{address_state}}"
                                     name="address_state" class="form-control">
+                                    <option selected value="{{../doc.address_state}}">{{../doc.address_state}}</option>
                                     <option value="">Provincia</option>
                                     <option value="Buenos Aires">Buenos Aires</option>
                                     <option value="Catamarca">Catamarca</option>
@@ -116,7 +121,13 @@
                                 <label class="margin-t-20">{{ws_catalog_settings_list}} </label>
                                 <select class="form-control md " name="price_list" id="price_list">
                                     {{#each ../ws_price_list.price_list}}
-                                        <option value="{{{id}}}">{{value}}</option>
+
+                                      {{#ifEquals id ../doc.price_list}}
+                                        <option selected="" value="{{{id}}}">{{value}}</option>
+                                      {{/ifEquals}}
+
+                                     <option value="{{{id}}}">{{value}}</option>
+
                                     {{/each}}
                                 </select>
                             </div>
@@ -130,7 +141,7 @@
         <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
             <span class="">{{b_cancel}}</span>
         </button>
-        <button id="btn-save" onclick="save_new_conctact(this)" category_id="new_contact" type="button"
+        <button id="btn-save" doc_rev="{{../doc._rev}}" doc_id="{{{../doc._id}}}"  onclick="save_edit_conctact(this)" type="button"
             class="btn btn-primary ">
             <span class="">{{b_save}}</span>
         </button>
@@ -146,44 +157,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 
 <script>
+
     var input = document.querySelector("#phone");
     var codeCountry = null;
     var ipCountry = null;
-    //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA IP
-    async function set_geolocation() {
-        const request = await fetch("https://ipinfo.io/json?token=b1b5f9b5d7dfea")
-        const jsonResponse = await request.json()
-        var ipCountry = jsonResponse.ip
-        var codeCountry = jsonResponse.country;
-        var cityLocation = jsonResponse.city;
-        var regionLocation = jsonResponse.region;
-        intlTelInput(input, {
-            initialCountry: codeCountry,
-            separateDialCode: true
-        });
-        var targetValue = regionLocation; // Valor a buscar
-        $("#address_state option").each(function () {
-            if ($(this).val() === targetValue) {
-                $(this).prop("selected", true);
-                return false; // Se encontró la coincidencia, se detiene el bucle each
-            }
-        });
-        console.log('codeCountry', codeCountry);
-        $("#address_country option").each(function () {
-            if ($(this).val() === codeCountry) {
-                $(this).prop("selected", true);
-                return false; // Se encontró la coincidencia, se detiene el bucle each
-            }
-        });
-        $("#address_city").val(cityLocation)
-        console.log(jsonResponse, jsonResponse.ip, jsonResponse.country)
-    }
+    //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA I
 
-    set_geolocation();
+function save_edit_conctact(element) {
+    // Recoge los mensajes desde los atributos de los campos
+    const doc_id = $(element).attr('doc_id');
+    const first_name_msj = $("#first_name").attr('data-msg-required');
+    const last_name_msj = $("#last_name").attr('data-msg-required');
+    const document_number_msj = $("#document_number").attr('data-msg-required');
+    const email_msj = $("#email").attr('data-msg-required');
+    const phone_msj = $("#phone").attr('data-msg-required');
+    const phone_min_msj = $("#phone").attr('data-msg-minlength');
 
-    function save_new_conctact() {
+    // Define las reglas y mensajes de validación en una sola llamada a validate
+    $("#edit_contact_form").validate({
+        ignore: [],
+        rules: {
+            first_name: {
+                required: true
+            },
+            last_name: {
+                required: true
+            },
+            document_number: {
+                required: true
+            },
+             email: {
+                required: true
+            },
+            phone: {
+                required: true,
+                minlength: 10
+            },
+        },
+        messages: {
+            first_name: {
+                required: first_name_msj
+            },
+            last_name: {
+                required: last_name_msj
+            },
+            document_number: {
+                required: document_number_msj
+            },
+             email: {
+                required: email_msj
+            },
+            phone: {
+                required: phone_msj,
+                minlength: phone_min_msj
+            },
+        }
+    });
+
+    // Solo si el formulario es válido, recoger los datos y enviarlos
+    if ($("#edit_contact_form").valid()) {
         // Obtener todos los elementos de entrada y select dentro del formulario
-        const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
+        const inputs = document.querySelectorAll('#edit_contact_form input, #edit_contact_form select');
         let formData = {};
         // Recorrer todos los elementos
         for (let i = 0; i < inputs.length; i++) {
@@ -191,74 +225,15 @@
             // Agregar el valor del elemento al objeto formData utilizando su id como clave
             formData[input.id] = input.value;
         }
+       // formData[_id] = input.value;
         // Convertir el objeto formData en una cadena JSON y devolverla
-        console.log('save_new_conctact', formData);
-        new_contact_put(formData);
+        console.log('save_edit_conctact', formData);
+        contact_edit_put(formData, doc_id);
+        
         return true
-        // formData;
+    } else {
+        return false;
     }
-
-    /*
-        async function save_new_conctact() {
-            try {
-    
-                // Define las reglas de validación
-                //alert('save_new_conctact')
-                const rules = {
-                    name: {
-                        required: true,
-                        minlength: 2
-                    },
-                    // Agrega más reglas según necesites
-                };
-    
-                // Define los mensajes de error personalizados
-                const messages = {
-                    name: {
-                        required: "Por favor, introduce un nombre",
-                        minlength: "El nombre debe tener al menos 2 caracteres"
-                    },
-                    // Agrega más mensajes según necesites
-                };
-    
-                // Inicializa la validación en el formulario
-                $('#new_contact_form').validate({
-                    rules: rules,
-                    messages: messages,
-                    submitHandler: function () {
-                        // Obtener todos los elementos de entrada y select dentro del formulario
-                        const inputs = document.querySelectorAll('#new_contact_form input, #new_contact_form select');
-                        let formData = {};
-                        // Recorrer todos los elementos
-                        for (let i = 0; i < inputs.length; i++) {
-                            const input = inputs[i];
-                            // Agregar el valor del elemento al objeto formData utilizando su id como clave
-                            formData[input.id] = input.value;
-                        }
-    
-                        console.log('save_new_conctact', formData);
-                        new_contact_put(formData);
-                        return true;
-                    },
-                    invalidHandler: function (event, validator) {
-                        var errors = validator.numberOfInvalids();
-                        if (errors) {
-                            Snackbar.show({
-                                text: "Por favor, corrige los errores en el formulario",
-                                actionText: 'ok',
-                                actionTextColor: "#0575e6",
-                            });
-                        }
-                    }
-                });
-    
-                 console.log('rules messages', rules, messages);
-    
-            } catch (error) {
-                console.error('Error al crear el documento:', error);
-            }
-        }
-    */
-
+}
 
 </script>

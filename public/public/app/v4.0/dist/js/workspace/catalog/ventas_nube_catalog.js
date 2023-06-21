@@ -2908,7 +2908,16 @@ async function new_price_var(element) {
         let price_list_id = $('#price_list_var_' + variant_id).val(); //Id del documento a edita
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
-        var price_list_id_s = Number(price_list_id)
+        var price_list_id_s = Number(price_list_id);
+
+        let currency_id = 'ARS';
+        let currency_value = '$';
+
+        var currency = {
+            id: currency_id,
+            value:currency_value
+          };
+
         //PRUEBAS NUEVAS
         var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
@@ -2925,15 +2934,21 @@ async function new_price_var(element) {
                 price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
                 price.updateDate = newDate;
                 price.updateUser = userName;
+                price.currency = currency;
+              
             } else {
+
+            
                 var new_item = {
                     id: price_list_id_s,
                     value: new_value,
                     create: newDate,
                     updateDate: newDate,
-                    updateUser: userName
+                    updateUser: userName,
+                    currency: currency
 
                 };
+
                 //  console.log(userName, 'else userName',new_item,'new_item');
                 var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
             }

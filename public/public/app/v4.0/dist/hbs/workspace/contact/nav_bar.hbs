@@ -9,7 +9,7 @@
                                     <div class="group">
                                                 <div class="btn-group dopdown">
                                                     <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
-                                                        Filtrar
+                                                        {{b_filter}}
                                                         <span class="material-icons"> filter_list </span>
                                                     </button>
                                                     <ul class="dropdown-menu xl pull-left">
@@ -86,16 +86,16 @@
                         <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle "
                             data-toggle="dropdown" aria-expanded="true">
                             <span class="material-icons">add_circle_outline</span> <span
-                                class="hidden-xs hidden-sm">Nuevo</span>
+                                class="hidden-xs hidden-sm">{{b_new}}</span>
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li role="separator" class="divider"></li>
-                            <li><a class="catalog_new_item" href="#catalog_new_item" data-toggle="modal" role="button"
-                                    title="Crear nuevo articulo"><i class="material-icons">collections</i> A&ntilde;adir un articulo nuevo</a>
+                            <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                                    title="{{address_title}}"><i class="material-icons">person_add</i>{{address_title}}</a>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#cajaRetiro" data-toggle="modal" role="button" title="Retirar efectivo"><i
-                                        class="material-icons">article</i> Listado de articulos </a></li>
+                            <li><a href="" data-toggle="modal" role="button" title="{{b_save}} {{contact_list}}"><i
+                                        class="material-icons">article</i> {{b_save}} {{contact_list}}</a></li>
                         </ul>
                     </div>
              
@@ -105,15 +105,15 @@
                         <span class="material-icons">settings</span>
                     </button>
                     <ul class="dropdown-menu pull-right">
-                        <li>
+                        <!--li>
                             <a onclick="catalog_config()">
                                 <i class="material-icons">create</i>
                                 Editar catalogo
                             </a>    
-                              </li>
+                              </li-->
                         <li class="divider"></li>
                         <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i
-                                    class="material-icons">view_carousel</i> Agregar colaborador</a></li>
+                                    class="material-icons">view_carousel</i>{{m_add_board_group_collaborator}}</a></li>
                     </ul>
                 </div>
                 
