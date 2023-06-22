@@ -65,33 +65,9 @@
                                     name="address_city" />
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                <select class="form-control md " id="address_state" placeholder="{{address_state}}"
-                                    name="address_state" class="form-control">
-                                    <option value="">Provincia</option>
-                                    <option value="Buenos Aires">Buenos Aires</option>
-                                    <option value="Catamarca">Catamarca</option>
-                                    <option value="Chaco">Chaco</option>
-                                    <option value="Chubut">Chubut</option>
-                                    <option value="Córdoba">Córdoba</option>
-                                    <option value="Corrientes">Corrientes</option>
-                                    <option value="Entre Ríos">Entre Ríos</option>
-                                    <option value="Formosa">Formosa</option>
-                                    <option value="Jujuy">Jujuy</option>
-                                    <option value="La Pampa">La Pampa</option>
-                                    <option value="La Rioja">La Rioja</option>
-                                    <option value="Mendoza">Mendoza</option>
-                                    <option value="Misiones">Misiones</option>
-                                    <option value="Neuquén">Neuquén</option>
-                                    <option value="Río Negro">Río Negro</option>
-                                    <option value="Salta">Salta</option>
-                                    <option value="San Juan">San Juan</option>
-                                    <option value="San Luis">San Luis</option>
-                                    <option value="Santa Cruz">Santa Cruz</option>
-                                    <option value="Santa Fe">Santa Fe</option>
-                                    <option value="Santiago del Estero">Santiago del Estero</option>
-                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
-                                    <option value="Tucumán">Tucumán</option>
-                                </select>
+
+                                <input id="address_state" class="form-control"
+                                    type="text" placeholder="{{address_state}}" name="address_state" />    
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                 <select class="form-control md " name="address_country" id="address_country">
@@ -142,8 +118,8 @@
     </form>
 </div>
 {{/with}}
-<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
-<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+<!--link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script-->
 
 <!-- CSS -->
 <!-- JS -->
@@ -154,6 +130,7 @@
     var input = document.querySelector("#phone");
     var codeCountry = null;
     var ipCountry = null;
+
     //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA IP
     async function set_geolocation() {
         const request = await fetch("https://ipinfo.io/json?token=b1b5f9b5d7dfea")
@@ -167,13 +144,14 @@
             separateDialCode: true
         });
         var targetValue = regionLocation; // Valor a buscar
-        $("#address_state option").each(function () {
+        /*  $("#address_state option").each(function () {
             if ($(this).val() === targetValue) {
                 $(this).prop("selected", true);
                 return false; // Se encontró la coincidencia, se detiene el bucle each
             }
-        });
-        console.log('codeCountry', codeCountry);
+        });*/
+         $("#address_state").val(regionLocation);
+       // console.log('codeCountry', codeCountry);
         $("#address_country option").each(function () {
             if ($(this).val() === codeCountry) {
                 $(this).prop("selected", true);
@@ -181,7 +159,8 @@
             }
         });
         $("#address_city").val(cityLocation)
-        console.log(jsonResponse, jsonResponse.ip, jsonResponse.country)
+         $("#first_name").focus(); //Hago focus en nombre
+        //console.log(jsonResponse, jsonResponse.ip, jsonResponse.country)
     }
 
     set_geolocation();

@@ -77,33 +77,6 @@ async function add_new_contact(element) {
     }
 }
 
-// Guardo los datos del nuevo contacto
-async function new_contact_put(user_data) {
-        try {
-            var doc = {};
-            const doc_id = 'contact_'+  + new Date().getTime() + Math.random().toString().slice(2);
-            doc._id = doc_id;
-            doc.type = 'contact';
-            doc.status = 'active';
-            doc.create_date = new Date(); //fecha actual del navegador
-            doc.create_user = user_Ctx.userCtx.roles.name; //fecha actual del navegador
-            //doc.user_data = user_data;
-            doc = {...doc, ...user_data};
-            const response = await L_contact_db.put(doc);
-            console.log(doc);
-            if(response.ok){
-                $('#master_popup').modal('hide');
-                Snackbar.show({
-                    text: 'Se creo el contacto con éxito!',
-                    actionText: 'ok',
-                    actionTextColor: "#0575e6",
-                });
-            }
-
-        } catch (error) {
-            console.error('Error al crear el contacto:', error);
-        }
-}
 
 /// SELECCIONO y GUARDO MARCA
 async function contact_edit_put(formData,doc_id) {
@@ -147,8 +120,6 @@ async function contact_edit_put(formData,doc_id) {
    // catalog_edit_item_url(doc_id, 1);
 }
 
-
-
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_contact_intems(ws_id, filter) {
     // Traigo los resultados de una vista
@@ -172,6 +143,16 @@ async function get_all_contact_intems(ws_id, filter) {
             new_items['phone'] = item.value.phone;
             new_items['email'] = item.value.email;
             new_items['document_number'] = item.value.document_number;
+            ////
+            new_items['address'] = item.value.address;
+            new_items['address_number'] = item.value.address_number;
+            new_items['address_floor'] = item.value.address_floor;
+            new_items['address_city'] = item.value.address_city;
+            new_items['address_state'] = item.value.address_state;
+            new_items['address_country'] = item.value.address_country;
+            new_items['price_list'] = item.value.price_list;
+
+
             return new_items;
         });
 
@@ -210,10 +191,39 @@ async function get_all_contact_intems(ws_id, filter) {
     }
 }
 
+
+// Guardo los datos del nuevo contacto
+async function new_contact_put(user_data) {
+    try {
+        var doc = {};
+        const doc_id = 'contact_'+  + new Date().getTime() + Math.random().toString().slice(2);
+        doc._id = doc_id;
+        doc.type = 'contact';
+        doc.status = 'active';
+        doc.create_date = new Date(); //fecha actual del navegador
+        doc.create_user = user_Ctx.userCtx.roles.name; //fecha actual del navegador
+        //doc.user_data = user_data;
+        doc = {...doc, ...user_data};
+        const response = await L_contact_db.put(doc);
+        console.log(doc);
+        if(response.ok){
+            $('#master_popup').modal('hide');
+            get_all_contact_intems();
+            Snackbar.show({
+                text: 'Se creo el contacto con éxito!',
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+
+    } catch (error) {
+        console.error('Error al crear el contacto:', error);
+    }
+}
+
+
 ///////// VERSION NUEVA 2023 SCROLL INFINITO /////
-
 const PAGE_SIZE = 10; // Ajusta este número a la cantidad de elementos que quieres cargar a la vez.
-
 let lastItemDate = null;
 
 async function getMoreItemsOLD() {
@@ -350,11 +360,21 @@ async function search_contact_item(search_val) {
         console.log('new_items_search',new_items_search)
         new_items = {};
         // Mapeo el array
+        new_items['_id'] = it.item._id;
+        new_items['_rev'] = it.item._rev;
         new_items['first_name'] = it.item.first_name;
         new_items['last_name'] = it.item.last_name;
         new_items['phone'] = it.item.phone;
         new_items['email'] = it.item.email;
         new_items['document_number'] = it.item.document_number;
+
+        new_items['address'] = it.item.address;
+        new_items['address_number'] = it.item.address_number;
+        new_items['address_floor'] = it.item.address_floor;
+        new_items['address_city'] = it.item.address_city;
+        new_items['address_state'] = it.item.address_state;
+        new_items['address_country'] = it.item.address_country;
+        new_items['price_list'] = it.item.price_list;
         return new_items;
     });
 

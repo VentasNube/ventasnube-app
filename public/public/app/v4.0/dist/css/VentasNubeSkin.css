@@ -11763,6 +11763,11 @@ board-item-content
     width: 230px;
     text-align: left;
 }
+
+.card_contact{
+    padding: 0px 15px 15px;
+    min-width: 300px;
+}
 .card .card-product {
     position: relative;
     width: 100%;

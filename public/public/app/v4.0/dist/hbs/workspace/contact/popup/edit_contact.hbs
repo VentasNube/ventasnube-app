@@ -17,19 +17,19 @@
                 <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
                     <div id="new-contact-step-1">
                         <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <input value="{{../doc.first_name}}" required="" id="first_name" class="form-control" type="text"
-                                data-msg-required="{{{form_valid_name}}}" placeholder="{{contact_first_name}}"
-                                name="first_name" />
-                            <input  value="{{../doc.last_name}}"  required="" id="last_name" class="form-control" type="text"
-                                data-msg-required="{{{form_valid_last_name}}}" placeholder="{{contact_last_name}}"
-                                name="last_name" />
-                            <input  value="{{../doc.document_number}}"  required="" id="document_number" class="form-control" type="text"
-                                data-msg-required="{{{form_valid_document}}}" placeholder="{{document_number}}"
-                                name="document_number" />
-                            <input value="{{../doc.email}}"  required="" id="email" class="form-control" type="text"
+                            <input value="{{../doc.first_name}}" required="" id="first_name" class="form-control"
+                                type="text" data-msg-required="{{{form_valid_name}}}"
+                                placeholder="{{contact_first_name}}" name="first_name" />
+                            <input value="{{../doc.last_name}}" required="" id="last_name" class="form-control"
+                                type="text" data-msg-required="{{{form_valid_last_name}}}"
+                                placeholder="{{contact_last_name}}" name="last_name" />
+                            <input value="{{../doc.document_number}}" required="" id="document_number"
+                                class="form-control" type="text" data-msg-required="{{{form_valid_document}}}"
+                                placeholder="{{document_number}}" name="document_number" />
+                            <input value="{{../doc.email}}" required="" id="email" class="form-control" type="text"
                                 data-msg-required="{{form_valid_email}}" placeholder="{{contact_email}}" name="email" />
                             <!-- Repite este bloque por cada número de teléfono que desees agregar -->
-                            <input value="{{../doc.phone}}" required="" id="phone" type="tel" class="form-control"
+                            <input value="{{../doc.phone}}" country_code="{{../doc.address_country}}" required="" id="phone" type="tel" class="edit_phone form-control"
                                 data-msg-required="{{form_valid_phone}}" data-msg-minlength="{{form_valid_phone_count}}"
                                 placeholder="{{contact_phone}}" name="phone">
                             <!--div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -45,57 +45,33 @@
                                     </span>
                                 </div>
                             </div-->
-
                         </div>
                         <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-12">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <input  value="{{../doc.address}}" id="address" class="form-control " type="text" placeholder="{{address_street}}"
-                                    name="address_street" />
+                                <input value="{{../doc.address}}" id="address" class="form-control " type="text"
+                                    placeholder="{{address_street}}" name="address_street" />
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                <input  value="{{../doc.address_number}}"  id="address_number" class="form-control " type="number"
-                                    placeholder="{{address_number}}" name="address_number" />
+                                <input value="{{../doc.address_number}}" id="address_number" class="form-control "
+                                    type="number" placeholder="{{address_number}}" name="address_number" />
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                <input  value="{{../doc.address_floor}}"  id="address_floor" class="form-control " type="text"
-                                    placeholder="{{address_floor}}" name="address_floor" />
+                                <input value="{{../doc.address_floor}}" id="address_floor" class="form-control "
+                                    type="text" placeholder="{{address_floor}}" name="address_floor" />
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                <input  value="{{../doc.address_city}}"  id="address_city" class="form-control" type="text" placeholder="{{address_city}}"
-                                    name="address_city" />
+                                <input value="{{../doc.address_city}}" id="address_city" class="form-control"
+                                    type="text" placeholder="{{address_city}}" name="address_city" />
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                <select class="form-control md " id="address_state" placeholder="{{address_state}}"
-                                    name="address_state" class="form-control">
-                                    <option selected value="{{../doc.address_state}}">{{../doc.address_state}}</option>
-                                    <option value="">Provincia</option>
-                                    <option value="Buenos Aires">Buenos Aires</option>
-                                    <option value="Catamarca">Catamarca</option>
-                                    <option value="Chaco">Chaco</option>
-                                    <option value="Chubut">Chubut</option>
-                                    <option value="Córdoba">Córdoba</option>
-                                    <option value="Corrientes">Corrientes</option>
-                                    <option value="Entre Ríos">Entre Ríos</option>
-                                    <option value="Formosa">Formosa</option>
-                                    <option value="Jujuy">Jujuy</option>
-                                    <option value="La Pampa">La Pampa</option>
-                                    <option value="La Rioja">La Rioja</option>
-                                    <option value="Mendoza">Mendoza</option>
-                                    <option value="Misiones">Misiones</option>
-                                    <option value="Neuquén">Neuquén</option>
-                                    <option value="Río Negro">Río Negro</option>
-                                    <option value="Salta">Salta</option>
-                                    <option value="San Juan">San Juan</option>
-                                    <option value="San Luis">San Luis</option>
-                                    <option value="Santa Cruz">Santa Cruz</option>
-                                    <option value="Santa Fe">Santa Fe</option>
-                                    <option value="Santiago del Estero">Santiago del Estero</option>
-                                    <option value="Tierra del Fuego">Tierra del Fuego</option>
-                                    <option value="Tucumán">Tucumán</option>
-                                </select>
+
+                                 <input value="{{../doc.address_state}}" id="address_state" class="form-control"
+                                    type="text" placeholder="{{address_state}}" name="address_state" />
+
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                 <select class="form-control md " name="address_country" id="address_country">
+                                    <option selected value="{{../doc.address_country}}">{{../doc.address_country}}</option>
                                     <option value="AF">Afganistán</option>
                                     <option value="AR">Argentina</option>
                                     <option value="AU">Australia</option>
@@ -121,14 +97,12 @@
                                 <label class="margin-t-20">{{ws_catalog_settings_list}} </label>
                                 <select class="form-control md " name="price_list" id="price_list">
                                     {{#each ../ws_price_list.price_list}}
-
-                                      {{#ifEquals id ../doc.price_list}}
-                                        <option selected="" value="{{{id}}}">{{value}}</option>
-                                      {{/ifEquals}}
-
-                                     <option value="{{{id}}}">{{value}}</option>
-
-                                    {{/each}}
+                                        <option     
+                                        {{#ifEquals id ../../doc.price_list}}
+                                            selected="" 
+                                        {{/ifEquals}}
+                                        value="{{{id}}}">{{value}}</option>
+                                     {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -138,101 +112,140 @@
     </div>
 
     <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        <button id="btn-save" doc_rev="{{../doc._rev}}" doc_id="{{{../doc._id}}}" onclick="dell_conctact(this)" type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+            <span class="">{{b_dell}}</span>
+        </button>
         <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
             <span class="">{{b_cancel}}</span>
         </button>
-        <button id="btn-save" doc_rev="{{../doc._rev}}" doc_id="{{{../doc._id}}}"  onclick="save_edit_conctact(this)" type="button"
-            class="btn btn-primary ">
+        <button id="btn-save" doc_rev="{{../doc._rev}}" doc_id="{{{../doc._id}}}" onclick="save_edit_conctact(this)"
+            type="button" class="btn btn-primary ">
             <span class="">{{b_save}}</span>
         </button>
     </div>
     </form>
 </div>
 {{/with}}
-<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
-<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
-
-<!-- CSS -->
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 
 <script>
 
     var input = document.querySelector("#phone");
-    var codeCountry = null;
+    var codeCountry =  $("#phone").attr('country_code');
     var ipCountry = null;
     //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA I
+    intlTelInput(input, {
+            initialCountry: codeCountry,
+            separateDialCode: true
+        });
+    function save_edit_conctact(element) {
+        // Recoge los mensajes desde los atributos de los campos
+        const doc_id = $(element).attr('doc_id');
+        const first_name_msj = $("#first_name").attr('data-msg-required');
+        const last_name_msj = $("#last_name").attr('data-msg-required');
+        const document_number_msj = $("#document_number").attr('data-msg-required');
+        const email_msj = $("#email").attr('data-msg-required');
+        const phone_msj = $("#phone").attr('data-msg-required');
+        const phone_min_msj = $("#phone").attr('data-msg-minlength');
+        // Define las reglas y mensajes de validación en una sola llamada a validate
+        $("#edit_contact_form").validate({
+            ignore: [],
+            rules: {
+                first_name: {
+                    required: true
+                },
+                last_name: {
+                    required: true
+                },
+                document_number: {
+                    required: true
+                },
+                email: {
+                    required: true
+                },
+                phone: {
+                    required: true,
+                    minlength: 10
+                },
+            },
+            messages: {
+                first_name: {
+                    required: first_name_msj
+                },
+                last_name: {
+                    required: last_name_msj
+                },
+                document_number: {
+                    required: document_number_msj
+                },
+                email: {
+                    required: email_msj
+                },
+                phone: {
+                    required: phone_msj,
+                    minlength: phone_min_msj
+                },
+            }
+        });
 
-function save_edit_conctact(element) {
-    // Recoge los mensajes desde los atributos de los campos
-    const doc_id = $(element).attr('doc_id');
-    const first_name_msj = $("#first_name").attr('data-msg-required');
-    const last_name_msj = $("#last_name").attr('data-msg-required');
-    const document_number_msj = $("#document_number").attr('data-msg-required');
-    const email_msj = $("#email").attr('data-msg-required');
-    const phone_msj = $("#phone").attr('data-msg-required');
-    const phone_min_msj = $("#phone").attr('data-msg-minlength');
+        // Solo si el formulario es válido, recoger los datos y enviarlos
+        if ($("#edit_contact_form").valid()) {
+            // Obtener todos los elementos de entrada y select dentro del formulario
+            const inputs = document.querySelectorAll('#edit_contact_form input, #edit_contact_form select');
+            let formData = {};
+            // Recorrer todos los elementos
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                // Agregar el valor del elemento al objeto formData utilizando su id como clave
+                formData[input.id] = input.value;
+            }
+            // formData[_id] = input.value;
+            // Convertir el objeto formData en una cadena JSON y devolverla
+            console.log('save_edit_conctact', formData);
+            contact_edit_put(formData, doc_id);
 
-    // Define las reglas y mensajes de validación en una sola llamada a validate
-    $("#edit_contact_form").validate({
-        ignore: [],
-        rules: {
-            first_name: {
-                required: true
-            },
-            last_name: {
-                required: true
-            },
-            document_number: {
-                required: true
-            },
-             email: {
-                required: true
-            },
-            phone: {
-                required: true,
-                minlength: 10
-            },
-        },
-        messages: {
-            first_name: {
-                required: first_name_msj
-            },
-            last_name: {
-                required: last_name_msj
-            },
-            document_number: {
-                required: document_number_msj
-            },
-             email: {
-                required: email_msj
-            },
-            phone: {
-                required: phone_msj,
-                minlength: phone_min_msj
-            },
+            return true
+        } else {
+            return false;
         }
-    });
+    }
 
-    // Solo si el formulario es válido, recoger los datos y enviarlos
-    if ($("#edit_contact_form").valid()) {
-        // Obtener todos los elementos de entrada y select dentro del formulario
-        const inputs = document.querySelectorAll('#edit_contact_form input, #edit_contact_form select');
-        let formData = {};
-        // Recorrer todos los elementos
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            // Agregar el valor del elemento al objeto formData utilizando su id como clave
-            formData[input.id] = input.value;
-        }
-       // formData[_id] = input.value;
-        // Convertir el objeto formData en una cadena JSON y devolverla
-        console.log('save_edit_conctact', formData);
-        contact_edit_put(formData, doc_id);
-        
-        return true
-    } else {
-        return false;
+  
+async function dell_conctact(element) {
+    try {
+        const doc_id = $(element).attr('doc_id');
+        const doc_rev = $(element).attr('doc_rev');
+        const btn_save = $("#btn-save").find('span').html();
+
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> '+btn_save+'???',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: btn_save,
+            actionTextColor: "#dd4b39",
+            onActionClick: async function (element) {
+                var response = await L_contact_db.remove(doc_id, doc_rev);
+                 if(response.ok){
+                     $('#card_' + doc_id).remove();
+                        Snackbar.show({
+                        text:'Eliminado con exito!' ,
+                        actionText: '<span class="material-icons">check_circle</span>',
+                        actionTextColor: "#0575e6",
+                    //    duration: Snackbar.LENGTH_INDEFINITE,
+                      //  action: () => { updateDocuments() }
+                    });
+                }
+            }
+        });
+    } catch (err) {
+        Snackbar.show({
+            text: err.reason,
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+            action: () => { updateDocuments() }
+        });
     }
 }
 
