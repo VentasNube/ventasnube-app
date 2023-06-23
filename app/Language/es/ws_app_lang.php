@@ -157,6 +157,10 @@ return [
         'm_catalog_icon' => 'collections',
         't_new_product' => 'Crear producto',
         'a_dell_product' => 'Quieres eliminar el producto?',
+
+
+        'input_product_search' => 'Buscar productos',
+
         //Editar producto
         'm_catalog_edit_tittle' => 'Editar producto',
         'm_catalog_edit_sub_tittle' => 'Informacion General',
@@ -205,6 +209,9 @@ return [
         //CARRITO
         'm_cart' => 'Carrito',
         't_cart' => 'Carrito',
+        't_cart_sell' => 'Carrito de ventas',
+        't_cart_purcharse' => 'Carrito de compras',
+
         'm_cart_trash' => 'El carrito esta vacio',
         'm_cart_all_dellete' => 'El carrito esta vacio',
         'b_cart_add_product' => 'Agrega productos',
@@ -241,6 +248,9 @@ return [
         'ws_panel_settings_general' => 'General',
         'ws_panel_settings_users' => 'Colaboradores',
         'ws_panel_settings_update' => 'Actualizaciones',
+        'ws_panel_settings_compact' => 'Compactar Base de datos',
+        'ws_panel_settings_compact_btn' => 'Compactar',
+        'ws_panel_settings_compact_icon' => 'compress',
         'ws_panel_settings_lang_label' => 'Modificar Idioma', 
         'ws_panel_settings_lang_es' => 'Espa&ntilde;ol',
         'ws_panel_settings_lang_us' => 'Ingles',
@@ -438,6 +448,8 @@ return [
         'm_catalog_edit_price_list_update' => 'Update Price Lists',
         'm_cart' => 'Cart',
         't_cart' => 'Cart',
+        't_cart_purcharse' => 'Cart',
+
         'm_cart_trash' => 'Your cart is empty',
         'm_cart_all_delete' => 'Your cart is empty',
         'b_cart_add_product' => 'Add products',

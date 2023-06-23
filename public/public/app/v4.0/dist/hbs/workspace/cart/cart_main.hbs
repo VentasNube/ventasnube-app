@@ -78,16 +78,54 @@
 
 </div>
 
+
+<!-- Product module -->  
+{{#ifEquals board_type_name 'purcharse'}}
+                                          
+<div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+    <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <button onclick="add_new_contact(this)" class="success round s margin-0">
+            <span class="material-icons">library_add</span>
+        </button>
+    </div>
+
+    <div class="btn-group dopdown dropdown-subjet  padding-0 col-xs-10 col-sm-10 col-md-8 col-lg-10">
+        <div id="" type="button" class="dropdown-toggle dropdown-subjet-input" data-toggle="dropdown"
+            aria-expanded="true">
+            <input autocomplete="off" id="cart_producto_search_input" class="form-control" type="text"
+                placeholder="  {{#with ws_lang_data}} {{input_product_search}}{{/with}}">
+        </div>
+        <ul id="product_auto_subjet" class="dropdown-menu dropdown-subjet-div">
+            
+        </ul>
+    </div>
+
+</div>
+  {{/ifEquals}}
 <!-- Cart main module -->
 <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
     <ul class="nav nav-tabs">
+       
+{{#ifEquals board_type_name 'purcharse'}}
+              <li id="cart_item_tab_icon" class="ripple  active">
+            <a data-toggle="tab" href="#cart_purcharse_item_tab">
+                <span class="material-icons">shopping_cart</span>
+                <span class="cart_n cart-number">0</span>
+                  {{#with ws_lang_data}} {{t_cart_purcharse}}{{/with}}
+            </a>
+        </li>
+        {{else}}               
         <li id="cart_item_tab_icon" class="ripple  active">
             <a data-toggle="tab" href="#cart_item_tab">
                 <span class="material-icons">shopping_cart</span>
                 <span class="cart_n cart-number">0</span>
-                {{#with ws_lang_data}} {{t_cart}}{{/with}}
+                {{#with ws_lang_data}} {{t_cart_sell}} {{/with}}
             </a>
         </li>
+
+  {{/ifEquals}}
+
         <li id="fav_item_tab_icon" class="ripple">
             <a data-toggle="tab" href="#fav_item_tab">
                 <span class="material-icons">favorite</span>
@@ -95,22 +133,40 @@
                 {{#with ws_lang_data}} {{t_fav}}{{/with}}
             </a>
         </li>
-        <li id="new_item_tab_icon" class="ripple">
+
+        <!--li id="new_item_tab_icon" class="ripple">
             <a data-toggle="tab" href="#new_item_tab">
                 <span class="material-icons">
                     add_circle
                 </span>
                 {{#with ws_lang_data}} {{t_new_product}}{{/with}}
             </a>
-        </li>
+        </li-->
+
     </ul>
     <!--tab-content--->
     <div class="tab-content ">
         <!--tab--->
         <div id="cart_item_tab" class="tab-pane fade in active">
             <!--s-card-activ-cont--->
+
+{{#ifEquals board_type_name 'purcharse'}}
+            <div id="product_cart_purcharse_items" class="s-card-activ-cont gray">
+            </div>                    
+  {{/ifEquals}}
+
+{{#ifEquals board_type_name 'sell'}}
             <div id="product_cart_items" class="s-card-activ-cont gray">
             </div>
+{{/ifEquals}}
+{{#ifEquals board_type_name 'sell'}}
+            <div id="product_cart_items" class="s-card-activ-cont gray">
+            </div>
+{{/ifEquals}}
+{{#ifEquals board_type_name 'service_turn'}}
+            <div id="product_cart_items" class="s-card-activ-cont gray">
+            </div>
+{{/ifEquals}}
         </div>
         <div id="fav_item_tab" class="tab-pane fade in">
             <div id="product_fav_items" class="s-card-activ-cont gray">

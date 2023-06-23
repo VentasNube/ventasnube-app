@@ -1338,7 +1338,7 @@ async function new_orderNOindiceincremental(element) {
 async function get_board_onscroll() {
     window.onscroll = async function () {
         if (isLoading) return;
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 700) {
             isLoading = true;
             try {
                 let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);

@@ -548,7 +548,7 @@
     async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
         let options = {
         include_docs: true,
-        limit: 3, // Cambia el límite para obtener todos los documentos en una sola consulta
+        limit: 300, // Cambia el límite para obtener todos los documentos en una sola consulta
         group: true,
         group_level: 1,
         };

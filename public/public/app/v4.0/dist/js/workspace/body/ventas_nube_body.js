@@ -116,7 +116,8 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
        console.log('GET MODULE FUNCION OK');
        ws_board_start();
        get_board(m_t_id);
-       //ws_board_start();
+       get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
+        //ws_board_start();
         // get_box();
     }
     else if (ws_m_s == 'contact') {

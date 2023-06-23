@@ -425,16 +425,13 @@ async function catalog_edit_item(element) {
 
        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-
-
-        console.log('product_doc_array', product_doc_array);
+       // console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
-
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return item_print;
+       // return item_print;
     } catch (err) {
         console.log(err);
     }

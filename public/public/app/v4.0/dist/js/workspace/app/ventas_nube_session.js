@@ -279,4 +279,79 @@ async function getDateTimeMinutes() {
   }
 
 
+  /// 2023 UPDATE COMPACTACION DE WORKSPACE
+
+  // Variables globales
+//let L_board_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+//let L_catalog_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+//let L_contact_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+
+// Función para realizar la auto compactación de las bases de datos
+async function auto_compact_db() {
+  try {
+
+    let L_board_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+    let L_catalog_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+    let L_contact_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
+
+    const databasesToCompact = ['board_db', 'catalog_db', 'contact_db'];
+
+    for (const dbName of databasesToCompact) {
+      const db = new PouchDB(dbName);
+      const info = await db.info();
+
+      if (info.doc_count > 0 && info.disk_size > 0 && info.disk_size / info.doc_count > 500000) {
+      //  console.log("Iniciando auto compactación de la base de datos " + dbName + "...");
+        $('#ws_panel_settings_compact_result').append('<li>'+ "Iniciando auto compactación de la base de datos <strong>" + dbName + "</strong>..."+'</li>');
+        const result = await db.compact();
+      //  console.log("Auto compactación completada para la base de datos " + dbName + ".");
+        $('#ws_panel_settings_compact_result').append('<li>'+ "Auto compactación completada para la base de datos <strong>" + dbName + "</strong>." +'</li>');
+        // Actualizar las variables globales con la información de compactación
+        if (dbName === 'board_db') {
+          L_board_db.compactedFiles = result.length;
+          L_board_db.docCount = info.doc_count;
+          L_board_db.diskSize = info.disk_size;
+        } else if (dbName === 'catalog_db') {
+          L_catalog_db.compactedFiles = result.length;
+          L_catalog_db.docCount = info.doc_count;
+          L_catalog_db.diskSize = info.disk_size;
+        } else if (dbName === 'contact_db') {
+          L_contact_db.compactedFiles = result.length;
+          L_contact_db.docCount = info.doc_count;
+          L_contact_db.diskSize = info.disk_size;
+        }
+      } else {
+
+        $('#ws_panel_settings_compact_result').append('<li>'+ "No se requiere auto compactación en este momento para la base de datos <strong>" + dbName + "</strong>."+'</li>');
+       // console.log("No se requiere auto compactación en este momento para la base de datos " + dbName + ".");
+      }
+    }
+    $('#ws_panel_settings_compact_result').append('<li>'+ "Información de compactación:"+'</li>');
+    $('#ws_panel_settings_compact_result').append('<li>'+ "board_db:<blockquote> <p>",  JSON.stringify(L_board_db) +'</blockquote> </p></li>');
+    $('#ws_panel_settings_compact_result').append('<li>'+ "catalog_db:<blockquote> <p>",  JSON.stringify( L_catalog_db)+'</blockquote> </p></li>');
+    $('#ws_panel_settings_compact_result').append('<li>'+ "contact_db:<blockquote> <p>",  JSON.stringify( L_contact_db)+'</blockquote> </p></li>');
+
+   // console.log("Información de compactación:");
+   //console.log("board_db:", L_board_db);
+   // console.log("catalog_db:", L_catalog_db);
+   // console.log("contact_db:", L_contact_db);
+    return {
+      success: true
+    };
+  } catch (error) {
+    $('#ws_panel_settings_compact_result').append('<li>'+ "Error durante la auto compactación:<strong>", error+'</strong></li>');
+   // console.error("Error durante la auto compactación:", error);
+    return {
+      error: error,
+      success: false
+    };
+  }
+}
+
+
+
+  
+  
+
+
 

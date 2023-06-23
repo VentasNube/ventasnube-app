@@ -4,7 +4,7 @@
 // importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 123112111234121212121212121235122;
+const version = 121122123111221212321212212111212112121212122121231211212122121221212112121221221212567678121121222;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -116,6 +116,10 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
+  //Config
+
+
+  { url: '/public/app/v4.0/dist/hbs/workspace/setting/general.hbs', revision: version },
   //CATALOG
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
   // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },

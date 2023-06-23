@@ -35,10 +35,15 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
 
     // board_group_info = await L_board_db.get('board_group_' + board_type_name);
     //const board_group = board_group_info.board_group;
-    // const board_name = await getUrlVal('t');
+   
+    try{
+        const board_name = await getUrlVal('t');
 
-
-
+        if(!board_name){
+            const board_name = 'sell';   
+        }
+   //let  board_type_name ='sell';
+    console.log("Board TYPE NAME:"+board_name);
     var price_doc = await L_catalog_db.get('price_list');
     var currency_doc = await L_catalog_db.get('currency_list');
 
@@ -48,7 +53,7 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
         module_name: 'board',
-        board_type_name: 'sell',
+        board_type_name: board_name,
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         ws_left_nav_data: ws_left_nav_data
@@ -58,6 +63,12 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
     get_fav(ws_id);
     get_cart_change(ws_id);
     get_fav_change(ws_id);
+
+    }
+    catch{
+
+
+    }
 };
 
 
