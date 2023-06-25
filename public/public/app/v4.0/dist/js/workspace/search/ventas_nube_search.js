@@ -39,15 +39,29 @@ async function search_db() {
 }
 
 ////----(4 Search Module)---/////
-function get_search_module(ws_info, ws_lang_data) {
-    var ws_search_data = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        user: user_data,
+async function get_search_module(ws_info, ws_lang_data,ws_left_nav_data) {
+    try{
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        const board_name = await getUrlVal('t');
+        if(!board_name){
+                const board_name = 'sell';   
+        }
+        // Mapeo el contenido del objeto ws_left_nav M
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];
+        var ws_search_data = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user: user_data,
+            ws_left_nav_data: ws_left_nav_data,
+            board_type_name: board_name,
+        }
+        //console.log('SEARCH ARRAYYY ');
+        console.log('SEACH CONSOLE',ws_search_data);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
     }
-    //console.log('SEARCH ARRAYYY ');
-    //console.log(ws_search_data);
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
+    catch{
+
+    }
 };
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
@@ -268,16 +282,20 @@ function card_edit_variant() {
 
 }
 
-//Seacrh Input
+//TOMA EL FOCUS EN SEARCH ABRE EL MENU
 $(document).on('focusin', '.search-input', function (element) {
     get_all_item_punchDb();//traigo los items del array
+
 });
+
 //Searh Input
 $(document).on('keyup', '.search-input', function () {
  var search_m_input = $(this).val();
  var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
  search_item_js(search_m_input);
+
 });
+
 //Botones de tipos de busqueda 
 $(document).on('click', '.search_button_cat', function (event) {
     var search_cat_selected_btn = $(this).html();

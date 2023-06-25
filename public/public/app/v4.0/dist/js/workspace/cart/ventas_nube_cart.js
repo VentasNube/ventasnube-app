@@ -37,12 +37,7 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
     //const board_group = board_group_info.board_group;
    
     try{
-        const board_name = await getUrlVal('t');
-
-        if(!board_name){
-            const board_name = 'sell';   
-        }
-   //let  board_type_name ='sell';
+    var board_name = await get_board_type('t');
     console.log("Board TYPE NAME:"+board_name);
     var price_doc = await L_catalog_db.get('price_list');
     var currency_doc = await L_catalog_db.get('currency_list');
@@ -397,7 +392,13 @@ $(document).on('click', '.right_nav_open', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, false), 30;
     $('#right_main').removeClass('move-right');
     $('#cart_user_input').focus();
+
+    search_open();
+    console.log("ws_left_nav_data", ws_left_nav_data);
+    //Aca tengo que evniarle los aprametros la funcion get cart para que filtre
     get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
+
+
 });
 
 

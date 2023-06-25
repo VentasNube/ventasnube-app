@@ -14,19 +14,21 @@
                     <span class="material-icons">widgets</span>
                     <span class="hidden-xs hidden-sm">Productos</span>
                 </div>
-                <input class="search-input s-card-actv-input" autocomplete="off" type="text" id="searchInput" name="searchInput" placeholder="Buscar.." />
-          
-           <button type="button" id="search_button_dell" class="search-delete  search-close"><span class="material-icons">cancel</span>
-            </button>
+                <input class="search-input s-card-actv-input" autocomplete="off" type="text" id="searchInput"
+                    name="searchInput" placeholder="Buscar.." />
+
+                <button type="button" id="search_button_dell" class="search-delete  search-close"><span
+                        class="material-icons">cancel</span>
+                </button>
             </div>
 
-           
+
             <div class="search-nav-icons">
                 <button type="button" class="cart_button search-close right_nav_open">
                     <span class="material-icons"> store</span>
                     <span id="cart-number-1" class="cart_n cart-number">0</span>
                 </button>
-            </div>  
+            </div>
 
         </div>
         <!--search-header -->
@@ -36,20 +38,48 @@
         <!--search-title -->
         <!--search-result -->
         <div class="search-title col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="btn-group dopdown">
+                <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
+                    class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+                    data-toggle="dropdown" aria-expanded="true">
+                    {{#each ws_left_nav_data.m_t}}
+                    {{#ifEquals m_t_url ../board_type_name }}
+                    <span class="material-icons">{{m_t_icon}}</span>
+                    <span class="this_m_t_name">{{m_t_name}}</span>
+                    {{/ifEquals}}
+                    {{/each}}
+                    <i class="material-icons">expand_more</i>
+                </button>
+                <ul class="dropdown-menu pull-left">
+                    {{#each ws_left_nav_data.m_t}}
+                    <li class="margin-5">
+                        <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                            s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
+                            <span class="material-icons">{{m_t_icon}}</span>
+                            <span class="this_m_t_name">{{m_t_name}}</span>
+                        </a>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+
             <button type="button" search_cat="search_serice"
                 class="search_button_cat btn xl btn-more  btn-primary line">
                 <i class="material-icons">widgets</i>
-                <span search_m_t_name="product" class="hidden-xs hidden-sm">{{#with ws_lang_data}} {{b_product}}{{/with}}</span>
+                <span search_m_t_name="product" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
+                    {{b_product}}{{/with}}</span>
             </button>
             <button type="button" search_cat="search_serice"
                 class="search_button_cat btn xl btn-more  btn-primary line">
                 <i class="material-icons">home_repair_service</i>
-                <span search_m_t_name="service" class="hidden-xs hidden-sm">{{#with ws_lang_data}} {{b_service}}{{/with}}</span>
+                <span search_m_t_name="service" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
+                    {{b_service}}{{/with}}</span>
             </button>
             <button type="button" search_cat="search_contact"
                 class="search_button_cat btn xl btn-more  btn-primary line">
                 <i class="material-icons">people_alt</i>
-                <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ws_lang_data}} {{b_contact}}{{/with}}</span>
+                <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
+                    {{b_contact}}{{/with}}</span>
             </button>
             <div class="btn-group dopdown">
                 {{#each m_now}}
@@ -92,7 +122,7 @@
 </div>
 <script>
 
- 
+
     //Boton select animaciones
     /*  $("li.bg-color").click(function () {
           var bgColor = $(this).attr('bg-color');
@@ -112,7 +142,7 @@
           });
   */
 
-   
-      
+
+
 
 </script>

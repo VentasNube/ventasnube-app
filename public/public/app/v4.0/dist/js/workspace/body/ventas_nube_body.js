@@ -69,7 +69,7 @@ async function ws_module_config() {
         get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
         get_top_bar(ws_info, ws_lang_data,ws_left_nav_data, user_Ctx); // Imprimo el top bar
         get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
-        get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
+        get_search_module(ws_info, ws_lang_data, user_Ctx, ws_left_nav_data); // Imprimo el search 
         put_left_nav_doc(); // Actualizo o envio la cokkie de navegacion lateral
         check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
 
@@ -86,8 +86,6 @@ async function ws_module_config() {
         });
     }
 }
-
-
 
 //Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
 async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
@@ -133,7 +131,6 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         // get_box();
     }
 };
-
 
 
 ////----(1 LEFT NAV)---/////

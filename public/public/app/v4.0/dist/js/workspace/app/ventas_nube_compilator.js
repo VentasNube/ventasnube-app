@@ -465,3 +465,32 @@ async function getUrlVal(nombreParametro) {
       reject(`El parámetro '${nombreParametro}' no se encuentra en la URL.`);
     });
   }
+
+  // FUNCION QUE BUSCA EN LA URL EL PARAMETRO T y lo imprime en pantalla
+async function get_url_now(url_parameter){
+    try{
+        let board_type_name = await getUrlVal(url_parameter);
+        console.log(board_type_name);
+        return board_type_name;
+    }
+    catch(err){
+        console.log('Error get board type name', err);
+        return false
+    }
+}
+
+// FUNCION QUE BUSCA EN LA URL EL PARAMETRO T y lo imprime en pantalla
+async function get_board_type(url_parameter){
+    try{
+        let board_type_name = await getUrlVal(url_parameter);
+        if(!board_type_name){
+            let board_type_name = 'sell';   
+        }
+        console.log(board_type_name);
+        return board_type_name;
+    }
+    catch(err){
+        console.log('Error get board type name', err);
+        return false
+    }
+}
