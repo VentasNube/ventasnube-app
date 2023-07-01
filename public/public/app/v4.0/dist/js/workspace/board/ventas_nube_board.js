@@ -1,6 +1,11 @@
 ////// BOARDS MODULE 2023 ////////////
 
+
+
 ws_board_db = 'ws_boards_' + ws_id;
+
+
+
 board_group_info = null;
 ws_left_nav_data = null;
 ws_lang_data = null;
@@ -34,7 +39,7 @@ var boardGrid =  null;
 // Creando una instancia de la base de datos remota
 //const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
-const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
 
 
 // Variable para controlar el estado de conexión
@@ -42,6 +47,14 @@ let isOnline = true;
 // CREO LA DB
 //L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 //SYNCRONIZO LOS DATOS 
+/*
+L_board_db.sync(url_R_db + ws_board_db, {
+    live: true,
+    retry: true,
+    //  skip_setup: true
+});
+
+*/
 /*
 L_board_db.sync(url_R_db + ws_board_db, {
     live: true,
@@ -191,7 +204,7 @@ async function update_all_index_orders2() {
 }*/
 
 //SYNCRONIZO LOS DATOS
-
+/*
 L_board_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true
@@ -214,7 +227,7 @@ L_board_db.sync(url_R_db + ws_board_db, {
     // Evento de sincronización completada
 
 });
-
+*/
 
 
 //COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
@@ -1336,9 +1349,32 @@ async function new_orderNOindiceincremental(element) {
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function get_board_onscroll() {
+            try {
+                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+                if (paginationData) {
+                    nextStartkey = paginationData.nextStartkey;
+                    nextStartkeyDocid = paginationData.nextStartkeyDocid;
+                    if (!nextStartkey) {
+                    
+                    }
+                } else {
+                    console.error("No se pudo obtener los siguientes elementos.");
+                
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                isLoading = false;
+            }
+}
+
+///NUEVAS ORDENES 2023
+// CREAR NUEVA ORDEN EN LA DB
+/// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
+async function get_board_onscrollOLDOK() {
     window.onscroll = async function () {
         if (isLoading) return;
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 700) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
             isLoading = true;
             try {
                 let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
@@ -1370,6 +1406,7 @@ async function coun_items_broup(board_type_name) {
     try {
         var grupos_arr = await L_board_db.get('board_group_' + board_type_name);
         const grupos = grupos_arr.board_group;
+       // console.log('grupos',grupos);
         await L_board_db.createIndex({
             index: {
                 fields: ['type', 'status', 'category_id']
@@ -1386,7 +1423,8 @@ async function coun_items_broup(board_type_name) {
                     status: "open",
                     category_id: board_type_name,
                     group_id: group_id
-                }
+                },
+                limit: 1000  // Aumenta este número según sea necesario
             });
             console.log('result', result_items);
             const totalOrdenes = result_items.docs.length;
@@ -1429,6 +1467,7 @@ async function get_board(board_type_name) {
                 if (id_compiled_nav) {
                     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
                         coun_items_broup(board_type_name);
+                        scrollerMove();
                         // add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
                         get_board_onscroll();//activa el evento scroll para graer mas ordenes
                     });
@@ -1502,6 +1541,7 @@ function scrollerMove() {
     } else {
         $("#move-left").show();
     }
+
     $("#move-left").click(function () {
         var leftPos = $('#scroller').scrollLeft();
         if (leftPos >= 0) {
@@ -1513,6 +1553,7 @@ function scrollerMove() {
             scrollLeft: leftPos - scroll_px
         }, 200);
     });
+
     $("#move-right").click(function () {
         var leftPos = $('#scroller').scrollLeft();
         if (leftPos < 0) {
@@ -1524,6 +1565,8 @@ function scrollerMove() {
             scrollLeft: leftPos + scroll_px
         }, 200);
     });
+
+    
 };
 
 ////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group
@@ -1556,7 +1599,6 @@ function datetimePiker() {
     });
 }
 
-scrollerMove();
 $(document).ready(function () {
     //  window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
 

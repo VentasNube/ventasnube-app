@@ -158,6 +158,51 @@ user_db = new PouchDB(u_db, { skip_setup: true });
 //getSession();
 
 user_db.sync(url_R_db + userDb, {
+  live: true,
+  retry: true,
+}).on('change', function (change) {
+  //$('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
+  //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
+}).on('error', function (err) {
+  if (err) {
+      $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
+      //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
+      //logout()
+      var msj_error = "Hay un error inesperado";
+      if (err.status === 401) {
+          msj_error = '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...';
+      }
+      if (err.status != 401) {
+          msj_error = err.name;
+      }
+      //Imprimo el Mensaje de error en pantalla
+      $('#master_modal').modal('show', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          // var recipient = button.data('whatever') // Extract info from data-* attributes
+          var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          modal.find('.modal-title').text(recipient)
+          // modal.find('.modal-body input').val(recipient)
+          modal.find('.modal-body').html("<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>");
+      });
+      Snackbar.show({
+          text: msj_error,
+          width: '475px',
+          pos: 'bottom-right',
+          actionText: 'Ingresar',
+          actionTextColor: "#4CAF50",
+          onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
+              $(element).css('opacity', 0);
+              logout()
+          }
+      });
+  }
+});
+
+/*
+user_db.sync(url_R_db + userDb, {
     live: true,
     retry: true,
 }).on('change', function (change) {
@@ -207,6 +252,7 @@ user_db.sync(url_R_db + userDb, {
 
     }
 });
+*/
 /*
 var userCtx;
 //Creo y conecto con userDB local 

@@ -25,7 +25,11 @@ for (const evento of eventosContact) {
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 //SYNCRONIZO LOS DATOS
-
+L_contact_db.sync(url_R_db + ws_board_db, {
+    live: true,
+    retry: true
+});
+/*
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true
@@ -48,7 +52,7 @@ L_contact_db.sync(url_R_db + ws_board_db, {
     // Evento de sincronización completada
 
 });
-
+*/
 
 async function add_new_contact(element) {
     try {

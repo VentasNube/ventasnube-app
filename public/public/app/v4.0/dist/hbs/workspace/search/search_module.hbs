@@ -40,7 +40,7 @@
         <div class="search-title col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="btn-group dopdown">
                 <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
-                    class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+                    class="dropdown-toggle line  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
                     data-toggle="dropdown" aria-expanded="true">
                     {{#each ws_left_nav_data.m_t}}
                     {{#ifEquals m_t_url ../board_type_name }}
@@ -54,7 +54,7 @@
                     {{#each ws_left_nav_data.m_t}}
                     <li class="margin-5">
                         <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                            s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
+                            s_url_t_m="board" m_t_url="{{{m_t_url}}}" href="#">
                             <span class="material-icons">{{m_t_icon}}</span>
                             <span class="this_m_t_name">{{m_t_name}}</span>
                         </a>
@@ -62,7 +62,7 @@
                     {{/each}}
                 </ul>
             </div>
-
+             <span class=" btn-primary text material-icons">arrow_forward_ios</span>
             <button type="button" search_cat="search_serice"
                 class="search_button_cat btn xl btn-more  btn-primary line">
                 <i class="material-icons">widgets</i>

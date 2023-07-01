@@ -214,10 +214,8 @@ async function all_cart_item(todos) {
 }
 
 // Traer los item leyendo de la pounchDB
-
 async function get_cart_change() {
     //  Escucho Los cambios en tiempo real
-    /*
     await user_db.changes({
         // filter: '_view',
         //view: 'get/cart-item',
@@ -238,9 +236,7 @@ async function get_cart_change() {
         // handle errors
         console.log(err);
     });
-    */
 }
-
 
 //Nueva funcion de agregar al producto al carrito
 function variations_add_cart(element) {
@@ -332,28 +328,20 @@ async function add_cart_item(data) {
             variant: data //Array new_variant_doc
         });
 
-        if(response.ok){
-
-
-            get_cart(ws_id);
-            Snackbar.show({
-                text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
-                width: '475px',
-                pos: 'bottom-right',
-                actionText: 'Deshacer ',
-                actionTextColor: "#4CAF50",
-                onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
-                    $(element).css('opacity', 0);
-                    user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
-                    $('#' + response.id).remove();
-                }
-            });
-
-        }
-
         //console.log('CART ADD ITEM ');
         //console.log(data);
-       
+        Snackbar.show({
+            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Deshacer ',
+            actionTextColor: "#4CAF50",
+            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+                user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
+                $('#' + response.id).remove();
+            }
+        });
     } catch (err) {
         Snackbar.show({
             text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
@@ -386,10 +374,6 @@ async function dell_cart_item(element) {
             actionTextColor: "#dd4b39",
             onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-               
-               
-                get_cart(ws_id);
-               
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
@@ -551,7 +535,6 @@ async function all_fav_item(todos) {
 // Traer los item leyendo de la pounchDB
 async function get_fav_change(ws_id) {
     //  Escucho Los cambios en tiempo real
-    /*
     await user_db.changes({
         // filter: '_view',
         //view: 'get/cart-item',
@@ -572,8 +555,6 @@ async function get_fav_change(ws_id) {
         // handle errors
         console.log('' + err);
     });
-
-    */
 }
 
 //Nueva funcion de agregar al producto al favoritos

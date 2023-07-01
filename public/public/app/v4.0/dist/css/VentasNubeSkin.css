@@ -11368,8 +11368,8 @@ h2 {
 .board-group {
     width: 100%;
    /* width: auto;*/
-   /* min-height: 600px;*/
-    overflow-x: scroll;
+  min-height: 600px;
+ /*   overflow-x: scroll;*/
 }
 .board-group>.board {
    /* overflow-x: auto;*/

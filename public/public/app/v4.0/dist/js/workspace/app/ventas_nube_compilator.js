@@ -461,7 +461,6 @@ async function getUrlVal(nombreParametro) {
           return;
         }
       }
-  
       reject(`El parámetro '${nombreParametro}' no se encuentra en la URL.`);
     });
   }
@@ -483,14 +482,14 @@ async function get_url_now(url_parameter){
 async function get_board_type(url_parameter){
     try{
         let board_type_name = await getUrlVal(url_parameter);
-        if(!board_type_name){
-            let board_type_name = 'sell';   
-        }
-        console.log(board_type_name);
+       
+        console.log('board type name',board_type_name);
         return board_type_name;
     }
     catch(err){
         console.log('Error get board type name', err);
-        return false
+        let board_type = 'sell'
+        return board_type_name = board_type
+
     }
 }

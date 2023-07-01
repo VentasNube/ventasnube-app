@@ -43,24 +43,30 @@ async function get_search_module(ws_info, ws_lang_data,ws_left_nav_data) {
     try{
         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
         const board_name = await getUrlVal('t');
+        const module_name = await getUrlVal('type');
+        
         if(!board_name){
                 const board_name = 'sell';   
+                const module_name = 'board';
         }
+        
         // Mapeo el contenido del objeto ws_left_nav M
         ws_left_nav_data = ws_left_nav['ws_left_nav'];
         var ws_search_data = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user: user_data,
+            module_name:module_name,
             ws_left_nav_data: ws_left_nav_data,
             board_type_name: board_name,
         }
         //console.log('SEARCH ARRAYYY ');
         console.log('SEACH CONSOLE',ws_search_data);
+
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
     }
-    catch{
-
+    catch(err){
+    console.log('ERROR CONSOLE',err);
     }
 };
 
