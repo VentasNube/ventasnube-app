@@ -1,25 +1,15 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 1232123124121122222222;
+const version = 123212112122211122212121212121121211212121221122231212412122222;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
-  self.skipWaiting();
+  self.skipWaiting(); //Con este comando salto el dialogo de espera una vez q se instala una version 
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => {
-        if (!expectedCaches.includes(key)) {
-          return caches.delete(key);
-        }
-      })
-    )).then(() => {
-      console.log('V-' + version + ' now ready to handle fetches!');
-    })
-  );
+
 });
 
 self.addEventListener('message', function (event) {
@@ -32,15 +22,13 @@ workbox.setConfig({
   debug: false
 });
 
+
 workbox.core.setCacheNameDetails({
   prefix: 'ventasnube',
   suffix: 'v1' + version,
   precache: 'ventasnube-precache',
   runtime: 'ventasnube-runcache'
 });
-
-// Resto del código...
-
 
 
 workbox.precaching.precacheAndRoute([

@@ -7,27 +7,16 @@ var ws_catalog_db = 'ws_collections_' + ws_id;
 //CREO LA DB
 //L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
 
-L_catalog_db = new PouchDB(url_R_db + ws_catalog_db, { skip_setup: true });
+L_catalog_db = new PouchDB(ws_catalog_db, { skip_setup: true });
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-const eventosCatalog =  L_catalog_db.eventNames();
-for (const evento of eventosCatalog) {
-  const oyentes = L_catalog_db.listeners(evento);
-  console.log(`Oyentes para '${evento}':`);
-  for (const oyente of oyentes) {
-    console.log(oyente.toString());
-  }
-}
-
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-/// SYNC
-/*
-L_catalog_db.sync(url_R_db + ws_search_db, {
+/// S
+L_catalog_db.sync(url_R_db + ws_catalog_db, {
     live: true,
     retry: true,
-    //  skip_setup: true
+    skip_setup: true
 });
-*/
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {

@@ -11,7 +11,7 @@ module_info = null;
 // Creando una instancia de la base de datos remota
 //const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
-const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
+const L_contact_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 const eventosContact = L_contact_db.eventNames();
@@ -25,10 +25,12 @@ for (const evento of eventosContact) {
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 //SYNCRONIZO LOS DATOS
+/*
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true
 });
+*/
 /*
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,

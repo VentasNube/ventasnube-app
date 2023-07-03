@@ -510,14 +510,37 @@ class Workspace extends BaseController
 
                  //Documento de diseno que trae todos los productos del cart
                  $user_get = [
-                    '_id' => '_design/get-type',
+                    '_id' => '_design/get-cart-'.$workspace_id_hex,
                     'views' => [
-                        'cart-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+
+                        'cart-item-sell' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-sell' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
                         ],
-                        'fav-item' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item') {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        'fav-item-sell' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-sell'&& doc.ws_id === $workspace_id_hex {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+
+                        'cart-item-purcharse' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-purcharse' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item-purcharse' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-purcharse'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+
+                        'cart-item-service_order' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_order' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item-service_order' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_order'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+
+                        'cart-item-service_turn' => [
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_turn' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                        ],
+                        'fav-item-service_turn' => [
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_turn'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
                         ]
+
                     ],
                 ];
 
@@ -529,7 +552,7 @@ class Workspace extends BaseController
                 $this->WorkspaceModel->curl_put($db_user . "/ws_left_nav_" . $workspace_id_hex, $ws_body); //Creo el doc
                 $this->WorkspaceModel->curl_put($db_user . "/ws_setting_" . $workspace_id_hex, $ws_setting); //Creo el doc
                 $this->WorkspaceModel->curl_put($db_user . "/ws_lang_". $workspace_id_hex, $ws_lang); //Creo un doc con la informacion del workspace
-                $this->WorkspaceModel->curl_put($db_user . "/_design/get", $user_get); //Docuento diseno get
+                $this->WorkspaceModel->curl_put($db_user . "/_design/get-cart-".$workspace_id_hex, $user_get); //Docuento diseno get
             
                 /* ========== 
                     DB COLLECTION
@@ -1868,7 +1891,89 @@ class Workspace extends BaseController
                                             entry_date: doc.entry_date,
                                             due_date: doc.due_date,
                                             customer: doc.customer,
-                                            collaborators: doc.collaborators
+                                            collaborators: doc.collaborators,
+                                            total:doc.total,
+                                            priority:doc.priority,
+                                        });
+                                    }
+                                }"
+                            ],
+                            "get_orders_sell" => [
+                                "map" => "function(doc) {
+                                    if (doc.type === 'order' && doc.category_id === 'sell' && doc.status === 'open') {
+                                        emit([doc.status, doc.type, doc.category_id], {
+                                            _id:doc._id,
+                                            type: doc.type,
+                                            category_id: doc.category_id,
+                                            group_id: doc.group_id,
+                                            status: doc.status,
+                                            order_id: doc.order_id,
+                                            entry_date: doc.entry_date,
+                                            due_date: doc.due_date,
+                                            customer: doc.customer,
+                                            collaborators: doc.collaborators,
+                                            total:doc.total,
+                                            priority:doc.priority,
+                                        });
+                                    }
+                                }"
+                            ],
+                            "get_orders_purcharse" => [
+                                "map" => "function(doc) {
+                                    if (doc.type === 'order' && doc.category_id === 'purcharse' && doc.status === 'open') {
+                                        emit([doc.status, doc.type, doc.category_id], {
+                                            _id:doc._id,
+                                            type: doc.type,
+                                            category_id: doc.category_id,
+                                            group_id: doc.group_id,
+                                            status: doc.status,
+                                            order_id: doc.order_id,
+                                            entry_date: doc.entry_date,
+                                            due_date: doc.due_date,
+                                            customer: doc.customer,
+                                            collaborators: doc.collaborators,
+                                            total:doc.total,
+                                            priority:doc.priority,
+                                        });
+                                    }
+                                }"
+                            ],
+                            "get_orders_service_order" => [
+                                "map" => "function(doc) {
+                                    if (doc.type === 'order' && doc.category_id === 'service_order' && doc.status === 'open') {
+                                        emit([doc.status, doc.type, doc.category_id], {
+                                            _id:doc._id,
+                                            type: doc.type,
+                                            category_id: doc.category_id,
+                                            group_id: doc.group_id,
+                                            status: doc.status,
+                                            order_id: doc.order_id,
+                                            entry_date: doc.entry_date,
+                                            due_date: doc.due_date,
+                                            customer: doc.customer,
+                                            collaborators: doc.collaborators,
+                                            total:doc.total,
+                                            priority:doc.priority,
+                                        });
+                                    }
+                                }"
+                            ],
+                            "get_orders_service_turn" => [
+                                "map" => "function(doc) {
+                                    if (doc.type === 'order' && doc.category_id === 'service_turn' && doc.status === 'open') {
+                                        emit([doc.status, doc.type, doc.category_id], {
+                                            _id:doc._id,
+                                            type: doc.type,
+                                            category_id: doc.category_id,
+                                            group_id: doc.group_id,
+                                            status: doc.status,
+                                            order_id: doc.order_id,
+                                            entry_date: doc.entry_date,
+                                            due_date: doc.due_date,
+                                            customer: doc.customer,
+                                            collaborators: doc.collaborators,
+                                            total:doc.total,
+                                            priority:doc.priority,
                                         });
                                     }
                                 }"

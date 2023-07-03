@@ -152,8 +152,17 @@ function get_all_item_punchDb() {
 }
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function search_item_js(search_val) {
-    var url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+async function search_item_js(search_val) {
+
+    const board_name = await getUrlVal('t');
+    const module_name = await getUrlVal('type');
+    
+    if(!board_name){
+            const board_name = 'sell';   
+            const module_name = 'board';
+    }
+
+    var url_template = '/public/app/v4.0/dist/hbs/workspace/search/card_product_'+board_name+'.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
     var id_copiled = '#card_product_result_items'; // ID DE COMPILACION // 
     var result = fuse.search(search_val, { limit: 18 });
     //Armo el array para renderizar los items
@@ -170,6 +179,8 @@ function search_item_js(search_val) {
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
+
+
 }
 
 //Boton cambiar lista de precio
@@ -190,6 +201,8 @@ function variations_set(element) {
     event.preventDefault();
     var buton_state = $('.open_detail .material-icons', element).html();
     var product_id = $(element).attr('product_id');
+
+    var category_name = $(element).attr('category_name');
     if (buton_state == 'add_shopping_cart') {
         $(element).addClass('open');
         //Efecto ripple
@@ -298,6 +311,7 @@ $(document).on('focusin', '.search-input', function (element) {
 $(document).on('keyup', '.search-input', function () {
  var search_m_input = $(this).val();
  var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+ 
  search_item_js(search_m_input);
 
 });

@@ -1,0 +1,151 @@
+ <!--- SEARCH CARD PRODUCT TEMPLATE   --->
+{{#each search_product }}
+<div class="card-content">
+    <div class="card">
+        <div id="card_id_{{{item.doc._id}}}">
+            <!--- RENDER VARIANT ZONE   --->
+            <form id="card_var_id_{{{item.doc._id}}}" variant_id="{{item.doc.variant_id}}"
+                class="card-product card_product_form" product_id="{{{item.doc._id}}}">
+                <div class="header">
+                    <!-- Indicador -->
+                    <p class="cat">
+                        {{#each item.doc.tags }}
+                        <span id="cat-{{{item.doc._id}}}" class="s-card-cat pull-left">#{{this}}</span>
+                        {{/each}}
+                    </p>
+                    <div class="img_card"><img class="card_img_url"
+                            src="{{{item.doc.picture_min}}}" alt="200x200">
+                    </div>
+                    <div onclick="variations_set(this)" class="variations_set indicator two"
+                        product_id="{{{item.doc._id}}}">
+                        <div class="open_detail" width="18" height="27">
+                            <span class=" material-icons">add_shopping_cart</span>
+                            <span class="quantity">9999</span>
+                        </div>
+                    </div>
+                    <div class="card_product_details">
+                        <button onclick="variations_edit(this)" class="variations_edit" product_id="{{{item.doc._id}}}">
+                            <div class="open_detail" width="18" height="27">
+                                <span class="material-icons">
+                                    tune
+                                </span>
+                            </div>
+                        </button>
+                        <div>
+                            <span class=" material-icons">monetization_on</span>
+                            <input name="card_prduct_val" class="card_product_val form-control" type="number"
+                                placeholder="valor" value="{{item.doc.price}}">
+                        </div>
+                        <div>
+                            <span class=" material-icons">local_offer</span>
+                            <input name="card_prduct_discount" class="card_product_discount form-control" type="number"
+                                placeholder="Descuento" value="0">
+                        </div>
+                        <div>
+                            <span class=" material-icons">superscript</span>
+                            <input name="card_prduct_quantity" class="card_product_quantity form-control" type="number"
+                                placeholder="Cantidad" value="1">
+                        </div>
+                        <div class="card_product_footer">
+                            <button onclick="variations_add_fav(this)" product_id="{{{item.doc._id}}}"
+                                variant_id="{{{item.doc.variant_id}}}" class="danger round m margin-r-10">
+                                <i class="material-icons">favorite</i>
+                            </button>
+                            <button onclick="variations_add_cart(this)" product_id="{{{item.doc._id}}}"
+                                variant_id="{{{item.doc.variant_id}}}" type="submit"
+                                class="success round m btn_submit margin-0">
+                                <span class="material-icons">add_shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content ripple_div ripple_efect_close "> </div>
+                    <div class="ripple-efect-div success"></div>
+                </div>
+            </form>
+            <!--- CIERRE DE FORM --->
+            <div class="info">
+                <p class="card_product_name">{{item.doc.name}} </p>
+            </div>
+            <!--- END RENDER VARIANT ZONE   --->
+            <div class="footer">
+                <div class="text-left">
+                    <div class="btn-group dropright">
+                        <button id="var_btn_{{{item.doc._id}}}" id="var_btn_{{{item.doc._id}}}"
+                            onclick="variations_get(this)" product_id="{{{item.doc._id}}}"
+                            variant_id="{{item.doc.variant_id}}" type="button" data-toggle="dropdown"
+                            aria-expanded="true">
+                            <span id="bg-select-color" class="btn btn-default">
+                                {{#if item.doc.picture_min}}
+                                <img src="{{{item.doc.picture_min}}}" class="var_img img-card-mini s round">
+                                {{else}}
+                                <span id="bg-select-color" class="material-icons">
+                                    category
+                                </span>
+                                {{/if}}
+                                {{#each item.doc.attribute_combinations as | ac |}}
+                                <!-- Hago la comprobacion de si es un color -->
+                                {{#ifEquals id 'SIZE' }}
+                                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{{id_name}}}" data-original-title="{{{id_name}}}">
+                                    <span> {{value}} </span>
+                                </div>
+                                {{/ifEquals}}
+                                {{#ifDiff id 'COLOR' }}
+                                {{name}}
+                                {{/ifDiff}}
+                                {{/each}}
+                                <span class="material-icons">arrow_drop_down</span>
+                            </span>
+                        </button>
+                        <ul class="card-loader dropdown-menu mini ">
+                            <div id="variant_{{{item.doc._id}}}">
+                                <div class="spinner-box">
+                                    <div class="three-quarter-spinner primary"></div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropright">
+                        <button type="button" class=" " data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
+                                <div class="round-icon pr">
+                                    <span> {{item.doc.currency}} </span>
+                                </div>
+                                <label class="counter">
+                                    {{item.doc.price}}
+                                </label>
+                                <span class="material-icons">arrow_drop_down</span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="header">Precios</li>
+                             {{#each item.doc.price_list as | pl |}}
+                                    <li>
+                                        <a onclick="cat_variations_price(this)" class="" href="#">
+                                        {{#each ../../price_list as | l1 |}}
+                                                {{#ifEquals l1.id pl.id }}
+                                                                    <div class="round-icon pr uper">
+                                                                        {{value}}
+                                                                    </div>
+                                                {{/ifEquals}}
+                                               {{/each}}   
+                                        <span>{{../doc.currency}}</span>
+                                        <label class="counter">{{value}}</label>
+                                        </a>
+                                    </li>                
+                            {{/each}}
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--- CIERRE DE INFO --->
+    </div>
+    <!--- CIERRE DE CARD --->
+</div>
+</div>
+{{/each}}

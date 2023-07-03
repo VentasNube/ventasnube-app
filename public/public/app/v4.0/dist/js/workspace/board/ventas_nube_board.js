@@ -1,10 +1,7 @@
 ////// BOARDS MODULE 2023 ////////////
 
 
-
 ws_board_db = 'ws_boards_' + ws_id;
-
-
 
 board_group_info = null;
 ws_left_nav_data = null;
@@ -39,8 +36,28 @@ var boardGrid =  null;
 // Creando una instancia de la base de datos remota
 //const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
-const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
 
+
+ws_offline = true;
+
+if(ws_offline){
+    url_db_board = ws_board_db;
+   // const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+}else{
+    url_db_board = url_R_db + ws_board_db;
+   // const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
+}
+
+console.log('ws_offline',url_db_board);
+//const L_board_db = new PouchDB(url_db_board, { skip_setup: true });
+
+const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+
+L_board_db.sync(url_R_db + ws_board_db, {
+    live: true,
+    retry: true,
+    skip_setup: true
+});
 
 // Variable para controlar el estado de conexión
 let isOnline = true;
@@ -1350,7 +1367,10 @@ async function new_orderNOindiceincremental(element) {
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function get_board_onscroll() {
             try {
-                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
+
+                const category_id = await getUrlVal('t');
+
+                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids,category_id);
                 if (paginationData) {
                     nextStartkey = paginationData.nextStartkey;
                     nextStartkeyDocid = paginationData.nextStartkeyDocid;

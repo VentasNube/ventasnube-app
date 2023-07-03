@@ -160,11 +160,13 @@
             <div class="board-column">
                 <div class=" board-column-header {{{color}}}">
                     <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
-                    <div class="board-drag-handle board-column-header-tittle"> 
-                        <span class="board-item-conunt_{{id}}" data-toggle="tooltip" data-placement="right" data-original-title="Cantidad de Ordenes">
+                    <div class="board-drag-handle board-column-header-tittle">
+                        <span class="board-item-conunt_{{id}}" data-toggle="tooltip" data-placement="right"
+                            data-original-title="Cantidad de Ordenes">
                             {{counter @index}}
                         </span>
-                        {{{name}}}</div>
+                        {{{name}}}
+                    </div>
                     <div class="board-column-header-button">
                         <div class="btn-group ">
                             <button role="button" data-toggle="collapse" data-parent="#accordion_{{{id}}}"
@@ -444,7 +446,7 @@
                     item.getElement().style.width = '';
                     item.getElement().style.height = '';
                     item.getGrid().refreshItems([item]);
-                  //  console.log('dragReleaseEnd');
+                    //  console.log('dragReleaseEnd');
                     var element = item.getElement();
                     var orderId = element.getAttribute('id');
                     var boardName = element.getAttribute('category_id');
@@ -487,34 +489,72 @@
         });
     }
 
+
+    async function add_new_card(template_hbs, card_data = null, board_gorup_id = null, grid) {
+        try {
+            return new Promise((resolve, reject) => {
+                if (board_gorup_id == null) {
+                    reject(new Error('No se proporcionó un board_gorup_id válido'));
+                } else {
+                    getTemplateAjaxCARD(template_hbs, function (template) {
+                        let new_card = document.createElement('div');
+                        new_card.classList.add('board-item');
+                        new_card.setAttribute('group_id', card_data.doc.group_id);
+                        new_card.setAttribute('category_id', card_data.doc.category_id);
+                        new_card.setAttribute('id', card_data.doc._id);
+                        new_card.innerHTML = template(card_data);
+                        const board_group = document.querySelector('#' + board_gorup_id);
+                        if (!board_group) {
+                            reject(new Error('No se encontró el elemento con el ID board_gorup_id'));
+                        } else {
+                            board_group.appendChild(new_card);
+                            grid.add(new_card);
+                            grid.refreshItems().layout();
+                            resolve(new_card);
+                        }
+                    });
+                }
+            });
+        } catch (err) {
+            console.error('ERROR EN add_new_card', err);
+            return null;
+        }
+    }
+
     // COLOCO LOS ITEMS EN EL DOM CREO EL TEMPLATE Y LO AGREGO AL MUURI
-    function add_new_card(template_hbs, card_data = null, board_gorup_id = null, grid) {
-        return new Promise((resolve, reject) => {
-            //  console.log('board_gorup_id', board_gorup_id);
-            if (board_gorup_id == null) {
-                //  console.log('NULL board_gorup_id', board_gorup_id)
-                // alert('No hay mas resultados')
-            } else {
-                getTemplateAjaxCARD(template_hbs, function (template) {
-                    let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
-                    new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
-                    new_card.setAttribute('group_id', card_data.doc.group_id); //Le agrego la id 
-                    new_card.setAttribute('category_id', card_data.doc.category_id); //Le agrego la id 
-                    new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
-                    // console.log('ADD NEW CARD group_id:',board_gorup_id);
-                    new_card.innerHTML = template(card_data);    //Uno el template con al data 
-                    document.querySelector('#' + board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
-                    // console.log('GRIDDDDDD add_new_card',grid);
-                    grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
-                    grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
-                    resolve(new_card);
-                });
-            }
-        });
+    async function add_new_cardOK(template_hbs, card_data = null, board_gorup_id = null, grid) {
+        try {
+            return new Promise((resolve, reject) => {
+                //  console.log('board_gorup_id', board_gorup_id);
+                if (board_gorup_id == null) {
+                    //  console.log('NULL board_gorup_id', board_gorup_id)
+                    // alert('No hay mas resultados')
+                } else {
+                    getTemplateAjaxCARD(template_hbs, function (template) {
+                        let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
+                        new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
+                        new_card.setAttribute('group_id', card_data.doc.group_id); //Le agrego la id 
+                        new_card.setAttribute('category_id', card_data.doc.category_id); //Le agrego la id 
+                        new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
+                        // console.log('ADD NEW CARD group_id:',board_gorup_id);
+                        new_card.innerHTML = template(card_data);    //Uno el template con al data 
+                        document.querySelector('#' + board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
+                        // console.log('GRIDDDDDD add_new_card',grid);
+                        grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
+                        grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
+                        resolve(new_card);
+                    });
+                }
+            });
+        }
+        catch (err) {
+            return null;
+            console.log('ERROR EN add_new_card', err);
+        }
     }
 
     //IMPRIME LAS TARJETAS EN EL DOM
-    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids) {
+    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids,category_id) {
         // Si ya se está ejecutando una búsqueda, sal de la función.
         if (isFetching) {
             return;
@@ -523,13 +563,13 @@
         isFetching = true;
         try {
             const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
-            console.log('RESULT:',result)
+            // console.log('RESULT:',result)
             //console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
-           // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
+            // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
             for (const row of result.rows) {
-                var group_id = row.doc.group_id;
-                var card_data = { doc: row.doc };
-                var board_gorup_id = row.doc.group_id;
+                var group_id = row.value.group_id;
+                var card_data = { doc: row.value };
+                var board_gorup_id = row.value.group_id;
                 var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
                 var grid = columnGrids[groupIndex];
                 add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
@@ -546,18 +586,25 @@
 
     //HACE QUERY Y LA PAGINACION TRAE LOS RESULTADOS DE LA DB
     async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
+
+
+            const category_id = await getUrlVal('t');
         let options = {
-        include_docs: true,
-        limit: 300, // Cambia el límite para obtener todos los documentos en una sola consulta
-       // group: true,
-       // group_level: 1,
+            include_docs: false,
+            limit: 300, // Cambia el límite para obtener todos los documentos en una sola consulta
+            // group: true,
+            // group_level: 1,
         };
         if (nextStartkey && nextStartkeyDocid) {
             options.startkey = [nextStartkey];
             options.startkey_docid = nextStartkeyDocid;
         }
         // let result = await db.allDocs(options);
-        let result = await L_board_db.query('order_view/by_type_category_status', options);
+
+
+        let result = await L_board_db.query('order_view/get_orders_' + category_id, options);
+
+
         if (result && result.rows && result.rows.length > 0) {
             nextStartkey = result.rows[result.rows.length - 1].key;
             nextStartkeyDocid = result.rows[result.rows.length - 1].id;
@@ -573,6 +620,8 @@
             nextStartkeyDocid: nextStartkeyDocid
         };
     }
+
+
     up_ventasnube_kanban();
     scrollerMove();
 </script>
