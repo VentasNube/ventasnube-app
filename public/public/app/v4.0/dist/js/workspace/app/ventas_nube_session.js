@@ -268,9 +268,10 @@ console.log('userCtx 1',userCtx)
 _session();
 */
 
-var userCtx;
+
 // Creo y conecto con userDB local 
 u_session = new PouchDB(url_R_db, { skip_setup: true });
+var userCtx = null;
 
 function _session(callback) {
   u_session.get('_session', { include_docs: true })
@@ -287,11 +288,32 @@ function _session(callback) {
 _session(function(error, userCtx) {
   if (error) {
     console.error(error);
+    console.log('userCtx',userCtx)
     // Manejar el error de alguna manera
   } else {
     // Utilizar userCtx dentro de la función de callback
+    console.log('userCtx',userCtx)
   }
 });
+
+
+
+// Función para obtener los datos y roles de sesión
+async function _session_New_no() {
+  try {
+    const response = await u_session.get('_session', { include_docs: true });
+    var userCtx = response;
+    console.log('response.data userCtx',userCtx);
+   return userCtx;
+    //callback(null, userCtx);
+  } catch (error) {
+    console.error('Error al obtener los datos y roles de sesión:', error);
+    throw error;
+  }
+}
+
+//_session();
+
 
 //console.log('userCtx 2:', userCtx);
 

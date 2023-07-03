@@ -509,41 +509,37 @@ class Workspace extends BaseController
                   ];
 
                  //Documento de diseno que trae todos los productos del cart
-                 $user_get = [
-                    '_id' => '_design/get-cart-'.$workspace_id_hex,
+              
+                $user_get = [
+                    '_id' => '_design/get-cart-' . $workspace_id_hex,
                     'views' => [
-
                         'cart-item-sell' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item-sell' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-sell' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
                         'fav-item-sell' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item-sell'&& doc.ws_id === $workspace_id_hex {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-sell' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
-
                         'cart-item-purcharse' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item-purcharse' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-purcharse' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
                         'fav-item-purcharse' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item-purcharse'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-purcharse' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
-
                         'cart-item-service_order' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_order' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_order' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
                         'fav-item-service_order' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_order'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_order' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
-
                         'cart-item-service_turn' => [
-                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_turn' && doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'cart-item-service_turn' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ],
                         'fav-item-service_turn' => [
-                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_turn'&& doc.ws_id === $workspace_id_hex) {\n        emit(doc.type,{\n          'tipo': doc.type,\n          'price': doc.variant.price,\n          'stock': doc.variant.stock,\n          'discount': doc.variant.discount,\n          'tax': doc.variant.tax\n        });\n    }\n}",
+                            "map" => "function(doc) {\nif(doc.type === 'fav-item-service_turn' && doc.ws_id === '" . $workspace_id_hex . "') {\nemit(doc.type,{\n'tipo': doc.type,\n'price': doc.variant.price,\n'stock': doc.variant.stock,\n'discount': doc.variant.discount,\n'tax': doc.variant.tax\n});\n}\n}",
                         ]
-
-                    ],
+                    ]
                 ];
-
+                
                 //Transformo el email en hexadecimal por seguridad
                 $hex = bin2hex($user_email);
                 //Armo la url de la User BD

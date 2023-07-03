@@ -40,15 +40,15 @@ var boardGrid =  null;
 
 ws_offline = true;
 
-if(ws_offline){
+if (ws_offline) {
     url_db_board = ws_board_db;
-   // const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
-}else{
+    // const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+} else {
     url_db_board = url_R_db + ws_board_db;
-   // const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
+    // const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
 }
 
-console.log('ws_offline',url_db_board);
+console.log('ws_offline', url_db_board);
 //const L_board_db = new PouchDB(url_db_board, { skip_setup: true });
 
 const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
@@ -361,7 +361,7 @@ async function new_board_star_intro(board_type_name) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', '#master_popup', data);
     } catch (err) {
         Snackbar.show({
-            text: error.message,
+            text: err,
             actionText: 'Ok',
             actionTextColor: '#0575e6',
             pos: 'bottom-left',
@@ -1023,9 +1023,29 @@ async function new_order(element) {
         const total_discount = $('#total_neto_discount').html();
         const total_service = $('#total_neto_service').html();
         const total_tax = $('#total_neto_tax').html();
-        const contact_id = $('#cart_button_new_order').attr('contact_id');
 
-        get_board(category_id);
+        const contact_id = $('#cart_button_new_order').attr('contact_id');
+        console.log(' NEW ORDER contact_id',contact_id);
+
+
+        if (contact_id == null) {
+            Snackbar.show({
+                text: 'Falta seleccionar el contacto!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 50000
+            });
+
+           
+            $('#cart_user_input').css('background-image', 'linear-gradient(0deg, #ff0e0e 2px, rgba(213, 0, 0, 0) 0), linear-gradient(0deg, rgba(0, 0, 0, .26) 1px, transparent 0)');
+            $('#cart_user_input').focus();
+            $('#contact_auto_subjet').addClass('open');
+        }else{
+
+
+        
+
         //const productItems = document.querySelectorAll('#total_cart_neto');
         const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
         const workspace_id = ws_id;
@@ -1038,7 +1058,7 @@ async function new_order(element) {
         const comments = '';
         const products = await get_cart_product();
         const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
-        console.log('contact_doc',contact_doc)
+        console.log('contact_doc', contact_doc)
         //const customer = contact_id,
         const customer = {
             id: contact_doc._id,
@@ -1049,6 +1069,7 @@ async function new_order(element) {
             email: contact_doc.email,
             price_list: contact_doc.price_list
         };
+
         var order_arr = {
             _id: doc_id,
             type: 'order',
@@ -1056,7 +1077,7 @@ async function new_order(element) {
             workspace_id: workspace_id,
             status: 'open',
             seen: false,
-            author: userCtx.email,
+            author: userCtx.name,
             group_id: group_id,
             order_id: null, // Inicialmente se establece como null
             group_position: '1',
@@ -1191,7 +1212,9 @@ async function new_order(element) {
             var board_gorup_id = doc.group_id;
             var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id); //Agrego el grid al grupo de ordenes
             var grid = columnGrids[groupIndex];
+
             add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+           // get_board(category_id);
             coun_items_broup(category_id);
             Snackbar.show({
                 text: 'Se creó la orden con éxito!',
@@ -1201,6 +1224,8 @@ async function new_order(element) {
                 duration: 50000
             });
         }
+
+    }
 
     } catch (err) {
         console.log(err);
@@ -1366,26 +1391,26 @@ async function new_orderNOindiceincremental(element) {
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
 async function get_board_onscroll() {
-            try {
+    try {
 
-                const category_id = await getUrlVal('t');
+        const category_id = await getUrlVal('t');
 
-                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids,category_id);
-                if (paginationData) {
-                    nextStartkey = paginationData.nextStartkey;
-                    nextStartkeyDocid = paginationData.nextStartkeyDocid;
-                    if (!nextStartkey) {
-                    
-                    }
-                } else {
-                    console.error("No se pudo obtener los siguientes elementos.");
-                
-                }
-            } catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                isLoading = false;
+        let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, category_id);
+        if (paginationData) {
+            nextStartkey = paginationData.nextStartkey;
+            nextStartkeyDocid = paginationData.nextStartkeyDocid;
+            if (!nextStartkey) {
+
             }
+        } else {
+            console.error("No se pudo obtener los siguientes elementos.");
+
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    } finally {
+        isLoading = false;
+    }
 }
 
 ///NUEVAS ORDENES 2023
@@ -1421,12 +1446,13 @@ async function get_total_orders_group() {
     // let result = await db.allDocs(options);
     let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
+
 // Cuento los items totales en cada grupo
 async function coun_items_broup(board_type_name) {
     try {
         var grupos_arr = await L_board_db.get('board_group_' + board_type_name);
         const grupos = grupos_arr.board_group;
-       // console.log('grupos',grupos);
+        // console.log('grupos',grupos);
         await L_board_db.createIndex({
             index: {
                 fields: ['type', 'status', 'category_id']
@@ -1586,7 +1612,7 @@ function scrollerMove() {
         }, 200);
     });
 
-    
+
 };
 
 ////CONTRUCTO DE DIV CONTENDOR DE LOS BOARD GROUP, TOMA CONFIGURA EL With DE .board-group

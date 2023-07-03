@@ -554,7 +554,7 @@
     }
 
     //IMPRIME LAS TARJETAS EN EL DOM
-    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids,category_id) {
+    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, category_id) {
         // Si ya se está ejecutando una búsqueda, sal de la función.
         if (isFetching) {
             return;
@@ -588,7 +588,7 @@
     async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
 
 
-            const category_id = await getUrlVal('t');
+        const category_id = await getUrlVal('t');
         let options = {
             include_docs: false,
             limit: 300, // Cambia el límite para obtener todos los documentos en una sola consulta
@@ -604,7 +604,7 @@
 
         let result = await L_board_db.query('order_view/get_orders_' + category_id, options);
 
-
+        console.log('order_view/get_orders_'+category_id, result);
         if (result && result.rows && result.rows.length > 0) {
             nextStartkey = result.rows[result.rows.length - 1].key;
             nextStartkeyDocid = result.rows[result.rows.length - 1].id;

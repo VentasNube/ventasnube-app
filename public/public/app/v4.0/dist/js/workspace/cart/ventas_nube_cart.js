@@ -684,30 +684,4 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
     }
 }
 
-///****** FUNCIONES CONTACTOS **********///
-function cart_select_contact() {
-    alert('seleccionado');
-}
-
-function cart_user_input_in(element) {
-    var form = document.getElementById("#cart_user_input");
-    form.addEventListener("focus", function (event) {
-        event.target.style.background = "pink";
-        $('#cart_user_input_subjet').addClass('in');
-    }, true);
-    form.addEventListener("blur", function (event) {
-        event.target.style.background = "";
-    }, true);
-
-}
-
-function cart_user_input_in() {
-    $('#cart_user_input_subjet').addClass('in');
-    //  alert('focusin');
-}
-
-function cart_user_input_out() {
-    $('#cart_user_input_subjet').removeClass('in');
-};
-// Abre el left nav cart
 

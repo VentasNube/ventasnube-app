@@ -11,50 +11,16 @@ module_info = null;
 // Creando una instancia de la base de datos remota
 //const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
-const L_contact_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
+const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-const eventosContact = L_contact_db.eventNames();
-for (const evento of eventosContact) {
-  const oyentes = L_contact_db.listeners(evento);
-  console.log(`Oyentes para '${evento}':`);
-  for (const oyente of oyentes) {
-    console.log(oyente.toString());
-  }
-}
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 //SYNCRONIZO LOS DATOS
-/*
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true
 });
-*/
-/*
-L_contact_db.sync(url_R_db + ws_board_db, {
-    live: true,
-    retry: true
-}).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-    // Evento de cambio
-}).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // Evento de pausa
-    isOnline = false; // No hay conexión
-}).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // Evento de activación
-    isOnline = true; // Hay conexión
-}).on('error', function (err) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-    // Evento de error
-    isOnline = false; // No hay conexión
-}).on('complete', function () {
-    // Evento de sincronización completada
-
-});
-*/
 
 async function add_new_contact(element) {
     try {
@@ -82,7 +48,6 @@ async function add_new_contact(element) {
         });
     }
 }
-
 
 /// SELECCIONO y GUARDO MARCA
 async function contact_edit_put(formData,doc_id) {
@@ -127,7 +92,7 @@ async function contact_edit_put(formData,doc_id) {
 }
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_all_contact_intems(ws_id, filter) {
+async function get_all_contact_intems() {
     // Traigo los resultados de una vista
     let response = await L_contact_db.query(
         'contact_get/by_type_and_status', {
@@ -229,86 +194,7 @@ async function new_contact_put(user_data) {
 
 
 ///////// VERSION NUEVA 2023 SCROLL INFINITO /////
-const PAGE_SIZE = 10; // Ajusta este número a la cantidad de elementos que quieres cargar a la vez.
-let lastItemDate = null;
 
-async function getMoreItemsOLD() {
-    var options = {
-        limit: PAGE_SIZE,
-        include_docs: true,
-        descending: true
-    };
-
-    if (lastItemDate) {
-        options.endkey = lastItemDate;
-    }
-
-    let response = await L_contact_db.query('contact_get/by_type_and_status', options);
-    const rows = response.rows;
-
-    if (rows.length > 0) {
-        lastItemDate = rows[rows.length - 1].key; // Actualizar la fecha del último ítem.
-
-        const newItems = rows.map(item => ({
-            first_name: item.value.first_name,
-            last_name: item.value.last_name,
-            phone: item.value.phone,
-            email: item.value.email,
-            document_number: item.value.document_number
-        }));
-
-        print_contact_item(newItems); // Aquí puedes agregar los nuevos ítems a tu UI.
-
-        var options = {
-            includeScore: true,
-            useExtendedSearch: true,
-            keys: ["first_name", "last_name"]
-        };
-        var myIndex = Fuse.createIndex(options.keys, newItems);
-        search_contact_fuse = new Fuse(newItems, options, myIndex);
-    } else {
-        // No hay más datos para cargar.
-    }
-}
-
-async function getMoreItems() {
-    var options = {
-        limit: PAGE_SIZE,
-        include_docs: true,
-        descending: true
-    };
-
-    if (lastItemDate) {
-        options.endkey = lastItemDate;
-    }
-
-    let response = await L_contact_db.query('contact_get/by_type_and_status', options);
-    
-    if (response && response.rows && response.rows.length > 0) {
-        const rows = response.rows;
-        lastItemDate = rows[rows.length - 1].key; // Actualizar la fecha del último ítem.
-
-        const newItems = rows.map(item => ({
-            first_name: item.value.first_name,
-            last_item: item.value.last_name,
-            phone: item.value.phone,
-            email: item.value.email,
-            document_number: item.value.document_number
-        }));
-
-        print_contact_item(newItems); // Aquí puedes agregar los nuevos ítems a tu UI.
-
-        var options = {
-            includeScore: true,
-            useExtendedSearch: true,
-            keys: ["first_name", "last_name"]
-        };
-        var myIndex = Fuse.createIndex(options.keys, newItems);
-        search_contact_fuse = new Fuse(newItems, options, myIndex);
-    } else {
-        // No hay más datos para cargar.
-    }
-}
 
 // Llamar a `getMoreItems` cada vez que el usuario llega al final de la lista.
 //////////////////////////////
@@ -342,7 +228,7 @@ function get_items_contact(ws_id) {
 
 // TARJETAS DE PRODUCTOS
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function print_contact_item(new_items) {
+function print_contact_itemNO(new_items) {
     var search_result = {
         search_contact: new_items,
         price_list: price_doc.price_list,
@@ -408,19 +294,12 @@ async function get_contact(ws_id) {
 
 
 $(document).on('focusin', '.contact_search', function (element) {
-    // cat_get_all_item_punchDb();
-    //  cat_search_item_js();
-    get_all_catalog_intems();
+    get_all_contact_intems();// CReo con fuse el array con los objetos 
 });
 
 $(document).on('keyup', '.contact_search', function () {
     var search_val = $(this).val();
-    var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
-    //search_catalog_item(search_m_input);
-    console.log('all_items_array llll222');
-    console.log(all_items_array);
-    console.log('all_items_array llll2222');
-    console.log(search_val);
+   // var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
     search_contact_item(search_val, all_items_array)
 });
 
