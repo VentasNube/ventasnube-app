@@ -61,13 +61,16 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
         ws_lang_data: ws_lang_data,
         ws_left_nav_data: ws_left_nav_data
     }
+
+
+
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
 
-    get_cart(ws_id);
-    get_fav(ws_id);
-    get_cart_change(ws_id);
-    get_fav_change(ws_id);
-    get_search_module(ws_info, ws_lang_data,ws_left_nav_data);
+    get_cart(ws_id, ws_cart);
+    get_fav(ws_id, ws_cart);
+    //   get_cart_change(ws_id);
+    // get_fav_change(ws_id);
+    get_search_module(ws_info, ws_lang_data,ws_left_nav_data, ws_cart);
     
    search_open();
     }
@@ -89,19 +92,21 @@ $("#t_fav").click(function () {
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id) {
+    const board_name = await getUrlVal('t');
+    //const module_name = await getUrlVal('type');
+    if(!board_name){
+            const board_name = 'sell';   
+          //  const module_name = 'board';
+    }
     // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get/cart-item', {
+        'get-cart-'+ws_id+'/cart-item-'+board_name, {
         include_docs: true,
         descending: true
     }
     ); //Conceto con la vista de diseno
     if (response.rows) {
-        const rows = response.rows;
-        //Filtro los items de este espacio de trabajo 
-        const result = rows.filter(row => row.doc.ws_id === ws_id);
-        // console.log('Respuesta FILTRADA'); // []
-        // console.log(result);
+        const result = response.rows;
         return all_cart_item(result);
     }
     else {
@@ -109,26 +114,6 @@ async function get_cart(ws_id) {
     }
 }
 
-// Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_cartOLD2() {
-    // Traigo los resultados de una vista
-    let response = await user_db.query(
-        'get/cart-item', {
-        include_docs: true,
-        startkey: 'cart_ws_id_' + ws_id + '_',
-        endkey: 'cart_ws_id_' + ws_id + '_\ufff0',
-        //filter: 'get_cart_ws/by_ws_id',
-        //query_params: { "ws_id": ws_id },
-        descending: true
-    }
-    ); //Conceto con la vista de diseno
-    if (response.rows) {
-        return all_cart_item(response.rows);
-    }
-    else {
-        return all_cart_item(false);
-    }
-}
 
 // Creo los arrays con los datos de la BD
 async function all_cart_item(todos) {
@@ -241,7 +226,6 @@ async function get_cart_change() {
     */
 }
 
-
 //Nueva funcion de agregar al producto al carrito
 function variations_add_cart(element) {
     event.preventDefault();
@@ -322,11 +306,16 @@ function validaForm(card_product_val, card_product_discount, card_product_quanti
 
 // Agreagar productos al carrito
 async function add_cart_item(data) {
-    console.log(data);
+    
     try {
+        const board_name = await getUrlVal('t');
+        
+        if(!board_name){
+                const board_name = 'sell';   
+        }
         var response = await user_db.put({
             _id: new Date().toISOString(),
-            type: 'cart-item',
+            type: 'cart-item-'+board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
@@ -443,23 +432,24 @@ $(document).on('click', '.right_nav_close', function (event) {
 
 async function get_fav(ws_id) {
     // Traigo los resultados de una vista
+    const board_name = await getUrlVal('t');
+    //const module_name = await getUrlVal('type');
+    if(!board_name){
+            const board_name = 'sell';   
+          //  const module_name = 'board';
+    }
+    // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get/fav-item', {
+       'get-cart-'+ws_id+'/fav-item-'+board_name, {
         include_docs: true,
         descending: true
     }
     ); //Conceto con la vista de diseno
     if (response.rows) {
-        const rows = response.rows;
-        //  console.log('Respuesta Origial'); // []
-        //   console.log(response.rows);
-        // alert(ws_id);
-        const result = rows.filter(row => row.doc.ws_id === ws_id);
-        //  console.log('Respuesta FILTRADA'); // []
-        // console.log(result);
-        //console.log(rows_items); // []
+        const result = response.rows;
+
+        console.log('FAVVVV',result)
         return all_fav_item(result);
-        //return all_cart_item(response.rows);
     }
     else {
         return all_fav_item(false);
@@ -548,34 +538,6 @@ async function all_fav_item(todos) {
     }
 }
 
-// Traer los item leyendo de la pounchDB
-async function get_fav_change(ws_id) {
-    //  Escucho Los cambios en tiempo real
-    /*
-    await user_db.changes({
-        // filter: '_view',
-        //view: 'get/cart-item',
-        since: 'now',
-        include_docs: true,
-        live: true
-    }).on('change', function (change) {
-        if (change.deleted) {
-            // alert('Docuento Eliminado' + change.id);
-            //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_fav(ws_id);
-        } else {
-            //  alert('Docuento Agregado' + change.id);
-            // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_fav(ws_id);
-        }
-    }).on('error', function (err) {
-        // handle errors
-        console.log('' + err);
-    });
-
-    */
-}
-
 //Nueva funcion de agregar al producto al favoritos
 function variations_add_fav(element) {
     event.preventDefault();
@@ -626,36 +588,48 @@ function variations_add_fav(element) {
 async function add_fav_item(data) {
     // console.log(data);
     try {
+
+        const board_name = await getUrlVal('t');
+        
+        if(!board_name){
+                const board_name = 'sell';   
+        }
+
         var response = await user_db.put({
             _id: new Date().toISOString(),
-            type: 'fav-item',
+            type: 'fav-item-'+board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
 
-        //fav_n
+        if(response.ok){
+            get_fav(ws_id)
+            //fav_n
+    
+            $("#cart_item_tab").removeClass('active in');
+            $("#cart_item_tab_icon").removeClass('active');
+            $("#new_item_tab").removeClass('active in');
+            $("#new_item_tab_icon").removeClass('active');
+            //Activo la animacion del tab favoritos
+            $("#fav_item_tab").addClass('active in');
+            $("#fav_item_tab_icon").addClass('active');
+    
+            Snackbar.show({
+                text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
+                width: '475px',
+                pos: 'bottom-right',
+                actionText: 'Deshacer',
+                actionTextColor: "#4CAF50",
+                onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
+                    $(element).css('opacity', 0);
+                    user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
+                    $('#' + response.id).remove();
+                }
+            });
 
-        $("#cart_item_tab").removeClass('active in');
-        $("#cart_item_tab_icon").removeClass('active');
-        $("#new_item_tab").removeClass('active in');
-        $("#new_item_tab_icon").removeClass('active');
-        //Activo la animacion del tab favoritos
-        $("#fav_item_tab").addClass('active in');
-        $("#fav_item_tab_icon").addClass('active');
+        }
 
-        Snackbar.show({
-            text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Deshacer',
-            actionTextColor: "#4CAF50",
-            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);
-                user_db.remove(response.id, response.rev);   //Set opacity of element to 0 to close Snackbar                    
-                $('#' + response.id).remove();
-            }
-        });
     } catch (err) {
         Snackbar.show({
             text: '<span class="round-icon pr">' + data.variant_quantity + '</span> ' + data.variant_name + '<?= lang("Body.b_error") ?>',
