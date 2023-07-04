@@ -17,7 +17,8 @@
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a onclick="board_edit_group(this)" group_id="{{id}}" board_type_name="{{{../name}}}"
+                                <a onclick="board_edit_group(this)" group_id="{{id}}" board_type_name="{{#with ../ws_lang_data}}
+                                    {{{board_type_name}}}{{/with}}"
                                     id="edit_board_group_btn" m_s_id="{{id}}" href="#master_popup" role="button"
                                     title="Retirar efectivo">
                                     <i class="material-icons">settings</i> {{#with ../ws_lang_data}}

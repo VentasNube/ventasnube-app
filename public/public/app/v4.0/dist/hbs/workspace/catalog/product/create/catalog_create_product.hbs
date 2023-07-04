@@ -1,73 +1,49 @@
 <!-- CATALOG CREATE NEW PRODUCT TEMPLATE -->
-<div class="view-product">
+<div class="create-product">
 
-    <!--- HEADER NAV  -->
-    <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <button data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto"
-            type="button"
-            class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+
+    <div class="righ_nav_header">
+        <button  class="margin-10 left_nav_close right_nav_close round btn btn-transparent btn-default pull-left " 
+        data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="" type="button">
             <span class="material-icons">
                 arrow_back
             </span>
         </button>
-        <!--h3 class=" margin-0 padding-t-20">{{#with ws_lang_data}} {{t_new_product}} {{/with}}</h3-->
-                         <button id="" type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default "
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="catalog_select_type_value"><h3>{{#with ws_lang_data}}  {{t_new_product}}  {{/with}} </h3><span>
-                         </button>
-
-                          <ul class="dropdown-menu m">
-                                                    <!--ul class="dropdown-menu m pull-right"></ul-->
-                                                    <li  >
-                                                         <a id="catalog_select_type_value_product"  href="#">
-                                                                  {{#with ws_lang_data}} {{t_new_product}} {{/with}}
-                                                        </a>   
-                                                    </li>
-                                                     <li  >
-                                                        <a id="catalog_select_type_value_service" href="#">
-                                                                  {{#with ws_lang_data}} {{t_new_service}} {{/with}}
-                                                        </a>   
-                                                    </li>
-                                </ul>
-
-        
-    </div>
-
-    <div class="righ_nav_header">
-    <!--span class="material-icons">receipt</span>Nueva -->
-
-    <div class="btn-group dopdown">
-        <button id="" m_id="" m_t_id="" m_t_name="" type="button" class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
-            <span class="material-icons">home_repair_service</span>
-            <span id="new_type_value_select" class="" type_order="product"> {{#with ws_lang_data}} {{t_new_product}} {{/with}}</span>
-            <i class="material-icons">expand_more</i>
+        <div class="margin-10 btn-group dopdown">
+            <button id="" m_id="" m_t_id="" m_t_name="" type="button"
+                class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+                data-toggle="dropdown" aria-expanded="true">
+                <span id="new_type_icon_select" class="material-icons">home_repair_service</span>
+                <span id="new_type_value_select" type_order="product"> {{#with ws_lang_data}} {{t_new_product}}
+                    {{/with}}</span>
+                <i class="material-icons">expand_more</i>
+            </button>
+            <ul class="dropdown-menu pull-left">
+                <li class="margin-5">
+                    <a class="" onclick="new_select_type_order(this)" type_order="product" href="#">
+                        <span class="material-icons">inventory_2</span>
+                        <span class="type_val"> {{#with ws_lang_data}} {{t_new_product}} {{/with}}</span>
+                    </a>
+                </li>
+                <li class="margin-5">
+                    <a class="" onclick="new_select_type_order(this)" type_order="service" href="#">
+                        <span class="material-icons">home_repair_service</span>
+                        <span class="type_val">{{#with ws_lang_data}} {{t_new_service}} {{/with}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
+            <span class="material-icons">close</span>
         </button>
-        <ul class="dropdown-menu pull-left">
-            <li class="margin-5">
-                <a class="" onclick="new_select_type_order(this)" type_order="product" href="#">
-                    <span class="material-icons">inventory_2</span>
-                    <span class="type_val">  {{#with ws_lang_data}} {{t_new_product}} {{/with}}</span>
-                </a>
-            </li>
-            <li class="margin-5">
-                <a class="" onclick="new_select_type_order(this)" type_order="service" href="#">
-                    <span class="material-icons">home_repair_service</span>
-                    <span class="type_val">{{#with ws_lang_data}} {{t_new_service}} {{/with}}</span>
-                </a>
-            </li>
-        </ul>
     </div>
-    <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
-        <span class="material-icons">close</span>
-    </button>
-</div>
 
     <div class="s-card-activ-footer ">
         <div class="panel-group " role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
                 <div class="panel-heading" id="edit-item-description">
                     <h4 class="panel-title">
-                        <a role="button"  class="collapsed">
+                        <a role="button" class="collapsed">
                             <div class="row">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -75,17 +51,19 @@
                                             drive_file_rename_outline
                                         </span>
                                     </span>
-                                    <input id="catalog_new_product_name_input" input_id="name" value="{{name}}" placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
+                                    <input id="catalog_new_product_name_input" input_id="name" value="{{name}}"
+                                        placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
                                         class="form-control" type="text" data-toggle="tooltip" data-placement="bottom"
-                                        title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}" data-original-title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}">
+                                        title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
+                                        data-original-title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}">
                                 </div>
                             </div>
                         </a>
                     </h4>
                 </div>
 
-                <div id="edit-item-description-body" class="" 
-                    aria-labelledby="edit-item-description" aria-expanded="true" style="height: 0px;">
+                <div id="edit-item-description-body" class="" aria-labelledby="edit-item-description"
+                    aria-expanded="true" style="height: 0px;">
                     <div class="panel-body">
                         <div class="row">
                             <!--- TAGS MAIN -->
@@ -100,8 +78,9 @@
 
                                     </div>
                                     <input doc_id="" input_id="tags" class="chips_input form-control"
-                                    placeholder="{{#with ws_lang_data}} {{m_catalog_edit_tags}} {{/with}}"
-                                        name="keywords" type="text" onkeypress="catalog_add_new_tag_press(event,this)" style="">
+                                        placeholder="{{#with ws_lang_data}} {{m_catalog_edit_tags}} {{/with}}"
+                                        name="keywords" type="text" onkeypress="catalog_add_new_tag_press(event,this)"
+                                        style="">
                                 </div>
                             </div>
 
@@ -138,22 +117,21 @@
                                                         <span id="catalog_select_cat_value"></span>
                                                     </li>
 
-                                                    <li  >
+                                                    <li>
                                                         <div>
                                                             <input input_id="catalog_cat_input"
                                                                 id="catalog_new_cat_input" class="form-control"
                                                                 onkeypress="catalog_search_new_prod_cat(event,this)"
-                                                                type="text"
-                                                                 doc_id="{{_id }}"
+                                                                type="text" doc_id="{{_id }}"
                                                                 placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
-                                                                
+
                                                         </div>
                                                     </li>
-                                                    <div id="catalog_select_new_cat_list" >
+                                                    <div id="catalog_select_new_cat_list">
                                                         {{#each category_list/category_list }}
                                                         <li onclick='catalog_select_new_cat(this)'
-                                                                    item_value_id="{{id}}"
-                                                                    item_value="{{value}}" item_id="category" >
+                                                            item_value_id="{{id}}" item_value="{{value}}"
+                                                            item_id="category">
                                                             <div class="dropdown-item">
                                                                 <a href="#">
                                                                     {{value}}
@@ -175,132 +153,134 @@
                                 </div>
                             </div>
 
-                           
-                            <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <!--- MARCAS  -->
-                                   <div class="input-group flex">
-                                        <span class="input-group-addon">
-                                            <div class="btn-group dropright">
 
-                                                <button id="" type="button"
-                                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <!--- MARCAS  -->
+                                <div class="input-group flex">
+                                    <span class="input-group-addon">
+                                        <div class="btn-group dropright">
+
+                                            <button id="" type="button"
+                                                class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="material-icons" data-toggle="tooltip"
+                                                    data-placement="bottom"
+                                                    data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}">
+                                                    grid_view
+                                                </span>
+
+                                                <span id="catalog_select_trade_tittle">{{#with ws_lang_data}}
+                                                    {{{m_catalog_edit_trade}}} {{/with}} <span>
+                                            </button>
+
+                                            <ul class="dropdown-menu m">
+                                                <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                <li class="header">
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom"
                                                         data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}">
-                                                       grid_view
+                                                        grid_view
                                                     </span>
+                                                    {{#with ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}
+                                                    <span class="material-icons">arrow_right</span>
+                                                    <span id="catalog_select_trade_value"></span>
+                                                </li>
 
-                                                    <span id="catalog_select_trade_tittle">{{#with ws_lang_data}}
-                                                        {{{m_catalog_edit_trade}}} {{/with}} <span>
-                                                </button>
+                                                <li>
+                                                    <div>
+                                                        <input id="catalog_new_trade_input"
+                                                            onkeypress="catalog_search_new_pro_trade(event,this)"
+                                                            input_id="catalog_trade_input" class="form-control"
+                                                            type="text"
+                                                            placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
 
-                                                <ul class="dropdown-menu m">
-                                                    <!--ul class="dropdown-menu m pull-right"></ul-->
-                                                    <li class="header">
-                                                        <span class="material-icons" data-toggle="tooltip"
-                                                            data-placement="bottom"
-                                                            data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}">
-                                                               grid_view
-                                                        </span>
-                                                        {{#with ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}
-                                                        <span class="material-icons">arrow_right</span>
-                                                        <span id="catalog_select_trade_value"></span>
-                                                    </li>
+                                                    </div>
+                                                </li>
+                                                <div id="catalog_select_new_trade_list">
+                                                    {{#each trade_list/trade_list }}
+                                                    <li onclick='catalog_select_new_trade(this)' item_value_id="{{id}}"
+                                                        item_value="{{value}}" item_id="trade">
+                                                        <div class="dropdown-item">
+                                                            <a href="#">
+                                                                {{value}}
+                                                            </a>
+                                                            {{#userCtx 'catalog' 'admin'}}
+                                                            <button>
+                                                                <span doc_id="" value="{{value}}" class="material-icons"
+                                                                    onclick='catalog_dell_trade(this)'>delete</span>
+                                                            </button>
+                                                            {{/userCtx }}
 
-                                                    <li >
-                                                        <div>
-                                                            <input id="catalog_new_trade_input"  onkeypress="catalog_search_new_pro_trade(event,this)" input_id="catalog_trade_input" class="form-control" type="text"
-                                                                placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
-                                                         
                                                         </div>
                                                     </li>
-                                                    <div id="catalog_select_new_trade_list">
-                                                        {{#each trade_list/trade_list }}
-                                                        <li onclick='catalog_select_new_trade(this)'
-                                                                    item_value_id="{{id}}"
-                                                                    item_value="{{value}}"
-                                                                     item_id="trade">
-                                                            <div class="dropdown-item">
-                                                                <a  href="#">
-                                                                    {{value}}
-                                                                </a>
-                                                                {{#userCtx 'catalog' 'admin'}}
-                                                                    <button>
-                                                                        <span doc_id="" value="{{value}}"
-                                                                            class="material-icons"
-                                                                            onclick='catalog_dell_trade(this)'>delete</span>
-                                                                    </button>
-                                                                {{/userCtx }}
+                                                    {{/each}}
+                                                </div>
+                                            </ul>
 
-                                                            </div>
-                                                        </li>
-                                                        {{/each}}
-                                                    </div>
-                                                </ul>
-
-                                            </div>
-                                        </span>
-                                    </div>
-                                     <!--- MODELO  -->
-                                    <div class="input-group flex">
-                                        <span class="input-group-addon">
-                                            <div class="btn-group dropright">
-                                                <button id="" type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </div>
+                                    </span>
+                                </div>
+                                <!--- MODELO  -->
+                                <div class="input-group flex">
+                                    <span class="input-group-addon">
+                                        <div class="btn-group dropright">
+                                            <button id="" type="button"
+                                                class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="material-icons" data-toggle="tooltip"
+                                                    data-placement="bottom"
+                                                    data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}">
+                                                    flip_to_front
+                                                </span>
+                                                <span id="catalog_select_model_tittle">{{#with
+                                                    ws_lang_data}}{{{m_catalog_edit_model}}} {{/with}} <span>
+                                            </button>
+                                            <ul class="dropdown-menu m">
+                                                <li class="header">
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom"
                                                         data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}">
-                                                          flip_to_front
+                                                        flip_to_front
                                                     </span>
-                                                    <span id="catalog_select_model_tittle">{{#with ws_lang_data}}{{{m_catalog_edit_model}}} {{/with}} <span>
-                                                </button>
-                                                <ul class="dropdown-menu m">
-                                                    <li class="header">
-                                                        <span class="material-icons" data-toggle="tooltip"
-                                                            data-placement="bottom"
-                                                            data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}">
-                                                            flip_to_front
-                                                        </span>
-                                                        {{#with ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}
-                                                        <span class="material-icons">arrow_right</span>
-                                                        <span id="catalog_select_model_value"></span>
-                                                    </li>
-                                                    <li>
-                                                         <div>
-                                                            <input id="catalog_new_model_input" input_id="catalog_model_input" onkeypress="catalog_search_model(event,this)"
-                                                              class="form-control"   type="text" placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_model}}} {{/with}} ">
-                                                         
+                                                    {{#with ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}
+                                                    <span class="material-icons">arrow_right</span>
+                                                    <span id="catalog_select_model_value"></span>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <input id="catalog_new_model_input"
+                                                            input_id="catalog_model_input"
+                                                            onkeypress="catalog_search_model(event,this)"
+                                                            class="form-control" type="text"
+                                                            placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_model}}} {{/with}} ">
+
+                                                    </div>
+                                                </li>
+                                                <div id="catalog_select_new_model_list">
+                                                    {{#each model_list/model_list }}
+                                                    <li onclick='catalog_select_new_model(this)' item_value_id="{{id}}"
+                                                        item_value="{{value}}" item_id="model">
+                                                        <div class="dropdown-item">
+                                                            <a href="#">
+                                                                {{value}}
+                                                            </a>
+                                                            {{#userCtx 'catalog' 'admin'}}
+                                                            <button>
+                                                                <span doc_id="" value="{{value}}" class="material-icons"
+                                                                    onclick='catalog_dell_model(this)'>delete</span>
+                                                            </button>
+                                                            {{/userCtx }}
+
                                                         </div>
                                                     </li>
-                                                     <div id="catalog_select_new_model_list">
-                                                        {{#each model_list/model_list }}
-                                                        <li onclick='catalog_select_new_model(this)'
-                                                                    item_value_id="{{id}}"
-                                                                    item_value="{{value}}"
-                                                                     item_id="model">
-                                                            <div class="dropdown-item">
-                                                                <a  href="#">
-                                                                    {{value}}
-                                                                </a>
-                                                                {{#userCtx 'catalog' 'admin'}}
-                                                                    <button>
-                                                                        <span doc_id="" value="{{value}}"
-                                                                            class="material-icons"
-                                                                            onclick='catalog_dell_model(this)'>delete</span>
-                                                                    </button>
-                                                                {{/userCtx }}
+                                                    {{/each}}
+                                                </div>
 
-                                                            </div>
-                                                        </li>
-                                                        {{/each}}
-                                                    </div>
 
-                                                    
-                                                </ul>
-                                            </div>
-                                        </span>
-                                    </div>
+                                            </ul>
+                                        </div>
+                                    </span>
+                                </div>
                             </div>
 
                         </div>
@@ -311,7 +291,7 @@
     </div>
     <!--- NOMBRE CATEGORIAS -->
 
-   
+
     <!--- MAIN VARIACIONES imprimo el catalog_new_variaton -->
     <div id="create_prod_new_variations_main" class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
@@ -321,11 +301,39 @@
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit'}}
-                <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary">
-                    {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
-                </button>
+            <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button"
+                class="btn btn-primary">
+                {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
+            </button>
             {{/userCtx}}
         </div>
     </div>
 
 </div>
+
+<script>
+
+
+  function new_select_type_order(opcion) {
+  // Obtener el tipo de orden seleccionado y el botón
+  //const boton = document.querySelector('.select-btn');
+  // Obtener los elementos dentro del botón
+  //const icono = boton.querySelector('#new_type_icon_select');
+ // const valorSeleccionado = boton.querySelector('#new_type_value_select');
+  //type_order_icon_select = $('#new_type_icon_select').html('type_order');
+  //type_order_select = $('#new_type_value_select').attr('type_order');
+  // Obtener los datos seleccionados en la opción
+  const type_order_select = opcion.getAttribute('type_order');
+  const type_order_icon_select = opcion.querySelector('.material-icons').textContent;
+  const type_order_name_select = opcion.querySelector('.type_val').textContent;
+//Imprimo
+ $('#new_type_icon_select').html(type_order_icon_select);
+ $('#new_type_value_select').attr('type_order',type_order_select);
+ $('#new_type_value_select').html(type_order_name_select);
+
+  // Cambiar el texto y el icono del botón según la selección
+  //valorSeleccionado.textContent = valorSeleccionadoTexto;
+  //icono.textContent = iconoSeleccionado;
+}
+
+</script>

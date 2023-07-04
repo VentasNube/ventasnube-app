@@ -25,7 +25,7 @@
 
             <div class="search-nav-icons">
                 <button type="button" class="cart_button search-close right_nav_open">
-                    <span class="material-icons"> store</span>
+                    <span class="material-icons"> shopping_cart</span>
                     <span id="cart-number-1" class="cart_n cart-number">0</span>
                 </button>
             </div>
@@ -85,10 +85,10 @@
 
                     {{#each ws_left_nav_data.m_t}}
                     {{#ifEquals m_t_url ../board_type_name }}
-                <button type="button" search_cat="search_order_{{board_type_name}}"
+                        <button type="button" search_cat="search_order_{{m_t_name}}"
                                 class="search_button_cat btn xl btn-more  btn-primary line">
                                 <i class="material-icons">{{m_t_icon}}</i>
-                                <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ws_lang_data}}{{m_board_new_item_order}}{{/with}}    {{m_t_name}}  </span>
+                                <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ../ws_lang_data}}{{b_order}}{{/with}}    {{m_t_name}}  </span>
                             </button>
                     {{/ifEquals}}
                     {{/each}}

@@ -595,14 +595,12 @@ async function put_catalog(doc_id, my_doc) {
 // TRAE EL FORMULARIO
 async function catalog_new_item(element) {
     try {
-
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var user_roles_permisions = user_Ctx.userCtx.roles;
-
        // console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
@@ -615,14 +613,10 @@ async function catalog_new_item(element) {
             model_list: new_model_list,
             attributes_list: attributes
         }
-
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
-        //renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', '#new_variations_main', product_doc_array);
-       // console.log('product_doc_array', product_doc_array);
-
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=new&?id=';
+        var m_url = '?type=catalog&?t=new';
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
         return;
     } catch (err) {

@@ -107,6 +107,10 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
             catalog_edit_item_url(m_id, m_var_id, userCtx);
           //  updateHistory();
         }
+        if (m_t_id == 'new') {
+            catalog_new_item(m_id, m_var_id, userCtx);
+          //  updateHistory();
+        }
         //  get_items_catalog();
     }
     else if (ws_m_s == 'board') {

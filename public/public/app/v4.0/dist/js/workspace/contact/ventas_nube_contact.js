@@ -1,21 +1,14 @@
 ////// BOARDS MODULE 2023 ////////////
+//// VARIABLES GLOBALES 
 ws_board_db = 'ws_contact_' + ws_id;
 //board_group_info = null;
 ws_left_nav_data = null;
 ws_lang_data = null;
 module_info = null;
-//// VARIABLES GLOBALES 
-
-// Definiendo la URL de la base de datos remota
-//const url_R_db = 'http://<username>:<password>@localhost:5984/'; // Reemplaza con tus propios valores
 // Creando una instancia de la base de datos remota
 //const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
 const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
-
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
 //SYNCRONIZO LOS DATOS
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,
@@ -162,7 +155,6 @@ async function get_all_contact_intems() {
     }
 }
 
-
 // Guardo los datos del nuevo contacto
 async function new_contact_put(user_data) {
     try {
@@ -191,10 +183,6 @@ async function new_contact_put(user_data) {
         console.error('Error al crear el contacto:', error);
     }
 }
-
-
-///////// VERSION NUEVA 2023 SCROLL INFINITO /////
-
 
 // Llamar a `getMoreItems` cada vez que el usuario llega al final de la lista.
 //////////////////////////////
@@ -226,23 +214,6 @@ function get_items_contact(ws_id) {
     //console.log('GET ITEMS CATALOG');
 }
 
-// TARJETAS DE PRODUCTOS
-//Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
-function print_contact_itemNO(new_items) {
-    var search_result = {
-        search_contact: new_items,
-        price_list: price_doc.price_list,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-    }
-    console.log('print_contact_item:',search_result);
-    if (new_items.length > 0) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', '#content_contact_commpiled', search_result);
-    } else {
-        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
-    }
-}
-
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_contact_item(search_val) {
     //Armo el array para renderizar los items
@@ -259,7 +230,6 @@ async function search_contact_item(search_val) {
         new_items['phone'] = it.item.phone;
         new_items['email'] = it.item.email;
         new_items['document_number'] = it.item.document_number;
-
         new_items['address'] = it.item.address;
         new_items['address_number'] = it.item.address_number;
         new_items['address_floor'] = it.item.address_floor;
@@ -291,7 +261,6 @@ async function get_contact(ws_id) {
     get_nav_contact(ws_info,ws_lang_data);
     get_all_contact_intems();
 }
-
 
 $(document).on('focusin', '.contact_search', function (element) {
     get_all_contact_intems();// CReo con fuse el array con los objetos 

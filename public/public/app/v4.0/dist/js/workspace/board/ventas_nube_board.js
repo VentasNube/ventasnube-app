@@ -350,6 +350,10 @@ async function query_orders(type, category_id) {
 /// NEW BOARD POPUP START
 async function new_board_star_intro(board_type_name) {
     try {
+
+
+
+
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
         var data = {
@@ -925,13 +929,15 @@ async function delete_board_group(element, board_type_name) {
 }
 
 // EDIT BOARD GROUP POPUP
-async function board_edit_group(element, board_type_name) {
+async function board_edit_group(element) {
     try {
         const modal = document.getElementById('master_popup');
+        const board_type_name = $(element).attr('board_type_name'); //Id del documento a edita
+console.log('board_type_name EEEEEE',board_type_name);
         const group_id = $(element).attr('group_id'); //Id del documento a edita
-        const parametroUrl = await getUrlVal('t');
+      //  const parametroUrl = await getUrlVal('t');
         var board_name = board_name;
-        var board_type_name = parametroUrl;
+       // var board_type_name = parametroUrl;
         var board_group_conf = await L_board_db.get('board_group_' + board_type_name);
         var board_group = board_group_conf.board_group;
         const selected_group = board_group.find(group => group.id === group_id);
@@ -953,14 +959,10 @@ async function board_edit_group(element, board_type_name) {
 // EDIT BOARD GROUP EDITO
 async function edit_board_group_put(element) {
     try {
-        var board_name = $(element).attr('board_name'); //Id del documento a edita
-        // var board_group_id = $(element).attr('group_id'); //Id del documento a edita
-        const parametroUrl = await getUrlVal('t');
-        var board_name = board_name;
-        const docId = 'board_group_' + board_name; // Generar un ID único
-        const doc = await L_board_db.get(docId); // Verificar si el documento ya existe
+        const board_type_name = $(element).attr('board_name'); //Id del documento a edita
         const group_id = $(element).attr('group_id'); //Id del documento a edita
-        var board_type_name = parametroUrl;
+        const docId = 'board_group_' + board_type_name; // Generar un ID único
+        const doc = await L_board_db.get(docId); // Verificar si el documento ya existe
         // Valores seleccionados del formulario
         const board_group_name = $('input[name=board_group_name]').val();
         const board_group_color = $("#bg-select-color-group").attr('bg-color');
@@ -968,8 +970,6 @@ async function edit_board_group_put(element) {
         const board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();
         const board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();
         const board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
-        // const m_s_id = $(this).attr('m_s_id');
-
         if (board_group_name != null) {
             const board_group = doc.board_group;
             const selected_group = board_group.find(group => group.id === group_id);
@@ -987,7 +987,7 @@ async function edit_board_group_put(element) {
             doc._rev = doc._rev;
             const response = await L_board_db.put(doc); // Actualizar el documento existente
 
-            get_board(board_name, board_type_name);
+            get_board(board_type_name);
             $('#master_popup').modal('hide');
             Snackbar.show({
                 text: 'Se editó la sección del tablero con éxito!',
@@ -1011,7 +1011,7 @@ async function edit_board_group_put(element) {
     }
 }
 
-
+/// VACIA EL CARRITO
 async function delete_cart_items(products){
 
     // Obtén los documentos que quieres eliminar
@@ -1472,12 +1472,11 @@ async function get_board_onscrollOLDOK() {
         }
     };
 }
-
+/*
 async function get_total_orders_group() {
-    // let result = await db.allDocs(options);
     let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
-
+*/
 // Cuento los items totales en cada grupo
 async function coun_items_broup(board_type_name) {
     try {
@@ -1493,7 +1492,7 @@ async function coun_items_broup(board_type_name) {
         grupos.forEach(async function (grupo) {
             const group_id = grupo.id;
             const elementoSuma = document.querySelector('.board-item-conunt_' + group_id);
-            console.log(`.board-item-conunt_${group_id}`);
+          //  console.log(`.board-item-conunt_${group_id}`);
             const result_items = await L_board_db.find({
                 selector: {
                     type: 'order',
@@ -1503,7 +1502,7 @@ async function coun_items_broup(board_type_name) {
                 },
                 limit: 1000  // Aumenta este número según sea necesario
             });
-            console.log('result', result_items);
+         //   console.log('result', result_items);
             const totalOrdenes = result_items.docs.length;
             elementoSuma.innerHTML = totalOrdenes.toString();
         });
@@ -1521,11 +1520,8 @@ async function coun_items_broup(board_type_name) {
 // CREO EL BOARD 
 async function get_board(board_type_name) {
     try {
-
         // Obtener la sesión actual
-      // const response = _session();
         userCtx_rol = user_Ctx.userCtx.roles;
-        console.log( 'get_board USEEERRRR',userCtx);
         board_group_info = await L_board_db.get('board_group_' + board_type_name);
         const board_group = board_group_info.board_group;
         const board_data = {
@@ -1539,7 +1535,7 @@ async function get_board(board_type_name) {
             user_roles: userCtx_rol,
         };
 
-        console.log('BOARD DATA', board_data);
+        // console.log('BOARD DATA', board_data);
         let parentElement = document.querySelector('#content_compiled');
         let id_compiled = '#' + parentElement.id;
         if (id_compiled) {
@@ -1550,14 +1546,12 @@ async function get_board(board_type_name) {
                     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
                         coun_items_broup(board_type_name);
                         scrollerMove();
-                        // add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
                         get_board_onscroll();//activa el evento scroll para graer mas ordenes
                     });
                 }
             });
         } else {
-            // alert('get_board parentElement NO ES un elemento DOM');
-            console.log('get_board NO TRAE O NO SE ENCUENTRA parentElement:', parentElement);
+            console.log('NO SE ENCUENTRA parentElement:', parentElement);
         }
     }
     catch (err) {
@@ -1686,9 +1680,4 @@ function datetimePiker() {
         switchOnClick: true
     });
 }
-
-$(document).ready(function () {
-    //  window.onload = ws_board_start();// Ejecuto todas las funciones del espacio de trabajo
-
-});
 

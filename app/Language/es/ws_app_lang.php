@@ -33,7 +33,7 @@ return [
         'search_icon' => 'search',
         //CONTACTS
 
-        'input_contact_search' => 'Buscar Contactos',
+        'input_contact_search' => 'Buscar Contactos...',
         'contact_title' => 'Contactos',
 
         'contact_list' => 'Lista de contactos',
@@ -229,6 +229,7 @@ return [
         'b_product' => 'Productos',
         'b_service' => 'Servicios',
         'b_contact' => 'Contactos',
+        'b_order' => 'Orden de',
         //CREAR ORDEN
         'b_add_order' => 'Crear orden',
          //FAVORITOS

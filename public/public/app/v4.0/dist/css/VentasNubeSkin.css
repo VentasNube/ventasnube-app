@@ -11400,8 +11400,11 @@ h2 {
     }
 */
 .container-fluid {
-  /*  overflow-x: auto; */
-    white-space: nowrap;
+    /*overflow: scroll; */
+    /* white-space: nowrap; */
+    height: 100%;
+    padding-bottom: 200px;
+    margin-bottom: 100px;
 }
 .container-fluid::-webkit-scrollbar {
     width: 15px;
@@ -11419,9 +11422,11 @@ h2 {
 
 .board-group {
     width: 100%;
-   /* width: auto;*/
-  min-height: 600px;
- /*   overflow-x: scroll;*/
+    /* width: auto; */
+    /* min-height: 600px; */
+    overflow: scroll;
+    /* white-space: nowrap; */
+    height: 100%;
 }
 .board-group>.board {
    /* overflow-x: auto;*/
@@ -11773,7 +11778,7 @@ board-item-content
     padding: 5px;
     right: 5px;
     position: relative;
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
 }
 .righ_nav_header .righ_nav_users {
     position: relative;

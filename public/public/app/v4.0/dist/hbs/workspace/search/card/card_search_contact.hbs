@@ -1,0 +1,154 @@
+{{#each search_result }}
+    {{#with item}}
+    <div id="card_{{_id}}" class="s-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="s-card-body col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <div class="s-card-user col-xs-3 col-sm-4 col-md-4 col-lg-4">
+                <div class="first-letter s-card-mini-img col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <div class="round-icon client user m">
+                        <span class="first-letter" data-first-letter=" {{first_name}}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="s-card-main col-xs-9 col-sm-8 col-md-8 col-lg-8 ">
+                <button class="btn xs btn-more  dropdown-toggle" type="button" data-toggle="dropdown">
+                    <h5>
+                    <span class="material-icons">
+                                    account_circle
+                                </span>   {{first_name}} {{last_name}}
+                    </h5>
+                </button>
+
+                <ul class="dropdown-menu card_contact pull-left">
+                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                    <div class="body">
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    account_circle
+                                </span>   {{first_name}} {{last_name}}
+                            </h4>
+                        </li>
+                        {{#if email}}
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    email
+                                </span> {{email}}
+                            </h4>
+                        </li>
+                        {{/if}}
+                        {{#if phone}}
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    phone
+                                </span> {{phone}}
+                            </h4>
+                        </li>
+                        {{/if}}
+                        {{#if phone}}
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">mobile_screen_share</span>
+                                {{phone}}
+                            </h4>
+                        </li>
+                        <li>
+                            <a class="btn btn-success md" target="_blank" rel="nofollow"
+                                href="https://api.whatsapp.com/send?phone=54{{phone}}&text= Hola te contactamos ">
+                                <span class="material-icons">mobile_screen_share</span>
+                                Enviar whatsapp
+                            </a>
+                        </li>
+                        {{/if}}
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    home
+                                </span>
+                                {{address}} {{address_number}} <br>
+                                {{address_floor}},
+                                {{address_city}},{{address_state}},
+                                {{address_country}}
+                            </h4>
+                        </li>
+                    </div>
+                    <li class="">
+                        <a class="btn btn-primary md" target="_blank"
+                            href="https://www.google.com/maps/search/?api=1&query={{address}}+{{address_number}}+{{address_city}}+{{address_state}}">
+                            <span class="material-icons">directions</span>
+                            Indicaciones
+                        </a>
+                    </li>
+                </ul>
+                <!--div class="s-card-tittle" data-toggle="tooltip" data-placement="bottom" title="" class=""
+                    data-original-title="Coca cola retornable 1.5l sin azucar">
+                    {{first_name}} {{last_name}}
+                </div-->
+    </div>
+
+    <div class="s-card-main col-xs-9 col-sm-8 col-md-8 col-lg-8 ">
+                <div class="s-card-content">
+                    <div class="s-card-text" data-toggle="tooltip" data-placement="bottom"
+                        data-original-title="Precio al publico $1000">
+                        <i class="material-icons">drafts</i>
+                        <span> {{email}}</span>
+                    </div>
+                    <div class="s-card-text" data-toggle="tooltip" data-placement="bottom"
+                        data-original-title="Precio al publico $1000">
+                        <i class="fab fa-whatsapp"></i>
+                        <span class="s-card-text"> {{phone}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="s-card-footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <span class="s-card-cat pull-left">DNI:{{document_number}}</span>
+                <button onclick="edit_contact(this)" doc_rev="{{_rev}}" doc_id="{{{_id}}}" type="button"
+                    class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown" aria-expanded="true">
+                    <span class="hidden-xs hidden-sm">Editar</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    {{/with}}
+{{/each}}
+
+
+<script>
+
+    async function edit_contact(element) {
+        try {
+            const modal = document.getElementById('master_popup');
+            const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+            // const rev_id = $(element).attr('rev_id'); //Id del documento a editar
+            // Listas de precio ws_collections_333433/
+            ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+            doc = await L_contact_db.get(doc_id, { include_docs: true, descending: true });
+            const data = {
+                ws_price_list: ws_price_list,
+                ws_info: ws_info,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc: doc
+            }
+            console.log(data);
+            $(modal).modal('show');
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/popup/edit_contact.hbs', '#master_popup', data);
+            // save_new_conctact();
+        } catch (err) {
+            console.log('ERROR add_new_contact', err)
+            Snackbar.show({
+                text: err.reason,
+                actionText: '<span class="material-icons">refresh</span> Refresh ',
+                actionTextColor: "#0575e6",
+                //  duration: Snackbar.LENGTH_INDEFINITE,
+                //   action: () => { updateDocuments() }
+            });
+        }
+    }
+
+
+</script>
