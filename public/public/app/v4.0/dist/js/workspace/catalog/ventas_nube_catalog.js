@@ -666,6 +666,8 @@ async function catalog_new_item_new_product(element) {
         const category = {id:new_doc_cat_id, value:new_doc_cat_value} ;
         const trade =  {id:new_doc_trade_id, value:new_doc_trade_value};
         const model =  {id:new_doc_model_id, value:new_doc_model_value};
+        const type =  $('#new_type_value_select').attr('type_order');
+        console.log('TYPE ITEM :',type);
         // Obtener el texto de cada hijo del elemento div
         const textoTags = [];
         divTags.childNodes.forEach(childNode => {
@@ -783,11 +785,18 @@ async function catalog_new_item_new_product(element) {
               ],
             "status":"active",
             "condition": "new",
-            "type": "product",
+            "type": type,
             "tags": new_doc_tags,
             category,
             trade,
             model,
+            "cost_price":[
+                {
+                    id:1,
+                    value:1000,
+                    id_stock_invetary:311
+                }
+            ],
             "available_quantity": null,
             "sold_quantity": null,
             "limit_discount": null,

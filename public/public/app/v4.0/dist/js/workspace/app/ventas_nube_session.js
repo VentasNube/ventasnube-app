@@ -273,6 +273,7 @@ _session();
 u_session = new PouchDB(url_R_db, { skip_setup: true });
 var userCtx = null;
 
+
 function _session(callback) {
   u_session.get('_session', { include_docs: true })
     .then(function(result) {
@@ -285,14 +286,16 @@ function _session(callback) {
     });
 }
 
-_session(function(error, userCtx) {
+_session(function(error, userCtx_new) {
   if (error) {
     console.error(error);
-    console.log('userCtx',userCtx)
+    console.log('ERROR EN userCtx',userCtx);
     // Manejar el error de alguna manera
   } else {
     // Utilizar userCtx dentro de la función de callback
-    console.log('userCtx',userCtx)
+   var userCtx =  userCtx_new;
+   console.log('userCtx',userCtx)
+   return userCtx
   }
 });
 

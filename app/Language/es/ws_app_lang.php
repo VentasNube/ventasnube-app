@@ -151,13 +151,16 @@ return [
         //nueva Ordenes
         'm_board' => 'Tableros',
         'm_board_new_item' => 'Nueva Orden',
+
+        'm_board_new_item_order' => 'Orden',
         'm_board_filter' => 'Filtrar',
         //CATALOGO
         'm_catalog' => 'Catalogo',
         'm_catalog_icon' => 'collections',
         't_new_product' => 'Crear producto',
         'a_dell_product' => 'Quieres eliminar el producto?',
-
+        't_new_service' => 'Crear servicio',
+        'a_dellproduct' => 'Quieres eliminar el servicio',
 
         'input_product_search' => 'Buscar productos',
 

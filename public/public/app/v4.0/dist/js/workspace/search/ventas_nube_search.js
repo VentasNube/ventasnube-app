@@ -71,10 +71,13 @@ async function get_search_module(ws_info, ws_lang_data,ws_left_nav_data) {
 };
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
-function get_all_item_punchDb() {
-    L_catalog_db.query('get/seach', {
+function get_all_item_catalog(type_order) {
+
+  // type = 'product';
+    console.log("type_order SEARCH:",type_order)
+    L_catalog_db.query('get/'+type_order, {
         include_docs: false,
-        descending: true
+        descending: false,
             // attachments: true,
             // startkey: data,
             // endkey: data + '\ufff0',
@@ -93,6 +96,9 @@ function get_all_item_punchDb() {
             // hacer algo con a[i];
             var new_item = {
                     name: items[i].value.name,
+                    price: items[i].price,
+                    cost_price: items[i].cost_price,
+                    currency: items[i].currency,
                     cat: items[i].value.cats,
                     tags: items[i].value.tags,
                     sku: items[i].value.sku,
@@ -172,10 +178,11 @@ async function search_item_js(search_val) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
     }
+    
 
     if (result.length > 0) {
         renderHandlebarsTemplate(url_template, id_copiled, search_result);
-        //  console.log('search_item');
+        console.log('search_item',search_result);
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
@@ -303,7 +310,18 @@ function card_edit_variant() {
 
 //TOMA EL FOCUS EN SEARCH ABRE EL MENU
 $(document).on('focusin', '.search-input', function (element) {
-    get_all_item_punchDb();//traigo los items del array
+    let type_search = $('#select_type_search').attr("type_search");
+    if(type_search == 'search_product' || type_search == 'search_service'){
+        console.log("TYPE SEARCH",type_search);
+        get_all_item_catalog(type_search);//traigo los items del array
+    }
+    else if(type_search == 'search_contact'){
+        console.log("TYPE SEARCH",type_search);
+        get_all_item_contact(type_search);//traigo los items del array
+    }else if(type_search == 'search_order_sell' && type_search == 'search_order_sell'){
+        console.log("TYPE SEARCH",type_search);
+        get_all_item_board(type_search);//traigo los items del array
+    }
 
 });
 
@@ -312,6 +330,8 @@ $(document).on('keyup', '.search-input', function () {
  var search_m_input = $(this).val();
  var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
  
+//console.log('btn_filter RRRRR',btn_filter);
+
  search_item_js(search_m_input);
 
 });
@@ -320,13 +340,13 @@ $(document).on('keyup', '.search-input', function () {
 $(document).on('click', '.search_button_cat', function (event) {
     var search_cat_selected_btn = $(this).html();
     var search_cat_selected = $(this).attr('search_cat');
-    var search_cat_input = $('.search_cat_btn').html();
-
+    // var search_cat_input = $('.search_cat_btn').html();
     $('.search-title').find('.search_button_cat').removeClass('active');
     $(this).addClass('active');
-
-    //alert(search_cat_selected_btn);
+    //alert(search_cat_selected_btn)
     $('.search_cat_btn').html(search_cat_selected_btn);
+   // $('.search_cat_btn').attr("type_search",search_cat_selected_btn);
+    $('#select_type_search').attr("type_search",search_cat_selected);
     //$('#searchInput').val('');
     $('#searchInput').focus();
 });
@@ -344,6 +364,7 @@ $(document).on('click', '.search_button_board_li', function (event) {
     // alert(search_cat_selected_btn);
     $('.search_button_board').html(search_cat_selected_btn_print + ' <i class="hidden-xs hidden-sm material-icons">expand_more</i>');
     $('.search_cat_btn').html(search_cat_selected_btn_print);
+    $('.search_cat_btn').attr("type_search",search_cat_selected_btn_print);
     // $('#searchInput').val('');
     $('#searchInput').focus();
 });

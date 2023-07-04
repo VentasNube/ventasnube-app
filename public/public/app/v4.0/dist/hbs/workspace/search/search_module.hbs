@@ -10,7 +10,7 @@
                 <!--span class="badge round xs">Productos <button>
                         <span class="material-icons">cancel</span></button>
                 </span-->
-                <div class="search_cat_btn">
+                <div id="select_type_search" type_search="search_product" class="search_cat_btn">
                     <span class="material-icons">widgets</span>
                     <span class="hidden-xs hidden-sm">Productos</span>
                 </div>
@@ -63,13 +63,13 @@
                 </ul>
             </div>
              <span class=" btn-primary text material-icons">arrow_forward_ios</span>
-            <button type="button" search_cat="search_serice"
-                class="search_button_cat btn xl btn-more  btn-primary line">
+            <button type="button" search_cat="search_product"
+                class="search_button_cat btn xl btn-more  btn-primary line active">
                 <i class="material-icons">widgets</i>
                 <span search_m_t_name="product" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
                     {{b_product}}{{/with}}</span>
             </button>
-            <button type="button" search_cat="search_serice"
+            <button type="button" search_cat="search_service"
                 class="search_button_cat btn xl btn-more  btn-primary line">
                 <i class="material-icons">home_repair_service</i>
                 <span search_m_t_name="service" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
@@ -81,6 +81,17 @@
                 <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ws_lang_data}}
                     {{b_contact}}{{/with}}</span>
             </button>
+
+
+                    {{#each ws_left_nav_data.m_t}}
+                    {{#ifEquals m_t_url ../board_type_name }}
+                <button type="button" search_cat="search_order_{{board_type_name}}"
+                                class="search_button_cat btn xl btn-more  btn-primary line">
+                                <i class="material-icons">{{m_t_icon}}</i>
+                                <span search_m_t_name="contact" class="hidden-xs hidden-sm">{{#with ws_lang_data}}{{m_board_new_item_order}}{{/with}}    {{m_t_name}}  </span>
+                            </button>
+                    {{/ifEquals}}
+                    {{/each}}
             <div class="btn-group dopdown">
                 {{#each m_now}}
                 <button search_cat="search_board" id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" type="button"

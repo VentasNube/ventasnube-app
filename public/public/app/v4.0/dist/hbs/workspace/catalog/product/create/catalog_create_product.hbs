@@ -10,8 +10,57 @@
                 arrow_back
             </span>
         </button>
-        <h3 class=" margin-0 padding-t-20">{{#with ws_lang_data}} {{t_new_product}} {{/with}}</h3>
+        <!--h3 class=" margin-0 padding-t-20">{{#with ws_lang_data}} {{t_new_product}} {{/with}}</h3-->
+                         <button id="" type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span id="catalog_select_type_value"><h3>{{#with ws_lang_data}}  {{t_new_product}}  {{/with}} </h3><span>
+                         </button>
+
+                          <ul class="dropdown-menu m">
+                                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                    <li  >
+                                                         <a id="catalog_select_type_value_product"  href="#">
+                                                                  {{#with ws_lang_data}} {{t_new_product}} {{/with}}
+                                                        </a>   
+                                                    </li>
+                                                     <li  >
+                                                        <a id="catalog_select_type_value_service" href="#">
+                                                                  {{#with ws_lang_data}} {{t_new_service}} {{/with}}
+                                                        </a>   
+                                                    </li>
+                                </ul>
+
+        
     </div>
+
+    <div class="righ_nav_header">
+    <!--span class="material-icons">receipt</span>Nueva -->
+
+    <div class="btn-group dopdown">
+        <button id="" m_id="" m_t_id="" m_t_name="" type="button" class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
+            <span class="material-icons">home_repair_service</span>
+            <span id="new_type_value_select" class="" type_order="product"> {{#with ws_lang_data}} {{t_new_product}} {{/with}}</span>
+            <i class="material-icons">expand_more</i>
+        </button>
+        <ul class="dropdown-menu pull-left">
+            <li class="margin-5">
+                <a class="" onclick="new_select_type_order(this)" type_order="product" href="#">
+                    <span class="material-icons">inventory_2</span>
+                    <span class="type_val">  {{#with ws_lang_data}} {{t_new_product}} {{/with}}</span>
+                </a>
+            </li>
+            <li class="margin-5">
+                <a class="" onclick="new_select_type_order(this)" type_order="service" href="#">
+                    <span class="material-icons">home_repair_service</span>
+                    <span class="type_val">{{#with ws_lang_data}} {{t_new_service}} {{/with}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
+        <span class="material-icons">close</span>
+    </button>
+</div>
 
     <div class="s-card-activ-footer ">
         <div class="panel-group " role="tablist" aria-multiselectable="true">
