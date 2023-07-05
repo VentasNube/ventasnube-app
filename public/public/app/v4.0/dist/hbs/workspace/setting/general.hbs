@@ -56,16 +56,16 @@
                                     {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}}
                                 </span>
                             </span>
-                            <select class="form-control md" name="ws_lang_setting">
-                                <option value="ws_lang_es" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}"
-                                    input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)"> {{#with
-                                    ws_lang_data}} {{{ws_panel_settings_lang_es}}}{{/with}} </option>
-                                <option value="ws_lang_us" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}"
-                                    input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)"> {{#with
-                                    ws_lang_data}} {{ws_panel_settings_lang_us}}{{/with}}</option>
-                                <option value="ws_lang_por" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}"
-                                    input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)"> {{#with
-                                    ws_lang_data}} {{ws_panel_settings_lang_por}}{{/with}} </option>
+                          <select class="form-control md" name="ws_lang_setting" onchange="ws_setting_general_edit(this)">
+                            <option class="change_lang_setting" value="ws_lang_es" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
+                                {{#with ws_lang_data}} {{{ws_panel_settings_lang_es}}}{{/with}}
+                            </option>
+                            <option class="change_lang_setting" value="ws_lang_us" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_us}}{{/with}}
+                            </option>
+                            <option class="change_lang_setting" value="ws_lang_por" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_por}}{{/with}}
+                            </option>
                             </select>
                         </div>
                     </div>
@@ -129,3 +129,8 @@
     </div>
 
 </div>
+
+<script>
+
+
+</script>

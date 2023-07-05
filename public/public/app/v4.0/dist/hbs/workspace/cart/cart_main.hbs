@@ -268,20 +268,6 @@
     // Este es tu método de búsqueda asíncrono
 
 
-    function print_contact_item(new_items) {
-        var search_result = {
-            search_contact: new_items,
-            price_list: price_doc.price_list,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-        }
-        console.log('print_contact_item:', search_result);
-        if (new_items.length > 0) {
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', '#content_contact_commpiled', search_result);
-        } else {
-            $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
-        }
-    }
 
     async function select_contact(element) {
        

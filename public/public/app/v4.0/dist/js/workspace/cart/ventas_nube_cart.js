@@ -18,9 +18,6 @@
 //Instalacion de Dases de datos y documentos.
 //###########################################################################
 
-
-
-
 //Funcion que chekea el ultimo estado del cart
 function chek_cart_open_ws() {
     var cart_open = readCookie("left_nav_open_ws_" + ws_id);
@@ -31,76 +28,45 @@ function chek_cart_open_ws() {
     }
 }
 
-async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data) {
+async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name) {
+    try {
 
-    // board_group_info = await L_board_db.get('board_group_' + board_type_name);
-    //const board_group = board_group_info.board_group;
-   
-    try{
-    //var board_name = await get_board_type('t');
-    const board_name = await getUrlVal('t');
-    const module_name = await getUrlVal('type');
-    
-    if(!board_name){
-            const board_name = 'sell';   
-            const module_name = 'board';
+        board_name = await getUrlVal('t');
+        if (!board_name) {
+            board_name = $('#cart_button').attr('board_name');
+        }
+
+        console.log("get_right_cart board_name:" + board_name);
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+        var ws_cart = {
+            price_doc: price_doc,
+            currency_doc: currency_doc,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            module_name: 'board',
+            board_type_name: board_name,
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            ws_left_nav_data: ws_left_nav_data
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
+        get_cart(ws_id, ws_cart);
+        get_fav(ws_id, ws_cart);
+        get_search_module(ws_info, ws_lang_data, ws_left_nav_data, ws_cart, board_name);
+        search_open();
     }
-
-    console.log("Board TYPE NAME:"+board_name);
-    var price_doc = await L_catalog_db.get('price_list');
-    var currency_doc = await L_catalog_db.get('currency_list');
-
-    var ws_cart = {
-        price_doc: price_doc,
-        currency_doc: currency_doc,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-        module_name: 'board',
-        board_type_name: board_name,
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
-        ws_left_nav_data: ws_left_nav_data
-    }
-
-
-
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
-
-    get_cart(ws_id, ws_cart);
-    get_fav(ws_id, ws_cart);
-    //   get_cart_change(ws_id);
-    // get_fav_change(ws_id);
-    get_search_module(ws_info, ws_lang_data,ws_left_nav_data, ws_cart);
-    
-   search_open();
-    }
-    catch{
-
-
+    catch (err) {
+        console.log(err);
     }
 };
 
-
-
-$("#t_cart").click(function () {
-    $('#cart_footer').show();
-});
-
-$("#t_fav").click(function () {
-    $('#cart_footer').hide();
-});
-
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id) {
-    const board_name = await getUrlVal('t');
-    //const module_name = await getUrlVal('type');
-    if(!board_name){
-            const board_name = 'sell';   
-          //  const module_name = 'board';
-    }
+    let board_name = $('#cart_button').attr('board_name');
     // Traigo los resultados de una vista
     let response = await user_db.query(
-        'get-cart-'+ws_id+'/cart-item-'+board_name, {
+        'get-cart-' + ws_id + '/cart-item-' + board_name, {
         include_docs: true,
         descending: true
     }
@@ -113,7 +79,6 @@ async function get_cart(ws_id) {
         return all_cart_item(false);
     }
 }
-
 
 // Creo los arrays con los datos de la BD
 async function all_cart_item(todos) {
@@ -176,7 +141,7 @@ async function all_cart_item(todos) {
         };
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
-      
+
         // chek_cart_open_ws();
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (ex) {
@@ -306,22 +271,22 @@ function validaForm(card_product_val, card_product_discount, card_product_quanti
 
 // Agreagar productos al carrito
 async function add_cart_item(data) {
-    
+
     try {
         const board_name = await getUrlVal('t');
-        
-        if(!board_name){
-                const board_name = 'sell';   
+
+        if (!board_name) {
+            const board_name = 'sell';
         }
         var response = await user_db.put({
             _id: new Date().toISOString(),
-            type: 'cart-item-'+board_name,
+            type: 'cart-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
 
-        if(response.ok){
+        if (response.ok) {
 
 
             get_cart(ws_id);
@@ -342,7 +307,7 @@ async function add_cart_item(data) {
 
         //console.log('CART ADD ITEM ');
         //console.log(data);
-       
+
     } catch (err) {
         Snackbar.show({
             text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
@@ -375,10 +340,10 @@ async function dell_cart_item(element) {
             actionTextColor: "#dd4b39",
             onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-               
-               
+
+
                 get_cart(ws_id);
-               
+
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
@@ -405,19 +370,52 @@ async function dell_cart_item(element) {
     }
 }
 
+async function get_cart_nowOLD(elemnt) {
+    let board_name = await getUrlVal('t');
+    console.log('board_name',board_name);
+    if (!board_name) {
+        board_name = $('#cart_button').attr('board_name');
+    }
+    //let board_name = $(elemnt).attr("board_name");
+    createCookie('left_nav_open_ws_' + ws_id, false), 30;
+    $('#right_main').removeClass('move-right');
+    $('#cart_user_input').focus();
+    get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
+    search_open();
+}
+
+async function get_cart_now(elemnt) {
+    try {
+       // let urlParams = new URLSearchParams(window.location.search);
+       // let board_name = urlParams.get('t');
+       // let board_name = await getUrlVal('t');
+       // board_name = $(elemnt).attr('board_name');
+      board_name = $('#cart_button').attr('board_name');
+        //console.log('board_name 2', board_name);
+       // console.log('board_name 3', board_name);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;
+        $('#right_main').removeClass('move-right');
+        $('#cart_user_input').focus();
+        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name);
+        search_open();
+    } catch (error) {
+        console.error("Ocurrió un error al procesar el carrito: ", error);
+    }
+}
+
+
+/*
 $(document).on('click', '.right_nav_open', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, false), 30;
     $('#right_main').removeClass('move-right');
     $('#cart_user_input').focus();
 
-    search_open();
+   
     console.log("ws_left_nav_data", ws_left_nav_data);
     //Aca tengo que evniarle los aprametros la funcion get cart para que filtre
     get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
-
-
 });
-
+*/
 
 $(document).on('click', '.right_nav_close', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, true), 30;
@@ -431,16 +429,17 @@ $(document).on('click', '.right_nav_close', function (event) {
 // Trae los datos de la local user DB filtrado por tipo cart-items
 
 async function get_fav(ws_id) {
-    // Traigo los resultados de una vista
-    const board_name = await getUrlVal('t');
-    //const module_name = await getUrlVal('type');
-    if(!board_name){
-            const board_name = 'sell';   
-          //  const module_name = 'board';
+
+    let board_name = await getUrlVal('t');
+    if (!board_name) {
+        board_name = $('#cart_button').attr('board_name');
     }
+
+    // let  board_name = $('#cart_button').attr('board_name'); 
+    console.log("get_right_cart board_name:" + board_name);
     // Traigo los resultados de una vista
     let response = await user_db.query(
-       'get-cart-'+ws_id+'/fav-item-'+board_name, {
+        'get-cart-' + ws_id + '/fav-item-' + board_name, {
         include_docs: true,
         descending: true
     }
@@ -448,7 +447,7 @@ async function get_fav(ws_id) {
     if (response.rows) {
         const result = response.rows;
 
-        console.log('FAVVVV',result)
+        console.log('FAVVVV', result)
         return all_fav_item(result);
     }
     else {
@@ -589,24 +588,23 @@ async function add_fav_item(data) {
     // console.log(data);
     try {
 
-        const board_name = await getUrlVal('t');
-        
-        if(!board_name){
-                const board_name = 'sell';   
+        let board_name = await getUrlVal('t');
+        if (!board_name) {
+            board_name = $('#cart_button').attr('board_name');
         }
 
+        // console.log("get_right_cart board_name:"+board_name);
         var response = await user_db.put({
             _id: new Date().toISOString(),
-            type: 'fav-item-'+board_name,
+            type: 'fav-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
 
-        if(response.ok){
+        if (response.ok) {
             get_fav(ws_id)
             //fav_n
-    
             $("#cart_item_tab").removeClass('active in');
             $("#cart_item_tab_icon").removeClass('active');
             $("#new_item_tab").removeClass('active in');
@@ -614,7 +612,7 @@ async function add_fav_item(data) {
             //Activo la animacion del tab favoritos
             $("#fav_item_tab").addClass('active in');
             $("#fav_item_tab_icon").addClass('active');
-    
+
             Snackbar.show({
                 text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
                 width: '475px',
@@ -650,6 +648,7 @@ async function add_fav_item(data) {
 async function dell_fav_item(item_cart_id, item_cart_rev) {
     try {
         //   get_cart()
+
         Snackbar.show({
             text: '<span class="material-icons">delete</span> <?= lang("Body.a_dell_product") ?>',
             width: '475px',
@@ -668,7 +667,7 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
 
     } catch (err) {
         Snackbar.show({
-            text: '<?= lang("Body.a_dell_conflict") ?>',
+            text: 'Hay un erro al eliminar',
             width: '475px',
             pos: 'bottom-right',
             actionText: '<?= lang("Body.b_reload") ?>',

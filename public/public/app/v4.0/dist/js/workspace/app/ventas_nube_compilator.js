@@ -461,7 +461,8 @@ async function getUrlVal(nombreParametro) {
           return;
         }
       }
-      reject(`El parámetro '${nombreParametro}' no se encuentra en la URL.`);
+      return null;
+      //reject(`El parámetro '${nombreParametro}' no se encuentra en la URL.`);
     });
   }
 

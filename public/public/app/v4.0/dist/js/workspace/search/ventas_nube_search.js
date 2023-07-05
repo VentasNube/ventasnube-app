@@ -164,7 +164,6 @@ async function get_search_contact(type_order) {
     // Traigo los resultados de una vista
 
     var type_order = 'by_type_and_status'
-
     let response = await L_contact_db.query(
         'contact_get/'+type_order, {
         include_docs: true,
@@ -173,7 +172,7 @@ async function get_search_contact(type_order) {
     ); //Conceto con la vista de diseno
     if (response.rows) {
         const rows = response.rows;
-        console.log('get_search_contact AAA',rows);
+       // console.log('get_search_contact AAA',rows);
 
         documents = await rows.map(item => {
             new_items = {};
@@ -235,6 +234,7 @@ async function get_search_contact(type_order) {
 
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
+/*
 async function  get_search_contactNOOO(search_val) {
     //Armo el array para renderizar los items
     var new_items_search = search_contact_fuse.search(search_val, { sortFn: (a, b) => { a > b }, limit: 18 }); //Sort odena de mayor a menor segun el resultado A>b b<A
@@ -267,7 +267,7 @@ async function  get_search_contactNOOO(search_val) {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
-
+*/
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
 function get_search_board(type_order) {

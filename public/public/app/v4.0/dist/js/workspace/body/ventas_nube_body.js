@@ -421,7 +421,8 @@ async function get_module_type_nav(event) {
     //  var m= $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/
     // var m_t_id = $(event).attr('m_t_id'); //Trae Pacht url /pacht/
     var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
-    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
+    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion
+    $('.cart_button').attr('board_name',m_type_name);        
     check_content_module(m_name,m_type_name);
 }
 
