@@ -48,27 +48,29 @@
                 <div id="" class="padding-10 s-card-activ-cont">
                     <!--IDIOMA--->
                     </br>
+                    {{#with ws_lang_data}}
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <label> {{{ws_panel_settings_lang_label}}} </label>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span class="material-icons">
-                                    {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}}
+                                   {{ws_panel_settings_lang_icon}} 
                                 </span>
-                            </span>
+                            </span>{{{lang_name}}}
                           <select class="form-control md" name="ws_lang_setting" onchange="ws_setting_general_edit(this)">
-                            <option class="change_lang_setting" value="ws_lang_es" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
-                                {{#with ws_lang_data}} {{{ws_panel_settings_lang_es}}}{{/with}}
+                            <option class="change_lang_setting" value="ws_lang_es" doc_id="{{{_id}}}" input_id="ws_land_default">
+                              {{{ws_panel_settings_lang_es}}}
                             </option>
-                            <option class="change_lang_setting" value="ws_lang_us" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
-                                {{#with ws_lang_data}} {{ws_panel_settings_lang_us}}{{/with}}
+                            <option class="change_lang_setting" value="ws_lang_es" doc_id=" {{{_id}}}" input_id="ws_land_default">
+                                {{{ws_panel_settings_lang_es}}}
                             </option>
-                            <option class="change_lang_setting" value="ws_lang_por" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default">
-                                {{#with ws_lang_data}} {{ws_panel_settings_lang_por}}{{/with}}
+                            <option class="change_lang_setting" value="ws_lang_us" doc_id="{{{_id}}}" input_id="ws_land_default">
+                               {{ws_panel_settings_lang_us}}
                             </option>
                             </select>
                         </div>
                     </div>
+                    {{/with}}
                     </br>
                 </div>
             </div>

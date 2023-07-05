@@ -3,8 +3,8 @@
 return [
 
     'ws_lang_es' => [
-   
         //BOTONES GENERALES
+        'lang_name'=>'Espa&aacuteol',
         'b_ok' => 'Ok',
         'b_dell' => 'Eliminar',
         'b_add' => 'Agregar',
@@ -318,6 +318,7 @@ return [
 
     'ws_lang_us' => [
         // GENERAL BUTTONS
+        'lang_name'=>'Ingles',
         'b_ok' => 'Ok',
         'b_dell' => 'Delete',
         'b_add' => 'Add',
