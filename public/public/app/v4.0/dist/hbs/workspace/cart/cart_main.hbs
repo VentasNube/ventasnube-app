@@ -3,7 +3,7 @@
     <!--span class="material-icons">receipt</span>Nueva -->
 
     <div class="btn-group dopdown">
-        <button id="" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_t_name="{{{m_t_name}}}" type="button"
+        <button type="button"
             class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
             aria-expanded="true">
             {{#each ws_left_nav_data.m_t}}
@@ -104,41 +104,34 @@
 <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
     <ul class="nav nav-tabs">
 
-        {{#ifEquals board_type_name 'purcharse'}}
         <li id="cart_item_tab_icon" class="ripple  active">
             <a data-toggle="tab" href="#cart_item_tab">
                 <span class="material-icons">shopping_cart</span>
                 <span class="cart_n cart-number">0</span>
-                {{#with ws_lang_data}} {{t_cart_purcharse}}{{/with}}
+
+                 {{#with ws_lang_data}}{{t_cart_name}} {{/with}} 
+                    {{#each ws_left_nav_data.m_t}}
+                            {{#ifEquals m_t_url ../board_type_name }}
+                             {{m_t_name}}
+                            {{/ifEquals}}
+                    {{/each}}
+
             </a>
         </li>
-        {{else}}
-        <li id="cart_item_tab_icon" class="ripple  active">
-            <a data-toggle="tab" href="#cart_item_tab">
-                <span class="material-icons">shopping_cart</span>
-                <span class="cart_n cart-number">0</span>
-                {{#with ws_lang_data}} {{t_cart_sell}} {{/with}}
-            </a>
-        </li>
-
-        {{/ifEquals}}
-
         <li id="fav_item_tab_icon" class="ripple">
             <a data-toggle="tab" href="#fav_item_tab">
                 <span class="material-icons">favorite</span>
                 <span class="fav_count">0</span>
-                {{#with ws_lang_data}} {{t_fav}}{{/with}}
+
+                  {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}} 
+                    {{#each ws_left_nav_data.m_t}}
+                            {{#ifEquals m_t_url ../board_type_name }}
+                             {{m_t_name}}
+                            {{/ifEquals}}
+                    {{/each}}
+                    
             </a>
         </li>
-
-        <!--li id="new_item_tab_icon" class="ripple">
-            <a data-toggle="tab" href="#new_item_tab">
-                <span class="material-icons">
-                    add_circle
-                </span>
-                {{#with ws_lang_data}} {{t_new_product}}{{/with}}
-            </a>
-        </li-->
 
     </ul>
     <!--tab-content--->

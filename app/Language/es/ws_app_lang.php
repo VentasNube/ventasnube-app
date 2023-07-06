@@ -212,13 +212,14 @@ return [
         //CARRITO
         'm_cart' => 'Carrito',
         't_cart' => 'Carrito',
-        't_cart_sell' => 'Carrito de ventas',
+        't_cart_name' => 'Carrito de',
         't_cart_purcharse' => 'Carrito de compras',
 
         'm_cart_trash' => 'El carrito esta vacio',
         'm_cart_all_dellete' => 'El carrito esta vacio',
         'b_cart_add_product' => 'Agrega productos',
         'b_add_cart' => 'Agregar al carrito',
+        'b_dell_cart' => 'Eliminar del carrito',
         't_total' => 'Total',
         't_service' => 'Total Servicios',
         't_product' => 'Total Productos',
@@ -233,9 +234,12 @@ return [
         //CREAR ORDEN
         'b_add_order' => 'Crear orden',
          //FAVORITOS
+
+        'm_favorite_cart' => 'Favoritos de',
         'm_favorite' => 'Favoritos',
         'm_fav_trash' => 'No tienes favoritos',
         'b_add_fav' => 'Agregar a favoritos',
+        'b_dell_fav' => 'Eliminar Favoritos?',
         'b_fav_add_all_items' => 'Agregar todos a favoritos',
         't_fav' => 'Favoritos',
         // MI CUENTA

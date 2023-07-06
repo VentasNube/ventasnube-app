@@ -67,7 +67,6 @@ async function get_cart(ws_id,board_name) {
 
     if (!board_name) {
         board_name = readCookie('board-now-' + ws_id);
-        alert(board_name);
     }
     let response = await user_db.query(
         'get-cart-' + ws_id + '/cart-item-' + board_name, {
@@ -107,8 +106,6 @@ async function get_cart_now(elemnt) {
         console.error("Ocurrió un error al procesar el carrito: ", error);
     }
 }
-
-
 
 
 // Creo los arrays con los datos de la BD
@@ -195,33 +192,6 @@ async function all_cart_item(todos) {
 }
 
 // Traer los item leyendo de la pounchDB
-
-async function get_cart_change() {
-    //  Escucho Los cambios en tiempo real
-    /*
-    await user_db.changes({
-        // filter: '_view',
-        //view: 'get/cart-item',
-        since: 'now',
-        include_docs: true,
-        live: true
-    }).on('change', function (change) {
-        if (change.deleted) {
-            // alert('Docuento Eliminado' + change.id);
-            //  console.log('Docuento ELIMINADOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_cart(ws_id);
-        } else {
-            //  alert('Docuento Agregado' + change.id);
-            // console.log('Docuento AGREGADOOOOOOOOO ' + JSON.stringify(change.doc) + '\n');
-            get_cart(ws_id);
-        }
-    }).on('error', function (err) {
-        // handle errors
-        console.log(err);
-    });
-    */
-}
-
 //Nueva funcion de agregar al producto al carrito
 function variations_add_cart(element) {
     event.preventDefault();
@@ -355,17 +325,18 @@ async function dell_cart_item(element) {
     try {
         //   get_cart()
         Snackbar.show({
-            text: '<span class="material-icons">delete</span> Eliminar producto?',
+            text: '<span class="material-icons">delete</span>'+ws_lang_data.b_dell_cart,
             width: '475px',
             pos: 'bottom-right',
-            actionText: 'Eliminar',
+            actionText: ws_lang_data.b_dell,
             actionTextColor: "#dd4b39",
             onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 get_cart(ws_id);
-                $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);
-                //    alert('Clicked Called!');
+                // $('#' + item_cart_id).remove();
+                // $(element).css('opacity', 0);
+                // alert('Clicked Called!');
                 // dell_product(response.id, response.rev);
                 //  location.reload();   
             }
@@ -624,25 +595,22 @@ async function add_fav_item(data,board_name) {
 }
 
 // Eliminar productos del carrito
-async function dell_fav_item(item_cart_id, item_cart_rev) {
+async function dell_fav_item(element) {
     try {
-        //   get_cart()
 
+
+    var item_cart_id = $(element).attr('item_cart_id');
+    var item_cart_rev = $(element).attr('item_cart_rev');
         Snackbar.show({
-            text: '<span class="material-icons">delete</span> <?= lang("Body.a_dell_product") ?>',
+            text: '<span class="material-icons">delete</span>' + ws_lang_data.b_dell_fav,
             width: '475px',
             pos: 'bottom-right',
-            actionText: '<?= lang("Body.b_dell") ?>',
+            actionText: ws_lang_data.b_dell,
             actionTextColor: "#dd4b39",
             onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-                $('#' + item_cart_id).remove();
+                get_fav(ws_id) 
                 $(element).css('opacity', 0);
-
-                
-                //    alert('Clicked Called!');
-                // dell_product(response.id, response.rev);
-                //  location.reload();   
             }
         });
 
