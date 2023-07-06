@@ -93,6 +93,7 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
     if (ws_m_s == 'catalog') {
         await get_catalog();
+        //get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
             //  alert('traogo el catalogo')
             //  Si el tipo de modulo es producto envia los parametros a la funcion constructora
         if (m_t_id == 'product') {
@@ -116,6 +117,8 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     else if (ws_m_s == 'board') {
        //alert('GET MODULE FUNCION OK');
        console.log('GET MODULE FUNCION OK');
+
+       createCookie('board-now-' + ws_id,  m_t_id, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
        ws_board_start();
        get_board(m_t_id);
        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
@@ -126,7 +129,7 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         //alert('GET MODULE FUNCION OK');
         console.log('GET MODULE CONTACT OK');
         get_contact(m_t_id);
-        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);  //NO ENVIO LA URL ASI LO BUSCA EN LA COKIE
+      //  get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
      }
     else if (ws_m_s == 'account') {
         alert('TRAIGO EL account');
@@ -424,9 +427,15 @@ async function get_module_type_nav(event) {
     var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion
 
+
+
     $('.cart_button').attr('board_name',m_type_name); //GUARDO EL ULTIMO BOARD EN EL CARRITO DE LA BARRA
 
+
+
     check_content_module(m_name,m_type_name);
+
+
 }
 
 ////----(OTRAS COSAS)----/////

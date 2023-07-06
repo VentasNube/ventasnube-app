@@ -30,12 +30,8 @@ function chek_cart_open_ws() {
 
 async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name) {
     try {
-   //     board_name = await getUrlVal('t');
-         //   console.log('BOARRRDD NAMEE get_right_cart:',board_name)
         if (!board_name) {
-            board_name = readCookie('board-now-' + ws_id);
-         //   console.log('COKIEEEE NOW',board_name); // Imprimir el valor de la cookie en la consola
-         //   alert(board_name);
+            board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
         }
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');

@@ -31,7 +31,7 @@ async function search_db() {
         category_list = await L_catalog_db.get('category_list', { include_docs: true, descending: true });
         //DOC ATRIBUTOS COLOR, TALLE, PESO, TAMANO
         attributes = await L_catalog_db.get('attributes', { include_docs: true, descending: true });
-
+       // get_search_module(ws_info, ws_lang_data, ws_left_nav_data)
     } catch (err) {
         Snackbar.show({
             text: err.reason,
@@ -44,17 +44,21 @@ async function search_db() {
 }
 
 ////----(4 Search Module)---/////
-async function get_search_module(ws_info, ws_lang_data, ws_left_nav_data) {
+async function get_search_module(ws_info, ws_lang_data, ws_left_nav_data,board_name) {
     try {
         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-        var board_name = await getUrlVal('t');
-        var module_name = await getUrlVal('type');
-        
-        if (board_name !== 'sell' && board_name !== 'board' && board_name !== 'service_order'  && board_name !== 'service_turn'  ) {
+       //  var board_name = await getUrlVal('t');
+       //  var module_name = await getUrlVal('type');
+
+        let module_name = 'board';
+      /*  if (board_name === null) {
+            board_name = readCookie('board-now-' + ws_id);
+        }*/
+        board_name = readCookie('board-now-' + ws_id);
+        /*if (board_name !== 'sell' && board_name !== 'board' && board_name !== 'service_order'  && board_name !== 'service_turn'  ) {
           board_name = 'sell';
-          module_name = 'board';
         // alert('No estoy en el board');
-        }
+        }*/
         // Mapeo el contenido del objeto ws_left_nav M
         ws_left_nav_data = ws_left_nav['ws_left_nav'];
         var ws_search_data = {
@@ -509,7 +513,7 @@ function variations_select(element) {
 
 //Efecto para mostrar el boton de etidar en la tarjetas
 function card_edit_variant() {
-
+    
 }
 
 //TOMA EL FOCUS EN SEARCH ABRE EL MENU
@@ -567,12 +571,15 @@ $(document).on('click', '.search_button_board_li', function (event) {
 
 /// 2022 
 //// BOTON SEARCH ///
-function search_open() {
+async function search_open() {
+
     $('#searchBox').fadeIn();
     $('#searchInput').focus();
     $('body').addClass('search-active');
     createCookie('search-now-' + ws_id,  true, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
-}
+  //  alert('Nueva BUSQUEDA')
+  }
+   
 
 function search_close() {
     $('#searchBox').fadeOut();
@@ -589,7 +596,7 @@ function chek_search_open() {
     if (search_open == 'true') {
         search_open();
         alert('open')
-   //     $('#right_main').addClass('move-right');
+        //  $('#right_main').addClass('move-right');
     } else if (search_open == 'false') {
         search_close() 
         //  $('#right_main').removeClass('move-right');
@@ -604,12 +611,13 @@ $("#search_button_dell").click(function () {
     $('#searchInput').focus();
 });
 
+/*
 $(document).on('click', '.search_open', function (event) {
     // get_search_module(textobuscar);
     //  load_product_cart();
-
     search_open();
 });
+*/
 
 // $(".search_close").click(function () {
 
