@@ -1236,12 +1236,14 @@ async function new_orderNOindiceincremental(element) {
 ///NUEVAS ORDENES 2023
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
-async function get_board_onscroll() {
+async function get_board_onscroll(board_name) {
     try {
 
-        const category_id = await getUrlVal('t');
+      //  const category_id = await getUrlVal('t');
+     // alert('get_board_onscroll');
+     // alert(board_name)
 
-        let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, category_id);
+        let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, board_name);
         if (paginationData) {
             nextStartkey = paginationData.nextStartkey;
             nextStartkeyDocid = paginationData.nextStartkeyDocid;
@@ -1333,18 +1335,18 @@ async function coun_items_broup(board_type_name) {
 }
 
 // CREO EL BOARD 
-async function get_board(board_type_name) {
+async function get_board(board_name) {
     try {
         // Obtener la sesión actual
         userCtx_rol = user_Ctx.userCtx.roles;
-        board_group_info = await L_board_db.get('board_group_' + board_type_name);
+        board_group_info = await L_board_db.get('board_group_' + board_name);
         const board_group = board_group_info.board_group;
         const board_data = {
             module_info: board_group_info,
             board_group: board_group,
             module_name: 'board',
             board_group_info: board_group_info,
-            board_type_name: board_type_name,
+            board_type_name: board_name,
             ws_lang_data: ws_lang_data,
             ws_left_nav_data: ws_left_nav_data,
             user_roles: userCtx_rol,
@@ -1359,9 +1361,10 @@ async function get_board(board_type_name) {
                 let id_compiled_nav = '#' + parentElement_nav.id;
                 if (id_compiled_nav) {
                     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
-                        coun_items_broup(board_type_name);
+                        createCookie('board-now-' + ws_id,  board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+                        coun_items_broup(board_name);
                         scrollerMove();
-                        get_board_onscroll();//activa el evento scroll para graer mas ordenes
+                        get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
                     });
                 }
             });
@@ -1376,7 +1379,7 @@ async function get_board(board_type_name) {
             actionText: 'Ok',
             actionTextColor: "#0575e6",
         });
-        new_board_star_intro(board_type_name)
+        new_board_star_intro(board_name)
 
     }
 }

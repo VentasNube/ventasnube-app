@@ -22,13 +22,14 @@
                 <ul class="dropdown-menu card_contact pull-left">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                     <div class="body">
-                        <li>
+                        <li class="padding-5">
                             <h4 class="">
                                 <span class="material-icons">
                                     account_circle
                                 </span>   {{first_name}} {{last_name}}
                             </h4>
                         </li>
+                          <li role="separator" class="divider"></li>
                         {{#if email}}
                         <li>
                             <h4 class="">
@@ -54,7 +55,8 @@
                                 {{phone}}
                             </h4>
                         </li>
-                        <li>
+                      
+                    <li class="text-center padding-10" >
                             <a class="btn btn-success md" target="_blank" rel="nofollow"
                                 href="https://api.whatsapp.com/send?phone=54{{phone}}&text= Hola te contactamos ">
                                 <span class="material-icons">mobile_screen_share</span>
@@ -75,7 +77,8 @@
                             </h4>
                         </li>
                     </div>
-                    <li class="">
+                   
+                    <li class="text-center padding-10" >
                         <a class="btn btn-primary md" target="_blank"
                             href="https://www.google.com/maps/search/?api=1&query={{address}}+{{address_number}}+{{address_city}}+{{address_state}}">
                             <span class="material-icons">directions</span>

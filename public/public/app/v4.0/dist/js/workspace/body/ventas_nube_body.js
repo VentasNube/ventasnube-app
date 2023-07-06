@@ -118,14 +118,15 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
        console.log('GET MODULE FUNCION OK');
        ws_board_start();
        get_board(m_t_id);
-       get_right_cart(ws_info, ws_lang_data, ws_left_nav_data); 
-        //ws_board_start();
+       get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
+        // ws_board_start();
         // get_box();
     }
     else if (ws_m_s == 'contact') {
         //alert('GET MODULE FUNCION OK');
         console.log('GET MODULE CONTACT OK');
         get_contact(m_t_id);
+        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);  //NO ENVIO LA URL ASI LO BUSCA EN LA COKIE
      }
     else if (ws_m_s == 'account') {
         alert('TRAIGO EL account');
@@ -422,7 +423,9 @@ async function get_module_type_nav(event) {
     // var m_t_id = $(event).attr('m_t_id'); //Trae Pacht url /pacht/
     var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion
-    $('.cart_button').attr('board_name',m_type_name);        
+
+    $('.cart_button').attr('board_name',m_type_name); //GUARDO EL ULTIMO BOARD EN EL CARRITO DE LA BARRA
+
     check_content_module(m_name,m_type_name);
 }
 

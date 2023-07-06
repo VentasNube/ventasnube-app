@@ -571,13 +571,32 @@ function search_open() {
     $('#searchBox').fadeIn();
     $('#searchInput').focus();
     $('body').addClass('search-active');
+    createCookie('search-now-' + ws_id,  true, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
 }
 
 function search_close() {
     $('#searchBox').fadeOut();
     $('#searchInput').focus();
     $('body').removeClass('search-active');
+    createCookie('search-now-' + ws_id,  false, 30);//CREO UNA COKIE CON EL ULTIMO estado del modulo
 }
+
+
+
+//Funcion que chekea el ultimo estado del cart
+function chek_search_open() {
+    var search_open = readCookie("left_nav_open_ws_" + ws_id);
+    if (search_open == 'true') {
+        search_open();
+        alert('open')
+   //     $('#right_main').addClass('move-right');
+    } else if (search_open == 'false') {
+        search_close() 
+        //  $('#right_main').removeClass('move-right');
+    }
+}
+
+
 
 
 $("#search_button_dell").click(function () {
@@ -588,6 +607,7 @@ $("#search_button_dell").click(function () {
 $(document).on('click', '.search_open', function (event) {
     // get_search_module(textobuscar);
     //  load_product_cart();
+
     search_open();
 });
 
@@ -596,6 +616,8 @@ $(document).on('click', '.search_open', function (event) {
 $(document).on('click', '.search_close', function (event) {
     search_close();
 });
+
+
 
 //Inicio las funciones
 search_db();

@@ -30,13 +30,13 @@ function chek_cart_open_ws() {
 
 async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name) {
     try {
-
-        board_name = await getUrlVal('t');
+   //     board_name = await getUrlVal('t');
+         //   console.log('BOARRRDD NAMEE get_right_cart:',board_name)
         if (!board_name) {
-            board_name = $('#cart_button').attr('board_name');
+            board_name = readCookie('board-now-' + ws_id);
+         //   console.log('COKIEEEE NOW',board_name); // Imprimir el valor de la cookie en la consola
+         //   alert(board_name);
         }
-
-        console.log("get_right_cart board_name:" + board_name);
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var ws_cart = {
@@ -51,10 +51,11 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name
             ws_left_nav_data: ws_left_nav_data
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
-        get_cart(ws_id, ws_cart);
-        get_fav(ws_id, ws_cart);
+        get_cart(ws_id, board_name);
+        get_fav(ws_id, board_name);
         get_search_module(ws_info, ws_lang_data, ws_left_nav_data, ws_cart, board_name);
-        search_open();
+       // chek_search_open()
+       // search_open();
     }
     catch (err) {
         console.log(err);
@@ -62,9 +63,12 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name
 };
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_cart(ws_id) {
-    let board_name = $('#cart_button').attr('board_name');
-    // Traigo los resultados de una vista
+async function get_cart(ws_id,board_name) {
+
+    if (!board_name) {
+        board_name = readCookie('board-now-' + ws_id);
+        alert(board_name);
+    }
     let response = await user_db.query(
         'get-cart-' + ws_id + '/cart-item-' + board_name, {
         include_docs: true,
@@ -79,6 +83,33 @@ async function get_cart(ws_id) {
         return all_cart_item(false);
     }
 }
+
+
+// Traigo los datos del cart actual
+async function get_cart_now(elemnt) {
+    try {
+        // Crear la cookie
+        // Leer el valor de la cookie usando una variable
+        board_name = readCookie('board-now-' + ws_id); //LEO LA COKIEE DEL BOARD
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;//tomo el ultimo estado de la barra lateral
+        $('#right_main').removeClass('move-right');
+        $('#cart_user_input').focus();
+        var response = await get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name);
+
+        if(response){
+            $('#searchBox').fadeIn();
+            $('#searchInput').focus();
+            $('body').addClass('search-active');
+        }
+       // createCookie('search-now-' + ws_id,  true, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+
+    } catch (error) {
+        console.error("Ocurrió un error al procesar el carrito: ", error);
+    }
+}
+
+
+
 
 // Creo los arrays con los datos de la BD
 async function all_cart_item(todos) {
@@ -198,6 +229,8 @@ function variations_add_cart(element) {
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
     let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
     var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+
+
     //Detalles
     //let variant_name = $('#var_btn_' + product_id).find('var_name').html(); //Nombre de variable seleccionada
     //let variant_pic = $('#var_btn_' + product_id).find('img-card-mini').attr('src'); //Pic de variable seleccionada
@@ -273,23 +306,17 @@ function validaForm(card_product_val, card_product_discount, card_product_quanti
 async function add_cart_item(data) {
 
     try {
-        const board_name = await getUrlVal('t');
-
-        if (!board_name) {
-            const board_name = 'sell';
-        }
+        var board_name = readCookie('board-now-' + ws_id);//LEO LA COKIE
         var response = await user_db.put({
             _id: new Date().toISOString(),
+            _id:'cart-item-'+board_name+new Date().toISOString(),
             type: 'cart-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
-
         if (response.ok) {
-
-
-            get_cart(ws_id);
+            get_cart(ws_id,board_name);
             Snackbar.show({
                 text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
                 width: '475px',
@@ -302,12 +329,7 @@ async function add_cart_item(data) {
                     $('#' + response.id).remove();
                 }
             });
-
         }
-
-        //console.log('CART ADD ITEM ');
-        //console.log(data);
-
     } catch (err) {
         Snackbar.show({
             text: '<span class="round-icon pr">' + data.quantity + '</span> ' + data.name + '<?= lang("Body.b_error") ?>',
@@ -340,10 +362,7 @@ async function dell_cart_item(element) {
             actionTextColor: "#dd4b39",
             onActionClick: async function (element) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-
-
                 get_cart(ws_id);
-
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);
                 //    alert('Clicked Called!');
@@ -370,38 +389,6 @@ async function dell_cart_item(element) {
     }
 }
 
-async function get_cart_nowOLD(elemnt) {
-    let board_name = await getUrlVal('t');
-    console.log('board_name',board_name);
-    if (!board_name) {
-        board_name = $('#cart_button').attr('board_name');
-    }
-    //let board_name = $(elemnt).attr("board_name");
-    createCookie('left_nav_open_ws_' + ws_id, false), 30;
-    $('#right_main').removeClass('move-right');
-    $('#cart_user_input').focus();
-    get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
-    search_open();
-}
-
-async function get_cart_now(elemnt) {
-    try {
-       // let urlParams = new URLSearchParams(window.location.search);
-       // let board_name = urlParams.get('t');
-       // let board_name = await getUrlVal('t');
-       // board_name = $(elemnt).attr('board_name');
-      board_name = $('#cart_button').attr('board_name');
-        //console.log('board_name 2', board_name);
-       // console.log('board_name 3', board_name);
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;
-        $('#right_main').removeClass('move-right');
-        $('#cart_user_input').focus();
-        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name);
-        search_open();
-    } catch (error) {
-        console.error("Ocurrió un error al procesar el carrito: ", error);
-    }
-}
 
 
 /*
@@ -420,7 +407,6 @@ $(document).on('click', '.right_nav_open', function (event) {
 $(document).on('click', '.right_nav_close', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, true), 30;
     $('#right_main').addClass('move-right');
-
 });
 
 
@@ -428,15 +414,11 @@ $(document).on('click', '.right_nav_close', function (event) {
 // Agreagar productos al favoritos
 // Trae los datos de la local user DB filtrado por tipo cart-items
 
-async function get_fav(ws_id) {
+async function get_fav(ws_id,board_name) {
 
-    let board_name = await getUrlVal('t');
     if (!board_name) {
-        board_name = $('#cart_button').attr('board_name');
+        board_name = readCookie('board-now-' + ws_id);
     }
-
-    // let  board_name = $('#cart_button').attr('board_name'); 
-    console.log("get_right_cart board_name:" + board_name);
     // Traigo los resultados de una vista
     let response = await user_db.query(
         'get-cart-' + ws_id + '/fav-item-' + board_name, {
@@ -584,26 +566,23 @@ function variations_add_fav(element) {
     return false;
 };
 
-async function add_fav_item(data) {
+async function add_fav_item(data,board_name) {
     // console.log(data);
     try {
 
-        let board_name = await getUrlVal('t');
         if (!board_name) {
-            board_name = $('#cart_button').attr('board_name');
+            board_name = readCookie('board-now-' + ws_id);
         }
-
         // console.log("get_right_cart board_name:"+board_name);
         var response = await user_db.put({
-            _id: new Date().toISOString(),
+            _id:'cart-fav-item-'+board_name+new Date().toISOString(),
             type: 'fav-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
-
         if (response.ok) {
-            get_fav(ws_id)
+            get_fav(ws_id,board_name);
             //fav_n
             $("#cart_item_tab").removeClass('active in');
             $("#cart_item_tab_icon").removeClass('active');
@@ -659,6 +638,8 @@ async function dell_fav_item(item_cart_id, item_cart_rev) {
                 user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
                 $('#' + item_cart_id).remove();
                 $(element).css('opacity', 0);
+
+                
                 //    alert('Clicked Called!');
                 // dell_product(response.id, response.rev);
                 //  location.reload();   
