@@ -834,7 +834,7 @@ async function delete_cart_items(products){
 //var userCtx = await u_session.get('_session', { include_docs: true });
 console.log('userCtx NEWWWW products',products)
 
-const productIds = products.map(product => product._id);
+const productIds = products.map(product => product.id);
 console.log('products IDS',productIds);
 
 let docs = await user_db.allDocs({
@@ -897,7 +897,11 @@ async function new_order(element) {
             const entry_date = { hour, minutes } = await getDateTimeMinutes();
             const due_date = { hour, minutes } = await getDateTimeMinutes();
             const comments = '';
-            const products = await get_cart_product();
+           //  const products = await get_cart_product();
+
+            const products = await  get_cart_products(ws_id);
+
+            console.log('AAAHUUUUUU  products',products);
             const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
             const customer = {
                 id: contact_doc._id,
@@ -1385,6 +1389,100 @@ async function get_board(board_name) {
 
 ////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
+async function get_cart_productNOOLD() {
+    const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
+    const products = [];
+
+    for (const item of productItems) {
+      //  const div_id = item.querySelector('.s-card-actv-item');
+        const _id = item.getAttribute('id');
+        const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
+        const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
+        const cost_price = item.getAttribute('cost_price');
+        const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
+        const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
+        const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
+        const price = priceMatch ? parseFloat(priceMatch[1]) : null;
+        const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
+        const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
+        const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
+        const discount = discountMatch ? {
+            percentage: parseFloat(discountMatch[1]),
+            amount: parseFloat(discountMatch[2])
+        } : null;
+        const subtotal = price * quantity;
+        const product = {
+            _id:_id,
+            product_id: productName,
+            name: productName,
+            variation_id: productName,
+            product_img: productImg,
+            price: price,
+            cost_price: cost_price,
+            tax: tax,
+            quantity: quantity,
+            discount: discount,
+            subtotal: subtotal
+        };
+        products.push(product);
+    }
+
+    return products;
+}
+
+
+// Trae los datos de la local user DB filtrado por tipo cart-items
+async function get_cart_products(ws_id,board_name) {
+
+    board_name = readCookie('board-now-' + ws_id);
+
+    let response = await user_db.query(
+        'get-cart-' + ws_id + '/cart-item-' + board_name, {
+        include_docs: true,
+        descending: true
+    }
+    ); //Conceto con la vista de diseno
+    if (response.rows) {
+        const result = response.rows;
+        /*
+        for (const item of result) {
+            //  const div_id = item.querySelector('.s-card-actv-item');
+              const _id = item._id;
+              const _rev = item._rev;
+              const productImg = item.pictures;
+              const productName = item.name;
+              const cost_price = item.price_cost;
+              const price = item.price;
+              const quantity = quantity;
+              const tax = item.taxt;
+              const discount = item.discoun;
+              const subtotal = price * quantity;
+
+              const product = {
+                  _id:_id,
+                  _rev:_rev,
+                  product_id: productName,
+                  name: productName,
+                  variation_id: productName,
+                  product_img: productImg,
+                  price: price,
+                  cost_price: cost_price,
+                  tax: tax,
+                  quantity: quantity,
+                  discount: discount,
+                  subtotal: subtotal
+              };
+              products.push(product);
+          }
+        */
+        return result;
+    }
+    else {
+        return false;
+    }
+}
+
+
 async function get_cart_product() {
     const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
     const products = [];
