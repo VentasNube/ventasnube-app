@@ -402,8 +402,8 @@ async function catalog_edit_item(element) {
             attributes_list: attributes,
         }
 
-       await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-       await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
+       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
        // console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -467,8 +467,8 @@ async function catalog_edit_item_url(product_id, variant_id) {
             model_list: new_model_list,
             attributes_list: attributes
         }
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
@@ -3322,8 +3322,8 @@ async function cat_new_variant(element) {
                 },
                 "pictures": [
                     {
-                        "max": "/public/img/catalog/product/max/remera_azul.jpg",
-                        "min": "/public/img/catalog/product/max/remera_azul.jpg"
+                        "max": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png",
+                        "min": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png"
                     }
                 ],
                 "attribute_combinations": [
@@ -3343,11 +3343,7 @@ async function cat_new_variant(element) {
                 "price_list": [
                     {
                         "id": 1,
-                        "value": 150
-                    },
-                    {
-                        "id": 2,
-                        "value": 100
+                        "value": 0
                     }
                 ],
                 "stock_invetary": [
@@ -3356,7 +3352,7 @@ async function cat_new_variant(element) {
                 "sold_quantity": 0,
                 "description": {
                     "status": true,
-                    "value": "Nueva Descripcion"
+                    "value": "Sin Descripcion"
                 },
                 "color": {
                     "status": false,

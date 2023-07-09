@@ -1,6 +1,5 @@
 <!-- CATALOG EDIT PRODUCT TEMPLATE -->
 <div class="view-product">
-    
     <!--- HEADER NAV  -->
     <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <button data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto"
@@ -301,14 +300,11 @@
         <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit' }}
-                {{#with ../product_variant}}
-                    <button onclick="cat_new_variant(this)" doc_id="{{{../../product_doc/_id}}}"
-                        variant_id="{{id}}" type="button" class="btn btn-primary">
+                    <button onclick="cat_new_variant(this)" doc_id="{{#with product_doc}}{{_id}}{{/with}}"
+                        variant_id="{{#with product_variant}}{{id}}{{/with}} " type="button" class="btn btn-primary">
                         Crear nueva variable
                     </button>
-                {{/with}}
             {{/userCtx}}
         </div>
     </div>
-
 </div>
