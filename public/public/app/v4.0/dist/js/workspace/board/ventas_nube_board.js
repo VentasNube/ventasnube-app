@@ -834,11 +834,11 @@ async function delete_cart_items(products){
 //var userCtx = await u_session.get('_session', { include_docs: true });
 console.log('userCtx NEWWWW products',products)
 
-const productIds = products.map(product => product.id);
+const productIds = products.map(product => product._id);
 console.log('products IDS',productIds);
-/*
-let docs = await L_board_db.allDocs({
-  keys: all_items,
+
+let docs = await user_db.allDocs({
+  keys: productIds,
   include_docs: true
 });
 
@@ -850,11 +850,10 @@ let deletedDocs = docs.rows.map(row => ({
 }));
 
 // Elimina los documentos
-let response = await L_board_db.bulkDocs(deletedDocs);
-console.log('delete_cart_items',all_items,response); // Debería mostrar un array con los resultados de la eliminación
-
-*/
-
+let response = await user_db.bulkDocs(deletedDocs);
+if(response){
+    get_cart(ws_id);
+}
 }
 
 /// NUEVAS FUNCIONES CREAR ORDEN

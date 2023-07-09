@@ -10289,23 +10289,20 @@ h1 span{
     line-height: 15px;
 }
 .s-card-actv-item-prod {
-    font-size: 15px;
-    line-height: 15px;
-    padding-right: 5px;
-    padding-left: 5px;
-    /* padding: 0 0 0 5px; */
-    /* position: absolute; */
-    
     display: inline-block;
-    position: absolute;
-    right: 0;
-    width: 100%;
-    padding-left: 60px;
-    padding-right: 40px;
+    font-size: 15px;
+}
+
+
+.s-card-actv-item-prod-fav-item {
+/* padding-left: 100px!important; */
+    display: inline-block;
+    font-size: 15px;
+
 }
 .s-card-mini-img {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     position: relative;
     display: inline-block;
     vertical-align: top;
@@ -10318,7 +10315,7 @@ h1 span{
 }
 .s-card-mini-img img {
     width: auto;
-    height: 45px;
+    height: 50px;
     object-fit: cover;
     display: inline-block;
     position: relative;
@@ -10329,8 +10326,8 @@ h1 span{
     cursor: pointer;
 }
 .s-card-mini-order {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     position: relative;
     display: inline-block;
     vertical-align: top;
@@ -10347,8 +10344,8 @@ h1 span{
 }
 @media (max-width: 767px) {
     .s-card-mini-img {
-        width: 45px;
-        height: 45px;
+        width: 50px;
+        height: 50px;
     }
     
     .s-card-actv-item-dell {
@@ -10391,6 +10388,10 @@ h1 span{
 .s-card-actv-item-body {
     width: 100%;
 }
+.s-card-actv-item-body.fav-item {
+    /* width: 100%; */
+}
+
 .s-card-actv-item-price-left {
     font-size: 13px;
 }
@@ -11778,7 +11779,7 @@ board-item-content
     padding: 5px;
     right: 5px;
     position: relative;
-    margin: 5px 0 0 0;
+    margin: 10px 0 0 0;
 }
 .righ_nav_header .righ_nav_users {
     position: relative;

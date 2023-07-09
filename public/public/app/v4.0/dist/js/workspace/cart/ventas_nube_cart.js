@@ -244,6 +244,67 @@ function variations_add_cart(element) {
     return false;
 };
 
+async function variations_add_cart_to_fav(element) {
+
+try{
+    event.preventDefault();
+    //Identificadores
+    let product_id = $(element).attr('product_id'); //Id del producto selccionado
+    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+    var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+    var board_name = readCookie('board-now-' + ws_id);
+
+    let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
+    let variant_price = $(element).attr('price'); //Id de la variable seleccionada
+    let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
+    let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
+
+    let doc = await user_db.get(product_id);
+    if(doc){
+        const var_doc = doc.variant;
+        // console.log(var_doc);
+        const new_variant_doc = {
+            product_id: doc._id,
+            product_rev: doc._rev,
+            variant_id: var_doc.variant_id,
+            id: var_doc.variant_id,
+            sku: var_doc.sku.value,
+            pictures: var_doc.pictures,
+            name: var_doc.name,
+            attribute_combinations: var_doc.attribute_combinations,
+            price: parseFloat(var_doc.price),
+            price_cost:parseFloat(var_doc.price_cost),
+            discount: parseFloat(var_doc.discount),
+            quantity: parseFloat(var_doc.quantity),
+            tax: parseFloat(var_doc.tax)
+        }
+      let rest_add = await add_cart_item(new_variant_doc);
+      let delete_doc = await user_db.remove(doc._id,doc._rev);
+      get_fav(ws_id,board_name);
+      if(rest_add){
+       
+      
+
+      }
+
+    }
+
+
+} catch (err) {
+    Snackbar.show({
+        text: 'Hay un conflicto',
+        width: '475px',
+        pos: 'bottom-right',
+        actionText: 'Recargar',
+        actionTextColor: "#dd4b39",
+        onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+            $(element).css('opacity', 0); 
+        }
+    });
+    console.log(err);
+}
+};
+
 //Validador de datos antes de enviar el form
 function validaForm(card_product_val, card_product_discount, card_product_quantity) {
     // Campos de texto
@@ -356,15 +417,11 @@ async function dell_cart_item(element) {
     }
 }
 
-
-
 /*
 $(document).on('click', '.right_nav_open', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, false), 30;
     $('#right_main').removeClass('move-right');
     $('#cart_user_input').focus();
-
-   
     console.log("ws_left_nav_data", ws_left_nav_data);
     //Aca tengo que evniarle los aprametros la funcion get cart para que filtre
     get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
@@ -434,7 +491,7 @@ async function all_fav_item(todos) {
             var cart_item = {
                 _id: todo.doc['_id'],
                 _rev: todo.doc['_rev'],
-                variant_id: todo.doc.variant['_id'],
+                variant_id: todo.doc.variant['id'],
                 sku: todo.doc.variant['sku'],
                 tax: tax,
                 pictures: todo.doc.variant['pictures'], //Img
@@ -489,7 +546,7 @@ async function all_fav_item(todos) {
 //Nueva funcion de agregar al producto al favoritos
 function variations_add_fav(element) {
     event.preventDefault();
-    //Identificadores
+    //Identificadores"cart-fav-item-purcharse2023-07-08T23:15:39.683Z"
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
     let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
     var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
@@ -510,8 +567,8 @@ function variations_add_fav(element) {
         const new_variant_doc = {
             product_id: product_id,
             product_rev: var_doc._rev,
-            variant_id: var_doc.variant_id,
-            id: var_doc.variant_id,
+            variant_id: variant_id,
+            id: variant_id,
             sku: var_doc.sku.value,
             pictures: var_doc.pictures,
             name: doc.name,
