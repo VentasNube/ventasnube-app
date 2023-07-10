@@ -150,7 +150,8 @@ function get_search_catalog(type_order) {
                 "name",
                 "sku",
                 "tags",
-                "cat"
+                "category.value",
+                "trade.value",
             ]
         };
         // var options = { keys: ['title', 'author.firstName'] }

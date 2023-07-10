@@ -748,11 +748,11 @@ async function board_edit_group(element) {
     try {
         const modal = document.getElementById('master_popup');
         const board_type_name = $(element).attr('board_type_name'); //Id del documento a edita
-        console.log('board_type_name EEEEEE',board_type_name);
+        console.log('board_type_name EEEEEE', board_type_name);
         const group_id = $(element).attr('group_id'); //Id del documento a edita
-      //  const parametroUrl = await getUrlVal('t');
+        //  const parametroUrl = await getUrlVal('t');
         var board_name = board_name;
-       // var board_type_name = parametroUrl;
+        // var board_type_name = parametroUrl;
         var board_group_conf = await L_board_db.get('board_group_' + board_type_name);
         var board_group = board_group_conf.board_group;
         const selected_group = board_group.find(group => group.id === group_id);
@@ -827,33 +827,26 @@ async function edit_board_group_put(element) {
 }
 
 /// VACIA EL CARRITO
-async function delete_cart_items(products){
-
+async function delete_cart_items(products) {
     // Obtén los documentos que quieres eliminar
-//let productsToDelete = ["productId1", "productId2", "productId3"]; // Reemplaza esto con tus ID de productos
-//var userCtx = await u_session.get('_session', { include_docs: true });
-console.log('userCtx NEWWWW products',products)
+    const productIds = products.map(product => product.id);
+    let docs = await user_db.allDocs({
+        keys: productIds,
+        include_docs: true
+    });
 
-const productIds = products.map(product => product.id);
-console.log('products IDS',productIds);
+    // Marca los documentos para la eliminación
+    let deletedDocs = docs.rows.map(row => ({
+        _id: row.id,
+        _rev: row.doc._rev,
+        _deleted: true
+    }));
 
-let docs = await user_db.allDocs({
-  keys: productIds,
-  include_docs: true
-});
-
-// Marca los documentos para la eliminación
-let deletedDocs = docs.rows.map(row => ({
-  _id: row.id,
-  _rev: row.doc._rev,
-  _deleted: true
-}));
-
-// Elimina los documentos
-let response = await user_db.bulkDocs(deletedDocs);
-if(response){
-    get_cart(ws_id);
-}
+    // Elimina los documentos
+    let response = await user_db.bulkDocs(deletedDocs);
+    if (response) {
+        get_cart(ws_id);
+    }
 }
 
 /// NUEVAS FUNCIONES CREAR ORDEN
@@ -897,11 +890,11 @@ async function new_order(element) {
             const entry_date = { hour, minutes } = await getDateTimeMinutes();
             const due_date = { hour, minutes } = await getDateTimeMinutes();
             const comments = '';
-           //  const products = await get_cart_product();
+            //  const products = await get_cart_product();
 
-            const products = await  get_cart_products(ws_id);
+            const products = await get_cart_products(ws_id);
 
-            console.log('AAAHUUUUUU  products',products);
+            console.log('AAAHUUUUUU  products', products);
             const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
             const customer = {
                 id: contact_doc._id,
@@ -1051,9 +1044,9 @@ async function new_order(element) {
             if (response.ok) {
 
                 //Limpio elimino los items del carrito
-                
+
                 delete_cart_items(products);
-                
+
                 //Trae el doc actualizado y pega en el DOM la tarjeta y crea el MUURI kamban
                 const doc = await L_board_db.get(response.id); // Verificar si el documento ya existe
                 var card_data = { doc: doc };
@@ -1242,9 +1235,9 @@ async function new_orderNOindiceincremental(element) {
 async function get_board_onscroll(board_name) {
     try {
 
-      //  const category_id = await getUrlVal('t');
-     // alert('get_board_onscroll');
-     // alert(board_name)
+        //  const category_id = await getUrlVal('t');
+        // alert('get_board_onscroll');
+        // alert(board_name)
 
         let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, board_name);
         if (paginationData) {
@@ -1312,7 +1305,7 @@ async function coun_items_broup(board_type_name) {
         grupos.forEach(async function (grupo) {
             const group_id = grupo.id;
             const elementoSuma = document.querySelector('.board-item-conunt_' + group_id);
-          //  console.log(`.board-item-conunt_${group_id}`);
+            //  console.log(`.board-item-conunt_${group_id}`);
             const result_items = await L_board_db.find({
                 selector: {
                     type: 'order',
@@ -1322,7 +1315,7 @@ async function coun_items_broup(board_type_name) {
                 },
                 limit: 1000  // Aumenta este número según sea necesario
             });
-         //   console.log('result', result_items);
+            //   console.log('result', result_items);
             const totalOrdenes = result_items.docs.length;
             elementoSuma.innerHTML = totalOrdenes.toString();
         });
@@ -1364,7 +1357,7 @@ async function get_board(board_name) {
                 let id_compiled_nav = '#' + parentElement_nav.id;
                 if (id_compiled_nav) {
                     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', id_compiled_nav, board_data, function () {
-                        createCookie('board-now-' + ws_id,  board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+                        createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
                         coun_items_broup(board_name);
                         scrollerMove();
                         get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
@@ -1394,7 +1387,7 @@ async function get_cart_productNOOLD() {
     const products = [];
 
     for (const item of productItems) {
-      //  const div_id = item.querySelector('.s-card-actv-item');
+        //  const div_id = item.querySelector('.s-card-actv-item');
         const _id = item.getAttribute('id');
         const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
         const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
@@ -1412,7 +1405,7 @@ async function get_cart_productNOOLD() {
         } : null;
         const subtotal = price * quantity;
         const product = {
-            _id:_id,
+            _id: _id,
             product_id: productName,
             name: productName,
             variation_id: productName,
@@ -1432,10 +1425,8 @@ async function get_cart_productNOOLD() {
 
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_cart_products(ws_id,board_name) {
-
+async function get_cart_products(ws_id, board_name) {
     board_name = readCookie('board-now-' + ws_id);
-
     let response = await user_db.query(
         'get-cart-' + ws_id + '/cart-item-' + board_name, {
         include_docs: true,
@@ -1444,37 +1435,6 @@ async function get_cart_products(ws_id,board_name) {
     ); //Conceto con la vista de diseno
     if (response.rows) {
         const result = response.rows;
-        /*
-        for (const item of result) {
-            //  const div_id = item.querySelector('.s-card-actv-item');
-              const _id = item._id;
-              const _rev = item._rev;
-              const productImg = item.pictures;
-              const productName = item.name;
-              const cost_price = item.price_cost;
-              const price = item.price;
-              const quantity = quantity;
-              const tax = item.taxt;
-              const discount = item.discoun;
-              const subtotal = price * quantity;
-
-              const product = {
-                  _id:_id,
-                  _rev:_rev,
-                  product_id: productName,
-                  name: productName,
-                  variation_id: productName,
-                  product_img: productImg,
-                  price: price,
-                  cost_price: cost_price,
-                  tax: tax,
-                  quantity: quantity,
-                  discount: discount,
-                  subtotal: subtotal
-              };
-              products.push(product);
-          }
-        */
         return result;
     }
     else {
@@ -1488,7 +1448,7 @@ async function get_cart_product() {
     const products = [];
 
     for (const item of productItems) {
-      //  const div_id = item.querySelector('.s-card-actv-item');
+        //  const div_id = item.querySelector('.s-card-actv-item');
         const _id = item.getAttribute('id');
         const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
         const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
@@ -1506,7 +1466,7 @@ async function get_cart_product() {
         } : null;
         const subtotal = price * quantity;
         const product = {
-            _id:_id,
+            _id: _id,
             product_id: productName,
             name: productName,
             variation_id: productName,

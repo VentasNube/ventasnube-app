@@ -108,7 +108,6 @@ async function get_cart_now(elemnt) {
 async function all_cart_item(todos) {
     try {
         let array_cart_items = [];
-        // let cart_item = [];
         //Creo los array
         var total_quantity_cart_item = 0
         var total_cart_neto = 0; //TOTAL NETO    
@@ -117,19 +116,36 @@ async function all_cart_item(todos) {
         var total_neto_tax = 0; //Impuestos    
         var total_neto_discount = 0; //Descuentos
         var total_neto_pay = 0; //Abonado
-
         todos.map(function (todo) {
-            //let prod_img = todo.doc.img.min;
+            var type_item = todo.doc.variant['type'];
             //calculos matematicos para armar el Carrito
             var quantity = todo.doc.variant['quantity'];
             //Valores
             var price = todo.doc.variant['price'];
+           // var price_cost = todo.doc.variant['price_cost'];
             var price_tot = price * quantity;
-            var tax = todo.doc.variant['tax'];
+           // var tax = todo.doc.variant['tax'].value;
+            var tax = todo.doc.variant.tax;
+            //console.log('TAXX TAXXX ',tax);
             //Descuentos
+            var sub_tot_product = 0;
+            var sub_tot_service = 0 ;
+            var total_neto_item = 0;
             var discount = todo.doc.variant['discount'];
             var discount_tot = Math.round((discount / 100) * price_tot);
-            var sub_tot_dis = Math.round(price_tot - discount_tot);
+
+            if(type_item === 'product'){
+                var sub_tot_product = Math.round(price_tot - discount_tot);
+                total_neto_prod += +sub_tot_product;
+                total_neto_item = total_neto_prod;
+            }
+            if(type_item == 'service'){
+                var sub_tot_service = Math.round(price_tot - discount_tot);
+                total_neto_service += +sub_tot_service;
+                total_neto_item = total_neto_service;
+            }   
+
+            // total_cart_neto += total_neto_prod + total_neto_service;
             //Cargo los datos del array
             var cart_item = {
                 _id: todo.doc['_id'],
@@ -145,16 +161,15 @@ async function all_cart_item(todos) {
                 discount: discount, //Discount
                 discount_tot: discount_tot, //Tot Discount
                 sub_tot: todo.doc.variant['price'],
-                sub_tot_dis: sub_tot_dis
+                sub_tot_dis: total_neto_item
             };
-
             //Creo el array con todos los items
             array_cart_items.push(cart_item);
             total_quantity_cart_item = array_cart_items.length;
             //Sumas de tototales
-            total_neto_prod += +sub_tot_dis;
-            total_cart_neto += +(sub_tot_dis + total_neto_service);
-            //  total_neto_service += +total_neto_service;
+           // total_neto_service += +sb_tot_dis;
+            total_cart_neto += +total_neto_item;
+            // total_cart_neto += total_neto_prod + total_neto_service;
             total_neto_discount += +discount_tot;
             total_neto_tax += +tax;
             //console.log('TOTAL DE ITEMS EN EL CARRITO' + JSON.stringify(total_cart_neto));
@@ -168,16 +183,16 @@ async function all_cart_item(todos) {
 
         // chek_cart_open_ws();
         //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
-    } catch (ex) {
-        console.error('inner', ex.message);
-        throw ex;
+    } catch (err) {
+        console.error('inner',err);
+        throw err;
     } finally {
         //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
         // alert('finally' + total_neto_prod + '----' + total_quantity_cart_item);
         $('.cart_n').text(total_quantity_cart_item);
         $('#total_cart_neto').text(total_cart_neto);
         $('#total_neto_prod').text(total_neto_prod);
-        // $('#total_neto_service').text(total_neto_service);
+        $('#total_neto_service').text(total_neto_service);
         $('#total_neto_discount').text(total_neto_discount);
         $('#total_neto_tax').text(total_neto_tax);
         $('#total_neto_pay').text(total_neto_pay);
@@ -212,7 +227,8 @@ function variations_add_cart(element) {
         // console.log(var_doc);
         const new_variant_doc = {
             product_id: product_id,
-            product_rev: var_doc._rev,
+            product_rev: doc._rev,
+            type: doc.type,
             variant_id: var_doc.variant_id,
             id: var_doc.variant_id,
             sku: var_doc.sku.value,
@@ -222,9 +238,10 @@ function variations_add_cart(element) {
             price: parseFloat(variant_price),
             discount: parseFloat(variant_discount),
             quantity: parseFloat(variant_quantity),
-            tax: parseFloat(var_doc.tax)
+            tax: parseFloat(var_doc.tax.value),
         }
-
+   
+        //alert(var_doc.tax['value']);
         if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
             $(this_card_id).find(".ripple_div").addClass('add');
             $(this_card_id).find(".content").addClass('ripple_efect');

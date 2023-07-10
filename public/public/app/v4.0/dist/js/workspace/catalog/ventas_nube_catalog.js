@@ -22,11 +22,11 @@ L_catalog_db.sync(url_R_db + ws_catalog_db, {
 async function get_all_catalog_intems(ws_id, filter) {
     // Traigo los resultados de una vista
 
-   /* L_catalog_db.on('error', function (err) { 
-        debugger; 
-        console.log(err);
-    });
-*/
+    /* L_catalog_db.on('error', function (err) { 
+         debugger; 
+         console.log(err);
+     });
+ */
     let response = await L_catalog_db.query(
         'get/seach', {
         include_docs: true,
@@ -116,7 +116,7 @@ function get_nav_catalog(ws_info, ws_lang_data) {
 // TRAIGO LOS PRODUCTOS DEL CATALOGO
 function get_items_catalog(ws_id) {
 
-    
+
 
     var ws_catalog = {
         ws_info: ws_info,
@@ -371,6 +371,55 @@ async function catalog_view_item_url(m_id, m_var_id) {
     }
 }
 
+async function coun_items_cart() {
+
+
+
+}
+
+// FUNCION PARA EDITAR PRODUCTO
+async function catalog_edit_itemNOOL(element) {
+    try {
+        var product_id = $(element).attr('product_id');
+        var variant_id = $(element).attr('variant_id');
+        var new_category_list = await L_catalog_db.get('category_list');
+        var new_trade_list = await L_catalog_db.get('trade_list');
+        var new_model_list = await L_catalog_db.get('model_list');
+
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+
+        var product_doc = await L_catalog_db.get(product_id);
+        var var_doc = product_doc.variations.find(response => response.id == variant_id);
+        var product_doc_array = {
+            product_doc: product_doc,
+            product_variant: var_doc,
+            name: product_doc.name,
+            tags: product_doc.tags,
+            price_list: price_doc.price_list,
+            currency_list: currency_doc.currency_list,
+            currency_default: currency_doc.currency_default,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            category_list: new_category_list,
+            trade_list: new_trade_list,
+            model_list: new_model_list,
+            attributes_list: attributes,
+        }
+
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        // console.log('product_doc_array', product_doc_array);
+        // alert('Holaaaaaa');
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+        // return item_print;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // FUNCION PARA EDITAR PRODUCTO
 async function catalog_edit_item(element) {
@@ -401,16 +450,24 @@ async function catalog_edit_item(element) {
             model_list: new_model_list,
             attributes_list: attributes,
         }
-
-       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-       renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-       // console.log('product_doc_array', product_doc_array);
-        // alert('Holaaaaaa');
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-        $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
-        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-       // return item_print;
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array, function () {
+                let parentElement_nav = document.querySelector('#edit_variations_main');
+                let id_compiled_nav = '#' + parentElement_nav.id;
+                console.log('id_compiled_nav UUUAAAAAA', id_compiled_nav);
+                if (id_compiled_nav) {
+                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', id_compiled_nav, product_doc_array, function () {
+                        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+                        $('#right_main').removeClass('move-right');
+                        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+                        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+                        coun_items_cart();
+                        //  createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+                        //    coun_items_broup(board_name);
+                        //   scrollerMove();
+                        //   get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
+                    });
+                }
+            })
     } catch (err) {
         console.log(err);
     }
@@ -422,16 +479,16 @@ async function catalog_product_select_currency(element, new_model) {
     let item_value_id = $(element).attr('item_value_id');
     var item_value = $(element).attr('item_value');
     var item_value_name = $(element).attr('item_value_name');
-   // var product_id = $(element).attr('doc_id');
+    // var product_id = $(element).attr('doc_id');
     var variant_id = $(element).attr('variant_id');
     try {
         //console.log(item_value_id,variant_id,item_value);
-        $('#catalog_product_selected_currency_'+variant_id).attr('item_value_id', item_value_id);
-        $('#catalog_product_selected_currency_'+variant_id).attr('item_value', item_value);
-        $('#catalog_product_selected_currency_'+variant_id).html(item_value);
+        $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id', item_value_id);
+        $('#catalog_product_selected_currency_' + variant_id).attr('item_value', item_value);
+        $('#catalog_product_selected_currency_' + variant_id).html(item_value);
 
-        $('#catalog_product_selected_currency_title_value'+variant_id).html(item_value);
-        $('#catalog_product_selected_currency_title'+variant_id).html(item_value_name);
+        $('#catalog_product_selected_currency_title_value' + variant_id).html(item_value);
+        $('#catalog_product_selected_currency_title' + variant_id).html(item_value_name);
         //traigo el documento a editar
     } catch (err) {
         console.log(err);
@@ -601,7 +658,7 @@ async function catalog_new_item(element) {
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var user_roles_permisions = user_Ctx.userCtx.roles;
-       // console.log('user_roles_permisions', user_roles_permisions);
+        // console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
@@ -650,35 +707,35 @@ async function catalog_new_item_new_product(element) {
         const divTags = document.querySelector('div#new_prod_tag_main.chips_items_main');
         //Cat
         const new_doc_cat_value = $('#catalog_select_cat_value').html();
-        const new_doc_cat_id =   $('#catalog_select_cat_value').attr('catalog_select_cat_value');
+        const new_doc_cat_id = $('#catalog_select_cat_value').attr('catalog_select_cat_value');
         //Trade
         const new_doc_trade_value = $('#catalog_select_trade_value').html();
-        const new_doc_trade_id =   $('#catalog_select_trade_value').attr('catalog_select_trade_value');
+        const new_doc_trade_id = $('#catalog_select_trade_value').attr('catalog_select_trade_value');
         //Trade
         const new_doc_model_value = $('#catalog_select_model_value').html();
-        const new_doc_model_id =   $('#catalog_select_model_value').attr('catalog_select_model_value');
-        const category = {id:new_doc_cat_id, value:new_doc_cat_value} ;
-        const trade =  {id:new_doc_trade_id, value:new_doc_trade_value};
-        const model =  {id:new_doc_model_id, value:new_doc_model_value};
-        const type =  $('#new_type_value_select').attr('type_order');
-        console.log('TYPE ITEM :',type);
+        const new_doc_model_id = $('#catalog_select_model_value').attr('catalog_select_model_value');
+        const category = { id: new_doc_cat_id, value: new_doc_cat_value };
+        const trade = { id: new_doc_trade_id, value: new_doc_trade_value };
+        const model = { id: new_doc_model_id, value: new_doc_model_value };
+        const type = $('#new_type_value_select').attr('type_order');
+        console.log('TYPE ITEM :', type);
         // Obtener el texto de cada hijo del elemento div
         const textoTags = [];
         divTags.childNodes.forEach(childNode => {
-        if (childNode.nodeType === Node.ELEMENT_NODE) {
-            const span = childNode.querySelector('span.chips_text');
-            if (span) {
-            textoTags.push(span.textContent);
+            if (childNode.nodeType === Node.ELEMENT_NODE) {
+                const span = childNode.querySelector('span.chips_text');
+                if (span) {
+                    textoTags.push(span.textContent);
+                }
             }
-        }
         });
         const new_doc_tags = textoTags
         var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
         var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
-   
+
 
         let textoSinEspacios = new_doc_name.replace(/\s+/g, '-');
-        const new_doc_id = textoSinEspacios +"-"+ new_doc_id_random;
+        const new_doc_id = textoSinEspacios + "-" + new_doc_id_random;
         var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
         // Documento variable template
         var variations = [{
@@ -694,7 +751,7 @@ async function catalog_new_item_new_product(element) {
                 }
             ],
             "sku": {
-                 "id": "EAN",
+                "id": "EAN",
                 "value": ""
             },
             "pictures": [
@@ -724,26 +781,26 @@ async function catalog_new_item_new_product(element) {
                     "currency": {
                         "id": "ARS",
                         "value": "$"
-                      },
+                    },
 
                 }
             ],
             "stock_invetary": [
                 {
-                "id": 311,
-                "create": "2023-06-15T04:54:29.744Z",
-                "in_datetime": "2023-06-15T04:54:29.744Z",
-                "update_datetime": "2023-06-15T04:54:29.744Z",
-                "updateUser": "smartmobile.com.ar@gmail.com",
-                "type": "in",
-                "in_stock": 50,
-                "out_stock": 0,
-                "real_stock": 50,
-                "cost_price": 1000,
-                "currency_id": "2",
-                "currency_value": "$",
-                "currency_name": "Peso Argentino",
-                "location_id": 1
+                    "id": 311,
+                    "create": "2023-06-15T04:54:29.744Z",
+                    "in_datetime": "2023-06-15T04:54:29.744Z",
+                    "update_datetime": "2023-06-15T04:54:29.744Z",
+                    "updateUser": "smartmobile.com.ar@gmail.com",
+                    "type": "in",
+                    "in_stock": 50,
+                    "out_stock": 0,
+                    "real_stock": 50,
+                    "cost_price": 1000,
+                    "currency_id": "2",
+                    "currency_value": "$",
+                    "currency_name": "Peso Argentino",
+                    "location_id": 1
                 }
             ],
             "sold_quantity": 0,
@@ -766,29 +823,29 @@ async function catalog_new_item_new_product(element) {
         }];
         // Documento template producto
         var response = await L_catalog_db.put({
-            _id:new_doc_id,
+            _id: new_doc_id,
             "name": new_doc_name,
             "author": new_doc_author,
             "start_time": new_doc_time,
-            "workspace_id":new_doc_workspace_id,
+            "workspace_id": new_doc_workspace_id,
             "last_update_at": [
                 {
-                  "username": new_doc_author,
-                  "datetime": new_doc_time
+                    "username": new_doc_author,
+                    "datetime": new_doc_time
                 }
-              ],
-            "status":"active",
+            ],
+            "status": "active",
             "condition": "new",
             "type": type,
             "tags": new_doc_tags,
             category,
             trade,
             model,
-            "cost_price":[
+            "cost_price": [
                 {
-                    id:1,
-                    value:1000,
-                    id_stock_invetary:311
+                    id: 1,
+                    value: 1000,
+                    id_stock_invetary: 311
                 }
             ],
             "available_quantity": null,
@@ -796,14 +853,14 @@ async function catalog_new_item_new_product(element) {
             "limit_discount": null,
             "permalink": null,
             "descriptions": [
-              null
+                null
             ],
             variations,
         });
         if (response) {
             //Imprimo el item en la pantalla 
             // $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_id +'</span></div>');
-            
+
             var product_doc = await L_catalog_db.get(new_doc_id);
             var new_category_list = await L_catalog_db.get('category_list');
             var new_trade_list = await L_catalog_db.get('trade_list');
@@ -811,11 +868,11 @@ async function catalog_new_item_new_product(element) {
             var price_doc = await L_catalog_db.get('price_list');
             var currency_doc = await L_catalog_db.get('currency_list');
             var user_roles_permisions = user_Ctx.userCtx.roles;
-    
-          //  console.log('user_roles_permisions', user_roles_permisions);
-    
+
+            //  console.log('user_roles_permisions', user_roles_permisions);
+
             var product_doc_array = {
-                product_doc:product_doc,
+                product_doc: product_doc,
                 price_list: price_doc.price_list,
                 currency_list: currency_doc.currency_list,
                 ws_lang_data: ws_lang_data,
@@ -829,7 +886,7 @@ async function catalog_new_item_new_product(element) {
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
 
             Snackbar.show({
-                text: 'Se creo con exito!'+ new_doc_id,
+                text: 'Se creo con exito!' + new_doc_id,
                 actionText: 'ok',
                 pos: 'bottom-right',
                 actionTextColor: "#0575e6",
@@ -1080,7 +1137,7 @@ async function add_new_tag(element) {
                 if (response) {
                     //Imprimo el item en la pantalla 
                     $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a doc_id="' + doc._id + '" new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
-                    
+
                     //limpio el imput 
                     //   $(element).val('');
                 } else {
@@ -1176,8 +1233,8 @@ async function add_new_cat(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
-                   
-                    
+
+
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
@@ -1270,12 +1327,12 @@ async function catalog_product_edit_category(element) {
         _rev: doc._rev,
         ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
     });
-    if(response.ok){
+    if (response.ok) {
         $('#catalog_select_cat_value').attr('catalog_select_cat_value', new_value);
         $('#catalog_select_cat_value').html(new_value);
         $('#catalog_select_cat_tittle').html(new_value);
     }
-   // catalog_edit_item_url(doc_id, 1);
+    // catalog_edit_item_url(doc_id, 1);
 }
 
 /// SELECCIONO y GUARDO MARCA
@@ -1292,12 +1349,12 @@ async function catalog_product_edit_trade(element) {
         _rev: doc._rev,
         ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
     });
-    if(response.ok){
+    if (response.ok) {
         $('#catalog_select_trade_value').attr('catalog_select_trade_value', new_value);
         $('#catalog_select_trade_value').html(new_value);
         $('#catalog_select_trade_tittle').html(new_value);
     }
-   // catalog_edit_item_url(doc_id, 1);
+    // catalog_edit_item_url(doc_id, 1);
 }
 
 /// SELECCIONO y GUARDO MODELO
@@ -1314,12 +1371,12 @@ async function catalog_product_edit_model(element) {
         _rev: doc._rev,
         ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
     });
-    if(response.ok){
+    if (response.ok) {
         $('#catalog_select_model_value').attr('catalog_select_model_value', new_value);
         $('#catalog_select_model_value').html(new_value);
         $('#catalog_select_model_tittle').html(new_value);
     }
-   // catalog_edit_item_url(doc_id, 1);
+    // catalog_edit_item_url(doc_id, 1);
 }
 
 
@@ -1342,25 +1399,25 @@ async function catalog_add_new_tag(element) {
         let new_tag = String(new_tag_val);
         // Filtro si el input esta bacio
         if (new_tag != '') {
-         let catalog_new_tag_item = $('.catalog_new_tag_item_input_'+new_tag);
-         var tag_item = $(".catalog_new_tag_item").toArray().length;
+            let catalog_new_tag_item = $('.catalog_new_tag_item_input_' + new_tag);
+            var tag_item = $(".catalog_new_tag_item").toArray().length;
             // var tag_item_array = $(".catalog_new_tag_item").text().toArray();
             //  var tag_item_array_chips_text = $(".chips_text").toArray();
             //console.log(tag_item_array);
             // Si encuentra un duplicado devuelve el indice del array para mostrar en pantalla el error
-            if(tag_item >= 3){
+            if (tag_item >= 3) {
                 Snackbar.show({
-                    text: 'No puedes agregar mas de '+tag_item+' categorias!',
+                    text: 'No puedes agregar mas de ' + tag_item + ' categorias!',
                     actionText: 'ok',
                     pos: 'bottom-right',
                     actionTextColor: "#0575e6",
                 });
-            }else if (catalog_new_tag_item.length == 0 ) {
-                $(element).prev('div').append('<div class="catalog_new_tag_item_input_'+ new_tag +' catalog_new_tag_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="catolog_dell_new_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
+            } else if (catalog_new_tag_item.length == 0) {
+                $(element).prev('div').append('<div class="catalog_new_tag_item_input_' + new_tag + ' catalog_new_tag_item  s-card-cat pull-left" val_text="' + new_tag + '" > <a new_tag="' + new_tag + '"  input_id="tags" val_text="' + new_tag + '" href="#" onclick="catolog_dell_new_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text">' + new_tag + '</span></div>');
             }
             else {
-                    //si esta todo ok cargo el nuevo valor al final del array
-                    $('.catalog_new_tag_item_input_'+new_tag).css("color", "red");
+                //si esta todo ok cargo el nuevo valor al final del array
+                $('.catalog_new_tag_item_input_' + new_tag).css("color", "red");
             }
         }
         else {
@@ -1374,8 +1431,8 @@ async function catalog_add_new_tag(element) {
 // ELIMINO
 async function catolog_dell_new_tag(element) {
     try {
-      //Limpio el item de la pantalla
-       $(element).parent('div').remove();
+        //Limpio el item de la pantalla
+        $(element).parent('div').remove();
     } catch (err) {
         console.log(err);
     }
@@ -1406,7 +1463,7 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1415,7 +1472,7 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1423,11 +1480,11 @@ async function catalog_search_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 no_result: true
             }
         }
-       // console.log('CAT LIST LIST LISTTTT', cat_list_search);
+        // console.log('CAT LIST LIST LISTTTT', cat_list_search);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', select_div_id, cat_list_search);
 
 
@@ -1458,7 +1515,7 @@ async function catalog_search_new_prod_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1467,7 +1524,7 @@ async function catalog_search_new_prod_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1475,11 +1532,11 @@ async function catalog_search_new_prod_cat(e, element) {
             var cat_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 no_result: true
             }
         }
-       // console.log('CAT LIST LIST LISTTTT', cat_list_search);
+        // console.log('CAT LIST LIST LISTTTT', cat_list_search);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_cat_list.hbs', select_div_id, cat_list_search);
     }
 }
@@ -1575,15 +1632,15 @@ async function catalog_add_new_cat(element) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
                     $('#catalog_select_cat_value').html(new_cat);
-                    $('#catalog_select_cat_value').attr('catalog_select_cat_value',arr_number_id);
-                  
+                    $('#catalog_select_cat_value').attr('catalog_select_cat_value', arr_number_id);
+
                     Snackbar.show({
                         text: 'La categoria ' + new_cat_val + ' se agrego!',
                         actionText: 'ok',
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
-                   
+
                     catalog_select_new_cat(element, new_cat);
                 } else {
                     alert("no se actualizo");
@@ -1627,7 +1684,7 @@ async function catalog_select_new_cat(element, new_cat) {
 async function catalog_search_trade(e, element) {
 
     //traigo el resultado mas parecido con find
-      var doc_id = $(element).attr('doc_id');
+    var doc_id = $(element).attr('doc_id');
     var new_trade_val = $(element).val();
     var select_div_id = "#catalog_select_new_trade_list";
     var new_trade = String(new_trade_val);
@@ -1648,7 +1705,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 trade_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1657,7 +1714,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1665,7 +1722,7 @@ async function catalog_search_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 no_result: true
             }
         }
@@ -1679,7 +1736,7 @@ async function catalog_search_trade(e, element) {
 async function catalog_search_new_pro_trade(e, element) {
 
     //traigo el resultado mas parecido con find
-      var doc_id = $(element).attr('doc_id');
+    var doc_id = $(element).attr('doc_id');
     var new_trade_val = $(element).val();
     var select_div_id = "#catalog_select_new_trade_list";
     var new_trade = String(new_trade_val);
@@ -1700,7 +1757,7 @@ async function catalog_search_new_pro_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 trade_find_list: search_list
             }
             //renderizo las categorias nuevas filtradas
@@ -1709,7 +1766,7 @@ async function catalog_search_new_pro_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 cat_find_list: doc.category_list
             }
         }
@@ -1717,7 +1774,7 @@ async function catalog_search_new_pro_trade(e, element) {
             var trade_list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 no_result: true
             }
         }
@@ -1728,7 +1785,7 @@ async function catalog_search_new_pro_trade(e, element) {
 
 }
 // SELECCIONO
-async function catalog_select_new_trade(element,new_item) {
+async function catalog_select_new_trade(element, new_item) {
 
     var item_value_id = $(element).attr('item_value_id');
     var new_item = new_item;
@@ -1738,15 +1795,15 @@ async function catalog_select_new_trade(element,new_item) {
         var item_value = $(element).attr('item_value');
     }
     try {
-       // console.log('id',item_value_id);
-      //  console.log('value',item_value);
+        // console.log('id',item_value_id);
+        //  console.log('value',item_value);
         //alert('item_value_id',item_value_id);
         $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
         $('#catalog_select_trade_value').html(item_value);
         $('#catalog_select_trade_tittle').html(item_value);
-        $('#catalog_select_trade_tittle').attr('item_value_id',item_value_id);
+        $('#catalog_select_trade_tittle').attr('item_value_id', item_value_id);
 
-        
+
     } catch (err) {
         console.log(err);
     }
@@ -1793,7 +1850,7 @@ async function catalog_add_new_trade(element) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
                     $('#catalog_select_trade_value').html(new_trade);
-                    $('#catalog_select_trade_value').attr('catalog_select_trade_value',arr_number_id);
+                    $('#catalog_select_trade_value').attr('catalog_select_trade_value', arr_number_id);
 
                     Snackbar.show({
                         text: 'La marca ' + new_trade_val + ' se agrego!',
@@ -1945,13 +2002,13 @@ async function catalog_search_model(e, element) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 model_find_list: search_list
             }
         } else if (search_list == null) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 model_find_list: doc.model_list
             }
@@ -1959,13 +2016,13 @@ async function catalog_search_model(e, element) {
         else {
             var list_search = {
                 ws_lang_data: ws_lang_data,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 no_result: true
             }
         }
 
-        console.log('list_search',list_search);
+        console.log('list_search', list_search);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', select_div_id, list_search);
     }
 }
@@ -1993,13 +2050,13 @@ async function catalog_search_new_pro_model(e, element) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 model_find_list: search_list
             }
         } else if (search_list == null) {
             var list_search = {
                 ws_lang_data: ws_lang_data,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 model_find_list: doc.model_list
             }
@@ -2007,13 +2064,13 @@ async function catalog_search_new_pro_model(e, element) {
         else {
             var list_search = {
                 ws_lang_data: ws_lang_data,
-                doc_id:doc_id,
+                doc_id: doc_id,
                 user_roles: user_Ctx.userCtx.roles,
                 no_result: true
             }
         }
 
-        console.log('list_search',list_search);
+        console.log('list_search', list_search);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_model_list.hbs', select_div_id, list_search);
     }
 }
@@ -2079,7 +2136,7 @@ async function catalog_add_new_model(element) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
                     $('#catalog_select_model_value').html(new_model);
-                    $('#catalog_select_model_value').attr('catalog_select_model_value',arr_number_id);
+                    $('#catalog_select_model_value').attr('catalog_select_model_value', arr_number_id);
 
                     Snackbar.show({
                         text: 'El modelo ' + new_model_val + ' se agrego!',
@@ -2275,14 +2332,14 @@ async function catalog_product_delete(element) {
                 var doc = await L_catalog_db.get(doc_id);
                 var response = await L_catalog_db.remove(doc._id, doc._rev);
 
-                if(response){
+                if (response) {
                     Snackbar.show({
                         text: 'Se elimino con exito!!',
                         actionText: 'ok',
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
-                }else{
+                } else {
                     Snackbar.show({
                         text: 'Hubo un error y no se elimino!',
                         actionText: 'ok',
@@ -2290,7 +2347,7 @@ async function catalog_product_delete(element) {
                         actionTextColor: "#0575e6",
                     });
                 }
-                
+
             }
         });
     } catch (err) {
@@ -2894,8 +2951,8 @@ async function new_price_var(element) {
 
         var currency = {
             id: currency_id,
-            value:currency_value
-          };
+            value: currency_value
+        };
 
         //PRUEBAS NUEVAS
         var user_Ctx = userCtx;
@@ -2914,10 +2971,10 @@ async function new_price_var(element) {
                 price.updateDate = newDate;
                 price.updateUser = userName;
                 price.currency = currency;
-              
+
             } else {
 
-            
+
                 var new_item = {
                     id: price_list_id_s,
                     value: new_value,
@@ -3051,7 +3108,7 @@ async function add_stock_var(element) {
         let currency_id = $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id'); //Id del documento a edita
         let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
         let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
-       
+
         let new_value = $('#add_stock_var_' + variant_id).val();
         let new_cost_stock = $('#new_cost_stock_var_' + variant_id).val(); //Id del documento a edita
         var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
@@ -3065,8 +3122,8 @@ async function add_stock_var(element) {
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
         //Hago comprobaciones 
-        if(new_cost_stock_s === 0){
-            $('#new_cost_stock_var_' + variant_id).css('border', '3px solid red'); 
+        if (new_cost_stock_s === 0) {
+            $('#new_cost_stock_var_' + variant_id).css('border', '3px solid red');
             Snackbar.show({
                 text: 'Falta completar el precio',
                 actionText: 'ok',
@@ -3074,16 +3131,16 @@ async function add_stock_var(element) {
                 actionTextColor: "#0575e6",
             });
         }
-       else if( new_value_s ===  0 ){
-            $('#add_stock_var_'+ variant_id).css('border', '3px solid red');
+        else if (new_value_s === 0) {
+            $('#add_stock_var_' + variant_id).css('border', '3px solid red');
             Snackbar.show({
                 text: 'Falta completar la cantidad',
                 actionText: 'ok',
                 pos: 'bottom-right',
                 actionTextColor: "#0575e6",
             });
-        } 
-        else if (variant_id ) {
+        }
+        else if (variant_id) {
             var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
             var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
@@ -3101,9 +3158,9 @@ async function add_stock_var(element) {
                     out_stock: 0,
                     real_stock: new_value_s,
                     cost_price: new_cost_stock_s,
-                    currency_id:currency_id,
-                    currency_value:currency_value,
-                    currency_name:currency_name,
+                    currency_id: currency_id,
+                    currency_value: currency_value,
+                    currency_name: currency_name,
                     location_id: 1
                 };
                 //  console.log(userName, 'else userName',new_item,'new_item');
@@ -3128,8 +3185,8 @@ async function add_stock_var(element) {
                 }
 
             }
-            
-        }else{
+
+        } else {
 
 
         }
@@ -3461,75 +3518,75 @@ async function cat_edit_variations(element) {
 
 
 ////// UPLOAD IMAGEN PRODUCTO ///
-  async function uploadImage(element) {
+async function uploadImage(element) {
     //const fileInput = document.getElementById("fileInput");
     const doc_id = $(element).attr('doc_id');
     const variant_id = $(element).attr('variant_id');
     const input_id = 'pictures';
 
-    const input = document.getElementById('img-file-input-'+variant_id);
+    const input = document.getElementById('img-file-input-' + variant_id);
 
     if (input.files.length > 0) {
-    //console.log("Se ha cargado un archivo.");
-    const file = input.files[0];
-    const formData = new FormData();
-    formData.append('userfile', file);
+        //console.log("Se ha cargado un archivo.");
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append('userfile', file);
 
-    //const preloader = document.getElementById('preloader');
-    //preloader.style.display = 'block';
+        //const preloader = document.getElementById('preloader');
+        //preloader.style.display = 'block';
 
-    //$('#preloader').attr('hidden','');
-    $('#preloader_finish').hide();
-    $('#preloader_up_pic').show();
+        //$('#preloader').attr('hidden','');
+        $('#preloader_finish').hide();
+        $('#preloader_up_pic').show();
 
-    try {
-      const response = await fetch('img_product_upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
+        try {
+            const response = await fetch('img_product_upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
 
-      $('#preloader_up_pic').hide();
-      $('#preloader_finish').show();
+            $('#preloader_up_pic').hide();
+            $('#preloader_finish').show();
 
-      // preloader.style.display = 'none';
-      /// Actualizo el linck del docuemento 
-      var doc_id_s = String(doc_id);
-      var doc = await L_catalog_db.get(doc_id_s);
-      //Busco dentro de las variables
-      if (variant_id) {
-          var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-          var value = item[input_id]; //Traigo el ojeto especifico 
-          value[0] =  {
-            max: data.new_name,
-            min: data.new_name
-          } ;
-      //Edito el valor del value por el valor nuevo
-        if (item) {
-            L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,
-              });
-             $("#img-card-"+variant_id+"-"+doc._id).css("background-image", "url('"+data.new_name+"')");
-             $("#mini-card-img-card-"+variant_id+"-"+doc._id).attr( "src",data.new_name);
-             
-             console.log(data.new_name,doc._id ,variant_id );
+            // preloader.style.display = 'none';
+            /// Actualizo el linck del docuemento 
+            var doc_id_s = String(doc_id);
+            var doc = await L_catalog_db.get(doc_id_s);
+            //Busco dentro de las variables
+            if (variant_id) {
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+                var value = item[input_id]; //Traigo el ojeto especifico 
+                value[0] = {
+                    max: data.new_name,
+                    min: data.new_name
+                };
+                //Edito el valor del value por el valor nuevo
+                if (item) {
+                    L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,
+                    });
+                    $("#img-card-" + variant_id + "-" + doc._id).css("background-image", "url('" + data.new_name + "')");
+                    $("#mini-card-img-card-" + variant_id + "-" + doc._id).attr("src", data.new_name);
+
+                    console.log(data.new_name, doc._id, variant_id);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            preloader.style.display = 'none';
         }
-      }
-    } catch (error) {
-      console.error(error);
-      preloader.style.display = 'none';
-    }
     } else {
-    console.log("No se ha cargado ningún archivo.");
-  }
+        console.log("No se ha cargado ningún archivo.");
+    }
 
-  }
- 
+}
 
-  
 
-  
+
+
+
 
 
