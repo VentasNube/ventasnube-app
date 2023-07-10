@@ -190,7 +190,9 @@ return [
         'm_catalog_edit_peso' => 'Peso',
         'm_catalog_edit_barcode' => 'Codigo de barras',
         //
-        'm_catalog_edit_price' => 'Precios',
+        'm_catalog_add_stock_cost' => 'Precio costo',
+        'm_catalog_add_stock' => 'Cantidad',
+        'm_catalog_edit_price' => 'Precio',
         'm_catalog_edit_stock' => 'Stock',
         'm_catalog_edit_inicial_stock' => 'Stock Inicial',
         'm_catalog_edit_create' => 'Creado',

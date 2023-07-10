@@ -733,23 +733,23 @@ async function catalog_new_item_new_product(element) {
         var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
         var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
 
+        var tax_doc = await L_catalog_db.get('tax_list');
+        var price_doc = await L_catalog_db.get('price_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+
+
+        let currency_select = currency_doc.currency_default;
+        let tax_select = tax_doc.tax;
 
         let textoSinEspacios = new_doc_name.replace(/\s+/g, '-');
+
         const new_doc_id = textoSinEspacios + "-" + new_doc_id_random;
         var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
         // Documento variable template
         var variations = [{
             "id": new_variant_id,
-            "tax": [
-                {
-                    "id": "0",
-                    "value": "21"
-                },
-                {
-                    "id": "1",
-                    "value": "10"
-                }
-            ],
+            currency_select,
+            tax_select,
             "sku": {
                 "id": "EAN",
                 "value": ""
@@ -774,6 +774,7 @@ async function catalog_new_item_new_product(element) {
                     "value": "M"
                 }
             ],
+
             "price_list": [
                 {
                     "id": 1,
@@ -782,7 +783,6 @@ async function catalog_new_item_new_product(element) {
                         "id": "ARS",
                         "value": "$"
                     },
-
                 }
             ],
             "stock_invetary": [
@@ -803,6 +803,7 @@ async function catalog_new_item_new_product(element) {
                     "location_id": 1
                 }
             ],
+
             "sold_quantity": 0,
             "description": {
                 "status": true,

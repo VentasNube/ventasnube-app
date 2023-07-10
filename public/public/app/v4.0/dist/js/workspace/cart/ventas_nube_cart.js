@@ -128,6 +128,8 @@ async function all_cart_item(todos) {
             // var price_cost = todo.doc.variant['price_cost'];
             var price_tot = price * quantity;
             var tax = todo.doc.variant.tax;
+            var tax_name = todo.doc.variant.tax_name;
+            var money_value = todo.doc.variant.currency;
             //Descuentos
             var sub_tot_product = 0;
             var sub_tot_service = 0 ;
@@ -155,6 +157,8 @@ async function all_cart_item(todos) {
                 variant_id: todo.doc.variant['_id'],
                 sku: todo.doc.variant['sku'],
                 tax: tax,
+                tax_name:tax_name,
+                money_value:money_value,
                 pictures: todo.doc.variant['pictures'], //Img
                 name: todo.doc.variant['name'], //Name
                 quantity: quantity, //Cantidad
@@ -235,8 +239,10 @@ function variations_add_cart(element) {
             discount: parseFloat(variant_discount),
             quantity: parseFloat(variant_quantity),
             tax: parseFloat(var_doc.tax.value),
+            tax_name: var_doc.tax.name,
+            currency: var_doc.price_list[0].currency.value,
         }
-   
+       // console.log('CURRENCY',var_doc.price_list[0].currency.value);
         //alert(var_doc.tax['value']);
         if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
             $(this_card_id).find(".ripple_div").addClass('add');
