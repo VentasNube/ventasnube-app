@@ -76,6 +76,7 @@
                         <!-- PRECIOS INVENTARIO -->
                         <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
                             <ul class="nav nav-tabs">
+
                                 <!--tab-stock--->
                                 <li id="" class="ripple active">
                                     <a data-toggle="tab" href="#edit_stock_item_tab_{{id}}">
@@ -86,6 +87,7 @@
                                         {{#with ../ws_lang_data}} {{{m_catalog_edit_stock}}} {{/with}}
                                     </a>
                                 </li>
+
                                 <!--tab-Price--->
                                 <li id="" class="ripple">
                                     <a data-toggle="tab" href="#edit_price_item_tab_{{id}}">
@@ -95,7 +97,8 @@
                                         {{#with ../ws_lang_data}} {{{m_catalog_edit_price}}} {{/with}}
                                     </a>
                                 </li>
-                                  <!--tab-Description--->
+
+                                <!--tab-Description--->
                                 <li id="" class="ripple">
                                     <a data-toggle="tab" href="#edit_tax_item_tab_{{id}}">
                                         <span class="material-icons">
@@ -104,6 +107,7 @@
                                         {{#with ../ws_lang_data}} {{{ws_catalog_settings_tax_2}}} {{/with}}
                                     </a>
                                 </li>
+
                                 <!--tab-Description--->
                                 <li id="" class="ripple">
                                     <a data-toggle="tab" href="#edit_description_item_tab_{{id}}">
@@ -306,6 +310,7 @@
 
                                     </div>
                                 </div>
+
                                 <div id="edit_price_item_tab_{{id}}" class="tab-pane fade in">
                                     <!-- Precios del producto --->
                                     <ul class="list-group margin-0">
@@ -378,8 +383,7 @@
                                     <div
                                         class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                        <div
-                                            class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <button type="button" class="btn xl btn-more btn-primary line" role="button"
                                                 data-toggle="collapse" data-parent="#item-edit-variants"
                                                 href="#edit_price_form{{id}}" aria-expanded="true"
@@ -390,8 +394,7 @@
                                             </button>
                                         </div>
 
-                                        <div id="edit_price_form{{id}}" role="tabpanel"
-                                            aria-labelledby="item-edit-variants" aria-expanded="true"
+                                        <div id="edit_price_form{{id}}" role="tabpanel"  aria-labelledby="item-edit-variants" aria-expanded="true"
                                             class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                             <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -432,8 +435,10 @@
                                             </div>
 
                                         </div>
+
                                     </div>
                                 </div>
+
                                 <div id="edit_tax_item_tab_{{id}}" class="tab-pane fade in">
                                     <!-- Precios del producto --->
                                     <ul class="list-group margin-0">
@@ -562,6 +567,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div id="edit_description_item_tab_{{id}}" class="tab-pane fade">
                                     <!-- FOTOS -->
                                     <div class="header">
@@ -816,8 +822,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <!--tab-content--->
                             </div>
                             <!--tabs-main--->
