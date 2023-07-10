@@ -131,17 +131,13 @@ async function all_cart_item(todos) {
             //Descuentos
             var sub_tot_product = 0;
             var sub_tot_service = 0 ;
-            var total_neto_item = 0;
             var discount = todo.doc.variant['discount'];
             if(!discount){discount = 0};
             var discount_tot = Math.round((discount / 100) * price_tot);
-
             if(type_item === 'product'){
                 var sub_tot_product = Math.round(price_tot - discount_tot);
                 total_neto_prod += +sub_tot_product;
-
                 sub_tot_item = sub_tot_product;
-
                 total_neto_item = total_neto_prod;
                 total_product = total_neto_prod;
             }
@@ -152,8 +148,6 @@ async function all_cart_item(todos) {
                 total_neto_item = total_neto_service;
                 total_service = total_neto_service;
             }   
-
-            // total_cart_neto += total_neto_prod + total_neto_service;
             //Cargo los datos del array
             var cart_item = {
                 _id: todo.doc['_id'],
@@ -184,29 +178,22 @@ async function all_cart_item(todos) {
         };
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
-
-        // chek_cart_open_ws();
-        //console.log('TODOS TODo-3 ------- ----' + JSON.stringify(cart_item));
     } catch (err) {
         console.error('inner',err);
         throw err;
     } finally {
-
+        //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
         total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
         total_service = parseFloat(total_service);
         total_cart_neto = total_product + total_service; // Suma los dos valores
         $('#total_cart_neto').text(total_cart_neto.toFixed(2)); 
-        //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
-        // alert('finally' + total_neto_prod + '----' + total_quantity_cart_item);
         $('.cart_n').text(total_quantity_cart_item);
-        //$('#total_cart_neto').text(total_product + total_service);
         $('#total_neto_prod').text(total_product.toFixed(2));
         $('#total_neto_service').text(total_service.toFixed(2));
         $('#total_neto_discount').text(total_neto_discount.toFixed(2));
         $('#total_neto_tax').text(total_neto_tax.toFixed(2));
         $('#total_neto_pay').text(total_neto_pay.toFixed(2));
         chek_cart_open_ws();
-        //   get_cart_change();
         return;
     }
 }
