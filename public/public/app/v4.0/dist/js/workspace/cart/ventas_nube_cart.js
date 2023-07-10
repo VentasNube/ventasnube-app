@@ -116,33 +116,41 @@ async function all_cart_item(todos) {
         var total_neto_tax = 0; //Impuestos    
         var total_neto_discount = 0; //Descuentos
         var total_neto_pay = 0; //Abonado
+        var total_product = 0;
+        var total_service = 0;
+        
         todos.map(function (todo) {
             var type_item = todo.doc.variant['type'];
             //calculos matematicos para armar el Carrito
             var quantity = todo.doc.variant['quantity'];
             //Valores
             var price = todo.doc.variant['price'];
-           // var price_cost = todo.doc.variant['price_cost'];
+            // var price_cost = todo.doc.variant['price_cost'];
             var price_tot = price * quantity;
-           // var tax = todo.doc.variant['tax'].value;
             var tax = todo.doc.variant.tax;
-            //console.log('TAXX TAXXX ',tax);
             //Descuentos
             var sub_tot_product = 0;
             var sub_tot_service = 0 ;
             var total_neto_item = 0;
             var discount = todo.doc.variant['discount'];
+            if(!discount){discount = 0};
             var discount_tot = Math.round((discount / 100) * price_tot);
 
             if(type_item === 'product'){
                 var sub_tot_product = Math.round(price_tot - discount_tot);
                 total_neto_prod += +sub_tot_product;
+
+                sub_tot_item = sub_tot_product;
+
                 total_neto_item = total_neto_prod;
+                total_product = total_neto_prod;
             }
-            if(type_item == 'service'){
+            if(type_item === 'service'){
                 var sub_tot_service = Math.round(price_tot - discount_tot);
                 total_neto_service += +sub_tot_service;
+                sub_tot_item = sub_tot_service;
                 total_neto_item = total_neto_service;
+                total_service = total_neto_service;
             }   
 
             // total_cart_neto += total_neto_prod + total_neto_service;
@@ -161,18 +169,14 @@ async function all_cart_item(todos) {
                 discount: discount, //Discount
                 discount_tot: discount_tot, //Tot Discount
                 sub_tot: todo.doc.variant['price'],
-                sub_tot_dis: total_neto_item
+                sub_tot_dis: sub_tot_item
             };
             //Creo el array con todos los items
             array_cart_items.push(cart_item);
             total_quantity_cart_item = array_cart_items.length;
             //Sumas de tototales
-           // total_neto_service += +sb_tot_dis;
-            total_cart_neto += +total_neto_item;
-            // total_cart_neto += total_neto_prod + total_neto_service;
             total_neto_discount += +discount_tot;
             total_neto_tax += +tax;
-            //console.log('TOTAL DE ITEMS EN EL CARRITO' + JSON.stringify(total_cart_neto));
         });
         //Creo el array nuevo con los items
         var cart_items = {
@@ -187,15 +191,20 @@ async function all_cart_item(todos) {
         console.error('inner',err);
         throw err;
     } finally {
+
+        total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
+        total_service = parseFloat(total_service);
+        total_cart_neto = total_product + total_service; // Suma los dos valores
+        $('#total_cart_neto').text(total_cart_neto.toFixed(2)); 
         //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
         // alert('finally' + total_neto_prod + '----' + total_quantity_cart_item);
         $('.cart_n').text(total_quantity_cart_item);
-        $('#total_cart_neto').text(total_cart_neto);
-        $('#total_neto_prod').text(total_neto_prod);
-        $('#total_neto_service').text(total_neto_service);
-        $('#total_neto_discount').text(total_neto_discount);
-        $('#total_neto_tax').text(total_neto_tax);
-        $('#total_neto_pay').text(total_neto_pay);
+        //$('#total_cart_neto').text(total_product + total_service);
+        $('#total_neto_prod').text(total_product.toFixed(2));
+        $('#total_neto_service').text(total_service.toFixed(2));
+        $('#total_neto_discount').text(total_neto_discount.toFixed(2));
+        $('#total_neto_tax').text(total_neto_tax.toFixed(2));
+        $('#total_neto_pay').text(total_neto_pay.toFixed(2));
         chek_cart_open_ws();
         //   get_cart_change();
         return;
