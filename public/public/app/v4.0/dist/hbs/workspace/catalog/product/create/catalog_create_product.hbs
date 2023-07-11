@@ -3,13 +3,13 @@
 
 
     <div class="righ_nav_header">
-        <button class="margin-10 left_nav_close right_nav_close round btn btn-transparent btn-default pull-left "
+        <button class="left_nav_close right_nav_close round btn btn-transparent btn-default pull-left "
             data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="" type="button">
             <span class="material-icons">
                 arrow_back
             </span>
         </button>
-        <div class="margin-10 btn-group dopdown">
+        <div class="btn-group dopdown">
             <button id="" m_id="" m_t_id="" m_t_name="" type="button"
                 class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
                 data-toggle="dropdown" aria-expanded="true">
@@ -38,9 +38,10 @@
         </button>
     </div>
 
-    <div class="s-card-activ-footer ">
+    <div class="righ_nav_content">
         <div class="panel-group " role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
+                
                 <div class="panel-heading" id="edit-item-description">
                     <h4 class="panel-title">
                         <a role="button" class="collapsed">
@@ -343,7 +344,7 @@
                                             $
                                         </span>
                                         <input id="new_price" class="form-control font-size-25" type="number"
-                                            placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_price}}} {{/with}}"
+                                            placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_sale}}} {{/with}}"
                                             value="">
                                         <!--span class="input-group-addon">
                                             <button type="button" onclick="new_price_var(this)"
@@ -360,6 +361,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -371,8 +373,11 @@
 
     </div>
     <!--- FOOTER BOTONES  -->
-    <div id="cart_footer">
-        <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="row righ_nav_footer_main" id="cart_footer">
+
+
+
+        <div class="right_nav_footer text-center ">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit'}}
             <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button"
@@ -381,6 +386,7 @@
             </button>
             {{/userCtx}}
         </div>
+
     </div>
 
 </div>
