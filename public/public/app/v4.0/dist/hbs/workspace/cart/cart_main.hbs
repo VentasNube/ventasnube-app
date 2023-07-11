@@ -1,7 +1,5 @@
 <!-- Cart Nav module -->
 <div class="righ_nav_header">
-    <!--span class="material-icons">receipt</span>Nueva -->
-
     <div class="btn-group dopdown">
         <button type="button"
             class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
@@ -31,23 +29,20 @@
     </button>
 </div>
 
+<div class="righ_nav_content">
 <!-- Contact module -->
 <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
     <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <button onclick="add_new_contact(this)" class="success round s margin-0">
             <span class="material-icons">person_add</span>
         </button>
     </div>
-
     <div id="cart_user_input_dropdown" class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
         <input autocomplete="off" id="cart_user_input" class="form-control" type="text" placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
         <ul id="contact_auto_subjet" class="">
 
         </ul>
     </div>
-
-
     <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="btn-group dropright">
             <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
@@ -72,34 +67,9 @@
             </ul>
         </div>
     </div>
-
 </div>
-
-
 <!-- Product module -->
-{{#ifEquals board_type_name 'purcharse'}}
-
-<!--div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-    <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <button onclick="add_new_contact(this)" class="success round s margin-0">
-            <span class="material-icons">library_add</span>
-        </button>
-    </div>
-
-    <div class="btn-group dopdown dropdown-subjet  padding-0 col-xs-10 col-sm-10 col-md-8 col-lg-10">
-        <div id="" type="button" class="dropdown-toggle dropdown-subjet-input" data-toggle="dropdown"
-            aria-expanded="true">
-            <input autocomplete="off" id="cart_producto_search_input" class="form-control" type="text"
-                placeholder="  {{#with ws_lang_data}} {{input_product_search}}{{/with}}">
-        </div>
-        <ul id="product_auto_subjet" class="dropdown-menu dropdown-subjet-div">
-            
-        </ul>
-    </div>
-
-</div-->
-{{/ifEquals}}
+{{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
 <!-- Cart main module -->
 <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
     <ul class="nav nav-tabs">
@@ -132,7 +102,6 @@
 
             </a>
         </li>
-
     </ul>
     <!--tab-content--->
     <div class="tab-content ">
@@ -153,11 +122,20 @@
         <!--tab-content--->
     </div>
     <!--tabs-main--->
+   
 </div>
 
+
+</div>
 <!-- Cart footer module -->
 <div id="cart_footer">
-    <div class="s-card-activ-footer b-tiket">
+    
+    <!--div class="btn-group margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
+            <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
+        </div-->
+    <div class="row righ_nav_footer_main">
+         <div class="s-card-activ-footer b-tiket">
         <div id="cart_total_items">
             <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
@@ -239,15 +217,9 @@
             </div>
         </div>
     </div>
-
-    <!--div class="btn-group margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
-            <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
-        </div-->
-    <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
         <button id="cart_button_new_order" onclick="new_order(this)" category_id="{{board_type_name}}" type="button"
-            class="cobrar-btn btn btn-primary">
+            class="margin-top cobrar-btn btn btn-primary">
             <span class="material-icons">monetization_on</span>
             {{#with ws_lang_data}} {{b_add_order}}{{/with}}
         </button>

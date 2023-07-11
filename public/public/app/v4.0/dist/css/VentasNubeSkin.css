@@ -10048,7 +10048,7 @@ h1 span{
     border-radius: 10px;
 }
 .s-card-activ-cont {
-    max-height: 400px;
+    max-height: 450px;
     position: relative;
     padding: 0;
     display: inline-block;
@@ -10056,9 +10056,11 @@ h1 span{
     overflow-x: hidden;
     width: 100%;
     text-align: left;
+    /*
     -webkit-box-shadow: inset 0px 11px 8px -10px rgba(0, 0, 0, .1), inset 0px -11px 8px -10px rgba(0, 0, 0, .1);
     -moz-box-shadow: inset 0px 11px 8px -10px rgba(0, 0, 0, .1), inset 0px -11px 8px -10px rgba(0, 0, 0, .1);
     box-shadow: inset 0px 11px 8px -10px rgba(0, 0, 0, .1), inset 0px -11px 8px -10px rgba(0, 0, 0, .1);
+    */
     border-top: 1px #CCC solid;
     /*border-bottom: 1px #CCC solid;*/
 }
@@ -11724,7 +11726,7 @@ board-item-content
 /* CART MODULE **/
 .cart_items_trash {
     text-align: center;
-    padding: 50px;
+    padding: 150px;
     font-size: 25px;
     color: #ccc;
 }
@@ -11747,7 +11749,6 @@ board-item-content
     height: 100%;
     right: 0;
     position: fixed;
-   
     top: 63px;
     transition: all 0.1s ease-in-out;
     /*width: 500px;
@@ -11755,7 +11756,7 @@ board-item-content
     /*z-index: 999;*/
     z-index: 1029;
     background: #fff;
-    overflow-y: auto;
+   /* overflow-y: auto;*/
 }
 @media (min-width: 800px) {
     .right_main {
@@ -11780,17 +11781,30 @@ board-item-content
     -moz-transform: translate(1080px, 0);
     /** Firefox **/
 }
-.righ_nav_header {
+.righ_nav_header-no {
     width: 100%;
     height: auto;
     position: relative;
     padding: 10px 0;
 }
+
+.righ_nav_header {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    padding:  10px;
+    z-index: 9999;
+    background-color: #ffff;
+    box-shadow: 5px 1px 1px 0px rgba(0, 0, 0, .05), 0px -1px 6px 3px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    margin-right: -15px;
+    margin-left: -15px;
+}
 .righ_nav_header .right_nav_close {
     padding: 5px;
     right: 5px;
     position: relative;
-    margin: 10px 0 0 0;
+    margin: 5px;
 }
 .righ_nav_header .righ_nav_users {
     position: relative;
@@ -11799,16 +11813,53 @@ board-item-content
     width: 100%;
     text-align: left;
 }
-.righ_nav_content {}
+
+
+
+.righ_nav_content {
+    position: relative;
+    padding: 0;
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    margin: 91px 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+
+
+.righ_nav_footer_main {
+    position: absolute;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    bottom: 60px;
+    box-shadow: 5px 1px 1px 0px rgba(0, 0, 0, .05), 0px -1px 6px 3px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    background-color: #ffff;
+    z-index: 9999;
+}
+
 .righ_nav_footer {
     right: 5px;
     position: relative;
     text-align: center;
     padding: 15px;
 }
+
+.righ_nav_footer.fixed {
+    right: 5px;
+    position: relative;
+    text-align: center;
+    padding: 15px;
+}
+
 .right_main .tabs-main {
-    max-height: 450px;
+    max-height: 500px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /*  SEAR PRODUCT **/

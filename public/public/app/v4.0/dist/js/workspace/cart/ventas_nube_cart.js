@@ -118,6 +118,8 @@ async function all_cart_item(todos) {
         var total_neto_pay = 0; //Abonado
         var total_product = 0;
         var total_service = 0;
+        var sub_tot_item = 0;
+        var total_neto_item = 0;
         
         todos.map(function (todo) {
             var type_item = todo.doc.variant['type'];
@@ -134,6 +136,7 @@ async function all_cart_item(todos) {
             var sub_tot_product = 0;
             var sub_tot_service = 0 ;
             var discount = todo.doc.variant['discount'];
+
             if(!discount){discount = 0};
             var discount_tot = Math.round((discount / 100) * price_tot);
             if(type_item === 'product'){
