@@ -7,6 +7,22 @@ var ws_catalog_db = 'ws_collections_' + ws_id;
 //CREO LA DB
 //L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
 
+//VUELVO A CARGAR LA SESION POR LAS DUDAS Q NO SE PIEDA EL ARRAY O SE PISE
+var userCtx;
+
+_session(function(error, userCtx_new) {
+    if (error) {
+      console.error(error);
+      console.log('ERROR EN userCtx',userCtx);
+      // Manejar el error de alguna manera
+    } else {
+      // Utilizar userCtx dentro de la función de callback
+     var userCtx =  userCtx_new;
+     console.log('userCtx',userCtx)
+     return userCtx
+    }
+  });
+
 L_catalog_db = new PouchDB(ws_catalog_db, { skip_setup: true });
 
 //** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */

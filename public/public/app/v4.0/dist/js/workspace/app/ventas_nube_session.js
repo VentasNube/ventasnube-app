@@ -232,7 +232,7 @@ _session();
 
 // Creo y conecto con userDB local 
 u_session = new PouchDB(url_R_db, { skip_setup: true });
-var userCtx = null;
+userCtx = null;
 
 
 function _session(callback) {

@@ -266,6 +266,88 @@ function variations_add_cart(element) {
     return false;
 };
 
+
+
+
+
+async function variations_add_cart_NEWNO(element)  {
+
+    try{
+        event.preventDefault();
+        //Identificadores
+        let product_id = $(element).attr('product_id'); //Id del producto selccionado
+        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+        var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+        var board_name = readCookie('board-now-' + ws_id);
+    
+       /* let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
+        let variant_price = $(element).attr('price'); //Id de la variable seleccionada
+        let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
+        let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
+*/
+    let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+    let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
+    let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
+    
+        let doc = await L_catalog_db.get(product_id);
+        if(doc){
+            const var_doc = doc.variant;
+          //  const tax = var_doc.tax.value;
+        //    const tax_name = var_doc.tax.name;
+            // console.log(var_doc);
+            const new_variant_doc = {
+                product_id: product_id,
+                product_rev: doc._rev,
+                type: doc.type,
+                variant_id: var_doc.variant_id,
+                id: var_doc.variant_id,
+                sku: var_doc.sku.value,
+                pictures: var_doc.pictures,
+                name: doc.name,
+                attribute_combinations: var_doc.attribute_combinations,
+                price: parseFloat(variant_price),
+                discount: parseFloat(variant_discount),
+                quantity: parseFloat(variant_quantity),
+               // tax: parseFloat(tax),
+              //  tax_name: tax_name,
+                currency: var_doc.price_list[0].currency.value,
+            }
+
+          let rest_add = await add_cart_item(new_variant_doc);
+         // let delete_doc = await user_db.remove(doc._id,doc._rev);
+          if(rest_add){
+            get_cart(ws_id,board_name);
+            $(this_card_id).find(".ripple_div").addClass('add');
+            $(this_card_id).find(".content").addClass('ripple_efect');
+            $("#cart_item_tab").addClass('active in');
+            $("#cart_item_tab_icon").addClass('active');
+            $("#new_item_tab").removeClass('active in');
+            $("#new_item_tab_icon").removeClass('active');
+         //   Activo la animacion del tab favoritos
+             $("#fav_item_tab").removeClass('active in');
+            $("#fav_item_tab_icon").removeClass('active');
+          }
+    
+        }
+    
+    } catch (err) {
+        Snackbar.show({
+            text: 'Hay un conflicto',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0); 
+            }
+        });
+        console.log(err);
+    }
+    };
+
+
+
+
 async function variations_add_cart_to_fav(element) {
 
 try{
