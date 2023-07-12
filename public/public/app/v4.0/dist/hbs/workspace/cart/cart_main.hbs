@@ -134,8 +134,8 @@
             <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
             <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
         </div-->
-    <div class="row righ_nav_footer_main">
-         <div class="s-card-activ-footer b-tiket">
+    <div class="row righ_nav_footer_main cart_drop_up">
+         <div class="s-card-activ-footer ">
         <div id="cart_total_items">
             <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
@@ -145,13 +145,13 @@
                                 aria-expanded="true" aria-controls="collapseOne">
                                 <div class="row">
                                     <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                        <span class="material-icons">
-                                            arrow_drop_down_circle
-                                        </span>
-
                                         {{#with ws_lang_data}} {{t_total}}{{/with}}
-
                                     </h3>
+                                    <span class="drop-up-total-cart">
+                                        <span class="material-icons">
+                                           keyboard_double_arrow_up
+                                        </span>
+                                    </span>
                                     <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
                                         {{#with ws_info}} {{money}}{{/with}}
                                         <span id="total_cart_neto">
@@ -219,7 +219,7 @@
     </div>
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
         <button id="cart_button_new_order" onclick="new_order(this)" category_id="{{board_type_name}}" type="button"
-            class="margin-top cobrar-btn btn btn-primary">
+            class="margin-top cobrar-btn btn btn-primary btn-full-with">
             <span class="material-icons">monetization_on</span>
             {{#with ws_lang_data}} {{b_add_order}}{{/with}}
         </button>

@@ -3343,6 +3343,25 @@ display: inline-block;
 .dropdown-menu.l {  min-width: 400px;}
 .dropdown-menu.xl {  min-width: 500px;}
 
+
+
+
+.dropdown-menu.open-left {  
+    right: 0;
+    left: auto;
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.dropdown-menu.open-right {  
+    left: 0;
+    right: auto;
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .open>.dropdown-menu {
     display: block!important;
 }
@@ -5227,9 +5246,14 @@ textarea.form-control {
 .open>.dropdown-toggle.btn-primary.focus {
     color: #fff;
     /* background-color: #204d74;*/
-    
     border: none!important;
 }
+.btn-full-with{
+width: 100%;
+border-radius: 5px;
+padding: 5px;
+}
+
 .btn-default {
     background-color: #f5f5f5 !important;
     color: #9e9e9e!important;
@@ -9384,7 +9408,22 @@ h1 span{
     color: #007bb6;
     cursor: pointer;
 }
+
 .cart_button {}
+
+.drop-up-total-cart{
+
+    position: absolute;
+    top: -15px;
+    background-color: ccc;
+    /* border: none; */
+    border-radius: 50%;
+    padding: 5px;
+}
+
+
+
+
 .cart_button .cart-number {
     font-size: 16px!important;
     background-color: #EF5350;
@@ -10709,7 +10748,7 @@ h1 span{
 }
 .dropdown-menu li input {
     display: block;
-    padding: 0px 5px;
+    padding: 0px 15px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #424242;
@@ -11833,7 +11872,9 @@ board-item-content
 .righ_nav_footer_main {
     position: absolute;
     text-align: center;
+
     padding: 20px;
+
     width: 100%;
     bottom: 60px;
     box-shadow: 5px 1px 1px 0px rgba(0, 0, 0, .05), 0px -1px 6px 3px rgba(0, 0, 0, 0.25);
@@ -11841,6 +11882,12 @@ board-item-content
     background-color: #ffff;
     z-index: 9999;
 }
+
+
+.righ_nav_footer_main.cart_drop_up {
+    padding: 0 20px 20px 20px;
+}
+
 
 .righ_nav_footer {
     right: 5px;
@@ -12810,6 +12857,14 @@ board-item-content
 
 .chips_item{
     margin:10px 5px;
+}
+
+.chips_items_main{
+    padding: 10px;
+}
+
+.chips_items_main .s-card-cat {
+    margin: 5px;
 }
 
 .chips_text{

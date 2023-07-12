@@ -656,12 +656,14 @@ async function catalog_new_item(element) {
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
+        var tax_doc = await L_catalog_db.get('tax_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var user_roles_permisions = user_Ctx.userCtx.roles;
         // console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
+            tax_list:tax_doc,
             currency_list: currency_doc.currency_list,
             ws_lang_data: ws_lang_data,
             user_roles: user_roles_permisions,
@@ -670,6 +672,7 @@ async function catalog_new_item(element) {
             model_list: new_model_list,
             attributes_list: attributes
         }
+        console.log('tax_doc CCCCC', product_doc_array)
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
