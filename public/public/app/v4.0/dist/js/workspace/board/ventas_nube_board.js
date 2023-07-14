@@ -51,7 +51,7 @@ if (ws_offline) {
 console.log('ws_offline', url_db_board);
 //const L_board_db = new PouchDB(url_db_board, { skip_setup: true });
 
-const L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
+L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
 
 L_board_db.sync(url_R_db + ws_board_db, {
     live: true,
