@@ -1,6 +1,4 @@
 <!-- CATALOG CREATE NEW PRODUCT TEMPLATE -->
-<div class="create-product">
-
 
     <div class="righ_nav_header">
         <button class="left_nav_close right_nav_close round btn btn-transparent btn-default pull-left "
@@ -382,13 +380,11 @@
             </div>
         </div>
     </div>
-    <!--- NOMBRE CATEGORIAS -->
-
     <!--- MAIN VARIACIONES imprimo el catalog_new_variaton -->
     <div id="create_prod_new_variations_main" class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
     </div>
     <!--- FOOTER BOTONES  -->
-    <div class="row righ_nav_footer_main" id="cart_footer">
+    <div class="righ_nav_footer_main" id="cart_footer">
         <div class="right_nav_footer text-center ">
             <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
             {{#userCtx 'catalog' 'edit'}}
@@ -399,7 +395,7 @@
             {{/userCtx}}
         </div>
     </div>
-</div>
+    
 
 <script>
     function new_select_type_order(opcion) {

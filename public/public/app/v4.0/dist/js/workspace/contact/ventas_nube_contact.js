@@ -1,21 +1,14 @@
-////// BOARDS MODULE 2023 ////////////
+
+/////////////////////////////////
+// CONCTACTOS             2023 //
+/////////////////////////////////
+
 ws_board_db = 'ws_contact_' + ws_id;
-//board_group_info = null;
-ws_left_nav_data = null;
-ws_lang_data = null;
-module_info = null;
+//userCtx
+//console.log('userCtx DATA CONTACT:',userCtx);
 //// VARIABLES GLOBALES 
-
-// Definiendo la URL de la base de datos remota
-//const url_R_db = 'http://<username>:<password>@localhost:5984/'; // Reemplaza con tus propios valores
-// Creando una instancia de la base de datos remota
-//const R_board_db = new PouchDB(url_R_db + ws_board_db);
 // Creando la base de datos local
-const L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
-
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
+L_contact_db = new PouchDB(ws_board_db, { skip_setup: true });
 //SYNCRONIZO LOS DATOS
 L_contact_db.sync(url_R_db + ws_board_db, {
     live: true,
@@ -48,7 +41,6 @@ async function add_new_contact(element) {
         });
     }
 }
-
 
 function print_contact_item(new_items) {
     var search_result = {
@@ -178,9 +170,8 @@ async function get_all_contact_intems() {
     }
 }
 
-
 // Guardo los datos del nuevo contacto
-async function new_contact_put(user_data) {
+async function new_contact_put(new_user_data) {
     try {
         var doc = {};
         const doc_id = 'contact_'+  + new Date().getTime() + Math.random().toString().slice(2);
@@ -190,7 +181,7 @@ async function new_contact_put(user_data) {
         doc.create_date = new Date(); //fecha actual del navegador
         doc.create_user = user_Ctx.userCtx.roles.name; //fecha actual del navegador
         //doc.user_data = user_data;
-        doc = {...doc, ...user_data};
+        doc = {...doc, ...new_user_data};
         const response = await L_contact_db.put(doc);
         console.log(doc);
         if(response.ok){
@@ -208,14 +199,8 @@ async function new_contact_put(user_data) {
     }
 }
 
-
 ///////// VERSION NUEVA 2023 SCROLL INFINITO /////
-
-
 // Llamar a `getMoreItems` cada vez que el usuario llega al final de la lista.
-//////////////////////////////
-// CATALOGO ( PRODUCTOS ) 2023 //
-//////////////////////////////
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_contact(ws_info, ws_lang_data) {
     var ws_contact_data = {
@@ -241,8 +226,6 @@ function get_items_contact(ws_id) {
     // $('#cart_user_input').focus();
     //console.log('GET ITEMS CATALOG');
 }
-
-// TARJETAS DE PRODUCTOS
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_contact_item(search_val) {
     //Armo el array para renderizar los items
@@ -277,7 +260,6 @@ async function search_contact_item(search_val) {
     }
 }
 
-
 // TRAIGO EL MODULO Y LO IMPRIMO
 async function get_contact(ws_id) {
 
@@ -291,7 +273,6 @@ async function get_contact(ws_id) {
     get_nav_contact(ws_info,ws_lang_data);
     get_all_contact_intems();
 }
-
 
 $(document).on('focusin', '.contact_search', function (element) {
     get_all_contact_intems();// CReo con fuse el array con los objetos 

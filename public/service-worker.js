@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 123112211121121212121212121212121212121211212121222;
+const version = 11212121121212121221232122;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -40,9 +40,6 @@ workbox.core.setCacheNameDetails({
 });
 
 // Resto del código...
-
-
-
 workbox.precaching.precacheAndRoute([
   // { url: '/', revision: version },
   //{ url: '/login', revision: version },
@@ -53,8 +50,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/img/favicon.ico', revision: version },
   { url: '/public/app/v4.0/dist/js/manifest.json', revision: version },
   // fuentes css y plugins
-
-
   { url: 'https://fonts.gstatic.com/s/materialicons/v114/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
   // { url: 'https://fonts.gstatic.com/s/materialicons/v111/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
   // { url: 'https://fonts.gstatic.com/s/materialicons/v109/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2', revision: version },
@@ -91,6 +86,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js', revision: version },
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_app.js', revision: version },
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_session.js', revision: version },
+  { url: '/public/app/v4.0/dist/js/workspace/setting/ventas_nube_setting.js', revision: version },
 
   //MODULOS
   //Funciones body
@@ -108,7 +104,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/board/ventas_nube_board.js ', revision: version },
   //Contact
   { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
-
+  //Config
   
 
   //Templates body de Top bar y left bar
@@ -126,9 +122,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_var_select.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/search/card_product_variant.hbs', revision: version },
   //Config
-
-
   { url: '/public/app/v4.0/dist/hbs/workspace/setting/general.hbs', revision: version },
+
   //CATALOG
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', revision: version },
   // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/catalog_items.hbs', revision: version },
@@ -173,7 +168,6 @@ workbox.precaching.precacheAndRoute([
 
 ]);
 
-
 workbox.routing.registerRoute(
   /ruta\/al\/archivo\/config.json/,
   new workbox.strategies.NetworkFirst({
@@ -186,7 +180,6 @@ workbox.routing.registerRoute(
     ],
   })
 );
-
 
 workbox.routing.registerRoute(
   ({ request }) => request.destination === 'image',

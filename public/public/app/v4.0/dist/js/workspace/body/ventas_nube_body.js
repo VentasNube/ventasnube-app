@@ -426,16 +426,8 @@ async function get_module_type_nav(event) {
     // var m_t_id = $(event).attr('m_t_id'); //Trae Pacht url /pacht/
     var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion
-
-
-
     $('.cart_button').attr('board_name',m_type_name); //GUARDO EL ULTIMO BOARD EN EL CARRITO DE LA BARRA
-
-
-
     check_content_module(m_name,m_type_name);
-
-
 }
 
 ////----(OTRAS COSAS)----/////

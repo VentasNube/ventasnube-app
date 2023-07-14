@@ -22,7 +22,7 @@ var search_contact = null;
 var search_board = null;
 
 var category_list = null;
-var attributes = null;
+//var attributes = null;
 
 async function search_db() {
     try {
@@ -30,7 +30,7 @@ async function search_db() {
         //DOC DE CATEGORIAS PRODUCTOS
         category_list = await L_catalog_db.get('category_list', { include_docs: true, descending: true });
         //DOC ATRIBUTOS COLOR, TALLE, PESO, TAMANO
-        attributes = await L_catalog_db.get('attributes', { include_docs: true, descending: true });
+       // attributes = await L_catalog_db.get('attributes', { include_docs: true, descending: true });
        // get_search_module(ws_info, ws_lang_data, ws_left_nav_data)
     } catch (err) {
         Snackbar.show({

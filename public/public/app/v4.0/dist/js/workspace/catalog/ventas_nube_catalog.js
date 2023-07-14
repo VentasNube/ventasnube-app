@@ -1,33 +1,20 @@
 
+/////////////////////////////////
+// CATALOGO ( PRODUCTOS ) 2023 //
+/////////////////////////////////
 var all_items_array = {};
 var search_fuse = null;
-
+//userCtx
 //CONCETO CON LA DB
 var ws_catalog_db = 'ws_collections_' + ws_id;
+
+//console.log('userCtx DATA CATALOGO:',userCtx);
 //CREO LA DB
 //L_catalog_db = new PouchDB(ws_search_db, { skip_setup: true });
 
-//VUELVO A CARGAR LA SESION POR LAS DUDAS Q NO SE PIEDA EL ARRAY O SE PISE
-var userCtx;
-
-_session(function(error, userCtx_new) {
-    if (error) {
-      console.error(error);
-      console.log('ERROR EN userCtx',userCtx);
-      // Manejar el error de alguna manera
-    } else {
-      // Utilizar userCtx dentro de la función de callback
-     var userCtx =  userCtx_new;
-     console.log('userCtx',userCtx)
-     return userCtx
-    }
-  });
-
+//CREO LA DB CATALOGO
 L_catalog_db = new PouchDB(ws_catalog_db, { skip_setup: true });
-
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-//** PRUEBA DE CAPTURAR LOS OYENTES PARA SOLUCIONAR LA ARBENTENCIA DE OYENTES */
-/// S
+// SYNC LOCAL CON REMOTO
 L_catalog_db.sync(url_R_db + ws_catalog_db, {
     live: true,
     retry: true,
@@ -36,13 +23,6 @@ L_catalog_db.sync(url_R_db + ws_catalog_db, {
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
-    // Traigo los resultados de una vista
-
-    /* L_catalog_db.on('error', function (err) { 
-         debugger; 
-         console.log(err);
-     });
- */
     let response = await L_catalog_db.query(
         'get/seach', {
         include_docs: true,
@@ -113,9 +93,6 @@ async function get_all_catalog_intems(ws_id, filter) {
         //return all_cart_item(false);
     }
 }
-//////////////////////////////
-// CATALOGO ( PRODUCTOS ) 2023 //
-//////////////////////////////
 
 // TRAIGO LA BARRA DE BUSQUEDA
 function get_nav_catalog(ws_info, ws_lang_data) {
@@ -343,9 +320,6 @@ async function catalog_view_item(element) {
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=product&?id=' + product_id + '&?v=' + variant_id;
         history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion      
-
-
-
     } catch (err) {
         console.log(err);
     }
@@ -368,15 +342,7 @@ async function catalog_view_item_url(m_id, m_var_id) {
             ws_lang_data: ws_lang_data, //Documento de lenguaje
             user_roles: user_Ctx.userCtx.roles // User roles
         }
-
-        console.log('VISTA DE PRODUCTO ROLES');
-        console.log(user_Ctx.userCtx.roles);
-        console.log('VISTA DE PRODUCTO ARRAY');
-        console.log(product_doc_array);
-
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         // var m_name = $(this).attr('s_url_t_m'); //Trae Pacht url /pacht/    
@@ -402,11 +368,14 @@ async function catalog_edit_itemNOOL(element) {
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
 
+        var attributes = await L_catalog_db.get('attributes');
+
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
 
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
+
         var product_doc_array = {
             product_doc: product_doc,
             product_variant: var_doc,
@@ -424,7 +393,7 @@ async function catalog_edit_itemNOOL(element) {
         }
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+       // renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         // console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -448,6 +417,7 @@ async function catalog_edit_item(element) {
 
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
+        var attributes = await L_catalog_db.get('attributes');
 
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
@@ -522,6 +492,7 @@ async function catalog_edit_item_url(product_id, variant_id) {
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
+        var attributes = await L_catalog_db.get('attributes');
 
         var product_doc = await L_catalog_db.get(product_id);
         var var_doc = product_doc.variations.find(response => response.id == variant_id);
@@ -541,7 +512,6 @@ async function catalog_edit_item_url(product_id, variant_id) {
             attributes_list: attributes
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
@@ -674,6 +644,8 @@ async function catalog_new_item(element) {
         var price_doc = await L_catalog_db.get('price_list');
         var tax_doc = await L_catalog_db.get('tax_list');
         var currency_doc = await L_catalog_db.get('currency_list');
+        var attributes = await L_catalog_db.get('attributes');
+        
         var user_roles_permisions = user_Ctx.userCtx.roles;
         // console.log('user_roles_permisions', user_roles_permisions);
 
@@ -2394,10 +2366,12 @@ async function catalog_config(tab_id) {
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
         }
-
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main_compiled', catalog_config);
-        //  $('#['+ tab_id +']').class('active in'); 
-
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main', catalog_config);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=config';
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+        return;
     } catch (err) {
         console.log(err);
     }
@@ -2436,7 +2410,7 @@ async function catalog_config_save_edit(element) {
         var new_name_n = String(new_name);
         var new_money_id_n = Number(new_money_id);
         //PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+       // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
@@ -2505,7 +2479,7 @@ async function catalog_config_save_block(element) {
         //Filtro los resultados
         const price_id_n = Number(price_id);
         //PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+       // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
@@ -2573,7 +2547,7 @@ async function catalog_config_money_block(element) {
         //Filtro los resultados
         const price_id_n = Number(price_id);
         //PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+        // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
@@ -2899,7 +2873,7 @@ async function new_price_list(element) {
         var price_list_id_s = Number(price_list_id)
 
         //PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+       // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
 
@@ -2975,7 +2949,7 @@ async function new_price_var(element) {
         };
 
         //PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+       // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
@@ -3137,7 +3111,7 @@ async function add_stock_var(element) {
         var new_value_s = Number(new_value);
         var new_cost_stock_s = Number(new_cost_stock);
         // PRUEBAS NUEVAS
-        var user_Ctx = userCtx;
+       // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);

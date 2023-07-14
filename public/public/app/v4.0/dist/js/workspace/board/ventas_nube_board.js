@@ -1,25 +1,25 @@
 ////// BOARDS MODULE 2023 ////////////
 
 
-ws_board_db = 'ws_boards_' + ws_id;
+var ws_board_db = 'ws_boards_' + ws_id;
 
-board_group_info = null;
-ws_left_nav_data = null;
-ws_lang_data = null;
-module_info = null;
+var board_group_info = null;
+var ws_left_nav_data = null;
+var ws_lang_data = null;
+var module_info = null;
 //// VARIABLES GLOBALES 
 
 /// BOARD TARJETAS TRAE LAS ORDENES
-columnGrids = [];
-boardElements = null;
-boardGrid = null;
-muuri = null;
-nextStartkey = ['open', 'order', 'sell'];
-nextStartkeyDocid = null;
-isLoading = false;
-boardsInitialized = false;
-isFetching = false; // Este es el semáforo o el bloqueo.
-totalDocs = null;
+var columnGrids = [];
+var boardElements = null;
+var boardGrid = null;
+var muuri = null;
+var nextStartkey = ['open', 'order', 'sell'];
+var nextStartkeyDocid = null;
+var isLoading = false;
+var boardsInitialized = false;
+var isFetching = false; // Este es el semáforo o el bloqueo.
+var totalDocs = null;
 
 /*var nextStartkey = ['order', 'sell'];
 var nextStartkeyDocid = null;
@@ -30,15 +30,7 @@ var boardElements =  null;
 var boardGrid =  null;
 */
 
-
-// Definiendo la URL de la base de datos remota
-//const url_R_db = 'http://<username>:<password>@localhost:5984/'; // Reemplaza con tus propios valores
-// Creando una instancia de la base de datos remota
-//const R_board_db = new PouchDB(url_R_db + ws_board_db);
-// Creando la base de datos local
-
-
-ws_offline = true;
+var ws_offline = true;
 
 if (ws_offline) {
     url_db_board = ws_board_db;
@@ -47,28 +39,22 @@ if (ws_offline) {
     url_db_board = url_R_db + ws_board_db;
     // const L_board_db = new PouchDB(url_R_db + ws_board_db, { skip_setup: true });
 }
-
-console.log('ws_offline', url_db_board);
-//const L_board_db = new PouchDB(url_db_board, { skip_setup: true });
+//console.log('ws_offline', url_db_board);
 
 L_board_db = new PouchDB(ws_board_db, { skip_setup: true });
-
 L_board_db.sync(url_R_db + ws_board_db, {
     live: true,
     retry: true,
     skip_setup: true
 });
 
-// Variable para controlar el estado de conexión
-let isOnline = true;
+//creo la variable user_Ctx por si hay cambios en el codigo
 
 //COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
 async function ws_board_start() {
     try {
 
-        const parametroUrl = await getUrlVal('t');
-        // alert(parametroUrl);
-        var board_name = parametroUrl;
+        board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
         module_info = await L_board_db.get('board_group_' + board_name);
         // userCtx variable global de permisos y roles para filtrar las vistas
         // DOC DE CONFIGURACION GENERAL
@@ -87,8 +73,6 @@ async function ws_board_start() {
         // Recorro el objeto con la confuracion seteada en el DOC lang por default
         ws_lang_data = ws_lang[ws_lang_default];
         // Envio los datos a la funciones y imprimo
-        // Creo la variable userCtx apartir del doc left nav
-        user_Ctx = ws_left_nav.userCtx;
         //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
         //  get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
         // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart

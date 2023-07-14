@@ -67,7 +67,7 @@ $('#master_modal').on('show.bs.modal', function (event) {
 })
 
 //Varianble global user_data
-this.user_data = {
+window.user_data = {
     user_db: u_db,
     user_name: u_name,
     user_email: u_email,
@@ -154,92 +154,19 @@ function logout() {
 
 //Creo y conecto con userDB local 
 user_db = new PouchDB(u_db, { skip_setup: true });
-
-//getSession();
-
 user_db.sync(url_R_db + userDb, {
   live: true,
   retry: true,
 });
 
-/*
-user_db.sync(url_R_db + userDb, {
-    live: true,
-    retry: true,
-}).on('change', function (change) {
-    $('#cloud_sync_icon').html("<i class='material-icons material-icon-spinner'> sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons material-icon-spinner'> sync</i>";
-}).on('paused', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    // document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('active', function (info) {
-    $('#cloud_sync_icon').html("<i class='material-icons'> cloud_sync</i>");
-    //  document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> cloud_sync</i>";
-}).on('error', function (err) {
-    if (err) {
-        $('#cloud_sync_icon').html("<i class='material-icons'> sync_problem</i>");
-        //   document.getElementById("cloud_sync_icon").innerHTML = "<i class='material-icons'> sync_problem</i>"
-        //logout()
-        var msj_error = "Hay un error inesperado";
-        if (err.status === 401) {
-            msj_error = '<i class="material-icons"> sync_problem</i> Tu sesion a expirado...';
-        }
-        if (err.status != 401) {
-            msj_error = err.name;
-        }
-        //Imprimo el Mensaje de error en pantalla
-        $('#master_modal').modal('show', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            // var recipient = button.data('whatever') // Extract info from data-* attributes
-            var recipient = 'Tu sesion expiro'; // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title').text(recipient)
-            // modal.find('.modal-body input').val(recipient)
-            modal.find('.modal-body').html("<button type='button' onclick='logout()' class='btn xl btn-secondary '>Login</button>");
-        });
-        Snackbar.show({
-            text: msj_error,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Ingresar',
-            actionTextColor: "#4CAF50",
-            onActionClick: function (element) {     //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);
-                logout()
-            }
-        });
-
-    }
-});
-*/
-/*
-var userCtx;
-//Creo y conecto con userDB local 
-u_session = new PouchDB(url_R_db, { skip_setup: true });
-
-async function _session() {
-    userCtx = await u_session.get('_session', { include_docs: true });
-    var userCtx;
-console.log('userCtx 1',userCtx)
-    return userCtx;
-}
-
-_session();
-*/
-
-
 // Creo y conecto con userDB local 
-u_session = new PouchDB(url_R_db, { skip_setup: true });
-userCtx = null;
-
+const u_session = new PouchDB(url_R_db, { skip_setup: true });
 
 function _session(callback) {
   u_session.get('_session', { include_docs: true })
     .then(function(result) {
       userCtx = result;
-      console.log('userCtx 1:', userCtx);
+     // console.log('userCtx 1:', userCtx);
       callback(null, userCtx);
     })
     .catch(function(error) {
@@ -250,7 +177,7 @@ function _session(callback) {
 _session(function(error, userCtx_new) {
   if (error) {
     console.error(error);
-    console.log('ERROR EN userCtx',userCtx);
+    console.log('_session userCtx:',userCtx);
     // Manejar el error de alguna manera
   } else {
     // Utilizar userCtx dentro de la función de callback
@@ -261,32 +188,10 @@ _session(function(error, userCtx_new) {
 });
 
 
-
-// Función para obtener los datos y roles de sesión
-async function _session_New_no() {
-  try {
-    const response = await u_session.get('_session', { include_docs: true });
-    var userCtx = response;
-    console.log('response.data userCtx',userCtx);
-   return userCtx;
-    //callback(null, userCtx);
-  } catch (error) {
-    console.error('Error al obtener los datos y roles de sesión:', error);
-    throw error;
-  }
-}
-
-//_session();
-
-
-//console.log('userCtx 2:', userCtx);
-
-
 // Funcion para traer la hora minutoso segundos 
 // se usa asi
 // const { hour, minutes } = await getDateTimeMinutes();
 /// 
-
 async function getDateTime() {
 let dateTimeStr = new Date(); // este es el formato original DD/MM/YYYY HH:MM:SS
 let [day, month, yearTime] = dateTimeStr.split("/");
@@ -310,14 +215,8 @@ async function getDateTimeMinutes() {
     }
   }
 
-
-  /// 2023 UPDATE COMPACTACION DE WORKSPACE
-
-  // Variables globales
-//let L_board_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
-//let L_catalog_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
-//let L_contact_db = { compactedFiles: 0, docCount: 0, diskSize: 0 };
-
+/// 2023 UPDATE COMPACTACION DE WORKSPACE
+// Variables globales
 // Función para realizar la auto compactación de las bases de datos
 async function auto_compact_db() {
   try {

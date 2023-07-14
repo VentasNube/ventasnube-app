@@ -1,9 +1,8 @@
 <!-- Cart Nav module -->
 <div class="righ_nav_header">
     <div class="btn-group dopdown">
-        <button type="button"
-            class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
-            aria-expanded="true">
+        <button type="button" class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+            data-toggle="dropdown" aria-expanded="true">
             {{#each ws_left_nav_data.m_t}}
             {{#ifEquals m_t_url ../board_type_name }}
             <span class="material-icons">{{m_t_icon}}</span>
@@ -30,193 +29,190 @@
 </div>
 
 <div class="righ_nav_content">
-<!-- Contact module -->
-<div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <button onclick="add_new_contact(this)" class="success round s margin-0">
-            <span class="material-icons">person_add</span>
-        </button>
-    </div>
-    <div id="cart_user_input_dropdown" class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
-        <input autocomplete="off" id="cart_user_input" class="form-control" type="text" placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
-        <ul id="contact_auto_subjet" class="">
-
-        </ul>
-    </div>
-    <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="btn-group dropright">
-            <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                <div class="round-icon pr">
-                    <span id="select_price_list_cart" price_list_id="" price_list_value=""> m </span>
-                </div>
-
+    <!-- Contact module -->
+    <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button onclick="add_new_contact(this)" class="success round s margin-0">
+                <span class="material-icons">person_add</span>
             </button>
-            <ul class="dropdown-menu pull-right">
-
-                <li class="header">Listas de precios</li>
-                {{#each price_doc.price_list}}
-                <li>
-                    <a href="#">
-                        <div class="round-icon user-top"><span> {{value}} </span></div> {{value}}
-                    </a>
-                </li>
-                {{/each}}
+        </div>
+        <div id="cart_user_input_dropdown"
+            class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
+            <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
+                placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
+            <ul id="contact_auto_subjet" class="">
 
             </ul>
         </div>
+        <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="btn-group dropright">
+                <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    <div class="round-icon pr">
+                        <span id="select_price_list_cart" price_list_id="" price_list_value=""> m </span>
+                    </div>
+
+                </button>
+                <ul class="dropdown-menu pull-right">
+
+                    <li class="header">Listas de precios</li>
+                    {{#each price_doc.price_list}}
+                    <li>
+                        <a href="#">
+                            <div class="round-icon user-top"><span> {{value}} </span></div> {{value}}
+                        </a>
+                    </li>
+                    {{/each}}
+
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
-<!-- Product module -->
-{{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
-<!-- Cart main module -->
-<div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
-    <ul class="nav nav-tabs">
+    <!-- Product module -->
+    {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
 
-        <li id="cart_item_tab_icon" class="ripple  active">
-            <a data-toggle="tab" href="#cart_item_tab">
-                <span class="material-icons">shopping_cart</span>
-                <span class="cart_n cart-number">0</span>
+            <li id="cart_item_tab_icon" class="ripple  active">
+                <a data-toggle="tab" href="#cart_item_tab">
+                    <span class="material-icons">shopping_cart</span>
+                    <span class="cart_n cart-number">0</span>
 
-                 {{#with ws_lang_data}}{{t_cart_name}} {{/with}} 
+                    {{#with ws_lang_data}}{{t_cart_name}} {{/with}}
                     {{#each ws_left_nav_data.m_t}}
-                            {{#ifEquals m_t_url ../board_type_name }}
-                             {{m_t_name}}
-                            {{/ifEquals}}
+                    {{#ifEquals m_t_url ../board_type_name }}
+                    {{m_t_name}}
+                    {{/ifEquals}}
                     {{/each}}
 
-            </a>
-        </li>
-        <li id="fav_item_tab_icon" class="ripple">
-            <a data-toggle="tab" href="#fav_item_tab">
-                <span class="material-icons">favorite</span>
-                <span class="fav_count">0</span>
+                </a>
+            </li>
+            <li id="fav_item_tab_icon" class="ripple">
+                <a data-toggle="tab" href="#fav_item_tab">
+                    <span class="material-icons">favorite</span>
+                    <span class="fav_count">0</span>
 
-                  {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}} 
+                    {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}}
                     {{#each ws_left_nav_data.m_t}}
-                            {{#ifEquals m_t_url ../board_type_name }}
-                             {{m_t_name}}
-                            {{/ifEquals}}
+                    {{#ifEquals m_t_url ../board_type_name }}
+                    {{m_t_name}}
+                    {{/ifEquals}}
                     {{/each}}
 
-            </a>
-        </li>
-    </ul>
-    <!--tab-content--->
-    <div class="tab-content ">
-        <!--tab--->
-        <div id="cart_item_tab" class="tab-pane fade in active">
-            <!--s-card-activ-cont--->
-            <div id="product_cart_items" class="s-card-activ-cont gray">
-            </div>
-        </div>
-        <div id="fav_item_tab" class="tab-pane fade in">
-            <div id="product_fav_items" class="s-card-activ-cont gray">
-            </div>
-        </div>
-        <div id="new_item_tab" class="tab-pane fade in">
-            <div id="product_new_product" class="s-card-activ-cont gray">
-            </div>
-        </div>
+                </a>
+            </li>
+        </ul>
         <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="cart_item_tab" class="tab-pane fade in active">
+                <!--s-card-activ-cont--->
+                <div id="product_cart_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="fav_item_tab" class="tab-pane fade in">
+                <div id="product_fav_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="new_item_tab" class="tab-pane fade in">
+                <div id="product_new_product" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
     </div>
-    <!--tabs-main--->
-   
-</div>
-
 
 </div>
 <!-- Cart footer module -->
 <div id="cart_footer">
-    
-    <!--div class="btn-group margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <label>Informe al cliente</label><small> (Se muestra al cliente)</small>
-            <input class="form-control" type="textarea" placeholder="Escribe el informe al cliente...">
-        </div-->
-    <div class="row righ_nav_footer_main cart_drop_up">
-         <div class="s-card-activ-footer ">
-        <div id="cart_total_items">
-            <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                        <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                aria-expanded="true" aria-controls="collapseOne">
+    <div class="righ_nav_footer_main cart_drop_up">
+        <div class="s-card-activ-footer ">
+            <div id="cart_total_items">
+                <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="row">
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                            {{#with ws_lang_data}} {{t_total}}{{/with}}
+                                        </h3>
+                                        <span class="drop-up-total-cart">
+                                            <span class="material-icons">
+                                                keyboard_double_arrow_up
+                                            </span>
+                                        </span>
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                            {{#with ws_info}} {{money}}{{/with}}
+                                            <span id="total_cart_neto">
+                                                0
+                                            </span>
+                                        </h3>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
+                            aria-labelledby="headingOne">
+                            <div class="panel-body">
                                 <div class="row">
-                                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                        {{#with ws_lang_data}} {{t_total}}{{/with}}
-                                    </h3>
-                                    <span class="drop-up-total-cart">
-                                        <span class="material-icons">
-                                           keyboard_double_arrow_up
-                                        </span>
-                                    </span>
-                                    <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_service}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
                                         {{#with ws_info}} {{money}}{{/with}}
-                                        <span id="total_cart_neto">
-                                            0
-                                        </span>
-                                    </h3>
+                                        <span id="total_neto_service">0</span>
+                                    </h4>
                                 </div>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body">
-                            <div class="row">
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                    {{#with ws_lang_data}} {{t_service}}{{/with}}:
-                                </h4>
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                    {{#with ws_info}} {{money}}{{/with}}
-                                    <span id="total_neto_service">0</span>
-                                </h4>
-                            </div>
-                            <div class="row ">
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                    {{#with ws_lang_data}} {{t_product}}{{/with}}:
-                                </h4>
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                    {{#with ws_info}} {{money}}{{/with}}
-                                    <span id="total_neto_prod">0</span>
-                                </h4>
-                            </div>
-                            <div class="row text-red">
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                    {{#with ws_lang_data}} {{t_dicount}}{{/with}}:
-                                </h4>
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                    {{#with ws_info}} {{money}}{{/with}}
-                                    <span id="total_neto_discount">0</span>
-                                </h4>
-                            </div>
-                            <div class="row text-red">
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                    {{#with ws_lang_data}} {{t_tax}}{{/with}}
+                                <div class="row ">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_product}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_prod">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_dicount}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_discount">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_tax}}{{/with}}
 
-                                </h4>
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                    {{#with ws_info}} {{#each tax}} {{tax_name}} (% {{tax_value}}) {{/each}}{{/with}}
-                                    <span id="total_neto_tax">0</span>
-                                </h4>
-                            </div>
-                            <div class="row text-green">
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                    {{#with ws_lang_data}} {{t_pay}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{#each tax}} {{tax_name}} (% {{tax_value}})
+                                        {{/each}}{{/with}}
+                                        <span id="total_neto_tax">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-green">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_pay}}{{/with}}:
 
-                                </h4>
-                                <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                    {{#with ws_info_}} {{money}}{{/with}}:
-                                    <span id="total_neto_pay">0</span>
-                                </h4>
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info_}} {{money}}{{/with}}:
+                                        <span id="total_neto_pay">0</span>
+                                    </h4>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
         <button id="cart_button_new_order" onclick="new_order(this)" category_id="{{board_type_name}}" type="button"
             class="margin-top cobrar-btn btn btn-primary btn-full-with">
@@ -230,10 +226,8 @@
 <script>
     // Este es tu método de búsqueda asíncrono
 
-
-
     async function select_contact(element) {
-       
+
         try {
             let _id = $(element).attr('contact_id');
             contact_doc = await L_contact_db.get(_id, { include_docs: true, descending: true });
@@ -244,7 +238,7 @@
             // console.log('price_list_id',price_list_id)      
             // console.log('price_list_doc',price_list_doc)        
             const price_select = price_list_doc.price_list.find(element => element.id == price_list_id);
-           //  console.log('price_select',price_select) 
+            //  console.log('price_select',price_select) 
             $('#cart_user_input').attr('contact_id', contact_doc._id);
             $('#cart_user_input').val(contact_doc.first_name + " " + contact_doc.last_name);
             $('#select_price_list_cart').attr('contact_id', contact_doc.price_list);
@@ -285,11 +279,11 @@
 
             if (searchResults.length > 0) {
                 renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', '#contact_auto_subjet', data);
-                    } else {
+            } else {
                 $('#contact_auto_subjet').html('<h4 class="padding-10 text-center" >Sin resultados... </h4>');
             }
 
-                
+
             console.log('DATA', data);
         } catch (err) {
             console.log('searchContacts', err);
@@ -303,34 +297,24 @@
     }
 
     // FUNCIONES 2023 aparece auto subjet
+    $('#cart_user_input').on('focusin', function () {
+        $('#contact_auto_subjet').addClass('open');
+    });
+    $('#contact_auto_subjet').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $(document).on('click focusout', function (event) {
+        if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
+            if (!$(event.target).is('#cart_button_new_order')) {
+                $('#contact_auto_subjet').removeClass('open');
+            }
+        }
+    });
 
-  $('#cart_user_input').on('focusin', function () {
-    $('#contact_auto_subjet').addClass('open');
-  });
-
-  $('#contact_auto_subjet').on('click', function (event) {
-    event.stopPropagation();
-  });
-/*
-  $(document).on('click focusout', function (event) {
-    if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
-      $('#contact_auto_subjet').removeClass('open');
-    }
-  });
-*/
-   $(document).on('click focusout', function (event) {
-    if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
-      if (!$(event.target).is('#cart_button_new_order')) {
-        $('#contact_auto_subjet').removeClass('open');
-      }
-    }
-  });
-
-  $('#cart_user_input').on('keyup', function (event) {
-    const value = event.target.value;
-    searchContacts(value);
-  });
-
+    $('#cart_user_input').on('keyup', function (event) {
+        const value = event.target.value;
+        searchContacts(value);
+    });
 
 
 </script>
