@@ -17,44 +17,28 @@
 
     {{#with product_variant}}
     <div class="header">
-
-        <button id="" type="button" class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
-            <span class="material-icons">close</span>
-        </button>
-
-        <button data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto"
-            type="button" class="margin-10 round btn btn-transparent btn-default pull-left ">
-            <span class="material-icons">
-                add_a_photo
-            </span>
-        </button>
-
         {{#first pictures}}
-        <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card">
-            <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
-            <div class=" mini-carrousel-img ">
-                {{#each ../pictures }}
-                <div class="mini-card-img-s">
+            <div style="width: 100%; background-image: url('{{{max}}}');" class="parallax img_card">
+                <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                <div class=" mini-carrousel-img ">
+                    {{#each ../pictures }}
+                    <div class="mini-card-img-s">
 
-                    <div class="img">
-                        <a target="_blank" href="{{min}}">
-                            <img src="{{min}}" alt="">
-                        </a>
+                        <div class="img">
+                            <a target="_blank" href="{{min}}">
+                                <img src="{{min}}" alt="">
+                            </a>
+                        </div>
+
                     </div>
-
+                    {{/each}}
                 </div>
-                {{/each}}
             </div>
-        </div>
         {{/first }}
-
     </div>
     {{/with}}
 
-
-
     {{#with product_doc}}
-    <h1 class="margin-t-0">{{name}}</h1>
     <h4>
         {{#ifEquals status 'active' }}
         <span class="s-card-cat pull-left">
@@ -74,38 +58,7 @@
     </h4>
     <br>
     <h3>Descripcion: {{descriptions}}</h3>
-    <h3>
-        {{#each attributes }}
-        <div class="s-card-cat pull-left">{{name}}: {{value_name}} </div>
-        {{/each}}
-    </h3>
-    </br>
-    <h4 class="margin-10">
-        <div class="btn-group dropright">
-            <button type="button" class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span id="bg-select-color" class="padding-0 card_item_selected_price btn btn-transparent">
-                    <div class="round-icon pr">
-                        <span class="material-icons">
-                            history
-                        </span>
-
-                    </div>
-                </span>
-            </button>
-            <ul class="dropdown-menu">
-                <li class="header">Historial de Cambios</li>
-                {{#each last_update_at }}
-                <li>
-                    <a href="#">
-                        <span>{{username}}</span>
-                        <label class="counter">{{datetime}}</label>
-                    </a>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
-        Variables
-    </h4>
+   
     {{/with}}
     {{#with product_variant}}
 
@@ -183,8 +136,7 @@
 <div >
     <div class="righ_nav_footer_main">
         {{#with ../product_variant}}
-        <button onclick="catalog_edit_item(this)" product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
-            type="button" class="cobrar-btn btn btn-primary btn-full-with">
+    <div  type="button"  onclick="catalog_edit_item(this)" variant_id="{{id}}" id="{{{../product_doc/_id}}}" class="cobrar-btn btn btn-primary btn-full-with" product_id="{{{../product_doc/_id}}}">
             <span class="material-icons">create</span>
               {{#with ../ws_lang_data}} {{m_catalog_edit_tittle}}{{/with}}
         </button>

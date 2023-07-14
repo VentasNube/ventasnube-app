@@ -859,6 +859,9 @@ async function catalog_new_item_new_product(element) {
             var new_model_list = await L_catalog_db.get('model_list');
             var price_doc = await L_catalog_db.get('price_list');
             var currency_doc = await L_catalog_db.get('currency_list');
+
+            var attributes = await L_catalog_db.get('attributes');
+
             var user_roles_permisions = user_Ctx.userCtx.roles;
 
             //  console.log('user_roles_permisions', user_roles_permisions);
