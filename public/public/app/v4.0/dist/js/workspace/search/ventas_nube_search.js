@@ -22,7 +22,7 @@ var search_contact = null;
 var search_board = null;
 
 var category_list = null;
-//var attributes = null;
+var attributes = null;
 
 async function search_db() {
     try {
@@ -79,7 +79,7 @@ async function get_search_module(ws_info, ws_lang_data, ws_left_nav_data,board_n
 };
 
 //TODO LOS ITEMS FILTRADOS DEL CART Y ARMO UN ARRA PARA ENVIAR A FUSE
-function get_search_catalog(type_order) {
+function get_search_catalog_Old(type_order) {
 
     // type = 'product';
     console.log("type_order SEARCH:", type_order)
@@ -97,42 +97,40 @@ function get_search_catalog(type_order) {
         // alert(result);
         // console.log('Proceso el array con get all puch');
         var new_array = [];
-        var items = result.rows;
+        var items = result.rows;       
+        
+        
         var i = 0;
         //   console.log(items)
         for (i = 0; i < items.length; i++) {
             // hacer algo con a[i];
+           
             var new_item = {
+                _id:items[i].value._id,
+                _rev:items[i].value._rev,
+                variant_id:items[i].value.variant_id,
                 name: items[i].value.name,
-                price: items[i].price,
-                cost_price: items[i].cost_price,
-                currency: items[i].currency,
+                tipo:items[i].value.tipo,
+                price: items[i].value.price,
+                cost_price: items[i].value.cost_price,
+                available_quantity:items[i].value.available_quantity,
+                currency: items[i].value.currency,
                 cat: items[i].value.cats,
                 tags: items[i].value.tags,
                 sku: items[i].value.sku,
-                attribute_combinations: items[i].value.attribute_combinations,
-                doc: items[i].value
-                // doc: items[i].doc
-            }
-            /*  var new_item = {
-                  name: items[i].status,
-                  cat: items[i].status,
-                  sold_quantity: items[i].sold_quantity,
-                  cost_price: items[i].cost_price,
-                  limit_discount: items[i].limit_discount,
-                  sku: items[i].sku,
-                  currency: items[i].currency,
-                  price: items[i].price,
-                  profit_percentage: items[i].profit_percentage,
-                  profit_percentage_active: items[i].profit_percentage_active,
-                  stock_list: items[i].stock_list,
-                  picture_min: items[i].pictures.min,
-                  picture_max: items[i].pictures.max
-                      // doc: items[i].doc
-              }*/
+                picture_min: items[i].value.picture_min,
+                picture_max:  items[i].value.picture_max,
+                price_list:items[i].value.price_list,
+                //doc: items[i].value
+            }            
             new_array.push(new_item);
         }
-        documents = new_array; //Array Formateado
+
+      //  console.log(' new_array NEWW ARRAY', new_array);
+      //   console.log( 'new_item SEARCHHH COMPLETO new_item NEWW ITEM',new_item);
+      //   console.log( 'new_item SEARCHHH COMPLETO items',items);
+        //  documents = new_array; //Array Formateado
+        documents = new_array
         var options = {
             // isCaseSensitive: false,
             // includeScore: false,
@@ -159,10 +157,63 @@ function get_search_catalog(type_order) {
         var search_catalog_index = Fuse.createIndex(options.keys, documents);
         // initialize Fuse with the index
         search_catalog = new Fuse(documents, options, search_catalog_index);
+        console.log( 'new_item SEARCHHH COMPLETO search_catalog',search_catalog);
     }).catch(function (err) {
         console.log(err);
     });
 }
+
+
+async function get_search_catalog(type_order) {
+    try {
+      console.log("type_order SEARCH:", type_order);
+  
+      const result = await L_catalog_db.query('get/' + type_order, {
+        include_docs: false,
+        descending: false,
+      });
+  
+      const items = result.rows;
+      const new_array = items.map(function (item) {
+        return {
+          _id: item.value._id,
+          _rev: item.value._rev,
+          variant_id: item.value.variant_id,
+          name: item.value.name,
+          tipo: item.value.tipo,
+          price: item.value.price,
+          cost_price: item.value.cost_price,
+          available_quantity: item.value.available_quantity,
+          currency: item.value.currency,
+          cat: item.value.cats,
+          tags: item.value.tags,
+          sku: item.value.sku,
+          picture_min: item.value.picture_min,
+          picture_max: item.value.picture_max,
+          price_list: item.value.price_list,
+        };
+      });
+  
+      documents = new_array;
+  
+      const options = {
+        keys: [
+          "name",
+          "sku",
+          "tags",
+          "category.value",
+          "trade.value",
+        ],
+      };
+  
+      const search_catalog_index = Fuse.createIndex(options.keys, documents);
+      search_catalog = new Fuse(documents, options, search_catalog_index);
+      console.log('new_item SEARCHHH COMPLETO search_catalog', search_catalog);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_search_contact(type_order) {
@@ -328,6 +379,8 @@ function get_search_board(type_order) {
               }*/
             new_array.push(new_item);
         }
+
+
         documents = new_array; //Array Formateado
         var options = {
             keys: [
@@ -393,7 +446,7 @@ async function search_print_item(search_val) {
     }
     if (result.length > 0) {
         renderHandlebarsTemplate(url_template, id_copiled, search_result);
-        console.log('search_print_item', search_result);
+        console.log('search_print_item AAAAA NEWWW ACAA', search_result);
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }

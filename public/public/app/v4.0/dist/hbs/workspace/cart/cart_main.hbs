@@ -81,12 +81,14 @@
                     <span class="cart_n cart-number">0</span>
 
                     {{#with ws_lang_data}}{{t_cart_name}} {{/with}}
-                    {{#each ws_left_nav_data.m_t}}
-                    {{#ifEquals m_t_url ../board_type_name }}
-                    {{m_t_name}}
-                    {{/ifEquals}}
-                    {{/each}}
 
+                    <div class="hidden-xs">
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../board_type_name }}
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+                    </div>
                 </a>
             </li>
             <li id="fav_item_tab_icon" class="ripple">
@@ -95,12 +97,13 @@
                     <span class="fav_count">0</span>
 
                     {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}}
-                    {{#each ws_left_nav_data.m_t}}
-                    {{#ifEquals m_t_url ../board_type_name }}
-                    {{m_t_name}}
-                    {{/ifEquals}}
-                    {{/each}}
-
+                    <div class="hidden-xs">
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../board_type_name }}
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+                    </div>
                 </a>
             </li>
         </ul>

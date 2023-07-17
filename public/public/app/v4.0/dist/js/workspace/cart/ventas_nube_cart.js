@@ -28,7 +28,7 @@ function chek_cart_open_ws() {
     }
 }
 
-async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name) {
+async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_name) {
     try {
         if (!board_name) {
             board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
@@ -50,8 +50,8 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name
         get_cart(ws_id, board_name);
         get_fav(ws_id, board_name);
         get_search_module(ws_info, ws_lang_data, ws_left_nav_data, ws_cart, board_name);
-       // chek_search_open()
-       // search_open();
+        // chek_search_open()
+        // search_open();
     }
     catch (err) {
         console.log(err);
@@ -59,7 +59,7 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name
 };
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
-async function get_cart(ws_id,board_name) {
+async function get_cart(ws_id, board_name) {
 
     if (!board_name) {
         board_name = readCookie('board-now-' + ws_id);
@@ -89,14 +89,14 @@ async function get_cart_now(elemnt) {
         createCookie('left_nav_open_ws_' + ws_id, false), 30;//tomo el ultimo estado de la barra lateral
         $('#right_main').removeClass('move-right');
         $('#cart_user_input').focus();
-        var response = await get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,board_name);
+        var response = await get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_name);
 
-        if(response){
+        if (response) {
             $('#searchBox').fadeIn();
             $('#searchInput').focus();
             $('body').addClass('search-active');
         }
-       // createCookie('search-now-' + ws_id,  true, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+        // createCookie('search-now-' + ws_id,  true, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
 
     } catch (error) {
         console.error("Ocurrió un error al procesar el carrito: ", error);
@@ -105,7 +105,7 @@ async function get_cart_now(elemnt) {
 
 
 // Creo los arrays con los datos de la BD
-async function all_cart_item(todos) {
+async function all_cart_item_OLD_Ok(todos) {
     try {
         let array_cart_items = [];
         //Creo los array
@@ -120,7 +120,7 @@ async function all_cart_item(todos) {
         var total_service = 0;
         var sub_tot_item = 0;
         var total_neto_item = 0;
-        
+
         todos.map(function (todo) {
             var type_item = todo.doc.variant['type'];
             //calculos matematicos para armar el Carrito
@@ -132,27 +132,28 @@ async function all_cart_item(todos) {
             var tax = todo.doc.variant.tax;
             var tax_name = todo.doc.variant.tax_name;
             var money_value = todo.doc.variant.currency;
+
             //Descuentos
             var sub_tot_product = 0;
-            var sub_tot_service = 0 ;
+            var sub_tot_service = 0;
             var discount = todo.doc.variant['discount'];
 
-            if(!discount){discount = 0};
+            if (!discount) { discount = 0 };
             var discount_tot = Math.round((discount / 100) * price_tot);
-            if(type_item === 'product'){
+            if (type_item === 'product') {
                 var sub_tot_product = Math.round(price_tot - discount_tot);
                 total_neto_prod += +sub_tot_product;
                 sub_tot_item = sub_tot_product;
                 total_neto_item = total_neto_prod;
                 total_product = total_neto_prod;
             }
-            if(type_item === 'service'){
+            if (type_item === 'service') {
                 var sub_tot_service = Math.round(price_tot - discount_tot);
                 total_neto_service += +sub_tot_service;
                 sub_tot_item = sub_tot_service;
                 total_neto_item = total_neto_service;
                 total_service = total_neto_service;
-            }   
+            }
             //Cargo los datos del array
             var cart_item = {
                 _id: todo.doc['_id'],
@@ -160,8 +161,8 @@ async function all_cart_item(todos) {
                 variant_id: todo.doc.variant['_id'],
                 sku: todo.doc.variant['sku'],
                 tax: tax,
-                tax_name:tax_name,
-                money_value:money_value,
+                tax_name: tax_name,
+                money_value: money_value,
                 pictures: todo.doc.variant['pictures'], //Img
                 name: todo.doc.variant['name'], //Name
                 quantity: quantity, //Cantidad
@@ -170,7 +171,7 @@ async function all_cart_item(todos) {
                 discount: discount, //Discount
                 discount_tot: discount_tot, //Tot Discount
                 sub_tot: todo.doc.variant['price'],
-                sub_tot_dis: sub_tot_item
+                sub_tot_dis: total_neto_item
             };
             //Creo el array con todos los items
             array_cart_items.push(cart_item);
@@ -186,14 +187,192 @@ async function all_cart_item(todos) {
         // Imprimo todos los items en un solo render asi es mas rapido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
     } catch (err) {
-        console.error('inner',err);
+        console.error('inner', err);
         throw err;
     } finally {
         //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
         total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
         total_service = parseFloat(total_service);
         total_cart_neto = total_product + total_service; // Suma los dos valores
-        $('#total_cart_neto').text(total_cart_neto.toFixed(2)); 
+        $('#total_cart_neto').text(total_cart_neto.toFixed(2));
+        $('.cart_n').text(total_quantity_cart_item);
+        $('#total_neto_prod').text(total_product.toFixed(2));
+        $('#total_neto_service').text(total_service.toFixed(2));
+        $('#total_neto_discount').text(total_neto_discount.toFixed(2));
+        $('#total_neto_tax').text(total_neto_tax.toFixed(2));
+        $('#total_neto_pay').text(total_neto_pay.toFixed(2));
+        chek_cart_open_ws();
+        return;
+    }
+}
+
+async function get_price_cost(doc_id,variant_id){
+
+    try{
+        var doc = await L_catalog_db.get(String(doc_id));
+        var get_variant_id = doc.variations.find(response => response.id == variant_id);
+    
+            var stock_invetary = get_variant_id['stock_invetary'];
+            var count_out_stock = out_stock_s;
+    
+            for (var i = stock_invetary.length - 1; i >= 0; i--) {
+                //Compruebo q tenga stock mayor a 1
+                var real_stock = stock_invetary[i].real_stock;
+                var out_stock = stock_invetary[i].out_stock;
+                //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
+                if (real_stock >= 1 && count_out_stock >= 1) {
+                    // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
+                    for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
+                        var real_stock = real_stock - 1;
+                        var out_stock = out_stock += 1;
+                        var count_out_stock = count_out_stock - 1;
+                        //Compruebo que queda stock disponible
+                        if (real_stock <= 0) {
+                            // Si no hay mas stock paro y guardo el resultado en el array
+                            var stock_invetary_new = stock_invetary[i];
+                            stock_invetary_new.real_stock = real_stock;
+                            stock_invetary_new.out_stock = out_stock;
+                            stock_invetary_new.update_datetime = newDate;
+                            stock_invetary_new.updateUser = userName;
+                            break
+                        } else {
+                            continue;
+                        }
+                    }
+                    // EDITO EL ARRAY 
+                    var stock_invetary_new = stock_invetary[i];
+                    stock_invetary_new.real_stock = real_stock;
+                    stock_invetary_new.out_stock = out_stock;
+                    stock_invetary_new.update_datetime = newDate;
+                    stock_invetary_new.updateUser = userName;
+                }
+    
+            }
+            //Modifico los datos del array viejo por el nuevo
+
+            var stock_invetary = stock_invetary;
+
+            return stock_invetary;
+
+    }
+    catch(err){
+        Snackbar.show({
+            text: err,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+            }
+        });
+        console.log(err);
+
+    }
+  
+}
+
+
+// Creo los arrays con los datos de la BD
+async function all_cart_item(todos) {
+    event.preventDefault
+    try {
+        let array_cart_items = [];
+        //Creo los array
+        var total_quantity_cart_item = 0
+        var total_cart_neto = 0; //TOTAL NETO    
+        var total_neto_prod = 0; //Total productos 
+        var total_neto_service = 0; //Total Servicios    
+        var total_neto_tax = 0; //Impuestos    
+        var total_neto_discount = 0; //Descuentos
+        var total_neto_pay = 0; //Abonado
+        var total_product = 0;
+        var total_service = 0;
+        //  var sub_tot_item = 0;
+        //   var total_neto_item = 0;
+        var discount_tot_sum = 0;
+        var tax = 0;
+        todos.map(function (todo) {
+            var type_item = todo.doc.variant['type'];
+            var quantity = todo.doc.variant['quantity'];
+            var discount = todo.doc.variant['discount'];
+            var price = todo.doc.variant['price'];
+            var sub_tot_dis = todo.doc.variant['sub_tot_dis'];
+            //  var price_cost = todo.doc.variant['price_cost'];
+            var price_tot = price * quantity;
+            var tax = todo.doc.variant['tax'];
+            var tax_name = todo.doc.variant['tax_name'];
+            var currency = todo.doc.variant['currency'];
+           // var currency_value = currency.value;
+            
+            console.log('currency AAAAAA ULTIMATE',currency)
+            //  var total_price_cost_profit = price_cost * quantity;
+            //Descuentos
+            //  var sub_tot_product = 0;
+            //  var sub_tot_service = 0 ;
+            //sumo el total de descuentos
+            discount_tot_sum += +discount;
+            var discount_tot = discount;
+
+            if (type_item === 'product') {
+                //var sub_tot_product = Math.round(price_tot - discount_tot);
+                total_neto_prod += +price_tot;
+                total_product = total_neto_prod;
+               // price_cost_tot += +price_tot;
+             //   price_cost_profit = total_price_cost_profit;
+            }
+            if (type_item === 'service') {
+                total_neto_service += +price_tot;
+                total_service = total_neto_service;
+               // price_cost_tot += +price_tot;
+               // price_cost_profit = 
+            }
+            //Cargo los datos del array
+            var cart_item = {
+                _id: todo.doc['_id'],
+                _rev: todo.doc['_rev'],
+                variant_id: todo.doc.variant['_id'],
+                sku: todo.doc.variant['sku'],
+                tax: tax,
+                tax_name: tax_name,
+                currency: currency,
+                pictures: todo.doc.variant['pictures'], //Img
+                name: todo.doc.variant['name'], //Name
+                quantity: quantity, //Cantidad
+                price: price, //Price
+                price_tot: price_tot, //Total del item
+                discount: discount, //Discount
+                discount_tot: discount_tot, //Tot Discount
+                sub_tot: price,
+                sub_tot_dis: sub_tot_dis
+            };
+            //Creo el array con todos los items
+            array_cart_items.push(cart_item);
+            total_quantity_cart_item = array_cart_items.length;
+            //Sumas de tototales
+            total_neto_discount += +discount_tot;
+            total_neto_tax += +tax;
+        });
+        //Creo el array nuevo con los items
+        var cart_items = {
+            items_product: array_cart_items,
+        };
+        // Imprimo todos los items en un solo render asi es mas rapido
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
+    } catch (err) {
+        console.error('inner', err);
+        throw err;
+    } finally {
+        //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
+        total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
+        total_service = parseFloat(total_service);
+        total_cart_neto = total_product + total_service; // Suma los dos valores
+        // Valores de costo
+
+       // total_cart_cost = parseFloat(price_cost_tot);
+      //  total_cart_profit = parseFloat(price_cost_profit);
+
+        $('#total_cart_neto').text(total_cart_neto.toFixed(2));
         $('.cart_n').text(total_quantity_cart_item);
         $('#total_neto_prod').text(total_product.toFixed(2));
         $('#total_neto_service').text(total_service.toFixed(2));
@@ -207,27 +386,55 @@ async function all_cart_item(todos) {
 
 // Traer los item leyendo de la pounchDB
 //Nueva funcion de agregar al producto al carrito
-function variations_add_cart(element) {
+async function variations_add_cart(element) {
+
     event.preventDefault();
-    //Identificadores
-    let product_id = $(element).attr('product_id'); //Id del producto selccionado
-    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+    try {
 
+       
+        //Busco el id en el array con find funcion de flecha
+        //  var stock_invetary = doc.variations['stock_invetary'].find(element => element.id == variant_id);
+ 
+        let product_id = $(element).attr('product_id'); //Id del producto selccionado
+        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+       // let variant_price_id = $(element).attr('variant_price_id');
+        var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+        let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+        let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
+        let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
 
-    //Detalles
-    //let variant_name = $('#var_btn_' + product_id).find('var_name').html(); //Nombre de variable seleccionada
-    //let variant_pic = $('#var_btn_' + product_id).find('img-card-mini').attr('src'); //Pic de variable seleccionada
-    //Valores
-    let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-    let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
-    let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
-    //Busco el doc por id actualizado y hago la carga de datos
-    L_catalog_db.get(product_id, function (err, doc) {
-        if (err) { return console.log(err); }
+        let variant_price_id = $('#card_var_id_' + product_id).attr('price_id'); //Tomo el valor del formulario
+       // let variant_price_id = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+
+        // TRAIGO EL PRODUCT DOC
+        let doc = await L_catalog_db.get(product_id);
         //Busco el id en el array con find funcion de flecha
         const var_doc = doc.variations.find(element => element.id == variant_id);
+        const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+       // let price_cost = await get_price_cost(product_id,variant_id)
+        //calculos matematicos para armar el Carrito
+        var quantity = variant_quantity;
+        //Valores
+        var price = variant_price;
+        //  var price_cost = todo.doc.variant['price_cost'];
+        var price_tot = price * quantity;
+
+        // Hago descuentos del item y la suma total
+        var tax = 21;
+        var tax_name = 'iva';
+        var currency = price_list.currency['value'];
+        //var currency_default = currency_doc.currency_default;
+        //Descuentos
+        var discount = variant_discount;
+        if (!discount) { discount = 0 };
+        var discount_tot = Math.round((discount / 100) * price_tot);
+        var sub_tot_product = Math.round(price_tot - discount_tot);
+        var sub_tot_dis = sub_tot_product;
+
         // console.log(var_doc);
+
+      //  const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+
         const new_variant_doc = {
             product_id: product_id,
             product_rev: doc._rev,
@@ -241,11 +448,16 @@ function variations_add_cart(element) {
             price: parseFloat(variant_price),
             discount: parseFloat(variant_discount),
             quantity: parseFloat(variant_quantity),
-            tax: parseFloat(var_doc.tax.value),
-            tax_name: var_doc.tax.name,
-            currency: var_doc.price_list[0].currency.value,
+            sub_tot_dis: parseFloat(sub_tot_dis),
+            discount_tot: parseFloat(discount_tot), //Tot Discount
+            tax: parseFloat(tax),
+            tax_name: tax_name,
+            currency: currency,
         }
-       // console.log('CURRENCY',var_doc.price_list[0].currency.value);
+
+        console.log('new_variant_doc',new_variant_doc);
+       console.log('CURRENCY',currency);
+       console.log('price_list',price_list);
         //alert(var_doc.tax['value']);
         if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
             $(this_card_id).find(".ripple_div").addClass('add');
@@ -262,38 +474,52 @@ function variations_add_cart(element) {
 
         }
         //    renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    });
-    return false;
+
+
+    }
+    catch (err) {
+        Snackbar.show({
+            text: err,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+            }
+        });
+        console.log(err);
+
+    }
+
 };
 
 
 
+async function variations_add_cart_NEWNO(element) {
 
-
-async function variations_add_cart_NEWNO(element)  {
-
-    try{
+    try {
         event.preventDefault();
         //Identificadores
         let product_id = $(element).attr('product_id'); //Id del producto selccionado
         let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
         var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
         var board_name = readCookie('board-now-' + ws_id);
-    
-       /* let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
-        let variant_price = $(element).attr('price'); //Id de la variable seleccionada
-        let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
-        let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
-*/
-    let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-    let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
-    let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
-    
+
+        /* let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
+         let variant_price = $(element).attr('price'); //Id de la variable seleccionada
+         let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
+         let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
+ */
+        let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+        let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
+        let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
+
         let doc = await L_catalog_db.get(product_id);
-        if(doc){
+        if (doc) {
             const var_doc = doc.variant;
-          //  const tax = var_doc.tax.value;
-        //    const tax_name = var_doc.tax.name;
+            //  const tax = var_doc.tax.value;
+            //    const tax_name = var_doc.tax.name;
             // console.log(var_doc);
             const new_variant_doc = {
                 product_id: product_id,
@@ -308,28 +534,92 @@ async function variations_add_cart_NEWNO(element)  {
                 price: parseFloat(variant_price),
                 discount: parseFloat(variant_discount),
                 quantity: parseFloat(variant_quantity),
-               // tax: parseFloat(tax),
-              //  tax_name: tax_name,
+                // tax: parseFloat(tax),
+                //  tax_name: tax_name,
                 currency: var_doc.price_list[0].currency.value,
             }
 
-          let rest_add = await add_cart_item(new_variant_doc);
-         // let delete_doc = await user_db.remove(doc._id,doc._rev);
-          if(rest_add){
-            get_cart(ws_id,board_name);
-            $(this_card_id).find(".ripple_div").addClass('add');
-            $(this_card_id).find(".content").addClass('ripple_efect');
-            $("#cart_item_tab").addClass('active in');
-            $("#cart_item_tab_icon").addClass('active');
-            $("#new_item_tab").removeClass('active in');
-            $("#new_item_tab_icon").removeClass('active');
-         //   Activo la animacion del tab favoritos
-             $("#fav_item_tab").removeClass('active in');
-            $("#fav_item_tab_icon").removeClass('active');
-          }
-    
+            let rest_add = await add_cart_item(new_variant_doc);
+            // let delete_doc = await user_db.remove(doc._id,doc._rev);
+            if (rest_add) {
+                get_cart(ws_id, board_name);
+                $(this_card_id).find(".ripple_div").addClass('add');
+                $(this_card_id).find(".content").addClass('ripple_efect');
+                $("#cart_item_tab").addClass('active in');
+                $("#cart_item_tab_icon").addClass('active');
+                $("#new_item_tab").removeClass('active in');
+                $("#new_item_tab_icon").removeClass('active');
+                //   Activo la animacion del tab favoritos
+                $("#fav_item_tab").removeClass('active in');
+                $("#fav_item_tab_icon").removeClass('active');
+            }
+
         }
-    
+
+    } catch (err) {
+        Snackbar.show({
+            text: err,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+            }
+        });
+        console.log(err);
+    }
+};
+
+
+
+
+async function variations_add_cart_to_fav(element) {
+
+    try {
+        event.preventDefault();
+        //Identificadores
+        let product_id = $(element).attr('product_id'); //Id del producto selccionado
+        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+        var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+        var board_name = readCookie('board-now-' + ws_id);
+
+        let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
+        let variant_price = $(element).attr('price'); //Id de la variable seleccionada
+        let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
+        let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
+
+        let doc = await user_db.get(product_id);
+        if (doc) {
+            const var_doc = doc.variant;
+            // console.log(var_doc);
+            const new_variant_doc = {
+                product_id: doc._id,
+                product_rev: doc._rev,
+                variant_id: var_doc.variant_id,
+                id: var_doc.variant_id,
+                sku: var_doc.sku.value,
+                pictures: var_doc.pictures,
+                name: var_doc.name,
+                attribute_combinations: var_doc.attribute_combinations,
+                price: parseFloat(var_doc.price),
+                price_cost: parseFloat(var_doc.price_cost),
+                discount: parseFloat(var_doc.discount),
+                quantity: parseFloat(var_doc.quantity),
+                tax: parseFloat(var_doc.tax)
+            }
+            let rest_add = await add_cart_item(new_variant_doc);
+            let delete_doc = await user_db.remove(doc._id, doc._rev);
+            get_fav(ws_id, board_name);
+            if (rest_add) {
+
+
+
+            }
+
+        }
+
+
     } catch (err) {
         Snackbar.show({
             text: 'Hay un conflicto',
@@ -338,75 +628,11 @@ async function variations_add_cart_NEWNO(element)  {
             actionText: 'Recargar',
             actionTextColor: "#dd4b39",
             onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0); 
+                $(element).css('opacity', 0);
             }
         });
         console.log(err);
     }
-    };
-
-
-
-
-async function variations_add_cart_to_fav(element) {
-
-try{
-    event.preventDefault();
-    //Identificadores
-    let product_id = $(element).attr('product_id'); //Id del producto selccionado
-    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
-    var board_name = readCookie('board-now-' + ws_id);
-
-    let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
-    let variant_price = $(element).attr('price'); //Id de la variable seleccionada
-    let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
-    let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
-
-    let doc = await user_db.get(product_id);
-    if(doc){
-        const var_doc = doc.variant;
-        // console.log(var_doc);
-        const new_variant_doc = {
-            product_id: doc._id,
-            product_rev: doc._rev,
-            variant_id: var_doc.variant_id,
-            id: var_doc.variant_id,
-            sku: var_doc.sku.value,
-            pictures: var_doc.pictures,
-            name: var_doc.name,
-            attribute_combinations: var_doc.attribute_combinations,
-            price: parseFloat(var_doc.price),
-            price_cost:parseFloat(var_doc.price_cost),
-            discount: parseFloat(var_doc.discount),
-            quantity: parseFloat(var_doc.quantity),
-            tax: parseFloat(var_doc.tax)
-        }
-      let rest_add = await add_cart_item(new_variant_doc);
-      let delete_doc = await user_db.remove(doc._id,doc._rev);
-      get_fav(ws_id,board_name);
-      if(rest_add){
-       
-      
-
-      }
-
-    }
-
-
-} catch (err) {
-    Snackbar.show({
-        text: 'Hay un conflicto',
-        width: '475px',
-        pos: 'bottom-right',
-        actionText: 'Recargar',
-        actionTextColor: "#dd4b39",
-        onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
-            $(element).css('opacity', 0); 
-        }
-    });
-    console.log(err);
-}
 };
 
 //Validador de datos antes de enviar el form
@@ -440,14 +666,14 @@ async function add_cart_item(data) {
         var board_name = readCookie('board-now-' + ws_id);//LEO LA COKIE
         var response = await user_db.put({
             _id: new Date().toISOString(),
-            _id:'cart-item-'+board_name+new Date().toISOString(),
+            _id: 'cart-item-' + board_name + new Date().toISOString(),
             type: 'cart-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
         if (response.ok) {
-            get_cart(ws_id,board_name);
+            get_cart(ws_id, board_name);
             Snackbar.show({
                 text: ' <span class="material-icons">add_shopping_cart</span> <span class="round-icon pr">' + data.quantity + ' </span>   ' + data.name,
                 width: '475px',
@@ -484,25 +710,9 @@ async function dell_cart_item(element) {
     var item_cart_rev = $(element).attr('item_cart_rev');
     //dell_product(item_cart_id, item_cart_rev);
     try {
-        //   get_cart()
-        Snackbar.show({
-            text: '<span class="material-icons">delete</span>'+ws_lang_data.b_dell_cart,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: ws_lang_data.b_dell,
-            actionTextColor: "#dd4b39",
-            onActionClick: async function (element) {
-                user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-                get_cart(ws_id);
-                $(element).css('opacity', 0);
-                // $('#' + item_cart_id).remove();
-                // $(element).css('opacity', 0);
-                // alert('Clicked Called!');
-                // dell_product(response.id, response.rev);
-                //  location.reload();   
-            }
-        });
-
+        user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar    
+        get_cart(ws_id);
+      
     } catch (err) {
         Snackbar.show({
             text: 'Hay un conflicto',
@@ -521,16 +731,6 @@ async function dell_cart_item(element) {
     }
 }
 
-/*
-$(document).on('click', '.right_nav_open', function (event) {
-    createCookie('left_nav_open_ws_' + ws_id, false), 30;
-    $('#right_main').removeClass('move-right');
-    $('#cart_user_input').focus();
-    console.log("ws_left_nav_data", ws_left_nav_data);
-    //Aca tengo que evniarle los aprametros la funcion get cart para que filtre
-    get_right_cart(ws_info, ws_lang_data, ws_left_nav_data);
-});
-*/
 
 $(document).on('click', '.right_nav_close', function (event) {
     createCookie('left_nav_open_ws_' + ws_id, true), 30;
@@ -542,7 +742,7 @@ $(document).on('click', '.right_nav_close', function (event) {
 // Agreagar productos al favoritos
 // Trae los datos de la local user DB filtrado por tipo cart-items
 
-async function get_fav(ws_id,board_name) {
+async function get_fav(ws_id, board_name) {
 
     if (!board_name) {
         board_name = readCookie('board-now-' + ws_id);
@@ -694,7 +894,7 @@ function variations_add_fav(element) {
     return false;
 };
 
-async function add_fav_item(data,board_name) {
+async function add_fav_item(data, board_name) {
     // console.log(data);
     try {
 
@@ -703,14 +903,14 @@ async function add_fav_item(data,board_name) {
         }
         // console.log("get_right_cart board_name:"+board_name);
         var response = await user_db.put({
-            _id:'cart-fav-item-'+board_name+new Date().toISOString(),
+            _id: 'cart-fav-item-' + board_name + new Date().toISOString(),
             type: 'fav-item-' + board_name,
             ws_id: ws_id,
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
         if (response.ok) {
-            get_fav(ws_id,board_name);
+            get_fav(ws_id, board_name);
             //fav_n
             $("#cart_item_tab").removeClass('active in');
             $("#cart_item_tab_icon").removeClass('active');
@@ -754,22 +954,10 @@ async function add_fav_item(data,board_name) {
 // Eliminar productos del carrito
 async function dell_fav_item(element) {
     try {
-
-
-    var item_cart_id = $(element).attr('item_cart_id');
-    var item_cart_rev = $(element).attr('item_cart_rev');
-        Snackbar.show({
-            text: '<span class="material-icons">delete</span>' + ws_lang_data.b_dell_fav,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: ws_lang_data.b_dell,
-            actionTextColor: "#dd4b39",
-            onActionClick: async function (element) {
-                user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-                get_fav(ws_id) 
-                $(element).css('opacity', 0);
-            }
-        });
+        var item_cart_id = $(element).attr('item_cart_id');
+        var item_cart_rev = $(element).attr('item_cart_rev');
+        user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar    
+        get_cart(ws_id);
 
     } catch (err) {
         Snackbar.show({
@@ -780,9 +968,6 @@ async function dell_fav_item(element) {
             actionTextColor: "#dd4b39",
             onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
                 $(element).css('opacity', 0);
-                //    alert('Clicked Called!');
-                //add_product(card_product_id, card_product_img_url, card_product_name, card_product_val, card_product_discount, card_product_quantity);
-                //  location.reload();   
             }
         });
         console.log(err);

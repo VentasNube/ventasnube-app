@@ -166,10 +166,17 @@ async function search_catalog_item(search_val) {
 //Boton cambiar lista de precio
 function cat_variations_price(element) {
     //    $(".card_item_select_price").click(function () {
+
     var card_item_price = $(element).html();
     var card_product_val = $(element).find('label').html();
+    var price_id =  $(element).attr('price_id');
+    alert(price_id);
     $(element).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
+
+    $(element).parent().parent().parent().find(".card_item_selected_price").attr('price_id',price_id);
+
     $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
+    //$(element).parent().parent().parent().parent().parent().find(".card_product_val").attr('price_id',price_id);
     //    alert(card_product_val);
     //  });
 }
