@@ -848,7 +848,7 @@ async function all_fav_item(todos) {
 }
 
 //Nueva funcion de agregar al producto al favoritos
-function variations_add_fav(element) {
+function variations_add_fav_OLD_NO(element) {
     event.preventDefault();
     //Identificadores"cart-fav-item-purcharse2023-07-08T23:15:39.683Z"
     let product_id = $(element).attr('product_id'); //Id del producto selccionado
@@ -893,6 +893,120 @@ function variations_add_fav(element) {
     });
     return false;
 };
+
+
+async function variations_add_fav(element) {
+
+    event.preventDefault();
+    try {
+        //Busco el id en el array con find funcion de flecha
+        //  var stock_invetary = doc.variations['stock_invetary'].find(element => element.id == variant_id);
+ 
+        let product_id = $(element).attr('product_id'); //Id del producto selccionado
+        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+       // let variant_price_id = $(element).attr('variant_price_id');
+        var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
+        let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+        let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
+        let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
+
+        let variant_price_id = $('#card_var_id_' + product_id).attr('price_id'); //Tomo el valor del formulario
+       // let variant_price_id = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+
+        // TRAIGO EL PRODUCT DOC
+        let doc = await L_catalog_db.get(product_id);
+        //Busco el id en el array con find funcion de flecha
+        const var_doc = doc.variations.find(element => element.id == variant_id);
+        const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+
+        const tax_doc = var_doc.tax
+        // let price_cost = await get_price_cost(product_id,variant_id)
+        //calculos matematicos para armar el Carrito
+        var quantity = variant_quantity;
+        //Valores
+        var price = variant_price;
+        //  var price_cost = todo.doc.variant['price_cost'];
+        var price_tot = price * quantity;
+
+        // Hago descuentos del item y la suma total
+        var tax = tax_doc['value'];
+        var tax_name = tax_doc['name'];
+        //var tax_id = tax_doc.id;
+        var currency = price_list.currency['value'];
+        //var currency_default = currency_doc.currency_default;
+        //Descuentos
+        var discount = variant_discount;
+        if (!discount) { discount = 0 };
+        var discount_tot = Math.round((discount / 100) * price_tot);
+        var sub_tot_product = Math.round(price_tot - discount_tot);
+        var sub_tot_dis = sub_tot_product;
+
+        // console.log(var_doc);
+
+      //  const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+
+        const new_variant_doc = {
+            product_id: product_id,
+            product_rev: doc._rev,
+            type: doc.type,
+            variant_id: var_doc.variant_id,
+            id: var_doc.variant_id,
+            sku: var_doc.sku.value,
+            pictures: var_doc.pictures,
+            name: doc.name,
+            attribute_combinations: var_doc.attribute_combinations,
+            price: parseFloat(variant_price),
+            discount: parseFloat(variant_discount),
+            quantity: parseFloat(variant_quantity),
+            sub_tot_dis: parseFloat(sub_tot_dis),
+            discount_tot: parseFloat(discount_tot), //Tot Discount
+            tax: parseFloat(tax),
+            tax_name: tax_name,
+            tax_doc:tax_doc,
+            currency: currency,
+        }
+
+        console.log('new_variant_doc',new_variant_doc);
+       console.log('CURRENCY',currency);
+       console.log('price_list',price_list);
+        //alert(var_doc.tax['value']);
+        if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
+            $(this_card_id).find(".ripple_div").addClass('add');
+            $(this_card_id).find(".content").addClass('ripple_efect');
+            add_fav_item(new_variant_doc);
+
+            $("#cart_item_tab").addClass('active in');
+            $("#cart_item_tab_icon").addClass('active');
+            $("#new_item_tab").removeClass('active in');
+            $("#new_item_tab_icon").removeClass('active');
+            //Activo la animacion del tab favoritos
+            $("#fav_item_tab").removeClass('active in');
+            $("#fav_item_tab_icon").removeClass('active');
+
+        }
+        //    renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+
+
+    }
+    catch (err) {
+        Snackbar.show({
+            text: err,
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Recargar',
+            actionTextColor: "#dd4b39",
+            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
+                $(element).css('opacity', 0);
+            }
+        });
+        console.log(err);
+
+    }
+
+};
+
+
+
 
 async function add_fav_item(data, board_name) {
     // console.log(data);
@@ -951,9 +1065,37 @@ async function add_fav_item(data, board_name) {
     }
 }
 
-// Eliminar productos del carrito
+
 async function dell_fav_item(element) {
     try {
+        var board_name = readCookie('board-now-' + ws_id);
+      var item_cart_id = $(element).attr('item_cart_id');
+      var item_cart_rev = $(element).attr('item_cart_rev');
+     let response = await user_db.remove(item_cart_id, item_cart_rev);
+     
+     if(response.ok){
+        get_cart(ws_id, board_name);
+     //   get_cart(ws_id);
+     }
+    } catch (err) {
+      Snackbar.show({
+        text: 'Hay un error al eliminar',
+        width: '475px',
+        pos: 'bottom-right',
+        actionText: '<?= lang("Body.b_reload") ?>',
+        actionTextColor: "#dd4b39",
+        onActionClick: function (element) {
+          $(element).css('opacity', 0);
+        }
+      });
+      console.log(err);
+    }
+  }
+// Eliminar productos del carrito
+async function dell_fav_itemOLD_NO(element) {
+    try {
+
+    
         var item_cart_id = $(element).attr('item_cart_id');
         var item_cart_rev = $(element).attr('item_cart_rev');
         user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar    

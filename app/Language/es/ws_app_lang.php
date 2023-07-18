@@ -192,6 +192,9 @@ return [
         //
         'm_catalog_add_stock_cost' => 'Precio costo',
         'm_catalog_add_stock_sale' => 'Precio venta',
+        'm_catalog_add_stock_profit' => 'Porcentaje',
+
+        'm_catalog_add_stock_price_list' => 'Agregar precio adicional',
         'm_catalog_add_stock' => 'Cantidad',
         'm_catalog_edit_price' => 'Precio',
         'm_catalog_edit_stock' => 'Stock',

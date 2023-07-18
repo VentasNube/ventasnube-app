@@ -730,12 +730,10 @@ async function catalog_new_item_new_product(element) {
         const new_doc_tags = textoTags
         var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
         var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
-
+        
         var tax_doc = await L_catalog_db.get('tax_list');
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
-
-
         let currency_select = currency_doc.currency_default;
         let tax_select = tax_doc.tax;
 
@@ -743,11 +741,20 @@ async function catalog_new_item_new_product(element) {
 
         const new_doc_id = textoSinEspacios + "-" + new_doc_id_random;
         var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+
+
         // Documento variable template
         var variations = [{
             "id": new_variant_id,
             currency_select,
             tax_select,
+            "sold_quantity": 0,
+            "available_quantity": 0,
+            "limit_discount": 0,
+            "status": {
+                "status": true,
+                "value": ""
+            },
             "sku": {
                 "id": "EAN",
                 "value": ""
@@ -758,21 +765,6 @@ async function catalog_new_item_new_product(element) {
                     "min": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png"
                 }
             ],
-            "attribute_combinations": [
-                {
-                    "id": "COLOR",
-                    "id_name": "Color",
-                    "name": "Roja",
-                    "value": "EF5350"
-                },
-                {
-                    "id": "SIZE",
-                    "id_name": "Talle",
-                    "name": "Medium",
-                    "value": "M"
-                }
-            ],
-
             "price_list": [
                 {
                     "id": 1,
@@ -801,23 +793,39 @@ async function catalog_new_item_new_product(element) {
                     "location_id": 1
                 }
             ],
-
-            "sold_quantity": 0,
+            "attribute_combinations": [
+                {
+                    "id": "COLOR",
+                    "id_name": "Color",
+                    "name": "Roja",
+                    "value": "EF5350"
+                },
+                {
+                    "id": "SIZE",
+                    "id_name": "Talle",
+                    "name": "Medium",
+                    "value": "M"
+                },
+                {
+                    "id": "WEIGHT",
+                    "id_name": "Peso",
+                    "unit":"Kg",
+                    "name": "Peso",
+                    "value": 10
+                },
+                {
+                    "id": "MEASURES",
+                    "id_name": "Dimension",
+                    "name": "Dimension",  
+                    "unit":"cm",      
+                    "width": 100,
+                    "height": 50,
+                    "value": "100cm x 50cm"
+                }
+            ],
             "description": {
                 "status": true,
                 "value": "Nueva Descripcion"
-            },
-            "color": {
-                "status": false,
-                "value": "#4f78ba"
-            },
-            "size": {
-                "status": false,
-                "value": ""
-            },
-            "status": {
-                "status": true,
-                "value": ""
             }
         }];
         // Documento template producto
@@ -827,12 +835,6 @@ async function catalog_new_item_new_product(element) {
             "author": new_doc_author,
             "start_time": new_doc_time,
             "workspace_id": new_doc_workspace_id,
-            "last_update_at": [
-                {
-                    "username": new_doc_author,
-                    "datetime": new_doc_time
-                }
-            ],
             "status": "active",
             "condition": "new",
             "type": type,
@@ -847,14 +849,17 @@ async function catalog_new_item_new_product(element) {
                     id_stock_invetary: 311
                 }
             ],
-            "available_quantity": null,
-            "sold_quantity": null,
-            "limit_discount": null,
             "permalink": null,
             "descriptions": [
                 null
             ],
             variations,
+            "last_update_at": [
+                {
+                    "username": new_doc_author,
+                    "datetime": new_doc_time
+                }
+            ]
         });
         if (response) {
             //Imprimo el item en la pantalla 
@@ -3522,6 +3527,38 @@ async function cat_edit_variations(element) {
 
 
 ////// UPLOAD IMAGEN PRODUCTO ///
+
+async function product_upload_img_pop(element){
+
+    try {
+        // const modal = document.getElementById('master_popup');
+        // Listas de precio ws_collections_333433/
+        // ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+        //  const doc_id = $(element).attr('doc_id');
+        //   const variant_id = $(element).attr('variant_id');
+    
+        const data = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+        }
+        // console.log(ws_price_list);
+        $('#master_popup').modal('show');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', '#master_popup', data);
+       // save_new_conctact();
+    } catch (err) {
+        console.log('ERROR:', err);
+        Snackbar.show({
+            text: err.reason,
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+         //   action: () => { updateDocuments() }
+        });
+    }
+
+}
+
 async function uploadImage(element) {
     //const fileInput = document.getElementById("fileInput");
     const doc_id = $(element).attr('doc_id');
@@ -3587,8 +3624,6 @@ async function uploadImage(element) {
     }
 
 }
-
-
 
 
 

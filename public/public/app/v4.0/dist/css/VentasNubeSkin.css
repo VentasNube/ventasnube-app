@@ -12718,6 +12718,36 @@ board-item-content
 
 /** stilos de moviemiento**/
 
+
+.tittle_input{
+    margin:0;
+    padding:0;
+    font-weight: bold;
+    font-size: 18px;
+}
+.dark_input{
+    margin:0;   
+    padding:0;
+    font-weight: bold;
+    font-size: 18px;
+    color:#ddd;
+}
+.dark_input:active{
+    margin:0;
+    padding:0;
+    font-weight: bold;
+    font-size: 18px;
+    color:#FFFFFF;
+}
+
+.dark_input:hover{
+    margin:0;
+    padding:0;
+    font-weight: bold;
+    font-size: 18px;
+    color:#FFFFFF;
+}
+
 /* BOARD */
 .auto-subjet {
     /*  display: hidden;*/
@@ -12766,11 +12796,13 @@ board-item-content
 
 /********  COMPONENTE SWICH **********/
 .Switch {
-    display: inline-block;
-    position: relative;
-    /* height: 9px; */
-    padding: 5px 0px 6px 5px;
-    width: 50px;
+   /* display: inline-block;*/
+   display: -webkit-inline-box;
+   position: relative;
+   height: auto;
+   padding: 5px 0px 6px 5px;
+   width: 50px;
+   vertical-align: middle;
 }
 
 .Switch>input[type="checkbox"] {
@@ -12926,11 +12958,15 @@ board-item-content
     display: inline-block;
     width: 100%;
     text-align: left;
-    margin: 75px 0px 90px 0;
+    margin: 55px 0px 90px 0;
     padding: 15px;
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
+}
+
+.righ_nav_content .righ_nav_conten_main {
+    margin-bottom: 300px;
 }
 
 .righ_nav_content .righ_nav_content_scroll {

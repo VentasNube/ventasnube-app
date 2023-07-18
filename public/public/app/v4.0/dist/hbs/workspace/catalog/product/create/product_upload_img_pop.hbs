@@ -1,0 +1,170 @@
+
+{{#with ws_lang_data }}
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <form id="new_contact_form" class="">
+            <div class="modal-header">
+                <div class="modal-nav">
+                    <span class="back-arrow btn-previus">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                        {{m_catalog_edit_add_pic}}
+                    </span>
+                </div>
+            </div>
+            <div id="modal-body" class="">
+                <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
+                    <div id="new-upload-img">
+
+                        <div class="form-group col-lg-12 col-md-12 col-sm-421 col-xs-12" >
+<div class="header">
+                                        <button id="" type="button"
+                                            class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
+                                            <span class="material-icons">
+                                                delete_forever
+                                            </span>
+                                        </button>
+                                        <!-- FOTOS  new 2023 -->
+                                  
+                                        <div id="img-card-{{{../id}}}-"
+                                            style="width: 100%; background-image: url('');"
+                                            class="parallax img_card">
+                                            <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                                            <div class=" mini-carrousel-img ">
+                                         
+                                                <div class="mini-card-img-s">
+                                                    <div class="img">
+                                                        <a target="_blank" href="">
+                                                              <img id="mini-card-img-card--" src=""  class="card_img_url">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                         
+                                               
+                                            </div>
+                                        </div>
+
+                                        <div id="message"></div>
+                                            <div class="form-group">
+                                                <label for="fileInput">Selecciona un archivo:</label>
+                                                <input  doc_id="" variant_id=""  type="file" name="userfile" id="img-file-input-">
+                                            </div>
+                                            <button id="upload-btn--" doc_id="" variant_id="" onclick="uploadImage(this)" class="btn btn-primary">
+                                                <span id="preloader_up_pic" style="display: none;"  class="material-icons material-icon-spinner">sync</span>
+                                                <span id="preloader_finish" class="material-icons">cloud_upload</span> 
+                                                <span >Subir</span>
+                                            </button>
+                                           
+                                            
+                                        <!-- Aquí se muestra el preloader mientras se sube la imagen -->
+                                        <div id="preloader" style="display: none;" class="icon_loading">
+                                            <span class="material-icons material-icon-spinner">
+                                                update
+                                            </span>
+                                        </div>
+
+                                             
+                                        <!-- Aquí se mostrará el mensaje de éxito o error -->
+                                        <!--input type="file" name="userfile" id="img-file-input-{{{id}}}">
+
+                                        <button doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}"
+                                            onclick="uploadImage(this)"
+                                            class="margin-10 round btn btn-transparent btn-default pull-left ">
+                                            <span class="material-icons">
+                                                upload
+                                            </span>
+                                        </button-->
+
+                                    </div>
+
+
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+            <span class="">{{b_cancel}}</span>
+        </button>
+        <button id="btn-save" onclick="save_new_conctact(this)" category_id="new_contact" type="button"
+            class="btn btn-primary ">
+            <span class="">{{b_save}}</span>
+        </button>
+    </div>
+    </form>
+</div>
+{{/with}}
+
+<script>
+
+async function uploadImage(element) {
+    //const fileInput = document.getElementById("fileInput");
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const input_id = 'pictures';
+
+    const input = document.getElementById('img-file-input-' + variant_id);
+
+    if (input.files.length > 0) {
+        //console.log("Se ha cargado un archivo.");
+        const file = input.files[0];
+        const formData = new FormData();
+        formData.append('userfile', file);
+
+        //const preloader = document.getElementById('preloader');
+        //preloader.style.display = 'block';
+
+        //$('#preloader').attr('hidden','');
+        $('#preloader_finish').hide();
+        $('#preloader_up_pic').show();
+
+        try {
+            const response = await fetch('img_product_upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            $('#preloader_up_pic').hide();
+            $('#preloader_finish').show();
+
+            // preloader.style.display = 'none';
+            /// Actualizo el linck del docuemento 
+            var doc_id_s = String(doc_id);
+            var doc = await L_catalog_db.get(doc_id_s);
+            //Busco dentro de las variables
+            if (variant_id) {
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+                var value = item[input_id]; //Traigo el ojeto especifico 
+                value[0] = {
+                    max: data.new_name,
+                    min: data.new_name
+                };
+                //Edito el valor del value por el valor nuevo
+                if (item) {
+                    L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,
+                    });
+                    $("#img-card-" + variant_id + "-" + doc._id).css("background-image", "url('" + data.new_name + "')");
+                    $("#mini-card-img-card-" + variant_id + "-" + doc._id).attr("src", data.new_name);
+
+                    console.log(data.new_name, doc._id, variant_id);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            preloader.style.display = 'none';
+        }
+    } else {
+        console.log("No se ha cargado ningún archivo.");
+    }
+
+}
+
+</script>
