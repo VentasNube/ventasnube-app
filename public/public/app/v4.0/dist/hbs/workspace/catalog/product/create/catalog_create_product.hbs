@@ -1,12 +1,6 @@
 <!-- CATALOG CREATE NEW PRODUCT TEMPLATE -->
 
 <div class="righ_nav_header">
-    <button class="left_nav_close right_nav_close round btn btn-transparent btn-default pull-left "
-        data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="" type="button">
-        <span class="material-icons">
-            arrow_back
-        </span>
-    </button>
     <div class="btn-group dopdown">
         <button id="" m_id="" m_t_id="" m_t_name="" type="button"
             class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
@@ -35,68 +29,61 @@
         <span class="material-icons">close</span>
     </button>
 </div>
-
 <div class="righ_nav_content">
-
     <div class="righ_nav_conten_main">
-
-        <div id="new_product_step_1">
-            <div class="row header bg-dark">
-                <button onclick="product_upload_img_pop(this)" doc_id="" variant_id=""
-                    class="margin-10 round btn btn-transparent btn-default pull-left ">
-                    <span class="material-icons">
-                        add_a_photo
-                    </span>
-                </button>
+        <form id="new_product_step_1">
+            <div class="row padding-t-20 header bg-dark">
                 <div style="width: 100%; background-image: url('');" class="parallax img_card">
-                    <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
-                    <div class=" mini-carrousel-img ">
-                        <div class="mini-card-img-s">
-                            <div class="img">
-                                <a target="_blank" href="{{min}}">
-                                    <img src="{{min}}" alt="">
-                                </a>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                            <div class=" mini-carrousel-new-img ">
+                                <div class="mini-card-img-s">
+                                    <div class="img">
+                                        <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)"
+                                            img-charge="" href="#">
+                                            <img id="new_product_img_card" src="{{min}}" alt="">
+                                            <span class="material-icons">
+                                                add_a_photo
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="padding-t-20 col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                            <div class="input-group font-size-25">
+                                <span class="input-group-addon">
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                        data-original-title="Agregar precio">
+                                        drive_file_rename_outline
+                                    </span>
+                                </span>
+                                <input {{#with ws_lang_data}} id="catalog_new_product_name_input" input_id="name"
+                                    value="" placeholder="{{m_catalog_edit_name}} "
+                                    class="dark_input  form-control font-size-20" type="text" title="" required=""
+                                    data-msg-required="Falta completar el nombre" placeholder="{{contact_first_name}}"
+                                    name="product_name" {{/with}}>
                             </div>
                         </div>
                     </div>
-
-                    <div>
-                        <div class="input-group font-size-25">
-                            <span class="input-group-addon">
-                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
-                                    data-original-title="Agregar precio">
-                                    drive_file_rename_outline
-                                </span>
+                    <!-- TAGS MAIN -->
+                    <div class="padding-t-10 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="chips_main">
+                            <span class="icon material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_tags}}} {{/with}}">
+                                tag
                             </span>
-                            <input id="catalog_new_product_name_input" input_id="name" value="{{name}}"
-                                placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
-                                class="dark_input  form-control font-size-20" type="text"
-                                title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}">
+                            <div id="new_prod_tag_main" class="chips_items_main">
 
+                            </div>
+                            <input doc_id="" input_id="tags" class="chips_input form-control"
+                                placeholder="{{#with ws_lang_data}} {{m_catalog_edit_tags}} {{/with}}" name="keywords"
+                                type="text" onkeypress="catalog_add_new_tag_press(event,this)" style="">
                         </div>
-
                     </div>
+
                 </div>
             </div>
-            <!--
-        <div class="bg-gray-light padding-10 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-            <div class="input-group font-size-25">
-                <span class="input-group-addon">
-                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
-                        data-original-title="Agregar precio">
-                        drive_file_rename_outline
-                    </span>
-                </span>
-                <input id="catalog_new_product_name_input" input_id="name" value="{{name}}"
-                    placeholder="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}"
-                    class="form-control font-size-20" type="text"
-                    title="{{#with ws_lang_data}} {{m_catalog_edit_name}} {{/with}}">
-
-            </div>
-
-        </div>
-        -->
             <div id="edit-item-description-body" class="">
                 <div class="panel-body">
                     <div class="row">
@@ -284,22 +271,17 @@
                                 </span>
                             </div>
                         </div>
-                        <!--- TAGS MAIN 
-                    <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="chips_main">
-                            <span class="icon material-icons" data-toggle="tooltip" data-placement="bottom" title=""
-                                data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_tags}}} {{/with}}">
-                                tag
-                            </span>
-                            <div id="new_prod_tag_main" class="chips_items_main">
 
-                            </div>
-                            <input doc_id="" input_id="tags" class="chips_input form-control"
-                                placeholder="{{#with ws_lang_data}} {{m_catalog_edit_tags}} {{/with}}" name="keywords"
-                                type="text" onkeypress="catalog_add_new_tag_press(event,this)" style="">
+                        <div class="input-group padding-t-20 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <span class="input-group-addon">
+                                <span class="material-icons">
+                                    qr_code
+                                </span>
+                            </span>
+                            <input id="new_sku" class="form-control" type="text" placeholder="Codigo universal SKU"
+                                value="">
                         </div>
-                    </div>
-                    -->
+
                         <!--- AGREGR STOCK -->
                         <div class="bg-gray-light padding-20 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -350,8 +332,8 @@
                                             price_change
                                         </span>
                                     </span>
-                                    <select class="form-control  md " name="price_list_var_{{id}}"
-                                        id="price_list_var_{{id}}">
+                                    <select class="form-control  md " name="new_price_list_var_select"
+                                        id="new_price_list_var_select">
                                         {{#each price_list }}
                                         <option value="{{id}}">{{value}}</option>
                                         {{/each}}
@@ -368,7 +350,7 @@
                                             price_change
                                         </span>
                                     </span>
-                                    <select class="form-control  md " name="new_tax_list" id="new_tax_list">
+                                    <select class="form-control  md " name="new_tax_list" id="new_tax_list_var_select">
                                         {{#with tax_list}}
                                         {{#each tax }}
                                         <option value="{{id}}">{{name}} ( {{value}} )</option>
@@ -384,16 +366,15 @@
 
                                     <span class="input-group-addon font-size-25">
                                         <div class="Switch" onclick="">
-                                            <input id="{{{../product_doc/_id}}}_{{id}}_status_checkbox"
-                                                name="switch_variation" {{#ifEquals status.status true }} checked
-                                                {{/ifEquals}} value="" type="checkbox" doc_id="{{{../product_doc/_id}}}"
-                                                variant_id="{{id}}" input_id="status"
+                                            <input id="new_porcent_checkbox" name="switch_variation" {{#ifEquals
+                                                status.status true }} checked {{/ifEquals}} value="" type="checkbox"
+                                                doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" input_id="status"
                                                 onclick="cat_edit_chekbox(this)" />
                                             <label for="{{{../product_doc/_id}}}_{{id}}_status_checkbox"
                                                 class="label-primary"></label>
                                         </div>
                                     </span>
-                                    <input id="new_price" class="form-control font-size-25" type="number"
+                                    <input id="new_porcent_value" class="form-control font-size-25" type="number"
                                         placeholder="%{{#with ws_lang_data}} {{{m_catalog_add_stock_profit}}} {{/with}}"
                                         value="">
                                 </div>
@@ -424,11 +405,7 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="hi" id="new_product_step_2">
-
-        </div>
+        </form>
     </div>
 </div>
 <!--- MAIN VARIACIONES imprimo el catalog_new_variaton -->
@@ -436,42 +413,477 @@
 </div>
 
 
-
 <!--- FOOTER BOTONES  -->
 <div class="righ_nav_footer_main" id="cart_footer">
     <div class="right_nav_footer text-center ">
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
         {{#userCtx 'catalog' 'edit'}}
-        <button onclick="catalog_new_item_new_product(this)" doc_id="" variant_id="" type="button"
+        <button onclick="catalog_new_product(this)" doc_id="" variant_id="" type="button"
             class="btn btn-primary btn-full-with">
+            <!--span id="preloader_up_pic" style="display:" class="material-icons material-icon-spinner">sync</span-->
+            <span id="preloader_finish" class="material-icons"> more</span>
             {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
         </button>
         {{/userCtx}}
     </div>
 </div>
-
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script-->
 
 <script>
+
+    /// NUEVO PRODUCTO ///// 
+    var selectedFile; // Variable global para almacenar el archivo seleccionado
     function new_select_type_order(opcion) {
-        // Obtener el tipo de orden seleccionado y el botón
-        //const boton = document.querySelector('.select-btn');
-        // Obtener los elementos dentro del botón
-        //const icono = boton.querySelector('#new_type_icon_select');
-        // const valorSeleccionado = boton.querySelector('#new_type_value_select');
-        //type_order_icon_select = $('#new_type_icon_select').html('type_order');
-        //type_order_select = $('#new_type_value_select').attr('type_order');
-        // Obtener los datos seleccionados en la opción
         const type_order_select = opcion.getAttribute('type_order');
         const type_order_icon_select = opcion.querySelector('.material-icons').textContent;
         const type_order_name_select = opcion.querySelector('.type_val').textContent;
-        //Imprimo
         $('#new_type_icon_select').html(type_order_icon_select);
         $('#new_type_value_select').attr('type_order', type_order_select);
         $('#new_type_value_select').html(type_order_name_select);
+    }
+    function updatePrice() {
+        const switchElement = document.getElementById('switch');
+        const costInput = document.getElementById('new_cost_stock');
+        const priceInput = document.getElementById('new_price');
 
-        // Cambiar el texto y el icono del botón según la selección
-        //valorSeleccionado.textContent = valorSeleccionadoTexto;
-        //icono.textContent = iconoSeleccionado;
+        const cost = parseFloat(costInput.value);
+        const percentage = parseFloat(priceInput.value);
+
+        if (switchElement.checked) {
+            // Calcular el precio de venta basado en el porcentaje y el costo
+            const price = cost + (cost * (percentage / 100));
+            priceInput.value = price.toFixed(2);
+            priceInput.disabled = true;
+        } else {
+            priceInput.disabled = false;
+        }
+    }
+    /// SUBIR IMAGEN
+    async function compressAndUploadImage() {
+
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput;
+
+        if (!file) {
+            console.error("No se seleccionó ninguna imagen.");
+            return;
+        }
+
+        try {
+            // Crear una instancia de ImageCompressor
+            const imageCompressor = new ImageCompressor();
+
+            // Comprimir la imagen usando la biblioteca ImageCompressor
+            const compressedFile = await imageCompressor.compress(file, {
+                quality: 0.8, // Calidad de compresión (rango del 0 al 1)
+                maxWidth: 500, // Ancho máximo deseado después de la compresión
+                maxHeight: 500, // Alto máximo deseado después de la compresión
+            });
+
+            // Crear un objeto Blob con la imagen comprimida y el mismo formato original
+            const compressedBlob = new Blob([compressedFile], { type: file.type });
+
+            // Crear un objeto File con el Blob comprimido y el mismo nombre que el archivo original
+            const compressedImage = new File([compressedBlob], file.name, {
+                lastModified: file.lastModified,
+                type: file.type,
+            });
+
+            // Ahora puedes enviar la imagen comprimida al servidor o realizar otras operaciones
+            // Por ejemplo, puedes enviarla mediante una solicitud AJAX o utilizar un formulario para subir la imagen.
+
+            // Ejemplo de solicitud AJAX (con Fetch API)
+            const formData = new FormData();
+            formData.append("image", compressedImage);
+
+            return compressedImage;
+            /*
+              const response = await fetch("tu_url_de_servidor", {
+                method: "POST",
+                body: formData,
+              });
+        
+              if (response.ok) {
+                console.log("Imagen subida exitosamente.");
+              } else {
+                console.error("Error al subir la imagen:", response.statusText);
+              }
+        */
+
+        } catch (error) {
+            console.error("Error al comprimir la imagen:", error);
+        }
+    }
+    // Función para cargar la imagen previa
+    async function previewImage(event) {
+
+        try {
+            const fileInput = event.target;
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
+
+            if (fileInput.files && fileInput.files[0]) {
+                selectedFile = fileInput.files[0]; // Guardar el archivo seleccionado en la variable global
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var backgroundImage = "url(" + e.target.result + ")";
+                    const img = document.createElement('img');
+                    img.setAttribute('src', e.target.result);
+                    img.setAttribute('class', 'preview-image');
+                    //$('#previewContainer').css({'background-image': backgroundImage});
+                    $('#minicard_new_product_img').attr('img-charge', true);
+                    $('#new_product_img_card').attr('src', e.target.result);
+                    //$('#new_product_img_card').attr('img-charge',true);
+                    previewContainer.appendChild(img);
+
+                };
+
+                //    let img_resize = await compressAndUploadImage(fileInput);
+                //  var selectedFile = img_resize;
+
+                reader.readAsDataURL(selectedFile);
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }
+    function delluploadImage() {
+        selectedFile = null; // Guardar el archivo seleccionado en la variable global
+        $('#previewContainer').html('');
+        $('#new_product_img_card').attr('src', '');
+        $('#new_product_img_card').attr('img-charge', '');
+    }
+
+    async function uploadImage(doc_id, variant_id) {
+        //const fileInput = document.getElementById("fileInput");
+        //const doc_id = $(element).attr('doc_id');
+        // const variant_id = $(element).attr('variant_id');
+        const input_id = 'pictures';
+        // const input = document.getElementById('img-file-input-' + variant_id);
+        console.log('selectedFile', selectedFile, 'ID', doc_id, 'Varian ID', variant_id)
+        if (!selectedFile) { 
+            
+        
+            }
+        const formData = new FormData();
+        formData.append('userfile', selectedFile);
+
+        try {
+            const response = await fetch('img_product_upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            // preloader.style.display = 'none';
+            /// Actualizo el linck del docuemento 
+            var doc_id_s = String(doc_id);
+            var doc = await L_catalog_db.get(doc_id_s);
+            //Busco dentro de las variables
+            if (variant_id) {
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+                var value = item[input_id]; //Traigo el ojeto especifico 
+                value[0] = {
+                    max: data.new_name,
+                    min: data.new_name
+                };
+                //Edito el valor del value por el valor nuevo
+                if (item) {
+                    L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,
+                    });
+                    $("#img-card-" + variant_id + "-" + doc._id).css("background-image", "url('" + data.new_name + "')");
+                    $("#mini-card-img-card-" + variant_id + "-" + doc._id).attr("src", data.new_name);
+
+                    console.log(data.new_name, doc._id, variant_id);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            preloader.style.display = 'none';
+        }
+
+
+    }
+
+
+    async function catalog_new_product(element) {
+        // Recoge los mensajes desde los atributos de los campos
+        try {
+            //NOMBRE
+            const new_doc_name = $("#catalog_new_product_name_input").val(); //Nombre
+            const new_product_name_error = $("#catalog_new_product_name_input").attr('data-msg-required');
+            //TIPO 
+            const type = $('#new_type_value_select').attr('type_order'); //Tipo
+            var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
+            //NEW ID
+            var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
+            let textoSinEspacios = new_doc_name.replace(/\s+/g, '-');
+            const new_doc_id = textoSinEspacios + "-" + new_doc_id_random;
+            const new_doc_time = new Date(); //Id del documento a editar
+            const new_doc_author = user_Ctx.userCtx.name; //Id del documento a editar
+            const new_doc_workspace_id = ws_id; //Id del documento a editar
+            // Seleccionar el elemento div con el id "new_prod_tag_main" y la clase "chips_items_main"
+            const divTags = document.querySelector('div#new_prod_tag_main.chips_items_main');
+            // CATEGORIA
+            const new_doc_cat_value = $('#catalog_select_cat_value').html();
+            const new_doc_cat_id = $('#catalog_select_cat_value').attr('catalog_select_cat_value');
+            const category = { id: new_doc_cat_id, value: new_doc_cat_value };
+
+            // MARCA
+            const new_doc_trade_value = $('#catalog_select_trade_value').html();
+            const new_doc_trade_id = $('#catalog_select_trade_value').attr('catalog_select_trade_value');
+            const trade = { id: new_doc_trade_id, value: new_doc_trade_value };
+
+            // MODELO
+            const new_doc_model_value = $('#catalog_select_model_value').html();
+            const new_doc_model_id = $('#catalog_select_model_value').attr('catalog_select_model_value');
+            const model = { id: new_doc_model_id, value: new_doc_model_value };
+
+            // PRECIO COSTO
+            const new_cost_stock = $('#new_cost_stock').val();
+            const new_stock_unit = $('#add_stock_unit').val(); //Stock unidades
+            const new_porcent_checkbox = $('#new_porcent_checkbox').val(); //witch
+            const new_porcent_value = $('#new_porcent_value').val();//Porcentaje de ganancia
+            const new_price = $('#new_price').val(); //Precio venta
+
+            // IMPUESTOS
+            const tax_doc = await L_catalog_db.get('tax_list');
+            const new_tax_list_id = $('#new_tax_list_var_select').val();
+            const tax = tax_doc.tax.find(response => response.id == new_tax_list_id);// busco y traigo todos los datos del id q seleccione 
+
+            // MONEDA
+            const currency_doc = await L_catalog_db.get('currency_list');
+            const currency_default = currency_doc['currency_default'];
+
+            // SKU
+            const new_sku = $('#new_sku').val();
+
+            // PRECIO
+            const price_doc = await L_catalog_db.get('price_list'); //Traigo el doc 
+            const new_price_list_id = $('#new_price_list_var_select').val();    //Traigo el id seleccionado
+            const price_list_arr = price_doc.price_list.find(response => response.id == new_price_list_id);// busco y traigo todos los datos del id q seleccione 
+            const price_list = [
+                {
+                    id: price_list_arr.id,
+                    value: new_price,
+                    value_porcent: new_porcent_value,
+                    value_swich: new_porcent_checkbox,
+                    currency: currency_default
+                }
+            ];
+
+            /// NEW STOCK
+            const new_radom_id = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
+            const stock_inventary = [
+                {
+                    id: new_radom_id,
+                    create: new_doc_time,
+                    in_datetime: new_doc_time,
+                    update_datetime: new_doc_time,
+                    updateUser: new_doc_author,
+                    type: 'in',
+                    in_stock: new_stock_unit,
+                    out_stock: 0,
+                    real_stock: new_stock_unit,
+                    cost_price: new_cost_stock,
+                    currency: currency_default,
+                    location_id: 1
+                }
+            ];
+            // TAGS
+            const textoTags = [];
+            divTags.childNodes.forEach(childNode => {
+                if (childNode.nodeType === Node.ELEMENT_NODE) {
+                    const span = childNode.querySelector('span.chips_text');
+                    if (span) {
+                        textoTags.push(span.textContent);
+                    }
+                }
+            });
+            const new_doc_tags = textoTags;
+
+
+
+
+            // Define las reglas y mensajes de validación en una sola llamada a validate
+            $("#new_product_step_1").validate({
+                ignore: [],
+                rules: {
+                    product_name: {
+                        required: true
+                    }
+                    /*,
+                    product_count: {
+                        required: true
+                    },
+                     price_cost: {
+                        required: true
+                    },
+                    price_sell: {
+                        required: true
+                    },
+                    add_stock_unit*/
+
+                },
+                messages: {
+                    product_name: {
+                        required: new_product_name_error
+                    }
+
+                }
+            });
+
+            // Solo si el formulario es válido, recoger los datos y enviarlos
+            if ($("#new_product_step_1").valid()) {
+                const new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+                // Documento variable template
+                var variations = [{
+                    "id": new_variant_id,
+                    currency: currency_default,
+                    tax,
+                    price_list,
+                    stock_inventary,
+                    "sold_quantity": 0,
+                    "available_quantity": 0,
+                    "limit_discount": 0,
+                    "status": {
+                        "status": true,
+                        "value": ""
+                    },
+                    "sku": new_sku,
+                    "pictures": [
+                        {
+                            "max": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png",
+                            "min": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png"
+                        }
+                    ],
+
+                    "attribute_combinations": [
+                        {
+                            "id": "COLOR",
+                            "id_name": "Color",
+                            "name": "Roja",
+                            "value": "EF5350"
+                        },
+                        {
+                            "id": "SIZE",
+                            "id_name": "Talle",
+                            "name": "Medium",
+                            "value": "M"
+                        },
+                        {
+                            "id": "WEIGHT",
+                            "id_name": "Peso",
+                            "unit": "Kg",
+                            "name": "Peso",
+                            "value": 10
+                        },
+                        {
+                            "id": "MEASURES",
+                            "id_name": "Dimension",
+                            "name": "Dimension",
+                            "unit": "cm",
+                            "width": 100,
+                            "height": 50,
+                            "value": "100cm x 50cm"
+                        }
+                    ],
+                    "description": {
+                        "status": true,
+                        "value": "Nueva Descripcion"
+                    }
+                }];
+                // Documento template producto
+                var response = await L_catalog_db.put({
+                    _id: new_doc_id,
+                    "name": new_doc_name,
+                    "author": new_doc_author,
+                    "start_time": new_doc_time,
+                    "workspace_id": new_doc_workspace_id,
+                    "status": "active",
+                    "condition": "new",
+                    "type": type,
+                    "tags": new_doc_tags,
+                    category,
+                    trade,
+                    model,
+                    "cost_price": [
+                        {
+                            id: 1,
+                            value: 1000,
+                            id_stock_invetary: 311
+                        }
+                    ],
+                    "permalink": null,
+                    "descriptions": [
+                        null
+                    ],
+                    variations,
+                    "last_update_at": [
+                        {
+                            "username": new_doc_author,
+                            "datetime": new_doc_time
+                        }
+                    ]
+                });
+                if (response) {
+                    //Imprimo el item en la pantalla 
+                    console.log(response)
+                    var product_doc = await L_catalog_db.get(new_doc_id);
+                    var new_category_list = await L_catalog_db.get('category_list');
+                    var new_trade_list = await L_catalog_db.get('trade_list');
+                    var new_model_list = await L_catalog_db.get('model_list');
+                    var attributes = await L_catalog_db.get('attributes');
+                    var user_roles_permisions = user_Ctx.userCtx.roles;
+
+                    var product_doc_array = {
+                        product_doc: product_doc,
+                        price_list: price_doc.price_list,
+                        currency_list: currency_default,
+                        ws_lang_data: ws_lang_data,
+                        user_roles: user_roles_permisions,
+                        category_list: new_category_list,
+                        trade_list: new_trade_list,
+                        model_list: new_model_list,
+                        attributes_list: attributes
+                    }
+                    let up_img = await uploadImage(new_doc_id, new_variant_id);
+                    console.log('up_img', up_img);
+                    console.log('product_doc_array', product_doc_array);
+
+                    let right_main = $('.righ_nav_content').html('<div class="cart_items_trash"><span class="material-icons xl">collections</span> <br> <span class="cart_items_title"> Se creo el producto con exito!</span></div>');
+                    // renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
+
+                    Snackbar.show({
+                        text: 'Se creo con exito!' + new_doc_id,
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+
+                    createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+                    $('#right_main').removeClass('move-right');
+                    var m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
+                    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
+                } else {
+                    $(element).css("color", "red");
+                }
+
+                return true
+            } else {
+                return false;
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 </script>

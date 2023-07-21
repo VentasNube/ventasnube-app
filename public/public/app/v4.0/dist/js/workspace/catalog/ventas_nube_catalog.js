@@ -694,7 +694,7 @@ $(document).on('click', '.catalog_new_item', function (event) {
 //////////////////////////////////////////////
 
 // AGREGAR variable al producto 
-async function catalog_new_item_new_product(element) {
+async function catalog_new_item_new_product_old_no(element) {
 
     try {
         const new_doc_name = $("#catalog_new_product_name_input").val(); //Id del documento a editar
@@ -1393,8 +1393,10 @@ async function catalog_product_edit_model(element) {
 /// CRUD #TAGS 2023
 // INPUT ENTER
 function catalog_add_new_tag_press(e, element) {
+    
     var key = e.keyCode || e.which;
     if (key == 13) {
+        event.preventDefault();
         catalog_add_new_tag(element);
     }
 }
@@ -3531,12 +3533,15 @@ async function cat_edit_variations(element) {
 async function product_upload_img_pop(element){
 
     try {
-        // const modal = document.getElementById('master_popup');
-        // Listas de precio ws_collections_333433/
-        // ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
-        //  const doc_id = $(element).attr('doc_id');
-        //   const variant_id = $(element).attr('variant_id');
-    
+      //  let img_charge = $(element).attr('img-charge')
+        const img_charge = $('#minicard_new_product_img').attr('img-charge');
+        
+        console.log('IMG CHARGE',img_charge);
+        if(img_charge === 'true'){
+            $('#master_popup').modal('show');
+       // save_new_conctact();
+    }else{
+              
         const data = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
@@ -3545,7 +3550,8 @@ async function product_upload_img_pop(element){
         // console.log(ws_price_list);
         $('#master_popup').modal('show');
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', '#master_popup', data);
-       // save_new_conctact();
+        $('#catalog_new_product_name_input').focus(); 
+    }
     } catch (err) {
         console.log('ERROR:', err);
         Snackbar.show({
@@ -3559,7 +3565,7 @@ async function product_upload_img_pop(element){
 
 }
 
-async function uploadImage(element) {
+async function uploadImage_old_OK(element) {
     //const fileInput = document.getElementById("fileInput");
     const doc_id = $(element).attr('doc_id');
     const variant_id = $(element).attr('variant_id');
@@ -3624,6 +3630,8 @@ async function uploadImage(element) {
     }
 
 }
+
+
 
 
 

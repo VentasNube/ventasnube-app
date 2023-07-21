@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 11212121212123222121222311222;
+const version = 1122121221211223123112312124222;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -141,18 +141,19 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_var_select.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_view_product_variant.hbs', revision: version },
 
-
+ // PRODUCTO
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_model_list.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_trade_list.hbs', revision: version },
-
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', revision: version },
   // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_create_product.hbs', revision: version },
   // { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', revision: version },
+
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_group.hbs', revision: version },

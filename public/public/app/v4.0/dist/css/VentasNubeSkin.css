@@ -12958,7 +12958,7 @@ board-item-content
     display: inline-block;
     width: 100%;
     text-align: left;
-    margin: 55px 0px 90px 0;
+    margin: 50px 0px 90px 0;
     padding: 15px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -13942,7 +13942,7 @@ board-item-content
     position: relative;
     display: flex;
     width: 100%;
-    margin: 0 0 20px 20px;
+    margin: 20px;
 }
 
 .mini-carrousel-img .mini-card-img-s {
@@ -13972,9 +13972,54 @@ board-item-content
 
 
 
-.mini-card-img-s {
+
+.mini-carrousel-new-img {
+    position: relative;
+    display: flex;
+}
+
+.mini-carrousel-new-img .mini-card-img-s {
     width: 100%;
-    background-color: #fff;
+    /* object-fit: contain; */
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+}
+
+.mini-carrousel-new-img .mini-card-img-s .img {
+    background: #ffff;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 0;
+    box-shadow: 0 16px 38px -12px rgb(0 0 0 / 56%), 0 4px 25px 0 rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(0 0 0 / 20%);
+    position: relative;
+    display: inline-block;
+    object-fit: contain;
+    width: 70px;
+    height: 70px;
+}
+
+.mini-carrousel-new-img .mini-card-img-s .img a img {
+    text-align: center;
+    vertical-align: middle;
+    height: 70px;
+} 
+.mini-carrousel-new-img .mini-card-img-s .img a span {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px;
+    font-size: 35px;
+    color: #757575;
+}
+
+.mini-carrousel-new-img .mini-card-img-s .img a span:hover {
+
+    color: #0575e6;
+    background-color: #f5f5f5 !important;
 }
 
 .mini-card-img-s {
@@ -14002,6 +14047,17 @@ board-item-content
     margin: 10 0;
     /*width: 100%;
     background-color: #fff; */
+}
+
+
+.img_card_previa{
+    width: -webkit-fill-available;
+    max-width: 200px;
+    height: auto;
+}
+.img_card_previa img{
+    width: 200px;
+    height: auto;
 }
 
 /**** CHIPS CLASES ***/
