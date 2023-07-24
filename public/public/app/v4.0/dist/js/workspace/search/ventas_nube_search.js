@@ -70,7 +70,7 @@ async function get_search_module(ws_info, ws_lang_data, ws_left_nav_data,board_n
             board_type_name: board_name,
         }
         //console.log('SEARCH ARRAYYY ');
-        console.log('SEACH CONSOLE', ws_search_data);
+       // console.log('SEACH CONSOLE', ws_search_data);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/search/search_module.hbs', '#search_module_compiled', ws_search_data);
     }
     catch (err) {
@@ -157,7 +157,7 @@ function get_search_catalog_Old(type_order) {
         var search_catalog_index = Fuse.createIndex(options.keys, documents);
         // initialize Fuse with the index
         search_catalog = new Fuse(documents, options, search_catalog_index);
-        console.log( 'new_item SEARCHHH COMPLETO search_catalog',search_catalog);
+     //   console.log( 'new_item SEARCHHH COMPLETO search_catalog',search_catalog);
     }).catch(function (err) {
         console.log(err);
     });
@@ -329,7 +329,7 @@ async function  get_search_contactNOOO(search_val) {
 function get_search_board(type_order) {
 
     // type = 'product';
-    console.log("type_order SEARCH:", type_order)
+   // console.log("type_order SEARCH:", type_order)
     L_board_db.query('get/' + type_order, {
         include_docs: false,
         descending: false,
@@ -446,7 +446,7 @@ async function search_print_item(search_val) {
     }
     if (result.length > 0) {
         renderHandlebarsTemplate(url_template, id_copiled, search_result);
-        console.log('search_print_item AAAAA NEWWW ACAA', search_result);
+      //  console.log('search_print_item AAAAA NEWWW ACAA', search_result);
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
@@ -560,8 +560,8 @@ function variations_select(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
         //Actualizo el boton variables
         //  console.log("var_doc");
-        console.log('variant_array VARIANT ARRAY');
-        console.log(variant_array);
+      //  console.log('variant_array VARIANT ARRAY');
+      //  console.log(variant_array);
     });
 }
 

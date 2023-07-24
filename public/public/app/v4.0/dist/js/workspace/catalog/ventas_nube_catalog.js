@@ -320,8 +320,9 @@ async function catalog_view_item(element) {
             category_list: category_list
         }
         // console.log('price_doc.price_lis',price_doc.price_list);
-        // console.log('var_doc.price_list',var_doc.price_list);
-        // alert('Haaaaaaa');
+         console.log('product_doc_array',product_doc_array);
+         alert('Haaaaaaa');
+
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -654,12 +655,13 @@ async function catalog_new_item(element) {
         var attributes = await L_catalog_db.get('attributes');
         
         var user_roles_permisions = user_Ctx.userCtx.roles;
-        // console.log('user_roles_permisions', user_roles_permisions);
+       console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
             tax_list:tax_doc,
             currency_list: currency_doc.currency_list,
+            currency:currency_doc['currency_default'],
             ws_lang_data: ws_lang_data,
             user_roles: user_roles_permisions,
             category_list: new_category_list,
@@ -667,7 +669,10 @@ async function catalog_new_item(element) {
             model_list: new_model_list,
             attributes_list: attributes
         }
-        console.log('tax_doc CCCCC', product_doc_array)
+
+        console.log('tax_doc CCCCC', product_doc_array);
+        console.log('tax_doc currency_doc currency_doc',currency_doc);
+        
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -1402,6 +1407,7 @@ function catalog_add_new_tag_press(e, element) {
 }
 // AGREGO
 async function catalog_add_new_tag(element) {
+    
     try {
         // Datos del cocumento y el id 
         let new_tag_val = $(element).val();
@@ -1551,6 +1557,7 @@ async function catalog_search_new_prod_cat(e, element) {
 }
 // ELIMINO
 async function catalog_dell_cat(element) {
+    event.preventDefault(element);
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
@@ -1599,6 +1606,7 @@ async function catalog_dell_cat(element) {
 }
 // AGREGO
 async function catalog_add_new_cat(element) {
+    event.preventDefault(element);
     try {
         var doc_id = $(element).attr('doc_id');
         var new_cat_val = $('#catalog_new_cat_input').val();
@@ -1819,6 +1827,7 @@ async function catalog_select_new_trade(element, new_item) {
 }
 // AGREGO
 async function catalog_add_new_trade(element) {
+    event.preventDefault(element);
     try {
         var doc_id = $(element).attr('doc_id');
         var new_trade_val = $('#catalog_new_trade_input').val();
@@ -1887,58 +1896,10 @@ async function catalog_add_new_trade(element) {
 
     }
 }
-// ELIMINO 
-async function catalog_dell_tradeOLD(element) {
-    try {
-        //Datos del cocumento y el id 
-        let doc_id = $(element).attr('doc_id');
-        let value = $(element).attr('value');
-        Snackbar.show({
-            text: '<span class="material-icons">delete</span> Quieres eliminar la marca ' + value + ' ?',
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Eliminar',
-            actionTextColor: "#dd4b39",
-            onActionClick: async function (element) {
-                //Efecto y verificacion del tag
-                let doc_id_s = String(doc_id);
-                //Traigo el documento actualizado
-                console.log(doc_id_s);
-                let doc = await L_catalog_db.get('trade_list');
-                console.log(doc);
-                //Filtro los resultados del array menos el que quiero eliminar
-                const new_cat_list = doc.trade_list.filter(word => word.value != value);
-                //Reemplazo el array por el filtrado
-                console.log(new_trade_list);
-                doc['trade_list'] = new_trade_list;
-                //Guardo los cambios
-                if (doc) {
-                    var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// trae todos los datos del doc y los pega en la raiz
-                    });
-                    if (response) {
-                        //Limpio el item de la pantalla
-                        catalog_edit_item_url(doc_id, 1);
-                        $(element).parent('li').remove();
-                    } else {
-                        //Si no se grabo tira un error en pantalla
-                        $(element).parent('li').css("color", "red");
-                    }
-                }
-                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-                //$('#' + item_cart_id).remove();
-                // $(element).css('opacity', 0);      
-            }
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
 
 // ELIMINO
 async function catalog_dell_trade(element) {
+    event.preventDefault(element);
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
@@ -2105,6 +2066,7 @@ async function catalog_select_new_model(element, new_model) {
 }
 // AGREGO
 async function catalog_add_new_model(element) {
+    event.preventDefault(element);
     try {
         //var doc_id = $(element).attr('doc_id');
         var new_model_val = $('#catalog_new_model_input').val();
@@ -2172,60 +2134,10 @@ async function catalog_add_new_model(element) {
 
     }
 }
-// ELIMINO
-async function catalog_dell_modelNO(element) {
-    try {
-        //Datos del cocumento y el id 
-        let doc_id = $(element).attr('doc_id');
-        let value = $(element).attr('value');
-        Snackbar.show({
-            text: '<span class="material-icons">delete</span> Quieres eliminar el modelo ' + value + ' ?',
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Eliminar',
-            actionTextColor: "#dd4b39",
-            onActionClick: async function (element) {
-                //Efecto y verificacion del tag
-                let doc_id_s = String(doc_id);
-                //Traigo el documento actualizado
-                console.log(doc_id_s);
-                let doc = await L_catalog_db.get('model_list');
-                console.log(doc);
-                //Filtro los resultados del array menos el que quiero eliminar
-                const new_model_list = doc.model_list.filter(word => word.value != value);
-                //Reemplazo el array por el filtrado
-                console.log(new_model_list);
-                doc['model_list'] = new_model_list;
-                //Guardo los cambios
-                if (doc) {
-                    var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// trae todos los datos del doc y los pega en la raiz
-                    });
-                    if (response) {
-                        //Limpio el item de la pantalla
-                        catalog_edit_item_url(doc_id, 1);
-                        $(element).parent('li').remove();
-                    } else {
-                        //Si no se grabo tira un error en pantalla
-                        $(element).parent('li').css("color", "red");
-                    }
-                }
-                //user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar                    
-                //$('#' + item_cart_id).remove();
-                // $(element).css('opacity', 0);      
-            }
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-
 
 // ELIMINO
 async function catalog_dell_model(element) {
+    event.preventDefault(element);
     try {
         //Datos del cocumento y el id 
         let doc_id = $(element).attr('doc_id');
@@ -2271,7 +2183,6 @@ async function catalog_dell_model(element) {
         console.log(err);
     }
 }
-
 
 // EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 async function cat_edit_product(element) {

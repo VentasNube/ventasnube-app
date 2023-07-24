@@ -1,5 +1,5 @@
 {{#with ws_lang_data }}
-<div class="modal-dialog modal-xl" role="document">
+<div class="modal-dialog modal-s" role="document">
     <div class="modal-content">
 
         <div class="modal-header">
@@ -14,7 +14,7 @@
                 <div id="new-upload-img">
 
                     <div id="previewContainer"  class="img_card_previa">
-                        <img src="">
+                        <img id='' class='preview-image' src='/public/img/app/foto_fondo.png'alt=''>
                     </div>
 
                     
@@ -26,7 +26,7 @@
                                 </div>
 
                             </form>
-                     <button onclick="delluploadImage()" class="btn btn-primary">
+                     <button id="delluploadImage_btn" style="display: none;" onclick="delluploadImage()" class="btn btn-primary">
                                 <span class="material-icons"> delete</span>
                                 <span>Eliminar</span>
                      </button>

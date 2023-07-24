@@ -10,8 +10,6 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 ws_left_nav_data = null;
 
-
-
 // ACTUALIZO EL HISTORIAL DE NAVEGACION 
 function updateHistory(curr) {
     window.location.lasthash.Push(window.location.hash);
@@ -33,6 +31,7 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
     //Traigo el documento actualizado y lo recorro
     ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
     var array = ws_module_array.ws_left_nav.m;
+   // const user_rol = ws_module_array['userCtx'].roles
     //Hago una consulta al array de modulos con permisos y lo comparo con el que estaba en el link
     for (const module of array) {
         if (module.m_url === ws_module_name) {
@@ -90,46 +89,34 @@ async function ws_module_config() {
 //Filtra los parametros de la URL y lo relasiona y trae los modulos estan en la URL
 async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     const ws_m_s = ws_module_select;
+    ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+    var userCtx = ws_module_array['userCtx'].userCtx;
+    //console.log('userCtx',userCtx)
     //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
     if (ws_m_s == 'catalog') {
         await get_catalog();
-        //get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
-            //  alert('traogo el catalogo')
-            //  Si el tipo de modulo es producto envia los parametros a la funcion constructora
         if (m_t_id == 'product') {
             catalog_view_item_url(m_id, m_var_id, userCtx);
-           // updateHistory();
         }
         if (m_t_id == 'edit') {
             catalog_edit_item_url(m_id, m_var_id, userCtx);
-          //  updateHistory();
         }
         if (m_t_id == 'create') {
             catalog_edit_item_url(m_id, m_var_id, userCtx);
-          //  updateHistory();
         }
         if (m_t_id == 'new') {
             catalog_new_item(m_id, m_var_id, userCtx);
-          //  updateHistory();
         }
-        //  get_items_catalog();
     }
     else if (ws_m_s == 'board') {
-       //alert('GET MODULE FUNCION OK');
-       console.log('GET MODULE FUNCION OK');
-
        createCookie('board-now-' + ws_id,  m_t_id, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
        ws_board_start();
        get_board(m_t_id);
        get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
-        // ws_board_start();
-        // get_box();
     }
     else if (ws_m_s == 'contact') {
-        //alert('GET MODULE FUNCION OK');
         console.log('GET MODULE CONTACT OK');
         get_contact(m_t_id);
-      //  get_right_cart(ws_info, ws_lang_data, ws_left_nav_data,m_t_id); //ENVIO EL MODULO DE LA URL ASI LO CARGA DESDE ACA
      }
     else if (ws_m_s == 'account') {
         alert('TRAIGO EL account');
@@ -154,11 +141,11 @@ function put_left_nav_docOLDOK() {
         dataType: "json",
         success: function (ws_left_nav) {
             if (ws_left_nav.result == true) {
-                console.log('Solicitud ajax ws_left_nav ok! ws_id:' + ws_id);
+              //  console.log('Solicitud ajax ws_left_nav ok! ws_id:' + ws_id);
                 // console.log('userCtx L nav doc 1');
-                console.log(userCtx);
-                console.log('ws_left_nav');
-                console.log(ws_left_nav);
+               // console.log(userCtx);
+               // console.log('ws_left_nav');
+               // console.log(ws_left_nav);
 
                 ///// IMPRIME ////
                 user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
@@ -218,10 +205,10 @@ function put_left_nav_docOLDOK() {
                         //   msj_alert('Se actualizo el left_nav_doc','top-center');
                         //   console.log('userCtx L nav doc 3');
                         //  console.log(userCtx);
-                        console.log('Se actualizo el left bar doc');
-                        console.log(userCtx);
-                        console.log(response);
-                        console.log(ws_left_nav);
+                       // console.log('Se actualizo el left bar doc');
+                      //  console.log(userCtx);
+                      //  console.log(response);
+                      //  console.log(ws_left_nav);
                         // handle response
                     });
                 });
@@ -279,9 +266,9 @@ function put_left_nav_doc() {
     .then(response => response.json())
     .then(data => {
         if (data.result === true) {
-            console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
-            console.log(userCtx);
-            console.log(data);
+           // console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
+           // console.log(userCtx);
+          //  console.log(data);
            // console.log('ws_left_nav');
 
             user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
@@ -377,7 +364,6 @@ function put_left_nav_doc() {
 
 }
 
-
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data, ws_lang_data) {
     var ws_left_nav_doc = {
@@ -410,7 +396,6 @@ function get_right_nav(ws_info, ws_lang_data) {
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_main.hbs', '#right_main', ws_cart);
 };
 
-
 //// BOTON TRAE MODULO LEFT BAR //
 async function get_module_nav(event) {
     var m_name = $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/    
@@ -418,22 +403,18 @@ async function get_module_nav(event) {
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion          
     check_content_module(m_name, ws_left_nav, ws_lang_data);
 }
+
 /// FUNCION TRAE MODULE TIPE NAV BAR
 async function get_module_type_nav(event) {
     var m_name = $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/
     var m_type_name = $(event).attr('m_t_url'); //Trae Pacht url /pacht/
-    //  var m= $(event).attr('s_url_t_m'); //Trae Pacht url /pacht/
-    // var m_t_id = $(event).attr('m_t_id'); //Trae Pacht url /pacht/
     var m_url = url_app + '?type=' + m_name+ '&t=' + m_type_name; // Armo la url completa del linck
     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion
     $('.cart_button').attr('board_name',m_type_name); //GUARDO EL ULTIMO BOARD EN EL CARRITO DE LA BARRA
     check_content_module(m_name,m_type_name);
 }
 
-////----(OTRAS COSAS)----/////
-//Efecto material de los Label imput 2021
 ////----( EJECUTO TODAS LAS FUNCIONES UNA VEZ Q SE BAJE EL .HBS  )----/////
-
 $(document).ready(function () {
     window.onload = ws_module_config();// Ejecuto todas las funciones del espacio de trabajo
 });

@@ -41,7 +41,10 @@
                                     <div class="img">
                                         <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)"
                                             img-charge="" href="#">
-                                            <img id="new_product_img_card" src="{{min}}" alt="">
+                                            <div id="new_img_product_content">
+                                                <img src="/public/img/app/foto_fondo.png">
+                                            </div>
+
                                             <span class="material-icons">
                                                 add_a_photo
                                             </span>
@@ -306,12 +309,12 @@
                                 <h4 class="tittle_input"><strong>Precio de costo</strong></h4>
                                 <div class="input-group ">
                                     <span class="input-group-addon font-size-25">
-                                        {{#with currency.currency_default }}
+                                        {{#with currency }}
                                         {{value}}
                                         {{/with}}
-                                        $
                                     </span>
-                                    <input id="new_cost_stock" class="col-sm-4 form-control font-size-25" type="number"
+                                    <input onkeyup="updatePrice(this)" id="new_cost_stock"
+                                        class="col-sm-4 form-control font-size-25" type="number"
                                         placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_cost}}} {{/with}}"
                                         value="">
                                 </div>
@@ -360,22 +363,21 @@
                                 </div>
                             </div>
                             <div class="padding-10 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
                                 <h4 class="tittle_input"><strong>Calcular ganancia</strong></h4>
                                 <div class="input-group">
-
-                                    <span class="input-group-addon font-size-25">
+                                    <span class="input-group-addon font-size-25 padding-0">
                                         <div class="Switch" onclick="">
-                                            <input id="new_porcent_checkbox" name="switch_variation" {{#ifEquals
-                                                status.status true }} checked {{/ifEquals}} value="" type="checkbox"
-                                                doc_id="{{{../product_doc/_id}}}" variant_id="{{id}}" input_id="status"
-                                                onclick="cat_edit_chekbox(this)" />
-                                            <label for="{{{../product_doc/_id}}}_{{id}}_status_checkbox"
-                                                class="label-primary"></label>
+                                            <input id="new_porcent_checkbox" name="new_porcent" value=""
+                                                type="checkbox" onclick="new_porcent_switch(this)" />
+                                            <label for="new_porcent_checkbox" class="label-primary"></label>
                                         </div>
                                     </span>
-                                    <input id="new_porcent_value" class="form-control font-size-25" type="number"
-                                        placeholder="%{{#with ws_lang_data}} {{{m_catalog_add_stock_profit}}} {{/with}}"
+                                    <span class="input-group-addon font-size-25 padding-0">
+                                        %
+                                    </span>
+                                    <input onkeyup="new_porcent_price(this)" id="new_porcent_value"
+                                        class="form-control font-size-25" type="number"
+                                        placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_profit}}} {{/with}}"
                                         value="">
                                 </div>
                             </div>
@@ -383,10 +385,9 @@
                                 <h4 class="tittle_input"><strong>Precio de venta</strong></h4>
                                 <div class="input-group">
                                     <span class="input-group-addon font-size-25">
-                                        {{#with currency.currency_default }}
+                                        {{#with currency }}
                                         {{value}}
                                         {{/with}}
-                                        $
                                     </span>
                                     <input id="new_price" class="form-control font-size-25" type="number"
                                         placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_sale}}} {{/with}}"
@@ -428,11 +429,13 @@
     </div>
 </div>
 <!--script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.0.7/compressor.min.js"></script-->
-
+<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
 <script>
 
     /// NUEVO PRODUCTO ///// 
     var selectedFile; // Variable global para almacenar el archivo seleccionado
+
     function new_select_type_order(opcion) {
         const type_order_select = opcion.getAttribute('type_order');
         const type_order_icon_select = opcion.querySelector('.material-icons').textContent;
@@ -441,23 +444,9 @@
         $('#new_type_value_select').attr('type_order', type_order_select);
         $('#new_type_value_select').html(type_order_name_select);
     }
-    function updatePrice() {
-        const switchElement = document.getElementById('switch');
-        const costInput = document.getElementById('new_cost_stock');
-        const priceInput = document.getElementById('new_price');
 
-        const cost = parseFloat(costInput.value);
-        const percentage = parseFloat(priceInput.value);
 
-        if (switchElement.checked) {
-            // Calcular el precio de venta basado en el porcentaje y el costo
-            const price = cost + (cost * (percentage / 100));
-            priceInput.value = price.toFixed(2);
-            priceInput.disabled = true;
-        } else {
-            priceInput.disabled = false;
-        }
-    }
+
     /// SUBIR IMAGEN
     async function compressAndUploadImage() {
 
@@ -519,29 +508,15 @@
 
         try {
             const fileInput = event.target;
-            const previewContainer = document.getElementById('previewContainer');
-            previewContainer.innerHTML = '';
-
             if (fileInput.files && fileInput.files[0]) {
                 selectedFile = fileInput.files[0]; // Guardar el archivo seleccionado en la variable global
                 const reader = new FileReader();
-
                 reader.onload = function (e) {
-                    var backgroundImage = "url(" + e.target.result + ")";
-                    const img = document.createElement('img');
-                    img.setAttribute('src', e.target.result);
-                    img.setAttribute('class', 'preview-image');
-                    //$('#previewContainer').css({'background-image': backgroundImage});
                     $('#minicard_new_product_img').attr('img-charge', true);
-                    $('#new_product_img_card').attr('src', e.target.result);
-                    //$('#new_product_img_card').attr('img-charge',true);
-                    previewContainer.appendChild(img);
-
+                    $("#previewContainer").html("<img id='new_product_img_card' src='" + e.target.result + "'alt=''>");
+                    $("#new_img_product_content").html("<img id='new_product_img_card' src='" + e.target.result + "'alt=''>");
+                    $('#delluploadImage_btn').show();
                 };
-
-                //    let img_resize = await compressAndUploadImage(fileInput);
-                //  var selectedFile = img_resize;
-
                 reader.readAsDataURL(selectedFile);
             }
 
@@ -551,34 +526,26 @@
         }
 
     }
+
     function delluploadImage() {
-        selectedFile = null; // Guardar el archivo seleccionado en la variable global
-        $('#previewContainer').html('');
-        $('#new_product_img_card').attr('src', '');
-        $('#new_product_img_card').attr('img-charge', '');
+        $('#new_product_img_card').remove();
+        $('#delluploadImage_btn').hide();
+        $("#previewContainer").html("<img id='new_product_img_card' class='preview-image' src='/public/img/app/foto_fondo.png'alt=''>");
+        $("#new_img_product_content").html("<img id='new_product_img_card' src='/public/img/app/foto_fondo.png'alt=''>");
     }
 
     async function uploadImage(doc_id, variant_id) {
-        //const fileInput = document.getElementById("fileInput");
-        //const doc_id = $(element).attr('doc_id');
-        // const variant_id = $(element).attr('variant_id');
         const input_id = 'pictures';
-        // const input = document.getElementById('img-file-input-' + variant_id);
-        console.log('selectedFile', selectedFile, 'ID', doc_id, 'Varian ID', variant_id)
-        if (!selectedFile) { 
-            
-        
-            }
+        //  console.log('selectedFile', selectedFile, 'ID', doc_id, 'Varian ID', variant_id)
+        if (!selectedFile) { }
         const formData = new FormData();
         formData.append('userfile', selectedFile);
-
         try {
             const response = await fetch('img_product_upload', {
                 method: 'POST',
                 body: formData
             });
             const data = await response.json();
-            // preloader.style.display = 'none';
             /// Actualizo el linck del docuemento 
             var doc_id_s = String(doc_id);
             var doc = await L_catalog_db.get(doc_id_s);
@@ -599,18 +566,14 @@
                     });
                     $("#img-card-" + variant_id + "-" + doc._id).css("background-image", "url('" + data.new_name + "')");
                     $("#mini-card-img-card-" + variant_id + "-" + doc._id).attr("src", data.new_name);
-
-                    console.log(data.new_name, doc._id, variant_id);
+                    $("#new_img_product_content").html("<img id='new_product_img_card' src='" + data.new_name + "'alt=''>");
                 }
             }
         } catch (error) {
             console.error(error);
             preloader.style.display = 'none';
         }
-
-
     }
-
 
     async function catalog_new_product(element) {
         // Recoge los mensajes desde los atributos de los campos
@@ -885,5 +848,91 @@
             console.log(err);
         }
     }
+
+    // ACTUALIZAR PRECIOS 
+
+
+    function new_porcent_priceOld_no() {
+        var new_cost_stock = $('#new_cost_stock').val();
+        var new_porcent_checkbox = $('#new_porcent_checkbox').val();
+        var new_porcent_value = $('#new_porcent_value').val();
+        var new_price = $('#new_price').val();
+        const cost = parseFloat(new_cost_stock);
+        const porcent = parseFloat(new_porcent_value);
+       // console.log('new_porcent_checkbox', new_porcent_checkbox);
+       // console.log('new_cost_stock', new_cost_stock);
+       /// console.log('new_porcent_value', new_porcent_value);
+       // console.log('new_price', new_price);
+        // Calcular el precio de venta basado en el porcentaje y el costo
+        const new_price_value = cost + (cost * (porcent / 100));
+        //priceInput.value = price.toFixed(2);
+        // priceInput.disabled = true;
+        // console.log('New_price_value',new_price_value);
+        var new_price = $('#new_price').val(parseFloat(new_price_value));
+        if (new_porcent_checkbox) {
+
+        } else {
+            //  priceInput.disabled = false;
+        }
+
+    }
+function new_porcent_price() {
+    var new_cost_stock = $('#new_cost_stock').val();
+    var new_porcent_checkbox = $('#new_porcent_checkbox').is(':checked');
+    var new_porcent_value = $('#new_porcent_value').val();
+    var new_price_input = $('#new_price');
+
+    const cost = parseFloat(new_cost_stock);
+    const porcent = parseFloat(new_porcent_value);
+
+    // Calcular el precio de venta basado en el porcentaje y el costo
+    const new_price_value = cost + (cost * (porcent / 100));
+    new_price_input.val(new_price_value.toFixed(2));
+
+    if (new_porcent_checkbox) {
+        new_price_input.prop('readonly', true);
+    } else {
+        new_price_input.prop('readonly', false);
+    }
+}
+
+ function new_porcent_switch() {
+    var new_cost_stock = $('#new_cost_stock').val();
+    var new_porcent_checkbox = $('#new_porcent_checkbox').is(':checked');
+    var new_porcent_value = $('#new_porcent_value');
+    var new_price_input = $('#new_price');
+    if (new_porcent_checkbox) {
+        new_price_input.prop('readonly', true); // Deshabilita la edición del input del precio de venta
+        new_porcent_value.prop('disabled', false); // Habilita la edición del input del porcentaje
+         new_porcent_price();
+    } else {
+        // Si el interruptor está desactivado, permite la edición del input del precio y deshabilita el input del porcentaje.
+        new_price_input.prop('readonly', false); // Habilita la edición del input del precio de venta
+        new_porcent_value.prop('disabled', true); // Deshabilita la edición del input del porcentaje
+    }
+    }
+
+function updatePrice(){
+    var new_porcent_checkbox = $('#new_porcent_checkbox').is(':checked');
+    if (new_porcent_checkbox) {
+        new_porcent_price()
+    } else {
+
+    }
+}
+
+$('#new_porcent_checkbox').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+
+
+
 
 </script>

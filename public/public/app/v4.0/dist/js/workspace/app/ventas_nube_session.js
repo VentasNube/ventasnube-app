@@ -177,12 +177,12 @@ function _session(callback) {
 _session(function(error, userCtx_new) {
   if (error) {
     console.error(error);
-    console.log('_session userCtx:',userCtx);
+  //  console.log('_session userCtx:',userCtx);
     // Manejar el error de alguna manera
   } else {
     // Utilizar userCtx dentro de la función de callback
    var userCtx =  userCtx_new;
-   console.log('userCtx',userCtx)
+  // console.log('userCtx',userCtx)
    return userCtx
   }
 });
