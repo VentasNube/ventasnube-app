@@ -15,10 +15,34 @@ var ws_catalog_db = 'ws_collections_' + ws_id;
 //CREO LA DB CATALOGO
 L_catalog_db = new PouchDB(ws_catalog_db, { skip_setup: true });
 // SYNC LOCAL CON REMOTO
+
+/*
 L_catalog_db.sync(url_R_db + ws_catalog_db, {
     live: true,
     retry: true,
     skip_setup: true
+}); 
+*/
+var sync = L_catalog_db.sync(url_R_db + ws_catalog_db, {
+    live: true,
+    retry: true,
+    skip_setup: true
+});
+
+sync.on('change', function (info) {
+    // Manejar cambios durante la sincronización
+}).on('paused', function (err) {
+    // Sincronización pausada
+}).on('active', function () {
+    // Sincronización reanudada
+}).on('denied', function (err) {
+    // Un documento falló al sincronizarse, por ejemplo, por falta de permisos
+    console.error("Error de sincronización (denegado):", err);
+}).on('complete', function (info) {
+    // Sincronización completadaß
+}).on('error', function (err) {
+    // Se captura algún error en la sincronización
+    console.error("Error de sincronización:", err);
 });
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
@@ -444,7 +468,10 @@ async function catalog_edit_item(element) {
             model_list: new_model_list,
             attributes_list: attributes,
         }
+
+       console.log('product_doc_array NEWW',product_doc_array);
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array, function () {
+
                 let parentElement_nav = document.querySelector('#edit_variations_main');
                 let id_compiled_nav = '#' + parentElement_nav.id;
                 console.log('id_compiled_nav UUUAAAAAA', id_compiled_nav);
@@ -461,6 +488,7 @@ async function catalog_edit_item(element) {
                         //   get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
                     });
                 }
+
             })
     } catch (err) {
         console.log(err);
