@@ -36,12 +36,30 @@
                         <div class="text-left btn-group">
                             <div class="s-card-mini-img ">
                                 {{#first pictures}}
-                                <img src="{{min}}" alt="">
+                                <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <div class=" mini-carrousel-new-img ">
+                                        <div class="mini-card-img-s">
+                                            <div class="">
+                                                <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)" img-charge="" href="#">
+                                                    <div id="new_img_product_content">
+                                                        <img src="{{min}}">
+                                                    </div>
+
+                                                    <span class="material-icons">
+                                                        add_a_photo
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{/first}}
+
+
                             </div>
-                            <span>
+                            <!--span>
                                 {{#each attribute_combinations as | ac |}}
-                                <!-- Hago la comprobacion de si es un color -->
+                                <!-- Hago la comprobacion de si es un color 
                                 {{#ifEquals id 'SIZE' }}
                                 <div class="margin-t-10 round-icon pr" data-toggle="tooltip" data-placement="bottom"
                                     title="{{{id_name}}}" data-original-title="{{{id_name}}}">
@@ -53,15 +71,17 @@
                                 {{/ifDiff}}
                                 {{/each}}
 
-                            </span>
+                            <!--/span-->
+                            
                         </div>
                         <div class="pull-right padding-10">
                             {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}: {{/with}}
                             {{#available_stock stock_invetary}}{{/available_stock}}
-
-                            <div class="round-icon pr"><span> {{../product_doc/currency.value}} </span></div>
                             {{#first price_list}}
-                            <span iid="total_neto_prod"> {{value}}</span>
+
+                                <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                <span iid="total_neto_prod"> {{value}}</span>
+
                             {{/first}}
                         </div>
                     </a>
