@@ -484,6 +484,7 @@ async function variations_add_cart(element) {
             sku: var_doc.sku.value,
             pictures: var_doc.pictures,
             name: doc.name,
+            description:var_doc.description['value'],
             attribute_combinations: var_doc.attribute_combinations,
             price: parseFloat(variant_price),
             discount: parseFloat(variant_discount),

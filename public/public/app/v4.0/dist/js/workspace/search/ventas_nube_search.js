@@ -110,6 +110,7 @@ function get_search_catalog_Old(type_order) {
                 _rev:items[i].value._rev,
                 variant_id:items[i].value.variant_id,
                 name: items[i].value.name,
+                description:items[i].value.description,
                 tipo:items[i].value.tipo,
                 price: items[i].value.price,
                 cost_price: items[i].value.cost_price,
@@ -174,12 +175,15 @@ async function get_search_catalog(type_order) {
       });
   
       const items = result.rows;
+
+      console.log('items',items)
       const new_array = items.map(function (item) {
         return {
           _id: item.value._id,
           _rev: item.value._rev,
           variant_id: item.value.variant_id,
           name: item.value.name,
+          description: item.value.description,
           tipo: item.value.tipo,
           price: item.value.price,
           cost_price: item.value.cost_price,
