@@ -300,8 +300,9 @@ async function all_cart_item(todos) {
             var sub_tot_dis = todo.doc.variant['sub_tot_dis'];
             //  var price_cost = todo.doc.variant['price_cost'];
             var price_tot = price * quantity;
-            var tax = todo.doc.variant['tax'];
-            var tax_name = todo.doc.variant['tax_name'];
+
+            var taxes = todo.doc.variant['taxes'];
+           // var tax_name = todo.doc.variant['tax_name'];
             var currency = todo.doc.variant['currency'];
            // var currency_value = currency.value;
             
@@ -333,8 +334,8 @@ async function all_cart_item(todos) {
                 _rev: todo.doc['_rev'],
                 variant_id: todo.doc.variant['_id'],
                 sku: todo.doc.variant['sku'],
-                tax: tax,
-                tax_name: tax_name,
+                taxes: taxes,
+                // tax_name: tax_name,
                 currency: currency,
                 pictures: todo.doc.variant['pictures'], //Img
                 name: todo.doc.variant['name'], //Name
@@ -397,31 +398,71 @@ async function variations_add_cart(element) {
  
         let product_id = $(element).attr('product_id'); //Id del producto selccionado
         let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-       // let variant_price_id = $(element).attr('variant_price_id');
+        // let variant_price_id = $(element).attr('variant_price_id');
         var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
         let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
         let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
         let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
-
         let variant_price_id = $('#card_var_id_' + product_id).attr('price_id'); //Tomo el valor del formulario
-       // let variant_price_id = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-
-        // TRAIGO EL PRODUCT DOC
+        // let variant_price_id = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
+        
+        //  PRODUCTO
         let doc = await L_catalog_db.get(product_id);
-        //Busco el id en el array con find funcion de flecha
+        //  VARIABLE COMPLETA
         const var_doc = doc.variations.find(element => element.id == variant_id);
-        const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
-       // let price_cost = await get_price_cost(product_id,variant_id)
-        //calculos matematicos para armar el Carrito
-        var quantity = variant_quantity;
-        //Valores
-        var price = variant_price;
-        //  var price_cost = todo.doc.variant['price_cost'];
-        var price_tot = price * quantity;
+    
+        //  const tax_product = tax_arr.find(element => element.id == variant_price_id);
+        //  TAX CONFIGURACION GENERAL
+        const tax_list = await L_catalog_db.get("tax_list");
 
-        // Hago descuentos del item y la suma total
-        var tax = 21;
-        var tax_name = 'iva';
+        //RELACIONO CON EL ID Q ESTA GUARDADO EN EL PRODUCTO 
+        //   const tax_list_config = tax_list.tax.find(element => element.id == variant_id);
+        const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+        // let price_cost = await get_price_cost(product_id,variant_id)
+
+        const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+        //TAX DEL PRODUCTO
+        console.log("TAXESS variant_price_id",variant_price_id)
+
+        console.log(" tax_price_list", tax_price_list)
+       
+       // console.log("TAXESS",tax_price_list)
+        const tax_arr = tax_price_list.taxes
+        
+
+        console.log("tax_arr taxes",tax_arr)
+        // Ya tienes la lista de impuestos para la variante del producto
+        //const tax_arr = var_doc.tax;
+        // Aquí calculamos el precio final con impuestos
+        let price_final_with_tax = parseFloat(variant_price); // iniciamos con el precio base
+        let applied_taxes = []; // inicializamos el array de impuestos aplicados
+
+        if (tax_arr && Array.isArray(tax_arr)) {
+            for (const tax of tax_arr) {
+                // Buscar la configuración del impuesto en la lista general de impuestos
+                const tax_config = tax_list.tax.find(element => element.id == tax.id);
+                if (tax_config) {
+                    // Calcular el impuesto y sumarlo al precio final
+                    const tax_amount = (price_final_with_tax * tax_config.value) / 100;
+                    price_final_with_tax += tax_amount;
+                    applied_taxes.push({ name: tax_config.name, price_tax: tax_amount, value: tax_config.value });
+   
+                }
+            }
+        }
+
+
+         //calculos matematicos para armar el Carrito
+         var quantity = variant_quantity;
+         //Valores
+         var price = price_final_with_tax;
+         //  var price_cost = todo.doc.variant['price_cost'];
+         var price_tot = price * quantity;
+         // Hago descuentos del item y la suma total
+         // console.log("TAX LISTTTT",tax_list)
+         // var tax = 21;
+         // var tax_name = 'iva';
+        var taxes = applied_taxes;
         var currency = price_list.currency['value'];
         //var currency_default = currency_doc.currency_default;
         //Descuentos
@@ -432,8 +473,7 @@ async function variations_add_cart(element) {
         var sub_tot_dis = sub_tot_product;
 
         // console.log(var_doc);
-
-      //  const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+        //  const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
 
         const new_variant_doc = {
             product_id: product_id,
@@ -450,13 +490,15 @@ async function variations_add_cart(element) {
             quantity: parseFloat(variant_quantity),
             sub_tot_dis: parseFloat(sub_tot_dis),
             discount_tot: parseFloat(discount_tot), //Tot Discount
-            tax: parseFloat(tax),
-            tax_name: tax_name,
+            taxes: taxes,
+            //tax_name: tax_name,
             currency: currency,
+
         }
 
         console.log('new_variant_doc',new_variant_doc);
        console.log('CURRENCY',currency);
+       console.log('TAXEDS',taxes);
        console.log('price_list',price_list);
         //alert(var_doc.tax['value']);
         if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
@@ -672,6 +714,7 @@ async function add_cart_item(data) {
             update: new Date().toISOString(),
             variant: data //Array new_variant_doc
         });
+        console.log(data)
         if (response.ok) {
             get_cart(ws_id, board_name);
             Snackbar.show({

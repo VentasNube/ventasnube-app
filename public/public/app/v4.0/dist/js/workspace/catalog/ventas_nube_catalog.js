@@ -188,18 +188,37 @@ async function search_catalog_item(search_val) {
 }
 
 //Boton cambiar lista de precio
-function cat_variations_price(element) {
+async function cat_variations_price(element) {
     //    $(".card_item_select_price").click(function () {
 
     var card_item_price = $(element).html();
     var card_product_val = $(element).find('label').html();
     var price_id =  $(element).attr('price_id');
-    alert(price_id);
+    var product_id =  $(element).attr('product_id');
+
+      //  PRODUCTO
+     /* let doc = await L_catalog_db.get(product_id);
+      //  VARIABLE COMPLETA
+      const var_doc = doc.variations.find(element => element.id == variant_id);
+      //  const tax_product = tax_arr.find(element => element.id == variant_price_id);
+      //  TAX CONFIGURACION GENERAL
+      const tax_list = await L_catalog_db.get("tax_list");
+      //RELACIONO CON EL ID Q ESTA GUARDADO EN EL PRODUCTO 
+      //   const tax_list_config = tax_list.tax.find(element => element.id == variant_id);
+      const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+      // let price_cost = await get_price_cost(product_id,variant_id)
+      const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+*/
+  console.log( product_id, price_id,card_product_val, card_item_price)
     $(element).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
-
     $(element).parent().parent().parent().find(".card_item_selected_price").attr('price_id',price_id);
+   // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
+    // Actualiza la interfaz de usuario con el nuevo precio y los impuestos aplicados
+   // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val.toFixed(2)); // asumo que quieres mostrar dos decimales
+    $("#card_id_" + product_id).find(".card_product_val").val(Number(card_product_val).toFixed(2));
+    $("#card_var_id_" + product_id).attr('price_id',price_id);;
+    
 
-    $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
     //$(element).parent().parent().parent().parent().parent().find(".card_product_val").attr('price_id',price_id);
     //    alert(card_product_val);
     //  });

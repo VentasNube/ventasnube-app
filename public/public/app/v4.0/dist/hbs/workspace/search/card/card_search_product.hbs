@@ -4,7 +4,7 @@
     <div class="card">
         <div id="card_id_{{{item._id}}}">
             <!--- RENDER VARIANT ZONE   --->
-            <form id="card_var_id_{{{item._id}}}" variant_id="{{item.variant_id}}" price_id="{{#each item.price_list }}{{id}}{{/each}}" 
+            <form id="card_var_id_{{{item._id}}}" variant_id="{{item.variant_id}}" price_id="{{#first item.price_list }}{{id}}{{/first}}" 
                 class="card-product card_product_form" product_id="{{{item._id}}}">
                 <div class="header">
                     <!-- Indicador -->
@@ -123,7 +123,7 @@
 
                              {{#each item.price_list as | pl |}}
                                     <li>
-                                        <a onclick="cat_variations_price(this)" price_id="{{id}}" class="" href="#">
+                                        <a onclick="cat_variations_price(this)" product_id="{{{../item._id}}}" price_id="{{id}}" class="" href="#">
                                         {{#each ../../price_list as | l1 |}}
                                                 {{#ifEquals l1.id pl.id }}
                                                                     <div class="round-icon pr uper">

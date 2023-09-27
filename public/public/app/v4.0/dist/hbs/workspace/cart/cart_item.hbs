@@ -27,8 +27,9 @@
         <div class="s-card-actv-item-prod-fav-item">
             <div class="s-card-actv-item-name">
                 {{name}}
+                 <!--
                 {{#each attribute_combinations}}
-                <!-- Hago la comprobacion de si es un color -->
+                Hago la comprobacion de si es un color
 
                 {{#ifEquals id 'SIZE' }}
                 <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
@@ -43,6 +44,8 @@
 
 
                 {{/each}}
+
+                 -->
                 <div class="s-card-actv-item-dell">
                     <button type="button" onclick="dell_cart_item(this)" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
                         class="btn btn-round pull-right">
@@ -52,14 +55,20 @@
             </div>
 
              <span class="s-card-actv-item-price-left ">
-                <span class="hidden-xs" data-toggle="tooltip" data-placement="top"
-                    data-original-title="Valor del impuesto">{{tax_name}}: {{tax}}%</span>
+
+
+                <span class="hidden-xs text-red" data-toggle="tooltip" data-placement="top" data-original-title="Valor del impuesto">
+                    {{#each taxes}}
+                        {{name}}:{{../currency}}{{price_tax}}
+                    {{/each}}
+                </span>
                 
-                <!--span class=" material-icons">local_offer</spa-->    
-                <span class="text-red" data-toggle="tooltip" data-placement="top"
-                    data-original-title="Descuento Unitario">
-                    {{discount}}% : {{currency}}{{discount_tot}}</span>
+                <span class="text-red" data-toggle="tooltip" data-placement="top" data-original-title="Descuento Unitario">
+                    {{discount}}% : {{currency}}{{discount_tot}}
+                </span>
+
             </span>
+
             <span class="s-card-actv-item-price-right">
                  <small class="card_product_quantity" data-toggle="tooltip" data-placement="top"
                     data-original-title="Cantidad de productos">{{quantity}}</small>
