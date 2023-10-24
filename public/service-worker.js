@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 1211121212122123122123223;
+const version = 122122123;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -153,6 +153,10 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', revision: version },
+
+  { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', revision: version },
+
+
 
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },

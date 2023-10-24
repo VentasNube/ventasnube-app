@@ -95,6 +95,24 @@ function registerHandlebarsHelpers() {
         return tot_real_stock;
     });
 
+
+    Handlebars.registerHelper("available_stock_cost", function(value) {
+        if (value.length > 0) {
+            // Obtener el último elemento del array
+            var lastItem = value[value.length - 1];
+            
+            // Verificar si el tipo es "in"
+            if (lastItem.type === "in") {
+                // Convertir el precio de costo a un número entero
+                var costPrice = parseInt(lastItem.cost_price);
+                return costPrice;
+            }
+        }
+        // Si no se encuentra un elemento válido, devolver 0
+        return 0;
+    });
+    
+
     // Trae el primer objeto de un array se usa
     Handlebars.registerHelper("first", function(context, options) {
         var ret = "";

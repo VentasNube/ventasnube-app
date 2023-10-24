@@ -36,26 +36,24 @@
                         <div class="text-left btn-group">
                             <div class="s-card-mini-img ">
                                 {{#first pictures}}
-                                <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <div class=" mini-carrousel-new-img ">
-                                        <div class="mini-card-img-s">
-                                            <div class="">
-                                                <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)" img-charge="" href="#">
-                                                    <div id="new_img_product_content">
-                                                        <img src="{{min}}">
-                                                    </div>
+                                    <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <div class=" mini-carrousel-new-img ">
+                                            <div class="mini-card-img-s">
+                                                <div class="">
+                                                    <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)" img-charge="" href="#">
+                                                        <div id="new_img_product_content">
+                                                            <img src="{{min}}">
+                                                        </div>
 
-                                                    <span class="material-icons">
-                                                        add_a_photo
-                                                    </span>
-                                                </a>
+                                                        <span class="material-icons">
+                                                            add_a_photo
+                                                        </span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 {{/first}}
-
-
                             </div>
                             <!--span>
                                 {{#each attribute_combinations as | ac |}}
@@ -70,18 +68,14 @@
                                 {{name}}
                                 {{/ifDiff}}
                                 {{/each}}
-
                             <!--/span-->
-                            
                         </div>
                         <div class="pull-right padding-10">
                             {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}: {{/with}}
                             {{#available_stock stock_invetary}}{{/available_stock}}
                             {{#first price_list}}
-
                                 <div class="round-icon pr"><span> {{currency.value}} </span></div>
                                 <span iid="total_neto_prod"> {{value}}</span>
-
                             {{/first}}
                         </div>
                     </a>
@@ -97,8 +91,20 @@
                         <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
                             <ul class="nav nav-tabs">
 
-                                <!--tab-stock--->
+                             
+
+                                <!--tab-Price--->
                                 <li id="" class="ripple active">
+                                    <a data-toggle="tab" href="#edit_price_item_tab_{{id}}">
+                                        <span class="material-icons">
+                                            price_change
+                                        </span>
+                                        {{#with ../ws_lang_data}} {{{m_catalog_edit_price}}} {{/with}}
+                                    </a>
+                                </li>
+
+                                   <!--tab-stock--->
+                                <li id="" class="ripple ">
                                     <a data-toggle="tab" href="#edit_stock_item_tab_{{id}}">
                                         <span class="material-icons">
                                             production_quantity_limits
@@ -108,25 +114,15 @@
                                     </a>
                                 </li>
 
-                                <!--tab-Price--->
-                                <li id="" class="ripple">
-                                    <a data-toggle="tab" href="#edit_price_item_tab_{{id}}">
-                                        <span class="material-icons">
-                                            price_change
-                                        </span>
-                                        {{#with ../ws_lang_data}} {{{m_catalog_edit_price}}} {{/with}}
-                                    </a>
-                                </li>
-
                                 <!--tab-Description--->
-                                <li id="" class="ripple">
+                                <!--li id="" class="ripple">
                                     <a data-toggle="tab" href="#edit_tax_item_tab_{{id}}">
                                         <span class="material-icons">
                                             account_balance
                                         </span>
                                         {{#with ../ws_lang_data}} {{{ws_catalog_settings_tax_2}}} {{/with}}
                                     </a>
-                                </li>
+                                </li-->
 
                                 <!--tab-Description--->
                                 <li id="" class="ripple">
@@ -142,7 +138,149 @@
                             <!--tab-content--->
                             <div class="tab-content ">
                                 <!--tab--->
-                                <div id="edit_stock_item_tab_{{id}}" class="tab-pane fade in active">
+
+
+                                <div id="edit_price_item_tab_{{id}}" class="tab-pane fade in active">
+                                    <!-- Precios del producto --->
+                                    <ul class="list-group margin-0">
+                                        <!-- Hago un each de las listas de precios --->
+                                        {{#each price_list as | pl |}}
+                                        <li class="list-group-item ripple">
+                                            <!-- Hago un each de los precios --->
+                                            {{#each ../../price_list as | l1 |}}
+                                            <!-- Relaciono los dos valores por la ID --->
+                                            {{#ifEquals l1.id pl.id }}
+                                            <div class="round-icon pr uper">
+                                                {{value}}
+                                            </div>
+                                            {{value}}
+                                            <!-- {{id}} --->
+                                            {{/ifEquals}}
+                                            {{/each}}
+                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                title=""
+                                                data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                                history
+                                            </span>
+
+                                            <div class="pull-right">
+                                                {{#first ../../price_list}}
+                                                <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                                {{/first}}
+                                                <span id="total_neto_prod"> {{value}}</span>
+
+                                                <div class="btn-group dropright">
+                                                    <button id="" type="button"
+                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <span class="material-icons">more_vert</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a price_id=" {{id}}" price_value="  {{value}}"
+                                                                onclick="edit_price_var(this)"
+                                                                id="edit_price_var_{{../id}}"
+                                                                doc_id="{{{../product_doc/_id}}}" variant_id="{{../id}}"
+                                                                input_id="price_list" href="#">
+                                                                <span class="material-icons">
+                                                                    edit
+                                                                </span><span> {{#with ../../ws_lang_data}}
+                                                                    {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a onclick="dell_price_var(this)" id="dell_price_var_{{id}}"
+                                                                doc_id="{{{../../product_doc/_id}}}"
+                                                                variant_id="{{../id}}" price_id=" {{id}}"
+                                                                price_value="  {{value}}" input_id="price_list"
+                                                                href="#">
+                                                                <span class="material-icons">
+                                                                    delete
+                                                                </span>
+                                                                <span> {{#with ../../ws_lang_data}}
+                                                                    {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                    <!--- Listas de precios --->
+                                    <div
+                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                        <!--div
+                                            class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <button type="button" class="btn xl btn-more btn-primary line" role="button"
+                                                data-toggle="collapse" data-parent="#item-edit-variants"
+                                                href="#edit_price_form{{id}}" aria-expanded="true"
+                                                aria-controls="collapseOne">
+
+                                                <span class="material-icons">add_circle_outline</span>
+                                                <span class=""> Editar </span>
+                                            </button>
+                                        </div-->
+
+                                         <button type="button" onclick="product_new_price_pop(this)"
+                                                            id="add_price_var_{{id}}" doc_id="{{{../product_doc/_id}}}"
+                                                            variant_id="{{id}}" input_id="price_list"  type="button" class="btn xl btn-more btn-primary line" role="button"
+                                                            data-toggle="collapse" data-parent="#item-edit-variants"
+                                                            href="#edit_price_form{{id}}" aria-expanded="true"
+                                                            aria-controls="collapseOne">
+                                                <span class="material-icons">add_circle_outline</span>
+                                                <span class=""> Editar </span>
+                                            </button>
+
+                                        <div id="edit_price_form{{id}}" role="tabpanel"
+                                            aria-labelledby="item-edit-variants" aria-expanded="true"
+                                            class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                            <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <span class="material-icons" data-toggle="tooltip"
+                                                            data-placement="bottom" title=""
+                                                            data-original-title="Agregar precio">
+                                                            price_change
+                                                        </span>
+                                                    </span>
+                                                    <select class="form-control md " name="price_list_var_{{id}}"
+                                                        id="price_list_var_{{id}}">
+                                                        {{#each ../price_list }}
+                                                        <option value="{{id}}">{{value}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                <div class="input-group">
+                                                    <input id="new_price_var_{{id}}" class="form-control" type="number"
+                                                        placeholder="Precio" value="">
+                                                    <span class="input-group-addon">
+                                                        <button type="button" onclick="new_price_var(this)"
+                                                            id="add_price_var_{{id}}" doc_id="{{{../product_doc/_id}}}"
+                                                            variant_id="{{id}}" input_id="price_list"
+                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                            <span class="material-icons">add_circle</span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div> 
+
+                                <div id="edit_stock_item_tab_{{id}}" class="tab-pane fade">
                                     <ul class="list-group margin-0">
                                         {{#each stock_invetary}}
                                         <li class="list-group-item ripple ">
@@ -189,8 +327,7 @@
                                         {{/each}}
                                     </ul>
 
-                                    <div
-                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                         <div id="dell_stock_form{{id}}" role="tabpanel"
                                             class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -330,264 +467,6 @@
                                     </div>
                                 </div>
 
-                                <div id="edit_price_item_tab_{{id}}" class="tab-pane fade in">
-                                    <!-- Precios del producto --->
-                                    <ul class="list-group margin-0">
-                                        <!-- Hago un each de las listas de precios --->
-                                        {{#each price_list as | pl |}}
-                                        <li class="list-group-item ripple">
-                                            <!-- Hago un each de los precios --->
-                                            {{#each ../../price_list as | l1 |}}
-                                            <!-- Relaciono los dos valores por la ID --->
-                                            {{#ifEquals l1.id pl.id }}
-                                            <div class="round-icon pr uper">
-                                                {{value}}
-                                            </div>
-                                            {{value}}
-                                            <!-- {{id}} --->
-                                            {{/ifEquals}}
-                                            {{/each}}
-                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                                title=""
-                                                data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
-                                                history
-                                            </span>
-
-                                            <div class="pull-right">
-                                                {{#first ../../price_list}}
-                                                <div class="round-icon pr"><span> {{currency.value}} </span></div>
-                                                {{/first}}
-                                                <span id="total_neto_prod"> {{value}}</span>
-
-                                                <div class="btn-group dropright">
-                                                    <button id="" type="button"
-                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                        <span class="material-icons">more_vert</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a price_id=" {{id}}" price_value="  {{value}}"
-                                                                onclick="edit_price_var(this)"
-                                                                id="edit_price_var_{{../id}}"
-                                                                doc_id="{{{../product_doc/_id}}}" variant_id="{{../id}}"
-                                                                input_id="price_list" href="#">
-                                                                <span class="material-icons">
-                                                                    edit
-                                                                </span><span> {{#with ../../ws_lang_data}}
-                                                                    {{{m_catalog_edit_edit}}} {{/with}}</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a onclick="dell_price_var(this)" id="dell_price_var_{{id}}"
-                                                                doc_id="{{{../../product_doc/_id}}}"
-                                                                variant_id="{{../id}}" price_id=" {{id}}"
-                                                                price_value="  {{value}}" input_id="price_list"
-                                                                href="#">
-                                                                <span class="material-icons">
-                                                                    delete
-                                                                </span>
-                                                                <span> {{#with ../../ws_lang_data}}
-                                                                    {{{m_catalog_edit_delete}}} {{/with}}</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        {{/each}}
-                                    </ul>
-                                    <!--- Listas de precios --->
-                                    <div
-                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                        <div
-                                            class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <button type="button" class="btn xl btn-more btn-primary line" role="button"
-                                                data-toggle="collapse" data-parent="#item-edit-variants"
-                                                href="#edit_price_form{{id}}" aria-expanded="true"
-                                                aria-controls="collapseOne">
-
-                                                <span class="material-icons">add_circle_outline</span>
-                                                <span class=""> Editar </span>
-                                            </button>
-                                        </div>
-
-                                        <div id="edit_price_form{{id}}" role="tabpanel"
-                                            aria-labelledby="item-edit-variants" aria-expanded="true"
-                                            class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                            <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <span class="material-icons" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Agregar precio">
-                                                            price_change
-                                                        </span>
-                                                    </span>
-                                                    <select class="form-control md " name="price_list_var_{{id}}"
-                                                        id="price_list_var_{{id}}">
-                                                        {{#each ../price_list }}
-                                                        <option value="{{id}}">{{value}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                                <div class="input-group">
-                                                    <input id="new_price_var_{{id}}" class="form-control" type="number"
-                                                        placeholder="Precio" value="">
-                                                    <span class="input-group-addon">
-                                                        <button type="button" onclick="new_price_var(this)"
-                                                            id="add_price_var_{{id}}" doc_id="{{{../product_doc/_id}}}"
-                                                            variant_id="{{id}}" input_id="price_list"
-                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            <span class="material-icons">add_circle</span>
-                                                        </button>
-                                                    </span>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div id="edit_tax_item_tab_{{id}}" class="tab-pane fade in">
-                                    <!-- Precios del producto --->
-                                    <ul class="list-group margin-0">
-                                        <!-- Hago un each de las listas de precios --->
-                                        {{#each price_list as | pl |}}
-                                        <li class="list-group-item ripple">
-                                            <!-- Hago un each de los precios --->
-                                            {{#each ../../price_list as | l1 |}}
-                                            <!-- Relaciono los dos valores por la ID --->
-                                            {{#ifEquals l1.id pl.id }}
-                                            <div class="round-icon pr uper">
-                                                {{value}}
-                                            </div>
-                                            {{value}}
-                                            <!-- {{id}} --->
-                                            {{/ifEquals}}
-                                            {{/each}}
-                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                                title=""
-                                                data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
-                                                history
-                                            </span>
-
-                                            <div class="pull-right">
-                                                {{#first ../../price_list}}
-                                                <div class="round-icon pr"><span> {{currency.value}} </span></div>
-                                                {{/first}}
-                                                <span id="total_neto_prod"> {{value}}</span>
-
-                                                <div class="btn-group dropright">
-                                                    <button id="" type="button"
-                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                        <span class="material-icons">more_vert</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a price_id=" {{id}}" price_value="  {{value}}"
-                                                                onclick="edit_price_var(this)"
-                                                                id="edit_price_var_{{../id}}"
-                                                                doc_id="{{{../product_doc/_id}}}" variant_id="{{../id}}"
-                                                                input_id="price_list" href="#">
-                                                                <span class="material-icons">
-                                                                    edit
-                                                                </span><span> {{#with ../../ws_lang_data}}
-                                                                    {{{m_catalog_edit_edit}}} {{/with}}</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a onclick="dell_price_var(this)" id="dell_price_var_{{id}}"
-                                                                doc_id="{{{../../product_doc/_id}}}"
-                                                                variant_id="{{../id}}" price_id=" {{id}}"
-                                                                price_value="  {{value}}" input_id="price_list"
-                                                                href="#">
-                                                                <span class="material-icons">
-                                                                    delete
-                                                                </span>
-                                                                <span> {{#with ../../ws_lang_data}}
-                                                                    {{{m_catalog_edit_delete}}} {{/with}}</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        {{/each}}
-                                    </ul>
-                                    <!--- Listas de precios --->
-                                    <div
-                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                        <div
-                                            class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <button type="button" class="btn xl btn-more btn-primary line" role="button"
-                                                data-toggle="collapse" data-parent="#item-edit-variants"
-                                                href="#edit_price_form{{id}}" aria-expanded="true"
-                                                aria-controls="collapseOne">
-
-                                                <span class="material-icons">add_circle_outline</span>
-                                                <span class=""> Editar </span>
-                                            </button>
-                                        </div>
-
-                                        <div id="edit_price_form{{id}}" role="tabpanel"
-                                            aria-labelledby="item-edit-variants" aria-expanded="true"
-                                            class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                            <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <span class="material-icons" data-toggle="tooltip"
-                                                            data-placement="bottom" title=""
-                                                            data-original-title="Agregar precio">
-                                                            price_change
-                                                        </span>
-                                                    </span>
-                                                    <select class="form-control md " name="price_list_var_{{id}}"
-                                                        id="price_list_var_{{id}}">
-                                                        {{#each ../price_list }}
-                                                        <option value="{{id}}">{{value}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                                <div class="input-group">
-                                                    <input id="new_price_var_{{id}}" class="form-control" type="number"
-                                                        placeholder="Precio" value="">
-                                                    <span class="input-group-addon">
-                                                        <button type="button" onclick="new_price_var(this)"
-                                                            id="add_price_var_{{id}}" doc_id="{{{../product_doc/_id}}}"
-                                                            variant_id="{{id}}" input_id="price_list"
-                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            <span class="material-icons">add_circle</span>
-                                                        </button>
-                                                    </span>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div id="edit_description_item_tab_{{id}}" class="tab-pane fade">
                                     <!-- FOTOS -->

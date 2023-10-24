@@ -133,8 +133,6 @@ function get_nav_catalog(ws_info, ws_lang_data) {
 // TRAIGO LOS PRODUCTOS DEL CATALOGO
 function get_items_catalog(ws_id) {
 
-
-
     var ws_catalog = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
@@ -197,7 +195,7 @@ async function cat_variations_price(element) {
     var product_id =  $(element).attr('product_id');
 
       //  PRODUCTO
-     /* let doc = await L_catalog_db.get(product_id);
+    /* let doc = await L_catalog_db.get(product_id);
       //  VARIABLE COMPLETA
       const var_doc = doc.variations.find(element => element.id == variant_id);
       //  const tax_product = tax_arr.find(element => element.id == variant_price_id);
@@ -208,7 +206,8 @@ async function cat_variations_price(element) {
       const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
       // let price_cost = await get_price_cost(product_id,variant_id)
       const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
-*/
+    */
+
   console.log( product_id, price_id,card_product_val, card_item_price)
     $(element).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
     $(element).parent().parent().parent().find(".card_item_selected_price").attr('price_id',price_id);
@@ -739,6 +738,112 @@ $(document).on('click', '.catalog_new_item', function (event) {
 
 });
 
+// TRAE EL FORMULARIO
+async function catalog_new_price_item(element) {
+    try {
+        var new_category_list = await L_catalog_db.get('category_list');
+        var new_trade_list = await L_catalog_db.get('trade_list');
+        var new_model_list = await L_catalog_db.get('model_list');
+        var price_doc = await L_catalog_db.get('price_list');
+        var tax_doc = await L_catalog_db.get('tax_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+        var attributes = await L_catalog_db.get('attributes');
+        var user_roles_permisions = user_Ctx.userCtx.roles;
+
+        console.log('user_roles_permisions', user_roles_permisions);
+
+        var product_doc_array = {
+            price_list: price_doc.price_list,
+            tax_list:tax_doc,
+            currency_list: currency_doc.currency_list,
+            currency:currency_doc['currency_default'],
+            ws_lang_data: ws_lang_data,
+            user_roles: user_roles_permisions,
+            category_list: new_category_list,
+            trade_list: new_trade_list,
+            model_list: new_model_list,
+            attributes_list: attributes
+        }
+
+        console.log('tax_doc CCCCC', product_doc_array);
+        console.log('tax_doc currency_doc currency_doc',currency_doc);
+        
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', '#right_main', product_doc_array);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=new';
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+        return;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// BOTON CREAR PRODUCTO
+$(document).on('click', '.catalog_new_price_item', function (element) {
+    //  $('#master_popup').modal('show');
+    // get_catalog_new_item();
+    catalog_new_item(element);
+
+});
+
+
+async function product_new_price_pop(element){
+
+    try {
+        //  let img_charge = $(element).attr('img-charge')
+        const img_charge = "false";
+        console.log('IMG CHARGE',img_charge);
+
+        if(img_charge === 'true'){
+        $('#master_popup').modal('show');
+        // save_new_conctact();
+    }else{
+        // quiero probar que el teclado sea bueno para programar creo q esta super bueno
+        let doc_id = $(element).attr('doc_id')
+        var product_doc = await L_catalog_db.get(doc_id);
+        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+        var price_doc = await L_catalog_db.get('price_list');
+        var tax_doc = await L_catalog_db.get('tax_list');
+        var currency_doc = await L_catalog_db.get('currency_list');
+        var user_roles_permisions = user_Ctx.userCtx.roles;
+            //Busco el id en el array con find funcion de flecha
+         const var_doc = product_doc.variations.find(element => element.id == variant_id);
+        //  console.log('user_roles_permisions', user_roles_permisions);
+        //traigo los datos del producto   
+        const data = {
+            doc_id: doc_id,
+            variant_id:variant_id,
+            price_list_items:var_doc.price_list,
+            stock_invetary:var_doc.stock_invetary,
+            tax_list:tax_doc.tax,
+            price_list: price_doc.price_list,
+            currency_list: currency_doc.currency_list,
+            ws_lang_data: ws_lang_data,
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_roles_permisions,
+        }
+         console.log(data);
+        $('#master_popup').modal('show');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', '#master_popup', data);
+        $('#catalog_new_product_name_input').focus(); 
+    }
+    } catch (err) {
+        console.log('ERROR:', err);
+        Snackbar.show({
+            text: err.reason,
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+         //   action: () => { updateDocuments() }
+        });
+    }
+
+}
+
+
+
 // Crear variable (Carga todos los datos generales en un nuevo documento con el nombre y crea 1 sola variable )
 
 ///////////////////////////////////////////////
@@ -925,7 +1030,6 @@ async function catalog_new_item_new_product_old_no(element) {
             var currency_doc = await L_catalog_db.get('currency_list');
 
             var attributes = await L_catalog_db.get('attributes');
-
             var user_roles_permisions = user_Ctx.userCtx.roles;
 
             //  console.log('user_roles_permisions', user_roles_permisions);
@@ -2697,6 +2801,11 @@ async function catalog_config_tax_money_edit(element) {
 // AGREGO
 async function catalog_config_tax_new(element) {
     try {
+
+         // Traigo el documento de usuario y crep la variable userCtx
+        var ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        var userCtx = ws_module_array['userCtx'].userCtx;
+
         let value = $('#new_value_tax_edit').val();
         let name = $('#new_name_tax_input').val();
         $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
@@ -2704,7 +2813,9 @@ async function catalog_config_tax_new(element) {
         var value_n = String(value);
         var name_n = String(name);
         var newDate = new Date(); //fecha actual del navegador
-        var userName = userCtx.userCtx.name;
+        var userName = userCtx;
+
+
         var doc = await L_catalog_db.get('tax_list'); //Traigo el documento
         var id_tax = doc.tax[doc.tax.length - 1];
         //Si Id_tax es nulo o esta vacio 
@@ -3093,6 +3204,7 @@ async function add_stock_var(element) {
         //Hago comprobaciones 
         if (new_cost_stock_s === 0) {
             $('#new_cost_stock_var_' + variant_id).css('border', '3px solid red');
+            $('#new_cost_stock_modal_var_' + variant_id).css('border', '3px solid red');
             Snackbar.show({
                 text: 'Falta completar el precio',
                 actionText: 'ok',
@@ -3102,6 +3214,7 @@ async function add_stock_var(element) {
         }
         else if (new_value_s === 0) {
             $('#add_stock_var_' + variant_id).css('border', '3px solid red');
+            $('#new_cost_stock_modal_var_' + variant_id).css('border', '3px solid red');
             Snackbar.show({
                 text: 'Falta completar la cantidad',
                 actionText: 'ok',
@@ -3133,7 +3246,8 @@ async function add_stock_var(element) {
                     location_id: 1
                 };
                 //  console.log(userName, 'else userName',new_item,'new_item');
-                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+                //  var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+                var new_doc = item[input_id].push(new_item);  //Envio los datos editados al documento
                 var response = await L_catalog_db.put({
                     _id: doc._id,
                     _rev: doc._rev,
@@ -3148,6 +3262,8 @@ async function add_stock_var(element) {
                         pos: 'bottom-right',
                         actionTextColor: "#0575e6",
                     });
+
+                    product_new_price_pop(element);
                     catalog_edit_item_url(doc_id, 1);
                 } else {
                     alert("no se actualizo");
@@ -3240,6 +3356,7 @@ async function dell_stock_var(element) {
                 pos: 'bottom-right',
                 actionTextColor: "#0575e6",
             });
+            product_new_price_pop(element);
             catalog_edit_item_url(doc_id, 1);
         } else {
             alert("no se actualizo");
@@ -3505,6 +3622,7 @@ async function product_upload_img_pop(element){
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
         }
+
         // console.log(ws_price_list);
         $('#master_popup').modal('show');
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', '#master_popup', data);
