@@ -20,14 +20,16 @@
                     <div class="bg-gray-light padding-20 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
-                        <div id="edit_stock_block{{../doc_id}}" class="pull-left padding-0 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="edit_stock_block{{../doc_id}}"
+                            class="pull-left padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                             <h4 class="tittle_input margin-b-10">
+                            <h4 class="tittle_input margin-b-10">
                                 <div class="Switch" onclick="">
-                                    <input id="stock_active_{{../doc_id}}_status_checkbox" name="switch_variation" value=""
-                                        type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
+                                    <input id="stock_active_{{../doc_id}}_status_checkbox" name="switch_variation"
+                                        value="" type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
                                         input_id="status" onclick="stock_active_chekbox(this)">
-                                    <label for="stock_active_{{../doc_id}}_status_checkbox" class="label-primary"></label>
+                                    <label for="stock_active_{{../doc_id}}_status_checkbox"
+                                        class="label-primary"></label>
                                 </div>
                                 <strong>{{{m_catalog_edit_stock_active }}}</strong>
                             </h4>
@@ -63,10 +65,68 @@
                                 </div>
                             </div>
 
-                            <div class="padding-0 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        </div>
+
+
+                           
+
+
+                            <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                 <h4 class="tittle_input margin-t-10">
+                                <div class="Switch" onclick="">
+                                    <input id="{{../doc_id}}_status_checkbox" name="switch_variation" value=""
+                                        type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
+                                        input_id="status" onclick="cat_edit_chekbox(this)">
+                                    <label for="{{../doc_id}}_status_checkbox" class="label-primary"></label>
+                                </div>
+                                <strong>{{{m_catalog_edit_stock_lotes }}}</strong>
+                            </h4>
+                              <!--- AGREGR STOCK -->
+                                <div id="add_stock_form{{../doc_id}}"class="bg-gray-light padding-0 margin-t-10 col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                                    role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true">
+                                   
+
+                                    <div class="padding-0 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="input-group">
+                                             <span class="input-group-addon">
+                                                <span class="material-icons" data-toggle="tooltip"
+                                                    data-placement="bottom" title="" data-original-title="Cantidad">
+                                                    inventory_2
+                                                </span>
+                                            </span>
+                                            <input id="add_stock_var_{{../variant_id}}" class="form-control"
+                                                type="number" placeholder="{{{m_catalog_add_stock}}}" value="">
+                                            
+                                        </div>
+                                    </div>
+ <!--- AGREGR STOCK -->
+                                    <div class="padding-0 margin-0  col-xs-8 col-sm-8 col-md-6 col-lg-8">
+
+                                        <div class="input-group">
+                                           
+                                            <input id="new_cost_stock_var_{{../variant_id}}"
+                                                class="col-sm-4 form-control" type="number"
+                                                placeholder="{{{m_catalog_add_stock_cost}}}" value="">
+
+                                                <span class="input-group-addon">
+                                                <button type="button" onclick="add_stock_var(this)"
+                                                    id="add_stock_var_{{../variant_id}}" doc_id="{{../doc_id}}"
+                                                    variant_id="{{../variant_id}}" input_id="stock_invetary"
+                                                    class="btn xl btn-more btn-primary line" role="button"
+                                                    data-toggle="collapse" data-parent="#item-edit-variants"
+                                                    href="#add_stock_form{{../doc_id}}" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    <span class="material-icons">add_circle_outline</span>
+                                                    <span class=""> {{{m_catalog_edit_add}}}</span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!--- Eliminar STOCK -->
-                                <div id="dell_stock_form{{../doc_id}}"
-                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12" role="tabpanel">
+                                <div id="dell_stock_form{{../doc_id}}"  class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                                    role="tabpanel">
                                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="input-group">
                                             <span class="input-group-addon">
@@ -77,7 +137,8 @@
                                                 </span>
                                             </span>
                                             <div class="input-group">
-                                                <input id="dell_stock_var_{{../variant_id}}" class="form-control" type="number" placeholder="{{{m_catalog_add_stock}}}" value="">
+                                                <input id="dell_stock_var_{{../variant_id}}" class="form-control"
+                                                    type="number" placeholder="{{{m_catalog_add_stock}}}" value="">
                                                 <span class="input-group-addon">
 
                                                     <button type="button" onclick="dell_stock_var(this)"
@@ -98,62 +159,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--- AGREGR STOCK -->
-                                <div id="add_stock_form{{../doc_id}}"
-                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                                    role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true">
-                         <!--- AGREGR STOCK -->
-                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <span class="material-icons" data-toggle="tooltip"
-                                                    data-placement="bottom" title="" data-original-title="Cantidad">
-                                                    inventory_2
-                                                </span>
-                                            </span>
-                                            <input id="new_cost_stock_var_{{../variant_id}}"
-                                                class="col-sm-4 form-control" type="number"
-                                                placeholder="{{{m_catalog_add_stock_cost}}}" value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="input-group">
-                                            <input id="add_stock_var_{{../variant_id}}" class="form-control"
-                                                type="number" placeholder="{{{m_catalog_add_stock}}}" value="">
-                                            <span class="input-group-addon">
-                                                <button type="button" onclick="add_stock_var(this)"
-                                                    id="add_stock_var_{{../variant_id}}" doc_id="{{../doc_id}}"
-                                                    variant_id="{{../variant_id}}" input_id="stock_invetary"
-                                                    class="btn xl btn-more btn-primary line" role="button"
-                                                    data-toggle="collapse" data-parent="#item-edit-variants"
-                                                    href="#add_stock_form{{../doc_id}}" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                    <span class="material-icons">add_circle_outline</span>
-                                                    <span class=""> {{{m_catalog_edit_add}}}</span>
-                                                </button>
-
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
+                              
                             </div>
-                            
-                        </div>
 
-                        <div id="edit_stock_item_tab_{{../doc_id}}" class="pull-left padding-0 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <h4 class="tittle_input margin-b-10">
-                                <div class="Switch" onclick="">
-                                    <input id="{{../doc_id}}_status_checkbox" name="switch_variation" value=""
-                                        type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
-                                        input_id="status" onclick="cat_edit_chekbox(this)">
-                                    <label for="{{../doc_id}}_status_checkbox" class="label-primary"></label>
-                                </div>
-                                <strong>{{{m_catalog_edit_stock_lotes }}}</strong>
-                            </h4>
-
+                        <div id="edit_stock_item_tab_{{../doc_id}}" class="pull-left padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <ul class="list-group margin-0">
                                 {{#each ../stock_invetary}}
                                 <li class="list-group-item ripple ">
@@ -200,10 +209,7 @@
                                 </li>
                                 {{/each}}
                             </ul>
-
-                           
                         </div>
-
 
 
                     </div>
