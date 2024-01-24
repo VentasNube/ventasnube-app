@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 1221111225622212123;
+const version = 232312121212112121212123121121221122122112122112123;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -69,19 +69,19 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/plugins/moments/moments.js', revision: version },
   { url: '/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js', revision: version },
   { url: '/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js', revision: version },
-
   { url: '/public/app/v4.0/plugins/iCheck/icheck.min.js', revision: version },
+
   // Fuentes js Handelbar POUCHDB
   { url: '/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js', revision: version },
   { url: '/public/app/v4.0/plugins/pouchdb/pouchdb-8/pouchdb-8.0.1.min.js', revision: version },
-
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js', revision: version },
-  
   { url: '/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js', revision: version },
+
   // Fuentes js plugins
   { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
   { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.5/dist/muuri.min.js', revision: version },
   { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },
+
   //Funciones Compilador y maqueta
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js', revision: version },
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_app.js', revision: version },
@@ -106,7 +106,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
   //Config
   
-
   //Templates body de Top bar y left bar
   { url: '/public/app/v4.0/dist/hbs/workspace/body/top_bar.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/body/left_nav.hbs', revision: version },
@@ -153,10 +152,7 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', revision: version },
-
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', revision: version },
-
-
 
   //BOARD
   { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_board.hbs', revision: version },
