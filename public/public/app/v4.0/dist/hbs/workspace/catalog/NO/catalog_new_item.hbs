@@ -1,0 +1,639 @@
+<!-- Modal -->
+<style>
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {}
+
+    .custom-file-upload {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        display: inline-block;
+        padding: 0;
+        cursor: pointer;
+        width: 150px;
+        height: 150px;
+        text-align: center;
+    }
+
+    .custom-file-upload-prev-img {
+        max-width: 150px;
+        cursor: pointer
+    }
+
+    .custom-file-upload-img-new {
+        /* max-width: 150px;*/
+        cursor: pointer;
+        text-align: center;
+        margin: 23% auto;
+        font-size: 80px;
+    }
+
+    .custom-file-upload input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: pointer !important;
+        display: block;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        z-index: 9999999;
+    }
+
+    .custom-file-select-txt {
+
+        font-size: 14px;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer
+    }
+</style>
+
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form action="" id="formAdProduto" method="post">
+            <div class="modal-header">
+                <div class="modal-nav">
+                    <span class="back-arrow" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                        Nuevo articulo
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="text-left padding-0 col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                        <div id="" class="bg-gray custom-file-upload" data-original-title="Seleccionar y subir imagen"
+                            role="button" data-toggle="tooltip" data-placement="top">
+                            <!--span class="material-icons"> add_photo_alternate </span-->
+                            <input type="file" name="ImgUpload" id="ImgUpload" class="custom-file-select ImgUpload">
+                            <span id="custom-file-select-img" class="custom-file-upload-prev-img">
+                            </span>
+                            <span class="custom-file-upload-img-new material-icons lx">
+                                add_a_photo
+                            </span>
+                        </div>
+                        <div class="margin-10 text-center">
+                            <button id="custom-file-select-delete" type="button" data-original-title="Eliminar imagen?"
+                                role="button" data-toggle="tooltip" data-placement="top"
+                                class="pull-left btn btn-round xs hidden">
+                                <span class="material-icons">
+                                    delete
+                                </span>
+                            </button>
+                            <div id="custom-file-select-txt" class="custom-file-select-txt"
+                                data-original-title="Nombre de la imagen" role="button" data-toggle="tooltip"
+                                data-placement="top">Cargar .JPG.PNG.GIF</div>
+                            <div id="custom-file-select-size" class="custom-file-select-txt"></div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
+                        <div class="text-left col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button id="" m_id="1" m_t_id="1" m_t_name="Ventas" type="button"
+                                class="
+                                    new_item_tipe_select dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="false">
+                                <span class="material-icons"> devices_other </span>
+                                <span class="this_m_t_name">Producto fisico</span>
+                                <i class="material-icons">expand_more</i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="margin-5">
+                                    <a m_id="1" m_t_id="1" s_url_t_m=""
+                                        class="l_nav_t_m btn-status btn  btn-primary text"
+                                        data-original-title="Producto tangible con peso y dimensiones" href="#"
+                                        role="button" data-toggle="tooltip" data-placement="top">
+                                        <span class="material-icons"> devices_other</span>
+                                        <span class="this_m_t_name">Producto Físico</span>
+                                    </a>
+                                </li>
+                                <li class="margin-5">
+                                    <a m_id="1" m_t_id="1" s_url_t_m=""
+                                        class="l_nav_t_m btn-status  btn-success btn text" href="#" role="button"
+                                        data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Producto que no necesita ser enviado físicamente">
+                                        <span class="material-icons"> handyman </span>
+                                        <span class="this_m_t_name">Digital o un servicio</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="material_input col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Modelo de producto.">
+                                <span class="material-icons">
+                                    text_fields
+                                </span>
+                                Nombre del articulo
+                            </label>
+                            <input name="new_item_name" id="new_item_name" class="form-control" type="text" value="">
+                        </div>
+                        <div class="material_input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label>
+                                <span class="material-icons">
+                                    category
+                                </span>
+                                Categoria
+                            </label>
+                            <input class="form-control" type="text" name="new_item_cat" id="new_item_cat" value="">
+                        </div>
+                        <div class="material_input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label>
+                                <span class="material-icons">
+                                    push_pin
+                                </span>
+                                Marca
+                            </label>
+                            <input id="new_item_trade" class="form-control" type="text" name="marca" value="">
+                        </div>
+                        <div class="material_input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Modelo de producto.">
+                                <span class="material-icons">
+                                    photo_filter
+                                </span>
+                                Modelo
+                            </label>
+                            <input class="form-control" type="text" name="new_item_model" id="new_item_model">
+                        </div>
+                        <div class="material_input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Modelo de producto.">
+                                <span class="material-icons">
+                                    qr_code
+                                </span>
+                                Codigo SKU
+                            </label>
+                            <input class="form-control" id="new_item_sku" type="text" name="new_item_sku" value="">
+
+                            <label class="btn_n_serie btn xs btn-more" data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Generar un codigo SKU propio">
+                                <span class="material-icons">
+                                    loop
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="new_item_variant" class=" margin-t-20 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="">Precios y colores</label>
+                    <div class="">
+                        <div class="material_input col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Nombre de la variable">
+                                <span class="material-icons">
+                                    spellcheck
+                                </span>
+                                Nombre
+                            </label>
+                            <input class="form-control" type="text" name="new_item_var" id="new_item_stock">
+                        </div>
+                        <div class="padding-0  margin-top col-lg-1 col-md-5 col-sm-6 col-xs-6">
+                            <div class="input-group">
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span bg-color="" id="bg-select-color" class="btn {{{m_t_color}}} line">
+                                        <span id="bg-select-color" class="material-icons">
+                                            color_lens
+                                        </span>
+                                        <span id="bg-select-text">.</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-danger" class="bg-color btn-status btn btn-danger"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="material_input col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Modelo de producto.">
+                                <span class="material-icons">
+                                    broken_image
+                                </span>
+                                Stok
+                            </label>
+                            <input class="form-control" type="number" name="new_item_stock" id="new_item_stock">
+                        </div>
+                        <div class="material_input col-lg-2 col-md-3 col-sm-5 col-xs-5">
+                            <label data-toggle="tooltip" data-placement="rigth"
+                                data-original-title="Modelo de producto.">
+                                <span class="material-icons">
+                                    monetization_on
+                                </span>
+                                Costo
+                            </label>
+                            <input class="form-control" type="number" name="new_item_model" id="new_item_model">
+                        </div>
+                        <div class="material_input col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label data-toggle="tooltip" data-placement="rigth" data-original-title="Valor de compra.">
+                                <span class="material-icons">
+                                    <strong>%</strong>
+                                </span>
+                                Ganancia
+                            </label>
+                            <input class="form-control" type="number" name="new_item_stock" id="new_item_stock">
+                        </div>
+                        <div class="material_input col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label data-toggle="tooltip" data-placement="rigth" data-original-title="Valor de venta.">
+                                <span class="material-icons">
+                                    monetization_on
+                                </span>
+                                Venta
+                            </label>
+                            <input class="form-control" type="number" name="new_item_stock" id="new_item_stock">
+                        </div>
+                        <div class="padding-0  margin-top col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <button type="button" class="btn btn-round xl">
+
+                                <span id="new_item_variant_delete" class="material-icons">
+                                    delete
+                                </span>
+
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-center padding-t-20  col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <span class="btn xl btn-more btn-primary" data-toggle="tooltip" data-placement="rigth"
+                        data-original-title="Agregar mas variables de precios talles o colores">
+                        <span class="material-icons">add_circle </span>
+                        variable
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary "> Crear</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+
+<link href="/public/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/plugins/iCheck/icheck.min.js"></script>
+
+
+<!-- Ayudantes para formularios input etc -->
+<script src="/public/dist/js/ventas_nube_helper.js"></script>
+
+<script>
+    $(document).ready(function () {
+        ///**** Clase para subir una imagen al producto ******/
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var file = input.files[0];
+                if (file) {
+                    var fileSize = 0;
+                    if (file.size > 1048576) {
+                        fileSize = (Math.round(file.size * 100 / 1048576) / 100).toString() + ' MB';
+                    } else {
+                        fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + ' Kb';
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#custom-file-select-img').html("<img class='ImgPreview custom-file-upload-prev-img'src='" + e.target.result + "'>");
+                        var imgB64 = e.target.result;
+                        // alert(imgB64);
+                        //Funcion  q envia la varianle a y la guarda como variable para el formulario
+                    }
+                    $('#custom-file-select-size').html(fileSize);
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+
+        $(".ImgUpload").change(function () {
+            var img_name = $(this).val().split('\\').pop();
+            $('#custom-file-select-txt').html(img_name);
+            $('#custom-file-select-delete').removeClass('hidden');
+            $('#custom-file-select-txt').attr('data-original-title', img_name);
+            readURL(this);
+        });
+
+        $("#custom-file-select-delete").click(function () {
+            $(".ImgUpload").val('');
+            $('#custom-file-select-txt').html("Cargar .JPG.PNG.GIF")
+            $('#custom-file-select-img').html("");
+            $('#custom-file-select-size').html("");
+            $('#custom-file-select-delete').addClass('hidden');
+            $('#custom-file-select-txt').attr('data-original-title', '');
+        });
+
+        // DESPLIEGA NUEVA VARIABLE DEL PRODUCTO
+        $(".new_item_tipe_select").click(function () {
+            var bgColor = $(this).attr('board-type');
+            var bgText = $(this).html();
+            var icon = $(this).children('.material-icons:first').text();
+            $("#bt-select-type").html(bgText);
+            $("#bg-select-icon").html(icon);
+            $("#bg-select-color").children('.material-icons:first').text(icon);
+            $("#bt-select-type").removeClass();
+            $("#bt-select-type").addClass('btn ' + bgColor + ' line');
+            $("#bt-select-type").val(bgColor);
+            if (bgColor == "btn-primary") {
+                $("#new-board-step-objects").show();
+                $("#new-board-step-patients").hide();
+            } else {
+                $("#new-board-step-patients").show();
+                $("#new-board-step-objects").hide();
+            }
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.radio-chek').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            handle: '',
+            increaseArea: '20%' // optional
+        });
+
+        $("#new_item_name").val('').focus();
+
+        $(".btn_n_serie").click(function () {
+            var randomSKU = Math.random().toString(36).substr(2); // Eliminar `0.`
+            $("#new_item_sku").val(randomSKU).focus();
+        });
+
+        //boton agregar variables_order
+
+        $(".item-select").click(function () {
+            var bgColor = $(this).attr('item-select');
+            var bgText = $(this).html();
+            $("#btn-select-3").html(bgText);
+            $("#btn-select-3").removeClass();
+            $("#btn-select-3").addClass('btn ' + bgColor + ' line');
+            $("#bg-select-lis").attr(bgColor);
+
+            // $("#input-select-3").val(bgColor);    
+        });
+        $("li.bg-color").click(function () {
+            var bgColor = $(this).attr('bg-color');
+            $("#bg-select-color").removeClass();
+            $("#bg-select-color").addClass('btn ' + bgColor + ' line');
+            $("#bg-select").val(bgColor);
+            $("#bg-select-color").attr('bg-color', bgColor);
+            // $("#bg-select-color").attr('bg-color').html(bgColor);
+        })
+
+
+        $('#switch-9').click(function () {
+            // Si esta seleccionado (si la propiedad checked es igual a true)
+            if ($(this).prop('checked')) {
+                $('input:radio[name=board_delivery_place]').iCheck('enable');
+            } else {
+                // Deselecciona cada input que tenga la clase .checar
+                $('input:radio[name=board_delivery_place]').iCheck('uncheck');
+                $('input:radio[name=board_delivery_place]').iCheck('disable');
+            }
+        });
+        // BOTON DE NUMERO SERIAL
+        $(".btn_new_variable").click(function () {
+            //  var randomSKU = Math.random().toString(36).substr(2); // Eliminar `0.`
+            //   $("#barcode").val(randomSKU);
+            $("#barcode").html(
+
+            );
+        });
+        $("#formAdProduto").validate({
+            rules: {
+                descricao: {
+                    required: true
+                },
+                modelo: {
+                    required: true
+                },
+                cat: {
+                    required: true
+                },
+                marca: {
+                    required: true
+                },
+                barcode: {
+                    required: true
+                },
+                proveedor: {
+                    required: true
+                },
+                //  estoqueMinimo: {required: true},
+                unidade: {
+                    required: true
+                },
+                precoCompra: {
+                    required: true
+                },
+                precoVenda: {
+                    required: true
+                },
+                //estoque: {required: true}
+            },
+            messages: {
+                descricao: {
+                    required: 'Falta el nombre.'
+                },
+                modelo: {
+                    required: 'Falta el modelo.'
+                },
+                cat: {
+                    required: 'Falta la categoria.'
+                },
+                barcode: {
+                    required: 'Falta el codigo de barras.'
+                },
+                proveedor: {
+                    required: 'Falta el proovedor.'
+                },
+                //    estoqueMinimo: {required: 'Campo Requerido.'},
+                marca: {
+                    required: 'Campo Requerido.'
+                },
+                precoCompra: {
+                    required: 'Falta el precio de compra'
+                },
+                precoVenda: {
+                    required: 'Falta el precio de venta'
+                },
+                //estoque: {required: 'Campo Requerido.'}
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight: function (element, errorClass, validClass) {
+                $(element).parents('.form-control').addClass('has-error has-feedback');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).parents('.form-control').removeClass('has-error has-feedback');
+                $(element).parents('.form-control').addClass('has-success has-feedback');
+            },
+            submitHandler: function (form) {
+                var loc = window.location;
+                /**url actual pajina de destino */
+                var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+                // alert(pathName);
+                var dados = $(form).serialize();
+                $("#loading").show();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>productos/adicionarAjax",
+                    data: dados,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.result == true) {
+                            $("#new_item_name").val('');
+                            //  $("#observaciones").val('');
+                            $("#new_item_model").val('');
+                            $("#new_item_trade").val('');
+                            $("##new_item_cat").val('');
+                            // $("#estoqueMinimo_new").val('');
+                            $("#new_item_val_cost").val('');
+                            $("#new_item_val_sale").val('');
+                            // $("#lista_1_new").val('');
+                            //  $("#lista_2_new").val('');
+                            //  $("#alert").html("<div class='alert-toast alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Listo!</h4> Producto agregado con éxito!</div>");
+                            if (pathName == '/catalogo/') {
+                                // alert(pathName);
+                                $("#loading").hide();
+                                $('#modalCrearProducto').modal('hide');
+                                $("#alert").html("<div class='alert-toast alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Listo!</h4> Producto agregado con éxito!</div>");
+                                $("#tablas-c").load("<?php echo current_url(); ?> #tablas-c");
+                                //$("#busqueda").val('').focus();
+                            }
+                            if (pathName == '/compras/editar/') {
+                                $("#produto").val(data.descricao);
+                                $("#idProduto").val(data.id);
+                                $(".V1").val(data.precoVenda);
+                                $(".C1").val(data.precoCompra);
+                                $(".V2").val(data.lista_1);
+                                $(".V3").val(data.lista_2);
+                                $(".P1").val(data.precoVendaP);
+                                $(".P2").val(data.lista_1P);
+                                $(".P3").val(data.lista_2P);
+                                $('#modalCrearProducto').modal('hide');
+                                $("#loading").hide();
+                                $("#alert").html("<div class='alert-toast alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Listo!</h4> Producto agregado con éxito!</div>");
+                                $("#quantidade").val('').focus();
+                            } else {
+                                $('#modalCrearProducto').modal('hide');
+                                $("#loading").hide();
+                                $("#alert").html("<div class='alert-toast alert alert-success alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Listo!</h4> Producto agregado con éxito!</div>");
+                            }
+                        } else {
+                            $("#loading").hide();
+                            $("#alert").html("<div class='alert-toast alert alert-danger alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h4><i class='icon fa fa-check'></i> Error!</h4> Revisa los campos obligatorios.</div>");
+                        }
+                    }
+                });
+                return false;
+                alert('Ocurrió un error al intentar agregar un equipo falta un campo.');
+            }
+        });
+        //*** Calcula el valor de utilidad en porcentaje ****//   
+        $(".c12").on("keyup", function () {
+            //*** Trae el valor de costo del primera clase c1 despues del body ****/
+            var C1 = $('.c12', $(this).parents('form')).val();
+            var V1 = $('.V12', $(this).parents('form')).val();
+            var V2 = $('.V22', $(this).parents('form')).val();
+            var V3 = $('.V32', $(this).parents('form')).val();
+            var P1 = $('.P12', $(this).parents('form')).val();
+            var P2 = $('.P22', $(this).parents('form')).val();
+            var P3 = $('.P32', $(this).parents('form')).val();
+            //aler ( V1+V2+V3);
+            var C2 = parseFloat(C1);
+            var valor = $(this).val();
+            var porcent = 100;
+            ///**  Lista 1 ***/				   
+            var valorP1 = C2 * P1 / porcent;
+            var valUtil1 = valorP1 + C2;
+            $(".V12", $(this).parents('form')).val(valUtil1);
+            ///**  Lista 2 ***/	
+            var valorP2 = C2 * P2 / porcent;
+            var valUtil2 = valorP2 + C2;
+            $(".V22", $(this).parents('form')).val(valUtil2);
+            ///**  Lista 3 ***/	
+            var valorP3 = C2 * P3 / porcent;
+            var valUtil3 = valorP3 + C2;
+            $(".V32", $(this).parents('form')).val(valUtil3);
+
+        });
+        $(".L32").on("keyup", function () {
+            //*** Trae el valor de costo del primera clase c1 despues del body ****/
+            var c1 = $('.c12', $(this).parents('body')).val();
+            var c12 = parseFloat(c1);
+            var valor = $(this).val();
+            var porcent = 100;
+            var valorP = c12 * valor / porcent;
+            var valUtil = valorP + c12;
+            $(".R32", $(this).parents('table')).val(valUtil);
+        });
+
+        //*** HABILITA y DESABILITA LOS INPUT ****//
+        $(".chk3").change(function () {
+            var i = $('.i12', $(this).parents('tr'));
+            var i2 = $('.i22', $(this).offsetParent('tr'));
+            if ($(this).prop('checked', true)) {
+                i.removeAttr('readonly');
+                i.removeClass("bg-gray");
+                i2.attr('disabled', true);
+            }
+        });
+        $(".chk23").change(function () {
+            var i = $('.i12', $(this).offsetParent('tr'));
+            var i2 = $('.i22', $(this).parents('tr'));
+            if ($(this).prop('checked', true)) {
+                i.attr("readonly", "readonly");
+                i.addClass("bg-gray");
+                i2.removeAttr('disabled');
+            }
+        });
+
+        $("#prCost").click(function () {
+            url = $(this).attr("href");
+            name = $('#descricao_new').val();
+            window.open(url + name, '_blank');
+            return false;
+        });
+
+    });
+</script>

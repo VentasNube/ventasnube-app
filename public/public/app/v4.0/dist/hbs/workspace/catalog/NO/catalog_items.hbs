@@ -1,0 +1,143 @@
+    <div class="box-body box-table">
+        <div class="table-responsive mailbox-messages">
+            <table id="tablas-c" class="display table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <!--span class="label label-primary checkbox-toggle"><i class="fa far fa-square"></i></span-->
+                            <!--input id="" class="checkbox-items" type="checkbox" value=""-->
+                            <div class="btn-group" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Seleccionar productos">
+                                <button type="button" class="btn btn-more dropdown-toggle " data-toggle="dropdown">
+                                    <!--i class="fa fa-ellipsis-v" aria-hidden="true"></i-->
+                                    <i class="far fa-square "></i>
+                                </button>
+                                <ul id="filter-menu" style=" left:0!important; right: auto!important;"
+                                    class="dropdown-menu text-left">
+                                    <li>
+                                    <li><a class="select-stock" role="button" title="Seleccionar con stock"> Con stock</a>
+                                    </li>
+                                    <li><a class="select-sin-stock" role="button" title="Filtrar articulos sin stock">Sin
+                                            Stock</a></li>
+                                    <li><a class="select-stock-min" role="button" title="Con stock minimo"> Stock Minimo</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a class="select-todos" role="button" title="Selcionar todos"> Todos</a></li>
+                                    <li><a class="select-ninguno" role="button" title="Selcionar todos"> Ninguno</a></li>
+                                </ul>
+                            </div>
+                        </th>
+                        <!--th><a id="fpl1" href="#"><i class="fa fa-caret-up"></i></a> Fav</th-->
+                        
+                    </tr>
+                </thead>
+                <tbody id="items-results">
+                    <form method="post" action="#">
+                        <tr class=" products-list product-list-in-box ">
+                            <td>
+                                <span stockMin="" stock="10" idProd="" idProd="" idUser="" class="swich-list material-icons text-gray">
+                                    check_box_outline_blank
+                                </span>
+                            </td>
+                            <td class="itemProd">1</td>
+                            <td class="">
+                                <div class="cover-img-small">
+                                    <a href="#">
+                                        <img style=" background-image: url(" http://placehold.it/150x100")"
+                                            src="http://placehold.it/150x100" alt="..." class="img-card-80">
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="mailbox-subject">
+                                <a href="#">
+                                    Coca cola zero
+                                </a>
+                                <p></p>
+                                <span class="text-uppercase margin-top label bg-blue">Gaseosas</span>
+                            </td>
+                            <td><input estoque="" class="estoque cat-text-field_input" autocorrect="off" name="estoque"
+                                    autocomplete="off" spellcheck="false" value="50"></td>
+                            <td class="compra_price">
+                                <input name="precoCompra" id="c1" class="c1 cat-text-field_input" autocorrect="off"
+                                    autocomplete="off" spellcheck="false" value="10">
+                            </td>
+                            <td class="list_price">
+                                <input type="radio" class="chk radio-chek" name="precoVendaA" value="1" />
+                                <i class="i-icon" aria-hidden="true"></i>
+                                <input name="precoVenda" class="V1 R3 i1 cat-text-field_input" readonly="readonly"
+                                    autocomplete="off" spellcheck="false" value=""><br>
+                                <input type="radio" class="chk2 radio-chek" name="precoVendaA" value="0" type="checkbox" />
+                                <i class="i-icon fa fa-percent" aria-hidden="true"></i>
+                                <input name="precoVendaP" class="P1 L3 i2 cat-text-field_input" spellcheck="false" value="">
+                            </td>
+                            <td class="list_price">
+                                <input type="radio" class="chk radio-chek" name="precoVendaA" value="1" />
+                                <i class="i-icon" aria-hidden="true"></i>
+                                <input name="precoVenda" class="V1 R3 i1 cat-text-field_input" readonly="readonly"
+                                    autocomplete="off" spellcheck="false" value=""><br>
+                                <input type="radio" class="chk2 radio-chek" name="precoVendaA" value="0" type="checkbox" />
+                                <i class="i-icon fa fa-percent" aria-hidden="true"></i>
+                                <input name="precoVendaP" class="P1 L3 i2 cat-text-field_input" spellcheck="false" value="">
+                            </td>
+                            <td class="list_price">
+                                <input type="radio" class="chk radio-chek" name="precoVendaA" value="1" />
+                                <i class="i-icon" aria-hidden="true"></i>
+                                <input name="precoVenda" class="V1 R3 i1 cat-text-field_input" readonly="readonly"
+                                    autocomplete="off" spellcheck="false" value=""><br>
+                                <input type="radio" class="chk2 radio-chek" name="precoVendaA" value="0" type="checkbox" />
+                                <i class="i-icon fa fa-percent" aria-hidden="true"></i>
+                                <input name="precoVendaP" class="P1 L3 i2 cat-text-field_input" spellcheck="false" value="">
+                            </td>
+
+                            <td class="text-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-more dropdown-toggle " data-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="dropdown-menu text-left">
+                                        <li><a href="#" style="margin-right: 1%" title="Editar Venta">
+                                                <iclass="ion ion-edit" aria-hidden="true"></i>
+                                                    Editar
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#modal-excluir" role="button" data-toggle="modal" produto=""
+                                                title="Eliminar Producto"><i class="ion ion-android-delete"></i>
+                                                Eliminar</a></li>
+                                    </ul>
+                                </div>
+        </div>
+        </tr>
+        </form>
+
+        </tbody>
+        </table>
+        <div class="filter-msj text-center"></div>
+    </div>
+</div>
+
+<!-- Ayudantes para formularios input drop zone  -->
+<!-- include FilePond library -->
+<!--script src="https://unpkg.com/filepond/dist/filepond.min.js"></script-->
+<script>
+
+    //Input de busqueda 
+    $("input[name=searchInput]").focusin(function (documents) {
+        //  alert('Input');
+        event.preventDefault();
+        console.log('Creo el array con los items de PounchDb');
+        get_all_item_punchDb();
+    });
+
+    $("input[name=searchInput]").keyup(function () {
+        event.preventDefault();
+        var search_m_input = $(this).val();
+        var btn_filter = $(this).prev('.search_cat_btn').find('span').attr('search_m_t_name');
+        // alert(search_m_input);
+        console.log(search_m_input);
+        search_item_js(search_m_input);
+    });
+
+    
+</script>

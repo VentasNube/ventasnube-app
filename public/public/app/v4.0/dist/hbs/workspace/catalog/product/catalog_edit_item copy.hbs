@@ -1,0 +1,256 @@
+<!-- CATALOG EDIT PRODUCT TEMPLATE -->
+<div class="view-product">
+    
+    <!--- HEADER NAV  -->
+    <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button data-toggle="tooltip" data-placement="bottom" title="Subir foto" data-original-title="Subir foto"
+            type="button"
+            class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+            <span class="material-icons">
+                arrow_back
+            </span>
+        </button>
+        <h3 class=" margin-0 padding-t-20">{{#with ws_lang_data}} {{m_catalog_edit_tittle}} {{/with}}</h3>
+    </div>
+    
+    {{#with product_doc}}
+    <div class="s-card-activ-footer ">
+        <div class="panel-group " role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="edit-item-description">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                            href="#edit-item-description-body" aria-expanded="false" aria-controls="collapseOne"
+                            class="collapsed">
+                            <div class="row">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="material-icons">
+                                            drive_file_rename_outline
+                                        </span>
+                                    </span>  
+                                     <input doc_id="{{_id}}"  input_id="name"  onfocusout="cat_edit_product(this)"  value="{{name}}"  class="form-control" type="text" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{name}}">
+                                </div>
+                            </div>
+                        </a>
+                    </h4>
+                </div>
+
+                <div id="edit-item-description-body" class="panel-collapse collapse out" role="tabpanel"
+                    aria-labelledby="edit-item-description" aria-expanded="true" style="height: 0px;">
+                    <div class="panel-body">
+                        <div class="row">
+                            <!--- TAGS MAIN -->
+                            <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="chips_main">
+                                    <span class="icon material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_tags}}} {{/with}}">
+                                        tag
+                                    </span>
+                                    <div class="chips_items_main">
+                                        {{#each tags }}
+                                            <div class="chips_item s-card-cat pull-left" val_text=" {{this}}">
+                                                <a doc_id="{{../_id}}" new_tag=" {{this}}"  input_id="tags" href="#" onclick="dell_tag(this)">
+                                                    <span class="button material-icons text-s lh-n"> highlight_off</span>
+                                                </a>
+                                                <label class="chips_text">
+                                                    {{this}}
+                                                </label>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                    <input doc_id="{{_id}}"  input_id="tags" class="chips_input form-control" name="keywords"
+                                        type="text" onkeypress="add_new_tag_press(event,this)" style="">
+                                </div>
+                            </div>
+                            <!--- Categorias  -->
+                            <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="input-group flex">
+                                        <span class="input-group-addon">
+                                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
+                                                        category
+                                                    </span>
+                                                      <span id="edit_cat_select_{{_id}}" > {{category.value}} </span>
+                                                </button>
+                                                <ul class="dropdown-menu m">
+                                                     <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                    <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}</li>
+                                                   
+                                                    <li>  <input  doc_id="{{_id}}"  input_id="category_list" class="form-control" name="keywords"
+                                                     type="text" onkeypress="add_new_cat_press(event,this)" value="" style=""> </li>     
+                                                    <div id="select_category_list_{{_id}}">
+                                                        
+                                                    {{#each ../category_list/category_list }}
+                                                    <li>
+                                                        <div class="dropdown-item">
+                                                            <a  new_value="{{value}}" onclick='cat_edit_product_category(this)' 
+                                                            input_value="{{category.id}}" 
+                                                            input_id="category" href="#"   doc_id="{{../_id }}"  value="{{value}}">
+                                                            {{value}}
+                                                            </a>
+                                                            <button><span  doc_id="{{../_id }}"  value="{{value}}" class="material-icons" onclick='catalog_dell_cat(this)' >delete</span></button> 
+                                                        </div>
+                                                    </li> 
+                                                    {{/each}}
+
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>  
+                                <!--div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="material-icons">
+                                                copyright
+                                            </span>
+                                        </span>
+                                        <select class="form-control md" name="cars" id="cars">
+                                            {{#each ../category_list/category_list }}
+                                            <option value="{{id}}">{{value}}</option>
+                                            {{/each}}
+                                        </select>
+                                        <span class="input-group-addon">
+                                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="material-icons">add_circle</span>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                    <li>
+                                                        <input id="" class="form-control" type="text"
+                                                            placeholder="Escribe la categoria..." value="">
+                                                    </li>
+                                                    <li class="margin-t-10 text-center">
+                                                        {{#with product_doc}}
+                                                        <button onclick="catalog_save_edit_item(this)"
+                                                            product_id="{{{../../product_doc/_id}}}" variant_id="{{id}}"
+                                                            type="button" class="cobrar-btn btn btn-primary">
+                                                            {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                        </button>
+                                                        {{/with}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div-->
+                            </div>
+                            <!--- Marca y modelo  -->
+                            <div class="padding-0 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="input-group flex">
+                                        <span class="input-group-addon">
+                                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}">
+                                                        grid_view
+                                                    </span>
+                                                      <span id="edit_trade_select_{{_id}}" > {{trade.value}} </span>
+                                                </button>
+                                                <ul class="dropdown-menu m">
+                                                     <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                    <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_trade}}} {{/with}}</li>
+                                                   
+                                                    <li>  <input  doc_id="{{_id}}"  input_id="trade_list" class="form-control" name="keywords"
+                                                     type="text" onkeypress="add_new_trade_press(event,this)" value="" style=""> </li>     
+                                                    <div id="select_trade_list_{{_id}}">
+                                                        
+                                                        {{#each ../trade_list/trade_list }}
+                                                            <li>
+                                                                <div class="dropdown-item">
+                                                                    <a  new_value="{{value}}" onclick='catalog_edit_trade(this)' 
+                                                                    input_value="{{value}}" 
+                                                                    input_id="trade" href="#"   doc_id="{{../_id }}"  value="{{value}}">
+                                                                    {{value}}
+                                                                    </a>
+                                                                    <button><span  doc_id="{{../_id }}"  value="{{value}}" class="material-icons" onclick='catalog_dell_trade(this)' >delete</span></button> 
+                                                                </div>
+                                                            </li> 
+                                                        {{/each}}
+
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                    </div>
+                                      <div class="input-group flex">
+                                        <span class="input-group-addon">
+                                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}">
+                                                       
+                                                     flip_to_front
+                                                    </span>
+                                                      <span id="edit_model_select_{{_id}}" > {{model.value}} </span>
+                                                </button>
+                                                <ul class="dropdown-menu m">
+                                                     <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                    <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_model}}} {{/with}}</li>
+                                                   
+                                                    <li>  <input  doc_id="{{_id}}"  input_id="model_list" class="form-control" name="keywords"
+                                                     type="text" onkeypress="add_new_model_press(event,this)" value="" style=""> </li>     
+                                                    <div id="select_model_list_{{_id}}">
+                                                        
+                                                        {{#each ../model_list/model_list }}
+                                                            <li>
+                                                                <div class="dropdown-item">
+                                                                    <a  new_value="{{value}}" onclick='catalog_edit_model(this)' 
+                                                                    input_value="{{value}}" 
+                                                                    input_id="model" href="#"   doc_id="{{../_id }}"  value="{{value}}">
+                                                                    {{value}}
+                                                                    </a>
+                                                                    <button><span  doc_id="{{../_id }}"  value="{{value}}" class="material-icons" onclick='catalog_dell_model(this)' >delete</span></button> 
+                                                                </div>
+                                                            </li> 
+                                                        {{/each}}
+
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </span>
+                                    </div>
+                               </div>
+                                 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- NOMBRE CATEGORIAS -->
+    {{/with}}
+    {{#with ws_lang_data}} <h3> {{{m_catalog_edit_variant}}} </h3>{{/with}}
+    <!--- MAIN VARIACIONES imprimo el catalog_new_variaton -->
+    <div id="edit_variations_main" class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       
+    </div>
+    <!--- FOOTER BOTONES  -->
+    <div id="cart_footer">
+        <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
+            {{#userCtx 'catalog' 'edit' }}
+                {{#with ../product_variant}}
+                    <button onclick="cat_new_variant(this)" doc_id="{{{../../product_doc/_id}}}"
+                        variant_id="{{id}}" type="button" class="btn btn-primary">
+                        Crear nueva variable
+                    </button>
+                {{/with}}
+            {{/userCtx}}
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,231 @@
+<html lang="es" xml:lang="es" xmlns="https://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ventas Nube</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Ventas Nube">
+    <link rel="apple-touch-icon" href="/public/app/v4.0/dist/img/favicon.ico">
+    <!-- favicon.ico -->
+    <link rel="shortcut icon" href="/public/app/v4.0/dist/img/favicon.ico" type="image/x-icon">
+    <!-- favicon.ico -->
+    <link rel="icon" href="/public/app/v4.0/dist/img/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap.min.css  -->
+    <link rel="stylesheet" href="/public/app/v4.0/dist/bootstrap/css/bootstrap.css">
+    <!-- VentasNubeSkin.css -->
+    <link rel="stylesheet" href="/public/app/v4.0/dist/css/skins/skin-ventas-nube.css">
+    <!-- VentasNubeSkin.css -->
+    <link rel="stylesheet" href="/public/app/v4.0/dist/css/VentasNubeSkin.css">
+    <!-- snack-bar.ccs -->
+    <link rel="stylesheet" href="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.min.css">
+    <!-- Font-awesome.min.css 5.8-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Manifest JSON-->
+    <link rel="manifest" href="/public/app/v4.0/dist/js/manifest.json">
+</head>
+
+<div id="right_main_compiled"></div>
+<div id="search_module_compiled"></div>
+<body class="hold-transition skin-ventas-nube sidebar-mini sidebar-collapse fixed">
+
+    <div class="btnContenedor">
+        <button class="botonF1">
+            <span class="btnSpan">+</span>
+        </button>
+        <button class="btnFloat botonF2">
+            <a href="<?php echo site_url('os/adicionar') ?>"><span class="btnSpan"><i class="fa fa-wrench"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF3">
+            <a href="<?php echo site_url('vendas/adicionar') ?>"><span class="btnSpan"><i class="fa fa-cart-plus"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF4">
+            <a href="<?php echo site_url('home') ?>"><span class="btnSpan"><i class="fa fa-inbox"
+                        aria-hidden="true"></i></i></span></a>
+        </button>
+        <button class="btnFloat botonF5">
+            <a href="#"><span class="btnSpan"><i class="fa fa-ticket" aria-hidden="true"></i></i></span></a>
+        </button>
+    </div>
+    <div class="wrapper">
+        <!-- TOP NAV -->
+        <header id="top_nav_compiled" class="main-header">
+        </header>
+        <!-- LEFT NAV-->
+        <aside id="left_nav_compiled" class="main-sidebar">
+        </aside>
+        <div class="content-wrapper">
+            <section class="content" id="content">
+                <div id="nav_bar_compiled"></div>
+                <!--MODULE NAV BAR COPILED-->
+                <div id="content_compiled">
+
+                </div>
+                <!--MODULE CONTENT COPILED-->
+            </section>
+        </div>
+    </div>
+    <!-- Footer-->
+    <footer class="main-footer">
+        <div class="Switch" data-toggle="tooltip" data-html="true" data-placement="bottom"
+            data-original-title="<em> Habilitar modo offline</em>">
+            <input class="offline_mode" value="true" id="switch-9" name="board_delivery_place"
+                type="checkbox" />
+            <label for="switch-9" class="label-primary"></label>
+        </div>
+        <strong> Habilitar modo sin conexion </strong>
+
+        <strong>Copyright &copy; 2017-2021 <a href="www.ventasnube.com">Ventas Nube</a>
+
+            <span id="sw-version">3 </span>
+        </strong>
+    </footer>
+
+</body>
+
+<div class="modal fade modal-primary master_popup" id="master_popup" tabindex="-1" role="dialog"
+    aria-labelledby="presu-orden" data-backdrop="static" data-keyboard="false">
+</div>
+
+<!--- COMPONENTES PRIMARIOS -->
+<!-- Jquery-3.1.1.min.js -->
+<script type="text/javascript" src="/public/app/v4.0/plugins/jQuery/jquery-3.1.1.min.js"></script>
+<!-- moments.js -->
+<!--script type="text/javascript" src="/public/app/v4.0/plugins/moments/moments.js"></script-->
+<!-- Bootstrap.min.JS -->
+<script src="/public/app/v4.0/dist/bootstrap/js/bootstrap.min.js"></script>
+<!-- snack-bar.JS -->
+<script src="/public/app/v4.0/plugins/snackbar-master/dist/snackbar.js"></script>
+<!-- Handlebars -->
+<script src="/public/app/v4.0/plugins/handlebars/4.7.6.handlebars.js"></script>
+<!-- PouchDb plugin -->
+<script src="/public/app/v4.0/plugins/pouchdb/js/pouchdb.min.js"></script>
+<!-- login script auth -->
+<script src="/public/app/v4.0/plugins/pouchdb/js/pouchdb.authentication.min.js"></script>
+<!-- Jquery.validate.js -->
+<script src="/public/app/v4.0/plugins/validate/jquery.validate.js"></script>
+<!-- MUURI drop efect Script -->
+<script src="https://cdn.jsdelivr.net/npm/muuri@0.9.0/dist/muuri.min.js"></script>
+<!-- Search Motor plugin -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.3"></script>
+<!---############### Vistas con seguridad de login #######################--->
+<!--- LOGICA MOTOR AJAX COMPILADOR PLANTILLA NAVEGACION -->
+<script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js"></script>
+<!--- PLANTILLA FUNCIONES BODY -->
+<script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_app.js"></script>
+
+<!--script type="text/javascript" src="/public/app/v4.0/dist/js/plugin/WebNotifications.js"></script-->
+
+<!--script type="text/javascript">
+    var n = 1;
+    function showNotification() {
+        //Se usan los siguientes parametros 
+        // title, msg, icon, tag, timeout
+        var notif = showWebNotification(
+            'Nueva notificacion' + n,
+            'Se actualizo con exito!' + n,
+            '/public/app/v4.0/dist/img/logo/max/6008ae9230784b299a2fac15a9f8880f.png',
+            null,
+            3000
+        );
+        // Segun si tiene permisos y el usuario presiona sobre las distintas
+        // funciones y re envia los siguientes parametros
+        notif.addEventListener("show", Notification_OnEvent);
+        notif.addEventListener("click", Notification_OnEvent);
+        notif.addEventListener("close", Notification_OnEvent);
+        n++;
+    }
+    function Notification_OnEvent(event) {
+        //A reference to the Notification object
+        var notif = event.currentTarget;
+        //document.getElementById("msgs").innerHTML += "<br>Notification <strong>'" + notif.title + "'</strong> received event '" + event.type + "' at " + new Date().toLocaleString();
+    }
+</script-->
+
+<script type="module">
+    navigator.serviceWorker.register('/service-worker.js').then(reg => {
+        reg.installing; // the installing worker, or undefined
+        reg.waiting; // the waiting worker, or undefined
+        reg.active; // the active worker, or undefined
+        //  reg.update(); 
+        reg.addEventListener('updatefound', () => {
+            // A wild service worker has appeared in reg.installing!
+            const newWorker = reg.installing;
+            alert('Ventasnube se actualizo!');
+            newWorker.state;
+            // "installing" - the install event has fired, but not yet complete
+            // "installed"  - install complete
+            // "activating" - the activate event has fired, but not yet complete
+            // "activated"  - fully active
+            // "redundant"  - discarded. Either failed install, or it's been
+            //                replaced by a newer version
+            newWorker.addEventListener('statechange', () => {
+                $('#sw-version').html("Hay una nueva vesion instalada!!!");
+                // newWorker.state has changed
+                location.reload();
+                // alert('statechange');
+            });
+        });
+    });
+    
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        // This fires when the service worker controlling this page
+        // changes, eg a new worker has skipped waiting and become
+        // the new active worker.
+        // $('#sw-version').html(" Hay una nueva vesion instalada!!!");
+        // alert('controllerchange');
+    });
+</script>
+
+<script>
+    // CARGO LAS VISTAS UNA VEZ SE CARGUE LOS MODULOS
+    //###########################################################
+    //Creo la variable global con el objeto de la secion 
+    //###########################################################
+    //Limpio las variables globales si hay un error de pantalla asi no falla el APP
+    //    ws_info = new PouchDB(url_R_db + 'ws_info_' + ws_id, { skip_setup: false });
+    //    ws_setting_doc = ws_info.get('ws_lang_sp', { include_docs: true, descending: true });
+    //Creo las variables globales
+    // var ws_lang = '';
+    // var ws_lang_data = '';
+    //Traigo el doc con los textos en diferentes idiomas
+    /*var ws_info = new PouchDB(url_R_db + 'ws_info_' + ws_id, { skip_setup: false });
+    //function ws_lang(){
+    ws_info.get('ws_lang_sp', function (err, doc) {
+        var ws_lang = doc;
+        ws_lang_data = ws_lang.ws_lang_es;
+        if (err) { return console.log(err); }
+    });
+*/
+    //}
+    //ws_lang();
+</script>
+<!-- ############## Modulos VNAPP ##############  -->
+<!--- SESSION -->
+<script src="/public/app/v4.0/dist/js/workspace/app/ventas_nube_session.js"></script>
+<!--- BODY -->
+<script src="/public/app/v4.0/dist/js/workspace/body/ventas_nube_body.js"></script>
+<!--- SETTING  -->
+<script src="/public/app/v4.0/dist/js/workspace/setting/ventas_nube_setting.js"></script>
+<!--- CART -->
+<script src="/public/app/v4.0/dist/js/workspace/cart/ventas_nube_cart.js"></script>
+<!--- SEARCH -->
+<script src="/public/app/v4.0/dist/js/workspace/search/ventas_nube_search.js"></script>
+<!--- ACCOUNT -->
+<script src="/public/app/v4.0/dist/js/workspace/account/ventas_nube_account.js"></script>
+
+
+</html>
+<script>
+    //  getSession();
+    //###############  FUNCION CHEK _session ###############
+    $(document).ready(function () {
+        //Cargo las funciones de los modulos para inciar primer Vista
+        window.onload = getSession();
+    });
+</script>

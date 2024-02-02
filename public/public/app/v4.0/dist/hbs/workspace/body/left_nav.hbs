@@ -1,0 +1,86 @@
+<section class="sidebar">
+    <ul class="sidebar-menu">
+
+            {{#each ws_left_nav_data.m}}
+                <li class="treeview">
+                    <a class="" 
+                      href="#" 
+                      m_id="{{{m_id}}}"      
+                        {{#ifEquals m_type_action "1"}} 
+                        {{else}}
+                           onclick="get_module_nav(this)"
+                           s_url_t_m="{{{m_url}}}"               
+                        {{/ifEquals}}
+                        >
+                        <i class="material-icons">{{m_icon}}</i>
+                        <span>{{m_name}} </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        {{#each ../ws_left_nav_data.m_t}}
+                            {{#ifEquals m_id ../m_id }}   
+                                <li class="active">
+                                    <a class=""
+                                    onclick="get_module_type_nav(this)"
+                                        {{#ifEquals m_t_type_action "1"}}   
+                                                href="{{m_t_url}}"
+                                            {{else}}
+                                                m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" s_url_t_m="{{{../m_url}}}" m_t_url="{{{m_t_url}}}"   href="#"                                       
+                                        {{/ifEquals}}
+                                    >
+                                        <span class="material-icons">{{m_t_icon}}</span>
+                                        <span class="this_m_t_name">{{m_t_name}}</span> 
+                                    </a>
+                                </li>
+                            {{/ifEquals}}
+
+                        {{/each}}
+                    </ul>
+                </li>
+            {{/each}}
+     
+        <li class="treeview  active">
+                <a class="l_nav_m"  m_id=""  m_url="" href=""   >
+                    <i class="material-icons">manage_accounts</i>
+                    <span> {{#with ws_lang_data}} {{b_myaccount}}{{/with}}</span>
+                </a>
+                <ul class="treeview-menu">
+                            <!--li class="active">
+                                <a class="l_nav_t_m"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
+                                    <span class="material-icons">shopping_cart</span>
+                                    <span class="this_m_t_name">Mi carrito </span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a class="l_nav_t_m"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
+                                    <span class="material-icons">home</span>
+                                    <span class="this_m_t_name">Home </span>                                
+                                </a>
+                            </li-->
+                            <li class="active">
+                                <a class=""  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{m_account_tittle_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_myaccount}}{{/with}}</span>
+                                </a>
+                            </li>     
+                            <li class="active">
+                                <a class=""  m_id="" m_t_id="" s_url_t_m=""  href="home"    >
+                                    <span class="material-icons">{{#with ws_lang_data}}{{{ws_home_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_my_workspace}} {{/with}} </span>                                
+                                </a>
+                            </li>   
+                            <li class="active">
+                                <a class="config_workspace_btn"  m_id="" m_t_id="" s_url_t_m="" href="#"  >
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{ws_config_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{m_config_workspace}} {{/with}}</span>
+                                </a>
+                            </li>
+                             <li class="active">
+                                <a class="logout_button"  m_id="" m_t_id="" s_url_t_m=""  href="#"    >
+                                    <span class="material-icons">{{#with ws_lang_data}} {{{b_exit_icon}}} {{/with}}</span>
+                                    <span class="this_m_t_name">{{#with ws_lang_data}} {{b_exit}} {{/with}}</span>
+                                </a>
+                            </li>
+                </ul>
+        </li>
+    </ul>
+</section>      

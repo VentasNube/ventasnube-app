@@ -220,9 +220,9 @@
         <div class="container">
         <div class="navbar-translate">
             <a class="navbar-brand" href="<?php echo base_url(); ?>">
-            <div class="ml-3 logo-image" >
-            <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
-            </div>
+              <div class="ml-3 logo-image" >
+                <img  src="<?php echo $owner['owner_img']; ?>" style=" max-height: 100px;" class=" img-fluid logo-nav-bar">
+              </div>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -261,7 +261,7 @@
                             <div class="col-12 mt-12 text-center justify-content-center">
                                 <?php if ($ws_user) {foreach ($ws_user as $row) {?>
                                         <div class="menu-body-item">
-                                                <a ws_id='<?php echo $row['ws_id']; ?>' class="ws_select" href="#">
+                                                <a u_name="<?php echo $user_data['u_name'] ?>" user_email='<?php echo $user_data['u_email'] ?>' userDb='<?php echo $user_data['userDb'] ?>' ws_id='<?php echo $row['ws_id_hex']; ?>' class="ws_select" href="#">
                                                     <div class="card-avatar md">
                                                             <img class="img img-circle" src="<?php echo $row['ws_img']; ?>">
                                                     </div>
@@ -315,7 +315,7 @@
 <script src="/public/app/v4.0/assets/js/material-kit.js?v=2.0.6" type="text/javascript"></script>
 <script>
 
-
+/*
 function nocodelog(str) {
     var result = "";
     for (var i = 0; i < str.length; i++) {
@@ -324,10 +324,10 @@ function nocodelog(str) {
     // alert(result);
     return result;
 }
+*/
 
 var url = "<?=site_url('login');?>";
 var db_url = "http://localhost:5984";
-
 //Variables globales
 var u_db = '';
 var u_session = '';
@@ -417,25 +417,19 @@ async function ws_select(){
       }
     }
 */
-/*
-function readCookie(name) {
 
+function readCookie(name) {
 var nameEQ = name + "=";
 var ca = document.cookie.split(';');
-
 for (var i = 0; i < ca.length; i++) {
-
     var c = ca[i];
     while (c.charAt(0) == ' ') c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) == 0) {
         return decodeURIComponent(c.substring(nameEQ.length, c.length));
     }
-
 }
-
 return null;
-
-}*/
+}
 
 function createCookie(name,value,days) {
 	if (days) {
@@ -444,38 +438,55 @@ function createCookie(name,value,days) {
 		var expires = "; expires="+date.toGMTString();
 	}
 	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/account";
+	document.cookie = name+"="+value+expires+"; path=/workspace/app";
 }
 
+
+/*
+$(".ws_select").click( function() {
+        if(validaForm()){
+                        const ws_id = $(this).attr('ws_id');
+                        const userDb = $(this).attr('userDb');
+                        const user_email = $(this).attr('user_email');
+                        const u_name = $(this).attr('u_name');
+                        
+                        ///// IMPRIME la Cokie ////
+                        createCookie ('ws_select',ws_id);
+                        createCookie ('userDb',userDb);
+                        createCookie ('user_email',user_email);
+                        createCookie ('u_name',u_name);
+                        
+                        $(location).attr('href','/workspace');
+        }
+});
+*/
 $(".ws_select").click( function() {
         if(validaForm()){
 
-                        const ws_select = $(this).attr('ws_id');
-                        const name = 'ws_select'
+                        const ws_id = $(this).attr('ws_id');
+                        const userDb = $(this).attr('userDb');
+                        const user_email = $(this).attr('user_email');
+                        const u_name = $(this).attr('u_name');
+
           $.ajax({
                 url: "/workspace/ws_select",
                 // dataType: "html",
-                data:{ ws_select: ws_select},
+                data: { ws_select: ws_id, userDb: userDb },
                 type: "POST",
                 dataType: "json",
                 success: function(response) {
                     if (response.result === true) { ///// IMPRIME ////
                         // window.location = "/account";
-                        // alert('Estas logeado!');
-                        createCookie (name,ws_select);
-                        $(location).attr('href','/account');
-
-                        Snackbar.show({
-                            text: ' <span class="material-icons">sentiment_very_satisfied</span> Hola ' + response.user_name.username + ' Bienvenido!',
-                            actionText: ' <span class="material-icons"> highlight_off </span>',
-                            actionTextColor: "#0575e6",
-                            pos: 'bottom-center',
-                            duration: 5000
-                        });
+                        ///// IMPRIME la Cokie ////
+                        createCookie ('ws_select',ws_id);
+                        createCookie ('userDb',userDb);
+                        createCookie ('user_email',user_email);
+                        createCookie ('u_name',u_name);
+                        $(location).attr('href','/workspace/app');                       
                     } else {
                         // alert('No esta logeado');
                        // logout();
-                        window.location = "/login";
+                        window.location = "/workspace/login";
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {

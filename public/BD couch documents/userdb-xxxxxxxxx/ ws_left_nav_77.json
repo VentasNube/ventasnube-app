@@ -1,0 +1,51 @@
+{
+  "_id": "ws_left_nav_77",
+  "_rev": "1380-90e407f7eb3215381cc1eb58727b389e",
+  "ws_left_nav": {
+    "m": false,
+    "m_t": [
+      {
+        "m_t_id": "1",
+        "m_t_type_action": "sell",
+        "m_t_color": "btn-success",
+        "m_t_name": "Ventas",
+        "m_t_url": "Ventas",
+        "m_t_icon": "store ",
+        "m_id": "1"
+      },
+      {
+        "m_t_id": "2",
+        "m_t_type_action": "1",
+        "m_t_color": "btn-danger",
+        "m_t_name": "Compras",
+        "m_t_url": "compras",
+        "m_t_icon": "local_shipping",
+        "m_id": "1"
+      },
+      {
+        "m_t_id": "3",
+        "m_t_type_action": "2",
+        "m_t_color": "",
+        "m_t_name": "Servicios",
+        "m_t_url": "Servicios",
+        "m_t_icon": "devices_other ",
+        "m_id": "1"
+      }
+    ],
+    "user_id": "51",
+    "ws_id": "77",
+    "ws_plan": {
+      "workspace_id": "77",
+      "workspace_plan": "plan-starter-free",
+      "workspace_name": "ServerNet",
+      "workspace_plan_expiration": "2021-04-16",
+      "workspace_status": "active",
+      "msj": "Tu cuenta esta activa! y tu cuota vence:2021-04-16",
+      "time_now": 1631779014,
+      "return": true
+    },
+    "ws_plan_name": "77",
+    "workspace_plan_expiration": "2021-04-16",
+    "result": true
+  }
+}

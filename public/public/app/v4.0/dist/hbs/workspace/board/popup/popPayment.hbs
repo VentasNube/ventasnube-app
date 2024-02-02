@@ -1,0 +1,349 @@
+     <style>
+         .card-cob-container .left-side-e .post-c {
+             width: 55px;
+             height: 100px;
+             /* background-color: var(--post-c);*/
+             position: absolute;
+             z-index: 12;
+             bottom: 0px;
+             top: 105px;
+             overflow: hidden;
+             background: url(/public/dist/img/hand.svg) no-repeat;
+             position: absolute;
+         }
+     </style>
+
+
+     <div class="modal fade modal-success" id="cobrar-orden" tabindex="-1" role="dialog" aria-labelledby="presu-orden" aria-hidden="true">
+         <div class="modal-dialog modal-md" role="document">
+             <form id="formCobrar">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <div class="modal-nav">
+                             <span class="back-arrow" data-dismiss="modal" aria-label="Close">
+                                 <span class="material-icons">arrow_back</span>
+                             </span>
+                             <span class="modal-title">
+                                 Cobrar
+                             </span>
+                             <span class="modal-title pull-right">
+                                 <span class="material-icons">receipt</span>
+                                <span class="os-Id" > </span>
+                             </span>
+                         </div>
+                     </div>
+                     <div class="modal-body text-center col-sm-12 col-md-12 col-xs-12">
+                         <!--- Datos para de Venta --->
+                         
+                         <input type="hidden" class="os-Id" name="mov_id" value="" />
+                         <input type="hidden" id="usuarios_id " name="usuarios_id" value="" />
+                         <input type="hidden" name="caja_id" id="caja_id" value="">
+                         <input type="hidden" id="descricao" name="descricao" value="Cobro #" />
+                         <input type="hidden" id="tipo" name="tipo" value="venta" />
+                         <!--- Datos cliente --->
+                         <input type="hidden" id="clientes_id " name="clientes_id" value="1" />
+                         <input type="hidden" id="nomeCliente" name="cliente" value="Consumidor Final" />
+                         <!--- Valores para Crear movimiento --->
+
+                         <input type="hidden" class="valor_ventaTot" id="valor_ventaTot" name="valor_ventaTot" value="1000" />
+                         <input type="hidden" class="valor_costoTot" id="valor_costoTot" name="valor_costoTot" value="" />
+
+                         <!--- Key para hacer venta --->
+                         <input type="hidden" name="cod" id="cod" value="">
+                         <input type="hidden" id="recebido" name="recebido" value="1" />
+                         <!-- Calculadora de vuelto -->
+                         <!--input type="hidden" class="valTotal" value="" id="valTotal" name="Material"-->
+                         <!--input type="hidden" class="valor" name="valorTotal" id="valor" value=""-->
+                         <!--input type="hidden" name="vendas_id" id="vendas_id" value="<?php //echo $ventaL->vendas_id  ?>"-->
+                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                             <label >
+                                 Fecha
+                             </label>
+                             <input class="form-control maxi dateTimepicker" type="datetime" name="dataVenda" value="<?php echo date('Y/m/d H:i:s'); ?>" />
+                         </div>
+
+                         <div class="form-group cobrar-display col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                             <span>
+                                 <strong>
+                                     Total
+                                     <?php echo $emitente[0]->moneda; ?>
+                                     <span class="valTotal">1000 </span>
+                                 </strong>
+                             </span>
+                         </div>
+                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                             <label>
+                                Abona
+                             </label>
+                            
+                             <div class="input-group ">
+                                <span class="input-group-addon"> <h2 class="margin-b-10"><?php echo $emitente[0]->moneda; ?></h2></span>
+                                <input type="number" placeholder="Paga" class="form-control  maxi" value="" id="pago" name="Pago">
+                             </div>
+                         </div>
+
+                         <div id="vueltoBg" class="form-group vuelto-display col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                 <span>
+                                    <strong>
+                                        <span id="vuelto">
+                                            <?php echo $emitente[0]->moneda; ?>
+                                        </span>
+                                        <span id="resultado">0.000</span>
+                                    </strong>
+                                 </span>
+                         </div>
+                         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                             <label>
+                                Forma de pago
+                             </label>
+                             <select id="select-tipo" class="form-control maxi" name="formaPgto">
+                                 <option value="">Seleccionar</option>
+                                 <option value="Efectivo">Efectivo</option>
+                                 <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                                 <option value="Depósito">Depósito</option>
+                                 <option value="Débito">Débito</option>
+                             </select>
+                         </div>
+                         <div class="form-group   card-cob  col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                             <div class="card-cob-main">
+                                 <div class="card-cob-container">
+                                     <button type="submit" id="left-side-c" class="left-side-e">
+                                         <div class="card-c">
+                                             <div class="card-line"></div>
+                                             <div class="buttons"></div>
+                                         </div>
+                                         <div class="post-c">
+                                             <div class="post-line"></div>
+                                             <div class="screen">
+                                                 <div class="dollar">$</div>
+                                             </div>
+                                             <div class="numbers"></div>
+                                             <div class="numbers-line2"></div>
+                                         </div>
+                                     </button>
+                                     <div class="right-side-c">
+                                         <div class="new">Cobrar $ <span id="cobrar-val">0</span></div>
+                                         <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 451.846 451.847">
+                                             <path d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf" /></svg>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+
+                     </div>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+
+     <script>
+         $(document).ready(function() {
+             $(".cobrar-btn").click(function() {
+                 var orId = $(this).attr('or-id');
+                 console.log(orId);
+                 $('#cobrar-orden').modal('show');
+                 $.get("<?php echo base_url(); ?>os/getOrId", "callback=" + orId,
+                     function(data) {
+                         var cont = 0;
+                         var registros = eval(data);
+                         html = "";
+                         if (registros != null) {
+                             for (var i = 0; i < registros.length; i++) {
+
+                            /*   nomeCliente = $('.nomeCliente').val();
+                            clientes_id = $('.clientes_id').val();
+                            valorCosto = $('#total-costo').val();
+                            valorVenta = $('#total-venta').val();
+                            caja_id = $('#caja_id').val();*/
+                            // idOs = (data.idOs);
+                            var idOs = registros[i]["idOs"];
+                            var nomeCliente = registros[i]["nomeCliente"];
+                            var clientes_id = registros[i]["clientes_id"];
+                          //  var valorCosto = registros[i]["valorCosto"];
+                          //  var valorVenta = registros[i]["valorVenta"];
+                            var caja_id = registros[i]["caja_id"];
+                            //Verifica que no traiga comas las comas en los valores de los imput y los limpia
+                            // var valorCostoV = parseFloat(valorCosto.replace(',', ""));
+                            //  var valorVentaV = parseFloat(valorVenta.replace(',', ""));
+                            /* Cargo los valores en el modal*/
+                             };
+                           // $('.valor_costoTot').val(valorCostoV);
+                           //  $('.valor_ventaTot').val(valorVentaV);     
+
+                             /** Cargo los valores a los input del popup para hacer el cobro **/
+                            $('#nomeCliente').val(nomeCliente);
+                            $('#clientes_id').val(clientes_id);
+                            $('#caja_id').val(caja_id);
+                            $('.os-Id').html(idOs);
+                            $('.os-Id').val(idOs);
+
+                            $('.valTotal').html(valorVentaV);
+
+                            //console.log (data);
+                            //console.log (idOs);
+                            
+                         }
+                         
+                         else {
+                          //   $("#alert_div").load("<?php echo current_url(); ?> #alert_div");
+                         }
+            
+                       //  $(".countAlert").html(cont);/
+                     }
+                 );
+
+             });
+
+
+             $(document).on('click', '#btn-faturar', function(event) { // Boton modal Facturar                
+                 $("#datosFacturacion").load("<?php echo current_url(); ?> #datosFacturacion");
+                 nomeCliente = $('.nomeCliente').val();
+                 clientes_id = $('.clientes_id').val();
+                 valorCosto = $('#total-costo').val();
+                 valorVenta = $('#total-venta').val();
+                 caja_id = $('#caja_id').val();
+
+                 
+                 //  var a = parseFloat("10")    
+                 //Verifica que no traiga comas las comas en los valores de los imput y los limpia
+                 var valorCostoV = parseFloat(valorCosto.replace(',', ""));
+                 var valorVentaV = parseFloat(valorVenta.replace(',', ""));
+                 //  alert(valorVentaV);
+                 //  alert(valorVenta);
+                 //  valTotal = $('.valTotal').val();
+                 /* Cargo los valores en el modal*/
+                 $('.valor_costoTot').val(valorCostoV);
+                 $('.valor_ventaTot').val(valorVentaV);
+                 $('.valTotal').html(valorVentaV);
+                 $('.nomeCliente').val(nomeCliente);
+                 $('.clientes_id').val(clientes_id);
+                 $('.caja_id').val(caja_id);
+             });
+             
+
+          
+/** Apciones popup **/
+             $("#pago").on("keyup", function() { /// Calculadora de vuelto 
+                 var valTot = parseFloat($(".valor_ventaTot").val());
+                 var pago = parseFloat($("#pago").val());
+                 var resultado = parseFloat(pago) - parseFloat(valTot);
+                 $("#resultado").html(resultado);
+
+                 //$("#vuelto").html(resultado);
+                 if (parseFloat(valTot) > parseFloat(pago)) {
+                     // $("#vueltoBg").removeClass("bg-blue");
+                     $("#vueltoBg").removeClass("orange");
+                     $("#vueltoBg").removeClass("green");
+                     $("#vueltoBg").addClass("red");
+                     $("#vuelto").html("Faltan  <?php echo $emitente[0]->moneda; ?>");
+                 } else if (parseFloat(valTot) == parseFloat(pago)) {
+                     // $("#vueltoBg").removeClass("bg-blue");
+                     $("#vueltoBg").removeClass("orange");
+                     $("#vueltoBg").removeClass("red");
+                     $("#vueltoBg").addClass("green");
+                     $("#vuelto").html("Justo!");
+                   //  $("#vuelto").html("Justo!");
+                     $("#resultado").html('');
+                 } else {
+                     $("#vueltoBg").removeClass("green");
+                     $("#vueltoBg").removeClass("red");
+                     $("#vueltoBg").addClass("orange");
+                     $("#vuelto").html("Vuelto  <?php echo $emitente[0]->moneda; ?>");
+                 }
+                 if (pago > 0 && pago < valTot) {
+                     $(".card-cob-main").css("display", "flex");
+                     $("#cobrar-val").html(pago);
+                     // alert (valTot);
+                 } else if (pago >= valTot) {
+                     $(".card-cob-main").css("display", "flex");
+                     $("#cobrar-val").html(valTot);
+                     //  alert (pago);
+                 } else {
+                     $(".card-cob-main").css("display", "none");
+                     //    alert ('else');
+                 }
+             });
+             $("#select-tipo").change(function() { /// cambia el tipo de pago
+                 var selected = $(this).val();
+                 if (selected == 'Efectivo') {
+                     $("#left-side-c").removeClass("left-side-c");
+                     $("#left-side-c").addClass("left-side-e");
+                     $(".card-line").html("$");
+
+                 } else {
+                     $("#left-side-c").removeClass("left-side-e");
+                     $("#left-side-c").addClass("left-side-c");
+                     $(".card-line").html("");
+                 }
+             });
+
+
+            
+             $("#formCobrar").validate({ // Boton validar y facturar
+                 rules: {
+                     valor: {
+                         required: true
+                     },
+                     formaPgto: {
+                         required: true
+                     }
+                 },
+                 messages: {
+                     valor: {
+                         required: 'Campo Requerido.'
+                     },
+                     formaPgto: {
+                         required: 'Campo Requerido.'
+                     }
+                 },
+                 errorClass: "help-inline",
+                 errorElement: "span",
+                 highlight: function(element, errorClass, validClass) {
+                     $(element).parents('.form-group').addClass('has-error has-feedback');
+                 },
+                 unhighlight: function(element, errorClass, validClass) {
+                     $(element).parents('.form-group').removeClass('has-error has-feedback');
+                     $(element).parents('.form-group').addClass('has-success has-feedback');
+                 },
+                 submitHandler: function(form) {
+                     $('#facturarVeri').html('<i class="fa fa-spinner fa-spin"></i> Facturando..').attr('disabled', 'disabled');
+                     var dados = $(form).serialize();
+                     $("#loading").show();
+                     $.ajax({
+                         type: "POST",
+                         url: "<?php echo base_url(); ?>vendas/sell",
+                         data: dados,
+                         dataType: 'json',
+                         success: function(data) {
+                             if (data.result == true) {
+                                 window.open("<?php echo base_url(); ?>vendas/visualizar/" + data.id);
+                                 $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos");
+                                 $("#tblProdutos").load("<?php echo current_url(); ?> #tblProdutos");
+                                 $("#divBotones").load("<?php echo current_url(); ?> #divBotones");
+                                 $("#divFactura").load("<?php echo current_url(); ?> #divFactura");
+                                 // $("#total-venta-modal").load("<?php echo current_url(); ?> #total-venta-modal");
+                                 $("#total-venta-boton").load("<?php echo current_url(); ?> #total-venta-boton");
+                                 //  $("#formFaturarVeri").load("<?php echo current_url(); ?> #formFaturarVeri");    
+                                 $('#facturarVeri').html('Facturar').removeAttr("disabled");
+                                 /**Cierra las ventanas y deja listp para una nueva venta */
+                                 $('#modalFacturarVeri').modal('hide');
+                                 $("#loading").hide();
+                                 $("#produto").focus();
+                             } else {
+                                 alert(data.msj);
+                             }
+                         }
+                     });
+                 }
+             });
+
+             /* $(document).on('click', 'button[type="submit"]', function(event) {
+                 $this.attr("disabled", true);
+                 console.log("Se presionó el Boton con Id :" + id)
+              });*/
+
+         });
+     </script>

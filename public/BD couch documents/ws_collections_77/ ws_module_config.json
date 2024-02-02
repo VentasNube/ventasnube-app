@@ -1,0 +1,9 @@
+{
+    "_id": "ws_module_config",
+    "_rev": "1-4abbf84d43d323142e39a612fb23c5d6",
+    "author": "smartmobile.com.ar@gmail.com",
+    "type": "ws_module_config",
+    "ws_module_status": "active",
+    "ws_module_color": "primary",
+    "ws_module_icon": ""
+  }

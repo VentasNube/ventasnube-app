@@ -1,0 +1,131 @@
+
+<!-- CATALOG VIEW PRODUCT TEMPLATE -->
+<div class="righ_nav_header">
+            <button type="button" class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+                <span class="material-icons">
+                    arrow_back
+                </span>
+            </button>
+  <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_workspace}}{{/with}} </h3>
+</div>
+<div class="righ_nav_content">
+    <div class="righ_nav_content_scroll">
+   <div class="tabs-main margin-t-10 default padding-0">
+            <ul class="nav nav-tabs">
+                <li class="ripple  active">
+                    <a data-toggle="tab" href="#ws_general_setting">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}}{{ws_panel_settings_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}} {{ws_panel_settings_general}} {{/with}}
+                    </a>
+                </li>
+                <li class="ripple">
+                    <a data-toggle="tab" href="#ws_users_setting">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}}{{ws_panel_settings_users_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}}{{ ws_panel_settings_users}} {{/with}}
+                    </a>
+                </li>
+                <li class="ripple">
+                    <a data-toggle="tab" href="#ws_update">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}} {{ws_panel_settings_update_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}} {{ws_panel_settings_update}} {{/with}}
+                    </a>
+                </li>
+            </ul>
+            <!--tab-content--->
+            <div class="tab-content ">
+                <!--tab--->
+                <div id="ws_general_setting" class="tab-pane fade in active">
+                    <!--s-card-activ-cont--->
+                    <div id="" class="padding-10 s-card-activ-cont">
+                        <!--IDIOMA--->
+                        </br>
+                        {{#with ws_lang_data}}
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <label> {{{ws_panel_settings_lang_label}}} </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        {{ws_panel_settings_lang_icon}}
+                                    </span>
+                                </span>{{{lang_name}}}
+                                <select class="form-control md" name="ws_lang_setting"
+                                    onchange="ws_setting_general_edit(this)">
+                                    <option class="change_lang_setting" value="ws_lang_es" doc_id="{{{_id}}}"
+                                        input_id="ws_land_default">
+                                        {{{ws_panel_settings_lang_es}}}
+                                    </option>
+                                    <option class="change_lang_setting" value="ws_lang_es" doc_id=" {{{_id}}}"
+                                        input_id="ws_land_default">
+                                        {{{ws_panel_settings_lang_es}}}
+                                    </option>
+                                    <option class="change_lang_setting" value="ws_lang_us" doc_id="{{{_id}}}"
+                                        input_id="ws_land_default">
+                                        {{ws_panel_settings_lang_us}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        {{/with}}
+                        </br>
+                    </div>
+                </div>
+                <div id="ws_users_setting" class="tab-pane fade in">
+                    <div id="" class="s-card-activ-cont gray">
+                    </div>
+                </div>
+                <div id="ws_update" class="tab-pane fade in">
+                    <div id="" class="s-card-activ-cont gray">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}}
+                                    </span>
+                                </span>
+
+                                <button type="button" class="btn btn-primary" onclick="update_app()" data-toggle="modal"
+                                    data-target="#master_modal" data-whatever="Actualizar">{{#with ws_lang_data}}
+                                    {{{ws_settings_update_btn}}}{{/with}}</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="" class="s-card-activ-cont gray">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label>{{#with ws_lang_data}} {{{ws_panel_settings_compact_btn}}}{{/with}} </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        {{#with ws_lang_data}} {{ws_panel_settings_compact_icon}} {{/with}}
+                                    </span>
+                                </span>
+
+                                <button type="button" class="btn btn-primary" onclick="auto_compact_db()">{{#with
+                                    ws_lang_data}} {{{ws_panel_settings_compact}}}{{/with}}</button>
+                            </div>
+                            <div>
+                                <ol id="ws_panel_settings_compact_result">
+
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--tab-content--->
+            </div>
+            <!--tabs-main--->
+        </div>
+
+   </div>
+</div>
+

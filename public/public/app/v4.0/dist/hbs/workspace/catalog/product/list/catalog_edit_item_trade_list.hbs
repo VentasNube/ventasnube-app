@@ -1,0 +1,25 @@
+{{#each trade_find_list }}
+<li onclick='catalog_select_new_trade(this)' item_id="trade" item_value_id="{{id}}" item_value="{{value}}" href="#">
+    <div class="dropdown-item">
+        <a  new_value="{{value}}" onclick='catalog_product_edit_trade(this)' 
+                                                                    input_value="{{value}}" 
+                                                                    input_id="trade" href="#"   doc_id="{{../doc_id}}"  value="{{value}}">
+                                                                    {{value}}
+                                                                    </a>
+        {{#userCtx 'catalog' 'admin'}}
+        <button><span doc_id="{{../_id }}" value="{{../value}}" class="material-icons"
+                onclick='catalog_dell_trade(this)'>delete</span></button>
+        {{/userCtx}}
+    </div>
+</li>
+{{/each}}
+{{#if no_result }}
+<div class="padding-30 margin-t-30 text-center">
+    <button class="btn btn-default" onclick='catalog_add_new_trade(this)' data-toggle="tooltip"
+        data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_trade}}} {{/with}} "
+        data-placement="bottom">
+        <span class="material-icons" title="">add_circle_outline</span>
+        {{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_trade}}} {{/with}}
+    </button>
+</div>
+{{/if}}

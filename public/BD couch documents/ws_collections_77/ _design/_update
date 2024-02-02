@@ -1,0 +1,10 @@
+{
+  "_id": "_design/_update",
+  "_rev": "1-9090cefd8950514d41890ef639e5b862",
+  "views": {
+    "idGenerator": {
+      "map": "function(doc, req) {\r\n    if (!doc) {\r\n        doc = {\r\n            _id: req.id,\r\n            type: 'idGenerator',\r\n            count: 0\r\n        };\r\n    }\r\n    doc.count++;\r\n    return [doc, toJSON(doc.count)];\r\n}"
+    }
+  },
+  "language": "javascript"
+}

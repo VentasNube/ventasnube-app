@@ -1,0 +1,363 @@
+<div class="modal-dialog modal-xl" role="document">
+
+    <div class="modal-content">
+        <form class="">
+            <div class="modal-header">
+                   {{#with ws_lang_data}}
+                <div class="modal-nav">
+                    <span class="back-arrow btn-previus">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                       {{{m_edit_board_group_tittle}}}
+                       
+                    </span>
+                </div>
+            </div>
+            <div id="modal-body" class="">
+                <div id="step-1" class="modal-body text-left col-sm-12 col-md-12 col-xs-12" style="
+                                        background-image: url(/public/app/v4.0/dist/img/tuto/board-edit-group.svg)!important;
+                                        background-repeat: no-repeat!important;
+                                        background-size: 230px 230px!important;
+                                        background-position: 94% 15% !important; ">
+                    <div class="text-left ">
+
+                        <div id="new-board-step-1">
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong>{{m_edit_board_group_name}}</strong>
+                                </label> 
+                                <input id="board_group_name" class="form-control" type="text"
+                                    placeholder="Compras, ventas etc.. " name="board_group_name"
+                                    value="{{../board_group.name}}" />
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong>{{m_edit_board_group_color}}</strong>
+                                </label>
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span bg-color="{{{../board_group.color}}}" id="bg-select-color-group" class="btn {{{../board_group.color}}} line">
+                                        <span id="bg-select-color-group" class="material-icons">
+                                            color_lens
+                                        </span>
+                                        <span id="bg-select-text"> {{board_group_name}}</span>
+                                        <span class="material-icons">arrow_drop_down</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="bg-danger" class="bg-color btn-status btn btn-danger"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="margin-l-10">
+                        <div class="text-left col-lg-12 col-md-6 col-sm-12 col-xs-12">
+                            <h3 class="margin-b-20 text-left">
+                                </br>
+                                <p>
+                                  {{ m_edit_board_group_intro}}
+                                </p>
+                                <small> {{ m_edit_board_group_sub_intro}} </small>
+                               
+                            </h3>
+                             
+                            <h4>
+                                <div class="Switch">
+                                    <input {{#ifEquals ../board_group.stock '1'}} checked="" {{/ifEquals}} value="1"
+                                        id="switch-action" name="board_group_stock" type="checkbox" />
+                                    <label for="switch-action" class="label-primary"></label>
+                                </div>
+                                <strong>{{m_edit_board_group_confirm_stock}}</strong>
+                            </h4>
+                            <h4>
+                                <div class="Switch">
+                                    <input {{#ifEquals ../board_group.sell '1'}} checked="" {{/ifEquals}} value="1"
+                                        id="switch-sell" name="board_group_sell" type="checkbox" />
+                                    <label for="switch-sell" class="label-primary"></label>
+                                </div>
+                                <strong>{{m_edit_board_group_cash}}</strong>
+                            </h4>
+                            <h4>
+                                <div class="Switch">
+                                    <input {{#ifEquals ../board_group.deliver '1'}} checked="" {{/ifEquals}} value="1"
+                                        id="switch-deliver" name="board_group_deliver" type="checkbox" />
+                                    <label for="switch-deliver" class="label-primary"></label>
+                                </div>
+                                <strong>{{m_edit_board_group_deliver}}</strong>
+                            </h4>
+                             <!--
+                             <h4>    
+                                <div class="Switch">
+                                    <input {{#ifEquals ../board_group.web_acept '1'}} checked="" {{/ifEquals}} value="1"
+                                        id="switch-web_acept" name="board_group_web_acept" type="checkbox" />
+                                    <label for="switch-web_acept" class="label-primary"></label>
+                                </div>
+                                <strong>{{m_edit_board_group_auto_web}}</strong>
+                            </h4>
+                            -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+                <button   onclick="delete_board_group(this)" group_id="{{{../board_group.id}}}" board_name="{{../board_type_name}}"   m_s_id="{{../board_group_id}}"   id="btn-save"  m_s_id="{{ board_group_id}}"  id="btn-delete" type="button"board_group_id="{{ board_group_id}}" class="btn btn-default">
+                    <span class="">{{b_dell}}</span>
+                </button>
+                <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+                    <span class="">{{b_cancel}}</span>
+                </button>
+                <button    onclick="edit_board_group_put(this)" group_id="{{{../board_group.id}}}" board_name="{{../board_type_name}}"   m_s_id="{{../board_group_id}}"   id="btn-save"  m_s_id="{{ board_group_id}}" type="button" class="btn btn-primary ">
+                    <span class="">{{b_save}}</span>
+                </button>
+            </div>
+
+            {{/with}}
+        </form>
+    </div>
+
+</div>
+<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+
+<script>
+
+    $('[data-toggle="tooltip"]').tooltip()
+    $('.radio-chek').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        handle: '',
+        increaseArea: '20%' // optional
+    });
+    $('input').on('ifChecked', function (event) {
+        var select = $(this);
+        var id = select.attr('id');
+        $("#new-board-detail-1").show();
+        $("#new-board-name").focus();
+        var board_type = $('input:radio[name=board-type]:checked').val();
+        var board_icon = $(this).attr('icon');
+        var board_bg = $(this).attr('bg-color');
+        console.log(board_icon + board_bg)
+        if (board_type) {
+            $("#board-type-icon").show();
+            $("#new-board-step-1").show();
+            $("#new-board-name").focus();
+            $("#bt-text-icon").attr('icon', board_icon);
+            $("#bt-text-icon").children('.material-icons:first').text(board_icon);
+            $("#bg-select-color-group").children('.material-icons:first').text(board_icon);
+            $("#bg-select-color-group").attr('bg-color', board_bg);
+            $("#bg-select-color-group").removeClass().addClass('btn ' + board_bg + ' line');
+        } else {
+            $("#board-type-radio-5").hide();
+        }
+    });
+    $("li.bg-color").click(function () {
+        var bgColor = $(this).attr('bg-color');
+        $("#bg-select-color-group").removeClass();
+        $("#bg-select-color-group").addClass('btn ' + bgColor + ' line');
+        $("#bg-select").val(bgColor);
+        $("#bg-select-color-group").attr('bg-color', bgColor);
+        // $("#bg-select-color-group").attr('bg-color').html(bgColor);
+    })
+        .mouseout(function () {
+            $("span", this).first().text("panorama_fish_eye");
+            // $("p", this).last().text(++i);
+        })
+        .mouseover(function () {
+    $("span", this).first().text("check_circle");
+        });
+    $("#new-board-group-name").keyup(function () {
+        var board_name = $(this).val();
+        $("#bg-select-text").html(board_name);
+
+        if (board_name.length >= 3) {
+            $("#btn-next").removeAttr('disabled');
+        } else {
+            $("#btn-next").attr('disabled', '');
+        }
+        //  $("#btn-next").attr('disabled','');
+    });
+    $(".item-select").click(function () {
+        var bgColor = $(this).attr('item-select');
+        var bgText = $(this).html();
+        $("#btn-select-3").html(bgText);
+        $("#btn-select-3").removeClass();
+        $("#btn-select-3").addClass('btn ' + bgColor + ' line');
+        $("#bg-select-lis").attr(bgColor);
+
+        // $("#input-select-3").val(bgColor);    
+    });
+    $('#switch-web_acept').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+    $('#switch-action').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+    $('#switch-deliver').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+    $('#switch-sell').click(function () {
+        // Si esta seleccionado (si la propiedad checked es igual a true)
+        if ($(this).prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            // Deselecciona cada input que tenga la clase .checar
+            $('input.control_cash').iCheck('uncheck');
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+   
+    /*$("#btn-save").click(function () {
+        //VALORES SELECCIONADOS DEL FOMULARIO    
+         var board_group_name = $('input[name=board_group_name]').val();
+         var board_group_color = $("#bg-select-color-group").attr('bg-color');
+         var board_group_web_acept = $('input:checkbox[name=board_group_web_acept]:checked').val();         
+         var board_group_stock = $('input:checkbox[name=board_group_stock]:checked').val();         
+         var board_group_sell = $('input:checkbox[name=board_group_sell]:checked').val();         
+         var board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
+         var m_s_id = $(this).attr('m_s_id');      
+        if (board_group_name != null) {
+                var url_now = getUrl();
+                var m_id = url_now.m_id;
+                var m_t_id = url_now.m_t_id;
+                var pacht = 'board'; //CONTROLADOR PRINCIPAL
+                var controler_data = 'edit_board_group_data_post'; //NOMBRE DE CONTROLADOR DATA
+                var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+                var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+                var data = {
+                    //STEP 1
+                    m_id: m_id,
+                    m_t_id: m_t_id,
+                    m_s_id: m_s_id,
+                    board_group_name: board_group_name,
+                    board_group_color: board_group_color,
+                    board_group_web_acept: board_group_web_acept,
+                    board_group_stock: board_group_stock,
+                    board_group_sell:board_group_sell,
+                    board_group_deliver:board_group_deliver,
+                };             
+                var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data);
+                get_board_group(m_id);
+                get_nav_bar(m_id,m_t_id);
+                get_left_nav(m_id,m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+                $('#master_popup').modal('hide');
+                Snackbar.show({
+                      text: 'Se edito la seccion del tablero con exito!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+         
+        }
+         else {
+                Snackbar.show({
+                    text: 'Falta completar el nombre',
+                    actionText: 'Falta completar',
+                    actionTextColor: "#0575e6",
+                });
+            }
+    });
+    */
+    $(".btn-previus").click(function () {
+        var step = $("#btn-previus").attr('step');
+        if (step == 1) {
+            $("#btn-next").text('Siguiente');
+            $("#btn-previus").text('Cancelar');
+            $(".btn-previus").attr('data-dismiss', 'modal');
+            $(".btn-previus").attr('aria-label', 'Close');
+        }
+        else if (step == 2) {
+            $("#btn-previus").attr('step', '1');
+            $("#btn-previus").text('Volver');
+            $("#step-1").show();
+            $("#step-2").hide();
+        }
+        else if (step == 3) {
+            $("#btn-next").text('Continuar');
+            $("#btn-previus").attr('step', '2');
+            $("#step-2").show();
+            $("#step-3").hide();
+        }
+    });
+    $("#btn-delete").click(function () {
+
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+
+        var board_group_id =  $(this).attr('board_group_id');
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'edit_board_group_data_delete'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'edit_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            //STEP 1
+            m_id: m_id,
+            m_t_id: m_t_id,
+             board_group_id: board_group_id,
+        };
+        //console.log(data);
+        var new_module = get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        get_board_group(m_id);
+        get_nav_bar(m_id,m_t_id); // Recargo los datos del modulos al copilador handelbars del modulo.
+        $('#master_popup').modal('hide');
+        Snackbar.show({
+            text: 'Se elimino el tablero con exito!',
+            actionText: 'ok',
+            actionTextColor: "#0575e6",
+        });
+    });
+
+
+</script>

@@ -1,0 +1,20 @@
+{
+    "_id": "currency_list",
+    "_rev": "5-37b98eac7f25aad9f7d3b862bc3d13c0",
+    "type": "product",
+    "status": "active",
+    "currency_list": [
+      {
+        "id": "ARS",
+        "value": "$"
+      },
+      {
+        "id": "DOLAR",
+        "value": "u$s"
+      },
+      {
+        "id": "EUR",
+        "value": "€"
+      }
+    ]
+  }

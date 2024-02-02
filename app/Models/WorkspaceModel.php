@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\HTTP\Response;
 use CodeIgniter\Model;
 
 class WorkspaceModel extends Model
@@ -54,17 +55,12 @@ class WorkspaceModel extends Model
     protected $validationMessages = [];
     protected $skipValidation     = false;
      */
-
     // protected $table = 'workspace'; //Trae los datos de la tabla users
-    //protected $table = 'Students';
-
+    // protected $table = 'Students';
     // protected  $primaryKey = 'workspace_id';
-
-    //Workspace filas
+    // Workspace filas
     // workspace_id    workspace_name    workspace_plan    workspace_plan_expiration    workspace_db_pacht    workspace_status    workspace_web    workspace_phone    workspace_zona_h    workspace_icon    workspace_img
-
     // Users_workspace
-  
     /* public function new_ws($ws_data = false)
     {
         if ($ws_data === false) {
@@ -87,8 +83,9 @@ class WorkspaceModel extends Model
             return $response;
         }
     }*/
-    //Paso los parametros para insertar un item de la DB
-    public function insert($table = false, $data = false)
+
+    //Funcion para crear items 
+    public function insert($table = false, $data = null)
     {
         if ($table === false) {
             $response = ['data' => $data, 'msj' => 'Falta la tabla o los datos', 'result' => false];
@@ -101,7 +98,19 @@ class WorkspaceModel extends Model
         }
     }
 
-    //Paso los parametros para eliminar un item de la DB
+    //Funcion para editar(lo uso en la creacion de ws )
+    public function edit($table = false, $data = null, $where = false, $where_id = false)
+    {
+           if ($table === false) {
+              return false;
+           } else {
+              $this->table = $this->db->table($table);
+              $this->table->where($where, $where_id)->update($data);          
+               return true;
+           }
+    }
+
+    //Funcion para eeliminar( NO lo uso )
     public function dell($table = false, $where = false, $where_id = false)
     {
         if ($table === false) {
@@ -113,17 +122,16 @@ class WorkspaceModel extends Model
         }
     }
 
-    //user_workspace_id    user_id    user_group    user_workspace_status    user_workspace_create_time
+    // Traigo los datos del ws por id
     public function get_ws_id($workspace_id = false)
     {
-        //  $this->table = $this->db->table('workspace');
         $this->table = $this->db->table('workspace');
         $this->table->select('*');
         $this->table->where('workspace_id', $workspace_id);
         return $this->table->get()->getResultArray();
     }
 
-    //Traigo todos los ws del usuario por la ID 
+    //Traigo  todos los ws del usuario por la ID 
     public function get_all_ws_user($user_id = false)
     {
         $this->table = $this->db->table('users_workspace');
@@ -136,6 +144,7 @@ class WorkspaceModel extends Model
             foreach ($query as $row) {
                 $row_m[] = array(
                     'ws_id' => $row['workspace_id'],
+                    'ws_id_hex' => $row['workspace_id_hex'],
                     'ws_color' => $row['workspace_color'],
                     'ws_name' => $row['workspace_name'],
                     'ws_img' => $row['workspace_img'],
@@ -182,29 +191,205 @@ class WorkspaceModel extends Model
             return $response;
         } else {
             $client = \Config\Services::curlrequest();
-            $url = 'http://admin:Cou6942233Cou@localhost:5984/' . $ws_db_name;
-            $response = $client->request('PUT', $url, ['json' => $ws_db_data]);
-            return $response;
+            $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+            $response = $client->request('PUT', $url, ['json' => $ws_db_data, 'http_errors' => false]);
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
+            return $response_code;
         }
     }
+
+    //Modelo traigo datos de CouchDB
+    public function curl_get($ws_db_name = false, $ws_db_data = false)
+    {
+         if ($ws_db_name === false) {
+             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
+             return $response;
+         } else {
+             $client = \Config\Services::curlrequest();
+             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+             $response = $client->request('GET', $url);  //Devuelvo el contenido del documento
+             $body = $response->getBody();   
+             return $body;
+         }
+    }
+
+    // Devuelve la revision del documento que consulto
+    public function curl_get_rev($ws_db_name = false)
+    {
+         if ($ws_db_name === false) {
+             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
+             return $response;
+         } else {
+             $client = \Config\Services::curlrequest();
+             $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+             $response = $client->request('GET', $url);  //Devuelvo el contenido del documento
+             $doc = $response->getBody();  
+             $obj = json_decode($doc); //transformo el json e un array 
+             $_rev = $obj->{'_rev'}; // lo recorro y traigo el rev
+             return $_rev ;
+         }
+    }
+     
+    //Modelo de actualizacion de documentos a CouchDB
+    public function curl_update($ws_db_name = false, $ws_db_data = false)
+    {
+          if ($ws_db_name === false) {
+              $response = ['msj' => 'Ocurrio un error y no se pudo editar la db', 'result' => true];
+              return $response;
+          } else {
+            $client = \Config\Services::curlrequest();
+            $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
+            $response = $client->request('PUT', $url, ['json' => $ws_db_data, 'http_errors' => false]);
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
+
+            return $response_code;
+          }
+    }
+
     //Modelo de elimiar Bases de datos en CouchDB
-    public function curl_delete_db($ws_db_name = false, $ws_db_data = false)
+    public function curl_delete_db($ws_db_name = false)
     {
         if ($ws_db_name === false) {
             $response = ['msj' => 'Ocurrio un error y no se pudo crear la db', 'result' => true];
             return $response;
-        } else {
+        } else {        
             $client = \Config\Services::curlrequest();
-            $url = 'http://admin:Cou6942233Cou@localhost:5984/' . $ws_db_name;
-            //$response = $client->request('PUT', $url, ['json' => $ws_db_data]);
+            $url = 'http://admin:Cou6942233Cou@ventasnube-couchdb:5984/' . $ws_db_name;
             $response = $client->request('DELETE', $url, ['http_errors' => false]);
-            // $client->request('GET', '/status/500');
-            // Configuramos los errores para q no detenga el script
-            // $client->request('GET', '/status/404');
-            //  $response = $client->request('GET', '/status/404', ['http_errors' => false]);
-            $response_code = $response->getStatusCode();
+            $response_code = $response->getStatusCode(); //Devuelvo un el codigo de status
             return $response_code;
         }
     }
+
+    //FILTRO CHEKEO DE PERMISOS Devuelve true
+    public function check_rol($user_id = false, $module_id = false, $rol_id = false, $ws_id = false)
+    {
+
+            // Permisos de toda la APP Mysql y Couchdb
+            // 1 owner  PUEDE LEER, CREAR, EDITAR, ELIMINAR, NOMBRAR owner...
+            // 2 admin  PUEDE LEER, CREAR, EDITAR, ELIMINAR, AGREGAR COLAB...
+            // 3 edit   PUEDE LEER, CREAR, EDITAR
+            // 4 create PUEDE LEER, CREAR,
+            // 5 reed   PUEDE LEER
+            // Comfiguraciones de seguridad y lisencia
+            // El formato completo del permiso :
+            // modulo + permiso + ws_id
+
+          $this->table = $this->db->table('users_workspace_permission');
+          $this->table->select('*');
+          $this->table->join('workspace', 'workspace.workspace_id = users_workspace_permission.ws_id');
+          // $this->table->orderBy('workspace_id', 'Asc');
+          //busco por el id_user
+          $this->table->where('user_id', $user_id);
+          $this->table->where('ws_id', $ws_id);
+          $this->table->where('module_id', $module_id);      
+          $this->table->where('auth_permissions_id', $rol_id);
+          $query = $this->table->get()->getResultArray();
+          if ($query) {
+              return true;
+          } else {
+              return false;
+          }
+    }
+
+     //Agregar rol a usuario y autorizar en la DB Cocuchdb
+	public function add_rol($ws_id,$module,$new_rol,$user_email)
+	{	
+        helper('array');
+        $user_url = '/_users/org.couchdb.user:'.$user_email;
+        $query = $this->curl_get($user_url);
+        $json = json_decode($query);
+        // $ws_id = '323130';
+        $new_rol = $module.'_'. $new_rol .'_'. $ws_id;
+        $edit_roles = $json->roles;
+        //Busco en el array si hay un permiso repetido
+        $filter_rol = dot_array_search($new_rol, $edit_roles);
+        if($filter_rol){
+            // FIltro el array para q no alla duplicados
+            $msj = "El rol ".$new_rol." esta en el indice: " .$filter_rol;
+           return  json_encode($msj);
+        }
+        else{
+            if($edit_roles){
+             array_push($edit_roles,$new_rol);
+             $ws_security_doc_edited = [
+                        '_id' =>  $json->_id,
+                        '_rev' => $json->_rev,
+                        'name' =>  $json->name,
+                        'firstname' => $json->firstname,			
+                        'lastname' => $json->lastname,
+                        // 'password' => 'Ven6942233', //Solo en la actualizacion del pasword se usa
+                        'email' => $json->email, 
+                        'phone' => $json->phone, 
+                        'created_at' => $json->created_at, 
+                        'update_at' => now(),
+                        'type' => $json->type,
+                        'active' => $json->active,
+                        'roles' => $edit_roles,
+                        'password_scheme'=> $json->password_scheme,
+                        'iterations'=> $json->iterations,
+                        'derived_key'=>$json->derived_key,
+                        'salt'=> $json->salt
+             ];
+             $this->curl_put($user_url, $ws_security_doc_edited);
+             return true;
+            }
+        }
+	}
+
+     //Eliminar rol a usuario y autorizar en la DB Cocuchdb
+    public function dell_rol($ws_id,$module,$new_rol,$user_email)
+    {	
+        helper('array');
+        helper('date');
+        $user_url = '/_users/org.couchdb.user:'.$user_email;
+        $query = $this->curl_get($user_url);
+        $json = json_decode($query);
+        //armo el nombre del rol a eliminar
+        $del_rol = $module.'_'. $new_rol .'_'. $ws_id;
+        $edit_roles = $json->roles;
+        //Busco en el array si hay un permiso repetido
+        $delete_rol = array_search($del_rol, $edit_roles);
+        //Elimina el rol espesifico del array
+        //  array_deep_search
+        if(!$delete_rol){
+            // FIltro el array para q no alla duplicados
+            $msj = "El rol ".$new_rol." esta en el indice: " .$delete_rol;
+            return  json_encode($msj);
+        }
+        else{
+            if($edit_roles){
+            //Elimino el objeto
+            unset($edit_roles[$delete_rol]);
+           // var_export ($edit_roles);
+           // array_push($edit_roles,$new_rol);
+            $ws_security_doc_edited = [
+                        '_id' =>  $json->_id,
+                        '_rev' => $json->_rev,
+                        'name' =>  $json->name,
+                        'firstname' => $json->firstname,			
+                        'lastname' => $json->lastname,
+                        // 'password' => 'Ven6942233',
+                        // Solo en la actualizacion del pasword se usa
+                        'email' => $json->email, 
+                        'phone' => $json->phone, 
+                        'created_at' => $json->created_at, 
+                        'update_at' => now(),
+                        'type' => $json->type,
+                        'active' => $json->active,
+                        'roles' => $edit_roles,
+                        'password_scheme'=> $json->password_scheme,
+                        'iterations'=> $json->iterations,
+                        'derived_key'=>$json->derived_key,
+                        'salt'=> $json->salt
+            ];
+            
+            $this->curl_put($user_url, $ws_security_doc_edited);
+           // return  $edit_roles;
+            return  json_encode($edit_roles);
+        }
+        }
+    }
+
 
 }

@@ -115,7 +115,6 @@ $("#formLogin" ).submit(function( event ) {
 
 var url = "<?=site_url('login');?>";
 var db_url = "<?php echo base_url();?>:5984";
-
 var L_user_db = new PouchDB(db_url, {skip_setup: true});
 
 //Funcion logout cdb
@@ -146,9 +145,10 @@ function logout() {
                 }
             }
         });
-    };
+};
 
 //Funcion chek _session
+/*
 L_user_db.getSession(function (err, response) {
         if (err) {
             // network error
@@ -158,7 +158,7 @@ L_user_db.getSession(function (err, response) {
         } else {
             // response.userCtx.name is the current user
             $.ajax({
-            url: "/user_data",
+            url: "/body/user_data",
             // dataType: "html",
             //data: data,
             type: "POST",
@@ -175,7 +175,7 @@ L_user_db.getSession(function (err, response) {
                 if (jqXHR.status == 404) {
                    // setTimeout(function () { window.location = "/account"; }, 2000);
                     Snackbar.show({
-                        text: 'Error 404 La pagina no existe',
+                        text: 'Debes iniciar secion',
                         actionText: 'ok',
                         actionTextColor: "#0575e6",
                     });
@@ -184,7 +184,7 @@ L_user_db.getSession(function (err, response) {
 
         }
 });
-
+*/
 
 
     // Esta parte del código se ejecutará automáticamente cuando la página esté lista.
@@ -197,28 +197,7 @@ var formData = $("#formLogin").serialize();
         if(validaForm()){
             // login(email, password);
             L_user_db.logIn(email, password, function (err, response) {
-                if(response.ok){
-                            Snackbar.show({
-                                text: 'Bienvenido! '+response.name,
-                                actionText: 'ok',
-                                actionTextColor: "#0575e6",
-                                pos: 'top-center'
-                            });
-                                $.ajax({
-                                type: "POST",
-                                url: url,
-                                data: formData,
-                                beforeSend: function () {
-                                    //  alert('AAAAAAAAA')
-                                    //location.reload().delay(5000);
-                                    },
-                                success:  function (data) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                                    window.location = "/workspace";
-                                }
-
-                            });
-                }
-                else  if (err) {
+               if (err) {
                     if (err.name === 'unauthorized' || err.name === 'forbidden') {
                     // name or password incorrect
                     Snackbar.show({
@@ -234,6 +213,27 @@ var formData = $("#formLogin").serialize();
                             actionTextColor: "#0575e6",
                         });
                     }
+                }
+                else if(response.ok){
+                            Snackbar.show({
+                                text: 'Bienvenido! '+response.name,
+                                actionText: 'ok',
+                                actionTextColor: "#0575e6",
+                                pos: 'bottom-center'
+                            });
+                                $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: formData,
+                                beforeSend: function () {
+                                    //  alert('AAAAAAAAA')
+                                    //location.reload().delay(5000);
+                                    },
+                                success:  function (data) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                                    window.location = "/workspace/home";
+                                }
+
+                            });
                 }
                 });
             // Primero validará el formulario.

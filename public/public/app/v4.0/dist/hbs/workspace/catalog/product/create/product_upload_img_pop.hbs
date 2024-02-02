@@ -1,0 +1,56 @@
+{{#with ws_lang_data }}
+<div class="modal-dialog modal-s" role="document">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <div class="modal-nav">
+                <span class="modal-title">
+                    {{m_catalog_edit_add_pic}}
+                </span>
+            </div>
+        </div>
+        <div id="modal-body" class="">
+            <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
+                <div id="new-upload-img">
+
+                    <div id="previewContainer"  class="img_card_previa">
+                        <img class='preview-image' src='/public/img/app/foto_fondo.png'alt=''>
+                    </div>
+
+                    
+                    <form id="new_contact_form" class="">
+                                <div id="message"></div>
+                                <div class="form-group">
+                                    <label for="fileInput">Selecciona un archivo:</label>
+                                    <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+                                </div>
+
+                            </form>
+                     <button id="delluploadImage_btn" style="display: none;" onclick="delluploadImage()" class="btn btn-primary">
+                                <span class="material-icons"> delete</span>
+                                <span>Eliminar</span>
+                     </button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+
+        <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+            <span class="">{{b_cancel}}</span>
+        </button>
+
+        <button id="btn-save" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-primary ">
+            <span class="">{{b_save}}</span>
+        </button>
+    </div>
+</div>
+{{/with}}
+
+<script>
+
+</script>

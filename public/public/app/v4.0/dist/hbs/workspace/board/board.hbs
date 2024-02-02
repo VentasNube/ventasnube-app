@@ -1,0 +1,627 @@
+<!--div id="nav-bar-copiled"></div-->
+<!--MODULE NAV BAR COPILED-->
+<style>
+    .drag-container {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .board {
+        position: relative;
+        margin-left: 0;
+    }
+
+    .board-column {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0;
+        /* width: calc(100% / 3);*/
+        width: 400px;
+        z-index: 1;
+    }
+
+    .board-column.muuri-item-releasing {
+        z-index: 2;
+    }
+
+    .board-column.muuri-item-dragging {
+        z-index: 3;
+        cursor: move;
+    }
+
+    .board-column-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .board-column-header {
+        position: relative;
+        /* height: 50px; */
+        /* line-height: 50px; */
+        overflow: hidden;
+        padding: 10;
+        text-align: center;
+        /* background: #333; */
+        /* color: #fff; */
+        border-radius: 5px 5px 0 0;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+        .board-column-header {
+            text-indent: -1000px;
+        }
+    }
+
+    /*
+.board-column.todo .board-column-header {
+  background: #4A9FF9;
+}
+.board-column.working .board-column-header {
+  background: #f9944a;
+}
+.board-column.done .board-column-header {
+  background: #2ac06d;
+}
+*/
+    .board-column-content-wrapper {
+        position: relative;
+        padding: 8px;
+        background: #f0f0f0;
+        height: calc(100vh - 90px);
+        overflow-y: auto;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .board-column-content {
+        position: relative;
+        min-height: 100%;
+    }
+
+    .board-item {
+        position: absolute;
+        width: calc(100% - 16px);
+        margin: 8px;
+    }
+
+    .board-item.muuri-item-releasing {
+        z-index: 9998;
+    }
+
+    .board-item.muuri-item-dragging {
+        z-index: 9999;
+        cursor: move;
+    }
+
+    .board-item.muuri-item-hidden {
+        z-index: 0;
+    }
+
+    .board-item-content {
+        position: relative;
+        /* padding: 20px; 
+    background: #fff;
+    border-radius: 4px;
+    font-size: 17px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 3px 0 rgba(0,0,0,0.2);
+    border-left: 3px solid #415eff!important;
+    */
+    }
+
+    @media (max-width: 600px) {
+        .board-item-content {
+            text-align: center;
+        }
+
+        .board-item-content span {
+            display: none;
+        }
+    }
+
+    /* NEW 2023 */
+
+    .s-card {
+        /*  display: block;
+   padding: 5px;*/
+        /* z-index: 998; */
+    }
+
+    .s-card-body {
+        position: relative;
+        display: inline-block;
+        border-radius: 10px;
+        background-color: #fff;
+        margin: 0;
+        /* margin: 5px 0; */
+        padding: 10px;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05), 0 1px 3px 0 rgba(0, 0, 0, .25);
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        width: 100%;
+        cursor: pointer;
+        -webkit-box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+        border-left: 3px solid #415eff !important;
+    }
+</style>
+<div class="container-fluid" id="scroller">
+    <!--Kanban template-->
+    <div class="drag-container"></div>
+    <div id="content_board_group_compiled" class="board-group content-board-group">
+        <div class=" row board">
+            {{#each board_group}}
+            <div class="board-column">
+                <div class=" board-column-header {{{color}}}">
+                    <!--span class="board-drag-handle material-icons">  drag_indicator</span-->
+                    <div class="board-drag-handle board-column-header-tittle">
+                        <span class="board-item-conunt_{{id}}" data-toggle="tooltip" data-placement="right"
+                            data-original-title="Cantidad de Ordenes">
+                            {{counter @index}}
+                        </span>
+                        {{{name}}}
+                    </div>
+                    <div class="board-column-header-button">
+                        <div class="btn-group ">
+                            <button role="button" data-toggle="collapse" data-parent="#accordion_{{{id}}}"
+                                href="#board_group_config_{{{id}}}" aria-expanded="true"
+                                aria-controls="board_group_config_{{{id}}}" type="button"
+                                class="btn btn-round xl text-white dropdown-toggle">
+                                <span class="material-icons">expand_more</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="board_group_config_{{{id}}}" class="panel-collapse collapse panel-group" role="tabpanel"
+                        aria-labelledby="headingOne" aria-expanded="true">
+                        <div class="panel panel-default">
+                            <div class="padding-0 text-left panel-body">
+
+                                <div class="padding-b-0 padding-t-0 margin-b-0 text-left panel-body row list-group">
+                                    <a onclick="board_edit_group(this)" group_id="{{id}}"
+                                        board_type_name="{{{../board_type_name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
+                                        href="#master_popup" role="button" title="Retirar efectivo"
+                                        class="list-group-item"><i class="material-icons">settings</i>
+                                        {{#with ../ws_lang_data}} {{{m_edit_board_group}}}{{/with}}</a>
+                                    <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_s_id="{{{board_group_id}}}" href="#"
+                                        role="button" class="list-group-item">
+                                        <i class="material-icons">group_add</i> {{#with ../ws_lang_data}}
+                                        {{{m_add_board_group_collaborator}}}{{/with}}
+                                    </a>
+                                    <a href="#" data-toggle="modal" role="button" class="list-group-item">
+                                        <i class="material-icons">picture_as_pdf</i>
+                                        {{#with ../ws_lang_data}} {{{m_list_board_group}}}{{/with}}
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="board-column-content-wrapper">
+                    <div class="board-column-content" id="{{id}}" group-id="{{id}}">
+
+                    </div>
+                    <!--div class="board-new-item">
+                        <div class="icon">
+                            <span class="material-icons">
+                                add_circle_outline
+                            </span>
+                        </div>
+                    </div-->
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <!--Kanban template-->
+</div>
+
+
+<div id="move-left" class="btn btn-default fixed-center l">
+    <i class="material-icons">
+        keyboard_arrow_left
+    </i>
+</div>
+<div id="move-right" class="btn btn-default fixed-center r">
+    <i class="material-icons">
+        keyboard_arrow_right
+    </i>
+</div>
+
+<!--- PLANTILLA  BODY NAVEGACION -->
+<!--script src="<?php echo base_url() ?>public/dist/js/ventas_nube_board.js"></script-->
+
+<script>
+
+    ////----( CARRUSEL DE CROLL  )----/////
+    function scrollerMove() {
+        var ventana_ancho = $(window).width();
+        var leftPos = $('#scroller').scrollLeft();
+        if (ventana_ancho >= 600) {
+            var scroll_px = 350;
+        } else {
+            var scroll_px = 150;
+        }
+        if (leftPos >= 0) {
+            $("#move-left").hide();
+        } else {
+            $("#move-left").show();
+        }
+        $("#move-left").click(function () {
+            var leftPos = $('#scroller').scrollLeft();
+            if (leftPos >= 0) {
+                $("#move-right").show();
+            } else {
+                $("#move-right").hide();
+            }
+            $("#scroller").animate({
+                scrollLeft: leftPos - scroll_px
+            }, 200);
+        });
+        $("#move-right").click(function () {
+            var leftPos = $('#scroller').scrollLeft();
+            if (leftPos < 0) {
+                $("#move-left").hide();
+            } else {
+                $("#move-left").show();
+            }
+            $("#scroller").animate({
+                scrollLeft: leftPos + scroll_px
+            }, 200);
+        });
+    };
+
+    ///----( POPUP AGREGAR COLABORADOR  )----/////
+    function get_board_group_Collaborator(m_id, m_t_id, m_s_id) {
+        //  var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'collaborator_board_group_template_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'collaborator_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+            m_s_id: m_s_id,
+        }
+        console.log('llamada ajax 1');
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    };
+
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#new_board-btn', function (event) {
+        var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'new_board_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'new_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            //  m_id: m_id,
+            //    search_m_input: search_m_input,
+            /*    m_name: m_name,
+           m_icon: m_icon,
+           m_color: m_color,
+           m_position: m_position,
+           m_url: m_url,
+               */
+            /* or_board_finality:or_board_finality,
+             or_board_type:or_board_type,
+             or_board_color:or_board_color,
+             or_board_icon:or_board_icon,
+             */
+            //  or_board_mode:or_board_mode,
+            //  or_board_delivery_place:or_board_delivery_place,
+            //  or_board_collect_and_deliver:or_board_collect_and_deliver,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#new_board_group_btn', function (event) {
+        var url_now = getUrl();
+        //  var m_id = url_now.m_id;
+        //  var m_t_id = url_now.m_t_id;
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'new_board_group_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'new_board_group_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            //  m_id: m_id,
+            //    search_m_input: search_m_input,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', '#edit_board-btn', function (event) {
+        //  alert('holaaaa');
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        //  alert(m_id+ m_t_id);
+        var pacht = 'board'; //CONTROLADOR PRINCIPAL
+        var controler_data = 'edit_board_template_data'; //NOMBRE DE CONTROLADOR DATA
+        var controler_template = 'edit_board_template'; //NOMBRE CONTROLADOR TEMPLATE      
+        var id_copiled = '#master_popup'; // ID DE COMPILACION //  
+        var data = {
+            m_id: m_id,
+            m_t_id: m_t_id,
+        }
+        console.log(data);
+        get_module(pacht, controler_data, controler_template, id_copiled, data); //ENVIO LOS PARAMETROS DEL ESTE MODULO AL CONTRUCTOR DE LA VISTA    
+        $('#master_popup').modal('show');
+    });
+    ////----( POPUP AGREGAR COLABORADOR  )----/////
+    $(document).on('click', 'a.buttonNewCollaborator', function (event) {
+        var url_now = getUrl();
+        var m_id = url_now.m_id;
+        var m_t_id = url_now.m_t_id;
+        var m_s_id = $(this).attr('m_s_id');
+        $('#save-new-coll').attr('m_s_id', m_s_id);
+        get_board_group_Collaborator(m_id, m_t_id, m_s_id);
+    });
+
+    // VARIABLES GLOBALES 
+
+    //nextStartkey = ['open', 'order', 'sell'];
+    //nextStartkeyDocid = null;
+    // isLoading = false;
+    boardsInitialized = false;
+    var dragContainer = document.querySelector('.drag-container');
+    var itemContainers = [].slice.call(document.querySelectorAll('.board-column-content'));
+    var columnGrids = [];
+    var boardGrid;
+    var grid;
+    processedRows = 0;
+    var isFetching = false;
+    var totalDocs = null;
+
+    // Edito El paso de etapas 
+    async function edit_order_group(board_name, order_id, group_id) {
+        try {
+            const doc = await L_board_db.get(order_id); // Verificar si el documento ya existe
+            doc._rev = doc._rev;
+            doc.group_id = group_id;
+            const response = await L_board_db.put(doc); // Actualizar el documento existen
+            if (response) {
+                Snackbar.show({
+                    text: 'Se editó orden con exito!',
+                    actionText: 'ok',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        }
+        catch (err) {
+            console.log(err);
+            Snackbar.show({
+                text: err.name,
+                actionText: 'Ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    };
+
+    // CREA LA PRIMER INSTANCIA MUURI
+    function up_ventasnube_kanban(board_group) {
+        // Init the column grids so we can drag those items around.
+        itemContainers.forEach(function (container) {
+            grid = new Muuri(container, {
+                items: '.board-item',
+                dragEnabled: true,
+                dragSort: function () {
+                    return columnGrids;
+                },
+                dragContainer: dragContainer,
+                dragAutoScroll: {
+                    targets: (item) => {
+                        return [
+                            { element: window, priority: 0 },
+                            { element: item.getGrid().getElement().parentNode, priority: 1 },
+                        ];
+                    }
+                },
+            })
+                .on('dragInit', function (item) {
+                    item.getElement().style.width = item.getWidth() + 'px';
+                    item.getElement().style.height = item.getHeight() + 'px';
+                    console.log('dragInit');
+                    // var element = item.getElement();
+                    // var orderId = element.getAttribute('id');
+                    // var groupId = element.getAttribute('group_id');
+                    // var boardName = element.getAttribute('category_id');
+                })
+                .on('dragReleaseEnd', function (item) {
+                    item.getElement().style.width = '';
+                    item.getElement().style.height = '';
+                    item.getGrid().refreshItems([item]);
+                    //  console.log('dragReleaseEnd');
+                    var element = item.getElement();
+                    var orderId = element.getAttribute('id');
+                    var boardName = element.getAttribute('category_id');
+                    var originalGroup = item._drag._gridId;
+                    // Para obtener el nuevo group_id:
+                    var newGroupElement = item.getGrid().getElement();
+                    // Si el atributo 'id' contiene el group_id, podemos obtenerlo de la siguiente manera:
+                    var newGroupId = newGroupElement.id;
+                    // Si el atributo 'id' contiene el group_id, podemos obtenerlo de la siguiente manera:
+                    // console.log('END orderId:', orderId);
+                    //console.log('END groupId:', newGroupId);
+                    edit_order_group(boardName, orderId, newGroupId);
+                    coun_items_broup(boardName);
+                })
+                .on('layoutStart', function () {
+                    boardGrid.refreshItems().layout();
+                });
+            //console.log('GRIDDDDDD  up_muuri_kanban ', grid);
+            columnGrids.push(grid);
+        });
+        // Init board grid so we can drag those columns around.
+        boardGrid = new Muuri('.board', {
+            dragEnabled: true,
+            dragHandle: '.board-column-header'
+        });
+
+    }
+
+    // TRAE LOS DATOS DEL TEMPLATE CON AJAX Y COPILALAS VISTAS
+    function getTemplateAjaxCARD(path, callback) {
+        var source, template;
+        $.ajax({
+            url: path,
+            dataType: "html",
+            success: function (data) {
+                source = data;
+                template = Handlebars.compile(source);
+                if (callback) callback(template);
+            }
+        });
+    }
+
+
+    async function add_new_card(template_hbs, card_data = null, board_gorup_id = null, grid) {
+        try {
+            return new Promise((resolve, reject) => {
+                if (board_gorup_id == null) {
+                    reject(new Error('No se proporcionó un board_gorup_id válido'));
+                } else {
+                    getTemplateAjaxCARD(template_hbs, function (template) {
+                        let new_card = document.createElement('div');
+                        new_card.classList.add('board-item');
+                        new_card.setAttribute('group_id', card_data.doc.group_id);
+                        new_card.setAttribute('category_id', card_data.doc.category_id);
+                        new_card.setAttribute('id', card_data.doc._id);
+                        new_card.innerHTML = template(card_data);
+                        const board_group = document.querySelector('#' + board_gorup_id);
+                        if (!board_group) {
+                            reject(new Error('No se encontró el elemento con el ID board_gorup_id'));
+                        } else {
+                            board_group.appendChild(new_card);
+                            grid.add(new_card);
+                            grid.refreshItems().layout();
+                            resolve(new_card);
+                        }
+                    });
+                }
+            });
+        } catch (err) {
+            console.error('ERROR EN add_new_card', err);
+            return null;
+        }
+    }
+
+    // COLOCO LOS ITEMS EN EL DOM CREO EL TEMPLATE Y LO AGREGO AL MUURI
+    async function add_new_cardOK(template_hbs, card_data = null, board_gorup_id = null, grid) {
+        try {
+            return new Promise((resolve, reject) => {
+                //  console.log('board_gorup_id', board_gorup_id);
+                if (board_gorup_id == null) {
+                    //  console.log('NULL board_gorup_id', board_gorup_id)
+                    // alert('No hay mas resultados')
+                } else {
+                    getTemplateAjaxCARD(template_hbs, function (template) {
+                        let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
+                        new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
+                        new_card.setAttribute('group_id', card_data.doc.group_id); //Le agrego la id 
+                        new_card.setAttribute('category_id', card_data.doc.category_id); //Le agrego la id 
+                        new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
+                        // console.log('ADD NEW CARD group_id:',board_gorup_id);
+                        new_card.innerHTML = template(card_data);    //Uno el template con al data 
+                        document.querySelector('#' + board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
+                        // console.log('GRIDDDDDD add_new_card',grid);
+                        grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
+                        grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
+                        resolve(new_card);
+                    });
+                }
+            });
+        }
+        catch (err) {
+            return null;
+            console.log('ERROR EN add_new_card', err);
+        }
+    }
+
+    //IMPRIME LAS TARJETAS EN EL DOM
+    async function add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids, category_id) {
+        // Si ya se está ejecutando una búsqueda, sal de la función.
+        if (isFetching) {
+            return;
+        }
+        // Marca que estamos empezando una búsqueda.
+        isFetching = true;
+        try {
+            const result = await paginate_orders(L_board_db, nextStartkey, nextStartkeyDocid);
+            // console.log('RESULT:',result)
+            //console.log('add_new_item_DOM / result.nextStartkey:', result.nextStartkey);
+            // console.log('add_new_item_DOM / result.nextStartkeyDocid', result.nextStartkeyDocid);
+            for (const row of result.rows) {
+                var group_id = row.value.group_id;
+                var card_data = { doc: row.value };
+                var board_gorup_id = row.value.group_id;
+                var groupIndex = itemContainers.findIndex(container => container.id === board_gorup_id);
+                var grid = columnGrids[groupIndex];
+                add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+            }
+            return result;
+        } catch (error) {
+            console.error("Error in add_new_item_DOM: ", error);
+            throw error;
+        } finally {
+            // Independientemente de si la búsqueda tuvo éxito o lanzó un error, asegúrate de marcar que ha terminado.
+            isFetching = false;
+        }
+    }
+
+    //HACE QUERY Y LA PAGINACION TRAE LOS RESULTADOS DE LA DB
+    async function paginate_orders(db, nextStartkey, nextStartkeyDocid) {
+
+
+        const category_id = await getUrlVal('t');
+        let options = {
+            include_docs: false,
+            limit: 300, // Cambia el límite para obtener todos los documentos en una sola consulta
+            // group: true,
+            // group_level: 1,
+        };
+        if (nextStartkey && nextStartkeyDocid) {
+            options.startkey = [nextStartkey];
+            options.startkey_docid = nextStartkeyDocid;
+        }
+        // let result = await db.allDocs(options);
+
+
+        let result = await L_board_db.query('order_view/get_orders_' + category_id, options);
+
+        console.log('order_view/get_orders_'+category_id, result);
+        if (result && result.rows && result.rows.length > 0) {
+            nextStartkey = result.rows[result.rows.length - 1].key;
+            nextStartkeyDocid = result.rows[result.rows.length - 1].id;
+        }
+        // Si el número de resultados es menor que el límite, estamos en la última página.
+        if (!result || !result.rows || result.rows.length < options.limit) {
+            nextStartkey = null;
+            nextStartkeyDocid = null;
+        }
+        return {
+            rows: result.rows,
+            nextStartkey: nextStartkey,
+            nextStartkeyDocid: nextStartkeyDocid
+        };
+    }
+
+
+    up_ventasnube_kanban();
+    scrollerMove();
+</script>

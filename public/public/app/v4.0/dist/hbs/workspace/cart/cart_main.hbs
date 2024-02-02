@@ -1,0 +1,322 @@
+<!-- Cart Nav module -->
+<div class="righ_nav_header">
+    <div class="btn-group dopdown">
+        <button type="button" class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
+            data-toggle="dropdown" aria-expanded="true">
+            {{#each ws_left_nav_data.m_t}}
+            {{#ifEquals m_t_url ../board_type_name }}
+            <span class="material-icons">{{m_t_icon}}</span>
+            <span class="this_m_t_name">{{m_t_name}}</span>
+            {{/ifEquals}}
+            {{/each}}
+            <i class="material-icons">expand_more</i>
+        </button>
+        <ul class="dropdown-menu pull-left">
+            {{#each ws_left_nav_data.m_t}}
+            <li class="margin-5">
+                <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
+                    s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
+                    <span class="material-icons">{{m_t_icon}}</span>
+                    <span class="this_m_t_name">{{m_t_name}}</span>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
+        <span class="material-icons">close</span>
+    </button>
+</div>
+
+<div class="righ_nav_content">
+    <!-- Contact module -->
+    <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button onclick="add_new_contact(this)" class="success round s margin-0">
+                <span class="material-icons">person_add</span>
+            </button>
+        </div>
+        <div id="cart_user_input_dropdown"
+            class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
+            <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
+                placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
+            <ul id="contact_auto_subjet" class="">
+
+            </ul>
+        </div>
+        <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="btn-group dropright">
+                <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    <div class="round-icon pr">
+                        <span id="select_price_list_cart" price_list_id="" price_list_value=""> m </span>
+                    </div>
+
+                </button>
+                <ul class="dropdown-menu pull-right">
+
+                    <li class="header">Listas de precios</li>
+                    {{#each price_doc.price_list}}
+                    <li>
+                        <a href="#">
+                            <div class="round-icon user-top"><span> {{value}} </span></div> {{value}}
+                        </a>
+                    </li>
+                    {{/each}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Product module -->
+    {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
+
+            <li id="cart_item_tab_icon" class="ripple  active">
+                <a data-toggle="tab" href="#cart_item_tab">
+                    <span class="material-icons">shopping_cart</span>
+                    <span class="cart_n cart-number">0</span>
+
+                    {{#with ws_lang_data}}{{t_cart_name}} {{/with}}
+                    <span class="hidden-xs">
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../board_type_name }}
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+                    </span>
+                </a>
+            </li>
+            <li id="fav_item_tab_icon" class="ripple">
+                <a data-toggle="tab" href="#fav_item_tab">
+                    <span class="material-icons">favorite</span>
+                    <span class="fav_count">0</span>
+
+                    {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}}
+                    <span class="hidden-xs">
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../board_type_name }}
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="cart_item_tab" class="tab-pane fade in active">
+                <!--s-card-activ-cont--->
+                <div id="product_cart_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="fav_item_tab" class="tab-pane fade in">
+                <div id="product_fav_items" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="new_item_tab" class="tab-pane fade in">
+                <div id="product_new_product" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
+    </div>
+
+</div>
+<!-- Cart footer module -->
+<div id="cart_footer">
+    <div class="righ_nav_footer_main cart_drop_up">
+        <div class="s-card-activ-footer ">
+            <div id="cart_total_items">
+                <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="row">
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                            {{#with ws_lang_data}} {{t_total}}{{/with}}
+                                        </h3>
+                                        <span class="drop-up-total-cart">
+                                            <span class="material-icons">
+                                                keyboard_double_arrow_up
+                                            </span>
+                                        </span>
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                            {{#with ws_info}} {{money}}{{/with}}
+                                            <span id="total_cart_neto">
+                                                0
+                                            </span>
+                                        </h3>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
+                            aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_service}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_service">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row ">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_product}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_prod">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_dicount}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_discount">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_tax}}{{/with}}
+
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{#each tax}} {{tax_name}} (% {{tax_value}})
+                                        {{/each}}{{/with}}
+                                        <span id="total_neto_tax">0</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-green">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_pay}}{{/with}}:
+
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info_}} {{money}}{{/with}}:
+                                        <span id="total_neto_pay">0</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
+        <button id="cart_button_new_order" onclick="new_order(this)" category_id="{{board_type_name}}" type="button"
+            class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ws_lang_data}} {{b_add_order}}{{/with}}
+        </button>
+    </div>
+</div>
+
+
+<script>
+    // Este es tu método de búsqueda asíncrono
+
+    async function select_contact(element) {
+
+        try {
+            let _id = $(element).attr('contact_id');
+            contact_doc = await L_contact_db.get(_id, { include_docs: true, descending: true });
+            price_list_id = contact_doc.price_list
+            price_list_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+            // console.log('_id',_id)  
+            // console.log('contact_doc',contact_doc)     
+            // console.log('price_list_id',price_list_id)      
+            // console.log('price_list_doc',price_list_doc)        
+            const price_select = price_list_doc.price_list.find(element => element.id == price_list_id);
+            //  console.log('price_select',price_select) 
+            $('#cart_user_input').attr('contact_id', contact_doc._id);
+            $('#cart_user_input').val(contact_doc.first_name + " " + contact_doc.last_name);
+            $('#select_price_list_cart').attr('contact_id', contact_doc.price_list);
+            $('#select_price_list_cart').attr('contact_id', price_list_doc.price_list);
+            $('#cart_button_new_order').attr('contact_id', _id);
+            const price_select_letra = price_select.value[0];
+            $('#select_price_list_cart').text(price_select_letra);
+            $('#contact_auto_subjet').removeClass('open');
+
+        } catch (error) {
+            // Muestra el error en un Snackbar
+            Snackbar.show({
+                text: 'Error select_contact ' + error.message,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    }
+
+    async function searchContacts(query) {
+        try {
+            const contact_search_options = {
+                includeScore: true,
+                keys: ['first_name', 'last_name', 'document_number', 'phone']
+            };
+            let contact_search_fuse;
+            // Obtén todos los documentos que comienzan con 'contact_'
+            const allDocs = await L_contact_db.allDocs({
+                include_docs: true,
+                startkey: 'contact_',
+                endkey: 'contact_\ufff0'
+            });
+            // Crea una nueva instancia de Fuse con los documentos obtenido
+            contact_search_fuse = new Fuse(allDocs.rows.map(row => row.doc), contact_search_options);
+            // Haz la búsqueda con Fuse
+            const searchResults = contact_search_fuse.search(query);
+            const data = { user_data: searchResults.map(result => result.item) };
+
+            if (searchResults.length > 0) {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', '#contact_auto_subjet', data);
+            } else {
+                $('#contact_auto_subjet').html('<h4 class="padding-10 text-center" >Sin resultados... </h4>');
+            }
+
+
+            console.log('DATA', data);
+        } catch (err) {
+            console.log('searchContacts', err);
+            // Muestra el error en un Snackbar
+            Snackbar.show({
+                text: 'Hubo un error en la búsqueda: ' + err,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    }
+
+    // FUNCIONES 2023 aparece auto subjet
+    $('#cart_user_input').on('focusin', function () {
+        $('#contact_auto_subjet').addClass('open');
+    });
+    $('#contact_auto_subjet').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $(document).on('click focusout', function (event) {
+        if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
+            if (!$(event.target).is('#cart_button_new_order')) {
+                $('#contact_auto_subjet').removeClass('open');
+            }
+        }
+    });
+
+    $('#cart_user_input').on('keyup', function (event) {
+        const value = event.target.value;
+        searchContacts(value);
+    });
+
+
+</script>

@@ -30,7 +30,8 @@
                                                     <img style="width: 100px;" src="data:image/jpeg;base64<?=$ws->workspace_img?>" />
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <h3><?=$ws->workspace_name;?> (<?=$ws->workspace_id;?>) </h3>
+                                                    <h3><?= $ws->workspace_name;?> (<?= $ws->workspace_id;?>) </h3>
+                                                    <h3>(<?= $ws->workspace_id_hex;?>)</h3>
                                                     <li class="list-group-item"> <strong> Vencimiento:</strong> </br> <?=$ws->workspace_plan_expiration;?></li>
                                                 </div>
                                             </div>
@@ -48,8 +49,12 @@
                                                 Eliminar
                                                 </button>
 
-                                                <button type="button" class="change_plan_ws btn btn-warning" ws_plan="" user_id="<?=$ws->user_id;?>"   ws_id="<?=$ws->user_workspace_id;?>"  data-toggle="modal" data-target="#change_plan_ws">
-                                                    Cambiar Plan
+                                                <button type="button" class="update_ws btn btn-warning" ws_id_ex="<?= $ws->workspace_id_hex;?>" user_id="<?=$ws->user_id;?>"   ws_id="<?=$ws->user_workspace_id;?>"  data-toggle="modal" data-target="#update_ws">
+                                                    Actualizar
+                                                </button>
+
+                                                <button type="button" class="licencia_ws btn btn-secondary" ws_id_ex="<?= $ws->workspace_id_hex;?>" user_id="<?=$ws->user_id;?>"   ws_id="<?=$ws->user_workspace_id;?>"  data-toggle="modal" data-target="#licencia_ws">
+                                                   Licencia
                                                 </button>
 
                                                 <button class="btn btn-primary pull-right"> Bloquear
@@ -77,6 +82,32 @@
     </div>
 
 
+<div class="modal fade" id="licencia_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form id="licencia_ws_form" action="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Actualizar licencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+               <label for="start">Fecha de caducidad:</label>
+ 
+                    <input id="licence_input_out_ws" type="date" name="fecha" step="1" value="<?php echo date("Y-m-d");?>">
+                    <input id="licence_time_out_ws" type="time" name="hora" step="2"value="">
+       
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="licencia_ws_submit" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="delete_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -102,37 +133,52 @@
   </div>
 </div>
 
-<div class="modal fade" id="change_plan_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="update_ws" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar Workspace</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar este Workspace</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form id="formUpadate" action="post">
       <div class="modal-body">
-       Quieres editar el plan de este Workspace
+       Puedes actualizar los documentos de configuracion a la ultima plantilla.
             <div class="form-group">
-                <label for="exampleInputEmail1">Nombre de plan</label>
-                <input type="m_name" name="m_name" class="form-control" id="m_name" aria-describedby="m_name" placeholder="Enter email">
-                <small id="m_name" class="form-text text-muted"></small>
+                 <imput id="update_ws_id" name="ws_id" class="" value="" >
+                 <imput id="user_id" name="user_id" class="" value="" >
             </div>
 
+
+            <div class="row no-gutters">
+                                                <div class="col-md-6">
+                                                <h4>Doc Lenguaje :</h4>
+                                                <h4>Doc diseno get :</h4> 
+                                                <h4>Doc diseno get cart:</h4> 
+                                                <h4>Doc barra lateral:</h4>  
+                                                </div>
+                                                <div class="col-md-6">
+                                                <button id="update_ws_submit"   type="button" class="btn btn-primary"> ( ws_app_lang ) </button><br>
+                                                <button id="ws_products_update"   type="button" class="btn btn-primary"> ( Productos de prueba ) </button><br>
+            <button id=""   type="button" class="btn btn-primary">(	_design/get )</button><br>
+             <button id=""   type="button" class="btn btn-primary">( _design/get_cart_ws )</button><br>
+           <button id=""   type="button" class="btn btn-primary">( ws_left_nav_xxxx )</button><br>              
+         </div>
+                                            </div>
+
+
+
+         
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button   type="button" class="btn btn-primary">Eliminar</button>
-      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="update_ws_submit"   type="button" class="btn btn-primary">Actualizar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
-<script type="text/javascript">
-
-
-
-
-</script>
 
 <?=$this->endSection();?>

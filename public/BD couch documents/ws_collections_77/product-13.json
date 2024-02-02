@@ -1,0 +1,220 @@
+{
+  "_id": "producto-13",
+  "_rev": "6-c83cb6f2f2fc612742d18d7e9618e012",
+  "name": "Coca Cola",
+  "type": "product",
+  "tags": [
+    "Coca cola",
+    "botella"
+  ],
+  "currency": {
+    "id": "ARS",
+    "value": "$"
+  },
+  "available_quantity": 10,
+  "sold_quantity": 0,
+  "limit_discount": 0,
+  "permalink": "http://loalhost/shop/servenet/red-boll-free",
+  "catalog_product_id": null,
+  "category_id": 1,
+  "sub_category_id": 1,
+  "workspace_id": 77,
+  "condition": "not_specified",
+  "status": "active",
+  "author": "smartmobile.com.ar@gmail.com",
+  "descriptions": [
+    "Coca Cola"
+  ],
+  "variations": [
+    {
+      "id": 1,
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/coca_original.jpg",
+          "min": "/public/img/catalog/product/max/coca_original.jpg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "TYPE",
+          "id_name": "Tipo",
+          "name": "Sabor Original",
+          "value": 1
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 150
+        },
+        {
+          "id": 2,
+          "value": 250
+        },
+        {
+          "id": 3,
+          "value": 350
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 6,
+          "sold_quantity": 2,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 6,
+          "sold_quantity": 2,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    },
+    {
+      "id": 2,
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/coca_zero.jpg",
+          "min": "/public/img/catalog/product/max/coca_zero.jpg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "TYPE",
+          "id_name": "Tipo",
+          "name": "Zero Azucar",
+          "value": 1
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 150
+        },
+        {
+          "id": 2,
+          "value": 200
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 4,
+          "quantity_": 4,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    },
+    {
+      "id": 3,
+      "tax": {
+        "id": "IVA",
+        "value": "21"
+      },
+      "sku": {
+        "id": "EAN",
+        "value": "1231256345345"
+      },
+      "pictures": [
+        {
+          "max": "/public/img/catalog/product/max/coca_light.jpg",
+          "min": "/public/img/catalog/product/max/coca_light.jpg"
+        }
+      ],
+      "attribute_combinations": [
+        {
+          "id": "TYPE",
+          "id_name": "Tipo",
+          "name": "Light",
+          "value": 1
+        }
+      ],
+      "price_list": [
+        {
+          "id": 1,
+          "value": 400
+        },
+        {
+          "id": 2,
+          "value": 240
+        }
+      ],
+      "stock_invetary": [
+        {
+          "id": 123,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "sold_quantity": 0,
+          "cost_price": 100
+        },
+        {
+          "id": 231,
+          "in_datetime": "18/3/2021 18:45:10",
+          "update_datetime": "18/3/2021 18:45:10",
+          "quantity": 2,
+          "sold_quantity": 0,
+          "cost_price": 150
+        }
+      ],
+      "sold_quantity": 2
+    }
+  ],
+  "last_update_at": [
+    {
+      "username": "smartmobile.com.ar@gmail.com",
+      "datetime": "18/3/2021 18:45:10"
+    },
+    {
+      "username": "otrousuario@gmail.com",
+      "datetime": "18/3/2021 18:45:10"
+    }
+  ],
+  "start_time": "2017-03-10T21:18:09.588Z",
+  "stop_time": "2037-03-05T21:18:09.588Z",
+  "end_time": "2037-03-05T21:18:09.588Z",
+  "expiration_time": "2017-05-29T21:18:09.651Z",
+  "shipping": {
+    "mode": "not_specified",
+    "local_pick_up": false,
+    "free_shipping": false,
+    "methods": [],
+    "dimensions": null,
+    "tags": [
+      "me2_available"
+    ],
+    "logistic_type": "not_specified"
+  }
+}

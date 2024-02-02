@@ -17,6 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * Configuración del enrutador
  * --------------------------------------------------------------------
  */
+
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
@@ -38,26 +39,25 @@ $routes->setAutoRoute(true);
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     //$routes->get('App', 'App::index', ['filter' => 'role:plan-starter-free']);
-    
- 
     //$routes->get('/', 'workspace::index',['filter' => 'login']);
     $routes->get('/', 'Home::index');
-
+    $routes->get('/uploads', 'uploads::index');     
     //$routes->get('/myapp', 'Home::app');
-
-    //  $routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
+    //$routes->get('/', 'Home::plan-starter',['filter' => 'role:plan-starter-free']);
     //ACCOUNT.
     //$routes->get('/account', 'Account::index', ['filter' => 'role:plan-starter-free']);
+    //$routes->get('/workspace', 'workspace::app');
+    $routes->get('/workspace/app', 'workspace::app');
+    $routes->get('/workspace/logout', 'AuthController::logout');
     // SHOP
     $routes->get('/shop', 'Home::shop');
     // Forgot/register cliente
     $routes->get('/shop/register', 'shop::register');
     $routes->post('/shop/register', 'AuthController::attemptRegisterShop');
+
     // ADMIN MODULO
     //Filtro las rutas por grupo de usuarios
-    
     /*$routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes) {
-      
     $routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     //$routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
     $routes->get('/admin/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
@@ -69,27 +69,26 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     // $routes->get('/client', 'Admin::index', ['filter' => 'role:client']);
     // $routes->get('/assets/ventas_nube_body', 'Body::ventas_nube_body',['filter' => 'login']);
-
     $routes->get('login', 'home::login');
     // $routes->get('login', 'AuthVn::login');
     $routes->post('login', 'AuthController::attemptLogin');
     $routes->get('logout', 'AuthController::logout');
 
+
+
+
     // Vista Registration
     $routes->get('register', 'home::register');
     // Post Registration
     $routes->post('register', 'AuthController::attemptRegister');
-
     //New Activation
     $routes->get('activate-account', 'AuthController::activateAccount', ['as' => 'activate-account']);
     //Resend Activation
     $routes->get('resend-activate-account', 'AuthController::resendActivateAccount', ['as' => 'resend-activate-account']);
-  
     // Forgot vista
     $routes->get('forgot', 'home::forgot');
     //Resets
     $routes->post('forgot', 'AuthController::attemptForgot');
-
     //Reset Pasword  Vista 
     $routes->get('reset-password', 'home::resetPassword', ['as' => 'reset-password']);
     //Change new

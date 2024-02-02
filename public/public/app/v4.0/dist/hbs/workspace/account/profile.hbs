@@ -1,0 +1,95 @@
+<div id="right_main" class="right_main col-xs-12 col-sm-12">
+    <!-- Cart Nav module -->
+    <div class="righ_nav_header">
+        <!--s-card-activ-cont--->
+            <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button type="button"
+                    class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+                    <span class="material-icons">
+                        arrow_back
+                    </span>
+                </button>
+                <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_workspace}}{{/with}} </h3>
+            </div>
+    </div>
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+        <ul class="nav nav-tabs">
+            <li class="ripple  active">
+                <a data-toggle="tab" href="#ws_general_setting">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{ws_panel_settings_icon}}{{/with}}
+                    </span>
+                        {{#with ws_lang_data}} {{ws_panel_settings_general}} {{/with}}
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_users_setting">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}}{{ws_panel_settings_users_icon}}{{/with}}
+                    </span>
+                    {{#with ws_lang_data}}{{ ws_panel_settings_users}} {{/with}}
+                </a>
+            </li>
+            <li class="ripple">
+                <a data-toggle="tab" href="#ws_update">
+                    <span class="material-icons">
+                        {{#with ws_lang_data}} {{ws_panel_settings_update_icon}}{{/with}}
+                    </span>
+                    {{#with ws_lang_data}} {{ws_panel_settings_update}} {{/with}}
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="ws_general_setting" class="tab-pane fade in active">
+                <!--s-card-activ-cont--->
+                <div id="" class="padding-10 s-card-activ-cont">
+                    <!--IDIOMA--->
+                    </br>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <label>{{#with ws_lang_data}} {{{ws_panel_settings_lang_label}}}{{/with}} </label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                               <span class="material-icons">
+                                {{#with ws_lang_data}} {{ws_panel_settings_lang_icon}} {{/with}} 
+                                </span>
+                            </span>
+                            <select class="form-control md" name="ws_lang_setting"  >
+                                <option value="ws_lang_es" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}} {{{ws_panel_settings_lang_es}}}{{/with}} </option>
+                                <option value="ws_lang_us" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}}  {{ws_panel_settings_lang_us}}{{/with}}</option>
+                                <option value="ws_lang_por" doc_id="{{#with ws_lang_data}} {{{_id}}}{{/with}}" input_id="ws_land_default" onclick="ws_setting_general_edit(event,this)">  {{#with ws_lang_data}} {{ws_panel_settings_lang_por}}{{/with}} </option>
+                            </select>
+                        </div>
+                    </div>
+                    </br>
+                    </div>
+                </div>
+            </div>
+            <div id="ws_users_setting" class="tab-pane fade in">
+                <div id="" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <div id="ws_update" class="tab-pane fade in">
+                <div id="" class="s-card-activ-cont gray">
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
+    </div>
+
+    <!-- Cart footer module -->
+    <div id="cart_footer">
+
+        <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <button type="button" class="btn btn-primary">
+                {{#with ws_lang_data}} {{m_account_save_b}}{{/with}} </button>
+            <button or-id="2" type="button" class="cobrar-btn btn btn-primary">
+                {{#with ws_lang_data}} {{m_account_edit_b}}{{/with}}
+            </button>
+        </div>
+    </div>
+
+</div>

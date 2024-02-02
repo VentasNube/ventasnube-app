@@ -88,6 +88,8 @@
         </div>
     </div>
 
+    
+
     <!-- Bootstrap core JavaScript  vendor/twbs/bootstrap/dist  -->
     <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -106,10 +108,9 @@
     <!--script src="<?=base_url();?>/public/vendor/jquery-easing/jquery.easing.min.js"></script-->
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>/public/app/v4.0/vnadmin/assets/app/js/sb-admin-2.min.js"></script>
-
-
     <script>
-        //MODULO DE PAGOS TATATABLE AJAX
+
+    // MODULO DE PAGOS TATATABLE AJAX
     var table = $('#payment_ws').DataTable( {
         "ajax": "/admin/get_payments",
         "columnDefs": [ {
@@ -118,15 +119,14 @@
             "defaultContent": "<button class='btn btn-info'>Ver</button>"
         } ]
     } );
- 
+    
+    // 
     $('#payment_ws tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
         alert( data[0] +"'s salary is: "+ data[ 5 ] );
     } );
 
-
-
-    //TABLA DE USERS
+    // TABLA DE USERS
     var table = $('#users_table').DataTable( {
         "ajax": "/admin/get_users",
         "columnDefs": [ {
@@ -136,7 +136,7 @@
         } ]
     } );
 
-    //BOTON DE OPCIONES
+    // BOTON DE OPCIONES
     $('#users_table tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
         alert( data[0] +"'s salary is: "+ data[ 5 ] );
@@ -144,79 +144,195 @@
     } );
 
 
+    //FUNCIONES PARA DAR LISENCIA A UN USUARIO WS SPACE
+
+    $(".licencia_ws" ).click(function() {
+
+       // alert('HOLAAA LE DOY MAS LICENCIA')
+        var ws_id_ex = $(this).attr('ws_id_ex');
+        var user_id = $(this).attr('user_id');
+        var user_email = $(this).attr('user_email');
+        //
+        $('#licencia_ws_submit').attr('ws_id_ex', ws_id_ex );
+        $('#licencia_ws_submit').attr('user_id', user_id );
+        $('#licencia_ws_submit').attr('user_email', user_email );
+        //
+        $('#licencia_ws_form').attr('ws_id_ex', ws_id_ex );
+        $('#licencia_ws_form').attr('user_id', user_id );
+        $('#licencia_ws_form').attr('user_email', user_email );
+
+        $('#licencia_ws').attr('ws_id_ex', ws_id_ex );
+       
+        
+    });
+
+    // EDITAR LENGUAJE 
+    $("#licencia_ws_submit" ).click(function() {
+           // var ws_id_ex = $(this).attr('ws_id_ex');
+           // var user_id = $(this).attr('user_id');
+
+            var licence_input_out_ws = $('#licence_input_out_ws').val();
+            var licence_time_out_ws =  $('#licence_time_out_ws').val();
+
+            var licence_time = licence_input_out_ws +' '+ licence_time_out_ws;
+
+            var ws_id_ex = $('#licencia_ws').attr('ws_id_ex');
+            //var user_id = $('#formUpadate').attr('user_id');
+        console.log(ws_id_ex);
+            var url = "<?=site_url('/admin/ws_licence_update');?>";
+            $.ajax({
+            data: {
+                ws_id_ex:ws_id_ex,
+                licence_input_out_ws:licence_time
+               //   user_id:user_id
+                },
+            url: url, //url de donde obtener los datos
+            dataType: 'json', //tipo de datos retornados
+            type: 'post' //enviar variables como post
+            }).done(function (response){
+              //  console.log(data);
+                  alert('Se actualizo con exito nuevo vencimiento' + data['licence_input_out_ws']);
+                //conformar respuesta final
+                //  $('#resultado').html('El resultado es: <b>' + data['res'] + '</b>');
+            });
+    });
 
 
+    // FUNCIONES PARA ACTUALIZAR LOS ESPACIOS DE TRABAJO
 
-    
+    $(".update_ws" ).click(function() {
+        var ws_id_ex = $(this).attr('ws_id_ex');
+        var user_id = $(this).attr('user_id');
+        var user_email = $(this).attr('user_email');
+        $('#update_ws_submit').attr('ws_id_ex', ws_id_ex );
+        $('#update_ws_submit').attr('user_id', user_id );
+        $('#update_ws_submit').attr('user_email', user_email );
 
 
+        $('#formUpadate').attr('ws_id_ex', ws_id_ex );
+        $('#formUpadate').attr('user_id', user_id );
+        $('#formUpadate').attr('user_email', user_email );
+        
+    });
 
-$('#edit_plan').selectize({
-    plugins: ['remove_button'],
-    delimiter: ',',
-    persist: false,
-    load: function(query, callback) {
-        if (!query.length) return callback();
-        $.ajax({
-            url: '/modules/' + encodeURIComponent(query),
-            type: 'GET',
-            error: function() {
-                callback();
-            },
-            success: function(res) {
-                callback(res.repositories.slice(0, 10));
+    // EDITAR LENGUAJE 
+    $("#update_ws_submit" ).click(function() {
+           // var ws_id_ex = $(this).attr('ws_id_ex');
+           // var user_id = $(this).attr('user_id');
+
+
+            var ws_id_ex = $('#formUpadate').attr('ws_id_ex');
+            var user_id = $('#formUpadate').attr('user_id');
+
+            var url = "<?=site_url('/admin/ws_lang_update');?>";
+            $.ajax({
+            data: {
+                ws_id_ex:ws_id_ex,
+                user_id:user_id
+                },
+            url: url, //url de donde obtener los datos
+            dataType: 'json', //tipo de datos retornados
+            type: 'post' //enviar variables como post
+            }).done(function (data){
+            console.log(data);
+            alert('Se actualizo con exito' + data['res'] + 'Datos:' +data);
+                //conformar respuesta final
+                //  $('#resultado').html('El resultado es: <b>' + data['res'] + '</b>');
+            });
+    });
+
+       // EDITAR PRODUCTO DE PRUEBA 1
+    $("#ws_products_update" ).click(function() {
+            var ws_id_ex = $('#formUpadate').attr('ws_id_ex');
+            var user_id = $('#formUpadate').attr('user_id');
+
+            var url = "<?=site_url('/admin/ws_products_update');?>";
+            $.ajax({
+                data: {
+                        ws_id_ex:ws_id_ex,
+                        user_id:user_id
+                    },
+                url: url, //url de donde obtener los datos
+                dataType: 'json', //tipo de datos retornados
+                type: 'post' //enviar variables como post
+            }).done(function (data){
+                
+                //  console.log(data);
+                //  alert('Se actualizo con exito' + data['res'] + 'Datos:' + data);
+                //  conformar respuesta final
+                //  $('#resultado').html('El resultado es: <b>' + data['res'] + '</b>');
+
+            });
+    });
+
+    // EDITAR PLAN
+    $('#edit_plan').selectize({
+        plugins: ['remove_button'],
+        delimiter: ',',
+        persist: false,
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '/modules/' + encodeURIComponent(query),
+                type: 'GET',
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res.repositories.slice(0, 10));
+                }
+            });
+        },
+        create: function(input) {
+            return {
+                value: input,
+                text: input
             }
-        });
-    },
-    create: function(input) {
-        return {
-            value: input,
-            text: input
         }
-    }
-});
+    });
 
-$('#edit_planno').selectize({
-    valueField: 'url',
-    labelField: 'name',
-    searchField: 'name',
-    create: false,
-    render: {
-        option: function(item, escape) {
-            return '<div>' +
-                '<span class="title">' +
-                    '<span class="name"><i class="icon ' + (item.fork ? 'fork' : 'source') + '"></i>' + escape(item.name) + '</span>' +
-                    '<span class="by">' + escape(item.username) + '</span>' +
-                '</span>' +
-                '<span class="description">' + escape(item.description) + '</span>' +
-                '<ul class="meta">' +
-                    (item.language ? '<li class="language">' + escape(item.language) + '</li>' : '') +
-                    '<li class="watchers"><span>' + escape(item.watchers) + '</span> watchers</li>' +
-                    '<li class="forks"><span>' + escape(item.forks) + '</span> forks</li>' +
-                '</ul>' +
-            '</div>';
-        }
-    },
-    score: function(search) {
-        var score = this.getScoreFunction(search);
-        return function(item) {
-            return score(item) * (1 + Math.min(item.watchers / 100, 1));
-        };
-    },
-    load: function(query, callback) {
-        if (!query.length) return callback();
-        $.ajax({
-            url: '/modules/' + encodeURIComponent(query),
-            type: 'GET',
-            error: function() {
-                callback();
-            },
-            success: function(res) {
-                callback(res.repositories.slice(0, 10));
+    // EDITAR PLAN
+    $('#edit_planno').selectize({
+        valueField: 'url',
+        labelField: 'name',
+        searchField: 'name',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div>' +
+                    '<span class="title">' +
+                        '<span class="name"><i class="icon ' + (item.fork ? 'fork' : 'source') + '"></i>' + escape(item.name) + '</span>' +
+                        '<span class="by">' + escape(item.username) + '</span>' +
+                    '</span>' +
+                    '<span class="description">' + escape(item.description) + '</span>' +
+                    '<ul class="meta">' +
+                        (item.language ? '<li class="language">' + escape(item.language) + '</li>' : '') +
+                        '<li class="watchers"><span>' + escape(item.watchers) + '</span> watchers</li>' +
+                        '<li class="forks"><span>' + escape(item.forks) + '</span> forks</li>' +
+                    '</ul>' +
+                '</div>';
             }
-        });
-    }
-});
+        },
+        score: function(search) {
+            var score = this.getScoreFunction(search);
+            return function(item) {
+                return score(item) * (1 + Math.min(item.watchers / 100, 1));
+            };
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '/modules/' + encodeURIComponent(query),
+                type: 'GET',
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res.repositories.slice(0, 10));
+                }
+            });
+        }
+    });
 
 
     $(".edit_module_ws").click(function() {
@@ -236,7 +352,7 @@ $('#edit_planno').selectize({
         $('#m_position').val(m_position);
 
         // $('#dell_ws_submit').('ws_id', ws_id);
-      /*  const controler = 'edit_modules';
+        /*  const controler = 'edit_modules';
         //var ws_id = '';
         var data = {
             m_id: m_id,
@@ -246,15 +362,15 @@ $('#edit_planno').selectize({
             m_url:m_url,
             m_position:m_position            
         }
-*/
+        */
         //alert(m_id +'--' + m_name  +'--' + m_icon  +'--' + m_color  +'--' + m_url);
         //  send_post(controler, data);
+
     });
+
+
 </script>
 
 </body>
-
-
-
 
 </html>

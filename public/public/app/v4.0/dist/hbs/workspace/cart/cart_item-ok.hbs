@@ -1,0 +1,67 @@
+{{#ifMe items_product '0'}}
+<div class="cart_items_trash">
+    <span class="material-icons xl">
+        shopping_cart
+    </span> <br>
+    <span class="cart_items_title">
+      
+    </span>
+   
+</div>
+
+{{else}}
+{{#each items_product}}
+<div id="{{_id}}" cost_price="{{cost_price}}" class="ripple s-card-actv-item padd ">
+    <div class="s-card-actv-item-body">
+        <div class="s-card-mini-img ">
+            {{#first pictures}}
+            <img src="{{min}}" alt="">
+            {{/first}}
+        </div>
+        <div class="s-card-actv-item-prod">
+            <div class="s-card-actv-item-name">
+                {{name}}
+                {{#each attribute_combinations}}
+                <!-- Hago la comprobacion de si es un color -->
+
+                    {{#ifEquals id 'SIZE' }}
+                    <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
+                        data-original-title="{{{id_name}}}">
+                        <span class="var_name"> {{value}} </span>
+                    </div>
+                    {{/ifEquals}}
+
+                    {{#ifDiff id 'COLOR' }}
+                    <span class="var_name" id="bg-select-text"> {{name}}</span>
+                    {{/ifDiff}}
+
+
+                {{/each}}
+                <div class="s-card-actv-item-dell">
+                    <button type="button"  onclick="dell_cart_item(this)" item_cart_rev="{{_rev}}"  item_cart_id="{{_id}}"  class="btn btn-round pull-right">
+                        <span class="material-icons">cancel </span>
+                    </button>
+                </div>
+            </div>
+            <span class="s-card-actv-item-price-left ">
+                <span class="hidden-xs" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Valor del impuesto">{{tax_name}}: {{tax}}%</span>
+                <span class="text-red" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Descuento Unitario">DES: {{discount}}% TOT:{{currency}}{{discount_tot}}</span>
+            </span>
+            <span class="s-card-actv-item-price-right">
+                <small>
+                    <div class="round-icon pr xs" data-toggle="tooltip" data-placement="top"
+                        data-original-title="Precio Mayorista"><span> M </span></div>
+                    ${{price}}
+                </small>
+                x
+                <small class="card_product_quantity" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Cantidad de productos">{{quantity}}</small>
+                <span class="tot"> ${{sub_tot_dis}}</span>
+            </span>
+        </div>
+    </div>
+</div>
+{{/each}}
+{{/ifMe}}

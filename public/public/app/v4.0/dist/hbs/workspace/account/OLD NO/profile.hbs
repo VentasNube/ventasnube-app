@@ -1,0 +1,107 @@
+<div class="row">
+  {{#each user}}
+
+  <div class="col-md-6 col-sm-6 col-md-6 col-lg-6 text-left">
+    <!-- Widget: user widget style 1 -->
+    <div class="box box-widget widget-user-2">
+      <!-- Add the bg color to the header using any of the bg-* classes -->
+      <div class="widget-user-header bg-blue">
+        <div class="widget-user-image">
+          <div class="user-icon lg">
+            <span data-toggle="tooltip" data-placement="bottom" data-original-title="{{email}}">
+              {{trimString username}}
+            </span>
+          </div>
+        </div>
+        <!-- /.widget-user-image -->
+        <h2 class="text-center">{{{username}}}</h2>
+        <h4 class="text-center">Nivel</h4>
+      </div>
+      <div class="box-footer no-padding">
+        <ul class="nav nav-stacked">
+          <li><a href="#">Nombre <span class="pull-right ">{{email}}</span></a></li>
+          <li><a href="#">Telefono <span class="pull-right">{{email}}</span></a></li>
+          <li><a href="#">Movil <span class="pull-right">{{email}}</span></a></li>
+          <li><a href="#">Email <span class="pull-right ">{{email}}</span></a></li>
+          <li><a href="#">Nivel <span class="pull-right"></span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="box">
+
+        <div class="box-body">
+          <a data-toggle="collapse" href="#formPass" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            <h3>Quieres modificar tu contrase&ntilde;a?</h3>
+          </a>
+
+          <form class="collapse" id="formPass" method="post" action="<?php echo base_url();?>admin/newPass">
+
+            <div class="text-left">
+              <div class="form-group">
+                <label for="inputPassword" class="bmd-label-floating">Password actual</label>
+                <input type="password" id="oldPass" name="oldPass" class="form-control" required="">
+              </div>
+              <div class="form-group">
+                <label for="inputPassword" class="bmd-label-floating">Nuevo Password</label>
+                <input type="password" id="newPass" name="newPass" class="form-control" required="">
+              </div>
+              <div class="form-group">
+                <label for="inputPassword" class="bmd-label-floating">Confirmar Nuevo Password</label>
+                <input type="password" name="comparePass" class="form-control" required="">
+              </div>
+            </div>
+            <br>
+
+            <br>
+            <button class="mb-2 mt-4 btn btn-lg btn-primary" type="submit">Modificar</button>
+
+            <a href="<?php echo site_url(); ?>admin/reset">
+              <p class="mt-4 mb-3 text-muted">¿Has olvidado tu contraseña?</p>
+            </a>
+          </form>
+        </div>
+        <div class="box-footer">
+        </div>
+      </div>
+    </div>
+    <!-- /.widget-user -->
+  </div>
+
+
+
+
+
+  {{/each}}
+</div>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $('#formPass').validate({
+      rules: {
+        oldPass: { required: true },
+        newPass: { required: true },
+        comparePass: { equalTo: "#newPass" }
+      },
+      messages: {
+        oldPass: { required: 'Campo Requerido' },
+        novaSenha: { required: 'Campo Requerido.' },
+        confirmarSenha: { equalTo: 'Las contraseñas no coninciden.' }
+      },
+
+      errorClass: "help-inline",
+      errorElement: "span",
+      highlight: function (element, errorClass, validClass) {
+        $(element).parents('.control-group').addClass('error');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parents('.control-group').removeClass('error');
+        $(element).parents('.control-group').addClass('success');
+      }
+    });
+  });
+</script>

@@ -1,5 +1,5 @@
 .snackbar-container {
-  transition: all 500ms ease;
+  transition: all 900ms ease;
   transition-property: top, right, bottom, left, opacity;
   font-family: Roboto, sans-serif;
   font-size: 14px;
@@ -15,7 +15,8 @@
   bottom: -100px;
   top: -100px;
   opacity: 0;
-  z-index: 9999; }
+  z-index: 9900!important }
+  
   .snackbar-container .action {
     background: inherit;
     display: inline-block;

@@ -1,0 +1,28 @@
+{
+  "_id": "attributes",
+  "_rev": "2-efe513349bfe524b2cff870a952e5df9",
+  "type": "attributes_list",
+  "status": "active",
+  "attributes_list": [
+    {
+      "id": "COLOR",
+      "value": "Consumidor Final"
+    },
+    {
+      "id": "TYPE",
+      "value": "Gremio"
+    },
+    {
+      "id": "SIZE",
+      "value": "Mayorista"
+    },
+    {
+      "id": "4",
+      "value": "Mercado Libre"
+    },
+    {
+      "id": "5",
+      "value": "Web"
+    }
+  ]
+}

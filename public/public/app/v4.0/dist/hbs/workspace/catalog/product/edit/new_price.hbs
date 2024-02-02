@@ -1,0 +1,590 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+{{#with ws_lang_data }}
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <form id="new_contact_form" class="">
+            <div class="modal-header">
+                <div class="modal-nav">
+                    <span class="back-arrow btn-previus" class="btn-previus" data-dismiss="modal" aria-label="Close">
+                        <span class="material-icons">arrow_back</span>
+                    </span>
+                    <span class="modal-title">
+                        {{m_catalog_edit_price_update}}
+                    </span>
+                </div>
+            </div>
+            <div id="modal-body" class="">
+                <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
+
+                    <!--- AGREGR STOCK -->
+                    <div class="bg-gray-light padding-20 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="edit_stock_block{{../doc_id}}"  class="pull-left padding-0 margin-t-10 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                            <h4 class="tittle_input margin-b-10">
+                                <div class="Switch" onclick="">
+                                    <input id="stock_active_{{../doc_id}}_status_checkbox" name="switch_variation"
+                                        value="" type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
+                                        input_id="status" onclick="stock_active_chekbox(this)">
+                                    <label for="stock_active_{{../doc_id}}_status_checkbox"
+                                        class="label-primary"></label>
+                                </div>
+                                <strong>{{{m_catalog_edit_stock_active }}}</strong>
+                            </h4>
+
+                            <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <h4 class="tittle_input"><strong>{{{m_catalog_edit_stock}}}</strong></h4>
+                                <div class="input-group font-size-25">
+                                    <span class="input-group-addon">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            title="" data-original-title="Agregar precio">
+                                            inventory_2
+                                        </span>
+                                    </span>
+                                    <div class="input-group">
+                                        <input id="add_stock_unit" class="form-control font-size-25" type="number"
+                                            placeholder="{{{m_catalog_edit_stock}}}"
+                                            value="{{#available_stock ../stock_invetary}}{{/available_stock}}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="padding-0 margin-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <h4 class="tittle_input"><strong>{{{m_catalog_add_stock_cost}}}</strong></h4>
+                                <div class="input-group ">
+                                    <span class="input-group-addon font-size-25">
+                                        {{#with currency }}
+                                        {{value}}
+                                        {{/with}}
+                                    </span>
+                                    <input onkeyup="" id="new_cost_stock" class="col-sm-4 form-control font-size-25"
+                                        type="number" placeholder="{{{m_catalog_add_stock_cost}}}"
+                                        value="{{#available_stock_cost ../stock_invetary}}{{/available_stock_cost}}">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                        {{#each ../price_list_items }}
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div id="main-price-variation">
+                                <div class="price-variation bg-gray-light padding-20 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <button onclick="catalog_new_price_del(this)"
+                                        style="position: absolute;top: 10px; right: 0;z-index: 1;" id_price_delete=""
+                                        type="button" class="hidden del-new-price btn btn-default pull-right ">
+                                        <span class="material-icons">close</span>
+                                    </button>
+
+                                    <div class="padding-10 col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>{{../m_catalog_edit_price_list}}</strong></h4>
+                                        <div class="input-group font-size-25">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons" data-toggle="tooltip"
+                                                    data-placement="bottom" title=""
+                                                    data-original-title="Agregar precio">
+                                                    price_change
+                                                </span>
+                                            </span>
+                                            <select class="new_price_list_var_select form-control md "
+                                                name="new_price_list_var_select" id="new_price_list_var_select">
+                                                {{#each ../../price_list }}
+                                                <option value="{{id}}">{{value}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="padding-10 col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>{{../m_catalog_add_stock_sale}}</strong></h4>
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-size-25">
+                                                {{#with currency }}
+                                                {{value}}
+                                                {{/with}}
+                                            </span>
+                                            <input id="new_price" class="new_price form-control font-size-25"
+                                                type="number"
+                                                placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_sale}}} {{/with}}"
+                                                value="">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="padding-10 col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input margin-b-10">
+                                            <div class="Switch" onclick="">
+                                                <input id="{{id}}_status_checkbox" name="switch_variation" value=""
+                                                    type="checkbox" doc_id="{{id}}" variant_id="" input_id="status"
+                                                    onclick="cat_edit_chekbox(this)">
+                                                <label for="{{id}}_status_checkbox" class="label-primary"></label>
+                                            </div>
+                                            <strong>{{../m_catalog_add_stock_profit_sel}}</strong>
+                                        </h4>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-size-25 padding-0">
+                                                %
+                                            </span>
+                                            <input disabled="" onkeyup="new_porcent_price(this)"
+                                                name="new_porcent_value"
+                                                class="new_porcent_value form-control font-size-25" type="number"
+                                                placeholder="%" value="">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="padding-10 col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>Impuesto</strong></h4>
+
+                                        <div class="input-group font-size-25">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons" data-toggle="tooltip"
+                                                    data-placement="bottom" title=""
+                                                    data-original-title="Agregar precio">
+                                                    price_change
+                                                </span>
+                                            </span>
+                                            <select class="new_tax_list_var_select form-control  md "
+                                                name="new_tax_list" id="new_tax_list_var_select">
+                                                {{#each ../../tax_list }}
+                                                <option value="{{id}}">{{name}} ( {{value}} )</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a price_id="{{id}}" price_value="  {{value}}"
+                                                    onclick="edit_price_var(this)" id="edit_price_var_{{../id}}"
+                                                    doc_id="{{{../doc_id}}}" variant_id="{{../variant_id}}"
+                                                    input_id="price_list" href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../../ws_lang_data}}
+                                                        {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="dell_price_var(this)" id="dell_price_var_{{../variant_id}}"
+                                                    doc_id="{{{../doc_id}}}" variant_id="{{../variant_id}}"
+                                                    price_id=" {{../doc_id}}" price_value="  {{value}}"
+                                                    input_id="price_list" href="#">
+                                                    <span class="material-icons">
+                                                        delete
+                                                    </span>
+                                                    <span> {{#with ../../ws_lang_data}}
+                                                        {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                     </div>
+                        {{/each}}
+
+                        <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <h4 class="tittle_input margin-t-10">
+                                <div class="Switch" onclick="">
+                                    <input id="{{../doc_id}}_status_checkbox" name="switch_variation" value=""
+                                        type="checkbox" doc_id="{{../doc_id}}" variant_id="{{../variant_id}}"
+                                        input_id="status" onclick="cat_edit_chekbox(this)">
+                                    <label for="{{../doc_id}}_status_checkbox" class="label-primary"></label>
+                                </div>
+                                <strong>{{{m_catalog_edit_stock_lotes }}}</strong>
+                            </h4>
+
+                            <!--- AGREGR STOCK -->
+                            <div id="add_stock_form{{../doc_id}}"
+                                class="bg-gray-light padding-0 margin-t-10 col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                                role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true">
+
+
+                                <div class="padding-0 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                title="" data-original-title="Cantidad">
+                                                inventory_2
+                                            </span>
+                                        </span>
+                                        <input id="add_stock_var_{{../variant_id}}" class="form-control" type="number"
+                                            placeholder="{{{m_catalog_add_stock}}}" value="">
+
+                                    </div>
+                                </div>
+                                <!--- AGREGR STOCK -->
+                                <div class="padding-0 margin-0  col-xs-8 col-sm-8 col-md-6 col-lg-8">
+
+                                    <div class="input-group">
+
+                                        <input id="new_cost_stock_var_{{../variant_id}}" class="col-sm-4 form-control"
+                                            type="number" placeholder="{{{m_catalog_add_stock_cost}}}" value="">
+
+                                        <span class="input-group-addon">
+                                            <button type="button" onclick="add_stock_var(this)"
+                                                id="add_stock_var_{{../variant_id}}" doc_id="{{../doc_id}}"
+                                                variant_id="{{../variant_id}}" input_id="stock_invetary"
+                                                class="btn xl btn-more btn-primary line" role="button"
+                                                data-toggle="collapse" data-parent="#item-edit-variants"
+                                                href="#add_stock_form{{../doc_id}}" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                <span class="material-icons">add_circle_outline</span>
+                                                <span class=""> {{{m_catalog_edit_add}}}</span>
+                                            </button>
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--- Eliminar STOCK -->
+                            <div id="dell_stock_form{{../doc_id}}"
+                                class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                                role="tabpanel">
+                                <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                title="" data-original-title="{{{m_catalog_add_stock}}}">
+                                                inventory_2
+                                            </span>
+                                        </span>
+                                        <div class="input-group">
+                                            <input id="dell_stock_var_{{../variant_id}}" class="form-control"
+                                                type="number" placeholder="{{{m_catalog_add_stock}}}" value="">
+                                            <span class="input-group-addon">
+
+                                                <button type="button" onclick="dell_stock_var(this)"
+                                                    id="dell_stock_var_{{../variant_id}}" doc_id="{{../doc_id}}"
+                                                    variant_id="{{../variant_id}}" input_id="stock_invetary"
+                                                    class="btn xl btn-more btn-danger line" role="button"
+                                                    data-toggle="collapse" data-parent="#item-edit-variants"
+                                                    href="#dell_stock_for_{{../doc_id}}" m aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    <span class="material-icons">do_not_disturb_on</span>
+                                                    <span class="">
+                                                        Retirar
+                                                    </span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--- LISTADO DE LOTES STOCK -->
+                        <div id="edit_stock_item_tab_{{../doc_id}}"
+                            class="pull-left padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <ul class="list-group margin-0">
+                                {{#each ../stock_invetary}}
+                                <li class="list-group-item ripple ">
+                                    {{#ifEquals type "in" }}
+                                    <span class="material-icons text-green">
+                                        check_circle
+                                    </span>
+                                    {{/ifEquals}}
+                                    {{#ifEquals type "out" }}
+                                    <span class="material-icons text-red">
+                                        highlight_off
+                                    </span>
+                                    {{/ifEquals}}
+
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                        data-original-title="Creado:{{in_datetime}}">
+                                        history
+                                    </span>
+                                    <span class="material-icons text-green" data-toggle="tooltip"
+                                        data-placement="bottom" title=""
+                                        data-original-title="{{{m_catalog_edit_inicial_stock}}}">
+                                        moving
+                                    </span>
+                                    {{in_stock}}
+                                    <span class="material-icons text-red" data-toggle="tooltip" data-placement="bottom"
+                                        title="" data-original-title="{{{m_catalog_edit_sale}}}">
+                                        trending_down
+                                    </span>
+                                    {{out_stock}}
+
+                                    <div class="pull-right">
+
+                                        {{#ifEquals type "in" }}
+                                        <span class="margin-r-10">{{#with ../../ws_lang_data}}
+                                            {{{m_catalog_edit_cost}}} {{/with}}:
+                                            {{currency_value}}{{cost_price}}</span>
+                                        <span class="pull-right"> {{#with ../../ws_lang_data}}
+                                            {{{m_catalog_edit_enable}}} {{/with}}
+                                            <span class="badge"> {{real_stock}}</span>
+                                        </span>
+                                        {{/ifEquals}}
+
+                                    </div>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+
+                    {{#each ../price_list_items }}
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div id="main-price-variation">
+                                <div
+                                    class="price-variation bg-gray-light padding-20 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <button onclick="catalog_new_price_del(this)"
+                                        style="position: absolute;top: 10px; right: 0;z-index: 1;" id_price_delete=""
+                                        type="button" class="hidden del-new-price btn btn-default pull-right ">
+                                        <span class="material-icons">close</span>
+                                    </button>
+
+                                    <div class="padding-10 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>{{../m_catalog_edit_price_list}}</strong></h4>
+                                        <div class="input-group font-size-25">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                    title="" data-original-title="Agregar precio">
+                                                    price_change
+                                                </span>
+                                            </span>
+                                            <select class="new_price_list_var_select form-control md "
+                                                name="new_price_list_var_select" id="new_price_list_var_select">
+                                                {{#each ../../price_list }}
+                                                <option value="{{id}}">{{value}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="padding-10 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>Impuesto</strong></h4>
+
+                                        <div class="input-group font-size-25">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                    title="" data-original-title="Agregar precio">
+                                                    price_change
+                                                </span>
+                                            </span>
+                                            <select class="new_tax_list_var_select form-control  md " name="new_tax_list"
+                                                id="new_tax_list_var_select">
+                                                {{#each ../../tax_list }}
+                                                <option value="{{id}}">{{name}} ( {{value}} )</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="padding-10 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input margin-b-10">
+                                            <div class="Switch" onclick="">
+                                                <input id="{{id}}_status_checkbox" name="switch_variation" value=""
+                                                    type="checkbox" doc_id="{{id}}" variant_id="" input_id="status"
+                                                    onclick="cat_edit_chekbox(this)">
+                                                <label for="{{id}}_status_checkbox" class="label-primary"></label>
+                                            </div>
+                                            <strong>{{../m_catalog_add_stock_profit_sel}}</strong>
+                                        </h4>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-size-25 padding-0">
+                                                %
+                                            </span>
+                                            <input disabled="" onkeyup="new_porcent_price(this)" name="new_porcent_value"
+                                                class="new_porcent_value form-control font-size-25" type="number"
+                                                placeholder="%" value="">
+
+                                        </div>
+                                    </div>
+                                    <div class="padding-10 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                        <h4 class="tittle_input"><strong>{{../m_catalog_add_stock_sale}}</strong></h4>
+                                        <div class="input-group">
+                                            <span class="input-group-addon font-size-25">
+                                                {{#with currency }}
+                                                {{value}}
+                                                {{/with}}
+                                            </span>
+                                            <input id="new_price" class="new_price form-control font-size-25" type="number"
+                                                placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_sale}}} {{/with}}"
+                                                value="">
+                                        </div>
+                                    </div>
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a price_id="{{id}}" price_value="  {{value}}"
+                                                    onclick="edit_price_var(this)" id="edit_price_var_{{../id}}"
+                                                    doc_id="{{{../doc_id}}}" variant_id="{{../variant_id}}"
+                                                    input_id="price_list" href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../../ws_lang_data}}
+                                                        {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="dell_price_var(this)" id="dell_price_var_{{../variant_id}}"
+                                                    doc_id="{{{../doc_id}}}" variant_id="{{../variant_id}}"
+                                                    price_id=" {{../doc_id}}" price_value="  {{value}}"
+                                                    input_id="price_list" href="#">
+                                                    <span class="material-icons">
+                                                        delete
+                                                    </span>
+                                                    <span> {{#with ../../ws_lang_data}}
+                                                        {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+    </div>
+
+
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        <button type="button" onclick="save_new_conctact(this)" doc_id="{{{doc_id}}}"
+            variant_id="{{{../../variant_id}}}" class="btn-previus btn btn-default pull-left" data-dismiss="modal"
+            aria-label="Close">
+            <span class="">{{m_catalog_edit_price_new}}</span>
+        </button>
+        <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+            <span class="">{{b_cancel}}</span>
+        </button>
+        <button id="btn-save" onclick="save_new_price_list(this)" produc_id="" variant_id="" category_id="new_contact"
+            type="button" class="btn btn-primary ">
+            <span class="">{{b_save}}</span>
+        </button>
+    </div>
+    </form>
+</div>
+{{/with}}
+<link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
+<script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
+<!-- CSS -->
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+<script>
+
+    $('.new_porcent_checkbox').click(function () {
+        var nextInput = $(this).next('input'); // Obtiene el siguiente input hermano directo.
+        if ($(this).prop('checked')) {
+            nextInput.iCheck('enable');
+        } else {
+            nextInput.iCheck('uncheck');
+            nextInput.iCheck('disable');
+        }
+    });
+
+    $(document).on('keyup', '.new_porcent_value-no', function () {
+        var parentDiv = $(this).closest('.price-variation');
+        var new_cost_stock = parentDiv.find('.new_cost_stock').val();
+        var new_porcent_checkbox = parentDiv.find('.new_porcent_checkbox').is(':checked');
+        var new_porcent_value = parseFloat($(this).val());
+        var new_price_input = parentDiv.find('.new_price');
+
+        const cost = parseFloat(new_cost_stock);
+        const porcent = parseFloat(new_porcent_value);
+
+        // Calcular el precio de venta basado en el porcentaje y el costo
+        const new_price_value = cost + (cost * (porcent / 100));
+        new_price_input.val(new_price_value.toFixed(2));
+
+        if (new_porcent_checkbox) {
+            new_price_input.prop('readonly', true);
+        } else {
+            new_price_input.prop('readonly', false);
+        }
+    });
+
+    function new_porcent_price(element) {
+        var parentDiv = $(element).closest('.price-variation');
+        var new_cost_stock = $('#new_cost_stock').val();
+        var new_porcent_checkbox = parentDiv.find('.new_porcent_checkbox').is(':checked');
+
+        //  console.log('new_cost_stock 1', new_cost_stock)
+        var new_porcent_value = $(element).val();
+        //  console.log('new_porcent_value 2', new_porcent_value)
+        var new_price_input = parentDiv.find('.new_price');
+
+        const cost = parseFloat(new_cost_stock);
+        const porcent = parseFloat(new_porcent_value);
+
+        // console.log(new_cost_stock)
+        //  console.log(new_porcent_checkbox)
+        // console.log('new_porcent_value', new_porcent_value)
+        // console.log(new_price_input)
+
+        // Calcular el precio de venta basado en el porcentaje y el costo
+        const new_price_value = cost + (cost * (porcent / 100));
+        new_price_input.val(new_price_value.toFixed(2));
+
+        if (new_porcent_checkbox) {
+            new_price_input.prop('readonly', true);
+        } else {
+            new_price_input.prop('readonly', false);
+        }
+    }
+
+    $(document).on('click', '.new_porcent_checkbox', function () {
+        var parentDiv = $(this).closest('.price-variation');
+        var new_porcent_checkbox = $(this).is(':checked');
+        var new_porcent_value = parentDiv.find('.new_porcent_value');
+        var new_price_input = parentDiv.find('.new_price');
+        if (new_porcent_checkbox) {
+            new_price_input.prop('readonly', true); // Deshabilita la edición del input del precio de venta
+            new_porcent_value.prop('disabled', false); // Habilita la edición del input del porcentaje
+            parentDiv.find('.new_porcent_value').trigger('keyup'); // Dispara el evento keyup para actualizar el precio
+        } else {
+            // Si el interruptor está desactivado, permite la edición del input del precio y deshabilita el input del porcentaje.
+            new_price_input.prop('readonly', false); // Habilita la edición del input del precio de venta
+            new_porcent_value.prop('disabled', true); // Deshabilita la edición del input del porcentaje
+        }
+    });
+
+    $('#catalog_new_item_new_price').click(function () {
+        var randomTwoDigits = Math.floor(Math.random() * 90) + 100;
+        var clonedDiv = $('.price-variation').first().clone();
+        // Cambia los IDs y los 'for' de los elementos input y label dentro del div clonado.
+        var switchDiv = clonedDiv.find('.Switch');
+        var input = switchDiv.find('input');
+        var label = switchDiv.find('label');
+        var originalInputId = input.attr('id');
+        clonedDiv.attr('id', 'new_price_' + randomTwoDigits);
+        input.attr('id', originalInputId + randomTwoDigits);
+        label.attr('for', originalInputId + randomTwoDigits);
+        clonedDiv.find('.del-new-price').attr('del-new-price', 'new_price_' + randomTwoDigits);
+        clonedDiv.find('.del-new-price').removeClass('hidden');
+        clonedDiv.appendTo('#main-price-variation');
+    });
+
+    function catalog_new_price_del(element) {
+        let id_delete = $(element).attr('del-new-price');
+        $('#' + id_delete).remove();
+    }
+
+    $(document).ready(function () {
+        // Habilitar/deshabilitar los inputs control_cash al cargar la página
+        if ($('.new_porcent_checkbox').prop('checked')) {
+            $('input.control_cash').iCheck('enable');
+        } else {
+            $('input.control_cash').iCheck('disable');
+        }
+    });
+
+</script>

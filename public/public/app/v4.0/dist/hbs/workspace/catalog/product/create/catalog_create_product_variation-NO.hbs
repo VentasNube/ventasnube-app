@@ -1,0 +1,590 @@
+
+   <br>
+   <br>
+
+        <div class="s-card-activ-footer">
+                {{#with ws_lang_data}} <h3> {{{m_catalog_edit_variant}}} </h3>{{/with}}
+            <div class="panel-group " role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default margin-b-10">
+                    <div class="panel-heading  {{#ifEquals status.status false }} bg-gray {{/ifEquals}}" role="tab" id="__status_input">
+                        <h4 class="panel-title">
+                            <div class="btn-group dropright">
+                                                <button id="" type="button"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="material-icons">more_vert</span>
+                                                </button>
+                                                <ul class="dropdown-menu pull-left">
+                                                    <li>
+                                                                    <a onclick="cat_delete_variant(this)" doc_id="" variant_id=""  href="#">
+                                                                        <span class="material-icons">
+                                                                            delete
+                                                                        </span> <span>Eliminar</span>
+
+                                                                    </a>
+                                                                </li>
+                                                </ul>
+                            </div>
+                            <div class="Switch" onclick="">
+                                <input id="__status_checkbox" name="switch_variation"
+                                  
+                                    value=""   type="checkbox" doc_id="" variant_id="" 
+                                    input_id="status" onclick="cat_edit_chekbox(this)"/>
+                                <label for="__status_checkbox" class="label-primary"></label>
+                            </div>
+                            <a role="button" data-toggle="collapse" data-parent="#item-edit-variants"
+                                href="#edit_variations_" aria-expanded="false" aria-controls="collapseOne"
+                                class="collapsed">
+                                <div class="text-left btn-group">
+                                    <div class="s-card-mini-img ">
+                                        <img src="" alt="">
+                                    </div>
+                                    <span>
+                                        {{#each attribute_combinations as | ac |}}
+                                        <!-- Hago la comprobacion de si es un color -->
+                                        {{#ifEquals id 'SIZE' }}
+                                        <div class="margin-t-10 round-icon pr" data-toggle="tooltip" data-placement="bottom"
+                                            title="{{{id_name}}}" data-original-title="{{{id_name}}}">
+                                            <span> {{value}} </span>
+                                        </div>
+                                        {{/ifEquals}}
+                                        {{#ifDiff id 'COLOR' }}
+                                        {{name}}
+                                        {{/ifDiff}}
+                                        {{/each}}
+
+                                    </span>
+                                </div>
+                                <div class="pull-right padding-10">
+                                    {{#with ws_lang_data}} Stock: {{/with}}
+                                   0
+                    
+                                    <div class="round-icon pr"><span> {{../product_doc/currency.value}} </span></div>
+                                  
+                                    <span iid="total_neto_prod"> 0</span>
+                              
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <!--- BODY VARIANTE --->
+                    <div id="edit_variations_" class="panel-collapse collapse in" role="tabpanel"
+                        aria-labelledby="item-edit-variants" aria-expanded="false" style="height: 0px;">
+                        <div class="panel-body">
+                            <div class="row">
+                               
+                                <!-- PRECIOS INVENTARIO -->
+                                <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+                                        <ul class="nav nav-tabs">
+                                            <!--tab-stock--->
+                                            <li id="" class="ripple active">
+                                                <a data-toggle="tab" href="#edit_stock_item_tab_">
+                                                    <span class="material-icons">
+                                                        production_quantity_limits
+                                                    </span>
+                                                    <span class=""> 0</span>
+                                                    {{#with ../ws_lang_data}} {{{m_catalog_edit_stock}}} {{/with}}
+                                                </a>
+                                            </li>
+                                            <!--tab-Price--->
+                                            <li id="" class="ripple">
+                                                <a data-toggle="tab" href="#edit_price_item_tab_">
+                                                    <span class="material-icons">
+                                                        price_change
+                                                    </span>
+                                                    {{#with ../ws_lang_data}} {{{m_catalog_edit_price}}} {{/with}}
+                                                </a>
+                                            </li>
+                                                <!--tab-Description--->
+                                            <li id="" class="ripple">
+                                                <a data-toggle="tab" href="#edit_description_item_tab_">
+                                                    <span class="material-icons">
+                                                        description
+                                                    </span>
+                                                    {{#with ../ws_lang_data}} {{{m_catalog_edit_description}}} {{/with}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <!--tab-content--->
+                                         <div class="tab-content ">
+                                        <!--tab--->
+                                        <div id="edit_stock_item_tab_" class="tab-pane fade in active">
+                                            <ul class="list-group margin-0">
+                                                    <li class="list-group-item ripple ">
+                                                    
+                                                            <span class="material-icons text-green">
+                                                                check_circle
+                                                            </span>
+                                                    
+                                                    
+                                                            <span class="material-icons text-red">
+                                                                highlight_off
+                                                            </span>
+
+                                                        <span class="material-icons" data-toggle="tooltip"
+                                                            data-placement="bottom" title=""
+                                                            data-original-title="Creado:{{in_datetime}}">
+                                                            history
+                                                        </span>
+                                                        <span class="material-icons text-green" data-toggle="tooltip"
+                                                            data-placement="bottom" title="" data-original-title="Stock inicial"> 
+                                                            moving
+                                                        </span>
+                                                            <span class="material-icons text-red" data-toggle="tooltip"
+                                                                data-placement="bottom" title="" data-original-title="Vendidos">
+                                                                trending_down
+                                                            </span>
+
+                                                        <div class="pull-right">
+                                                            <span class="margin-r-10">Costo: $</span>
+                                                            <span class="pull-right">Disponible
+                                                                <span class="badge">   </span>
+                                                                </span>
+
+                                                        </div>
+                                                    </li>
+                                            </ul>
+
+                                            <div  class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">                                                          
+                                                            <button type="button" class="btn xl btn-more btn-primary line"  role="button" data-toggle="collapse" data-parent="#item-edit-variants" href="#add_stock_form" aria-expanded="true" aria-controls="collapseOne" >
+                                
+                                                                <span class="material-icons">add_circle_outline</span>
+                                                                <span class=""> Ingresar</span>
+
+                                                            </button>          
+                                                </div>
+
+                                                <div class="padding-0 text-center margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <button type="button" class="btn xl btn-more btn-danger line"  role="button" data-toggle="collapse" data-parent="#item-edit-variants" href="#dell_stock_form" aria-expanded="true" aria-controls="collapseOne" >
+                                                                <span class="material-icons">do_not_disturb_on</span>
+                                                                    <span class="">
+                                                                    Retirar
+                                                                    </span>
+                                                            </button>          
+                                                </div>
+                                            
+                                                <div id="dell_stock_form" role="tabpanel" class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Cantidad">
+                                                                    inventory_2
+                                                                    </span>
+                                                                </span>
+
+                                                                <div class="input-group">
+                                                                    <input id="dell_stock_var_" class="form-control" type="number"  placeholder="Cantidad" value="">
+                                                                    <span class="input-group-addon">
+                                                                        <button                                                                
+                                                                            type="button"
+                                                                            onclick="dell_stock_var(this)"
+                                                                            id="dell_stock_var_"
+                                                                            doc_id=""
+                                                                            variant_id="" 
+                                                                            input_id="stock_invetary"      
+                                                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-danger line pull-right "
+                                                                            data-toggle="dropdown" 
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded="false">
+                                                                            <span class="material-icons">do_not_disturb_on</span>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    
+                                                </div>
+
+                                                <div id="add_stock_form"  role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true"  class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                        <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <span class="material-icons" data-toggle="tooltip"
+                                                                        data-placement="bottom" title=""
+                                                                        data-original-title="Agregar precio">
+                                                                    price_change
+                                                                    </span>
+                                                                </span>
+                                                                <input id="new_cost_stock_var_" class="col-sm-4 form-control" type="number" placeholder="Precio de costo" value="">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                           
+                                                            <div class="input-group">
+                                                                <input id="add_stock_var_" class="form-control" type="number"  placeholder="Cantidad" value="">
+                                                                <span class="input-group-addon">
+                                                                    <button                                                                
+                                                                        type="button"
+                                                                        onclick="add_stock_var(this)"
+                                                                        id="add_stock_var_"
+                                                                        doc_id=""
+                                                                        variant_id="" 
+                                                                        input_id="stock_invetary"      
+                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                                                                        data-toggle="dropdown" 
+                                                                        aria-haspopup="true"
+                                                                        aria-expanded="false">
+                                                                        <span class="material-icons">add_circle</span>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+
+                                                </div>
+                                                
+                                            </div>
+                                          
+                                        </div>
+                                        <div id="edit_price_item_tab_" class="tab-pane fade in">
+                                            <!-- Precios del producto --->
+                                            <ul class="list-group margin-0">
+                                                  <!-- Hago un each de las listas de precios --->
+                                                {{#each price_list as | pl |}}
+                                                <li class="list-group-item ripple">
+                                                     <!-- Hago un each de los precios --->
+                                                    {{#each ../../price_list as | l1 |}}
+                                                         <!-- Relaciono los dos valores por la ID --->
+                                                        {{#ifEquals l1.id pl.id }}
+                                                            <div class="round-icon pr uper">
+                                                                {{value}}
+                                                            </div>
+                                                            {{value}}
+                                                            <!--  --->
+                                                        {{/ifEquals}}
+                                                     {{/each}}
+                                                    <span class="material-icons" data-toggle="tooltip"
+                                                        data-placement="bottom" title=""
+                                                        data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                                        history
+                                                    </span>
+                                               
+                                                    <div class="pull-right">
+                                                        {{#first ../../price_list}}
+                                                        <div class="round-icon pr"><span> {{currency.value}} </span></div>
+                                                        {{/first}}
+                                                        <span id="total_neto_prod"> {{value}}</span>
+
+                                                        <div class="btn-group dropright">
+                                                            <button id="" type="button"
+                                                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                                <span class="material-icons">more_vert</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li>
+                                                                    <a
+                                                                     price_id=" "
+                                                                     price_value="  {{value}}"
+                                                                     onclick="edit_price_var(this)"
+                                                                     id="edit_price_var_{{../id}}"
+                                                                     doc_id=""
+                                                                     variant_id="{{../id}}" 
+                                                                     input_id="price_list"
+                                                                        href="#">
+                                                                        <span class="material-icons">
+                                                                            edit
+                                                                        </span><span> {{#with ../../ws_lang_data}} {{{m_catalog_edit_edit}}} {{/with}}</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a 
+
+                                                                     onclick="dell_price_var(this)"
+                                                                     id="dell_price_var_"
+                                                                     doc_id="{{{../../product_doc/_id}}}"
+                                                                     variant_id="{{../id}}" 
+                                                                     price_id=" "
+                                                                     price_value="  {{value}}"
+                                                                     input_id="price_list"
+
+                                                
+                                                                        href="#">
+                                                                        <span class="material-icons">
+                                                                            delete
+                                                                        </span>
+                                                                         <span> {{#with ../../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {{/each}}
+                                            </ul>
+                                            <!--- Listas de precios --->
+                                            <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                <div class="padding-0 text-center margin-0  col-xs-12 col-sm-12 col-md-12 col-lg-12">                                                          
+                                                            <button type="button" class="btn xl btn-more btn-primary line"  role="button" data-toggle="collapse" data-parent="#item-edit-variants" href="#edit_price_form" aria-expanded="true" aria-controls="collapseOne" >
+                                
+                                                                <span class="material-icons">add_circle_outline</span>
+                                                                <span class=""> Editar </span>
+                                                            </button>          
+                                                </div>
+
+                                                <div id="edit_price_form"  role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true"  class="panel-collapse collapse bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                                        <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <span class="material-icons" data-toggle="tooltip"
+                                                                        data-placement="bottom" title=""
+                                                                        data-original-title="Agregar precio">
+                                                                    price_change
+                                                                    </span>
+                                                                </span>
+                                                                 <select class="form-control md " name="price_list_var_" id="price_list_var_">
+                                                                    {{#each ../price_list }}
+                                                                        <option value="">{{value}}</option>
+                                                                    {{/each}}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                            <div class="input-group">
+                                                                <input id="new_price_var_" class="form-control" type="number"  placeholder="Precio" value="">
+                                                                <span class="input-group-addon">
+                                                                    <button                                                                
+                                                                        type="button"
+                                                                        onclick="new_price_var(this)"
+                                                                        id="add_price_var_"
+                                                                        doc_id=""
+                                                                        variant_id="" 
+                                                                        input_id="price_list"      
+                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                                                                        data-toggle="dropdown" 
+                                                                        aria-haspopup="true"
+                                                                        aria-expanded="false">
+                                                                        <span class="material-icons">add_circle</span>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="edit_description_item_tab_" class="tab-pane fade">
+                                         <!-- FOTOS -->
+                                        <div class="header">
+                                        <button id="" type="button"
+                                            class="round margin-10 left_nav_close btn btn-default right_nav_close pull-right ">
+                                            <span class="material-icons">
+                                                delete_forever
+                                            </span>
+                                        </button>
+
+
+                                        <form method="post" action="<?= base_url('fotos/subir') ?>" enctype="multipart/form-data">
+                                           
+                                                <input type="file" name="foto">
+                                                 <button type="submit" title="{{#with ../ws_lang_data}} {{{m_catalog_edit_add_pic}}} {{/with}}"
+                                                data-original-title="{{#with ../ws_lang_data}} {{{m_catalog_edit_add_pic}}} {{/with}}"
+                                                class="margin-10 round btn btn-transparent btn-default pull-left ">
+                                                <span class="material-icons">
+                                                    add_a_photo
+                                                </span>
+                                            </button>
+                                               
+                                        </form>
+                                  
+                                        <div style="width: 100%; background-image: url('');" class="parallax img_card">
+                                            <!--img class="card_img_url" src="{{{max}}}" alt="200x200"-->
+                                            <div class=" mini-carrousel-img ">
+                                         
+                                                <div class="mini-card-img-s">
+                                                    <div class="img">
+                                                        <a target="_blank" href="">
+                                                            <img src="" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                    <!-- DETALLE  COLOR ETC TALLE -->
+                                        <div class="padding-0 margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <!--- DETALLE -->
+                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <span class="material-icons">
+                                                        description
+                                                    </span>
+                                                </span>
+                                                <input  doc_id="" variant_id=""  input_id="description"  onfocusout="cat_edit_product(this)"  class="form-control" type="textarea" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_description}}} {{/with}}"
+                                                    value="{{description.value}}">
+                                                <!--- ATRIBUTOS DE LA VARIABLE -->
+                                            </div>
+                                        </div>
+                                    <!---COLOR-->
+                                        <div class="padding-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <input id="{{{../../product_doc/_id}}}_{{../id}}_color_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
+                                                            </span>
+                                                            <label for="" >
+                                                                <input status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_color" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="color" onfocusout="cat_edit_product(this)"  class="form-control md padding-10" type="color" placeholder="{{#with ../ws_lang_data}} {{{m_catalog_edit_color}}} {{/with}}" >
+                                                            </label>
+                                                        </div>
+                                        </div>
+                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-addon">
+                                                                                            <input id="{{{../../product_doc/_id}}}_{{../id}}_size_status" type="checkbox" {{#ifEquals status false }} checked {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size" input_status="{{{status}}}" value="{{{value}}}" onclick="cat_edit_product(this)" aria-label="...">
+                                                                                        </span>
+                                                                                        <label for="" >
+                                                                                            <select onchange="cat_edit_product(this)" class="form-control md" name="size" status="{{{status}}}" id="{{{../../product_doc/_id}}}_{{../id}}_size" value="{{{value}}}" {{#ifEquals status true }} disabled="" {{/ifEquals}} doc_id="{{{../../product_doc/_id}}}" variant_id="{{../id}}"  input_id="size"  >
+                                                                                                        <option selected value="{{{value}}}">{{{value}}}</option>
+                                                                                                    {{#each ../../attributes_list/size }}
+                                                                                                        <option value="{{value}}">{{value}}</option>
+                                                                                                    {{/each}}
+                                                                                            </select>
+                                                                                        </label>
+                                                                                        <span class="input-group-addon">
+                                                                                                <div class="btn-group dropright">
+                                                                                                    <button id="" type="button"
+                                                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                        <span class="material-icons">add_circle</span>
+                                                                                                    </button>
+                                                                                                    <ul class="dropdown-menu pull-right">
+                                                                                                        <li class="header">{{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                                                                        <li>
+                                                                                                            <input id="" class="form-control" type="text"
+                                                                                                                placeholder="Escribe la categoria..." value="">
+                                                                                                        </li>
+                                                                                                        <li class="margin-t-10 text-center">
+                                                                                                            {{#with product_doc}}
+                                                                                                            <button onclick="catalog_save_edit_item(this)"
+                                                                                                                product_id="{{{../../product_doc/_id}}}" variant_id=""
+                                                                                                                type="button" class="cobrar-btn btn btn-primary">
+                                                                                                                {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                                                                            </button>
+                                                                                                            {{/with}}
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                        </span>
+                                                                                    </div>
+                                        </div>
+                                                             
+                                        {{#each attribute_combinations as | ac |}}
+                                                <!--- weight --->
+                                                {{#ifEquals id 'WEIGHT' }}
+                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <input type="checkbox" aria-label="...">
+                                                            </span>
+
+                                                            <select class="form-control md" name="cars" id="cars">
+                                                                <option value="">{{#with ../ws_lang_data}} {{{m_catalog_edit_peso}}} {{/with}}</option>
+                                                            </select>
+                                                            <span class="input-group-addon">
+                                                                <div class="btn-group dropright">
+                                                                    <button id="" type="button"
+                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span class="material-icons">add_circle</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu pull-right">
+                                                                        <li class="header" {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                                        <li>
+                                                                            <input id="" class="form-control" type="text"
+                                                                                placeholder="Escribe la categoria..." value="">
+                                                                        </li>
+                                                                        <li class="margin-t-10 text-center">
+                                                                            {{#with product_doc}}
+                                                                            <button onclick="catalog_save_edit_item(this)"
+                                                                                product_id="{{{../../product_doc/_id}}}" variant_id=""
+                                                                                type="button" class="cobrar-btn btn btn-primary">
+                                                                            {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                                            </button>
+                                                                            {{/with}}
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </span>
+                                                        </div><!-- /input-group -->
+                                                    </div>
+                                                {{/ifEquals}}  
+                                                <!--- PACK --->
+                                                {{#ifEquals id 'PACK' }}
+                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <input type="checkbox" aria-label="...">
+                                                            </span>
+                                                            <select class="form-control md" name="cars" id="cars">
+                                                                <option value="">Pack x1</option>
+                                                                <option value="">Pack x2</option>
+                                                                    <option value="">Pack x6</option>
+                                                                    <option value="">Pack x12</option>
+                                                            </select>
+                                                            <span class="input-group-addon">
+                                                                <div class="btn-group dropright">
+                                                                    <button id="" type="button"
+                                                                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span class="material-icons">add_circle</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu pull-right">
+                                                                        <li class="header"> {{#with ../ws_lang_data}} {{{m_catalog_edit_new}}} {{/with}}</li>
+                                                                        <li>
+                                                                            <input id="" class="form-control" type="text"
+                                                                                placeholder="Escribe la categoria..." value="">
+                                                                        </li>
+                                                                        <li class="margin-t-10 text-center">
+                                                                            {{#with product_doc}}
+                                                                            <button onclick="catalog_save_edit_item(this)"
+                                                                                product_id="{{{../../product_doc/_id}}}" variant_id=""
+                                                                                type="button" class="cobrar-btn btn btn-primary">
+                                                                                {{#with ../ws_lang_data}} {{{m_catalog_edit_add}}} {{/with}}
+                                                                            </button>
+                                                                            {{/with}}
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </span>
+                                                        </div><!-- /input-group -->
+                                                    </div>
+                                                {{/ifEquals}}
+
+                                        {{/each}}
+                                    <!--- SKU --->
+                                    <div class="input-group padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span class="input-group-addon">
+                                            <span class="material-icons">
+                                                qr_code
+                                            </span>
+                                        </span>
+                                        <input doc_id="{{#with product_doc}}{{{../../product_doc/_id}}}{{/with}}" variant_id=""  input_id="sku"  onfocusout="cat_edit_product(this)"  class="form-control" type="text" placeholder="Codigo universal SKU"
+                                            value="{{sku.value}}">
+                                    </div>
+                                    </div>
+                                    </div>
+                                        <!--tab-content--->
+                                    </div>
+                                    <!--tabs-main--->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

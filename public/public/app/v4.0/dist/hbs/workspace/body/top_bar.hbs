@@ -1,0 +1,151 @@
+{{#with ws_top_bar}}
+<nav class="navbar navbar-static-top {{{workspace_color}}} " role="navigation">
+
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <i class="material-icons">
+            menu
+        </i>
+    </a>
+    <div class="navbar-custom-menu pull-left">
+        <ul class="nav navbar-nav">
+            <li class="notifications-menu">
+                <span class="logo-img round">
+                    <img src="{{{workspace_img}}}">
+                </span>
+                <span class="text-brand hidden-xs">{{workspace_name}}</span>
+            </li>
+            <li class="notifications-menu" data-toggle="tooltip" data-placement="bottom"
+                title="{{#with ../ws_lang_data }} {{t_search}}{{/with}}">
+                <a onclick="search_open()" id="" href="#" class="search_open ">
+                    <i class="material-icons">{{#with ../ws_lang_data }} {{search_icon}}{{/with}}</i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+            <!--li class="notifications-menu pull-left">
+                <a id="searchBtn" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                   <i class="material-icons">search</i>
+                </a>
+            </li-->
+            <!--li class="dropdown notifications-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="material-icons">notifications_active</i>
+                    <span class="countAlert label label-danger"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">
+                        Tienes <span class="countAlert">0</span> Notificaciones Nuevas
+                    </li>
+                    <li>
+                        <div id="menuBody" class="slimScrollDiv ">
+                            <ul id="alert_div" class='menu'>
+                                <li class="text-center">
+                                    <a href="#">
+                                        <div class="iconI text-center">
+                                            <i class="ion ion-android-notifications"></i>
+                                            <br>
+                                            Has leído todas las notificaciones.
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="footer"><a href="#" id="delAlertas"><i class="ion ion-android-delete"></i> Eliminar</a>
+                    </li>
+                </ul>
+            </li-->
+            <!--li class="notifications-menu">
+                <a id="store_cart_button" href="#" class="cart_button">
+                    <i class="material-icons">store</i>
+                    <span id="store_cart-number" class="cart-number">0</span>
+                </a>
+            </li-->
+            <!--li class="notifications-menu">
+                <a  onclick=""   id="cloud_sync_icon">
+                      <i class="material-icons"> sync</i>
+                </a>
+            </li-->
+            <!--li class="notifications-menu">
+                <a id="cart_button" href="#" class=" cart_button">
+                    <i class="material-icons">shopping_cart</i>
+                    <span id="cart-number-2" class="cart_n cart-number">0</span>
+                </a>
+            </li-->
+            <li class="notifications-menu">
+                <a onclick="get_cart_now(this)" board_name="sell"  id="cart_button" href="#" class="cart_button right_nav_open">
+                    <i class="material-icons">shopping_cart</i>
+                    <span id="cart-number-2" class="cart_n cart-number">0</span>
+                </a>
+            </li>
+            <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                {{#with ../user}}
+                <a href="#" id="account_menu_open" class="account_menu_open" >
+                     <div class="round-icon user-top">
+                            {{user_name}}
+                         </div>
+                </a>
+
+                <ul class="dropdown-menu" style="right: 0px;">
+
+                    <!-- The user image in the menu -->
+                    <li class="user-header {{#with ../../ws_top_bar}}  {{{workspace_color}}} {{/with}}">
+                     
+                       <div class="round-icon user-top">
+                            {{user_name}}
+                         </div>
+                        <p>{{user_name}}</p>
+                        <p>{{user_email}}</p>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-body text-center ">
+                        <div class="user-body-workspace">
+                            <div class="text-center user-body-workspace-title">
+                                <a href="/workspace/home" class="btn btn-default">
+                                    <span class="material-icons">
+                                         {{#with ../../ws_lang_data}} {{ws_home_icon}}{{/with}}
+                                    </span>
+                                         {{#with ../../ws_lang_data}} {{m_my_workspace}}{{/with}}
+                                </a>
+                                <br>
+                                <br>
+                                 <button  class="config_workspace_btn btn btn-default">
+                                    <span class="material-icons">
+                                         {{#with ../../ws_lang_data}} {{ws_config_icon}}{{/with}}
+                                    </span>
+                                        {{#with ../../ws_lang_data}} {{m_config_workspace}}{{/with}}
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="/account" class="btn btn-default">
+                               <span class="material-icons">
+                                {{#with ../../ws_lang_data}} {{m_account_tittle_icon}}{{/with}}
+                                </span>
+                           
+                                {{#with ../../ws_lang_data}} {{b_myaccount}}{{/with}}
+                            </a>
+                        </div>
+                        <div class="pull-right">
+                            <button onclick="logout()" class="btn btn-default">
+                                <span class="material-icons">
+                                      {{#with ../../ws_lang_data}} {{b_exit_icon}}{{/with}}
+                                </span>
+                                {{#with ../../ws_lang_data}} {{b_exit}}{{/with}}
+                            </button >
+                        </div>
+                    </li>
+
+                </ul>
+                {{/with}}
+            </li>
+        </ul>
+    </div>
+</nav>
+{{/with}}
