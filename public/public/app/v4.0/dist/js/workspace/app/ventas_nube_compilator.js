@@ -11,6 +11,7 @@ function registerHandlebarsHelpers() {
   
 
     Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
+        
         var rol_admin = modulo + "_admin_" + ws_id;
         var rol_edit = modulo + "_edit_" + ws_id;
         var rol_create = modulo + "_create_" + ws_id;

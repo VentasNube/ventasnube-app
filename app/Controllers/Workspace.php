@@ -152,7 +152,8 @@ class Workspace extends BaseController
         }
     }
 
-    //TESTER DE RECUEST
+    //TESTER DE POST RECUEST
+    
     public function ws_collection_get()
     {
         if (!logged_in()) {
@@ -162,11 +163,21 @@ class Workspace extends BaseController
                 '_id' => '_design/get',
                 'views' => [
                     'seach' => [
-                        'map' => "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n      var price_list = doc.variations[0].price_list;\n var stock_list =  doc.variations[0].stock_list;\n  var pictures_min = doc.variations[0].pictures[0].min;\n      var pictures_max = doc.variations[0].pictures[0].max;\n                  var sku = doc.variations[0].sku.value_name;\n                  var variant_id = doc.variations[0].id;\n                  var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.currency.value,\n                    'available_quantity': doc.available_quantity,\n                    'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    'limit_discount': doc.limit_discount,\n                    'price':doc.variations[0].price_list[0].value,\n                    'price_list':price_list,\n  'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                        'map' => "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                    ],
+                    'search' => [
+                        'map' => "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                    ],
+
+                    'search_product' => [
+                        'map' =>   "function(doc) {\n if( doc.status === 'active' && doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n    'attribute_combinations':attribute_combinations,\n });\n}\n}",
+                    ],
+                    'search_service' => [
+                        'map' => "function(doc) {\n if(doc.status === 'active' && doc.type === 'service'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n                      'attribute_combinations':attribute_combinations,\n });\n}\n}",
                     ],
                 ]
             ];
-            $response = $this->WorkspaceModel->curl_put("/ws_collections_323034/_design/get", $ws_collection_get); //Docuento diseno get
+            $response = $this->WorkspaceModel->curl_put("/ws_collections_333731/_design/get", $ws_collection_get); //Docuento diseno get
             return json_encode($response);
         }
     }
@@ -235,8 +246,11 @@ class Workspace extends BaseController
         //echo view('login/login', $data);
         return view('home/login/reset-pasword', $data);
     }
-   
-   
+
+
+
+    /// FUNCIONES TES
+
     //FUNCIONES 2022 Edicion roles de usuarios a WS y eliminacion
     // Creo un nuevo WS Completo
     public function ws_new()
@@ -497,7 +511,7 @@ class Workspace extends BaseController
                 ];
 
                 //Busco la rev del docuemnto para poder actualizarlo   
-             //   $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_". $workspace_id_hex); 
+                //  $doc_rev = $this->WorkspaceModel->curl_get_rev($db_user . "/ws_lang_". $workspace_id_hex); 
                 $ws_lang = [
                     '_id' => 'ws_lang_' . $workspace_id_hex,
                    // '_rev'=> $doc_rev,
@@ -583,22 +597,7 @@ class Workspace extends BaseController
                         "_id" => "_design/validate_save_doc",
                         "validate_doc_update" => "function(newDoc, oldDoc, userCtx)  var role = '_save';  if (userCtx.roles.indexOf('_admin') === -1 && userCtx.roles.indexOf(role) === -1) { { {throw({forbidden : 'Solo usuarios con el rol!'+rol+'o un administrador pueden editar'});}}",
                     ];
-
-                    $ws_collection_get = [
-                        '_id' => '_design/get',
-                        'views' => [
-                            'search'=> [
-                                "map"=>  "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n"
-                            ],
-                            'search_product'=> [
-                                "map"=>  "function(doc) {\n if( doc.status === 'active' && doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n                      'attribute_combinations':attribute_combinations,\n });\n}\n}"
-                            ],
-                            'search_service'=> [
-                                "map"=>"function(doc) {\n if(doc.status === 'active' && doc.type === 'service'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n                      'attribute_combinations':attribute_combinations,\n });\n}\n}"
-                            ]
-                        ]
-                    ];
-
+               
                     // DOC CON CONFIGURACIONES DEL CATALOGO 
                     // DOC CONFIGURACION DEL WORKSPACE FOTO DATOS DE CONTACTO DE CONFIGURACION DE FACTURA 
                     $ws_module_config = [
@@ -933,6 +932,7 @@ class Workspace extends BaseController
                             ],
                         ],
                     ];
+
                     //ATRIBUTOS
                     $attributes = [
                         '_id' => 'attributes',
@@ -971,6 +971,7 @@ class Workspace extends BaseController
                                     ]
                                 ]
                     ];
+
                     //PRODUCTOS DE EJEMPLO
                     $product_01 = [
                         '_id' => 'product-1',
@@ -1584,7 +1585,6 @@ class Workspace extends BaseController
                     ];
 
                      //ORDEN DE EJEMPLO
-                  
                     $order_01 = [
                         '_id' => 'sales_order_001',
                         'type' => 'order',
@@ -1726,7 +1726,6 @@ class Workspace extends BaseController
                     //SI SE CREARON CON EXITO CREO LA DB CATALOGO EN COUCHDB
                     $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                     //Agrego el rol del modulo admin al cliente que lo crea
-
                     // SEGURIDAD TODOS LOS DOCUMENTOS POR CADA MODULO DB
                     $ws_validate_doc_edit = [
                         "_id" => "_design/validate_edit_doc",
@@ -1818,43 +1817,42 @@ class Workspace extends BaseController
                             throw({ forbidden: 'No tienes permiso para acceder a este documento.' });
                         }"
                     ];
-
-                    $ws_collection_get_OLD = [
+                    // Version 2024
+                    $ws_collection_get = [
                         '_id' => '_design/get',
                         'views' => [
-                            'seach' => [
-                                'map' => "function(doc) {\n if(doc.status === 'active' || doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n      var price_list = doc.variations[0].price_list;\n var stock_list =  doc.variations[0].stock_list;\n  var pictures_min = doc.variations[0].pictures[0].min;\n      var pictures_max = doc.variations[0].pictures[0].max;\n                  var sku = doc.variations[0].sku.value_name;\n                  var variant_id = doc.variations[0].id;\n                  var attribute_combinations = doc.variations[0].attribute_combinations\n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.currency.value,\n                    'available_quantity': doc.available_quantity,\n                    'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    'limit_discount': doc.limit_discount,\n                    'price':doc.variations[0].price_list[0].value,\n                    'price_list':price_list,\n  'stock_list':stock_list,\n                    'sku': sku,\n                    'picture_min':pictures_min,\n                    'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+
+                            /*
+                            'search' => [
+                                'map' => "function(doc) { if ((doc.type === 'product') && doc.variations && doc.variations.length > 0) { var variation = doc.variations[0]; if(variation.price_list && variation.price_list.length > 0 && variation.pictures && variation.pictures.length > 0) { var price_list = variation.price_list; var stock_list = variation.stock_list || []; var pictures = variation.pictures[0]; var sku = variation.sku ? variation.sku.value_name : ''; var attribute_combinations = variation.attribute_combinations || []; emit([doc.name], { '_id': doc._id, 'variant_id': variation.id, 'tipo': doc.type, 'name': doc.name, 'tags': doc.tags, 'currency': doc.currency ? doc.currency.value : '', 'available_quantity': doc.available_quantity, 'sold_quantity': doc.sold_quantity, 'cost_price': doc.cost_price, 'limit_discount': doc.limit_discount, 'price': price_list[0].value, 'price_list': price_list, 'stock_list': stock_list, 'sku': sku, 'picture_min': pictures.min, 'picture_max': pictures.max, 'attribute_combinations': attribute_combinations }); } } }",
                             ],
+                            'searh' => [
+                                'map' => "function(doc) { if ((doc.type === 'product') && doc.variations && doc.variations.length > 0) { var variation = doc.variations[0]; if(variation.price_list && variation.price_list.length > 0 && variation.pictures && variation.pictures.length > 0) { var price_list = variation.price_list; var stock_list = variation.stock_list || []; var pictures = variation.pictures[0]; var sku = variation.sku ? variation.sku.value_name : ''; var attribute_combinations = variation.attribute_combinations || []; emit([doc.name], { '_id': doc._id, 'variant_id': variation.id, 'tipo': doc.type, 'name': doc.name, 'tags': doc.tags, 'currency': doc.currency ? doc.currency.value : '', 'available_quantity': doc.available_quantity, 'sold_quantity': doc.sold_quantity, 'cost_price': doc.cost_price, 'limit_discount': doc.limit_discount, 'price': price_list[0].value, 'price_list': price_list, 'stock_list': stock_list, 'sku': sku, 'picture_min': pictures.min, 'picture_max': pictures.max, 'attribute_combinations': attribute_combinations }); } } }",
+                            ],
+
+*/
+                            //NEW 2024 final OK 
+
+                            'seach' => [
+                                'map' => "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                            ],
+                            'search' => [
+                                'map' => "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n",
+                            ],
+
+                            'search_product' => [
+                                'map' =>   "function(doc) {\n if( doc.status === 'active' && doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n    'attribute_combinations':attribute_combinations,\n });\n}\n}",
+                            ],
+                            'search_service' => [
+                                'map' => "function(doc) {\n if(doc.status === 'active' && doc.type === 'service'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                    'available_quantity': doc.available_quantity,\n                     //   'sold_quantity': doc.sold_quantity,\n                    'cost_price': doc.cost_price,\n                    //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                     'stock_list':stock_list,\n                      'sku': sku,\n                      'picture_min':pictures_min,\n                      'picture_max':pictures_max,\n                      'attribute_combinations':attribute_combinations,\n });\n}\n}",
+                            ],
+                            
                         ]
                     ];
 
 
-                    $ws_collection_get_old = [
-                        '_id' => '_design/get',
-                        'views' => [
-                            'seach' => [
-                                'map' => "function(doc) {\n if( doc.type === 'product'){\n            var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n     \n                  var price_list = doc.variations[0].price_list;\n                 \n                  var stock_list =  doc.variations[0].stock_list;\n                 \n                  var pictures_min = doc.variations[0].pictures[0].min;\n                  \n                  var pictures_max = doc.variations[0].pictures[0].max;\n                  \n                  var sku = doc.variations[0].sku.value;\n                  \n                  var variant_id = doc.variations[0].id;\n                  \n                  var attribute_combinations = doc.variations[0].attribute_combinations\n                \n                  \n               }\n             emit([doc.name],{\n                    '_id': doc._id,\n                    '_rev':doc._rev,\n                    'variant_id':variant_id,\n                    'tipo': doc.type,\n                    'name': doc.name,\n                    'tags': doc.tags,\n                    'currency': doc.variations[0].price_list[0].currency.value,\n                 //   'available_quantity': doc.available_quantity,\n                 //   'sold_quantity': doc.sold_quantity,\n               //     'cost_price': doc.cost_price,\n               //     'limit_discount': doc.limit_discount,\n                     'price':doc.variations[0].price_list[0].value,\n                     'price_list':price_list,\n                      'stock_list':stock_list,\n                    'sku': sku,\n                  'picture_min':pictures_min,\n                 'picture_max':pictures_max,\n                 'attribute_combinations':attribute_combinations,\n });\n}\n}\n"
-                            ],
-                            ]
-                        ];
 
-                        $ws_collection_get = [
-                            '_id' => '_design/get',
-                            'views' => [
-                                'seach' => [
-                                    'map' => "function(doc) {\n if( doc.type === 'product'){\n var attribute_combinations = new Array();\n   for(var i=0, length=doc.variations.length; i<length; i++){\n 'description':doc.variations[0].description,\n  var price_list = doc.variations[0].price_list;\n var stock_list = doc.variations[0].stock_list;\n var pictures_min = doc.variations[0].pictures[0].min;\n var pictures_max = doc.variations[0].pictures[0].max;\n var sku = doc.variations[0].sku.value;\n var variant_id = doc.variations[0].id;\n var attribute_combinations = doc.variations[0].attribute_combinations\n }\n emit([doc.name],{\n '_id': doc._id,\n '_rev':doc._rev,\n 'variant_id':variant_id,\n 'tipo': doc.type,\n 'name': doc.name,\n 'tags': doc.tags,\n 'currency': doc.variations[0].price_list[0].currency.value,\n 'price':doc.variations[0].price_list[0].value,\n 'price_list':price_list,\n 'stock_list':stock_list,\n 'sku': sku,\n 'picture_min':pictures_min,\n 'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}\n"
-                                ],
-                                'search_product' => [
-                                    'map' => "function(doc) {\n if( doc.status === 'active' && doc.type === 'product'){\n var attribute_combinations = new Array();\n for(var i=0, length=doc.variations.length; i<length; i++){\n 'description':doc.variations[0].description,\n  var price_list = doc.variations[0].price_list;\n var stock_list = doc.variations[0].stock_list;\n var pictures_min = doc.variations[0].pictures[0].min;\n var pictures_max = doc.variations[0].pictures[0].max;\n var sku = doc.variations[0].sku.value;\n var variant_id = doc.variations[0].id;\n var attribute_combinations = doc.variations[0].attribute_combinations\n }\n emit([doc.name],{\n '_id': doc._id,\n '_rev':doc._rev,\n 'variant_id':variant_id,\n 'tipo': doc.type,\n 'name': doc.name,\n 'tags': doc.tags,\n 'currency': doc.variations[0].price_list[0].currency.value,\n 'available_quantity': doc.available_quantity,\n 'cost_price': doc.cost_price,\n 'price':doc.variations[0].price_list[0].value,\n 'price_list':price_list,\n 'stock_list':stock_list,\n 'sku': sku,\n 'picture_min':pictures_min,\n 'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}"
-                                ],
-                                'search_service' => [
-                                    'map' => "function(doc) {\n if(doc.status === 'active' && doc.type === 'service'){\n var attribute_combinations = new Array();\n for(var i=0, length=doc.variations.length; i<length; i++){\n 'description':doc.variations[0].description,\n  var price_list = doc.variations[0].price_list;\n var stock_list = doc.variations[0].stock_list;\n var pictures_min = doc.variations[0].pictures[0].min;\n var pictures_max = doc.variations[0].pictures[0].max;\n var sku = doc.variations[0].sku.value;\n var variant_id = doc.variations[0].id;\n var attribute_combinations = doc.variations[0].attribute_combinations\n }\n emit([doc.name],{\n '_id': doc._id,\n '_rev':doc._rev,\n 'variant_id':variant_id,\n 'tipo': doc.type,\n 'name': doc.name,\n 'tags': doc.tags,\n 'currency': doc.variations[0].price_list[0].currency.value,\n 'available_quantity': doc.available_quantity,\n 'cost_price': doc.cost_price,\n 'price':doc.variations[0].price_list[0].value,\n 'price_list':price_list,\n 'stock_list':stock_list,\n 'sku': sku,\n 'picture_min':pictures_min,\n 'picture_max':pictures_max,\n 'attribute_combinations':attribute_combinations,\n });\n}\n}"
-                                ]
-                            ]
-                        ];
-
-
-
+                   
 
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
@@ -1867,8 +1865,6 @@ class Workspace extends BaseController
 
                     // DOC DISEÑO PARA HACER GET CON FILTROS
                     $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_collection_get); //Docuento diseno get
-                    
-                   
 
                     //DOC COFIGURACIONES
                     $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
@@ -1880,9 +1876,8 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
                     $this->WorkspaceModel->curl_put($db_name . '/tax_list', $tax_list); //Creo un doc con la informacion las listas de modelos
                     //DOC EJEMPLO PRODUCTOS
-                    $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
-                    $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
-                   
+                    // $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
+                    // $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
                     //Creo una carpeta para subir las fotos del catalog
                 }
                 // ECHO EL 4/5/23
@@ -2014,18 +2009,13 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
-
                         $this->WorkspaceModel->curl_put($db_name . '/_design/order_view', $order_view); //Creo el documento de diseno par filtrar documentos por tipo
                         //$this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
-                        
-                      //  $this->WorkspaceModel->curl_put($db_name . '/order_index', $order_index); //Documento de indice q usan los demas para consultar 
-                        $this->WorkspaceModel->curl_put($db_name . '/order_01', $order_01); //Creo un doc con la informacion de la primera orden
+                        //  $this->WorkspaceModel->curl_put($db_name . '/order_index', $order_index); //Documento de indice q usan los demas para consultar 
+                       // $this->WorkspaceModel->curl_put($db_name . '/order_01', $order_01); //Creo un doc con la informacion de la primera orden
                         
                     }
                 }
-
-
-
 
                 // ECHO EL 4/5/23
                     /* ========== 
@@ -2092,7 +2082,7 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                  /*  if ($result) {
+                    /*  if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/get-type', $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
@@ -2210,9 +2200,7 @@ class Workspace extends BaseController
                  //Contactos
                 if ($ws_contact) {
                     $db_name = 'ws_contact_' . $workspace_id_hex;
-
-
-
+                    
                     $ws_contact_get = [
                         '_id' => '_design/contact_get',
                         'views' => [

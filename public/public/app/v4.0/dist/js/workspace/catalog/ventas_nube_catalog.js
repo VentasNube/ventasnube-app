@@ -48,7 +48,7 @@ sync.on('change', function (info) {
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
     let response = await L_catalog_db.query(
-        'get/seach', {
+        'get/search', {
         include_docs: true,
         descending: true
     }
@@ -125,6 +125,8 @@ function get_nav_catalog(ws_info, ws_lang_data) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles
     }
+    console.log ( 'get_nav_catalog / ws_catalog_data', ws_catalog_data);
+
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
