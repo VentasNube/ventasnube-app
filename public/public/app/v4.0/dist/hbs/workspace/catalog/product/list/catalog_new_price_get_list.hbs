@@ -1,0 +1,47 @@
+
+{{#each variant.price_list as | pl |}}
+<li>
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <!-- Nombre de lista de precio -->
+        {{#each ../price_list as | l1 |}}
+            {{#ifEquals l1.id pl.id }}
+                <div id="new_price_list_name_{{id}}" price_list_id="{{id}}" price_value="{{value}}">
+                    {{value}}
+                </div>
+            {{/ifEquals}}
+        {{/each}}
+        <!-- FIN Nombre de lista de precio -->
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <!-- Tipo de moneda icono -->
+        <span>{{../../currency}}</span>
+        <!-- Input para editar precio -->
+        <input id="new_price_var_{{../variant.id}}_id_{{{../_id}}}_price_id_{{id}}" class="form-control" type="number" placeholder="Precio" value="{{value}}">
+
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <!-- Boton de guardar cambios -->
+        <div class="col-lg-6">
+            <button type="button" onclick="edit_price_var(this)" id="add_price_var_{{../id}}"
+                doc_id="{{{../_id}}}" price_id="{{id}}" price_value="{{value}}" variant_id="{{../variant.id}}"
+                input_id="price_list"
+                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                aria-haspopup="true" aria-expanded="false">
+                <span class="material-icons">add_circle</span>
+            </button>
+        </div>
+        <div class="col-lg-6">
+            <button onclick="dell_price_var(this)" id="dell_price_var_{{../id}}"
+                class="round padding-0 margin-5  btn btn-primary line" doc_id="{{{../_id}}}"
+                variant_id="{{{../variant.id}}}" price_id="{{id}}" price_value="{{value}}" input_id="price_list"
+                href="#" title="{{#with ../../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}">
+                <span class="material-icons">
+                    delete
+                </span>
+            </button>
+        </div>
+        <!-- Boton deEliminar -->
+    </div>
+</li>
+
+{{/each}}

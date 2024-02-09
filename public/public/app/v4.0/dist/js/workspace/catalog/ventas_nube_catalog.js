@@ -119,19 +119,21 @@ async function get_all_catalog_intems(ws_id, filter) {
 }
 
 // TRAIGO LA BARRA DE BUSQUEDA
-function get_nav_catalog(ws_info, ws_lang_data) {
+function get_nav_catalog(ws_cart) {
+
     var ws_catalog_data = {
-        ws_info: ws_info,
-        ws_lang_data: ws_lang_data,
+        ws_info: ws_cart.ws_info,
+        ws_lang_data: ws_cart.ws_lang_data,
         user_roles: user_Ctx.userCtx.roles
     }
-    console.log ( 'get_nav_catalog / ws_catalog_data', ws_catalog_data);
+    console.log('get_nav_catalog / ws_catalog_data', ws_catalog_data);
 
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
+
 // TRAIGO LOS PRODUCTOS DEL CATALOGO
 function get_items_catalog(ws_id) {
 
@@ -148,19 +150,47 @@ function get_items_catalog(ws_id) {
 // TARJETAS DE PRODUCTOS
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function print_catalog_item(new_items) {
+
+
+    var ws_info = ws_info;
+    // var ws_catalog_view = ws_info.ws_catalog_view
+
+
+    var ws_catalog_view = 'list'
+
+    console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
+
     var search_result = {
+
         search_product: new_items,
         price_list: price_doc.price_list,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
+
     }
+
+
+
+    console.log('search_result ws_catalog_viwe', search_result);
+
     console.log(search_result);
     if (new_items.length > 0) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
+
+        if (ws_catalog_view == 'list') {
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/list_product.hbs', '#content_catalog_commpiled', search_result);
+
+        }
+        else if (ws_catalog_view == 'card') {
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/card_product.hbs', '#content_catalog_commpiled', search_result);
+        }
+
     } else {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
+
+
+
 
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_catalog_item(search_val) {
@@ -187,16 +217,19 @@ async function search_catalog_item(search_val) {
     }
 }
 
+
+
+
 //Boton cambiar lista de precio
 async function cat_variations_price(element) {
     //    $(".card_item_select_price").click(function () {
 
     var card_item_price = $(element).html();
     var card_product_val = $(element).find('label').html();
-    var price_id =  $(element).attr('price_id');
-    var product_id =  $(element).attr('product_id');
+    var price_id = $(element).attr('price_id');
+    var product_id = $(element).attr('product_id');
 
-      //  PRODUCTO
+    //  PRODUCTO
     /* let doc = await L_catalog_db.get(product_id);
       //  VARIABLE COMPLETA
       const var_doc = doc.variations.find(element => element.id == variant_id);
@@ -210,15 +243,15 @@ async function cat_variations_price(element) {
       const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
     */
 
-  console.log( product_id, price_id,card_product_val, card_item_price)
+    console.log(product_id, price_id, card_product_val, card_item_price)
     $(element).parent().parent().parent().find(".card_item_selected_price").html(card_item_price);
-    $(element).parent().parent().parent().find(".card_item_selected_price").attr('price_id',price_id);
-   // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
+    $(element).parent().parent().parent().find(".card_item_selected_price").attr('price_id', price_id);
+    // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val);
     // Actualiza la interfaz de usuario con el nuevo precio y los impuestos aplicados
-   // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val.toFixed(2)); // asumo que quieres mostrar dos decimales
+    // $(element).parent().parent().parent().parent().parent().find(".card_product_val").val(card_product_val.toFixed(2)); // asumo que quieres mostrar dos decimales
     $("#card_id_" + product_id).find(".card_product_val").val(Number(card_product_val).toFixed(2));
-    $("#card_var_id_" + product_id).attr('price_id',price_id);;
-    
+    $("#card_var_id_" + product_id).attr('price_id', price_id);;
+
 
     //$(element).parent().parent().parent().parent().parent().find(".card_product_val").attr('price_id',price_id);
     //    alert(card_product_val);
@@ -364,8 +397,8 @@ async function catalog_view_item(element) {
             category_list: category_list
         }
         // console.log('price_doc.price_lis',price_doc.price_list);
-         console.log('product_doc_array',product_doc_array);
-         alert('Haaaaaaa');
+        console.log('product_doc_array', product_doc_array);
+        alert('Haaaaaaa');
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/catalog_view_item.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -445,7 +478,7 @@ async function catalog_edit_itemNOOL(element) {
         }
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-       // renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
+        // renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
         // console.log('product_doc_array', product_doc_array);
         // alert('Holaaaaaa');
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
@@ -489,27 +522,27 @@ async function catalog_edit_item(element) {
             attributes_list: attributes,
         }
 
-       console.log('product_doc_array NEWW',product_doc_array);
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array, function () {
+        console.log('product_doc_array NEWW', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array, function () {
 
-                let parentElement_nav = document.querySelector('#edit_variations_main');
-                let id_compiled_nav = '#' + parentElement_nav.id;
-                console.log('id_compiled_nav UUUAAAAAA', id_compiled_nav);
-                if (id_compiled_nav) {
-                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', id_compiled_nav, product_doc_array, function () {
-                        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-                        $('#right_main').removeClass('move-right');
-                        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
-                        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-                        coun_items_cart();
-                        //  createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
-                        //    coun_items_broup(board_name);
-                        //   scrollerMove();
-                        //   get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
-                    });
-                }
+            let parentElement_nav = document.querySelector('#edit_variations_main');
+            let id_compiled_nav = '#' + parentElement_nav.id;
+            console.log('id_compiled_nav UUUAAAAAA', id_compiled_nav);
+            if (id_compiled_nav) {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', id_compiled_nav, product_doc_array, function () {
+                    createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+                    $('#right_main').removeClass('move-right');
+                    var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+                    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+                    coun_items_cart();
+                    //  createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+                    //    coun_items_broup(board_name);
+                    //   scrollerMove();
+                    //   get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
+                });
+            }
 
-            })
+        })
     } catch (err) {
         console.log(err);
     }
@@ -668,7 +701,7 @@ async function get_catalog(ws_id) {
         user_roles: user_Ctx.userCtx.roles
     }
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/catalog.hbs', '#content_compiled', ws_cart);
-    get_nav_catalog();
+    get_nav_catalog(ws_cart);
     get_all_catalog_intems();
 }
 
@@ -701,15 +734,15 @@ async function catalog_new_item(element) {
         var tax_doc = await L_catalog_db.get('tax_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var attributes = await L_catalog_db.get('attributes');
-        
+
         var user_roles_permisions = user_Ctx.userCtx.roles;
-       console.log('user_roles_permisions', user_roles_permisions);
+        console.log('user_roles_permisions', user_roles_permisions);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
-            tax_list:tax_doc,
+            tax_list: tax_doc,
             currency_list: currency_doc.currency_list,
-            currency:currency_doc['currency_default'],
+            currency: currency_doc['currency_default'],
             ws_lang_data: ws_lang_data,
             user_roles: user_roles_permisions,
             category_list: new_category_list,
@@ -719,8 +752,8 @@ async function catalog_new_item(element) {
         }
 
         console.log('tax_doc CCCCC', product_doc_array);
-        console.log('tax_doc currency_doc currency_doc',currency_doc);
-        
+        console.log('tax_doc currency_doc currency_doc', currency_doc);
+
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -756,9 +789,9 @@ async function catalog_new_price_item(element) {
 
         var product_doc_array = {
             price_list: price_doc.price_list,
-            tax_list:tax_doc,
+            tax_list: tax_doc,
             currency_list: currency_doc.currency_list,
-            currency:currency_doc['currency_default'],
+            currency: currency_doc['currency_default'],
             ws_lang_data: ws_lang_data,
             user_roles: user_roles_permisions,
             category_list: new_category_list,
@@ -768,8 +801,8 @@ async function catalog_new_price_item(element) {
         }
 
         console.log('tax_doc CCCCC', product_doc_array);
-        console.log('tax_doc currency_doc currency_doc',currency_doc);
-        
+        console.log('tax_doc currency_doc currency_doc', currency_doc);
+
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
@@ -790,47 +823,47 @@ $(document).on('click', '.catalog_new_price_item', function (element) {
 });
 
 
-async function product_new_price_pop(element){
+async function product_new_price_pop(element) {
 
     try {
         //  let img_charge = $(element).attr('img-charge')
         const img_charge = "false";
-        console.log('IMG CHARGE',img_charge);
+        console.log('IMG CHARGE', img_charge);
 
-        if(img_charge === 'true'){
-        $('#master_popup').modal('show');
-        // save_new_conctact();
-    }else{
-        // quiero probar que el teclado sea bueno para programar creo q esta super bueno
-        let doc_id = $(element).attr('doc_id')
-        var product_doc = await L_catalog_db.get(doc_id);
-        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-        var price_doc = await L_catalog_db.get('price_list');
-        var tax_doc = await L_catalog_db.get('tax_list');
-        var currency_doc = await L_catalog_db.get('currency_list');
-        var user_roles_permisions = user_Ctx.userCtx.roles;
+        if (img_charge === 'true') {
+            $('#master_popup').modal('show');
+            // save_new_conctact();
+        } else {
+            // quiero probar que el teclado sea bueno para programar creo q esta super bueno
+            let doc_id = $(element).attr('doc_id')
+            var product_doc = await L_catalog_db.get(doc_id);
+            let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
+            var price_doc = await L_catalog_db.get('price_list');
+            var tax_doc = await L_catalog_db.get('tax_list');
+            var currency_doc = await L_catalog_db.get('currency_list');
+            var user_roles_permisions = user_Ctx.userCtx.roles;
             //Busco el id en el array con find funcion de flecha
-         const var_doc = product_doc.variations.find(element => element.id == variant_id);
-        //  console.log('user_roles_permisions', user_roles_permisions);
-        //traigo los datos del producto   
-        const data = {
-            doc_id: doc_id,
-            variant_id:variant_id,
-            price_list_items:var_doc.price_list,
-            stock_invetary:var_doc.stock_invetary,
-            tax_list:tax_doc.tax,
-            price_list: price_doc.price_list,
-            currency_list: currency_doc.currency_list,
-            ws_lang_data: ws_lang_data,
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_roles_permisions,
+            const var_doc = product_doc.variations.find(element => element.id == variant_id);
+            //  console.log('user_roles_permisions', user_roles_permisions);
+            //traigo los datos del producto   
+            const data = {
+                doc_id: doc_id,
+                variant_id: variant_id,
+                price_list_items: var_doc.price_list,
+                stock_invetary: var_doc.stock_invetary,
+                tax_list: tax_doc.tax,
+                price_list: price_doc.price_list,
+                currency_list: currency_doc.currency_list,
+                ws_lang_data: ws_lang_data,
+                ws_info: ws_info,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_roles_permisions,
+            }
+            console.log(data);
+            $('#master_popup').modal('show');
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', '#master_popup', data);
+            $('#catalog_new_product_name_input').focus();
         }
-         console.log(data);
-        $('#master_popup').modal('show');
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/new_price.hbs', '#master_popup', data);
-        $('#catalog_new_product_name_input').focus(); 
-    }
     } catch (err) {
         console.log('ERROR:', err);
         Snackbar.show({
@@ -838,7 +871,7 @@ async function product_new_price_pop(element){
             actionText: '<span class="material-icons">refresh</span> Refresh ',
             actionTextColor: "#0575e6",
             duration: Snackbar.LENGTH_INDEFINITE,
-         //   action: () => { updateDocuments() }
+            //   action: () => { updateDocuments() }
         });
     }
 
@@ -889,7 +922,7 @@ async function catalog_new_item_new_product_old_no(element) {
         const new_doc_tags = textoTags
         var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
         var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
-        
+
         var tax_doc = await L_catalog_db.get('tax_list');
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
@@ -968,15 +1001,15 @@ async function catalog_new_item_new_product_old_no(element) {
                 {
                     "id": "WEIGHT",
                     "id_name": "Peso",
-                    "unit":"Kg",
+                    "unit": "Kg",
                     "name": "Peso",
                     "value": 10
                 },
                 {
                     "id": "MEASURES",
                     "id_name": "Dimension",
-                    "name": "Dimension",  
-                    "unit":"cm",      
+                    "name": "Dimension",
+                    "unit": "cm",
                     "width": 100,
                     "height": 50,
                     "value": "100cm x 50cm"
@@ -1551,7 +1584,7 @@ async function catalog_product_edit_model(element) {
 /// CRUD #TAGS 2023
 // INPUT ENTER
 function catalog_add_new_tag_press(e, element) {
-    
+
     var key = e.keyCode || e.which;
     if (key == 13) {
         event.preventDefault();
@@ -1560,7 +1593,7 @@ function catalog_add_new_tag_press(e, element) {
 }
 // AGREGO
 async function catalog_add_new_tag(element) {
-    
+
     try {
         // Datos del cocumento y el id 
         let new_tag_val = $(element).val();
@@ -2491,7 +2524,7 @@ async function catalog_config_save_edit(element) {
         var new_name_n = String(new_name);
         var new_money_id_n = Number(new_money_id);
         //PRUEBAS NUEVAS
-       // var user_Ctx = userCtx;
+        // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
@@ -2560,7 +2593,7 @@ async function catalog_config_save_block(element) {
         //Filtro los resultados
         const price_id_n = Number(price_id);
         //PRUEBAS NUEVAS
-       // var user_Ctx = userCtx;
+        // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get('price_list');
@@ -2804,7 +2837,7 @@ async function catalog_config_tax_money_edit(element) {
 async function catalog_config_tax_new(element) {
     try {
 
-         // Traigo el documento de usuario y crep la variable userCtx
+        // Traigo el documento de usuario y crep la variable userCtx
         var ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
         var userCtx = ws_module_array['userCtx'].userCtx;
 
@@ -2951,6 +2984,8 @@ async function new_price_list(element) {
     try {
         const doc_id = ('price_list');    //traigo el documento a editar
         const price_id = $(element).attr('price_id');
+        const variant_id = $(element).attr('variant_id');
+
         // let input_id = $(element).attr('input_id');
         //Nuevos valores
         let new_value = $('#new_price_list_value' + variant_id).val();
@@ -2961,7 +2996,7 @@ async function new_price_list(element) {
         var price_list_id_s = Number(price_list_id)
 
         //PRUEBAS NUEVAS
-       // var user_Ctx = userCtx;
+        // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
 
@@ -2970,10 +3005,300 @@ async function new_price_list(element) {
         var doc = await L_catalog_db.get(doc_id_s);
         //Busco dentro de las variables
         if (variant_id) {
-
             var price_list = doc.price_list.find(response => response.id == price_id);// Traigo el elemento por la id variant
             //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
             if (price_list) {
+                const price = price_list;//Traigo el ojeto especifico 
+                price.value = new_value_s; //Edito el valor del value por el valor nuevo
+                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+            } else {
+                var new_item = {
+                    id: price_list_id_s,
+                    value: new_value,
+                    create: newDate,
+                    updateDate: newDate,
+                    updateUser: userName
+
+                };
+                //  console.log(userName, 'else userName',new_item,'new_item');
+                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+            }
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                console.log(price_list)
+                catalog_edit_item_url(doc_id, 1);
+                
+                catalog_get_item_price(doc_id,variant_id);
+            } else {
+                alert("no se actualizo");
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// AGREGO
+async function new_price_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        let input_id = $(element).attr('input_id');
+        let new_value = $('#new_price_var_' + variant_id).val();
+        let price_list_id = $('#price_list_var_' + variant_id).val(); //Id del documento a edita
+        const doc_id_s = String(doc_id);
+        var new_value_s = Number(new_value);
+        var price_list_id_s = Number(price_list_id);
+
+        let currency_id = 'ARS';
+        let currency_value = '$';
+
+        var currency = {
+            id: currency_id,
+            value: currency_value
+        };
+
+        //PRUEBAS NUEVAS
+        // var user_Ctx = userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get(doc_id_s);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            var price_list = item[input_id].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
+            //Actualizo los arrays con la fecha y el ucsuario q lo actualizo al precio
+            if (price_list) {
+                const price = price_list;//Traigo el ojeto especifico 
+                price.value = new_value_s; //Edito el valor del value por el valor nuevo
+                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+                price.currency = currency;
+
+            } else {
+
+
+                var new_item = {
+                    id: price_list_id_s,
+                    value: new_value,
+                    create: newDate,
+                    updateDate: newDate,
+                    updateUser: userName,
+                    currency: currency
+
+                };
+
+                //  console.log(userName, 'else userName',new_item,'new_item');
+                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+            }
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                // load_all_cat(doc_id,arr_number_id );
+                // catalog_edit_item_url(doc_id, 1);
+
+
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                catalog_edit_item_url(doc_id, 1);
+                
+                catalog_get_item_price(doc_id,variant_id);
+
+
+            } else {
+                alert("no se actualizo");
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+// Actualizo el listado de dentro del menu
+
+//  2024 UPDATES
+// Imprimo los precios
+async function catalog_get_item_price(doc_id,variant_id) {
+    try {
+        //const doc_id = $(element).attr('doc_id');
+       // const variant_id = $(element).attr('variant_id');
+        const doc_id_s = String(doc_id);
+        var select_div_id = '#catalog_new_price_list_' + doc_id;
+
+        var doc = await L_catalog_db.get(doc_id_s);
+        var price_list = await L_catalog_db.get('price_list');
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+        const new_variant = {
+                variant: variant,
+                _id:doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                price_list:price_list.price_list
+            }
+
+            //    console.log('new_variant', new_variant);
+        // console.log('select_div_id', select_div_id);
+             var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_price_get_list.hbs', select_div_id, new_variant);
+      
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+// AGREGO
+async function edit_price_var(element) {
+
+    try {
+        //traigo el documento a editar
+        const doc_id = $(element).attr('doc_id');
+        const price_list_id = $(element).attr('price_id');
+        const variant_id = $(element).attr('variant_id');
+        let input_id = $(element).attr('input_id');
+      //  let new_value = $('#new_price_var_' + price_list_id).val();
+
+        let new_value = $('#new_price_var_' + variant_id + '_id_'+ doc_id +'_price_id_'+ price_list_id).val();
+
+      //  new_price_var_{{../variant.id}}_id_{{{../_id}}}_price_id{{id}}
+
+        // let price_list_id = $('#new_price_list_id' + variant_id).attr('price_id');
+        // let new_price_list_name =  $('#new_price_list_name_' + price_id).attr('price_value');
+
+        console.log(price_list_id)
+        const doc_id_s = String(doc_id);
+        var new_value_s = Number(new_value);
+        var price_list_id_s = Number(price_list_id);
+
+        let currency_id = 'ARS';
+        let currency_value = '$';
+
+        var currency = {
+            id: currency_id,
+            value: currency_value
+        };
+
+        //PRUEBAS NUEVAS
+        // var user_Ctx = userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get(doc_id_s);
+
+
+
+        console.log('doc', doc)
+        //Busco dentro de las variables
+        if (variant_id) {
+            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+            var price_list = item['price_list'].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
+
+            console.log('item', item)
+            console.log('price_list', price_list)
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            if (price_list) {
+                const price = price_list;//Traigo el ojeto especifico 
+                price.value = new_value_s; //Edito el valor del value por el valor nuevo
+                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
+                price.updateDate = newDate;
+                price.updateUser = userName;
+                price.currency = currency;
+
+            } else {
+
+            }
+            var response = await L_catalog_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+            });
+            if (response) {
+                // load_all_cat(doc_id,arr_number_id );
+                // catalog_edit_item_url(doc_id, 1);
+
+
+                catalog_get_item_price(doc_id,variant_id);
+
+                Snackbar.show({
+                    text: 'El precio se actualizo!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                catalog_edit_item_url(doc_id, 1);
+            } else {
+                alert("no se actualizo");
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+
+//  2024 UPDATES
+
+// EDITO
+
+async function edit_price_varNO(element) {
+    try {
+        const doc_id = $(element).attr('doc_id');   //traigo el documento a editar
+        const price_id = $(element).attr('price_id');
+        const variant_id = $(element).attr('variant_id');
+
+        const price_value = $('#new_price_list_name_' + price_id).attr('price_value');
+
+        let new_value = $('#new_price_var_' + price_id).val();
+
+        let price_list_id = $('#new_price_list_id' + variant_id).attr('price_id');
+
+        const doc_id_s = String(doc_id);
+
+
+        var new_value_s = Number(new_value);
+        var price_list_id_s = Number(price_list_id)
+
+        //PRUEBAS NUEVAS
+        // var user_Ctx = userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+
+        //console.log(user_Ctx, 'USER CTX');
+        // console.log(userName, 'USER userName');
+        var doc = await L_catalog_db.get(doc_id_s);
+
+        console.log('doc', doc);
+        //Busco dentro de las variables
+        if (variant_id) {
+            var price_list = doc.price_list.find(response => response.id == price_id);// Traigo el elemento por la id variant
+            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+            if (price_list) {
+
+                console.log('price_list', price_list);
                 const price = price_list;//Traigo el ojeto especifico 
                 price.value = new_value_s; //Edito el valor del value por el valor nuevo
                 price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
@@ -3014,89 +3339,7 @@ async function new_price_list(element) {
 
 }
 
-// AGREGO
-async function new_price_var(element) {
-
-    try {
-        //traigo el documento a editar
-        const doc_id = $(element).attr('doc_id');
-        const variant_id = $(element).attr('variant_id');
-        let input_id = $(element).attr('input_id');
-        let new_value = $('#new_price_var_' + variant_id).val();
-        let price_list_id = $('#price_list_var_' + variant_id).val(); //Id del documento a edita
-        const doc_id_s = String(doc_id);
-        var new_value_s = Number(new_value);
-        var price_list_id_s = Number(price_list_id);
-
-        let currency_id = 'ARS';
-        let currency_value = '$';
-
-        var currency = {
-            id: currency_id,
-            value: currency_value
-        };
-
-        //PRUEBAS NUEVAS
-       // var user_Ctx = userCtx;
-        var newDate = new Date(); //fecha actual del navegador
-        var userName = userCtx.userCtx.name;
-        var doc = await L_catalog_db.get(doc_id_s);
-        //Busco dentro de las variables
-        if (variant_id) {
-            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list = item[input_id].find(response => response.id == price_list_id_s);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if (price_list) {
-                const price = price_list;//Traigo el ojeto especifico 
-                price.value = new_value_s; //Edito el valor del value por el valor nuevo
-                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-                price.currency = currency;
-
-            } else {
-
-
-                var new_item = {
-                    id: price_list_id_s,
-                    value: new_value,
-                    create: newDate,
-                    updateDate: newDate,
-                    updateUser: userName,
-                    currency: currency
-
-                };
-
-                //  console.log(userName, 'else userName',new_item,'new_item');
-                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-            }
-            var response = await L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-            });
-            if (response) {
-                // load_all_cat(doc_id,arr_number_id );
-                // catalog_edit_item_url(doc_id, 1);
-                Snackbar.show({
-                    text: 'El precio se actualizo!',
-                    actionText: 'ok',
-                    pos: 'bottom-right',
-                    actionTextColor: "#0575e6",
-                });
-                catalog_edit_item_url(doc_id, 1);
-            } else {
-                alert("no se actualizo");
-            }
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-// EDITO
-async function edit_price_var(element) {
+async function edit_price_varNOOLD(element) {
 
     try {
         //traigo el documento a editar
@@ -3152,7 +3395,9 @@ async function dell_price_var(element) {
                     });
                     if (response) {
                         //Limpio el item de la pantalla
+                        
                         catalog_edit_item_url(doc_id, 1);
+                        catalog_get_item_price(doc_id,variant_id);
                         $(element).parent('li').remove();
                     } else {
                         //Si no se grabo tira un error en pantalla
@@ -3199,7 +3444,7 @@ async function add_stock_var(element) {
         var new_value_s = Number(new_value);
         var new_cost_stock_s = Number(new_cost_stock);
         // PRUEBAS NUEVAS
-       // var user_Ctx = userCtx;
+        // var user_Ctx = userCtx;
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
@@ -3607,29 +3852,29 @@ async function cat_edit_variations(element) {
 
 ////// UPLOAD IMAGEN PRODUCTO ///
 
-async function product_upload_img_pop(element){
+async function product_upload_img_pop(element) {
 
     try {
-      //  let img_charge = $(element).attr('img-charge')
+        //  let img_charge = $(element).attr('img-charge')
         const img_charge = $('#minicard_new_product_img').attr('img-charge');
-        
-        console.log('IMG CHARGE',img_charge);
-        if(img_charge === 'true'){
-            $('#master_popup').modal('show');
-       // save_new_conctact();
-    }else{
-              
-        const data = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-        }
 
-        // console.log(ws_price_list);
-        $('#master_popup').modal('show');
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', '#master_popup', data);
-        $('#catalog_new_product_name_input').focus(); 
-    }
+        console.log('IMG CHARGE', img_charge);
+        if (img_charge === 'true') {
+            $('#master_popup').modal('show');
+            // save_new_conctact();
+        } else {
+
+            const data = {
+                ws_info: ws_info,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+            }
+
+            // console.log(ws_price_list);
+            $('#master_popup').modal('show');
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/product_upload_img_pop.hbs', '#master_popup', data);
+            $('#catalog_new_product_name_input').focus();
+        }
     } catch (err) {
         console.log('ERROR:', err);
         Snackbar.show({
@@ -3637,7 +3882,7 @@ async function product_upload_img_pop(element){
             actionText: '<span class="material-icons">refresh</span> Refresh ',
             actionTextColor: "#0575e6",
             duration: Snackbar.LENGTH_INDEFINITE,
-         //   action: () => { updateDocuments() }
+            //   action: () => { updateDocuments() }
         });
     }
 

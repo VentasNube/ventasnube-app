@@ -14148,3 +14148,43 @@ board-item-content
     top: 1px;
     text-align: left;
 }
+
+/*  ** 2024 estilos catalogo ***/
+
+.new_table .table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.new_table .table-header, .table-row {
+    background-color: #d2d6de;
+    display: flex;
+}
+
+.new_table .table-header, .table-row:hover {
+    background-color: #d2d6de;
+    /*color: white;*/
+}
+
+
+.new_table .cell {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    /*border: 1px solid #ddd;*/
+}
+
+
+/* Estilos para el botón de Material Design */
+.new_table .btn-material {
+    background-color: #2196F3;
+    color: white;
+    /* Añadir más estilos según sea necesario */
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+}

@@ -1,10 +1,26 @@
- <!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  --->
+ <!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  ---> 
 <div class="box">
     <div class="box-header">
             <div class="nav-header nav_bar_catalog_header">
                 <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
                     <div class="nav_bar_catalog_search" >
                             <div class="input-filters" >
+
+
+                                    <div class="btn-group">
+                                            <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown" aria-expanded="true">
+                                                <span class="material-icons">add_circle_outline</span> <span class="hidden-xs hidden-sm">Nuevo</span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li role="separator" class="divider"></li>
+                                                <li><a class="catalog_new_item" href="#catalog_new_item" data-toggle="modal" role="button" title="Crear nuevo articulo"><i class="material-icons">collections</i> Añadir un articulo nuevo</a>
+                                                </li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="#cajaRetiro" data-toggle="modal" role="button" title="Retirar efectivo"><i class="material-icons">article</i> Listado de articulos </a></li>
+                                            </ul>
+                                    </div>
+
+
                                     <div class="group">
                                                 <div class="btn-group dopdown">
                                                     <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
@@ -100,39 +116,24 @@
                 </div>
             </div>
             <div class="nav-link col-xs-3 col-sm-4 col-md-4 col-lg-3 pull-right text-right">
-              
-                    <div class="btn-group ">
-                        <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle "
-                            data-toggle="dropdown" aria-expanded="true">
-                            <span class="material-icons">add_circle_outline</span> <span
-                                class="hidden-xs hidden-sm">Nuevo</span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li role="separator" class="divider"></li>
-                            <li><a class="catalog_new_item" href="#catalog_new_item" data-toggle="modal" role="button"
-                                    title="Crear nuevo articulo"><i class="material-icons">collections</i> A&ntilde;adir un articulo nuevo</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#cajaRetiro" data-toggle="modal" role="button" title="Retirar efectivo"><i
-                                        class="material-icons">article</i> Listado de articulos </a></li>
-                        </ul>
-                    </div>
-             
+    
                 <div class="btn-group ">
                     <button type="button" class="btn btn-round xl dropdown-toggle" data-toggle="dropdown"
                         aria-expanded="true">
                         <span class="material-icons">settings</span>
                     </button>
+                    
                     <ul class="dropdown-menu pull-right">
                         <li>
                             <a onclick="catalog_config()">
-                                <i class="material-icons">create</i>
-                                Editar catalogo
+                                <i class="material-icons">{{#with ws_lang_data}} {{{m_config_catalog_icon}}}{{/with}}</i>
+                                     {{#with ws_lang_data}} {{{m_config_catalog}}}{{/with}}
                             </a>    
-                              </li>
+                        </li>
                         <li class="divider"></li>
-                        <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i
-                                    class="material-icons">view_carousel</i> Agregar colaborador</a></li>
+                        <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i class="material-icons">view_carousel</i> Agregar colaborador</a></li>
+                         <li><a id="" href="#" data-toggle="modal" role="button"><i class="material-icons">view_carousel</i> Importar productos</a></li>
+       
                     </ul>
                 </div>
                 
