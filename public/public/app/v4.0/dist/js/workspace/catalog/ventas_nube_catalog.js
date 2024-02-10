@@ -77,6 +77,11 @@ async function get_all_catalog_intems(ws_id, filter) {
             new_items['sku'] = item.value.sku;
             new_items['attribute_combinations'] = item.value.attribute_combinations;
             new_items['doc'] = item.value;
+
+            
+        new_items['stock_invetary'] = item.value.stock_invetary;
+        new_items['available_quantity'] = item.value.available_quantity;
+
             //Formateo el array final
             //  all_items_map_array = {
             //     item:new_items
@@ -150,29 +155,21 @@ function get_items_catalog(ws_id) {
 // TARJETAS DE PRODUCTOS
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 function print_catalog_item(new_items) {
-
-
     var ws_info = ws_info;
     // var ws_catalog_view = ws_info.ws_catalog_view
-
-
     var ws_catalog_view = 'list'
-
-    console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
-
+   // console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
     var search_result = {
-
         search_product: new_items,
         price_list: price_doc.price_list,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
 
+
+        
     }
 
-
-
     console.log('search_result ws_catalog_viwe', search_result);
-
     console.log(search_result);
     if (new_items.length > 0) {
 
@@ -201,11 +198,18 @@ async function search_catalog_item(search_val) {
         new_items = {};
         // Mapeo el array
         new_items['name'] = it.item.name;
+        // new_items['stock_invetary'] = it.item.stock_invetary;
+        //  new_items['name'] = it.item.name;
         new_items['cats'] = it.item.cats;
         new_items['tags'] = it.item.tags;
         new_items['sku'] = it.item.sku;
         new_items['attribute_combinations'] = it.item.attribute_combinations;
         new_items['doc'] = it.item.doc;
+
+        
+            
+        new_items['stock_invetary'] = it.item.stock_invetary;
+        new_items['available_quantity'] = it.item.available_quantity;
 
         //Formateo el array final
         return new_items;
@@ -216,8 +220,6 @@ async function search_catalog_item(search_val) {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
-
-
 
 
 //Boton cambiar lista de precio
@@ -298,7 +300,7 @@ function cat_variations_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
     let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-    let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
+    let id_copiled = '#catalog_variations_size__' + product_id; // ID DE COMPILACION // 
     L_catalog_db.get(product_id, function (err, doc) {
         if (err) { return console.log(err); }
         const variant_array = {
@@ -317,6 +319,60 @@ function cat_variations_get(element) {
     });
 
 }
+
+
+
+//Boton variables y las Renderizo
+function cat_all_variations_get(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_get_variant.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#cat_all_variations_get' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function (err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+            //doc:doc,
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+            // tags: doc.tags,
+            // price_list: price_doc.price_list,
+            //  current: doc.price_list,
+        }
+        //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
+
+}
+
+    function cat_variations_size_get(element) {
+        let product_id = $(element).attr('product_id');
+        let variant_id = $(element).attr('variant_id');
+        let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant_size.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+        let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
+        L_catalog_db.get(product_id, function (err, doc) {
+            if (err) { return console.log(err); }
+            const variant_array = {
+                //doc:doc,
+                variant_id: variant_id,
+                _id: doc._id,
+                _rev: doc._rev,
+                variations: doc.variations,
+                name: doc.name,
+                // tags: doc.tags,
+                // price_list: price_doc.price_list,
+                //  current: doc.price_list,
+            }
+            //  console.log(element);
+            renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+        });
+
+}
+
+
+
 
 //Renderizo la variacion nueva en la tarjeta
 function cat_variations_select(element) {
@@ -3180,15 +3236,12 @@ async function edit_price_var(element) {
         const price_list_id = $(element).attr('price_id');
         const variant_id = $(element).attr('variant_id');
         let input_id = $(element).attr('input_id');
-      //  let new_value = $('#new_price_var_' + price_list_id).val();
+        //  let new_value = $('#new_price_var_' + price_list_id).val();
 
         let new_value = $('#new_price_var_' + variant_id + '_id_'+ doc_id +'_price_id_'+ price_list_id).val();
-
-      //  new_price_var_{{../variant.id}}_id_{{{../_id}}}_price_id{{id}}
-
+        //  new_price_var_{{../variant.id}}_id_{{{../_id}}}_price_id{{id}}
         // let price_list_id = $('#new_price_list_id' + variant_id).attr('price_id');
         // let new_price_list_name =  $('#new_price_list_name_' + price_id).attr('price_value');
-
         console.log(price_list_id)
         const doc_id_s = String(doc_id);
         var new_value_s = Number(new_value);
@@ -3207,8 +3260,6 @@ async function edit_price_var(element) {
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc = await L_catalog_db.get(doc_id_s);
-
-
 
         console.log('doc', doc)
         //Busco dentro de las variables
@@ -3238,17 +3289,14 @@ async function edit_price_var(element) {
             if (response) {
                 // load_all_cat(doc_id,arr_number_id );
                 // catalog_edit_item_url(doc_id, 1);
-
-
                 catalog_get_item_price(doc_id,variant_id);
-
                 Snackbar.show({
                     text: 'El precio se actualizo!',
                     actionText: 'ok',
                     pos: 'bottom-right',
                     actionTextColor: "#0575e6",
                 });
-                catalog_edit_item_url(doc_id, 1);
+               // catalog_edit_item_url(doc_id, 1);
             } else {
                 alert("no se actualizo");
             }

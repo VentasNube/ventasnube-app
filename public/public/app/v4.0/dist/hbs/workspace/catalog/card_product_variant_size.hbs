@@ -1,0 +1,34 @@
+<!--- CATALOG CARD PRODUCT NEW VARIANT PRODUCT TEMPLATE --->
+{{#each variations}}
+<div onclick="cat_variations_select(this)" product_id="{{{../_id}}}" variant_id="{{{id}}}" {{#if status}} disabled=""
+    {{/if}} class="variations-select ripple s-card-actv-item padd ">
+    <div class="s-card-actv-item-body">
+        <div class="s-card-actv-item-prod">
+            <span class="s-card-actv-item-price-left ">
+                <div class="var_new_name s-card-actv-item-name">
+                    {{#each attribute_combinations as | ac |}}
+                    <!-- Hago la comprobacion de si es un color -->
+                    {{#ifEquals id 'SIZE' }}
+                    <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
+                        data-original-title="{{{id_name}}}">
+                        <span> {{value}} </span>
+                    </div>
+                    {{/ifEquals}}
+                    {{/each}}
+                </div>
+                <span class="text-blue" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Stock Disponible">Stock:{{#stock stock_invetary}}{{/stock}}
+                </span>
+            </span>
+            </span>
+            <span class="s-card-actv-item-price-right text font-weight-bold">
+                <span class="tot" style="font-size: 20px;">
+                    {{#first price_list}}
+                    <span>{{currency.value}}</span> <label class="counter">{{value}}</label>
+                    {{/first}}
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+{{/each}}
