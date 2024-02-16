@@ -823,9 +823,9 @@ async function catalog_new_item(element) {
 
 // BOTON CREAR PRODUCTO
 $(document).on('click', '.catalog_new_item', function (event) {
-    //  $('#master_popup').modal('show');
-    // get_catalog_new_item();
-    catalog_new_item();
+       // $('#master_popup').modal('show');
+       // get_catalog_new_item();
+       catalog_new_item();
 
 });
 
@@ -872,7 +872,7 @@ async function catalog_new_price_item(element) {
 
 // BOTON CREAR PRODUCTO
 $(document).on('click', '.catalog_new_price_item', function (element) {
-    //  $('#master_popup').modal('show');
+    // $('#master_popup').modal('show');
     // get_catalog_new_item();
     catalog_new_item(element);
 
@@ -880,7 +880,6 @@ $(document).on('click', '.catalog_new_price_item', function (element) {
 
 
 async function product_new_price_pop(element) {
-
     try {
         //  let img_charge = $(element).attr('img-charge')
         const img_charge = "false";
@@ -930,7 +929,6 @@ async function product_new_price_pop(element) {
             //   action: () => { updateDocuments() }
         });
     }
-
 }
 
 
