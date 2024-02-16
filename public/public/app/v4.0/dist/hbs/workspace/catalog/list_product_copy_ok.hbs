@@ -19,7 +19,7 @@
             {{#each search_product }}
 
             <div class="table-row">
-                <!-- Detalles -->
+                   <!-- Detalles -->
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="cell">
 
@@ -81,14 +81,14 @@
                         <div class="margin-r-10">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <h5>{{{doc.name}}}</h5>
-                                <h6>
-                                    {{#each doc.tags}}
+                                 <h6>
+                                {{#each doc.tags}}
                                     <span class="text-uppercase margin-top label bg-blue">{{this}}</span>
-                                    {{/each}}
+                                {{/each}}
                                 </h6>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+                            
                                 <div class="btn-group dropright">
                                     <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}"
                                         onclick="cat_all_variations_get(this)" product_id="{{{doc._id}}}"
@@ -112,7 +112,7 @@
                                         </div>
                                     </ul>
                                 </div>
-                                <div class="btn-group dropright">
+                     <div class="btn-group dropright">
                                     <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}"
                                         onclick="cat_variations_size_get(this)" product_id="{{{doc._id}}}"
                                         variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
@@ -138,12 +138,11 @@
                                         </div>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Agregar Precio -->
+                   <!-- Agregar Precio -->
                 <div class=" cell col-xs-2 col-sm-2 col-md-2 col-lg-2">
                     <div class="btn-group dropright">
                         <button onclick="catalog_get_menu_price(this)" doc_id="{{{doc._id}}}"
@@ -268,17 +267,18 @@
                     <div class="btn-group dropright">
                         <button onclick="catalog_get_menu_stock(this)" doc_id="{{{doc._id}}}"
                             id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}"
-                            type="button" class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            type="button" class=" " data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
 
                             <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
                                 <div class="round-icon pr">
-                                    <span class="material-icons">
-                                        trending_up
-                                    </span>
+                                 <span class="material-icons">
+                                trending_up
+                                </span>
                                 </div>
-                                {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}: {{/with}}
+                                 {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}:    {{/with}}
                                 <label class="counter">
-                                    {{doc.available_quantity}}
+                                  {{doc.available_quantity}}   
                                 </label>
                                 <span class="material-icons">arrow_drop_down</span>
                             </span>
@@ -286,9 +286,9 @@
                         <ul class="dropdown-menu l">
                             <li class="header">Lotes de stock</li>
                             <div id="catalog_new_stock_list_{{doc._id}}">
-
+                              
                             </div>
-                            <div role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true"
+                            <div  role="tabpanel" aria-labelledby="item-edit-variants" aria-expanded="true"
                                 class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <span class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     Agregar Stock
@@ -301,18 +301,16 @@
                                                 price_change
                                             </span>
                                         </span>
-                                        <input id="new_cost_stock_var_{{doc.variant_id}}" class="col-sm-4 form-control"
-                                            type="number" placeholder="Precio de costo" value="">
+                                      <input id="new_cost_stock_var_{{doc.variant_id}}" class="col-sm-4 form-control" type="number" placeholder="Precio de costo" value="">
 
                                     </div>
                                 </div>
                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="input-group">
-                                        <input id="add_stock_var_{{doc.variant_id}}" class="form-control" type="number"
-                                            placeholder="Cantidad" value="">
-
+                                          <input id="add_stock_var_{{doc.variant_id}}" class="form-control" type="number"placeholder="Cantidad" value="">
+                                                    
                                         <span class="input-group-addon">
-                                            <button onclick="add_stock_var(this)" id="add_stock_var_{{doc.variant_id}}"
+                                            <button onclick="add_stock_var(this)"   id="add_stock_var_{{doc.variant_id}}"
                                                 doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}"
                                                 input_id="stock_invetary"
                                                 class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
@@ -337,187 +335,6 @@
             <!-- Repetir para más filas -->
         </div>
     </div>
-</div>
-
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
-    {{#each search_product }}
-
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
-
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-            <div class="margin-r-10 ">
-                <input type="checkbox" checked="" class="margin-r-10">
-            </div>
-            <div class="margin-r-10 ">
-                {{#userCtx 'catalog' 'edit'}}
-                <div class="Switch" onclick="">
-                    <input id="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" name="switch_variation" {{#ifEquals
-                        status.status true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{doc._id}}}"
-                        variant_id="{{doc.variant_id}}" input_id="status" onclick="cat_edit_chekbox(this)" />
-                    <label for="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" class="label-primary"></label>
-                </div>
-
-                <div class="margin-t-10 padding-10 indicator btn-group">
-                    <button id="" type="button"
-                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-left "
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="material-icons">more_vert</span>
-                    </button>
-                    <ul class="dropdown-menu pull-left">
-                        <li>
-                            <a onclick="catalog_edit_item(this)" doc_id="{{{doc._id}}}"
-                                id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                variant_id="{{doc.variant_id}}" href="#">
-                                <span class="material-icons">
-                                    create
-                                </span>
-                                <span>Editar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a onclick="catalog_product_delete(this)" doc_id="{{{doc._id}}}"
-                                variant_id="{{doc.variant_id}}" href="#">
-                                <span class="material-icons">
-                                    delete
-                                </span>
-                                <span>Eliminar</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                {{/userCtx}}
-            </div>
-
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="margin-r-10 ">
-                <div class="cover-img-small">
-                    {{#if doc.picture_min}}
-                    <img src="{{{doc.picture_min}}}" class="img-card-80">
-                    {{else}}
-                    <img src="/public/app/v4.0/dist/img/foto_fondo.png" class="img-card-80">
-                    {{/if}}
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-            <div class="btn-group dropright">
-                <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}" onclick="cat_all_variations_get(this)"
-                    product_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
-                    aria-expanded="true">
-                    <span id="bg-select-color" class="btn btn-default">
-                        {{#if doc.picture_min}}
-                        <img src="{{{doc.picture_min}}}" class="var_img img-card-mini s round">
-                        {{else}}
-                        <img src="/public/app/v4.0/dist/img/foto_fondo.png" class="var_img img-card-mini s round">
-                        {{/if}}
-                        <span class="material-icons">arrow_drop_down</span>
-                    </span>
-                </button>
-                <ul class="card-loader dropdown-menu mini ">
-                    <div id="cat_all_variations_get{{{doc._id}}}">
-                        <div class="spinner-box">
-                            <div class="three-quarter-spinner primary"></div>
-                        </div>
-                    </div>
-                </ul>
-            </div>
-            <div class="btn-group dropright">
-                <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}" onclick="cat_variations_size_get(this)"
-                    product_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
-                    aria-expanded="true">
-                    <span id="bg-select-color" class="btn btn-default">
-                        {{#each doc.attribute_combinations as | ac |}}
-                        <!-- Hago la comprobacion de si es un color -->
-                        {{#ifEquals id 'SIZE' }}
-                        <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
-                            data-original-title="{{{id_name}}}">
-                            <span> {{value}} </span>
-                        </div>
-                        {{/ifEquals}}
-                        {{/each}}
-                        <span class="material-icons">arrow_drop_down</span>
-                    </span>
-                </button>
-                <ul class="card-loader dropdown-menu mini ">
-                    <div id="cat_variant_{{{doc._id}}}">
-                        <div class="spinner-box">
-                            <div class="three-quarter-spinner primary"></div>
-                        </div>
-                    </div>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h5>{{{doc.name}}}</h5>
-                <h6>
-                    {{#each doc.tags}}
-                    <span class="text-uppercase margin-top label bg-blue">{{this}}</span>
-                    {{/each}}
-                </h6>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                <div class="btn-group dropright">
-                    <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}" onclick="cat_all_variations_get(this)"
-                        product_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
-                        aria-expanded="true">
-                        <span id="bg-select-color" class="btn btn-default">
-                            {{#if doc.picture_min}}
-                            <img src="{{{doc.picture_min}}}" class="var_img img-card-mini s round">
-                            {{else}}
-                            <img src="/public/app/v4.0/dist/img/foto_fondo.png" class="var_img img-card-mini s round">
-                            {{/if}}
-                            <span class="material-icons">arrow_drop_down</span>
-                        </span>
-                    </button>
-                    <ul class="card-loader dropdown-menu mini ">
-                        <div id="cat_all_variations_get{{{doc._id}}}">
-                            <div class="spinner-box">
-                                <div class="three-quarter-spinner primary"></div>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
-                <div class="btn-group dropright">
-                    <button id="var_btn_{{{doc._id}}}" id="var_btn_{{{doc._id}}}"
-                        onclick="cat_variations_size_get(this)" product_id="{{{doc._id}}}"
-                        variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown" aria-expanded="true">
-                        <span id="bg-select-color" class="btn btn-default">
-                            {{#each doc.attribute_combinations as | ac |}}
-                            <!-- Hago la comprobacion de si es un color -->
-                            {{#ifEquals id 'SIZE' }}
-                            <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom"
-                                title="{{{id_name}}}" data-original-title="{{{id_name}}}">
-                                <span> {{value}} </span>
-                            </div>
-                            {{/ifEquals}}
-                            {{/each}}
-                            <span class="material-icons">arrow_drop_down</span>
-                        </span>
-                    </button>
-                    <ul class="card-loader dropdown-menu mini ">
-                        <div id="cat_variant_{{{doc._id}}}">
-                            <div class="spinner-box">
-                                <div class="three-quarter-spinner primary"></div>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    {{/each}}
-
 </div>
 
 
@@ -628,18 +445,18 @@
             var price_list = await L_catalog_db.get('price_list');
             var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
 
-            // "stock_invetary":
+           // "stock_invetary":
 
-            const new_variant = {
+             const new_variant = {
                 variant: variant,
                 _id: doc_id,
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
                 price_list: price_list.price_list,
                 stock_invetary: variant.stock_invetary,
-                available_quantity: variant.available_quantity,
-                sold_quantity: variant.sold_quantity,
-                limit_discount: variant.limit_discount,
+                available_quantity:variant.available_quantity,
+                sold_quantity:variant.sold_quantity,
+                limit_discount:variant.limit_discount,
 
             }
 
