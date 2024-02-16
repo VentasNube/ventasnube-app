@@ -1,23 +1,17 @@
-
 <div class="padding-10">
-       <h4>
-        {{#userCtx 'catalog' 'admin'}}
-                            <div class="Switch" onclick="">
-                                <input id="{{variant._id}}_status_stock_control_checkbox" name="switch_variation"
-                                    {{#ifEquals status.status true }} checked {{/ifEquals}} value="" type="checkbox"
-                                    doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" input_id="status"
-                                    onclick="cat_edit_chekbox(this)" />
-                                <label for="{{variant._id}}_status_stock_control_checkbox"
-                                    class="label-primary"></label>
-                            </div>
-      {{/userCtx}}                         
- 
-{{#with ws_lang_data}} {{m_catalog_edit_stock}}:{{/with}}
-
-    {{available_quantity}}
-</4h>
-
- <!---div class="input-group">
+    <h4>
+            {{#userCtx 'catalog' 'admin'}}
+                <div class="Switch" onclick="">
+                    <input id="{{variant._id}}_status_stock_control_checkbox" name="switch_variation" {{#ifEquals status.status
+                        true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{doc._id}}}"
+                        variant_id="{{doc.variant_id}}" input_id="status" onclick="cat_edit_chekbox(this)" />
+                    <label for="{{variant._id}}_status_stock_control_checkbox" class="label-primary"></label>
+                </div>
+            {{/userCtx}}
+        {{#with ws_lang_data}} {{m_catalog_edit_stock}}:{{/with}}
+        {{available_quantity}}
+        </4h>
+        <!---div class="input-group">
                                           <input id="edit_new_stock_var_{{variant._id}}" class="form-control" type="number" placeholder="Cantidad" value="{{available_quantity}}">
                                                     
                                         <span class="input-group-addon">
@@ -25,68 +19,66 @@
                                                 <span class="material-icons">add_circle</span>
                                             </button>
                                         </span>
-                                </div-->
-                                
-<h4>
-      {{#userCtx 'catalog' 'admin'}}
-                            <div class="Switch" onclick="">
-                                <input id="{{variant._id}}_status_stock_control_lote_checkbox" name="switch_variation"
-                                    {{#ifEquals status.status true }} checked {{/ifEquals}} value="" type="checkbox"
-                                    doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" input_id="status"
-                                    onclick="cat_edit_chekbox(this)" />
-                                <label for="{{variant._id}}_status_stock_control_lote_checkbox"
-                                    class="label-primary"></label>
-                            </div>
-      {{/userCtx}}      
-{{#with ws_lang_data}} {{m_catalog_edit_stock}} total por lotes:{{/with}}
-{{#available_stock variant.stock_invetary}}{{/available_stock}}
-</4h>
+        </div-->
+        <h4>
+            {{#userCtx 'catalog' 'admin'}}
+            <div class="Switch" onclick="">
+                <input id="{{variant._id}}_status_stock_control_lote_checkbox" name="switch_variation" {{#ifEquals
+                    status.status true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{doc._id}}}"
+                    variant_id="{{doc.variant_id}}" input_id="status" onclick="cat_edit_chekbox(this)" />
+                <label for="{{variant._id}}_status_stock_control_lote_checkbox" class="label-primary"></label>
+            </div>
+            {{/userCtx}}
+            {{#with ws_lang_data}} {{m_catalog_edit_stock}} total por lotes:{{/with}}
+            {{#available_stock variant.stock_invetary}}{{/available_stock}}
+            </4h>
 </div>
 {{#each variant.stock_invetary}}
 
 <div class="padding-10">
-    
-<li class="list-group-item ripple ">
-    {{#ifEquals type "in" }}
-    <span class="material-icons text-green">
-        check_circle
-    </span>
-    {{/ifEquals}}
-    {{#ifEquals type "out" }}
-    <span class="material-icons text-red">
-        highlight_off
-    </span>
-    {{/ifEquals}}
 
-    <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
-        data-original-title="Creado:{{in_datetime}}">
-        history
-    </span>
-    <span class="material-icons text-green" data-toggle="tooltip" data-placement="bottom" title=""
-        data-original-title="Stock inicial">
-        moving
-    </span>
-    {{in_stock}}
-    <span class="material-icons text-red" data-toggle="tooltip" data-placement="bottom" title=""
-        data-original-title="Vendidos">
-        trending_down
-    </span>
-    {{out_stock}}
-
-    <div class="pull-right">
-
+    <li class="list-group-item ripple ">
         {{#ifEquals type "in" }}
-        <span class="margin-r-10">{{#with ../../ws_lang_data}}
-            {{{m_catalog_edit_cost}}} {{/with}}:
-            {{currency_value}}{{cost_price}}</span>
-        <span class="pull-right"> {{#with ../../ws_lang_data}}
-            {{{m_catalog_edit_enable}}} {{/with}}
-            <span class="badge"> {{real_stock}}</span>
+        <span class="material-icons text-green">
+            check_circle
+        </span>
+        {{/ifEquals}}
+        {{#ifEquals type "out" }}
+        <span class="material-icons text-red">
+            highlight_off
         </span>
         {{/ifEquals}}
 
-    </div>
-</li>
+        <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+            data-original-title="Creado:{{in_datetime}}">
+            history
+        </span>
+        <span class="material-icons text-green" data-toggle="tooltip" data-placement="bottom" title=""
+            data-original-title="Stock inicial">
+            moving
+        </span>
+        {{in_stock}}
+        <span class="material-icons text-red" data-toggle="tooltip" data-placement="bottom" title=""
+            data-original-title="Vendidos">
+            trending_down
+        </span>
+        {{out_stock}}
+
+        <div class="pull-right">
+
+            {{#ifEquals type "in" }}
+                <span class="margin-r-10">
+                    {{#with ../../ws_lang_data}} {{{m_catalog_edit_cost}}} {{/with}}:
+                    {{currency_value}}{{cost_price}}
+                </span>
+                <span class="pull-right"> {{#with ../../ws_lang_data}}
+                    {{{m_catalog_edit_enable}}} {{/with}}
+                    <span class="badge"> {{real_stock}}</span>
+                </span>
+            {{/ifEquals}}
+
+        </div>
+    </li>
 
 
 </div>

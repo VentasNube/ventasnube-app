@@ -333,17 +333,18 @@
                                     <h4 class="tittle_input"><strong>Controlar stock?</strong></h4>
                                     <div class="input-group">
                                         <span class="input-group-addon font-size-25 padding-0">
-                                          NO
+                                            NO
                                         </span>
                                         <span class="input-group-addon font-size-25 padding-0">
                                             <div class="Switch" onclick="">
-                                                <input class="new_control_stock_checkbox" id="new_control_stock_checkbox"
-                                                    name="new_control_stock_checkbox" value="" type="checkbox" onclick="" />
+                                                <input class="new_control_stock_checkbox"
+                                                    id="new_control_stock_checkbox" name="new_control_stock_checkbox"
+                                                    value="" type="checkbox" onclick="" />
                                                 <label for="new_control_stock_checkbox" class="label-primary"></label>
                                             </div>
                                         </span>
                                         <span class="input-group-addon font-size-25 padding-0">
-                                          Si
+                                            Si
                                         </span>
                                     </div>
                                 </div>
@@ -352,8 +353,7 @@
                                     <div class="input-group">
                                         <input onkeyup="new_porcent_price(this)" name="new_porcent_value"
                                             class="new_porcent_value form-control font-size-25" type="number"
-                                            placeholder="Stock Minimo"
-                                            value="">
+                                            placeholder="Stock Minimo" value="">
                                     </div>
                                 </div>
 
@@ -483,12 +483,17 @@
     <div class="right_nav_footer text-center ">
         <!--button type="button" class="btn btn-primary"><span class="material-icons"> print </span> Imprimir </button-->
         {{#userCtx 'catalog' 'edit'}}
-        <button onclick="catalog_new_product(this)" doc_id="" variant_id="" type="button"
-            class="btn btn-primary btn-full-with">
-            <!--span id="preloader_up_pic" style="display:" class="material-icons material-icon-spinner">sync</span-->
-            <span id="preloader_finish" class="material-icons"> more</span>
-            {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
-        </button>
+            <button onclick="catalog_new_product(this)" doc_id="" variant_id="" type="button" class="btn btn-primary btn-full-with">
+
+                <span id="preloader_new_product" class="hidden material-icons">
+
+                    <div class="three-quarter-spinner primary"></div>
+                    
+                </span>
+
+                {{#with ws_lang_data}} {{{t_new_product}}}{{/with}}
+
+            </button>
         {{/userCtx}}
     </div>
 </div>
@@ -499,7 +504,6 @@
 
     /// NUEVO PRODUCTO ///// 
     var selectedFile; // Variable global para almacenar el archivo seleccionado
-
     function new_select_type_order(opcion) {
         const type_order_select = opcion.getAttribute('type_order');
         const type_order_icon_select = opcion.querySelector('.material-icons').textContent;
@@ -913,6 +917,9 @@
     // Nueva funcion de carga de productos, 
     async function catalog_new_product(element) {
         try {
+
+             $('#preloader_new_product').show();
+
             // Recoge los mensajes desde los atributos de los campos
             const new_doc_name = $("#catalog_new_product_name_input").val();
             const new_product_name_error = $("#catalog_new_product_name_input").attr('data-msg-required');
@@ -946,34 +953,16 @@
             const new_tax_list_id = $('#new_tax_list_var_select').val();
             const taxItem = tax_doc.tax.find(response => response.id == new_tax_list_id);
             const tax = [taxItem];
-
             const currency_doc = await L_catalog_db.get('currency_list');
             const currency_default = currency_doc['currency_default'];
-
-
-
-
             const new_sku_value = $('#new_sku').val();
             const sku = {
                 id: "EAN",
                 value: new_sku_value
             };
-
             const price_doc = await L_catalog_db.get('price_list');
             const new_price_list_id = $('#new_price_list_var_select').val();
             const price_list_arr = price_doc.price_list.find(response => response.id == new_price_list_id);
-
-            /* const price_list = [
-                    {
-                        id: price_list_arr.id,
-                        value: new_price,
-                        value_porcent: new_porcent_value,
-                        value_swich: new_porcent_checkbox,
-                        currency: currency_default
-                    }
-                ];
-    
-                */
             const price_list = [
                 {
                     id: price_list_arr.id,
@@ -983,12 +972,7 @@
                     updateUser: new_doc_author
                 }
             ];
-
-
-
             const new_radom_id = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
-
-
             const stock_invetary = [
                 {
                     id: new_radom_id,
@@ -1008,26 +992,6 @@
                 }
             ];
 
-
-
-            /*
-                    const stock_invetary = [
-                        {
-                            id: new_radom_id,
-                            create: new_doc_time,
-                            in_datetime: new_doc_time,
-                            update_datetime: new_doc_time,
-                            updateUser: new_doc_author,
-                            type: 'in',
-                            in_stock: new_stock_unit,
-                            out_stock: 0,
-                            real_stock: new_stock_unit,
-                            cost_price: new_cost_stock,
-                            currency: currency_default,
-                            location_id: 1
-                        }
-                    ];
-            */
             const textoTags = [];
             divTags.childNodes.forEach(childNode => {
                 if (childNode.nodeType === Node.ELEMENT_NODE) {
@@ -1150,7 +1114,6 @@
                     const new_model_list = await L_catalog_db.get('model_list');
                     const attributes = await L_catalog_db.get('attributes');
                     const user_roles_permisions = user_Ctx.userCtx.roles;
-
                     const product_doc_array = {
                         product_doc: product_doc,
                         price_list: price_doc.price_list,
@@ -1162,11 +1125,21 @@
                         model_list: new_model_list,
                         attributes_list: attributes
                     };
+                   
                     const up_img = await uploadImage(new_doc_id, new_variant_id);
+
                     console.log('up_img', up_img);
                     console.log('product_doc_array', product_doc_array);
-
                     $('.righ_nav_content').html('<div class="cart_items_trash"><span class="material-icons xl">collections</span> <br> <span class="cart_items_title"> Se creo el producto con exito!</span></div>');
+               
+                    createCookie('left_nav_open_ws_' + ws_id, false, 30);
+                    $('#right_main').removeClass('move-right');
+                    const m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
+                    history.replaceState(null, null, m_url);
+
+                    
+
+                      $('#preloader_new_product').hide();
 
                     Snackbar.show({
                         text: 'Se creo con exito!' + new_doc_id,
@@ -1175,10 +1148,6 @@
                         actionTextColor: "#0575e6",
                     });
 
-                    createCookie('left_nav_open_ws_' + ws_id, false, 30);
-                    $('#right_main').removeClass('move-right');
-                    const m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
-                    history.replaceState(null, null, m_url);
                 } else {
                     $(element).css("color", "red");
                 }
@@ -1186,20 +1155,13 @@
             } else {
                 return false;
             }
+
         } catch (err) {
             console.log(err);
         }
     }
 
-
-
-
-
-
-
     // ACTUALIZAR PRECIOS 
-
-
     function new_porcent_priceOld_no() {
         var new_cost_stock = $('#new_cost_stock').val();
         var new_porcent_checkbox = $('#new_porcent_checkbox').val();

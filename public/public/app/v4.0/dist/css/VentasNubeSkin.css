@@ -617,6 +617,16 @@ form {
     display: block;
 }
 
+.img-card-catalog-list {
+    height: 80px !important;
+    width: auto !important;
+    max-width: 80px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
 .img-card-auto {
     height: auto !important;
     width: 303px !important;
@@ -14158,7 +14168,7 @@ board-item-content
 }
 
 .new_table .table-header, .table-row {
-    background-color: #d2d6de;
+   /* background-color: #d2d6de;*/
     display: flex;
 }
 
@@ -14172,9 +14182,32 @@ board-item-content
     flex: 1;
     padding: 10px;
     display: flex;
+    align-content: stretch;
+    justify-content: flex-start;
     align-items: center;
-    /*border: 1px solid #ddd;*/
 }
+
+.new_table .cell-left {
+    flex: 1;
+   /* padding: 10px;*/
+    display: flex;
+    align-content: stretch;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.new_table .cell-right {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    align-content: stretch;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+
+
 
 
 /* Estilos para el botón de Material Design */

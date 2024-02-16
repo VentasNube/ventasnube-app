@@ -822,13 +822,14 @@ async function catalog_new_item(element) {
 }
 
 // BOTON CREAR PRODUCTO
+/*
 $(document).on('click', '.catalog_new_item', function (event) {
        // $('#master_popup').modal('show');
        // get_catalog_new_item();
        catalog_new_item();
 
 });
-
+*/
 // TRAE EL FORMULARIO
 async function catalog_new_price_item(element) {
     try {
@@ -938,228 +939,6 @@ async function product_new_price_pop(element) {
 ///////////////////////////////////////////////
 // NUEVA VARIABLE EN NUEVO ( PRODUCTO ) 2023 //
 //////////////////////////////////////////////
-
-// AGREGAR variable al producto 
-async function catalog_new_item_new_product_old_no(element) {
-
-    try {
-        const new_doc_name = $("#catalog_new_product_name_input").val(); //Id del documento a editar
-        const new_doc_time = new Date(); //Id del documento a editar
-        const new_doc_author = user_Ctx.userCtx.name; //Id del documento a editar
-        const new_doc_workspace_id = ws_id; //Id del documento a editar
-        // Seleccionar el elemento div con el id "new_prod_tag_main" y la clase "chips_items_main"
-        const divTags = document.querySelector('div#new_prod_tag_main.chips_items_main');
-        //Cat
-        const new_doc_cat_value = $('#catalog_select_cat_value').html();
-        const new_doc_cat_id = $('#catalog_select_cat_value').attr('catalog_select_cat_value');
-        //Trade
-        const new_doc_trade_value = $('#catalog_select_trade_value').html();
-        const new_doc_trade_id = $('#catalog_select_trade_value').attr('catalog_select_trade_value');
-        //Trade
-        const new_doc_model_value = $('#catalog_select_model_value').html();
-        const new_doc_model_id = $('#catalog_select_model_value').attr('catalog_select_model_value');
-        const category = { id: new_doc_cat_id, value: new_doc_cat_value };
-        const trade = { id: new_doc_trade_id, value: new_doc_trade_value };
-        const model = { id: new_doc_model_id, value: new_doc_model_value };
-        const type = $('#new_type_value_select').attr('type_order');
-        console.log('TYPE ITEM :', type);
-        // Obtener el texto de cada hijo del elemento div
-        const textoTags = [];
-        divTags.childNodes.forEach(childNode => {
-            if (childNode.nodeType === Node.ELEMENT_NODE) {
-                const span = childNode.querySelector('span.chips_text');
-                if (span) {
-                    textoTags.push(span.textContent);
-                }
-            }
-        });
-        const new_doc_tags = textoTags
-        var doc_id_s = String(new_doc_name); //Combierto el id del doc en un string
-        var new_doc_id_random = Math.floor(Math.random() * (+'1000000' - +'1')) + +'1';
-
-        var tax_doc = await L_catalog_db.get('tax_list');
-        var price_doc = await L_catalog_db.get('price_list');
-        var currency_doc = await L_catalog_db.get('currency_list');
-        let currency_select = currency_doc.currency_default;
-        let tax_select = tax_doc.tax;
-
-        let textoSinEspacios = new_doc_name.replace(/\s+/g, '-');
-
-        const new_doc_id = textoSinEspacios + "-" + new_doc_id_random;
-        var new_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
-
-
-        // Documento variable template
-        var variations = [{
-            "id": new_variant_id,
-            currency_select,
-            tax_select,
-            "sold_quantity": 0,
-            "available_quantity": 0,
-            "limit_discount": 0,
-            "status": {
-                "status": true,
-                "value": ""
-            },
-            "sku": {
-                "id": "EAN",
-                "value": ""
-            },
-            "pictures": [
-                {
-                    "max": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png",
-                    "min": "/public/app/v4.0/dist/img/catalog/product-thumbnail.png"
-                }
-            ],
-            "price_list": [
-                {
-                    "id": 1,
-                    "value": 100,
-                    "currency": {
-                        "id": "ARS",
-                        "value": "$"
-                    },
-                }
-            ],
-            "stock_invetary": [
-                {
-                    "id": 311,
-                    "create": "2023-06-15T04:54:29.744Z",
-                    "in_datetime": "2023-06-15T04:54:29.744Z",
-                    "update_datetime": "2023-06-15T04:54:29.744Z",
-                    "updateUser": "smartmobile.com.ar@gmail.com",
-                    "type": "in",
-                    "in_stock": 50,
-                    "out_stock": 0,
-                    "real_stock": 50,
-                    "cost_price": 1000,
-                    "currency_id": "2",
-                    "currency_value": "$",
-                    "currency_name": "Peso Argentino",
-                    "location_id": 1
-                }
-            ],
-            "attribute_combinations": [
-                {
-                    "id": "COLOR",
-                    "id_name": "Color",
-                    "name": "Roja",
-                    "value": "EF5350"
-                },
-                {
-                    "id": "SIZE",
-                    "id_name": "Talle",
-                    "name": "Medium",
-                    "value": "M"
-                },
-                {
-                    "id": "WEIGHT",
-                    "id_name": "Peso",
-                    "unit": "Kg",
-                    "name": "Peso",
-                    "value": 10
-                },
-                {
-                    "id": "MEASURES",
-                    "id_name": "Dimension",
-                    "name": "Dimension",
-                    "unit": "cm",
-                    "width": 100,
-                    "height": 50,
-                    "value": "100cm x 50cm"
-                }
-            ],
-            "description": {
-                "status": true,
-                "value": "Nueva Descripcion"
-            }
-        }];
-        // Documento template producto
-        var response = await L_catalog_db.put({
-            _id: new_doc_id,
-            "name": new_doc_name,
-            "author": new_doc_author,
-            "start_time": new_doc_time,
-            "workspace_id": new_doc_workspace_id,
-            "status": "active",
-            "condition": "new",
-            "type": type,
-            "tags": new_doc_tags,
-            category,
-            trade,
-            model,
-            "cost_price": [
-                {
-                    id: 1,
-                    value: 1000,
-                    id_stock_invetary: 311
-                }
-            ],
-            "permalink": null,
-            "descriptions": [
-                null
-            ],
-            variations,
-            "last_update_at": [
-                {
-                    "username": new_doc_author,
-                    "datetime": new_doc_time
-                }
-            ]
-        });
-        if (response) {
-            //Imprimo el item en la pantalla 
-            // $(element).prev('div').append('<div class="chips_item  s-card-cat pull-left" val_text="" > <a    href="#" onclick="dell_tag(this)"><span class="button material-icons text-s lh-n">  highlight_off</span> </a><span class="chips_text"> Se creo'+ new_doc_id +'</span></div>');
-
-            var product_doc = await L_catalog_db.get(new_doc_id);
-            var new_category_list = await L_catalog_db.get('category_list');
-            var new_trade_list = await L_catalog_db.get('trade_list');
-            var new_model_list = await L_catalog_db.get('model_list');
-            var price_doc = await L_catalog_db.get('price_list');
-            var currency_doc = await L_catalog_db.get('currency_list');
-
-            var attributes = await L_catalog_db.get('attributes');
-            var user_roles_permisions = user_Ctx.userCtx.roles;
-
-            //  console.log('user_roles_permisions', user_roles_permisions);
-
-            var product_doc_array = {
-                product_doc: product_doc,
-                price_list: price_doc.price_list,
-                currency_list: currency_doc.currency_list,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_roles_permisions,
-                category_list: new_category_list,
-                trade_list: new_trade_list,
-                model_list: new_model_list,
-                attributes_list: attributes
-            }
-
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_variation.hbs', '#create_prod_new_variations_main', product_doc_array);
-
-            Snackbar.show({
-                text: 'Se creo con exito!' + new_doc_id,
-                actionText: 'ok',
-                pos: 'bottom-right',
-                actionTextColor: "#0575e6",
-            });
-
-            console.log('product_doc', product_doc_array);
-            // alert('Holaaaaaa');
-            createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-            $('#right_main').removeClass('move-right');
-            var m_url = '?type=catalog&?t=create_item&?id=' + new_doc_id + '&?v=' + new_variant_id;
-            history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion 
-            //new_variations_main
-        } else {
-            //Si no se grabo tira un error en pantalla
-            $(element).css("color", "red");
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-}
 
 // AGREGAR variable al producto 
 async function catalog_new_item_new_variant(element) {
@@ -1439,7 +1218,6 @@ async function dell_tag(element) {
         console.log(err);
     }
 }
-
 
 // CRUD CATEGORIAS 2023 
 // AGREGO
