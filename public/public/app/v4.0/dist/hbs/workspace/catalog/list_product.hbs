@@ -1,8 +1,8 @@
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
 
-<div class="table-responsive margin-b-30 padding-b-30">
-    <div class="table flex-table new_table">
+<div class="margin-b-30 padding-b-30">
+    <div class="new_table table flex-table">
         <!-- Encabezado de la tabla -->
         <!--div class="table-header">
             <div class="cell"></div>
@@ -15,9 +15,7 @@
         <!-- Cuerpo de la tabla -->
         <div class="table-body" id="tableBody">
             <!-- Filas de la tabla -->
-
             {{#each search_product }}
-
             <div class="table-row">
                 <!-- Detalles -->
                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -270,8 +268,7 @@
 
                     </div>
                 </div>
-                <!-- Agregar Precio -->
-                <!-- Agregar Stock -->
+                <!-- Agregar Precio --><!-- Agregar Stock -->
                 <div class=" cell-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
                     <div class="pull-right">
                         {{#userCtx 'catalog' 'edit'}}
@@ -314,7 +311,6 @@
                         {{/userCtx}}
                     </div>
                 </div>
-
             </div>
             {{/each}}
             <!-- Repetir para más filas -->
