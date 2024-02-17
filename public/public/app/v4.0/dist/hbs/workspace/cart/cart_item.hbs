@@ -1,8 +1,9 @@
 {{#ifMe items_product '0'}}
 <div class="cart_items_trash">
     <span class="material-icons xl">
-              shopping_cart
-    </span> <br>
+        shopping_cart
+    </span>
+    <br>
     <span class="cart_items_title">
     </span>
 </div>
@@ -14,7 +15,8 @@
             <button class="boton-round-mini-up primary" onclick="variations_add_cart_to_fav(this)"
                 sub_tot_des="{{sub_tot_des}}" price_cost="{{price_cost}}" price="{{price}}" product_id="{{_id}}"
                 variant_id="{{variant_id}}" quantity="{{quantity}}">
-                <span class="material-icons">shopping_cart_checkout</span>
+                <span class="material-icons">favorite</span>
+
             </button>
         </div>
 
@@ -27,7 +29,7 @@
         <div class="s-card-actv-item-prod-fav-item">
             <div class="s-card-actv-item-name">
                 {{name}}
-                 <!--
+                <!--
                 {{#each attribute_combinations}}
                 Hago la comprobacion de si es un color
 
@@ -54,35 +56,47 @@
                 </div>
             </div>
 
-             <span class="s-card-actv-item-price-left ">
+            <span class="s-card-actv-item-price-left ">
 
-
-                <span class="hidden-xs text-red" data-toggle="tooltip" data-placement="top" data-original-title="Valor del impuesto">
+                <span class="hidden-xs text-red" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Valor del impuesto">
                     {{#each taxes}}
-                        {{name}}:{{../currency}}{{price_tax}}
+                    {{name}}:{{../currency}}{{price_tax}}
                     {{/each}}
                 </span>
-                
-                <span class="text-red" data-toggle="tooltip" data-placement="top" data-original-title="Descuento Unitario">
+
+                <span class="text-red" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Descuento Unitario">
                     {{discount}}% : {{currency}}{{discount_tot}}
                 </span>
 
             </span>
 
             <span class="s-card-actv-item-price-right">
-                 <small class="card_product_quantity" data-toggle="tooltip" data-placement="top"
-                    data-original-title="Cantidad de productos">{{quantity}}</small>
-                    x
+                
                 <small>
                     <div class="round-icon pr xs" data-toggle="tooltip" data-placement="top"
                         data-original-title="Precio Mayorista"><span> M </span></div>
-                    {{currency}}
-                    {{price}}
+                    <small>{{currency}}</small>
+                    <span class="price_uni"> {{price}}</span>
                 </small>
-                <span class="tot"> {{currency}}{{sub_tot_dis}}</span>
+                
+                <button type="button" onclick="variations_cart_res_uni(this)" class="round-icon pr xs"
+                    data-toggle="tooltip" data-placement="top" data-original-title="Restar unidades"><span> - </span>
+                </button>
+                <small class="card_product_quantity" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Cantidad de productos">
+                    {{quantity}}
+                </small>
+                <button type="button" onclick="variations_cart_sum_uni(this)" class="round-icon pr xs"
+                    data-toggle="tooltip" data-placement="top" data-original-title="Sumar unidades"><span> + </span>
+                </button>
+                x
+                <span class="currency">{{currency}}</span>
+                <span class="tot"> {{sub_tot_dis}}</span>
             </span>
         </div>
-        
+
     </div>
 </div>
 {{/each}}

@@ -11433,12 +11433,21 @@ h1 span{
     padding: 5px 10px 0 0;
 }
 
+
+.s-card-actv-item-price-right .currency {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 13px;
+    text-align: right;
+    margin-right:-5px;
+    padding: 0;
+}
 .s-card-actv-item-price-right .tot {
     font-weight: bold;
     font-size: 20px;
     line-height: 13px;
     text-align: right;
-    padding: 0 0 0 10px;
+    padding: 0;
 }
 
 .s-card-actv-item-price-right .des {

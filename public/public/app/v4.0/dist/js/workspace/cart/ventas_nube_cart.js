@@ -104,108 +104,6 @@ async function get_cart_now(elemnt) {
 }
 
 
-// Creo los arrays con los datos de la BD
-async function all_cart_item_OLD_Ok(todos) {
-    try {
-        let array_cart_items = [];
-        //Creo los array
-        var total_quantity_cart_item = 0
-        var total_cart_neto = 0; //TOTAL NETO    
-        var total_neto_prod = 0; //Total productos 
-        var total_neto_service = 0; //Total Servicios    
-        var total_neto_tax = 0; //Impuestos    
-        var total_neto_discount = 0; //Descuentos
-        var total_neto_pay = 0; //Abonado
-        var total_product = 0;
-        var total_service = 0;
-        var sub_tot_item = 0;
-        var total_neto_item = 0;
-
-        todos.map(function (todo) {
-            var type_item = todo.doc.variant['type'];
-            //calculos matematicos para armar el Carrito
-            var quantity = todo.doc.variant['quantity'];
-            //Valores
-            var price = todo.doc.variant['price'];
-            // var price_cost = todo.doc.variant['price_cost'];
-            var price_tot = price * quantity;
-            var tax = todo.doc.variant.tax;
-            var tax_name = todo.doc.variant.tax_name;
-            var money_value = todo.doc.variant.currency;
-
-            //Descuentos
-            var sub_tot_product = 0;
-            var sub_tot_service = 0;
-            var discount = todo.doc.variant['discount'];
-
-            if (!discount) { discount = 0 };
-            var discount_tot = Math.round((discount / 100) * price_tot);
-            if (type_item === 'product') {
-                var sub_tot_product = Math.round(price_tot - discount_tot);
-                total_neto_prod += +sub_tot_product;
-                sub_tot_item = sub_tot_product;
-                total_neto_item = total_neto_prod;
-                total_product = total_neto_prod;
-            }
-            if (type_item === 'service') {
-                var sub_tot_service = Math.round(price_tot - discount_tot);
-                total_neto_service += +sub_tot_service;
-                sub_tot_item = sub_tot_service;
-                total_neto_item = total_neto_service;
-                total_service = total_neto_service;
-            }
-            //Cargo los datos del array
-            var cart_item = {
-                _id: todo.doc['_id'],
-                _rev: todo.doc['_rev'],
-                variant_id: todo.doc.variant['_id'],
-                sku: todo.doc.variant['sku'],
-                tax: tax,
-                tax_name: tax_name,
-                money_value: money_value,
-                pictures: todo.doc.variant['pictures'], //Img
-                name: todo.doc.variant['name'], //Name
-                quantity: quantity, //Cantidad
-                price: price, //Price
-                price_tot: price_tot, //Total del item
-                discount: discount, //Discount
-                discount_tot: discount_tot, //Tot Discount
-                sub_tot: todo.doc.variant['price'],
-                sub_tot_dis: total_neto_item
-            };
-            //Creo el array con todos los items
-            array_cart_items.push(cart_item);
-            total_quantity_cart_item = array_cart_items.length;
-            //Sumas de tototales
-            total_neto_discount += +discount_tot;
-            total_neto_tax += +tax;
-        });
-        //Creo el array nuevo con los items
-        var cart_items = {
-            items_product: array_cart_items,
-        };
-        // Imprimo todos los items en un solo render asi es mas rapido
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/cart/cart_item.hbs', '#product_cart_items', cart_items);
-    } catch (err) {
-        console.error('inner', err);
-        throw err;
-    } finally {
-        //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
-        total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
-        total_service = parseFloat(total_service);
-        total_cart_neto = total_product + total_service; // Suma los dos valores
-        $('#total_cart_neto').text(total_cart_neto.toFixed(2));
-        $('.cart_n').text(total_quantity_cart_item);
-        $('#total_neto_prod').text(total_product.toFixed(2));
-        $('#total_neto_service').text(total_service.toFixed(2));
-        $('#total_neto_discount').text(total_neto_discount.toFixed(2));
-        $('#total_neto_tax').text(total_neto_tax.toFixed(2));
-        $('#total_neto_pay').text(total_neto_pay.toFixed(2));
-        chek_cart_open_ws();
-        return;
-    }
-}
-
 async function get_price_cost(doc_id,variant_id){
 
     try{
@@ -538,85 +436,6 @@ async function variations_add_cart(element) {
 };
 
 
-
-async function variations_add_cart_NEWNO(element) {
-
-    try {
-        event.preventDefault();
-        //Identificadores
-        let product_id = $(element).attr('product_id'); //Id del producto selccionado
-        let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-        var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
-        var board_name = readCookie('board-now-' + ws_id);
-
-        /* let variant_quantity = $(element).attr('quantity'); //Id de la variable seleccionada
-         let variant_price = $(element).attr('price'); //Id de la variable seleccionada
-         let variant_discount = $(element).attr('discount'); //Id de la variable seleccionada
-         let variant_price_cost = $(element).attr('price_cost'); //Id de la variable seleccionada
- */
-        let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-        let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
-        let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
-
-        let doc = await L_catalog_db.get(product_id);
-        if (doc) {
-            const var_doc = doc.variant;
-            //  const tax = var_doc.tax.value;
-            //    const tax_name = var_doc.tax.name;
-            // console.log(var_doc);
-            const new_variant_doc = {
-                product_id: product_id,
-                product_rev: doc._rev,
-                type: doc.type,
-                variant_id: var_doc.variant_id,
-                id: var_doc.variant_id,
-                sku: var_doc.sku.value,
-                pictures: var_doc.pictures,
-                name: doc.name,
-                attribute_combinations: var_doc.attribute_combinations,
-                price: parseFloat(variant_price),
-                discount: parseFloat(variant_discount),
-                quantity: parseFloat(variant_quantity),
-                // tax: parseFloat(tax),
-                //  tax_name: tax_name,
-                currency: var_doc.price_list[0].currency.value,
-            }
-
-            let rest_add = await add_cart_item(new_variant_doc);
-            // let delete_doc = await user_db.remove(doc._id,doc._rev);
-            if (rest_add) {
-                get_cart(ws_id, board_name);
-                $(this_card_id).find(".ripple_div").addClass('add');
-                $(this_card_id).find(".content").addClass('ripple_efect');
-                $("#cart_item_tab").addClass('active in');
-                $("#cart_item_tab_icon").addClass('active');
-                $("#new_item_tab").removeClass('active in');
-                $("#new_item_tab_icon").removeClass('active');
-                //   Activo la animacion del tab favoritos
-                $("#fav_item_tab").removeClass('active in');
-                $("#fav_item_tab_icon").removeClass('active');
-            }
-
-        }
-
-    } catch (err) {
-        Snackbar.show({
-            text: err,
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Recargar',
-            actionTextColor: "#dd4b39",
-            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);
-            }
-        });
-        console.log(err);
-    }
-};
-
-
-
-
 async function variations_add_cart_to_fav(element) {
 
     try {
@@ -892,53 +711,6 @@ async function all_fav_item(todos) {
 }
 
 //Nueva funcion de agregar al producto al favoritos
-function variations_add_fav_OLD_NO(element) {
-    event.preventDefault();
-    //Identificadores"cart-fav-item-purcharse2023-07-08T23:15:39.683Z"
-    let product_id = $(element).attr('product_id'); //Id del producto selccionado
-    let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
-    var this_card_id = '#card_id_' + product_id; //Id del producto Seleccionado
-    //Detalles
-    let variant_name = $('#var_btn_' + product_id).find('var_name').html(); //Nombre de variable seleccionada
-    let variant_pic = $('#var_btn_' + product_id).find('img-card-mini').attr('src'); //Pic de variable seleccionada
-    //Valores
-    let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-    let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); //Tomo el valor del formulario
-    let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
-    //Busco el doc por id actualizado y hago la carga de datos
-    console.log(element);
-    L_catalog_db.get(product_id, function (err, doc) {
-        if (err) { return console.log(err); }
-        //Busco el id en el array con find funcion de flecha
-        const var_doc = doc.variations.find(element => element.id == variant_id);
-
-        const new_variant_doc = {
-            product_id: product_id,
-            product_rev: var_doc._rev,
-            variant_id: variant_id,
-            id: variant_id,
-            sku: var_doc.sku.value,
-            pictures: var_doc.pictures,
-            name: doc.name,
-            attribute_combinations: var_doc.attribute_combinations,
-            price: parseFloat(variant_price),
-            discount: parseFloat(variant_discount),
-            quantity: parseFloat(variant_quantity),
-            tax: parseFloat(var_doc.tax)
-        }
-
-        if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
-            $(this_card_id).find(".ripple_div").addClass('add');
-            $(this_card_id).find(".content").addClass('ripple_efect');
-            add_fav_item(new_variant_doc);
-            //  console.log(new_variant_doc);
-        }
-        //    renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-    });
-    return false;
-};
-
-
 async function variations_add_fav(element) {
 
     event.preventDefault();
@@ -1050,8 +822,6 @@ async function variations_add_fav(element) {
 };
 
 
-
-
 async function add_fav_item(data, board_name) {
     // console.log(data);
     try {
@@ -1135,29 +905,107 @@ async function dell_fav_item(element) {
       console.log(err);
     }
   }
-// Eliminar productos del carrito
-async function dell_fav_itemOLD_NO(element) {
-    try {
 
-    
-        var item_cart_id = $(element).attr('item_cart_id');
-        var item_cart_rev = $(element).attr('item_cart_rev');
-        user_db.remove(item_cart_id, item_cart_rev);   //Set opacity of element to 0 to close Snackbar    
-        get_cart(ws_id);
 
-    } catch (err) {
-        Snackbar.show({
-            text: 'Hay un erro al eliminar',
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: '<?= lang("Body.b_reload") ?>',
-            actionTextColor: "#dd4b39",
-            onActionClick: function (element) {       //Set opacity of element to 0 to close Snackbar
-                $(element).css('opacity', 0);
-            }
-        });
-        console.log(err);
+//// NEW 2024 //////
+
+
+/*
+let totalServices = 0;
+let totalProducts = 0;
+let totalDiscounts = 0;
+let totalTaxes = 0;
+
+async function variations_cart_res_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    if (quantity > 0) {
+        quantity--;
+        quantityElement.innerText = quantity;
+        updateTotal(button.parentElement, quantity);
     }
+}
+
+async function variations_cart_sum_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    quantity++;
+    quantityElement.innerText = quantity;
+    updateTotal(button.parentElement, quantity);
+}
+
+function updateTotal(parentElement, quantity) {
+    const price = 975000;
+    const total = quantity * price;
+    parentElement.querySelector('.tot').innerText = total;
+
+
+    totalServices += 1000;
+    totalProducts += 2000;
+    totalDiscounts += 500;
+    totalTaxes += 300;
+
+    total_cart_neto = 
+
+    document.getElementById('total_neto_service').innerText = totalServices.toFixed(2);
+    document.getElementById('total_neto_prod').innerText = totalProducts.toFixed(2);
+    document.getElementById('total_neto_discount').innerText = totalDiscounts.toFixed(2);
+    document.getElementById('total_neto_tax').innerText = totalTaxes.toFixed(2);
+
+    let totalNeto = totalServices + totalProducts - totalDiscounts + totalTaxes;
+    
+    document.getElementById('total_cart_neto').innerText = totalNeto.toFixed(2);
+
+}
+
+*/
+let totalServices = 0;
+let totalProducts = 0;
+let totalDiscounts = 0;
+let totalTaxes = 0;
+
+async function variations_cart_res_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    if (quantity > 0) {
+        quantity--;
+        quantityElement.innerText = quantity;
+        updateTotal(button.parentElement, quantity);
+    }
+}
+
+async function variations_cart_sum_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    quantity++;
+    quantityElement.innerText = quantity;
+    updateTotal(button.parentElement, quantity);
+}
+
+
+function updateTotal(parentElement, quantity) {
+    let priceElement = parentElement.querySelector('.price_uni');
+    let price = parseFloat(priceElement.innerText);
+
+    const total = quantity * price;
+    parentElement.querySelector('.tot').innerText = total.toFixed(2);
+
+    // Suma todos los subtotales de los ítems del carrito
+    let subtotals = document.querySelectorAll('.tot');
+    let totalCart = 0;
+    subtotals.forEach(subtotal => {
+        totalCart += parseFloat(subtotal.innerText);
+    });
+
+    // Actualiza los totales
+    totalServices = totalCart; // Asume que todos los ítems son servicios
+    document.getElementById('total_neto_service').innerText = totalServices.toFixed(2);
+    document.getElementById('total_neto_prod').innerText = totalProducts.toFixed(2);
+    document.getElementById('total_neto_discount').innerText = totalDiscounts.toFixed(2);
+    document.getElementById('total_neto_tax').innerText = totalTaxes.toFixed(2);
+
+    let totalNeto = totalServices + totalProducts - totalDiscounts + totalTaxes;
+    document.getElementById('total_cart_neto').innerText = totalNeto.toFixed(2);
 }
 
 

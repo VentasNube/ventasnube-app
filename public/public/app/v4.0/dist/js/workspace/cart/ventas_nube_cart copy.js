@@ -718,3 +718,31 @@ function cart_user_input_out() {
 };
 // Abre el left nav cart
 
+
+//// NEW 2024 //////
+
+async function variations_cart_res_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    if (quantity > 0) {
+        quantity--;
+        quantityElement.innerText = quantity;
+        updateTotal(button.parentElement, quantity);
+    }
+}
+
+async function variations_cart_sum_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    quantity++;
+    quantityElement.innerText = quantity;
+    updateTotal(button.parentElement, quantity);
+}
+
+function updateTotal(parentElement, quantity) {
+    const price = 975000;
+    const total = quantity * price;
+    parentElement.querySelector('.tot').innerText = total;
+}
+
+

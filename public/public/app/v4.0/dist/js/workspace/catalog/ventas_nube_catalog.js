@@ -494,58 +494,6 @@ async function catalog_view_item_url(m_id, m_var_id) {
     }
 }
 
-async function coun_items_cart() {
-
-
-
-}
-
-// FUNCION PARA EDITAR PRODUCTO
-async function catalog_edit_itemNOOL(element) {
-    try {
-        var product_id = $(element).attr('product_id');
-        var variant_id = $(element).attr('variant_id');
-        var new_category_list = await L_catalog_db.get('category_list');
-        var new_trade_list = await L_catalog_db.get('trade_list');
-        var new_model_list = await L_catalog_db.get('model_list');
-
-        var attributes = await L_catalog_db.get('attributes');
-
-        var price_doc = await L_catalog_db.get('price_list');
-        var currency_doc = await L_catalog_db.get('currency_list');
-
-        var product_doc = await L_catalog_db.get(product_id);
-        var var_doc = product_doc.variations.find(response => response.id == variant_id);
-
-        var product_doc_array = {
-            product_doc: product_doc,
-            product_variant: var_doc,
-            name: product_doc.name,
-            tags: product_doc.tags,
-            price_list: price_doc.price_list,
-            currency_list: currency_doc.currency_list,
-            currency_default: currency_doc.currency_default,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            category_list: new_category_list,
-            trade_list: new_trade_list,
-            model_list: new_model_list,
-            attributes_list: attributes,
-        }
-
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        // renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', '#edit_variations_main', product_doc_array);
-        // console.log('product_doc_array', product_doc_array);
-        // alert('Holaaaaaa');
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-        $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
-        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        // return item_print;
-    } catch (err) {
-        console.log(err);
-    }
-}
 
 // FUNCION PARA EDITAR PRODUCTO
 async function catalog_edit_item(element) {
@@ -822,14 +770,6 @@ async function catalog_new_item(element) {
 }
 
 // BOTON CREAR PRODUCTO
-/*
-$(document).on('click', '.catalog_new_item', function (event) {
-       // $('#master_popup').modal('show');
-       // get_catalog_new_item();
-       catalog_new_item();
-
-});
-*/
 // TRAE EL FORMULARIO
 async function catalog_new_price_item(element) {
     try {
@@ -2981,6 +2921,12 @@ async function catalog_get_item_price(doc_id,variant_id) {
         const doc_id_s = String(doc_id);
         var select_div_id = '#catalog_new_price_list_' + doc_id;
 
+       // var select_div_id = '#catalog_new_price_list_' + doc_id;
+       var select_div_id = '#catalog_new_price_list_' + doc_id;
+
+       $(select_div_id).addClass("card-loader");
+
+
         var doc = await L_catalog_db.get(doc_id_s);
         var price_list = await L_catalog_db.get('price_list');
         var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
@@ -2996,12 +2942,13 @@ async function catalog_get_item_price(doc_id,variant_id) {
             //    console.log('new_variant', new_variant);
         // console.log('select_div_id', select_div_id);
              var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_price_get_list.hbs', select_div_id, new_variant);
+
+            $(select_div_id).removeClass("card-loader");
       
     } catch (err) {
         console.log(err);
     }
 }
-
 
 // AGREGO
 async function edit_price_var(element) {
@@ -3077,103 +3024,6 @@ async function edit_price_var(element) {
                 alert("no se actualizo");
             }
         }
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-
-//  2024 UPDATES
-
-// EDITO
-
-async function edit_price_varNO(element) {
-    try {
-        const doc_id = $(element).attr('doc_id');   //traigo el documento a editar
-        const price_id = $(element).attr('price_id');
-        const variant_id = $(element).attr('variant_id');
-
-        const price_value = $('#new_price_list_name_' + price_id).attr('price_value');
-
-        let new_value = $('#new_price_var_' + price_id).val();
-
-        let price_list_id = $('#new_price_list_id' + variant_id).attr('price_id');
-
-        const doc_id_s = String(doc_id);
-
-
-        var new_value_s = Number(new_value);
-        var price_list_id_s = Number(price_list_id)
-
-        //PRUEBAS NUEVAS
-        // var user_Ctx = userCtx;
-        var newDate = new Date(); //fecha actual del navegador
-        var userName = userCtx.userCtx.name;
-
-        //console.log(user_Ctx, 'USER CTX');
-        // console.log(userName, 'USER userName');
-        var doc = await L_catalog_db.get(doc_id_s);
-
-        console.log('doc', doc);
-        //Busco dentro de las variables
-        if (variant_id) {
-            var price_list = doc.price_list.find(response => response.id == price_id);// Traigo el elemento por la id variant
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if (price_list) {
-
-                console.log('price_list', price_list);
-                const price = price_list;//Traigo el ojeto especifico 
-                price.value = new_value_s; //Edito el valor del value por el valor nuevo
-                price.id = price_list_id_s;//Edito el valor del value por el valor nuevo
-                price.updateDate = newDate;
-                price.updateUser = userName;
-            } else {
-                var new_item = {
-                    id: price_list_id_s,
-                    value: new_value,
-                    create: newDate,
-                    updateDate: newDate,
-                    updateUser: userName
-
-                };
-                //  console.log(userName, 'else userName',new_item,'new_item');
-                var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-            }
-            var response = await L_catalog_db.put({
-                _id: doc._id,
-                _rev: doc._rev,
-                ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-            });
-            if (response) {
-                Snackbar.show({
-                    text: 'El precio se actualizo!',
-                    actionText: 'ok',
-                    pos: 'bottom-right',
-                    actionTextColor: "#0575e6",
-                });
-                catalog_edit_item_url(doc_id, 1);
-            } else {
-                alert("no se actualizo");
-            }
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-}
-
-async function edit_price_varNOOLD(element) {
-
-    try {
-        //traigo el documento a editar
-        const doc_id = $(element).attr('doc_id');
-        const variant_id = $(element).attr('variant_id');
-        const price_id = $(element).attr('price_id');
-        const price_value = $(element).attr('price_value');
-        $('#new_price_var_' + variant_id).focus();
-        $('#new_price_var_' + variant_id).val(price_value);
-        $("#price_list_var_" + variant_id + " option[value=" + price_id + "]").attr("selected", true);
     } catch (err) {
         console.log(err);
     }
