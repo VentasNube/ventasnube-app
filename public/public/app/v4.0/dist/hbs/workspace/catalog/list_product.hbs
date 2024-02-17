@@ -31,18 +31,22 @@
                                     onclick="cat_all_variations_get(this)" product_id="{{{doc._id}}}"
                                     variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
                                     aria-expanded="true">
-                                    <span id="bg-select-color" class="btn btn-default ">
+                                    <span id="bg-select-color" class="btn btn-default item-icon">
+
                                         {{#if doc.picture_min}}
                                         <img src="{{{doc.picture_min}}}"
-                                            class="var_img img-card-mini s round img-card-catalog-list">
+                                            class="var_img img-card-mini s img-card-catalog-list">
                                         {{else}}
+
                                         <img src="/public/app/v4.0/dist/img/foto_fondo.png"
-                                            class="var_img img-card-mini s round img-card-catalog-list">
+                                            class="var_img img-card-mini s img-card-catalog-list">
                                         {{/if}}
+
+
                                         <span class="material-icons">arrow_drop_down</span>
                                     </span>
                                 </button>
-                                <ul class="card-loader dropdown-menu mini ">
+                                <ul class="card-loader dropdown-menu mini pull-left">
                                     <div id="cat_all_variations_get{{{doc._id}}}">
                                         <div class="spinner-box">
                                             <div class="three-quarter-spinner primary"></div>
@@ -55,13 +59,13 @@
                         <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                 <h5>{{{doc.name}}}</h5>
-                                <h6> {{#each doc.tags}}<span
-                                        class="text-uppercase margin-r-5 margin-top label bg-blue">{{this}}</span>{{/each}}
+                                <h6> 
+                                    {{#each doc.tags}}
+                                     <span class="text-uppercase margin-r-5 margin-top label bg-blue">{{this}}</span>
+                                    {{/each}}
                                 </h6>
                             </div>
-                            <div class="padding-t-5  col-xs-12 col-sm-12 col-md-8 col-lg-8">
-
-
+                            <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
                                 <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
@@ -82,7 +86,7 @@
                                                 <span class="material-icons">arrow_drop_down</span>
                                             </span>
                                         </button>
-                                        <ul class="dropdown-menu l">
+                                        <ul class="dropdown-menu l pull-right">
                                             <li class="header">Listas de precios</li>
 
                                             <div id="catalog_new_price_list_{{doc._id}}">
@@ -167,9 +171,7 @@
                                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
                                                     <div class="input-group">
-                                                        <input id="new_price_var_{{doc.variant_id}}"
-                                                            class="form-control" type="number" placeholder="Precio"
-                                                            value="">
+                                                        <input id="new_price_var_{{doc.variant_id}}" class="form-control" type="number" placeholder="Precio"   value="">
                                                         <span class="input-group-addon">
                                                             <button onclick="new_price_var(this)"
                                                                 id="add_price_var_{{doc.variant_id}}"
@@ -216,7 +218,7 @@
                                                 <span class="material-icons">arrow_drop_down</span>
                                             </span>
                                         </button>
-                                        <ul class="dropdown-menu l">
+                                        <ul class="dropdown-menu l pull-right">
                                             <li class="header"> {{#with ../ws_lang_data}}
                                                 {{m_catalog_edit_stock_update}} {{/with}}</li>
                                             <div id="catalog_new_stock_list_{{doc._id}}">

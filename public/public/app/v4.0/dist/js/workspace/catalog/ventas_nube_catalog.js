@@ -338,7 +338,7 @@ function cat_all_variations_get(element) {
             variations: doc.variations,
             name: doc.name,
             // tags: doc.tags,
-            // price_list: price_doc.price_list,
+           //  price_list: doc.variations[0].price_list,
             //  current: doc.price_list,
         }
         //  console.log(element);
