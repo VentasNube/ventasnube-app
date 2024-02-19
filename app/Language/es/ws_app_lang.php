@@ -235,8 +235,12 @@ return [
         't_service' => 'Total Servicios',
         't_product' => 'Total Productos',
         't_dicount' => 'Total Descuentos',
+        't_dicount_icon' => 'Des',
         't_tax' => 'Total impuestos',
-       
+
+        'm_cart_item_sum' => 'Sumar unidad',
+        'm_cart_item_rest' => 'Restar unidad',
+    
         't_pay' => 'Total abonado',
         'b_product' => 'Productos',
         'b_service' => 'Servicios',
@@ -535,6 +539,7 @@ return [
         't_service' => 'Total Services',
         't_product' => 'Total Products',
         't_discount' => 'Total Discounts',
+        't_dicount_icon' => 'Dis',
         't_tax' => 'Total Taxes',
         't_pay' => 'Total Paid',
         'b_product' => 'Products',

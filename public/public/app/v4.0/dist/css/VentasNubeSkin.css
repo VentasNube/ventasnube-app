@@ -976,7 +976,8 @@ button.a:active {
     cursor: pointer;
     padding: 5px;
     font-size: 24px;
-    background-color: #eee;
+    /*background-color: #eee;*/
+    background: linear-gradient(40deg, #0575e6, #415eff) !important;
     color: #bbbbbb;
     box-shadow: none;
     font-family: 'Open Sans', sans-serif;
@@ -987,7 +988,7 @@ button.a:active {
 
 .boton-round-mini-up:hover {
     padding: 15px;
-    background: linear-gradient(40deg, #0575e6, #415eff) !important;
+   /* background: linear-gradient(40deg, #0575e6, #415eff) !important;*/
     color: #ffff;
     transition: padding 0.3s, background-color 0.3s;
 }

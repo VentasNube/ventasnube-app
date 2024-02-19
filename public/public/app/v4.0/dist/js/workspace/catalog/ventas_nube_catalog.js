@@ -78,9 +78,9 @@ async function get_all_catalog_intems(ws_id, filter) {
             new_items['attribute_combinations'] = item.value.attribute_combinations;
             new_items['doc'] = item.value;
 
-            
-        new_items['stock_invetary'] = item.value.stock_invetary;
-        new_items['available_quantity'] = item.value.available_quantity;
+
+            new_items['stock_invetary'] = item.value.stock_invetary;
+            new_items['available_quantity'] = item.value.available_quantity;
 
             //Formateo el array final
             //  all_items_map_array = {
@@ -158,7 +158,7 @@ function print_catalog_item(new_items) {
     var ws_info = ws_info;
     // var ws_catalog_view = ws_info.ws_catalog_view
     var ws_catalog_view = 'list'
-   // console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
+    // console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
     var search_result = {
         search_product: new_items,
         price_list: price_doc.price_list,
@@ -166,7 +166,7 @@ function print_catalog_item(new_items) {
         user_roles: user_Ctx.userCtx.roles,
 
 
-        
+
     }
 
     console.log('search_result ws_catalog_viwe', search_result);
@@ -206,8 +206,8 @@ async function search_catalog_item(search_val) {
         new_items['attribute_combinations'] = it.item.attribute_combinations;
         new_items['doc'] = it.item.doc;
 
-        
-            
+
+
         new_items['stock_invetary'] = it.item.stock_invetary;
         new_items['available_quantity'] = it.item.available_quantity;
 
@@ -338,7 +338,7 @@ function cat_all_variations_get(element) {
             variations: doc.variations,
             name: doc.name,
             // tags: doc.tags,
-           //  price_list: doc.variations[0].price_list,
+            //  price_list: doc.variations[0].price_list,
             //  current: doc.price_list,
         }
         //  console.log(element);
@@ -347,27 +347,27 @@ function cat_all_variations_get(element) {
 
 }
 
-    function cat_variations_size_get(element) {
-        let product_id = $(element).attr('product_id');
-        let variant_id = $(element).attr('variant_id');
-        let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant_size.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
-        let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
-        L_catalog_db.get(product_id, function (err, doc) {
-            if (err) { return console.log(err); }
-            const variant_array = {
-                //doc:doc,
-                variant_id: variant_id,
-                _id: doc._id,
-                _rev: doc._rev,
-                variations: doc.variations,
-                name: doc.name,
-                // tags: doc.tags,
-                // price_list: price_doc.price_list,
-                //  current: doc.price_list,
-            }
-            //  console.log(element);
-            renderHandlebarsTemplate(url_template, id_copiled, variant_array);
-        });
+function cat_variations_size_get(element) {
+    let product_id = $(element).attr('product_id');
+    let variant_id = $(element).attr('variant_id');
+    let url_template = '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_variant_size.hbs'; //NOMBRE CONTROLADOR TEMPLATE      
+    let id_copiled = '#cat_variant_' + product_id; // ID DE COMPILACION // 
+    L_catalog_db.get(product_id, function (err, doc) {
+        if (err) { return console.log(err); }
+        const variant_array = {
+            //doc:doc,
+            variant_id: variant_id,
+            _id: doc._id,
+            _rev: doc._rev,
+            variations: doc.variations,
+            name: doc.name,
+            // tags: doc.tags,
+            // price_list: price_doc.price_list,
+            //  current: doc.price_list,
+        }
+        //  console.log(element);
+        renderHandlebarsTemplate(url_template, id_copiled, variant_array);
+    });
 
 }
 
@@ -2811,8 +2811,8 @@ async function new_price_list(element) {
                 });
                 console.log(price_list)
                 catalog_edit_item_url(doc_id, 1);
-                
-                catalog_get_item_price(doc_id,variant_id);
+
+                catalog_get_item_price(doc_id, variant_id);
             } else {
                 alert("no se actualizo");
             }
@@ -2896,8 +2896,8 @@ async function new_price_var(element) {
                     actionTextColor: "#0575e6",
                 });
                 catalog_edit_item_url(doc_id, 1);
-                
-                catalog_get_item_price(doc_id,variant_id);
+
+                catalog_get_item_price(doc_id, variant_id);
 
 
             } else {
@@ -2914,17 +2914,17 @@ async function new_price_var(element) {
 
 //  2024 UPDATES
 // Imprimo los precios
-async function catalog_get_item_price(doc_id,variant_id) {
+async function catalog_get_item_price(doc_id, variant_id) {
     try {
         //const doc_id = $(element).attr('doc_id');
-       // const variant_id = $(element).attr('variant_id');
+        // const variant_id = $(element).attr('variant_id');
         const doc_id_s = String(doc_id);
         var select_div_id = '#catalog_new_price_list_' + doc_id;
 
-       // var select_div_id = '#catalog_new_price_list_' + doc_id;
-       var select_div_id = '#catalog_new_price_list_' + doc_id;
+        // var select_div_id = '#catalog_new_price_list_' + doc_id;
+        var select_div_id = '#catalog_new_price_list_' + doc_id;
 
-       $(select_div_id).addClass("card-loader");
+        $(select_div_id).addClass("card-loader");
 
 
         var doc = await L_catalog_db.get(doc_id_s);
@@ -2932,19 +2932,19 @@ async function catalog_get_item_price(doc_id,variant_id) {
         var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
 
         const new_variant = {
-                variant: variant,
-                _id:doc_id,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-                price_list:price_list.price_list
-            }
+            variant: variant,
+            _id: doc_id,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list: price_list.price_list
+        }
 
-            //    console.log('new_variant', new_variant);
+        //    console.log('new_variant', new_variant);
         // console.log('select_div_id', select_div_id);
-             var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_price_get_list.hbs', select_div_id, new_variant);
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_price_get_list.hbs', select_div_id, new_variant);
 
-            $(select_div_id).removeClass("card-loader");
-      
+        $(select_div_id).removeClass("card-loader");
+
     } catch (err) {
         console.log(err);
     }
@@ -2961,7 +2961,7 @@ async function edit_price_var(element) {
         let input_id = $(element).attr('input_id');
         //  let new_value = $('#new_price_var_' + price_list_id).val();
 
-        let new_value = $('#new_price_var_' + variant_id + '_id_'+ doc_id +'_price_id_'+ price_list_id).val();
+        let new_value = $('#new_price_var_' + variant_id + '_id_' + doc_id + '_price_id_' + price_list_id).val();
         //  new_price_var_{{../variant.id}}_id_{{{../_id}}}_price_id{{id}}
         // let price_list_id = $('#new_price_list_id' + variant_id).attr('price_id');
         // let new_price_list_name =  $('#new_price_list_name_' + price_id).attr('price_value');
@@ -3012,14 +3012,14 @@ async function edit_price_var(element) {
             if (response) {
                 // load_all_cat(doc_id,arr_number_id );
                 // catalog_edit_item_url(doc_id, 1);
-                catalog_get_item_price(doc_id,variant_id);
+                catalog_get_item_price(doc_id, variant_id);
                 Snackbar.show({
                     text: 'El precio se actualizo!',
                     actionText: 'ok',
                     pos: 'bottom-right',
                     actionTextColor: "#0575e6",
                 });
-               // catalog_edit_item_url(doc_id, 1);
+                // catalog_edit_item_url(doc_id, 1);
             } else {
                 alert("no se actualizo");
             }
@@ -3069,9 +3069,9 @@ async function dell_price_var(element) {
                     });
                     if (response) {
                         //Limpio el item de la pantalla
-                        
+
                         catalog_edit_item_url(doc_id, 1);
-                        catalog_get_item_price(doc_id,variant_id);
+                        catalog_get_item_price(doc_id, variant_id);
                         $(element).parent('li').remove();
                     } else {
                         //Si no se grabo tira un error en pantalla
@@ -3085,6 +3085,109 @@ async function dell_price_var(element) {
     }
 }
 
+
+//async function edit_cost_price(element) {
+
+async function edit_stock_var(element) {
+
+    /// Edit Stok imput
+    try {
+
+        let doc_id = $(element).attr('doc_id');
+        let variant_id = $(element).attr('variant_id');
+        let new_value = $('#edit_stock_var_' + variant_id).val(); //Id del documento a edita
+       
+        var doc = await L_catalog_db.get(doc_id);
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+
+        var available_quantity = {
+            id:newDate,
+            value: new_value,
+            updateUser:userName,
+            updateDate:newDate,
+            status:true,
+        };
+
+     //   variant.cost_price = cost_price;
+        variant.available_quantity = available_quantity;
+        
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+        if (response) {
+            Snackbar.show({
+                text: 'El precio se actualizo!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("no se actualizo");
+        }
+
+    } catch (err) {
+        // Manejar errores
+        console.log(err);
+    }
+}
+async function  edit_cost_price(element) {
+
+    /// Edit Stok imput
+    try {
+
+        let doc_id = $(element).attr('doc_id');
+        let variant_id = $(element).attr('variant_id');
+        let new_value = $('#edit_price_cost_var_' + variant_id).val(); //Id del documento a edita
+
+     
+        //  let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
+        //  Obtener el documento actual del producto del usuario de la base de datos
+        //  console.log('product_id', product_id);
+        //  console.log('quantity', quantity);
+
+        var doc = await L_catalog_db.get(doc_id);
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+
+        var cost_price = {
+            id:newDate,
+            value: new_value,
+            updateUser:userName,
+            updateDate:newDate,
+        };
+
+
+        variant.cost_price = cost_price;
+        
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+        if (response) {
+            Snackbar.show({
+                text: 'El precio se actualizo!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("no se actualizo");
+        }
+
+    } catch (err) {
+        // Manejar errores
+        console.log(err);
+    }
+}
 ////////////////////////////////////////
 // MOVIMIENTO STOCK ( PRODUCTO ) 2023 //
 ////////////////////////////////////////

@@ -289,11 +289,8 @@ async function variations_add_cart(element) {
 
     event.preventDefault();
     try {
-
-       
         //Busco el id en el array con find funcion de flecha
         //  var stock_invetary = doc.variations['stock_invetary'].find(element => element.id == variant_id);
- 
         let product_id = $(element).attr('product_id'); //Id del producto selccionado
         let variant_id = $(element).attr('variant_id'); //Id de la variable seleccionada
         // let variant_price_id = $(element).attr('variant_price_id');
@@ -303,38 +300,29 @@ async function variations_add_cart(element) {
         let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); //Tomo el valor del formulario
         let variant_price_id = $('#card_var_id_' + product_id).attr('price_id'); //Tomo el valor del formulario
         // let variant_price_id = $('#card_var_id_' + product_id).find('.card_product_val').val(); //Tomo el valor del formulario
-        
         //  PRODUCTO
         let doc = await L_catalog_db.get(product_id);
         //  VARIABLE COMPLETA
         const var_doc = doc.variations.find(element => element.id == variant_id);
-    
         //  const tax_product = tax_arr.find(element => element.id == variant_price_id);
         //  TAX CONFIGURACION GENERAL
         const tax_list = await L_catalog_db.get("tax_list");
-
         //RELACIONO CON EL ID Q ESTA GUARDADO EN EL PRODUCTO 
         //   const tax_list_config = tax_list.tax.find(element => element.id == variant_id);
         const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
         // let price_cost = await get_price_cost(product_id,variant_id)
-
         const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
         //TAX DEL PRODUCTO
         console.log("TAXESS variant_price_id",variant_price_id)
-
         console.log(" tax_price_list", tax_price_list)
-       
        // console.log("TAXESS",tax_price_list)
         const tax_arr = tax_price_list.taxes
-        
-
         console.log("tax_arr taxes",tax_arr)
         // Ya tienes la lista de impuestos para la variante del producto
         //const tax_arr = var_doc.tax;
         // Aquí calculamos el precio final con impuestos
         let price_final_with_tax = parseFloat(variant_price); // iniciamos con el precio base
         let applied_taxes = []; // inicializamos el array de impuestos aplicados
-
         if (tax_arr && Array.isArray(tax_arr)) {
             for (const tax of tax_arr) {
                 // Buscar la configuración del impuesto en la lista general de impuestos
@@ -396,9 +384,9 @@ async function variations_add_cart(element) {
         }
 
         console.log('new_variant_doc',new_variant_doc);
-       console.log('CURRENCY',currency);
-       console.log('TAXEDS',taxes);
-       console.log('price_list',price_list);
+        console.log('CURRENCY',currency);
+        console.log('TAXEDS',taxes);
+        console.log('price_list',price_list);
         //alert(var_doc.tax['value']);
         if (validaForm(variant_price, variant_discount, variant_quantity)) { // Primero validará el formulario.
             $(this_card_id).find(".ripple_div").addClass('add');
@@ -453,9 +441,9 @@ async function variations_add_cart_to_fav(element) {
 
         let doc = await user_db.get(product_id);
         if (doc) {
-            const var_doc = doc.variant;
-            // console.log(var_doc);
-            const new_variant_doc = {
+                const var_doc = doc.variant;
+                // console.log(var_doc);
+                const new_variant_doc = {
                 product_id: doc._id,
                 product_rev: doc._rev,
                 variant_id: var_doc.variant_id,
@@ -470,14 +458,15 @@ async function variations_add_cart_to_fav(element) {
                 quantity: parseFloat(var_doc.quantity),
                 tax: parseFloat(var_doc.tax)
             }
+
             let rest_add = await add_cart_item(new_variant_doc);
-            let delete_doc = await user_db.remove(doc._id, doc._rev);
-            get_fav(ws_id, board_name);
-            if (rest_add) {
+            //let delete_doc = await user_db.remove(doc._id, doc._rev);
+           // get_fav(ws_id, board_name);
+           /* if (rest_add) {
 
 
 
-            }
+            }*/
 
         }
 
@@ -964,13 +953,59 @@ let totalProducts = 0;
 let totalDiscounts = 0;
 let totalTaxes = 0;
 
+
+/*
+async function variations_cart_res_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    let price = 0;
+       //selecciono el precio unitario
+       const priceElement = button.parentElement.querySelector('.s-card-actv-item-price-left .price_uni');
+       if (priceElement) {
+          let price = parseFloat(priceElement.innerText.trim());
+       } else {
+           let price = 0;
+           console.error('Price element not found');
+       }
+    if (quantity > 0) {
+        quantity--;
+        quantityElement.innerText = quantity;
+        updateTotal(button.parentElement, quantity,price);
+    }
+}
+
+async function variations_cart_sum_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    let quantity = parseInt(quantityElement.innerText);
+    let price = 0;
+    quantity++;
+    quantityElement.innerText = quantity;
+    //selecciono el precio unitario
+    const priceElement = button.parentElement.querySelector('.s-card-actv-item-price-left .price_uni');
+    if (priceElement) {
+       let price = parseFloat(priceElement.innerText.trim());
+    } else {
+        let price = 0;
+        console.error('Price element not found');
+    }
+
+    console.log('quantity',quantity)
+    console.log('quantityElement',quantityElement)
+    console.log('quantity',quantity)
+
+    updateTotal(button.parentElement, quantity,price);
+}
+*/
+
+
 async function variations_cart_res_uni(button) {
     let quantityElement = button.parentElement.querySelector('.card_product_quantity');
     let quantity = parseInt(quantityElement.innerText);
     if (quantity > 0) {
         quantity--;
         quantityElement.innerText = quantity;
-        updateTotal(button.parentElement, quantity);
+       //updateTotal(button.parentElement, quantity);
+        updateTotal(button.parentElement, product_id,  product_rev );
     }
 }
 
@@ -979,33 +1014,117 @@ async function variations_cart_sum_uni(button) {
     let quantity = parseInt(quantityElement.innerText);
     quantity++;
     quantityElement.innerText = quantity;
-    updateTotal(button.parentElement, quantity);
+
+    let product_id = $(button).attr('item_cart_id'); // ID del producto seleccionado
+    let product_rev = $(button).attr('item_cart_rev'); // Revisión del producto seleccionado
+
+   // console.log('quantity', quantity)
+   // console.log('quantityElement', quantityElement)
+   // console.log('quantity', quantity)
+
+    // get_cart_now(elemnt);
+    updateTotal(button.parentElement, product_id,  product_rev );
 }
 
 
-function updateTotal(parentElement, quantity) {
-    let priceElement = parentElement.querySelector('.price_uni');
-    let price = parseFloat(priceElement.innerText);
 
-    const total = quantity * price;
+async function updateTotal(button, product_id,  product_rev ) {
+    let parentElement = button.closest('.s-card-actv-item-body');
+
+   // let product_id = $(button).attr('item_cart_id'); //Id del producto selccionado
+ //   let product_rev = $(button).attr('item_cart_rev'); //Id del producto selccionado
+
+ 
+
+    let quantity = parseInt(parentElement.querySelector('.card_product_quantity').innerText);
+    let price = parseFloat(parentElement.querySelector('.s-card-actv-item-price-left .price_uni').innerText.trim());
+    let total = quantity * price;
     parentElement.querySelector('.tot').innerText = total.toFixed(2);
 
     // Suma todos los subtotales de los ítems del carrito
-    let subtotals = document.querySelectorAll('.tot');
+    let subtotals = document.querySelectorAll('.sub_tot_cart');
+    //  let all_subtotals = parentElement.querySelectorAll('.sub_tot_cart');
+
+    let totalServices = 0;
+    let totalProducts = 0;
+    let totalDiscounts = 0;
+    let totalTaxes = 0;
     let totalCart = 0;
+
     subtotals.forEach(subtotal => {
-        totalCart += parseFloat(subtotal.innerText);
+        let subtotalValue = parseFloat(subtotal.innerText);
+        totalCart += subtotalValue;
+
+        // Aquí puedes agregar lógica para determinar si un ítem es un servicio, producto, descuento o impuesto
+        // Por ejemplo, podrías tener clases en tus elementos HTML que indiquen el tipo de cada ítem
+        // y luego calcular los totales en función de esas clases
+        // Por ahora, simplemente asumiremos que todo es un producto
+        totalProducts += subtotalValue;
     });
 
+    
+    try {
+        // Obtener el documento actual del producto del usuario de la base de datos
+        console.log('product_id',product_id);
+        
+        console.log('quantity', quantity);
+
+        let doc = await user_db.get(product_id);
+    
+        // Verificar si el documento existe
+        if (doc) {
+            variant_doc = doc.variant;
+            // Obtener los detalles del producto y sus variantes del documento
+            // Actualizar los campos necesarios en el objeto de variante
+            variant_doc.quantity = quantity;
+            variant_doc.price = price;
+            variant_doc.sub_tot_dis = total;
+            //  variant_doc.discount = discount;
+            //  variant_doc.discount_tot = discount_tot;
+            //   variant_doc.tax = tax;
+
+            // Actualizar el documento en la base de datos
+            let response = await user_db.put({
+                _id: doc._id, // Mantener el mismo ID del documento
+                _rev: doc._rev, // Mantener la misma revisión del documento
+                type: doc.type,
+                ws_id: doc.ws_id,
+                update: new Date().toISOString(), // Actualizar la marca de tiempo de la última actualización
+                variant: variant_doc // Actualizar el objeto de variante con los campos actualizados
+            });
+    
+            // Realizar acciones adicionales si la actualización es exitosa
+            if (response) {
+                // Realizar acciones adicionales, si es necesario
+            }
+        }
+    } catch (err) {
+        // Manejar errores
+        console.log(err);
+    }
+    
+
+
+
+
+    console.log('totalCart', totalCart);
+
     // Actualiza los totales
-    totalServices = totalCart; // Asume que todos los ítems son servicios
     document.getElementById('total_neto_service').innerText = totalServices.toFixed(2);
     document.getElementById('total_neto_prod').innerText = totalProducts.toFixed(2);
     document.getElementById('total_neto_discount').innerText = totalDiscounts.toFixed(2);
     document.getElementById('total_neto_tax').innerText = totalTaxes.toFixed(2);
 
     let totalNeto = totalServices + totalProducts - totalDiscounts + totalTaxes;
+
+    console.log('totalDiscounts', totalDiscounts)
+    console.log('totalTaxes', totalTaxes)
+    console.log('totalProducts', totalProducts)
+    console.log('totalNeto', totalNeto)
+
     document.getElementById('total_cart_neto').innerText = totalNeto.toFixed(2);
 }
+
+
 
 

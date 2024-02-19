@@ -213,7 +213,7 @@
                                                 </span>
 
                                                 <label class="counter">
-                                                    {{doc.available_quantity}}
+                                                    {{doc.available_quantity.value}}
                                                 </label>
                                                 <span class="material-icons">arrow_drop_down</span>
                                             </span>
@@ -420,9 +420,11 @@
             console.log(err);
         }
     }
+    
     // Actualizo la vista
     async function catalog_get_menu_stock(element) {
         try {
+
             const doc_id = $(element).attr('doc_id');
             const variant_id = $(element).attr('variant_id');
             const doc_id_s = String(doc_id);
