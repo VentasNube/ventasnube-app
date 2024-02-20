@@ -3085,6 +3085,273 @@ async function dell_price_var(element) {
     }
 }
 
+async function stock_status_edit_checkbox_OLD(element) {
+
+    try {
+
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const variant_id = $(element).attr('variant_id'); // EL ID DE LA VARIABLE
+        const input_id = 'available_quantity'; //EL id del OBJETO a editar
+        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+
+     
+       // const input_html_id = '#edit_stock_var_' + variant_id;
+        const new_input_status = $(element).is(':checked');
+
+
+       // const input_status_html_id = '#' + variant_id + '_status_stock_control_checkbox_'; //Armo la id del checkbox
+        const input_html_id = '#edit_stock_var_' + variant_id; // Armo la id del input
+
+        //const new_input_status = $(input_status_html_id).is(':checked'); // Compruebo si la propiedad del input esta chekeada o no 
+        //Compruebo si el input se habilita con un input true false, O si no tiene checkbox
+       var input_status = true;
+       console.log(new_input_status , 'new_input_status');
+       //var input_status = '';
+        if (new_input_status === false) {
+            var input_status = false;
+            $(input_html_id).addClass('bg-gray', true);
+            $(input_html_id).prop('disabled', true);
+            $(input_html_id).prop('status', true);
+        } else {
+            var input_status = true;
+            $(input_html_id).removeClass('bg-gray');
+            $(input_html_id).prop('disabled', false);
+            $(input_html_id).prop('status', false);
+        }
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_catalog_db.get(doc_id_s); //Traigo el documento
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+
+        var available_quantity = {
+            id: newDate,
+            value: variant.available_quantity.value,
+            updateUser: userName,
+            updateDate: newDate,
+            status: input_status,
+        };
+
+        //   variant.cost_price = cost_price;
+        variant.available_quantity = available_quantity;
+        console.log('DOCUMENTO ACTUALIZADO');
+        console.log(input_status);
+
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// trae todos los datos del doc y los pega en la raiz
+        });
+        if (response) {
+
+            console.log('response',response);
+            Snackbar.show({
+                text: 'El producto se actualizo!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("no se actualizo");
+        }
+
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+async function stock_status_edit_checkboxOK2(element) {
+    try {
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_html_id = '#edit_stock_var_' + variant_id;
+        const new_input_status = $(element).is(':checked');
+
+        var input_status = true;
+        if (!new_input_status) {
+            input_status = false;
+            $(input_html_id).addClass('bg-gray');
+            $(input_html_id).prop('disabled', true);
+            $(input_html_id).prop('status', true);
+        } else {
+            $(input_html_id).removeClass('bg-gray');
+            $(input_html_id).prop('disabled', false);
+            $(input_html_id).prop('status', false);
+        }
+
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        var variant = doc.variations.find(response => response.id == variant_id);
+        var newDate = new Date();
+        var userName = userCtx.userCtx.name;
+
+        var available_quantity = {
+            id: newDate,
+            value: variant.available_quantity.value,
+            updateUser: userName,
+            updateDate: newDate,
+            status: input_status,
+        };
+
+        variant.available_quantity = available_quantity;
+
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,
+        });
+        if (response) {
+            console.log('response', response);
+            Snackbar.show({
+                text: 'El producto se actualizó!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("No se actualizó");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function stock_status_edit_checkbox(element) {
+    try {
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_html_id = '#edit_stock_var_' + variant_id;
+        const input_lote_checkbox_id = '#' + variant_id + '_stock_status_lote_edit_checkbox';
+        const new_input_status = $(element).is(':checked');
+
+        var input_status = true;
+        if (!new_input_status) {
+            input_status = false;
+            $(input_html_id).addClass('bg-gray');
+            $(input_html_id).prop('disabled', true);
+            $(input_html_id).prop('status', true);
+        } else {
+            $(input_html_id).removeClass('bg-gray');
+            $(input_html_id).prop('disabled', false);
+            $(input_html_id).prop('status', false);
+        }
+
+        // Desactivar el control de stock por lotes si el control de stock está activo
+        if (new_input_status) {
+            $(input_lote_checkbox_id).prop('checked', false);
+            $(input_lote_checkbox_id).prop('disabled', true);
+        } else {
+            $(input_lote_checkbox_id).prop('disabled', false);
+        }
+
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        var variant = doc.variations.find(response => response.id == variant_id);
+        var newDate = new Date();
+        var userName = userCtx.userCtx.name;
+
+        var available_quantity = {
+            id: newDate,
+            value: variant.available_quantity.value,
+            updateUser: userName,
+            updateDate: newDate,
+            status: input_status,
+        };
+
+        variant.available_quantity = available_quantity;
+
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,
+        });
+        if (response) {
+            console.log('response', response);
+            Snackbar.show({
+                text: 'El producto se actualizó!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("No se actualizó");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function stock_status_lote_edit_checkbox(element) {
+    try {
+        const doc_id = $(element).attr('doc_id');
+        const variant_id = $(element).attr('variant_id');
+        const input_html_id = '#edit_stock_var_' + variant_id;
+        const input_checkbox_id = '#' + variant_id + '_status_stock_control_checkbox';
+        const new_input_status = $(element).is(':checked');
+
+        var input_status = true;
+        if (!new_input_status) {
+            input_status = false;
+            $(input_html_id).addClass('bg-gray');
+            $(input_html_id).prop('disabled', true);
+            $(input_html_id).prop('status', true);
+        } else {
+            $(input_html_id).removeClass('bg-gray');
+            $(input_html_id).prop('disabled', false);
+            $(input_html_id).prop('status', false);
+        }
+
+        // Desactivar el control de stock si el control de stock por lotes está activo
+        if (new_input_status) {
+            $(input_checkbox_id).prop('checked', false);
+            $(input_checkbox_id).prop('disabled', true);
+        } else {
+            $(input_checkbox_id).prop('disabled', false);
+        }
+
+        var doc_id_s = String(doc_id);
+        var doc = await L_catalog_db.get(doc_id_s);
+        var variant = doc.variations.find(response => response.id == variant_id);
+        var newDate = new Date();
+        var userName = userCtx.userCtx.name;
+
+        var available_quantity = {
+            id: newDate,
+            value: variant.available_quantity.value,
+            updateUser: userName,
+            updateDate: newDate,
+            status: input_status,
+            control_status:input_status ,
+        };
+
+        variant.available_quantity = available_quantity;
+
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,
+        });
+        if (response) {
+            console.log('response', response);
+            Snackbar.show({
+                text: 'El producto se actualizó!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("No se actualizó");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
 
 //async function edit_cost_price(element) {
 
@@ -3096,7 +3363,7 @@ async function edit_stock_var(element) {
         let doc_id = $(element).attr('doc_id');
         let variant_id = $(element).attr('variant_id');
         let new_value = $('#edit_stock_var_' + variant_id).val(); //Id del documento a edita
-       
+
         var doc = await L_catalog_db.get(doc_id);
         var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
 
@@ -3105,16 +3372,16 @@ async function edit_stock_var(element) {
         var userName = userCtx.userCtx.name;
 
         var available_quantity = {
-            id:newDate,
+            id: newDate,
             value: new_value,
-            updateUser:userName,
-            updateDate:newDate,
-            status:true,
+            updateUser: userName,
+            updateDate: newDate,
+            status: true,
         };
 
-     //   variant.cost_price = cost_price;
+        //   variant.cost_price = cost_price;
         variant.available_quantity = available_quantity;
-        
+
         var response = await L_catalog_db.put({
             _id: doc._id,
             _rev: doc._rev,
@@ -3136,7 +3403,7 @@ async function edit_stock_var(element) {
         console.log(err);
     }
 }
-async function  edit_cost_price(element) {
+async function edit_cost_price(element) {
 
     /// Edit Stok imput
     try {
@@ -3145,7 +3412,7 @@ async function  edit_cost_price(element) {
         let variant_id = $(element).attr('variant_id');
         let new_value = $('#edit_price_cost_var_' + variant_id).val(); //Id del documento a edita
 
-     
+
         //  let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
         //  Obtener el documento actual del producto del usuario de la base de datos
         //  console.log('product_id', product_id);
@@ -3158,15 +3425,15 @@ async function  edit_cost_price(element) {
         var userName = userCtx.userCtx.name;
 
         var cost_price = {
-            id:newDate,
+            id: newDate,
             value: new_value,
-            updateUser:userName,
-            updateDate:newDate,
+            updateUser: userName,
+            updateDate: newDate,
         };
 
 
         variant.cost_price = cost_price;
-        
+
         var response = await L_catalog_db.put({
             _id: doc._id,
             _rev: doc._rev,

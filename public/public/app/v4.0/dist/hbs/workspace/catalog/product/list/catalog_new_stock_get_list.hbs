@@ -1,14 +1,15 @@
 <div class="">
-        
+
     <div class="cell padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                          {{#with ws_lang_data}} {{m_catalog_add_stock_cost}}:{{/with}}
+            {{#with ws_lang_data}} {{m_catalog_add_stock_cost}}:{{/with}}
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <!-- Tipo de moneda icono -->
             <span>{{currency.value}}</span>
             <!-- Input para editar precio -->
-            <input id="edit_price_cost_var_{{variant.id}}" class="form-control" type="number" placeholder="Precio Costo" value="{{variant.cost_price.value}}">
+            <input id="edit_price_cost_var_{{variant.id}}" class="form-control" type="number" placeholder="Precio Costo"
+                value="{{variant.cost_price.value}}">
         </div>
 
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -23,54 +24,56 @@
             <!-- Boton deEliminar -->
         </div>
     </div>
-        <div class="cell padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="cell padding-10 ">
+        <div class=" padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            {{#userCtx 'catalog' 'admin'}}
 
-            <div class="padding-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                {{#userCtx 'catalog' 'admin'}}
-                <div class="Switch" onclick="">
-                    <input id="{{variant._id}}_status_stock_control_checkbox" name="switch_variation" {{#ifEquals
-                        status.status true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{doc._id}}}"
-                        variant_id="{{doc.variant_id}}" input_id="status" onclick="cat_edit_chekbox(this)" />
-                    <label for="{{variant._id}}_status_stock_control_checkbox" class="label-primary"></label>
-                </div>
-                {{/userCtx}}
-                {{#with ws_lang_data}} {{m_catalog_edit_stock_active}}:{{/with}}
+            <div class="Switch" onclick="">
+                <input id="{{variant.id}}_status_stock_control_checkbox" name="switch_variation" {{#ifEquals
+                    variant.available_quantity.status true }} checked {{/ifEquals}} value="" type="checkbox"
+                    doc_id="{{_id}}" variant_id="{{variant.id}}" input_id="status"
+                    onclick="stock_status_edit_checkbox(this)" />
+                <label for="{{variant.id}}_status_stock_control_checkbox" class="label-primary"></label>
             </div>
 
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <div class="input-group">
-                    <input id="edit_stock_var_{{variant.id}}" class="form-control" type="number"
-                        placeholder="Cantidad" value="{{variant.available_quantity.value}}">
-                    <span class="input-group-addon">
-                        <button onclick="edit_stock_var(this)" doc_id="{{_id}}" variant_id="{{variant.id}}"
-                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
-                            data-toggle="dropdown" aria-haspopup="true" type="button" aria-expanded="false">
-                            <span class="material-icons">add_circle</span>
-                        </button>
-                    </span>
-                </div>
-            </div>
 
+            {{/userCtx}}
+            {{#with ws_lang_data}} {{m_catalog_edit_stock_active}}:{{/with}}
         </div>
 
-        <h4 class="margin-t-10">
-            {{#userCtx 'catalog' 'admin'}}
-                <div class="Switch" onclick="">
-                    <input id="{{variant._id}}_status_stock_control_lote_checkbox" name="switch_variation" {{#ifEquals
-                        status.status true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{variant.variant_id}}}"
-                        variant_id="{{doc.variant_id}}" input_id="status" onclick="cat_edit_chekbox(this)" />
-                    <label for="{{variant._id}}_status_stock_control_lote_checkbox" class="label-primary"></label>
-                </div>
-            {{/userCtx}}
-            {{#with ws_lang_data}} {{m_catalog_edit_stock_lotes}}:{{/with}}
-            {{#available_stock variant.stock_invetary}}{{/available_stock}}
-        </4h>
+        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="input-group">
+                <input {{#ifEquals variant.available_quantity.status false }} disabled {{/ifEquals}} id="edit_stock_var_{{variant.id}}" class="form-control" type="number" placeholder="Cantidad"
+                    value="{{variant.available_quantity.value}}">
+                <span class="input-group-addon">
+                    <button {{#ifEquals variant.available_quantity.status false }} disabled {{/ifEquals}} onclick="edit_stock_var(this)" doc_id="{{_id}}" variant_id="{{variant.id}}"
+                        class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
+                        data-toggle="dropdown" aria-haspopup="true" type="button" aria-expanded="false">
+                        <span class="material-icons">add_circle</span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="padding-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        {{#userCtx 'catalog' 'admin'}}
+        <div class="Switch" onclick="">
+            <input id="{{variant.id}}_stock_status_lote_edit_checkbox" name="switch_variation" {{#ifEquals
+                variant.status.status true }} checked {{/ifEquals}} value="" type="checkbox" doc_id="{{{_id}}}"
+                variant_id="{{variant.id}}" input_id="status" onclick="stock_status_lote_edit_checkbox(this)" />
+            <label for="{{variant.id}}_stock_status_lote_edit_checkbox" class="label-primary"></label>
+        </div>
+        {{/userCtx}}
+        {{#with ws_lang_data}} {{m_catalog_edit_stock_lotes}}:{{/with}}
+        {{#available_stock variant.stock_invetary}}{{/available_stock}}
+
+    </div>
 </div>
-<div class="padding-20">
-{{#each variant.stock_invetary}}
 
-
-
+<div class="padding-20 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    {{#each variant.stock_invetary}}
     <li class="list-group-item ripple ">
         {{#ifEquals type "in" }}
         <span class="material-icons text-green">
@@ -113,7 +116,5 @@
 
         </div>
     </li>
-
-{{/each}}
-
+    {{/each}}
 </div>
