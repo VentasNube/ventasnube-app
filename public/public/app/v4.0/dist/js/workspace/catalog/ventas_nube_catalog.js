@@ -3096,7 +3096,7 @@ async function stock_status_edit_checkbox(element) {
         const edit_stock_var_btn = '#edit_stock_var_btn_' + variant_id + '_' + doc_id;
 
         const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
-      
+
 
         var input_status = true;
         if (!new_input_status) {
@@ -3121,7 +3121,7 @@ async function stock_status_edit_checkbox(element) {
             $(input_lote_checkbox_id).prop('disabled', true);
             $(edit_stock_var_btn).prop('disabled', false);
             $(edit_stock_var_btn).prop('status', false);
-           // $(stock_lot_main).hide();
+            // $(stock_lot_main).hide();
         } else {
             $(input_lote_checkbox_id).prop('disabled', false);
         }
@@ -3138,7 +3138,7 @@ async function stock_status_edit_checkbox(element) {
             updateUser: userName,
             updateDate: newDate,
             status: input_status,
-            control_status:false,
+            control_status: false,
         };
 
         variant.available_quantity = available_quantity;
@@ -3169,20 +3169,20 @@ async function stock_status_lote_edit_checkbox(element) {
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
         const input_html_id = '#edit_stock_var_' + variant_id;
-        const input_checkbox_id = '#'+ doc_id + variant_id + '_status_stock_control_checkbox';
+        const input_checkbox_id = '#' + doc_id + variant_id + '_status_stock_control_checkbox';
         const edit_stock_var_btn = '#edit_stock_var_btn_' + variant_id + '_' + doc_id;
         const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
         const new_input_status = $(element).is(':checked');
-       // var ms_alert =  ws_lang_data.ws_lang_data['m_catalog_edit_stock_lotes'];
-      //  alert(ms_alert);
-      //  console.log(m_catalog_edit_stock_lotes,'m_catalog_edit_stock_lotes',ms_alert)
-       // var input_status = true;
+        // var ms_alert =  ws_lang_data.ws_lang_data['m_catalog_edit_stock_lotes'];
+        //  alert(ms_alert);
+        //  console.log(m_catalog_edit_stock_lotes,'m_catalog_edit_stock_lotes',ms_alert)
+        // var input_status = true;
         var input_status_lote = true;
         if (!new_input_status) {
             input_status_lote = false
             $(stock_lot_main).hide();
-         //   $(input_checkbox_id).prop('checked', true);
-          //  $(input_checkbox_id).prop('disabled', false);
+            //   $(input_checkbox_id).prop('checked', true);
+            //  $(input_checkbox_id).prop('disabled', false);
         }
         // Desactivar el control de stock si el control de stock por lotes está activo
         else if (new_input_status) {
@@ -3190,7 +3190,7 @@ async function stock_status_lote_edit_checkbox(element) {
             $(stock_lot_main).show();
             $(input_checkbox_id).prop('checked', false);
             $(input_checkbox_id).prop('disabled', true);
-          //  alert("caso 2");
+            //  alert("caso 2");
         } else {
             $(input_checkbox_id).prop('disabled', false);
             Snackbar.show({
@@ -3207,14 +3207,14 @@ async function stock_status_lote_edit_checkbox(element) {
         var newDate = new Date();
         var userName = userCtx.userCtx.name;
 
-        console.log('input_status_lote',input_status_lote)
+        console.log('input_status_lote', input_status_lote)
         var available_quantity = {
             id: newDate,
             value: variant.available_quantity.value,
             updateUser: userName,
             updateDate: newDate,
             status: false,
-            control_status:input_status_lote,
+            control_status: input_status_lote,
         };
         variant.available_quantity = available_quantity;
         var response = await L_catalog_db.put({
@@ -3362,159 +3362,414 @@ async function edit_cost_price(element) {
 // 2 : Por final creo un nuevo objeto con q registra el movimiento, y lo guardo ahi.
 
 //VER STPCK
- 
-    // Actualizo la vista
-    async function catalog_get_menu_stock_id(doc_id,variant_id) {
-        try {
 
-            var doc_id = doc_id;
-            var variant_id = variant_id;
-            const doc_id_s = String(doc_id);
-            var select_div_id = '#catalog_new_stock_list_' + doc_id;
+// CALCULAR STOCK DE LOTES 
+async function get_stock_inventary(producto_id, variant_id) {
+    try {
+        // Obtener el documento del producto de la base de datos
+        const doc = await L_catalog_db.get(producto_id);
+        let stockDisponible = 0;
+        var doc_id = doc_id;
+        var variant_id = variant_id;
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+        variant.stock_invetary.forEach(lote => {
+            // Sumar el stock disponible (in_stock - out_stock)
+            stockDisponible += (parseInt(lote.in_stock) - parseInt(lote.out_stock));
+        });
+        console.log('stockDisponible', stockDisponible);
+        return tot_real_stock;
+    } catch (error) {
+        console.error("Error al calcular el stock disponible:", error);
+        throw error; // Propagar el error para manejarlo en el contexto adecuado
+    }
+}
 
-            var doc = await L_catalog_db.get(doc_id_s);
-            var price_list = await L_catalog_db.get('price_list');
-            var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+// ACTUALIZAR y CALCULAR STOCK DE LOTES 
+async function update_stock_inventary(doc_id, variant_id) {
+    try {
+        // Obtener el documento del producto de la base de datos
+        const doc = await L_catalog_db.get(doc_id);
+        let stockDisponible = 0;
+        var doc_id = doc_id;
+        //  var variant_id = variant_id;
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
 
-            // "stock_invetary":
+        var a_quantity = variant.available_quantity
+        console.log('a_quantity', a_quantity);
+        var status = a_quantity.status
+        console.log('status', status);
+        variant.stock_invetary.forEach(lote => {
+            // Sumar el stock disponible (in_stock - out_stock)
+            stockDisponible += (parseInt(lote.in_stock) - parseInt(lote.out_stock));
+        });
 
-            const new_variant = {
-                variant: variant,
-                _id: doc_id,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-                price_list: price_list.price_list,
-                stock_invetary: variant.stock_invetary,
-                available_quantity: variant.available_quantity,
-                sold_quantity: variant.sold_quantity,
-                limit_discount: variant.limit_discount,
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+       // console.log('VARIANT', variant.available_quantity.status);
+        var available_quantity = {
+            id: newDate,
+            value: stockDisponible,
+            updateUser: userName,
+            updateDate: newDate,
+            status: a_quantity.status,
+            control_status: a_quantity.control_status,
+        };
+
+        //   variant.cost_price = cost_price;
+        variant.available_quantity = available_quantity;
+
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+        });
+        if (response) {
+
+            catalog_get_menu_stock_id(doc_id, variant_id);
+
+
+            Snackbar.show({
+                text: 'El stock se actualizo!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else {
+            alert("no se actualizo");
+        }
+
+
+        console.log('stockDisponible', stockDisponible);
+        return stockDisponible;
+    } catch (error) {
+        console.error("Error al calcular el stock disponible:", error);
+        throw error; // Propagar el error para manejarlo en el contexto adecuado
+    }
+}
+
+
+
+// Actualizo la vista
+async function catalog_get_menu_stock_id(doc_id, variant_id) {
+    try {
+
+        var doc_id = doc_id;
+        var variant_id = variant_id;
+        const doc_id_s = String(doc_id);
+        var select_div_id = '#catalog_new_stock_list_' + doc_id;
+
+        var doc = await L_catalog_db.get(doc_id_s);
+        var price_list = await L_catalog_db.get('price_list');
+        var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+        // "stock_invetary":
+
+        const new_variant = {
+            variant: variant,
+            _id: doc_id,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list: price_list.price_list,
+            stock_invetary: variant.stock_invetary,
+            available_quantity: variant.available_quantity,
+            sold_quantity: variant.sold_quantity,
+            limit_discount: variant.limit_discount,
+
+        }
+
+        console.log("new_variant", new_variant);
+        console.log('variant', variant);
+        var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_stock_get_list.hbs', select_div_id, new_variant);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+/// BOTON INGRESO EGRESO TOGLE
+
+async function catalog_product_selected_lot(element) {
+    const doc_id = $(element).attr('doc_id');
+    const variant_id = $(element).attr('variant_id');
+    const btn_add_stock_var = $('#btn_add_stock_var_' + variant_id + '_' + doc_id);
+    btn_add_stock_var.attr('onclick', 'dell_stock_var_btn(this)');
+
+    console.log(btn_add_stock_var)
+    // Obtener el tipo actual (ingreso o egreso)
+    var currentType = $(element).attr('mov');
+
+    // Cambiar el tipo
+    var newType = (currentType === 'in') ? 'out' : 'in';
+
+    // Cambiar el texto del botón
+    $(element).text(newType.toUpperCase());
+
+    // Obtener el icono
+    var icon = (newType === 'in') ? 'add_circle' : 'remove_circle'; // Cambiar aquí al icono apropiado para 'in' y 'out'
+
+    // Cambiar el icono y la clase
+    var $icon = $(element).find('.material-icons');
+    $icon.text(icon);
+    $icon.removeClass('text-red').addClass((newType === 'in') ? 'text-green' : 'text-red');
+
+    // Actualizar el atributo 'mov' con el nuevo tipo
+    $(element).attr('mov', newType);
+
+    // Cambiar el atributo 'onclick' del botón add stock
+    if (newType === 'in') {
+        // btn_add_stock_var.attr('onclick', 'add_stock_var(this)');
+    } else {
+        btn_add_stock_var.attr('onclick', 'dell_stock_var_btn(this)');
+    }
+}
+
+
+
+
+// ELIMINAR
+async function dell_stock_var_btn(doc_id, variant_id) {
+
+    try {
+        //traigo el documento a editar
+        // const doc_id = doc_id;
+        //  const variant_id = variant_id;
+        const out_stock_input = $('#add_stock_var_' + variant_id + '_' + doc_id).val();
+
+        //   var out_stock_input = $('#dell_stock_var_' + variant_id).val();
+
+        //   const doc_id = $(element).attr('doc_id');
+        //  const variant_id = $(element).attr('variant_id');
+        //  let input_id = $(element).attr('input_id');
+        //// let currency_id = $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id'); //Id del documento a edita
+        //  let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
+        // let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
+
+        //     let new_value = $('#add_stock_var_' + variant_id+'-'+ doc_id).val();
+
+        // const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
+
+        // let new_cost_stock = $('#new_cost_stock_var_'+ variant_id +'-'+ doc_id).val(); //Id del documento a edita
+        // Obtener valores de los campos de entrada
+        //  const out_stock_input = $('#dell_stock_var_' + variant_id + '_' + doc_id).val();
+        //const new_cost_stock = $('#new_cost_stock_var_' + variant_id + '_' + doc_id).val();
+
+        /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
+        // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
+        // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
+        const doc_id_s = String(doc_id);
+        var out_stock_s = Number(out_stock_input);
+        //PRUEBAS NUEVAS
+        // var user_Ctx =  userCtx;
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc = await L_catalog_db.get(doc_id_s);
+        // var check_first_date = check_old_date_inventary ;
+        // Buscar el objeto (con create mas viejo) con y real_stock >= 1 ( y restar) - out_stock guardar
+        // hay que hacer un bucle para poder ir verificando q el real_stock que pare cuando llegue a 0
+        // Y continuar con el proximo objeto, repertir el filtro y la operacion hasta q out_stock quede en 0
+        var get_variant_id = doc.variations.find(response => response.id == variant_id);
+        var stock_invetary = get_variant_id['stock_invetary'];
+        var count_out_stock = out_stock_s;
+        for (var i = stock_invetary.length - 1; i >= 0; i--) {
+            //Compruebo q tenga stock mayor a 1
+            var real_stock = stock_invetary[i].real_stock;
+            var out_stock = stock_invetary[i].out_stock;
+            //si el stock es mayor o igual a 1 tomo ese valor y le resto el out stock
+            if (real_stock >= 1 && count_out_stock >= 1) {
+                // Hago el descuento uno por uno hasta llegar a 0 y gravo la variable con el resutado
+                for (var i2 = count_out_stock - 1; i2 >= 0; i2--) {
+                    var real_stock = real_stock - 1;
+                    var out_stock = out_stock += 1;
+                    var count_out_stock = count_out_stock - 1;
+                    //Compruebo que queda stock disponible
+                    if (real_stock <= 0) {
+                        // Si no hay mas stock paro y guardo el resultado en el array
+                        var stock_invetary_new = stock_invetary[i];
+                        stock_invetary_new.real_stock = real_stock;
+                        stock_invetary_new.out_stock = out_stock;
+                        stock_invetary_new.update_datetime = newDate;
+                        stock_invetary_new.updateUser = userName;
+                        break
+                    } else {
+                        continue;
+                    }
+                }
+                // EDITO EL ARRAY 
+                var stock_invetary_new = stock_invetary[i];
+                stock_invetary_new.real_stock = real_stock;
+                stock_invetary_new.out_stock = out_stock;
+                stock_invetary_new.update_datetime = newDate;
+                stock_invetary_new.updateUser = userName;
+            }
+
+        }
+        //Modifico los datos del array viejo por el nuevo
+        var stock_invetary = stock_invetary;
+        // Lo guardo
+        var response = await L_catalog_db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            ...doc,
+        });
+        if (response) {
+              catalog_get_menu_stock_id(doc_id, variant_id);
+            let new_stock = await update_stock_inventary(doc_id, variant_id);
+            //console.log('new stock', new_stock)
+            if (new_stock) {
+                console.log('new stock 2', new_stock)
+
+                Snackbar.show({
+                    text: 'El stock se actualizo !',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
 
             }
 
-            console.log("new_variant", new_variant);
-            console.log('variant', variant);
-            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_stock_get_list.hbs', select_div_id, new_variant);
-
-        } catch (err) {
-            console.log(err);
+        } else {
+            alert("no se actualizo");
         }
+
+        console.log('(ARRAY MODIFICADO stock_invetary ):', stock_invetary);
+    } catch (err) {
+        console.log(err);
     }
 
+}
 
 
 /// AGREGAR 
 async function add_stock_var(element) {
 
     try {
+
+
         // traigo el documento a editar
         const doc_id = $(element).attr('doc_id');
         const variant_id = $(element).attr('variant_id');
+
+
         let input_id = $(element).attr('input_id');
+
         let currency_id = $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id'); //Id del documento a edita
         let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
         let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
-
-   //     let new_value = $('#add_stock_var_' + variant_id+'-'+ doc_id).val();
-
-       // const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
-
-       // let new_cost_stock = $('#new_cost_stock_var_'+ variant_id +'-'+ doc_id).val(); //Id del documento a edita
-        // Obtener valores de los campos de entrada
+        // const catalog_product_selected_lot = $('#catalog_product_selected_lot_' + variant_id + '_' + doc_id).val();
         const new_value = $('#add_stock_var_' + variant_id + '_' + doc_id).val();
         const new_cost_stock = $('#new_cost_stock_var_' + variant_id + '_' + doc_id).val();
 
-        
-        var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
-        // FILTRO LOS INPUT
-        
-        const doc_id_s = String(doc_id);
-        var new_value_s = Number(new_value);
-        var new_cost_stock_s = Number(new_cost_stock);
-        // PRUEBAS NUEVAS
-        // var user_Ctx = userCtx;
-        var newDate = new Date(); //fecha actual del navegador
-        var userName = userCtx.userCtx.name;
-        var doc = await L_catalog_db.get(doc_id_s);
+        const mov_type = $('#catalog_product_selected_lot_' + variant_id + '_' + doc_id).attr('mov');
 
-
-        console.log(  'new_value',new_value)
-        console.log(  ' new_cost_stock', new_cost_stock)
-        console.log(  'new_value',new_value)
-
-        //Hago comprobaciones 
-        if (new_cost_stock_s === 0) {
-            $('#new_cost_stock_var_' + variant_id+'-'+ doc_id).css('border', '3px solid red');
-            $('#new_cost_stock_modal_var_' + variant_id+'-'+ doc_id).css('border', '3px solid red');
-
-            Snackbar.show({
-                text: 'Falta completar el precio',
-                actionText: 'ok',
-                pos: 'bottom-right',
-                actionTextColor: "#0575e6",
-            });
-        }
-        else if (new_value_s === 0) {
-            $('#add_stock_var_' + variant_id+'-'+ doc_id).css('border', '3px solid red');
-            $('#new_cost_stock_modal_var_' + variant_id+'-'+ doc_id).css('border', '3px solid red');
-            Snackbar.show({
-                text: 'Falta completar la cantidad',
-                actionText: 'ok',
-                pos: 'bottom-right',
-                actionTextColor: "#0575e6",
-            });
-        }
-        else if (variant_id) {
-            var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
-            var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
-            //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
-            if (price_list) {
-                var add_stock_variant_id = Math.floor(Math.random() * (+'100000000' - +'1')) + +'1';
-            } else {
-                var new_item = {
-                    id: add_stock_variant_id,
-                    create: newDate,
-                    in_datetime: newDate,
-                    update_datetime: newDate,
-                    updateUser: userName,
-                    type: 'in',
-                    in_stock: new_value_s,
-                    out_stock: 0,
-                    real_stock: new_value_s,
-                    cost_price: new_cost_stock_s,
-                    currency_id: currency_id,
-                    currency_value: currency_value,
-                    currency_name: currency_name,
-                    location_id: 1
-                };
-                //  console.log(userName, 'else userName',new_item,'new_item');
-                //  var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
-                var new_doc = item[input_id].push(new_item);  //Envio los datos editados al documento
-                var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-                });
-                if (response) {
-                    // load_all_cat(doc_id,arr_number_id );
-                    // catalog_edit_item_url(doc_id, 1);
-                    catalog_get_menu_stock_id(doc_id,variant_id);
-                    Snackbar.show({
-                        text: 'El stock se actualizo!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-
-                   // product_new_price_pop(element);
-                  // catalog_edit_item_url(doc_id, 1);
-                } else {
-                    alert("no se actualizo");
-                }
-
-            }
+        if (mov_type === 'out') {
+            // Si es un out 
+            console.log(doc_id, mov_type, 'OUT')
+            dell_stock_var_btn(doc_id, variant_id);
 
         } else {
+            console.log(mov_type, 'IN')
+            // Si es un in sigue
 
+            var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
+            // FILTRO LOS INPUT
+            const doc_id_s = String(doc_id);
+            var new_value_s = Number(new_value);
+            var new_cost_stock_s = Number(new_cost_stock);
+            // PRUEBAS NUEVAS
+            // var user_Ctx = userCtx;
+            var newDate = new Date(); //fecha actual del navegador
+            var userName = userCtx.userCtx.name;
+            var doc = await L_catalog_db.get(doc_id_s);
+
+
+            // console.log(  'new_value',new_value)
+            // console.log(  ' new_cost_stock', new_cost_stock)
+            // console.log(  'new_value',new_value)
+
+            //Hago comprobaciones 
+            if (new_cost_stock_s === 0) {
+                $('#new_cost_stock_var_' + variant_id + '-' + doc_id).css('border', '3px solid red');
+                $('#new_cost_stock_modal_var_' + variant_id + '-' + doc_id).css('border', '3px solid red');
+
+                Snackbar.show({
+                    text: 'Falta completar el precio',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
+            else if (new_value_s === 0) {
+                $('#add_stock_var_' + variant_id + '-' + doc_id).css('border', '3px solid red');
+                $('#new_cost_stock_modal_var_' + variant_id + '-' + doc_id).css('border', '3px solid red');
+                Snackbar.show({
+                    text: 'Falta completar la cantidad',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
+            else if (variant_id) {
+                var item = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+                var price_list = item[input_id].find(response => response.id == add_stock_variant_id);// Compruebo q el id lista existe 
+                //Actualizo los arrays con la fecha y el usuario q lo actualizo al precio
+                if (price_list) {
+                    var add_stock_variant_id = Math.floor(Math.random() * (+'100000000' - +'1')) + +'1';
+                } else {
+                    var new_item = {
+                        id: add_stock_variant_id,
+                        create: newDate,
+                        in_datetime: newDate,
+                        update_datetime: newDate,
+                        updateUser: userName,
+                        type: 'in',
+                        in_stock: new_value_s,
+                        out_stock: 0,
+                        real_stock: new_value_s,
+                        cost_price: new_cost_stock_s,
+                        currency_id: currency_id,
+                        currency_value: currency_value,
+                        currency_name: currency_name,
+                        location_id: 1
+                    };
+                    // console.log(userName, 'else userName',new_item,'new_item');
+                    // var new_doc = item[input_id].unshift(new_item);  //Envio los datos editados al documento
+                    // new_item = item
+                    // available_quantity = new_item.available_quantity.value
+                    var new_doc = item[input_id].push(new_item);  //Envio los datos editados al documento
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                    });
+                    if (response) {
+
+                        catalog_get_menu_stock_id(doc_id, variant_id);
+
+                        let new_stock = await update_stock_inventary(doc_id, variant_id);
+                        console.log('new stock', new_stock)
+                        if (new_stock) {
+                            console.log('new stock 2', new_stock)
+
+                            Snackbar.show({
+                                text: 'El stock se actualizo !',
+                                actionText: 'ok',
+                                pos: 'bottom-right',
+                                actionTextColor: "#0575e6",
+                            });
+
+                        }
+
+
+                    } else {
+                        alert("no se actualizo");
+                    }
+
+                }
+
+            } else {
+
+
+            }
 
         }
 
