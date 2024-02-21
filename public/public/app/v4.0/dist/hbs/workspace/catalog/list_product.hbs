@@ -381,11 +381,11 @@
     }
     
     // Actualizo la vista
-    async function catalog_get_menu_stock(element) {
+    async function catalog_get_menu_stock(element,doc_id,variant_id) {
         try {
 
-            const doc_id = $(element).attr('doc_id');
-            const variant_id = $(element).attr('variant_id');
+            var doc_id = $(element).attr('doc_id');
+            var variant_id = $(element).attr('variant_id');
             const doc_id_s = String(doc_id);
             var select_div_id = '#catalog_new_stock_list_' + doc_id;
 

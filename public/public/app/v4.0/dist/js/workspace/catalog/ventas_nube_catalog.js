@@ -3361,6 +3361,47 @@ async function edit_cost_price(element) {
 // si no alcanza sigo y descuento el objeto con disponible q sigue hasta no tener mas para descontar
 // 2 : Por final creo un nuevo objeto con q registra el movimiento, y lo guardo ahi.
 
+//VER STPCK
+ 
+    // Actualizo la vista
+    async function catalog_get_menu_stock_id(doc_id,variant_id) {
+        try {
+
+            var doc_id = doc_id;
+            var variant_id = variant_id;
+            const doc_id_s = String(doc_id);
+            var select_div_id = '#catalog_new_stock_list_' + doc_id;
+
+            var doc = await L_catalog_db.get(doc_id_s);
+            var price_list = await L_catalog_db.get('price_list');
+            var variant = doc.variations.find(response => response.id == variant_id);// Traigo el elemento por la id variant
+
+            // "stock_invetary":
+
+            const new_variant = {
+                variant: variant,
+                _id: doc_id,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                price_list: price_list.price_list,
+                stock_invetary: variant.stock_invetary,
+                available_quantity: variant.available_quantity,
+                sold_quantity: variant.sold_quantity,
+                limit_discount: variant.limit_discount,
+
+            }
+
+            console.log("new_variant", new_variant);
+            console.log('variant', variant);
+            var item_print = await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_stock_get_list.hbs', select_div_id, new_variant);
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+
 /// AGREGAR 
 async function add_stock_var(element) {
 
@@ -3373,11 +3414,15 @@ async function add_stock_var(element) {
         let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
         let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
 
-        let new_value = $('#add_stock_var_' + variant_id+'-'+ doc_id).val();
+   //     let new_value = $('#add_stock_var_' + variant_id+'-'+ doc_id).val();
 
        // const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
 
-        let new_cost_stock = $('#new_cost_stock_var_' + variant_id +'-'+ doc_id).val(); //Id del documento a edita
+       // let new_cost_stock = $('#new_cost_stock_var_'+ variant_id +'-'+ doc_id).val(); //Id del documento a edita
+        // Obtener valores de los campos de entrada
+        const new_value = $('#add_stock_var_' + variant_id + '_' + doc_id).val();
+        const new_cost_stock = $('#new_cost_stock_var_' + variant_id + '_' + doc_id).val();
+
         
         var add_stock_variant_id = Math.floor(Math.random() * (+'1000' - +'1')) + +'1';
         // FILTRO LOS INPUT
@@ -3452,6 +3497,7 @@ async function add_stock_var(element) {
                 if (response) {
                     // load_all_cat(doc_id,arr_number_id );
                     // catalog_edit_item_url(doc_id, 1);
+                    catalog_get_menu_stock_id(doc_id,variant_id);
                     Snackbar.show({
                         text: 'El stock se actualizo!',
                         actionText: 'ok',
