@@ -71,6 +71,8 @@ async function get_all_catalog_intems(ws_id, filter) {
         all_items_array = await rows.map(item => {
             new_items = {};
             // Mapeo el array
+            console.log('ARRAY SEARCH COMPLETO it=',item,'it.item', item.value);
+
             new_items['name'] = item.value.name;
             new_items['cats'] = item.value.cats;
             new_items['tags'] = item.value.tags;
@@ -196,20 +198,16 @@ async function search_catalog_item(search_val) {
     search_all_items_map_array = await new_items_search.map(it => {
         new_items = {};
         // Mapeo el array
+        console.log('ARRAY SEARCH COMPLETO it=',it,'it.item', it.item);
         new_items['name'] = it.item.name;
-        // new_items['stock_invetary'] = it.item.stock_invetary;
-        //  new_items['name'] = it.item.name;
         new_items['cats'] = it.item.cats;
         new_items['tags'] = it.item.tags;
         new_items['sku'] = it.item.sku;
         new_items['attribute_combinations'] = it.item.attribute_combinations;
         new_items['doc'] = it.item.doc;
 
-
-
         new_items['stock_invetary'] = it.item.stock_invetary;
         new_items['available_quantity'] = it.item.available_quantity;
-
         //Formateo el array final
         return new_items;
     });
@@ -3509,7 +3507,6 @@ async function catalog_get_menu_stock_id(doc_id, variant_id) {
 
 
 /// BOTON INGRESO EGRESO TOGLE
-
 async function catalog_product_selected_lot(element) {
     const doc_id = $(element).attr('doc_id');
     const variant_id = $(element).attr('variant_id');
@@ -3780,6 +3777,7 @@ async function add_stock_var(element) {
     }
 }
 
+
 // ELIMINAR
 async function dell_stock_var(element) {
 
@@ -3926,6 +3924,7 @@ async function cat_edit_chekbox(element) {
         console.log(err);
     }
 }
+
 
 //////////////////////////////////////
 // NUEVA VARIABLE ( PRODUCTO ) 2023 //

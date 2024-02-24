@@ -238,8 +238,7 @@
 
 
                         {{#userCtx 'catalog' 'edit'}}
-                        {{doc.status.status}}
-                         {{doc.status}}
+                        
                         <div class="Switch" onclick="">
                             <input id="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" name="switch_variation"
                                 {{#ifEquals doc.status.status true }} checked {{/ifEquals}} value="" type="checkbox"
