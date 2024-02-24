@@ -188,7 +188,6 @@ function print_catalog_item(new_items) {
 
 
 
-
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_catalog_item(search_val) {
     //Armo el array para renderizar los items
@@ -321,7 +320,6 @@ function cat_variations_get(element) {
 }
 
 
-
 //Boton variables y las Renderizo
 function cat_all_variations_get(element) {
     let product_id = $(element).attr('product_id');
@@ -347,6 +345,7 @@ function cat_all_variations_get(element) {
 
 }
 
+
 function cat_variations_size_get(element) {
     let product_id = $(element).attr('product_id');
     let variant_id = $(element).attr('variant_id');
@@ -370,7 +369,6 @@ function cat_variations_size_get(element) {
     });
 
 }
-
 
 
 
@@ -873,7 +871,6 @@ async function product_new_price_pop(element) {
 }
 
 
-
 // Crear variable (Carga todos los datos generales en un nuevo documento con el nombre y crea 1 sola variable )
 
 ///////////////////////////////////////////////
@@ -997,6 +994,7 @@ async function catalog_new_item_new_variant(element) {
     }
 
 }
+
 // ELIMINAR
 async function catalog_new_item_delete_variant(element) {
 
@@ -1024,6 +1022,7 @@ async function catalog_new_item_delete_variant(element) {
     }
 
 }
+
 // EDITAR 
 async function catalog_new_item_edit_variations(element) {
 
@@ -1071,6 +1070,7 @@ function add_new_tag_press(e, element) {
         add_new_tag(element);
     }
 }
+
 // AGREGO
 async function add_new_tag(element) {
     try {
@@ -1229,6 +1229,7 @@ async function add_new_cat(element) {
 
     }
 }
+
 // TRAIGO LAS CATEGORIAS
 function catalog_get_cat(element) {
     let product_id = $(element).attr('product_id');
@@ -1247,6 +1248,7 @@ function catalog_get_cat(element) {
         renderHandlebarsTemplate(url_template, id_copiled, variant_array);
     });
 }
+
 /// BUSCADOR 
 async function add_new_cat_press(e, element) {
     var key = e.keyCode || e.which;
@@ -1283,6 +1285,7 @@ async function add_new_cat_press(e, element) {
         }
     }
 }
+
 /// SELECCIONO y GUARDO CATEGORIA
 async function catalog_product_edit_category(element) {
     const doc_id = $(element).attr('doc_id'); //Id del documento a editar
@@ -1363,6 +1366,8 @@ function catalog_add_new_tag_press(e, element) {
         catalog_add_new_tag(element);
     }
 }
+
+
 // AGREGO
 async function catalog_add_new_tag(element) {
 
@@ -1401,6 +1406,8 @@ async function catalog_add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
+
+
 // ELIMINO
 async function catolog_dell_new_tag(element) {
     try {
@@ -1464,6 +1471,7 @@ async function catalog_search_cat(e, element) {
     }
 
 }
+
 ///  LISTADO EN FORM NUEVO PRODUCTO
 async function catalog_search_new_prod_cat(e, element) {
     //traigo el resultado mas parecido con find
@@ -1513,6 +1521,8 @@ async function catalog_search_new_prod_cat(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_item_cat_list.hbs', select_div_id, cat_list_search);
     }
 }
+
+
 // ELIMINO
 async function catalog_dell_cat(element) {
     event.preventDefault(element);
@@ -1562,6 +1572,8 @@ async function catalog_dell_cat(element) {
         console.log(err);
     }
 }
+
+
 // AGREGO
 async function catalog_add_new_cat(element) {
     event.preventDefault(element);
@@ -1634,6 +1646,8 @@ async function catalog_add_new_cat(element) {
 
     }
 }
+
+
 // SELECCIONO
 async function catalog_select_new_cat(element, new_cat) {
     let item_value_id = $(element).attr('item_value_id');
@@ -1653,6 +1667,7 @@ async function catalog_select_new_cat(element, new_cat) {
     }
 
 }
+
 
 // CRUD MARCAS 2023
 // BUSCO 
@@ -1708,6 +1723,7 @@ async function catalog_search_trade(e, element) {
 
 }
 
+
 async function catalog_search_new_pro_trade(e, element) {
 
     //traigo el resultado mas parecido con find
@@ -1759,6 +1775,8 @@ async function catalog_search_new_pro_trade(e, element) {
     }
 
 }
+
+
 // SELECCIONO
 async function catalog_select_new_trade(element, new_item) {
 
@@ -1783,6 +1801,8 @@ async function catalog_select_new_trade(element, new_item) {
         console.log(err);
     }
 }
+
+
 // AGREGO
 async function catalog_add_new_trade(element) {
     event.preventDefault(element);
@@ -1855,6 +1875,7 @@ async function catalog_add_new_trade(element) {
     }
 }
 
+
 // ELIMINO
 async function catalog_dell_trade(element) {
     event.preventDefault(element);
@@ -1904,6 +1925,7 @@ async function catalog_dell_trade(element) {
         console.log(err);
     }
 }
+
 
 // CRUD MODELOS 2023
 // BUSCADOR
@@ -2237,6 +2259,8 @@ async function catalog_product_delete(element) {
 /////////////////////////////////////
 // CONFIGURACION ( CATALOGO ) 2023 //
 /////////////////////////////////////
+
+
 // ABRE CONFIGURACION
 async function catalog_config(tab_id) {
     try {
@@ -2511,6 +2535,7 @@ async function catalog_config_show_money_edit(element) {
     }
 }
 
+
 ///// CONFIG MONEDAS
 // TRAE LOS DATOS
 async function catalog_config_show_tax_edit(element) {
@@ -2541,6 +2566,7 @@ async function catalog_config_show_tax_edit(element) {
         console.log(err);
     }
 }
+
 // GUARDAR CAMBIOS
 async function catalog_config_tax_money_edit(element) {
     try {
@@ -2603,8 +2629,8 @@ async function catalog_config_tax_money_edit(element) {
         console.log(err);
     }
 }
-///// CONFIG IMPUESTOS 2023
 
+///// CONFIG IMPUESTOS 2023
 // AGREGO
 async function catalog_config_tax_new(element) {
     try {
@@ -3243,9 +3269,6 @@ async function stock_status_lote_edit_checkbox(element) {
     }
 }
 
-
-
-
 //async function edit_cost_price(element) {
 
 async function edit_stock_var(element) {
@@ -3304,7 +3327,6 @@ async function edit_cost_price(element) {
         let doc_id = $(element).attr('doc_id');
         let variant_id = $(element).attr('variant_id');
         let new_value = $('#edit_price_cost_var_' + variant_id).val(); //Id del documento a edita
-
 
         //  let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
         //  Obtener el documento actual del producto del usuario de la base de datos
@@ -3448,7 +3470,6 @@ async function update_stock_inventary(doc_id, variant_id) {
 }
 
 
-
 // Actualizo la vista
 async function catalog_get_menu_stock_id(doc_id, variant_id) {
     try {
@@ -3485,6 +3506,8 @@ async function catalog_get_menu_stock_id(doc_id, variant_id) {
         console.log(err);
     }
 }
+
+
 /// BOTON INGRESO EGRESO TOGLE
 
 async function catalog_product_selected_lot(element) {
@@ -3523,8 +3546,6 @@ async function catalog_product_selected_lot(element) {
 }
 
 
-
-
 // ELIMINAR
 async function dell_stock_var_btn(doc_id, variant_id) {
 
@@ -3533,25 +3554,6 @@ async function dell_stock_var_btn(doc_id, variant_id) {
         // const doc_id = doc_id;
         //  const variant_id = variant_id;
         const out_stock_input = $('#add_stock_var_' + variant_id + '_' + doc_id).val();
-
-        //   var out_stock_input = $('#dell_stock_var_' + variant_id).val();
-
-        //   const doc_id = $(element).attr('doc_id');
-        //  const variant_id = $(element).attr('variant_id');
-        //  let input_id = $(element).attr('input_id');
-        //// let currency_id = $('#catalog_product_selected_currency_' + variant_id).attr('item_value_id'); //Id del documento a edita
-        //  let currency_value = $('#catalog_product_selected_currency_' + variant_id).attr('item_value'); //Id del documento a edita
-        // let currency_name = $('#catalog_product_selected_currency_' + variant_id).attr('currency_name'); //Id del documento a edita
-
-        //     let new_value = $('#add_stock_var_' + variant_id+'-'+ doc_id).val();
-
-        // const stock_lot_main = '#stock_lot_main_' + variant_id + '_' + doc_id;
-
-        // let new_cost_stock = $('#new_cost_stock_var_'+ variant_id +'-'+ doc_id).val(); //Id del documento a edita
-        // Obtener valores de los campos de entrada
-        //  const out_stock_input = $('#dell_stock_var_' + variant_id + '_' + doc_id).val();
-        //const new_cost_stock = $('#new_cost_stock_var_' + variant_id + '_' + doc_id).val();
-
         /// ********* HACER UN BUCLE QUE RESTE EL STOCK edite en array y si sobran valores continua con el resto hasta que queda en 0
         // Buscar el ultimo movimiento con stock y descontar y dejarlo con el valor q resta, 
         // si el resultado queda en poitivo sique restando al siguiente array hasta que queda en 0
@@ -4097,8 +4099,6 @@ async function cat_edit_variations(element) {
         console.log(err);
     }
 }
-
-
 
 ////// UPLOAD IMAGEN PRODUCTO ///
 
