@@ -295,11 +295,6 @@
         handle: '',
         increaseArea: '20%' // optional
     });
-
-
-
-    // var board_group_deliver = $('input:checkbox[name=board_group_deliver]:checked').val();
-
     $('input').on('ifChecked', function (event) {
         //  var select = $(this);
         //    var id = select.attr('id');
@@ -322,7 +317,6 @@
             //  $("#board-type-radio-5").hide();
         //    }*/
     });
-
     $(document).ready(function () {
         // Prevenir el cierre del menú desplegable al hacer clic dentro
         $('.dropdown-menu').on('click', function (e) {
@@ -340,16 +334,12 @@
             console.log("Botón dentro del menú desplegable presionado.");
         });
     });
-
-
     $(document).on('click', '.dropdown-menu-app .dropdown-toggle', function (e) {
         e.preventDefault();
         e.stopPropagation();
         // Toggle del segundo dropdown aquí, si es necesario
         $(this).next('.dropdown-menu').toggle();
     });
-
-
 
     // Actualizo la vista
     async function catalog_get_menu_price(element) {
@@ -417,10 +407,6 @@
             console.log(err);
         }
     }
-
-
-
-
 
 
 
