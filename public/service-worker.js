@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 121345912112121211223121212121334432122;
+const version = 121344122211113212132122;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -143,7 +143,7 @@ workbox.precaching.precacheAndRoute([
   
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/list_product.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_get_variant.hbs', revision: version },
-  
+
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_stock_get_list.hbs', revision: version },
 
   
@@ -173,6 +173,11 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/board/nav_bar.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/board_group.hbs', revision: version },
+  
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/order_main.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/order_item.hbs', revision: version },
+  { url: '/public/app/v4.0/dist/hbs/workspace/board/order_total_items.hbs', revision: version },
+
 
   //CONTACT
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', revision: version },

@@ -1,8 +1,7 @@
 {{#with doc}}
 
-<!---- CARD MAIN ---->
-    <!--div class="board-item" id="22" order="410"-->
-    <div class="board-item-content">
+<!-- CARD MAIN -->
+    <div  class="board-item-content" onclick="get_edit_order(this)" oder_id="{{_id}}" board_type_name="{{#with ../../ws_lang_data}} {{{board_type_name}}} {{/with}}" >
         <div class="s-card ">
             <!--s-card-body--->
             <div class="s-card-body br-primary ">
@@ -172,7 +171,7 @@
                     <!--s-card-order--->
                     <div class="btn btn-default md s-card-order col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <h4>
-                            ORDEN
+                            {{#with ../../ws_lang_data}} {{{m_board_new_item_order}}} {{/with}}
                         </h4>
                         <span>{{order_id}} </span>
                     </div>

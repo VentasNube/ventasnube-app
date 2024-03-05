@@ -184,8 +184,8 @@
 
                                 <div class="padding-b-0 padding-t-0 margin-b-0 text-left panel-body row list-group">
                                     <a onclick="board_edit_group(this)" group_id="{{id}}"
-                                        board_type_name="{{{../board_type_name}}}" id="edit_board_group_btn" m_s_id="{{id}}"
-                                        href="#master_popup" role="button" title="Retirar efectivo"
+                                        board_type_name="{{{../board_type_name}}}" id="edit_board_group_btn"
+                                        m_s_id="{{id}}" href="#master_popup" role="button" title="Retirar efectivo"
                                         class="list-group-item"><i class="material-icons">settings</i>
                                         {{#with ../ws_lang_data}} {{{m_edit_board_group}}}{{/with}}</a>
                                     <a m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}" m_s_id="{{{board_group_id}}}" href="#"
@@ -238,6 +238,168 @@
 <!--script src="<?php echo base_url() ?>public/dist/js/ventas_nube_board.js"></script-->
 
 <script>
+
+    // Traigo doc orden
+    async function get_order(order_id) {
+        var order_doc = await L_board_db.get(order_id);
+        products = order_doc.products;
+        return all_order_item(products);
+    }
+
+    // Creo los arrays con los datos de la BD
+    async function all_order_item(todos) {
+        event.preventDefault
+        try {
+            let array_cart_items = [];
+            //Creo los array
+            var total_quantity_cart_item = 0
+            var total_cart_neto = 0; //TOTAL NETO    
+            var total_neto_prod = 0; //Total productos 
+            var total_neto_service = 0; //Total Servicios    
+            var total_neto_tax = 0; //Impuestos    
+            var total_neto_discount = 0; //Descuentos
+            var total_neto_pay = 0; //Abonado
+            var total_product = 0;
+            var total_service = 0;
+            //  var sub_tot_item = 0;
+            //   var total_neto_item = 0;
+            var discount_tot_sum = 0;
+            var tax = 0;
+            todos.map(function (todo) {
+                var type_item = todo.doc.variant['type'];
+                var quantity = todo.doc.variant['quantity'];
+                var discount = todo.doc.variant['discount'];
+                var price = todo.doc.variant['price'];
+                var sub_tot_dis = todo.doc.variant['sub_tot_dis'];
+                //  var price_cost = todo.doc.variant['price_cost'];
+                var price_tot = price * quantity;
+
+                var taxes = todo.doc.variant['taxes'];
+                // var tax_name = todo.doc.variant['tax_name'];
+                var currency = todo.doc.variant['currency'];
+                // var currency_value = currency.value;
+
+                console.log('todos todos todos todos ', todos)
+                //  var total_price_cost_profit = price_cost * quantity;
+                //Descuentos
+                //  var sub_tot_product = 0;
+                //  var sub_tot_service = 0 ;
+                //sumo el total de descuentos
+                discount_tot_sum += +discount;
+                var discount_tot = discount;
+
+                if (type_item === 'product') {
+                    //var sub_tot_product = Math.round(price_tot - discount_tot);
+                    total_neto_prod += +price_tot;
+                    total_product = total_neto_prod;
+                    // price_cost_tot += +price_tot;
+                    //   price_cost_profit = total_price_cost_profit;
+                }
+                if (type_item === 'service') {
+                    total_neto_service += +price_tot;
+                    total_service = total_neto_service;
+                    // price_cost_tot += +price_tot;
+                    // price_cost_profit = 
+                }
+                //Cargo los datos del array
+                var cart_item = {
+                    _id: todo.doc['_id'],
+                    _rev: todo.doc['_rev'],
+                    variant_id: todo.doc.variant['_id'],
+                    sku: todo.doc.variant['sku'],
+                    taxes: taxes,
+                    // tax_name: tax_name,
+                    currency: currency,
+                    pictures: todo.doc.variant['pictures'], //Img
+                    name: todo.doc.variant['name'], //Name
+                    quantity: quantity, //Cantidad
+                    price: price, //Price
+                    price_tot: price_tot, //Total del item
+                    discount: discount, //Discount
+                    discount_tot: discount_tot, //Tot Discount
+                    sub_tot: price,
+                    sub_tot_dis: sub_tot_dis
+                };
+                //Creo el array con todos los items
+                array_cart_items.push(cart_item);
+                total_quantity_cart_item = array_cart_items.length;
+                //Sumas de tototales
+                total_neto_discount += +discount_tot;
+                total_neto_tax += +tax;
+            });
+            //Creo el array nuevo con los items
+            var cart_items = {
+                items_product: array_cart_items,
+            };
+            // Imprimo todos los items en un solo render asi es mas rapido
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/order_item.hbs', '#product_order_items', cart_items);
+        } catch (err) {
+            console.error('inner', err);
+            throw err;
+        } finally {
+            //Finally es la funcion que emite el resultado final despues de esperar todo e codigo ok
+            total_product = parseFloat(total_neto_prod); // Asume que #total_product y #total_service son elementos que contienen los valores numéricos.
+            total_service = parseFloat(total_service);
+            total_cart_neto = total_product + total_service; // Suma los dos valores
+            // Valores de costo
+
+            // total_cart_cost = parseFloat(price_cost_tot);
+            //  total_cart_profit = parseFloat(price_cost_profit);
+
+            $('#total_cart_neto').text(total_cart_neto.toFixed(2));
+            $('.cart_n').text(total_quantity_cart_item);
+            $('#total_neto_prod').text(total_product.toFixed(2));
+            $('#total_neto_service').text(total_service.toFixed(2));
+            $('#total_neto_discount').text(total_neto_discount.toFixed(2));
+            $('#total_neto_tax').text(total_neto_tax.toFixed(2));
+            $('#total_neto_pay').text(total_neto_pay.toFixed(2));
+            chek_cart_open_ws();
+            return;
+        }
+    }
+
+    // TRAE EL FORMULARIO
+    async function get_edit_order(element) {
+        try {
+
+            var price_doc = await L_catalog_db.get('price_list');
+            var tax_doc = await L_catalog_db.get('tax_list');
+            var currency_doc = await L_catalog_db.get('currency_list');
+            var order_doc = await L_board_db.get(element._element.id);
+            var order_id = element._element.id
+
+            var user_roles_permisions = user_Ctx.userCtx.roles;
+            console.log('user_roles_permisions', user_roles_permisions);
+            console.log('element.id', element._element.id);
+
+            var product_doc_array = {
+                price_list: price_doc.price_list,
+                tax_list: tax_doc,
+                currency_list: currency_doc.currency_list,
+                currency: currency_doc['currency_default'],
+                ws_lang_data: ws_lang_data,
+                user_roles: user_roles_permisions,
+                order_id: order_id,
+                order_doc: order_doc,
+
+
+            }
+
+            // console.log('tax_doc CCCCC', product_doc_array);
+            //console.log('tax_doc currency_doc currency_doc', currency_doc);
+
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/order_main.hbs', '#right_main', product_doc_array);
+
+            get_order(order_id);
+            createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+            $('#right_main').removeClass('move-right');
+            var m_url = '?type=board&t=sell&edit=#' + order_id;
+            history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+            return;
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     ////----( CARRUSEL DE CROLL  )----/////
     function scrollerMove() {
@@ -434,13 +596,13 @@
                 },
             })
                 .on('dragInit', function (item) {
+
                     item.getElement().style.width = item.getWidth() + 'px';
                     item.getElement().style.height = item.getHeight() + 'px';
-                    console.log('dragInit');
-                    // var element = item.getElement();
-                    // var orderId = element.getAttribute('id');
-                    // var groupId = element.getAttribute('group_id');
-                    // var boardName = element.getAttribute('category_id');
+                    console.log('dragInit', item);
+                    console.log('ITEM', item);
+                    get_edit_order(item)
+
                 })
                 .on('dragReleaseEnd', function (item) {
                     item.getElement().style.width = '';
@@ -489,7 +651,6 @@
         });
     }
 
-
     async function add_new_card(template_hbs, card_data = null, board_gorup_id = null, grid) {
         try {
             return new Promise((resolve, reject) => {
@@ -518,38 +679,6 @@
         } catch (err) {
             console.error('ERROR EN add_new_card', err);
             return null;
-        }
-    }
-
-    // COLOCO LOS ITEMS EN EL DOM CREO EL TEMPLATE Y LO AGREGO AL MUURI
-    async function add_new_cardOK(template_hbs, card_data = null, board_gorup_id = null, grid) {
-        try {
-            return new Promise((resolve, reject) => {
-                //  console.log('board_gorup_id', board_gorup_id);
-                if (board_gorup_id == null) {
-                    //  console.log('NULL board_gorup_id', board_gorup_id)
-                    // alert('No hay mas resultados')
-                } else {
-                    getTemplateAjaxCARD(template_hbs, function (template) {
-                        let new_card = document.createElement('div'); //Creo un nuevo elemento del dom
-                        new_card.classList.add('board-item');  // Le agrego la clase para q lo detecte muuri
-                        new_card.setAttribute('group_id', card_data.doc.group_id); //Le agrego la id 
-                        new_card.setAttribute('category_id', card_data.doc.category_id); //Le agrego la id 
-                        new_card.setAttribute('id', card_data.doc._id); //Le agrego la id 
-                        // console.log('ADD NEW CARD group_id:',board_gorup_id);
-                        new_card.innerHTML = template(card_data);    //Uno el template con al data 
-                        document.querySelector('#' + board_gorup_id).appendChild(new_card); //Agrego el nuevo objeto en el grupo
-                        // console.log('GRIDDDDDD add_new_card',grid);
-                        grid.add(new_card); //agrego el nuevo item dom al grupo especifico que ya fue declarado en la funcion anterior
-                        grid.refreshItems().layout(); // Refresh Muuri grid after adding a new card
-                        resolve(new_card);
-                    });
-                }
-            });
-        }
-        catch (err) {
-            return null;
-            console.log('ERROR EN add_new_card', err);
         }
     }
 
@@ -604,7 +733,7 @@
 
         let result = await L_board_db.query('order_view/get_orders_' + category_id, options);
 
-        console.log('order_view/get_orders_'+category_id, result);
+        console.log('order_view/get_orders_' + category_id, result);
         if (result && result.rows && result.rows.length > 0) {
             nextStartkey = result.rows[result.rows.length - 1].key;
             nextStartkeyDocid = result.rows[result.rows.length - 1].id;

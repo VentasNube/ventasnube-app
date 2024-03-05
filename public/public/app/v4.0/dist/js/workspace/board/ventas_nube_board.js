@@ -873,12 +873,15 @@ async function new_order(element) {
             const group_id = board_group_first.id;
             const entry_date = { hour, minutes } = await getDateTimeMinutes();
             const due_date = { hour, minutes } = await getDateTimeMinutes();
-            const comments = '';
+            var comments = '';
             //  const products = await get_cart_product();
 
-            const products = await get_cart_products(ws_id);
+            var products = await get_cart_products(ws_id);
+
+
 
             console.log('AAAHUUUUUU  products', products);
+
             const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
             const customer = {
                 id: contact_doc._id,
@@ -902,6 +905,7 @@ async function new_order(element) {
                 order_id: order_id_new, // Inicialmente se establece como null
                 group_position: '1',
                 customer: customer,
+                products: products,
                 comments: comments,
                 priority: {
                     id: '1',
@@ -979,7 +983,7 @@ async function new_order(element) {
                         user: 'smartmobile.com@gmail.com',
                     }
                 ],
-                products: products,
+                
                 service: [
                     {
                         product_id: 'Product 1',
@@ -1064,154 +1068,6 @@ async function new_order(element) {
 }
 
 
-// NO Lo USO
-async function new_orderNOindiceincremental(element) {
-    const category_id = $(element).attr('category_id');
-    const doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
-    const workspace_id = ws_id;
-    const board_group_conf = await L_board_db.get('board_group_' + category_id);
-    const board_group = board_group_conf.board_group;
-    const board_group_first = board_group[0];
-    const group_id = board_group_first.id;
-    const entry_date = { hour, minutes } = await getDateTimeMinutes();
-    const due_date = { hour, minutes } = await getDateTimeMinutes();
-    const comments = '';
-    const products = await get_cart_product();
-    const customer = {
-        id: 'client_id_xxxx',
-        name: 'Customer Name',
-        address: 'Customer Address',
-        phone: 'Customer Phone',
-        email: 'Customer Email'
-    };
-    var order_arr = {
-        _id: doc_id,
-        type: 'order',
-        category_id: category_id,
-        workspace_id: workspace_id,
-        status: 'open',
-        seen: false,
-        author: userCtx.email,
-        group_id: group_id,
-        order_id: null, // Inicialmente se establece como null
-        group_position: '1',
-        customer: customer,
-        comments: comments,
-        priority: {
-            id: '1',
-            value: 'urgente'
-        },
-        entry_date: entry_date,
-        due_date: due_date,
-        collaborators: [
-            {
-                name: userCtx.name,
-                email: userCtx.email,
-                role: userCtx.role
-            }
-        ],
-        total_service: 39.95,
-        total_product: 39.95,
-        total_tax: 39.95,
-        total_discount: 39.95,
-        total: 39.95,
-        payment_history: [
-            {
-                id: 123,
-                payment_id: '21312312',
-                payment_method: 'Credit Card',
-                update_datetime: '18/3/2021 18:45:10',
-                user: userCtx.email,
-                total_tax: 21.00,
-                total_discount: 12.95,
-                total: 339.95,
-                currency: {
-                    id: 'ARS',
-                    value: '$'
-                }
-            }
-        ],
-        update_history: [
-            {
-                update_datetime: '18/3/2021 18:45:10',
-                user: 'smartmobile.com@gmail.com',
-            }
-        ],
-        products: products,
-        service: [
-            {
-                product_id: 'Product 1',
-                name: 'Product 1',
-                variation_id: 'Product 1',
-                product_img: 'Product 1',
-                price: 10.99,
-                tax: 21.00,
-                quantity: 2,
-                discount: 10,
-                subtotal: 21.98
-            },
-            {
-                service_id: 'Service 2',
-                name: 'Service 2',
-                variation_id: '1',
-                product_img: 'http:.//',
-                price: 100.99,
-                tax: 21.00,
-                quantity: 2,
-                discount: 10,
-                subtotal: 210.98
-            }
-        ],
-        shipping: {
-            address: 'Shipping Address',
-            city: 'Shipping City',
-            postal_code: 'Postal Code',
-            shipping_date: '2023-05-15',
-            shipping_status: 'pending',
-            carrier: {
-                name: 'Carrier Name',
-                phone: 'Carrier Phone',
-                vehicle: 'Carrier Vehicle'
-            }
-        }
-    };
-
-    try {
-        // Consulta el número de orden actual desde la base de datos remota
-        const remoteOrderIndex = await get_order_index(category_id)
-        // Asigna el número de orden actual al documento de la orden
-        order_arr.order_id = remoteOrderIndex;
-        // Incrementa el número de orden actual en la base de datos local
-        // Crea la orden en la base de datos local
-        let response = await L_board_db.put(order_arr);
-        if (response.ok) {
-            console.log(response);
-            Snackbar.show({
-                text: 'Se creó la orden con éxito!',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 50000
-            });
-        }
-    } catch (error) {
-        // Si no hay conexión o se produce un error al obtener el número de orden actual,
-        // se guarda la orden con el order_id como null o cualquier otro valor que indique que aún no se ha asignado un número de orden.
-        order_arr.order_id = null;
-        // Crea la orden en la base de datos local sin asignar un número de orden
-        let response = await L_board_db.put(order_arr);
-        if (response.ok) {
-            console.log(response);
-            Snackbar.show({
-                text: 'Se creó la orden sin asignar un número de orden',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 50000
-            });
-        }
-    }
-}
 
 ///NUEVAS ORDENES 2023
 // CREAR NUEVA ORDEN EN LA DB
@@ -1540,3 +1396,8 @@ function datetimePiker() {
     });
 }
 
+
+/// UPDATE 2024 /////
+
+
+// TRAE EL FORMULARIO

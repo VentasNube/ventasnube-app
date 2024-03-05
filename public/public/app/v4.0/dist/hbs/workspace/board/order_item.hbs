@@ -1,0 +1,108 @@
+{{#ifMe items_product '0'}}
+<div class="cart_items_trash">
+    <span class="material-icons xl">
+        shopping_cart
+    </span>
+    <br>
+    <span class="cart_items_title">
+    </span>
+</div>
+{{else}}
+{{#each items_product}}
+<div id="{{_id}}" class="ripple s-card-actv-item padding-10">
+    <div class="s-card-actv-item-body cart-item-active-butons">
+        <div class="fav-item boton-round-mini-up-contenedor">
+
+            <!--button class="boton-round-mini-up primary" onclick="variations_add_cart_to_fav(this)"
+                sub_tot_des="{{sub_tot_des}}" price_cost="{{price_cost}}" price="{{price}}" product_id="{{_id}}"
+                variant_id="{{variant_id}}" quantity="{{quantity}}">
+                <span class="material-icons">favorite</span>
+            </button-->
+
+             <button type="button" onclick="dell_cart_item(this)" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                        class="boton-round-mini-up bg-danger">
+                        <span class="material-icons">delete </span>
+            </button>
+
+        </div>
+
+        <div class="s-card-mini-img ">
+            {{#first pictures}}
+                <img src="{{min}}" alt="">
+            {{/first}}
+        </div>
+
+        <div class="s-card-actv-item-prod-fav-item">
+            <div class="s-card-actv-item-name">
+                {{name}}
+                <!--
+                {{#each attribute_combinations}}
+                Hago la comprobacion de si es un color
+
+                {{#ifEquals id 'SIZE' }}
+                <div class="round-icon pr" data-toggle="tooltip" data-placement="bottom" title="{{{id_name}}}"
+                    data-original-title="{{{id_name}}}">
+                    <span class="var_name"> {{value}} </span>
+                </div>
+                {{/ifEquals}}
+                {{#ifDiff id 'COLOR' }}
+                <span class="var_name" id="bg-select-text"> {{name}}</span>
+                {{/ifDiff}}
+
+                {{/each}}
+                 
+                <div class="s-card-actv-item-dell">
+                    <button type="button" onclick="dell_cart_item(this)" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                        class="btn btn-round pull-right">
+                        <span class="material-icons">cancel </span>
+                    </button>
+                </div>
+                -->
+            </div>
+
+            <span class="s-card-actv-item-price-left ">
+                <strong>
+                    <!--div class="round-icon pr xs" data-toggle="tooltip" data-placement="top" data-original-title="Precio Mayorista"><span> M </span></div-->
+                    <small>{{currency}}</small>
+                    <span class="price_uni"> {{price}}</span>
+                </strong>
+                
+                <span class="hidden-xs text-red" data-toggle="tooltip" data-placement="top"
+                    data-original-title="{{#with ../ws_lang_data}} {{t_tax}}{{/with}}">  
+
+                    {{#each taxes}}
+                    {{name}}:{{../currency}}{{price_tax}}
+                    {{/each}}
+                </span>
+
+                <span class="text-red" data-toggle="tooltip" data-placement="top"
+                    data-original-title="{{#with ../ws_lang_data}} {{t_dicount}}{{/with}}">
+                     {{#with ../ws_lang_data}} {{t_dicount_icon}}{{/with}}
+                    {{discount}}% : {{currency}}{{discount_tot}}
+                </span>
+
+            </span>
+
+            <span class="s-card-actv-item-price-right">
+                
+          
+                <span class="currency">{{currency}}</span>
+                <span class="tot sub_tot_cart"> {{sub_tot_dis}}</span>
+                <span> </span>
+                <button type="button" onclick="variations_cart_res_uni(this)" class="round-icon pr xd" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                 data-toggle="tooltip" data-placement="top" data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_rest}}{{/with}}"><span> - </span>
+                </button>
+                <span class="card_product_quantity" data-toggle="tooltip" data-placement="top" data-original-title="{{#with ../ws_lang_data}} {{m_catalog_add_stock}} {{/with}}">
+                    {{quantity}}
+                </span>
+                <button type="button" onclick="variations_cart_sum_uni(this)"  class="round-icon pr xd" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                    data-toggle="tooltip" data-placement="top" data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_sum}}{{/with}}"><span> + </span>
+                </button>
+                
+            </span>
+        </div>
+
+    </div>
+</div>
+{{/each}}
+{{/ifMe}}
