@@ -220,6 +220,7 @@ return [
         'm_catalog_edit_delete' => 'Eliminar',
         'm_catalog_edit_inactive' => 'Desactivar',
         'm_catalog_edit_active' => 'Activar',
+        
         //CARRITO
         'm_cart' => 'Carrito',
         't_cart' => 'Carrito',
@@ -240,16 +241,28 @@ return [
 
         'm_cart_item_sum' => 'Sumar unidad',
         'm_cart_item_rest' => 'Restar unidad',
-    
+
         't_pay' => 'Total abonado',
         'b_product' => 'Productos',
         'b_service' => 'Servicios',
         'b_contact' => 'Contactos',
         'b_order' => 'Orden de',
-        //CREAR ORDEN
-        'b_add_order' => 'Crear orden',
-         //FAVORITOS
 
+        //CREAR ORDEN
+        'b_tittle_order' => 'Orden',
+        'b_tittle_order_id' => 'ID',
+        'b_add_order' => 'Crear orden',
+        //TABS
+        'b_order_items_icon' => 'shopping_cart_checkout',
+        'b_order_items' => 'Items',
+        //Pay
+        'b_order_pay_icon' => 'add_card',
+        'b_order_pay_items' => 'Pagos',
+        //Activity
+        ' ' => 'query_stats',
+        'b_order_activity_items' => 'Actividad',
+
+         //FAVORITOS
         'm_favorite_cart' => 'Favoritos de',
         'm_favorite' => 'Favoritos',
         'm_fav_trash' => 'No tienes favoritos',

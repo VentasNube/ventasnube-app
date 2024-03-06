@@ -240,8 +240,8 @@
 <script>
 
     // Traigo doc orden
-    async function get_order(order_id) {
-        var order_doc = await L_board_db.get(order_id);
+    async function get_order_items(doc_id) {
+        var order_doc = await L_board_db.get(doc_id);
         products = order_doc.products;
         return all_order_item(products);
     }
@@ -361,37 +361,46 @@
     // TRAE EL FORMULARIO
     async function get_edit_order(element) {
         try {
+
+            //var element = element.getElement();
+            //var orderId = element.getAttribute('id');
+            // var category_id = element.getAttribute('category_id');
             // Crear un objeto URL basado en la URL actual
-            const url = new URL(window.location.href);
+            /*const url = new URL(window.location.href);
             // Acceder a los parámetros de búsqueda de la URL
             const searchParams = new URLSearchParams(url.search);
             // Extraer el valor del parámetro 't'
             const category_id = searchParams.get('t');
             // Mostrar el valor en consola o usarlo según sea necesario
-            console.log(category_id); // Debería mostrar 'sell'
+            */
+            var order_doc = await L_board_db.get(element._element.id);
+            var doc_id = order_doc._id
+            var order_id = order_doc.order_id
+            var category_id = order_doc.category_id
+            var group_position = order_doc.group_position;
+            var group_id = order_doc.group_id;
+        
             var price_doc = await L_catalog_db.get('price_list');
             var tax_doc = await L_catalog_db.get('tax_list');
             var currency_doc = await L_catalog_db.get('currency_list');
-
             var board_group_doc = await L_board_db.get('board_group_'+category_id);
-
-            var order_doc = await L_board_db.get(element._element.id);
-            var order_id = order_doc.order_id
-
-
-            var group_position = order_doc.group_position;
-            var group_id = order_doc.group_id;
-
+          
+            
+      
+            
             var user_roles_permisions = user_Ctx.userCtx.roles;
+            
+          
+            console.log(category_id); // Debería mostrar 'sell'
             console.log('user_roles_permisions', user_roles_permisions);
             console.log('element.id', element._element.id);
             console.log('order_doc', order_doc);
             console.log('ws_info', ws_info);
             console.log('order_doc CUSTOMER', order_doc.customer);
- console.log('group_position', group_position);
-
- console.log(' board_group_doc',  board_group_doc);
- console.log(' group_id',  group_id);
+            console.log('group_position', group_position);
+            console.log(' board_group_doc',  board_group_doc);
+            console.log(' group_id',  group_id);
+            console.log(' ws_lang_data',  ws_lang_data);
 
 
             var product_doc_array = {
@@ -415,7 +424,7 @@
 
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/order_main.hbs', '#right_main', product_doc_array);
 
-            get_order(order_id);
+            get_order_items(doc_id);
             createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
             var m_url = '?type=board&t=sell&edit=#' + order_id;
@@ -621,7 +630,7 @@
                 },
             })
                 .on('dragInit', function (item) {
-
+                 
                     item.getElement().style.width = item.getWidth() + 'px';
                     item.getElement().style.height = item.getHeight() + 'px';
                     console.log('dragInit', item);

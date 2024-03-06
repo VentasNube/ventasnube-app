@@ -47,79 +47,113 @@
     </div>
 
     <div class="padding-5">
-
-        {{#with order_doc.customer}}
-            <div class="btn-group dopdown">
+            {{#with order_doc.customer}}
             
-                <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
-                    aria-expanded="true">
-                    <div class="round-icon xd {{color}}">
-                        <span class="material-icons">account_circle</span>
-                    </div>
-                    <span class="">{{first_name }}</span>
-                    <i class="material-icons">expand_more</i>
+                <button onclick="edit_order_contact(this)" {{#with ../../order_doc}} doc_rev="{{_rev}}" doc_id="{{_id}}"{{/with}} type="button" class="btn btn-default">
+                    <span class="material-icons">manage_accounts </span>
+                    <span class="hidden-xs hidden-sm">{{first_name}}</span>
                 </button>
-                <ul class="dropdown-menu pull-left padding-10">
+
+            <div class="btn-group dopdown">
+                <!-- Con dopdown baja el poper-->
+                <button class="btn xs btn-more  dropdown-toggle" type="button" data-toggle="dropdown">
+                    <h5>
+                        <div class="round-icon pr xd"><span>p</span></div>
+                        {{first_name}}
+                    </h5>
+                </button>
+                <ul class="dropdown-menu card pull-left">
+                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                    <div class="body">
+                        <li class="header">
+                            Contacto
+                        </li>
                         <li>
-                            <h3 class="">
+                            <h4 class="">
                                 <span class="material-icons">
                                     account_circle
-                                </span>
-                                {{first_name }} {{last_name}}
-                            </h3>
+                                </span> 
+                                
+                                {{first_name}}
+                            </h4>
                         </li>
                         <li>
-                            <h3 class="">
+                            <h4 class="">
                                 <span class="material-icons">
-                                email
+                                    {{email}}
                                 </span>
-                                {{email}}
-                            </h3>
+                            </h4>
                         </li>
                         <li>
-                            <h3 class="">
+                            <h4 class="">
                                 <span class="material-icons">mobile_screen_share</span>
-                                {{phone}}
-                            </h3>
+                                 {{phone}}
+                            </h4>
                         </li>
                         <li>
-                            <a  class="btn btn-default bg-green" target="_blank" rel="nofollow" href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
-                                  <span class="material-icons"> perm_phone_msg</span>
-                            WhatsApp
+                            <a class="btn btn-success md" target="_blank" rel="nofollow"
+                                href="https://api.whatsapp.com/send?phone=54+5411{{phone}}&amp;text= Hola te contactamos ">
+                                <span class="material-icons">mobile_screen_share</span>
+                                Enviar whatsapp
                             </a>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <h3 class="">
-                                <span class="material-icons"> home  </span>  {{address}} <br>
-                            </h3>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    home
+                                </span>
+                                {{phone}} <br>
+                            </h4>
                         </li>
-                    
+                    </div>
                     <li class="">
-                        <a class="btn btn-primary md" target="_blank"
-                            href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
+                        <a class="btn btn-primary md" target="_blank" href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
                             <span class="material-icons">directions</span>
                             Indicaciones
                         </a>
                     </li>
-
-            
                 </ul>
             </div>
+            {{/with}}
+
+            {{#with phone}}
+            <button onclick="" class="btn btn-default">
+                <span class="material-icons"> perm_phone_msg</span>{{this}}
+            </button>
+            {{/with}}
         {{/with}}
     </div>
 
     <div class="padding-5">
+
         {{#with order_doc.customer}}
-       
-       
+            
+
+        <span class="left">
+            
+        </span>
+
+
+        <button onclick="edit_order_contact(this)" {{#with ../../order_doc}} doc_rev="{{_rev}}" doc_id="{{_id}}"
+            {{/with}} type="button" class="btn btn-default">
+            <span class="material-icons">manage_accounts </span>
+            <span class="hidden-xs hidden-sm">{{this}}</span>
+        </button>
+        {{/with}}
+        {{#with phone}}
+        <button onclick="" class="btn btn-default">
+            <span class="material-icons"> perm_phone_msg</span>{{this}}
+        </button>
+        {{/with}}
         {{/with}}
     </div>
+
+
 
 </div>
 
 <div class="righ_nav_content">
-
     <!-- Contact module -->
     <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -160,10 +194,8 @@
             </div>
         </div>
     </div>
-
     <!-- Product module -->
     {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
-
     <!-- Cart main module -->
     <div class="tabs-main margin-t-30 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
         <ul class="nav nav-tabs">
@@ -389,6 +421,7 @@
             });
         }
     }
+
 
     async function edit_order_contact(element) {
         try {
