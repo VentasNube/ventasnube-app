@@ -1,31 +1,106 @@
 <!-- Cart Nav module -->
-<div class="righ_nav_header">
+
+
+
+{{#with ws_info}}
+<div class="righ_nav_header  {{{workspace_color}}}">
+    <!--div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button type="button"
+            class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+            <span class="material-icons">
+                arrow_back
+            </span>
+        </button>
+        <h3 class=" margin-0 padding-t-20"> </h3>
+    </div-->
+    {{/with}}
+
+     {{#with order_doc}}
+            <h3><span class="material-icons">
+                    qr_code
+                </span>{{order_id}} </h3>
+           {{/with}}      
+
     <div class="btn-group dopdown">
-        <button type="button" class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text"
-            data-toggle="dropdown" aria-expanded="true">
-            {{#each ws_left_nav_data.m_t}}
-            {{#ifEquals m_t_url ../board_type_name }}
-            <span class="material-icons">{{m_t_icon}}</span>
-            <span class="this_m_t_name">{{m_t_name}}</span>
-            {{/ifEquals}}
-            {{/each}}
+
+        {{#each board_group_doc.board_group}}
+
+        {{#ifEquals id ../group_id }}
+        <button type="button" class="dropdown-toggle select-btn xl btn-more  btn btn-default" data-toggle="dropdown"
+            aria-expanded="true">
+            <div class="round-icon xd {{color}}">
+                <span class="material-icons">task_alt</span>
+            </div>
+            <span class="">{{name}}</span>
             <i class="material-icons">expand_more</i>
         </button>
         <ul class="dropdown-menu pull-left">
-            {{#each ws_left_nav_data.m_t}}
+            {{#each ../board_group_doc.board_group}}
             <li class="margin-5">
-                <a class="" onclick="get_module_type_nav(this)" m_id="{{{m_id}}}" m_t_id="{{{m_t_id}}}"
-                    s_url_t_m="{{{../module_name}}}" m_t_url="{{{m_t_url}}}" href="#">
-                    <span class="material-icons">{{m_t_icon}}</span>
-                    <span class="this_m_t_name">{{m_t_name}}</span>
+                <a class="" onclick="order_edit_group_select(this)" order_id="{{{../../order_id}}}" group_id="{{{id}}}"
+                    href="#">
+                    <div class="round-icon xd {{color}}">
+                        <span class="material-icons">task_alt</span>
+                    </div>
+                    <span class="this_m_t_name">{{name}}</span>
                 </a>
             </li>
             {{/each}}
         </ul>
+        {{/ifEquals}}
+
+        {{/each}}
+
+
+
     </div>
+
     <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
         <span class="material-icons">close</span>
     </button>
+
+    {{#with order_doc.customer}}
+
+    <div class="user-body-workspace padding-b-5">
+        <div class="text-center user-body-workspace-title padding-b-10">
+          
+            <a href="/workspace/home" class="btn btn-default">
+                <span class="material-icons">
+                    perm_phone_msg
+                </span>
+               {{phone}}
+            </a>
+            <button onclick="get_ws_setting(this)" class="btn btn-default">
+                <span class="material-icons">
+manage_accounts
+                </span>
+                
+                {{first_name}}
+            </button>
+        </div>
+
+    </div>
+
+    <!--div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button onclick="account()" type="button" class="cobrar-btn btn btn-default">
+            <span class="material-icons">
+                {{#with ../ws_lang_data}} {{m_account_tittle_icon}}{{/with}}
+            </span>
+
+            {{#with ../ws_lang_data}} {{b_myaccount}}{{/with}}
+
+        </button>
+        <button onclick="logout()" type="button" class="btn btn-default">
+            <span class="material-icons">
+                {{#with ../ws_lang_data}} {{b_exit_icon}}{{/with}}
+            </span>
+            {{#with ../ws_lang_data}} {{b_exit}}{{/with}}
+        </button>
+    </div-->
+
+    {{/with}}
+
+
 </div>
 
 <div class="righ_nav_content">
@@ -72,51 +147,38 @@
     <!-- Product module -->
     {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
     <!-- Cart main module -->
-    <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+    <div class="tabs-main margin-t-30 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
         <ul class="nav nav-tabs">
 
             <li id="product_order_item_tab_icon" class="ripple  active">
+
                 <a data-toggle="tab" href="#product_order_item_tab">
                     <span class="material-icons">shopping_cart</span>
                     <span class="cart_n cart-number">0</span>
-
-                    {{#with ws_lang_data}}{{t_cart_name}} {{/with}}
+                    {{#with ws_lang_data}} {{t_cart_name}} {{/with}}
                     <span class="hidden-xs">
-                        {{#each ws_left_nav_data.m_t}}
-                        {{#ifEquals m_t_url ../board_type_name }}
-                        {{m_t_name}}
-                        {{/ifEquals}}
-                        {{/each}}
+
+                    </span>
+                </a>
+
+            </li>
+            <li id="_item_tab_icon" class="ripple">
+                <a data-toggle="tab" href="#fav_item_tab">
+                    <span class="material-icons">add_card</span>
+                    <span class="fav_count">0</span>
+                    {{#with ws_lang_data}} Pagos {{/with}}
+                    <span class="hidden-xs">
+                        Pagos
                     </span>
                 </a>
             </li>
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#fav_item_tab">
-                    <span class="material-icons">Pagos</span>
+                    <span class="material-icons"> query_stats</span>
                     <span class="fav_count">0</span>
-
-                    {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}}
+                    {{#with ws_lang_data}}Actividad {{/with}}
                     <span class="hidden-xs">
-                        {{#each ws_left_nav_data.m_t}}
-                        {{#ifEquals m_t_url ../board_type_name }}
-                        {{m_t_name}}
-                        {{/ifEquals}}
-                        {{/each}}
-                    </span>
-                </a>
-            </li>
-             <li id="_item_tab_icon" class="ripple">
-                <a data-toggle="tab" href="#fav_item_tab">
-                    <span class="material-icons">Actividad</span>
-                    <span class="fav_count">0</span>
-
-                    {{#with ws_lang_data}}{{m_favorite_cart}} {{/with}}
-                    <span class="hidden-xs">
-                        {{#each ws_left_nav_data.m_t}}
-                        {{#ifEquals m_t_url ../board_type_name }}
-                        {{m_t_name}}
-                        {{/ifEquals}}
-                        {{/each}}
+                        Actividad
                     </span>
                 </a>
             </li>
@@ -142,6 +204,8 @@
     </div>
 
 </div>
+
+
 <!-- Cart footer module -->
 <div id="cart_footer">
     <div class="righ_nav_footer_main cart_drop_up">

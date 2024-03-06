@@ -361,16 +361,38 @@
     // TRAE EL FORMULARIO
     async function get_edit_order(element) {
         try {
-
+            // Crear un objeto URL basado en la URL actual
+            const url = new URL(window.location.href);
+            // Acceder a los parámetros de búsqueda de la URL
+            const searchParams = new URLSearchParams(url.search);
+            // Extraer el valor del parámetro 't'
+            const category_id = searchParams.get('t');
+            // Mostrar el valor en consola o usarlo según sea necesario
+            console.log(category_id); // Debería mostrar 'sell'
             var price_doc = await L_catalog_db.get('price_list');
             var tax_doc = await L_catalog_db.get('tax_list');
             var currency_doc = await L_catalog_db.get('currency_list');
+
+            var board_group_doc = await L_board_db.get('board_group_'+category_id);
+
             var order_doc = await L_board_db.get(element._element.id);
-            var order_id = element._element.id
+            var order_id = order_doc.order_id
+
+
+            var group_position = order_doc.group_position;
+            var group_id = order_doc.group_id;
 
             var user_roles_permisions = user_Ctx.userCtx.roles;
             console.log('user_roles_permisions', user_roles_permisions);
             console.log('element.id', element._element.id);
+            console.log('order_doc', order_doc);
+            console.log('ws_info', ws_info);
+            console.log('order_doc CUSTOMER', order_doc.customer);
+ console.log('group_position', group_position);
+
+ console.log(' board_group_doc',  board_group_doc);
+ console.log(' group_id',  group_id);
+
 
             var product_doc_array = {
                 price_list: price_doc.price_list,
@@ -378,11 +400,14 @@
                 currency_list: currency_doc.currency_list,
                 currency: currency_doc['currency_default'],
                 ws_lang_data: ws_lang_data,
+                ws_info:ws_info,
                 user_roles: user_roles_permisions,
                 order_id: order_id,
                 order_doc: order_doc,
-
-
+                category_id :category_id,
+                board_group_doc:board_group_doc,
+                group_position:group_position,
+                group_id:group_id,
             }
 
             // console.log('tax_doc CCCCC', product_doc_array);

@@ -32,8 +32,9 @@ class Logger extends BaseConfig
 	| your log files will fill up very fast.
 	|
 	*/
-	public $threshold = 3;
-
+	public $threshold = 1;
+	/* Lo cmabie a cero 0 para que no registre alertas errores comunes  */
+	/*public $threshold = 3;*/
 	/*
 	|--------------------------------------------------------------------------
 	| Date Format for Logs

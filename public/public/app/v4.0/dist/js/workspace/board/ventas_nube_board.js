@@ -1043,6 +1043,7 @@ async function new_order(element) {
                 var grid = columnGrids[groupIndex];
 
                 add_new_card('/public/app/v4.0/dist/hbs/workspace/board/card/card_order.hbs', card_data, board_gorup_id, grid);
+                
                 // get_board(category_id);
                 coun_items_broup(category_id);
                 Snackbar.show({
