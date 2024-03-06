@@ -9,16 +9,144 @@
             <span class="material-icons">
                 qr_code
             </span>
+
             {{#with order_doc}} {{order_id}} {{/with}}
-            <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
-                <span class="material-icons">close</span>
-            </button>
+
+          
+                <div class="btn-group dopdown">
+                            <!-- Prioridad -->
+                            <button class="btn btn-round md btn-default pull-right  dropdown-toggle" type="button" data-toggle="dropdown">
+                                <div class="round-icon primary">
+                                    <span class="material-icons">sentiment_satisfied_alt</span>
+                                </div>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                <li class="header">
+                                    Prioridad
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li class="active"><a href="#" class=""><span class="material-icons">sentiment_very_satisfied</span>
+                                        <small>Normal</small></a></li>
+                                <li><a href="#" class=""><span class="material-icons">sentiment_satisfied</span>
+                                        <small>Apurado</small></a></li>
+                                <li><a href="#" class=""><span class="material-icons">sentiment_dissatisfied</span>
+                                        <small>Urgente</small></a></li>
+                                <li><a href="#" class=""><span class="material-icons">sentiment_very_dissatisfied</span>
+                                        <small>Enojado</small></a></li>
+                                <li><a href="#" class=""><span class="material-icons">bug_report</span>
+                                        <small>Garantia</small></a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group dopdown">
+                            <!-- Prometido -->
+                            <!-- Con dopdown baja el poper-->
+                            <button class="btn xs btn-more btn-default   dropdown-toggle" type="button" data-toggle="dropdown">
+                                <h5>
+                                    <span class="material-icons">update</span>
+                                    5 Dias
+                                </h5>
+                            </button>
+
+                            <ul class="dropdown-menu card pull-right">
+                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                                <div class="body">
+                                    <li>
+                                        <label>Fecha limite</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <span class="material-icons">event</span>
+                                            </div>
+                                            <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite" value="">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <label>Fecha de ingreso</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon pull-left">
+                                                <span class="material-icons">today</span>
+                                                <span class="margin-t-10"></span>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <h5 class="">Faltan: </h5>
+                                        <span class="material-icons">update</span> 
+                                    </li>
+                                </div>
+                            </ul>
+                </div>
         </h3>
+       
+                      
     </div>
 
     <div class="padding-5">
+
+        {{#with order_doc.customer}}
+            <div class="btn-group dopdown">
+            
+                <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
+                    aria-expanded="true">
+                    <div class="round-icon xd {{color}}">
+                        <span class="material-icons">account_circle</span>
+                    </div>
+                    <span class="">{{first_name }}</span>
+                    <i class="material-icons">expand_more</i>
+                </button>
+                <ul class="dropdown-menu pull-left padding-10">
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                    account_circle
+                                </span>
+                                {{first_name }} {{last_name}}
+                            </h4>
+                        </li>
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons">
+                                email
+                                </span>
+                                {{email}}
+                            </h4>
+                        </li>
+                        <li>
+                            <h3 class="">
+                                <span class="material-icons">mobile_screen_share</span>
+                                {{phone}}
+                            </h3>
+                        </li>
+                        <li>
+                            <a  class="btn btn-primary md bg-green" target="_blank" rel="nofollow" href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
+                                  <span class="material-icons"> perm_phone_msg</span>
+                            WhatsApp
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <h4 class="">
+                                <span class="material-icons"> home  </span>  {{address}} <br>
+                            </h4>
+                        </li>
+                    
+                    <li class="">
+                        <a class="btn btn-primary md" target="_blank"
+                            href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
+                            <span class="material-icons">directions</span>
+                            Indicaciones
+                        </a>
+                    </li>
+
+            
+                </ul>
+            </div>
+        {{/with}}
+    {{#each board_group_doc.board_group}}
         <div class="btn-group dopdown">
-            {{#each board_group_doc.board_group}}
+           
             {{#ifEquals id ../group_id }}
             <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
                 aria-expanded="true">
@@ -42,71 +170,15 @@
                 {{/each}}
             </ul>
             {{/ifEquals}}
-            {{/each}}
+            
         </div>
+{{/each}}
+
     </div>
 
     <div class="padding-5">
 
-        {{#with order_doc.customer}}
-            <div class="btn-group dopdown">
-            
-                <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
-                    aria-expanded="true">
-                    <div class="round-icon xd {{color}}">
-                        <span class="material-icons">account_circle</span>
-                    </div>
-                    <span class="">{{first_name }}</span>
-                    <i class="material-icons">expand_more</i>
-                </button>
-                <ul class="dropdown-menu pull-left padding-10">
-                        <li>
-                            <h3 class="">
-                                <span class="material-icons">
-                                    account_circle
-                                </span>
-                                {{first_name }} {{last_name}}
-                            </h3>
-                        </li>
-                        <li>
-                            <h3 class="">
-                                <span class="material-icons">
-                                email
-                                </span>
-                                {{email}}
-                            </h3>
-                        </li>
-                        <li>
-                            <h3 class="">
-                                <span class="material-icons">mobile_screen_share</span>
-                                {{phone}}
-                            </h3>
-                        </li>
-                        <li>
-                            <a  class="btn btn-default bg-green" target="_blank" rel="nofollow" href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
-                                  <span class="material-icons"> perm_phone_msg</span>
-                            WhatsApp
-                            </a>
-                        </li>
-                        <li role="separator" class="divider"></li>
-                        <li>
-                            <h3 class="">
-                                <span class="material-icons"> home  </span>  {{address}} <br>
-                            </h3>
-                        </li>
-                    
-                    <li class="">
-                        <a class="btn btn-primary md" target="_blank"
-                            href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
-                            <span class="material-icons">directions</span>
-                            Indicaciones
-                        </a>
-                    </li>
-
-            
-                </ul>
-            </div>
-        {{/with}}
+        
     </div>
 
     <div class="padding-5">
@@ -180,7 +252,7 @@
             </li>
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#pay_items_tab">
-                    <span class="material-icons"> {{#with ws_lang_data}} {{b_order_items_icon}} {{/with}}</span>
+                    <span class="material-icons"> {{#with ws_lang_data}} {{b_order_pay_icon}} {{/with}}</span>
                     <span class="pay_items_n fav_count">0</span>
                     <span class="hidden-xs">
                         {{#with ws_lang_data}} {{b_order_pay_items}} {{/with}}
@@ -189,7 +261,7 @@
             </li>
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#activity_item_tab">
-                    <span class="material-icons"> {{#with ws_lang_data}} {{b_order_items_icon}} {{/with}} </span>
+                    <span class="material-icons"> {{#with ws_lang_data}} {{b_order_activity_icon}} {{/with}} </span>
                     <span class="activity_items_n fav_count">0</span>
                     <span class="hidden-xs">
                         {{#with ws_lang_data}} {{b_order_activity_items}} {{/with}}
