@@ -4,149 +4,163 @@
 
 <div class="righ_nav_header {{#with ws_info}}  {{{workspace_color}}}  {{/with}}">
 
-    <div class="margin-0 padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h3 class="margin-0 padding-10">
-            <span class="material-icons">
-                qr_code
+    <div class="margin-b-10 padding-0 ">
+
+        <h2 class="margin-0 padding-10">
+            <button type="button"
+                class="padding-5 left_nav_close right_nav_close margin-10 round btn btn-transparent success round s margin-0 btn-default pull-left ">
+                <span class="material-icons">
+                    arrow_back
+                </span>
+            </button>
+            <span class="padding-t-20">
+                <span class="material-icons">
+                    qr_code
+                </span>
+                <span class="">
+                    {{#with order_doc}} {{order_id}} {{/with}}
+                </span>
             </span>
+            <div class="btn-group dopdown pull-right">
+                <!-- Prometido -->
+                <!-- Con dopdown baja el poper-->
+                <button class="btn xs btn-more btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <h5>
+                        <span class="material-icons">update</span>
+                        5 Dias
+                    </h5>
+                </button>
 
-            {{#with order_doc}} {{order_id}} {{/with}}
-
-          
-                <div class="btn-group dopdown">
-                            <!-- Prioridad -->
-                            <button class="btn btn-round md btn-default pull-right  dropdown-toggle" type="button" data-toggle="dropdown">
-                                <div class="round-icon primary">
-                                    <span class="material-icons">sentiment_satisfied_alt</span>
-                                </div>
-                            </button>
-                            <ul class="dropdown-menu pull-right">
-                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                <li class="header">
-                                    Prioridad
-                                </li>
-                                <li role="separator" class="divider"></li>
-                                <li class="active"><a href="#" class=""><span class="material-icons">sentiment_very_satisfied</span>
-                                        <small>Normal</small></a></li>
-                                <li><a href="#" class=""><span class="material-icons">sentiment_satisfied</span>
-                                        <small>Apurado</small></a></li>
-                                <li><a href="#" class=""><span class="material-icons">sentiment_dissatisfied</span>
-                                        <small>Urgente</small></a></li>
-                                <li><a href="#" class=""><span class="material-icons">sentiment_very_dissatisfied</span>
-                                        <small>Enojado</small></a></li>
-                                <li><a href="#" class=""><span class="material-icons">bug_report</span>
-                                        <small>Garantia</small></a></li>
-                            </ul>
+                <ul class="dropdown-menu pull-right">
+                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                    <li class="header padding-20">
+                        Tiempo de entrega
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <div  class="">
+                        
+                    <li class="padding-10">
+                        <label>Fecha de ingreso</label>
+                        <div class="input-group">
+                            <div class="input-group-addon pull-left">
+                                <span class="material-icons">today</span>
+                                <span class="margin-t-10"></span>
+                            </div>
                         </div>
-                        <div class="btn-group dopdown">
-                            <!-- Prometido -->
-                            <!-- Con dopdown baja el poper-->
-                            <button class="btn xs btn-more btn-default   dropdown-toggle" type="button" data-toggle="dropdown">
-                                <h5>
-                                    <span class="material-icons">update</span>
-                                    5 Dias
-                                </h5>
-                            </button>
+                    </li>
+                    <li class="padding-10">
+                          <label> Fecha pactada</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="material-icons">event</span>
+                            </div>
+                            <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite"value="">
+                        </div>
+                    </li>
 
-                            <ul class="dropdown-menu card pull-right">
-                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                <div class="body">
-                                    <li>
-                                        <label>Fecha limite</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="material-icons">event</span>
-                                            </div>
-                                            <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite" value="">
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <label>Fecha de ingreso</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon pull-left">
-                                                <span class="material-icons">today</span>
-                                                <span class="margin-t-10"></span>
-                                            </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="btn-group dopdown pull-right">
+                <!-- Prioridad -->
+                <button class="success round s margin-0 btn-default pull-right dropdown-toggle" type="button"
+                    data-toggle="dropdown">
+                    <div class="round-icon primary">
+                        <span class="material-icons">sentiment_satisfied_alt</span>
+                    </div>
+                </button>
 
-                                        </div>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <h5 class="">Faltan: </h5>
-                                        <span class="material-icons">update</span> 
-                                    </li>
-                                </div>
-                            </ul>
-                </div>
-        </h3>
-       
-                      
+                <ul class="dropdown-menu pull-right">
+                    <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
+                    <li class="header">
+                        Prioridad
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" class=""><span class="material-icons">sentiment_very_satisfied</span>
+                            <small>Normal</small></a></li>
+                    <li><a href="#" class=""><span class="material-icons">sentiment_satisfied</span>
+                            <small>Apurado</small></a></li>
+                    <li><a href="#" class=""><span class="material-icons">sentiment_dissatisfied</span>
+                            <small>Urgente</small></a></li>
+                    <li><a href="#" class=""><span class="material-icons">sentiment_very_dissatisfied</span>
+                            <small>Enojado</small></a></li>
+                    <li><a href="#" class=""><span class="material-icons">bug_report</span>
+                            <small>Garantia</small></a></li>
+                </ul>
+            </div>
+        </h2>
+
+
     </div>
 
     <div class="padding-5">
 
         {{#with order_doc.customer}}
-            <div class="btn-group dopdown">
-            
-                <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
-                    aria-expanded="true">
-                    <div class="round-icon xd {{color}}">
-                        <span class="material-icons">account_circle</span>
-                    </div>
-                    <span class="">{{first_name }}</span>
-                    <i class="material-icons">expand_more</i>
-                </button>
-                <ul class="dropdown-menu pull-left padding-10">
-                        <li>
-                            <h4 class="">
-                                <span class="material-icons">
-                                    account_circle
-                                </span>
-                                {{first_name }} {{last_name}}
-                            </h4>
-                        </li>
-                        <li>
-                            <h4 class="">
-                                <span class="material-icons">
-                                email
-                                </span>
-                                {{email}}
-                            </h4>
-                        </li>
-                        <li>
-                            <h3 class="">
-                                <span class="material-icons">mobile_screen_share</span>
-                                {{phone}}
-                            </h3>
-                        </li>
-                        <li>
-                            <a  class="btn btn-primary md bg-green" target="_blank" rel="nofollow" href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
-                                  <span class="material-icons"> perm_phone_msg</span>
-                            WhatsApp
-                            </a>
-                        </li>
-                        <li role="separator" class="divider"></li>
-                        <li>
-                            <h4 class="">
-                                <span class="material-icons"> home  </span>  {{address}} <br>
-                            </h4>
-                        </li>
-                    
-                    <li class="">
-                        <a class="btn btn-primary md" target="_blank"
-                            href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
-                            <span class="material-icons">directions</span>
-                            Indicaciones
-                        </a>
-                    </li>
-
-            
-                </ul>
-            </div>
-        {{/with}}
-    {{#each board_group_doc.board_group}}
         <div class="btn-group dopdown">
-           
+
+            <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
+                aria-expanded="true">
+                <div class="round-icon xd {{color}}">
+                    <span class="material-icons">account_circle</span>
+                </div>
+                <span class="">{{first_name }}</span>
+                <i class="material-icons">expand_more</i>
+            </button>
+            <ul class="dropdown-menu pull-left padding-10">
+                <li>
+                    <h4 class="">
+                        <span class="material-icons">
+                            account_circle
+                        </span>
+                        {{first_name }} {{last_name}}
+                    </h4>
+                </li>
+
+                <li>
+                    <h4 class="">
+                        <span class="material-icons">
+                            email
+                        </span>
+                        {{email}}
+                    </h4>
+                </li>
+
+                <li>
+                    <h3 class="">
+                        <span class="material-icons">mobile_screen_share</span>
+                        {{phone}}
+                    </h3>
+                </li>
+
+                <li>
+                    <a class="btn btn-primary md bg-green" target="_blank" rel="nofollow"
+                        href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
+                        <span class="material-icons"> perm_phone_msg</span>
+                        WhatsApp
+                    </a>
+                </li>
+
+                <li>
+                    <h4 class="">
+                        <span class="material-icons"> home </span> {{address}} <br>
+                    </h4>
+                </li>
+
+                <li class="">
+                    <a class="btn btn-primary md" target="_blank"
+                        href="https://www.google.com/maps/search/?api=1&amp;query={{phone}}+++">
+                        <span class="material-icons">directions</span>
+                        Indicaciones
+                    </a>
+                </li>
+
+
+            </ul>
+
+        </div>
+        {{/with}}
+        {{#each board_group_doc.board_group}}
+        <div class="btn-group dopdown">
             {{#ifEquals id ../group_id }}
             <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
                 aria-expanded="true">
@@ -170,21 +184,20 @@
                 {{/each}}
             </ul>
             {{/ifEquals}}
-            
         </div>
-{{/each}}
+        {{/each}}
 
     </div>
 
     <div class="padding-5">
 
-        
+
     </div>
 
     <div class="padding-5">
         {{#with order_doc.customer}}
-       
-       
+
+
         {{/with}}
     </div>
 
