@@ -7,16 +7,18 @@
     <div class="margin-b-10 padding-0 ">
 
         <h2 class="margin-0 padding-10">
-            <button type="button"
-                class="padding-5 left_nav_close right_nav_close margin-10 btn btn-transparent margin-0 pull-left">
+            <button type="button" class="padding-5 left_nav_close right_nav_close margin-10 btn btn-transparent margin-0 pull-left">
                 <span class="material-icons">
                     arrow_back
                 </span>
             </button>
             <span class="padding-t-20">
-                <span class="material-icons lg">
-                    qr_code
-                </span>
+                    {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../order_doc.category_id}}
+                        <span class="material-icons lg">{{m_t_icon}}</span>
+                        {{/ifEquals}}
+                    {{/each}}
+                <span class="material-icons lg"> qr_code </span>
                 <span class="">
                     {{#with order_doc}} {{order_id}} {{/with}}
                 </span>
@@ -27,35 +29,33 @@
                 <button class="btn xs btn-more btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                     <h5>
                         <span class="material-icons">update</span>
-                        5 Dias
+                        {{#with order_doc.due_date}} {{hour}}:{{minutes}} {{/with}}   
                     </h5>
                 </button>
 
                 <ul class="dropdown-menu pull-right">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                    <li class="header padding-20">
+                    <li class="header padding-5">
                         Tiempo de entrega
                     </li>
                     <li role="separator" class="divider"></li>
                     <div class="">
-
-                        <li class="padding-10">
-                            <label>Fecha de ingreso</label>
+                        <li class="padding-5">
+                            <label>Ingreso</label>
                             <div class="input-group">
                                 <div class="input-group-addon pull-left">
                                     <span class="material-icons">today</span>
-                                    <span class="margin-t-10"></span>
+                                    <span class="margin-t-10"> {{#with order_doc.entry_date}} {{hour}}:{{minutes}} {{/with}}   </span>
                                 </div>
                             </div>
                         </li>
-                        <li class="padding-10">
-                            <label> Fecha pactada</label>
+                        <li class="padding-5">
+                            <label>Fecha de entrega</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <span class="material-icons">event</span>
                                 </div>
-                                <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite"
-                                    value="">
+                                <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite" value="">
                             </div>
                         </li>
 
@@ -209,7 +209,6 @@
 </div>
 
 <div class="righ_nav_content">
-
     <!-- Contact module -->
     <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">

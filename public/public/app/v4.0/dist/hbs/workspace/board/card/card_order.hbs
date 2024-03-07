@@ -1,209 +1,74 @@
 {{#with doc}}
-
 <!-- CARD MAIN -->
-    <div  class="board-item-content" onclick="get_edit_order(this)" oder_id="{{_id}}" board_type_name="{{#with ../../ws_lang_data}} {{{board_type_name}}} {{/with}}" >
-        <div class="s-card ">
-            <!--s-card-body--->
-            <div class="s-card-body br-primary ">
-                <!-- s-card-header--->
-                <div class="s-card-header  col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <span class="left">
-                        <div class="btn-group dopdown">
-                            <!-- Con dopdown baja el poper-->
-                            <button class="btn xs btn-more  dropdown-toggle" type="button" data-toggle="dropdown">
-                                <h5>
-                                    <div class="round-icon pr xd"><span> P </span></div>
-                                    <!--div class="round-icon client xs">E</div-->
-                                   {{customer.first_name}} {{customer.last_name}}
-                                </h5>
-                            </button>
-                            <ul class="dropdown-menu card pull-left">
-                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                <div class="body">
-                                    <li class="header">
-                                        Contacto
-                                    </li>
-                                    <li>
-                                        <h4 class="">
-                                            <span class="material-icons">
-                                                account_circle
-                                            </span> {{customer.first_name}}
-                                        </h4>
-                                    </li>
-                                    {{#if customer.email}}
-                                    <li>
-                                        <h4 class="">
-                                            <span class="material-icons">
-                                                email
-                                            </span> {{email}}
-                                        </h4>
-                                    </li>
-                                    {{/if}}
-                                    {{#if customer.phone}}
-                                    <li>
-                                        <h4 class="">
-                                            <span class="material-icons">
-                                                phone
-                                            </span> {{phone}}
-                                        </h4>
-                                    </li>
-                                    {{/if}}
-                                    {{#if customer.phone}}
-                                    <li>
-                                        <h4 class="">
-                                            <span class="material-icons">mobile_screen_share</span>
-                                            {{customer.phone}}
-                                        </h4>
-                                    </li>
-                                    <li>
-                                        <a class="btn btn-success md" target="_blank" rel="nofollow"
-                                            href="https://api.whatsapp.com/send?phone=54{{customer.phone}}&text= Hola te contactamos ">
-                                            <span class="material-icons">mobile_screen_share</span>
-                                            Enviar whatsapp
-                                        </a>
-                                    </li>
-                                    {{/if}}
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <h4 class="">
-                                            <span class="material-icons">
-                                                home
-                                            </span>
-                                            {{customer.address}} {{contact_number}} <br>
-                                            {{contact_floor}},
-                                            {{contact_district}},{{contact_city}},
-                                            {{contact_state}}
-                                        </h4>
-                                    </li>
-                                </div>
-                                <li class="">
-                                    <a class="btn btn-primary md" target="_blank"
-                                        href="https://www.google.com/maps/search/?api=1&query={{customer.address}}+{{contact_number}}+{{contact_city}}+{{contact_state}}">
-
-                                        <span class="material-icons">directions</span>
-                                        Indicaciones
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </span>
-                    <!--s-detail--->
-                    <div class="right">
-                        <div class="btn-group dopdown">
-                            <!-- Prioridad -->
-                            <button class="btn btn-round md pull-right  dropdown-toggle" type="button"
-                                data-toggle="dropdown">
-                                <div class="round-icon primary">
-                                    <span class="material-icons">sentiment_satisfied_alt</span>
-                                </div>
-                            </button>
-                            <ul class="dropdown-menu pull-right">
-                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                <li class="header">
-                                    Prioridad
-                                </li>
-                                <li role="separator" class="divider"></li>
-                                <li {{#ifEquals priority.id 1}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_very_satisfied</span>
-                                        <small>Normal</small></a></li>
-                                <li {{#ifEquals priority.id 2}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_satisfied</span>
-                                        <small>Apurado</small></a></li>
-                                <li {{#ifEquals priority.id 3}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_dissatisfied</span>
-                                        <small>Urgente</small></a></li>
-                                <li {{#ifEquals priority.id 4}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">sentiment_very_dissatisfied</span>
-                                        <small>Enojado</small></a></li>
-                                <li {{#ifEquals priority.id 5}} class="active" {{/ifEquals}}><a href="#" class=""><span
-                                            class="material-icons">bug_report</span>
-                                        <small>Garantia</small></a></li>
-                            </ul>
-                        </div>
-                        <div class="btn-group dopdown">
-                            <!-- Prometido -->
-                            <!-- Con dopdown baja el poper-->
-                            <button class="btn xs btn-more  dropdown-toggle" type="button" data-toggle="dropdown">
-                                <h5>
-                                    <!--span class="material-icons">update</span-->
-                                    5 Dias
-                                </h5>
-                            </button>
-
-                            <ul class="dropdown-menu card pull-right">
-                                <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                <div class="body">
-                                    <li>
-                                        <label>Fecha limite</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="material-icons">event</span>
-                                            </div>
-                                            <input type="text" class="s-card-actv-input datetimepicker" type="datetime"
-                                                placeholder="Fecha limite" value="">
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <label>Fecha de ingreso</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon pull-left">
-                                                <span class="material-icons">today</span>
-                                                <span class="margin-t-10">{{entry_date}}</span>
-                                            </div>
-
-                                        </div>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <h5 class="">Faltan: </h5>
-                                        <span class="material-icons">
-                                            update
-                                        </span> {{due_date}}
-                                    </li>
-                                </div>
-                            </ul>
-                        </div>
+<div class="board-item-content" onclick="get_edit_order(this)" oder_id="{{_id}}"
+    board_type_name="{{#with ../../ws_lang_data}} {{{board_type_name}}} {{/with}}">
+    <div class="s-card ">
+        <!--s-card-body--->
+        <div class="s-card-body br-primary ">
+            <!-- s-card-header--->
+            <div class="s-card-header padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <span class="left">
+                    <div class="btn-group dopdown">
+                        <!-- Con dopdown baja el poper-->
+                        <span>
+                            <span class="material-icons">
+                                account_circle
+                            </span>
+                            {{customer.first_name}} {{customer.last_name}}
+                        </span>
                     </div>
-                    <!--s-card-content--->
+                </span>
+                <!--s-detail--->
+                <div class="right">
+                    <div class="btn-group dopdown">
+                        <!-- Prioridad -->
+                        <button class="btn btn-round md pull-right" type="button" data-toggle="dropdown">
+                            <div class="round-icon primary">
+                                <span class="material-icons">sentiment_satisfied_alt</span>
+                                {{priority.value}}
+                            </div>
+                        </button>
+                    </div>
+                    <div class="btn-group dopdown">
+                        <button class="btn xs btn-more" type="button" data-toggle="dropdown">
+                            <h5>
+                                <span class="material-icons">update</span>
+                                {{due_date.hour}}:{{due_date.minutes}}
+                            </h5>
+                        </button>
+                    </div>
+                </div>
+                <!--s-card-content--->
+            </div>
+            <div class="padding-0 s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!--s-card-order--->
+                <div class="text-center padding-10 btn s-card-order col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div class="">
+                        <span class="material-icons md">
+                            qr_code
+                        </span>
+                    </div>
+                    <span>{{order_id}} </span>
+                </div>
+                <!--s-card-content--->
+                <div class="s-card-content col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    {{#with equipment}}
+                    <div or-id="1" class="equip-btn margin-b-5" data-toggle="tooltip" data-placement="bottom">
+                        <span class="btn btn-default md">
+                            {{type}} {{trade}}
+                        </span>
+                    </div>
+                    {{/with}}
+                    <div data-toggle="tooltip" data-placement="bottom">
+                        <button or-id="1" class="presu-btn btn btn-primary md s-card-number" type="button">
+                            $ {{total}}
+                        </button>
+                    </div>
                 </div>
                 <!-- s-card-main--->
-                <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <!--s-card-order--->
-                    <div class="btn btn-default md s-card-order col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <h4>
-                            {{#with ../../ws_lang_data}} {{{m_board_new_item_order}}} {{/with}}
-                        </h4>
-                        <span>{{order_id}} </span>
-                    </div>
-                    <!--s-card-content--->
-                    <div class="s-card-content col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                     {{#with equipment}}
-                        <div or-id="1" class="equip-btn margin-b-5" data-toggle="tooltip" data-placement="bottom">
-                            <span class="btn btn-default md">
-                                Notebook
-                            </span>
-                        </div>
-                     {{/with}}
-                        <div data-toggle="tooltip" data-placement="bottom">
-                            <button or-id="1" class="presu-btn btn btn-primary md s-card-number" type="button">
-                                $ {{total}}
-                            </button>
-                        </div>
-                    </div>
-                    <!-- s-card-main--->
-                </div>
-                <!--tabs-main--->
-               
-                <!--s-card-footer--->
-                <div class="s-card-footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            
-                </div>
-                <!--s-card-body--->
             </div>
-            <!--s-card --->
         </div>
+        <!--s-card --->
     </div>
-
+</div>
 {{/with}}
-
-

@@ -13045,7 +13045,7 @@ board-item-content
 }
 
 .right_main .tabs-main {
-    max-height: 500px;
+    max-height: 1024px;
     overflow-y: auto;
     overflow-x: hidden;
 }

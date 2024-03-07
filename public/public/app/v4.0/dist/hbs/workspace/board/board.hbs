@@ -385,12 +385,8 @@
             var currency_doc = await L_catalog_db.get('currency_list');
             var board_group_doc = await L_board_db.get('board_group_'+category_id);
           
-            
-      
-            
             var user_roles_permisions = user_Ctx.userCtx.roles;
-            
-          
+        
             console.log(category_id); // Debería mostrar 'sell'
             console.log('user_roles_permisions', user_roles_permisions);
             console.log('element.id', element._element.id);
@@ -401,8 +397,8 @@
             console.log(' board_group_doc',  board_group_doc);
             console.log(' group_id',  group_id);
             console.log(' ws_lang_data',  ws_lang_data);
-
-
+             console.log('  ws_left_nav_data',  ws_left_nav_data);
+             
             var product_doc_array = {
                 price_list: price_doc.price_list,
                 tax_list: tax_doc,
@@ -417,6 +413,7 @@
                 board_group_doc:board_group_doc,
                 group_position:group_position,
                 group_id:group_id,
+                ws_left_nav_data: ws_left_nav_data,
             }
 
             // console.log('tax_doc CCCCC', product_doc_array);
