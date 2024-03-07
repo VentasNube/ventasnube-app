@@ -522,6 +522,21 @@ form {
     font-feature-settings: 'liga';
 }
 
+.material-icons.xs {
+    font-size: 15px;
+    vertical-align:text-top;
+}
+
+.material-icons.md {
+    font-size: 24px;
+    vertical-align:text-top;
+}
+
+.material-icons.lg {
+    font-size: 35px;
+    vertical-align:text-top;
+}
+
 /**** Clasese de truncar textox que sobrepasan el div con los ... *****/
 
 .truncate {
@@ -10748,6 +10763,7 @@ h1 span{
     line-height: 26px;
     background-color: #575757;
     color: #fff;
+    vertical-align: 2;
 }
 
 .round-icon.pr.w {

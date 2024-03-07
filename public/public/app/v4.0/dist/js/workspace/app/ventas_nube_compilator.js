@@ -9,7 +9,6 @@ function registerHandlebarsHelpers() {
       return options.fn(context);
     });
   
-
     Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
         
         var rol_admin = modulo + "_admin_" + ws_id;
@@ -37,38 +36,8 @@ function registerHandlebarsHelpers() {
           // El usuario no tiene los permisos necesarios, se muestra el bloque inverso
           return options.inverse(this);
         }
-      });
-      
-      
-
-
-
-
-
-
-    // Helper "userCtx"
-    /*
-    Handlebars.registerHelper("userCtx", function(modulo, rol, options) {
-      var rol_admin = modulo + "_admin_" + ws_id;
-      var rol_edit = modulo + "_edit_" + ws_id;
-      var rol_create = modulo + "_create_" + ws_id;
-      var rol_reed = modulo + "_redd_" + ws_id;
-  
-      for (var i = 0, j = user_Ctx.userCtx.roles.length; i < j; i++) {
-        var role = user_Ctx.userCtx.roles[i];
-  
-        if (role === rol_admin || role === rol_edit || role === rol_create || role === rol_reed) {
-          return options.fn(this);
-        }
-      }
-  
-      return options.inverse(this);
     });
-  */
-
-
-
-
+      
     Handlebars.registerHelper("stock", function(value) {
         var ret = 0;
         for (var i = 0, j = value.length; i < j; i++) {
@@ -96,7 +65,6 @@ function registerHandlebarsHelpers() {
         return tot_real_stock;
     });
 
-
     Handlebars.registerHelper("available_stock_cost", function(value) {
         if (value.length > 0) {
             // Obtener el último elemento del array
@@ -113,7 +81,6 @@ function registerHandlebarsHelpers() {
         return 0;
     });
     
-
     // Trae el primer objeto de un array se usa
     Handlebars.registerHelper("first", function(context, options) {
         var ret = "";
@@ -158,6 +125,17 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper("counter", function(index) {
         return index + 1;
     });
+
+// Definir la función helper
+Handlebars.registerHelper('counter_items', function(items) {
+    if (!Array.isArray(items)) {
+        return 0; // Si no es un array, devuelve 0
+    } else {
+        return items.length; // Devuelve la longitud del array
+    }
+});
+
+
 
     // BUSCADOR TRAE RESULTADOS POR ID DENTRO DE UN ARRAY
     Handlebars.registerHelper("search_id", function(array, id, options) {
