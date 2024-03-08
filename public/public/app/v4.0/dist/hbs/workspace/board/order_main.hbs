@@ -7,17 +7,18 @@
     <div class="margin-b-10 padding-0 ">
 
         <h2 class="margin-0 padding-10">
-            <button type="button" class="padding-5 left_nav_close right_nav_close margin-10 btn btn-transparent margin-0 pull-left">
+            <button type="button"
+                class="padding-5 left_nav_close right_nav_close margin-10 btn btn-transparent margin-0 pull-left">
                 <span class="material-icons">
                     arrow_back
                 </span>
             </button>
             <span class="padding-t-20">
-                    {{#each ws_left_nav_data.m_t}}
-                        {{#ifEquals m_t_url ../order_doc.category_id}}
-                        <span class="material-icons lg">{{m_t_icon}}</span>
-                        {{/ifEquals}}
-                    {{/each}}
+                {{#each ws_left_nav_data.m_t}}
+                {{#ifEquals m_t_url ../order_doc.category_id}}
+                <span class="material-icons lg">{{m_t_icon}}</span>
+                {{/ifEquals}}
+                {{/each}}
                 <span class="material-icons lg"> qr_code </span>
                 <span class="">
                     {{#with order_doc}} {{order_id}} {{/with}}
@@ -26,14 +27,14 @@
             <div class="btn-group dopdown pull-right">
                 <!-- Prometido -->
                 <!-- Con dopdown baja el poper-->
+
                 <button class="btn xs btn-more btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                     <h5>
                         <span class="material-icons">update</span>
-                        {{#with order_doc.due_date}} {{hour}}:{{minutes}} {{/with}}   
+                        {{#with order_doc.due_date}} {{hour}}:{{minutes}} {{/with}}
                     </h5>
                 </button>
-
-                <ul class="dropdown-menu pull-right">
+                <ul class="dropdown-menu pull-right padding-10">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                     <li class="header padding-5">
                         Tiempo de entrega
@@ -45,7 +46,8 @@
                             <div class="input-group">
                                 <div class="input-group-addon pull-left">
                                     <span class="material-icons">today</span>
-                                    <span class="margin-t-10"> {{#with order_doc.entry_date}} {{hour}}:{{minutes}} {{/with}}   </span>
+                                    <span class="margin-t-10"> {{#with order_doc.entry_date}} {{hour}}:{{minutes}}
+                                        {{/with}} </span>
                                 </div>
                             </div>
                         </li>
@@ -55,10 +57,10 @@
                                 <div class="input-group-addon">
                                     <span class="material-icons">event</span>
                                 </div>
-                                <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite" value="">
+                                <input type="text" class="s-card-actv-input datetimepicker" placeholder="Fecha limite"
+                                    value="">
                             </div>
                         </li>
-
                     </div>
                 </ul>
             </div>
@@ -70,7 +72,6 @@
                         <span class="material-icons">sentiment_satisfied_alt</span>
                     </div>
                 </button>
-
                 <ul class="dropdown-menu pull-right">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                     <li class="header">
@@ -161,6 +162,7 @@
 
         </div>
         {{/with}}
+
         {{#each board_group_doc.board_group}}
         <div class="btn-group dopdown">
             {{#ifEquals id ../group_id }}
@@ -192,18 +194,76 @@
         </div>
         {{/each}}
 
-    </div>
+        {{#each order_doc.equipment}}
+        <div class="btn-group dopdown padding-t-10">
 
-    <div class="padding-5">
+            <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
+                aria-expanded="true">
+             
+                    <span class="material-icons">devices_other</span>
+             
+                <span class="">{{type}}</span>
+                <i class="material-icons">expand_more</i>
+            </button>
+            <ul class="dropdown-menu pull-left padding-10">
+                <li>
+                    <h4 class="">
+                        <span class="material-icons">
+                           devices_other
+                        </span>
+                        {{type}}
+                    </h4>
+                </li>
+
+                <li>
+                    <h4 class="">
+                       <span class="material-icons">
+                           devices_other
+                        </span>
+                        {{trade}}{{model}}
+                    </h4>
+                </li>
+
+                <li>
+                    <h4 class="">S/N:
+                        {{serial}}
+                    </h4>
+                </li>
+                <li>
+                    <h4 class="">
+                        <span class="material-icons">grid_view</span>
+                        {{addon}}
+                    </h4>
+                </li>
+
+                <li>
+                    <a class="btn btn-primary md bg-green" target="_blank" rel="nofollow"
+                        href="https://api.whatsapp.com/send?phone={{phone}}&amp;text= Hola te contactamos ">
+                        <span class="material-icons"> perm_phone_msg</span>
+                        WhatsApp
+                    </a>
+                </li>
+
+                <li>
+                    <h4 class="">
+                        <span class="material-icons"> home </span> {{address}} <br>
+                    </h4>
+                </li>
+
+                <li class="">
+                    <a class="btn btn-primary md" target="_blank"
+                        href="https://www.google.com/maps/search/?api=1&amp;query=+++">
+                        <span class="material-icons">directions</span>
+                        Indicaciones
+                    </a>
+                </li>
 
 
-    </div>
+            </ul>
 
-    <div class="padding-5">
-        {{#with order_doc.customer}}
-
-
-        {{/with}}
+        </div>
+        {{/each}}
+        
     </div>
 
 </div>
@@ -272,7 +332,8 @@
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#pay_items_tab">
                     <span class="material-icons"> {{#with ws_lang_data}} {{b_order_pay_icon}} {{/with}}</span>
-                    <span class="pay_items_n fav_count">{{#counter_items order_doc.payment_history}}{{this}}{{/counter_items}}</span>
+                    <span class="pay_items_n fav_count">{{#counter_items
+                        order_doc.payment_history}}{{this}}{{/counter_items}}</span>
                     <span class="hidden-xs">
                         {{#with ws_lang_data}} {{b_order_pay_items}} {{/with}}
                     </span>
@@ -281,7 +342,8 @@
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#activity_item_tab">
                     <span class="material-icons"> {{#with ws_lang_data}} {{b_order_activity_icon}} {{/with}} </span>
-                    <span class="activity_items_n fav_count">{{#counter_items order_doc.update_history}}{{this}}{{/counter_items}}</span>
+                    <span class="activity_items_n fav_count">{{#counter_items
+                        order_doc.update_history}}{{this}}{{/counter_items}}</span>
                     <span class="hidden-xs">
                         {{#with ws_lang_data}} {{b_order_activity_items}} {{/with}}
                     </span>
@@ -420,7 +482,9 @@
                     <div class="timeline_content">
                         <div class="box-header with-border">
                             <div class="" style="vertical-align: middle; display: inline-block;">
-                                <a data-toggle="tooltip" data-placement="bottom"data-original-title="Nuevos Comentarios" type="text" class="new_activity botonR inactive">
+                                <a data-toggle="tooltip" data-placement="bottom"
+                                    data-original-title="Nuevos Comentarios" type="text"
+                                    class="new_activity botonR inactive">
                                     <span class="btnSpan">
                                         <span class="material-icons"> Chat</span>
                                     </span>
