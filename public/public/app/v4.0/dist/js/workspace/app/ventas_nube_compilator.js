@@ -126,16 +126,14 @@ function registerHandlebarsHelpers() {
         return index + 1;
     });
 
-// Definir la función helper
-Handlebars.registerHelper('counter_items', function(items) {
-    if (!Array.isArray(items)) {
-        return 0; // Si no es un array, devuelve 0
-    } else {
-        return items.length; // Devuelve la longitud del array
-    }
-});
-
-
+    // Definir la función helper
+    Handlebars.registerHelper('counter_items', function(items) {
+        if (!Array.isArray(items)) {
+            return 0; // Si no es un array, devuelve 0
+        } else {
+            return items.length; // Devuelve la longitud del array
+        }
+    });
 
     // BUSCADOR TRAE RESULTADOS POR ID DENTRO DE UN ARRAY
     Handlebars.registerHelper("search_id", function(array, id, options) {
