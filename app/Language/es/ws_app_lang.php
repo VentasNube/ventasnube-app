@@ -164,9 +164,15 @@ return [
         'm_board_deliver' => 'Entregar',
         'm_board_filter' => 'Confirmar Stock',
 
-
-
-
+        'm_board_shipping_address'=> 'Direccion de envio',
+        'm_board_shipping_city'=> 'Ciudad',
+        'm_board_shipping_postal_code'=> 'Codigo postal',
+        'm_board_shipping_shipping_date'=> 'Fecha y hora de entrega',
+        'm_board_shipping_shipping_status'=> 'Estado de envio',
+        'm_board_shipping_carrier_name'=> 'Nombre del chofer',
+        'm_board_shipping_carrier_phone'=> 'Numero de Celular',
+        'm_board_shipping_carrier_vehicle'=> 'Tipo de transporte',
+       
         //CATALOGO
         'm_catalog' => 'Catalogo',
         'm_catalog_icon' => 'collections',

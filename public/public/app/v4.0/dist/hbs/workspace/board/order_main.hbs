@@ -1,6 +1,6 @@
 <!-- Cart Nav module -->
 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 
 <div class="righ_nav_header {{#with ws_info}}  {{{workspace_color}}}  {{/with}}">
 
@@ -67,7 +67,7 @@
                 <!-- Prioridad -->
                 <button class="dropdown-toggle select-btn xl  btn-round  btn btn-default" type="button"
                     data-toggle="dropdown">
-                        <span class="material-icons">sentiment_satisfied_alt</span>
+                    <span class="material-icons">sentiment_satisfied_alt</span>
                 </button>
                 <ul class="dropdown-menu pull-right">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
@@ -111,9 +111,9 @@
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-left">
-                 <li class="header">
-                         Estado de la orden
-                        </li>
+                <li class="header">
+                    Estado de la orden
+                </li>
                 {{#each ../board_group_doc.board_group}}
                 <li class="margin-5">
                     <a class="" onclick="order_edit_group_select(this)" order_id="{{{../../order_id}}}"
@@ -140,9 +140,9 @@
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-right padding-10">
-                   <li class="header">
-                           Datos del cliente
-                        </li>
+                <li class="header">
+                    Datos del cliente
+                </li>
                 <li>
                     <h4 class="">
                         <span class="material-icons">
@@ -207,9 +207,9 @@
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-left padding-10">
-                   <li class="header">
-                            Equipos del cliente
-                        </li>
+                <li class="header">
+                    Equipos del cliente
+                </li>
                 <li>
                     <h4 class="">
                         <span class="material-icons">
@@ -270,8 +270,8 @@
 
 
         <div class="btn-group dopdown padding-t-10 margin-r-10">
-            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default" data-toggle="dropdown"
-                aria-expanded="true">
+            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default"
+                data-toggle="dropdown" aria-expanded="true">
                 <span class="material-icons">comment</span>
                 <!--span class="">
                     Informe
@@ -334,6 +334,26 @@
 
         </div>
 
+
+        <!--
+        'm_board_shipping_address': 'Direccion de envio',
+        'm_board_shipping_city': 'Ciudad',
+        'm_board_shipping_postal_code': 'Codigo postal',
+        'm_board_shipping_shipping_date': 'Fecha y hora de entrega',
+        'm_board_shipping_shipping_status': 'Estado de envio',
+        'm_board_shipping_carrier_name': 'Nombre del chofer',
+        'm_board_shipping_carrier_phone': 'Numero de Celular',
+        'm_board_shipping_carrier_vehicle': 'Tipo de transporte'
+-->
+       
+  
+     
+         
+                      
+               
+                  
+                    
+
         <!--
   " shipping": { "address" : "Shipping Address" , "city" : "Shipping City" , "postal_code" : "Postal Code"
                                 , "shipping_date" : "2023-05-15" , "shipping_status" : "pending" , "carrier" : { "name"
@@ -341,8 +361,8 @@
 
         {{#with order_doc.shipping}}
         <div class="btn-group dopdown padding-t-10 margin-r-10">
-            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default" data-toggle="dropdown"
-                aria-expanded="true">
+            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default"
+                data-toggle="dropdown" aria-expanded="true">
                 <span class="material-icons">location_on</span>
                 <!--span class="">
                                         Envio
@@ -351,91 +371,123 @@
             </button>
             <ul class="dropdown-menu pull-right padding-10 xl">
                 <div class="col-md-12 padding-0 ">
-                    <span class="">
-                        <li class="header">
-                            Datos de envio
-                        </li>
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="material-icons">
-                                        location_on
-                                    </span>
-                                </span>
-                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                    input_id="shipping" input_value="address" onfocusout="order_edit(this)"
-                                    class="form-control" type="textarea" placeholder="Direccion" value="{{address}}"
-                                    rows="10" cols="50">
-                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                            </div>
-                        </div>
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="material-icons">
-                                        location_on
-                                    </span>
 
-                                </span>
-                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                    input_id="shipping" input_value="city" onfocusout="order_edit(this)"
-                                    class="form-control" type="textarea" placeholder="Ciudad" value="{{city}}" rows="10"
-                                    cols="50">
-                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                            </div>
-                        </div>
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="material-icons">
-                                        location_on
-                                    </span>
+                    <div class="order_edit_shipping_form">
+    <li class="header">
+        {{#with ../ws_lang_data}}{{m_board_shipping_address}}{{/with}}
+    </li>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    location_on
+                </span>
+            </span>
+            <input name="address" 
+                class="form-control" type="textarea" placeholder=" {{#with ../ws_lang_data}}{{m_board_shipping_address}}{{/with}}" value="{{address}}"
+                rows="10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    location_on
+                </span>
+            </span>
+            <input name="city"
+                class="form-control" type="textarea" placeholder=" {{#with ../ws_lang_data}}{{m_board_shipping_city}}{{/with}}" value="{{city}}" rows="10"
+                cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    location_on
+                </span>
+            </span>
+            <input name="postal_code" 
+               placeholder="Código Postal"  class="form-control" type="textarea" placeholder="  {{#with ../ws_lang_data}}{{m_board_shipping_postal_code}}{{/with}}"
+                value="{{postal_code}}" rows="10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    calendar_today
+                </span>
+            </span>
+            <input name="shipping_date" placeholder="{{#with ../ws_lang_data}}{{m_board_shipping_date}}{{/with}}"   class="form-control" type="datetime-local" value="{{shipping_date}}" rows="10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    location_on
+                </span>
+            </span>
+            <input name="shipping_status"  class="form-control"
+                type="textarea" placeholder="{{#with ../ws_lang_data}}{{m_board_shipping_status}}{{/with}}" value="{{shipping_status}}" rows=" 10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    account_circle
+                </span>
+            </span>
+            <input name="name" class="form-control"
+                type="textarea" placeholder="{{#with ../ws_lang_data}}{{m_board_shipping_carrier_name}}{{/with}}" value="{{name}}" rows=" 10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    phone
+                </span>
+            </span>
+            <input id="order_shipping_phone" name="phone" class="form-control"
+                type="textarea" placeholder="{{#with ../ws_lang_data}}{{m_board_carrier_phone}}{{/with}}" value="{{phone}}" rows=" 10" cols="50" country_code="" required="" id="phone" type="tel" class="edit_phone form-control"
+                                data-msg-required="{{form_valid_phone}}" data-msg-minlength="{{form_valid_phone_count}}"
+                                placeholder="{{contact_phone}}"
+                
+                >
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="material-icons">
+                    motorcycle
+                </span>
+            </span>
+            <input name="vehicle"class="form-control"
+                type="textarea" placeholder=" {{#with ../ws_lang_data}}{{m_board_shipping_carrier_vehicle}}{{/with}}" value="{{vehicle}}" rows=" 10" cols="50">
+            <!--- ATRIBUTOS DE LA VARIABLE -->
+        </div>
+    </div>
+                </div>
 
-                                </span>
-                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                    input_id="shipping" input_value="postal_code" onfocusout="order_edit(this)"
-                                    class="form-control" type="textarea" placeholder="Codigo Postal"
-                                    value="{{postal_code}}" rows="10" cols="50">
-                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                            </div>
-                        </div>
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="material-icons">
-                                        location_on
-                                    </span>
+                </div>
 
-                                </span>
-                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                    input_id="shipping" input_value="city" onfocusout="order_edit(this)"
-                                    class="form-control" type="textarea" placeholder="Ciudad" value="{{city}}" rows="10"
-                                    cols="50">
-                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                            </div>
-                        </div>
-
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="material-icons">
-                                        location_on
-                                    </span>
-                                </span>
-                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                    input_id="solutions" onfocusout="order_edit(this)" class="form-control"
-                                    type="textarea" placeholder="Informe" value="{{value}}  rows=" 10" cols="50"">
-                            <!--- ATRIBUTOS DE LA VARIABLE -->
-                        </div>
-                                            </div>
-                                        </div>
-
-                                                    <button doc_id=" {{_id}}" order_id="{{order_id}}"
-                                    onclick="order_edit_shipping(this)" category_id="{{category_id}}" type="button"
-                                    class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                <span class="material-icons">save</span>
-                                {{#with ../ws_lang_data}}{{b_save}}{{/with}}
-                                </button>
+                <button doc_id="{{../order_doc._id}}" order_id="{{../order_doc.order_id}}" onclick="order_edit_shipping(this)"
+                    category_id="{{../order_doc.category_id}}" type="button"
+                    class="margin-top cobrar-btn btn btn-primary btn-full-with">
+                    <span class="material-icons">save</span>
+                    {{#with ../ws_lang_data}}{{b_save}}{{/with}}
+                </button>
 
             </ul>
         </div>
@@ -445,52 +497,6 @@
 </div>
 
 <div class=" righ_nav_content">
-    <!-- Contact module -->
-    <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <button onclick="add_new_contact(this)" class="success round s margin-0">
-                <span class="material-icons">person_add</span>
-            </button>
-        </div>
-        <div id="cart_user_input_dropdown"
-            class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
-            <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
-                placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
-            <ul id="contact_auto_subjet" class="">
-
-            </ul>
-        </div>
-        <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <div class="btn-group dropright">
-                <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                    <div class="round-icon pr">
-                        <span id="select_price_list_cart" price_list_id="" price_list_value="">
-                            m </span>
-                    </div>
-
-                </button>
-                <ul class="dropdown-menu pull-right">
-
-                    <li class="header">Listas de precios</li>
-                    {{#each price_doc.price_list}}
-                    <li>
-                        <a href="#">
-                            <div class="round-icon user-top"><span> {{value}} </span></div>
-                            {{value}}
-                        </a>
-                    </li>
-                    {{/each}}
-
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Product module -->
-    {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
-
     <!-- Cart main module -->
     <div class="tabs-main margin-t-30 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
         <ul class="nav nav-tabs">
@@ -878,9 +884,18 @@
 </div>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
 <script>
     // Este es tu método de búsqueda asíncrono
-
+    var input = document.querySelector("#order_shipping_phone");
+    var codeCountry =  $("#order_shipping_phone").attr('country_code');
+    var ipCountry = null;
+    //GEO LOCALIZACION PARA AUTOCOMPLETAR LOS DATOS GEOGRAFICOS DEPENDIENDO LA I
+    intlTelInput(input, {
+            initialCountry: codeCountry,
+            separateDialCode: true
+        });
+        
     async function select_contact(element) {
 
         try {

@@ -983,7 +983,7 @@ async function new_order(element) {
                         user: 'smartmobile.com@gmail.com',
                     }
                 ],
-                
+
                 service: [
                     {
                         product_id: 'Product 1',
@@ -1416,18 +1416,18 @@ async function order_edit(element) {
         var doc = await L_board_db.get(doc_id_s); //Traigo el documento
         // Si el objeto a editar esta dentro de una variable
         //  var doc = await L_catalog_db.get(doc_id);
-       /*     if(  input_id == 'shipping'){
-                var objet_id = doc[input_id].find(response => response.[input_value] == new_value);// Traigo el elemento por la id variant
+        /*     if(  input_id == 'shipping'){
+                 var objet_id = doc[input_id].find(response => response.[input_value] == new_value);// Traigo el elemento por la id variant
+ 
+             }*/
+        var new_objet = {
+            id: newDate,
+            value: new_value,
+            updateUser: userName,
+            updateDate: newDate,
+        };
 
-            }*/
-            var new_objet = {
-                id: newDate,
-                value: new_value,
-                updateUser: userName,
-                updateDate: newDate,
-            };
-
-            doc[input_id] = new_objet; //Si existe el objeto Edito el valor del value por el valor nuevo
+        doc[input_id] = new_objet; //Si existe el objeto Edito el valor del value por el valor nuevo
 
         //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
@@ -1437,7 +1437,7 @@ async function order_edit(element) {
                 ...doc,// trae todos los datos del doc y los pega en la raiz
             });
 
-            if(response){
+            if (response) {
                 Snackbar.show({
                     text: 'Se edito la orden con éxito!',
                     actionText: 'OK',
@@ -1446,7 +1446,7 @@ async function order_edit(element) {
                     duration: 5000
                 });
             }
-            else{
+            else {
                 Snackbar.show({
                     text: 'No se pudo editar la orden!',
                     actionText: 'OK',
@@ -1465,33 +1465,53 @@ async function order_edit(element) {
 
 
 // EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
-async function order_edit_shipping(element) {
+async function order_edit_shippingNO(element) {
 
     try {
-        
+
         const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-        const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
-        const input_value = $(element).attr('input_value'); //EL id del OBJETO a editar
-        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        console.log("doc_id", doc_id);
+        
         var newDate = new Date(); //fecha actual del navegador
         var userName = userCtx.userCtx.name;
         var doc_id_s = String(doc_id); //Combierto el id del doc en un string
         var doc = await L_board_db.get(doc_id_s); //Traigo el documento
-        // Si el objeto a editar esta dentro de una variable
-        //  var doc = await L_catalog_db.get(doc_id);
-       /*     if(  input_id == 'shipping'){
-                var objet_id = doc[input_id].find(response => response.[input_value] == new_value);// Traigo el elemento por la id variant
+        const form = {}; // Objeto para almacenar los datos del formulario
+        var shippingArray = {} ;
 
-            }*/
-            var new_objet = {
-                id: newDate,
-                value: new_value,
-                updateUser: userName,
-                updateDate: newDate,
-            };
+        console.log("doc AAAAAAAA", doc);
+        // Recorrer todos los inputs dentro del formulario
+        $('.order_edit_shipping_form input').each(function () {
+            const name = $(this).attr('name'); // Obtener el nombre del input
+            const value = $(this).val(); // Obtener el valor del input
+            // Crear un objeto con el nombre y el valor del input y agregarlo al array
+            shippingArray.push({ [name]: value });
+        });
+        // Agregar otros campos requeridos a cada objeto del array
+        shippingArray.forEach(function (item) {
+            item.updateUser = userName;
+            item.updateDate = newDate;
+            item.address = address;
+            item.city = city;
+            item.postal_code = postal_code;
+            item.shipping_date = shipping_date;
+            item.shipping_status = shipping_status;
+            item.name = name;
+            item.phone = phone;
+            item.vehicle = vehicle;
+        });
 
-            doc[input_id] = new_objet; //Si existe el objeto Edito el valor del value por el valor nuevo
+        // Convertir el objeto shipping en un array y devolverlo
+        var shippingArray = [shipping];
+        
+        var shipping = shippingArray;
+        console.log("shippingArray", shippingArray);
+        console.log("shipping AAAAAAAA", shipping);
 
+        // Guardar el documento actualizado
+        // const response = await L_board_db.put(doc);
+        doc['shipping'] = shipping; //Si existe el objeto Edito el valor del value por el valor nuevo
+        console.log(shipping)
         //ENVIO El NUEVO DOCUMENTO EDITADO
         if (doc) {
             var response = await L_board_db.put({
@@ -1500,7 +1520,7 @@ async function order_edit_shipping(element) {
                 ...doc,// trae todos los datos del doc y los pega en la raiz
             });
 
-            if(response){
+            if (response) {
                 Snackbar.show({
                     text: 'Se edito la orden con éxito!',
                     actionText: 'OK',
@@ -1509,7 +1529,7 @@ async function order_edit_shipping(element) {
                     duration: 5000
                 });
             }
-            else{
+            else {
                 Snackbar.show({
                     text: 'No se pudo editar la orden!',
                     actionText: 'OK',
@@ -1526,3 +1546,63 @@ async function order_edit_shipping(element) {
 
 }// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
 
+
+async function order_edit_shipping(element) {
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        console.log("doc_id", doc_id);
+        
+        const newDate = new Date(); // Fecha actual del navegador
+        const userName = userCtx.userCtx.name;
+        const doc_id_s = String(doc_id); // Convierto el id del doc en un string
+        const doc = await L_board_db.get(doc_id_s); // Traigo el documento
+
+        console.log("doc AAAAAAAA", doc);
+
+        // Objeto para almacenar los datos del formulario
+        const form = {};
+        
+        // Recorrer todos los inputs dentro del formulario
+        $('.order_edit_shipping_form input').each(function () {
+            const name = $(this).attr('name'); // Obtener el nombre del input
+            const value = $(this).val(); // Obtener el valor del input
+            // Agregar el valor al objeto form con el nombre como clave
+            form[name] = value;
+        });
+
+        // Agregar otros campos requeridos al objeto form
+        form.updateUser = userName;
+        form.updateDate = newDate;
+
+        console.log("form", form);
+
+        // Guardar los datos del formulario en el documento
+        doc.shipping = form;
+
+        console.log("doc con datos de envío", doc);
+
+        // Guardar el documento actualizado
+        const response = await L_board_db.put(doc);
+
+        // Mostrar mensaje de éxito o error
+        if (response) {
+            Snackbar.show({
+                text: 'Se editó la orden con éxito!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        } else {
+            Snackbar.show({
+                text: 'No se pudo editar la orden!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
