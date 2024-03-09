@@ -1400,3 +1400,129 @@ function datetimePiker() {
 
 /// UPDATE 2024 /////
 // TRAE EL FORMULARIO
+
+
+// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
+async function order_edit(element) {
+
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        const input_value = $(element).attr('input_value'); //EL id del OBJETO a editar
+        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_board_db.get(doc_id_s); //Traigo el documento
+        // Si el objeto a editar esta dentro de una variable
+        //  var doc = await L_catalog_db.get(doc_id);
+       /*     if(  input_id == 'shipping'){
+                var objet_id = doc[input_id].find(response => response.[input_value] == new_value);// Traigo el elemento por la id variant
+
+            }*/
+            var new_objet = {
+                id: newDate,
+                value: new_value,
+                updateUser: userName,
+                updateDate: newDate,
+            };
+
+            doc[input_id] = new_objet; //Si existe el objeto Edito el valor del value por el valor nuevo
+
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (doc) {
+            var response = await L_board_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+
+            if(response){
+                Snackbar.show({
+                    text: 'Se edito la orden con éxito!',
+                    actionText: 'OK',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-right',
+                    duration: 5000
+                });
+            }
+            else{
+                Snackbar.show({
+                    text: 'No se pudo editar la orden!',
+                    actionText: 'OK',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-right',
+                    duration: 5000
+                });
+            }
+
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
+
+
+// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
+async function order_edit_shipping(element) {
+
+    try {
+        
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+        const input_id = $(element).attr('input_id'); //EL id del OBJETO a editar
+        const input_value = $(element).attr('input_value'); //EL id del OBJETO a editar
+        const new_value = $(element).val(); //EL VALOR DEL NUEVO OBJETO 
+        var newDate = new Date(); //fecha actual del navegador
+        var userName = userCtx.userCtx.name;
+        var doc_id_s = String(doc_id); //Combierto el id del doc en un string
+        var doc = await L_board_db.get(doc_id_s); //Traigo el documento
+        // Si el objeto a editar esta dentro de una variable
+        //  var doc = await L_catalog_db.get(doc_id);
+       /*     if(  input_id == 'shipping'){
+                var objet_id = doc[input_id].find(response => response.[input_value] == new_value);// Traigo el elemento por la id variant
+
+            }*/
+            var new_objet = {
+                id: newDate,
+                value: new_value,
+                updateUser: userName,
+                updateDate: newDate,
+            };
+
+            doc[input_id] = new_objet; //Si existe el objeto Edito el valor del value por el valor nuevo
+
+        //ENVIO El NUEVO DOCUMENTO EDITADO
+        if (doc) {
+            var response = await L_board_db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                ...doc,// trae todos los datos del doc y los pega en la raiz
+            });
+
+            if(response){
+                Snackbar.show({
+                    text: 'Se edito la orden con éxito!',
+                    actionText: 'OK',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-right',
+                    duration: 5000
+                });
+            }
+            else{
+                Snackbar.show({
+                    text: 'No se pudo editar la orden!',
+                    actionText: 'OK',
+                    actionTextColor: "#0575e6",
+                    pos: 'bottom-right',
+                    duration: 5000
+                });
+            }
+
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}// EDICION GENERAL DE IMPUTS EN VARIABLE Y GENERAL
+

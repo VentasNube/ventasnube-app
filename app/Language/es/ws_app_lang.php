@@ -154,6 +154,19 @@ return [
 
         'm_board_new_item_order' => 'Orden',
         'm_board_filter' => 'Filtrar',
+
+        'm_board_comment_tittle' => 'Datos adicionale',
+        'm_board_failure_tittle' => 'La falla',
+        'm_board_solutions_tittle' => 'La Solucion',
+
+        'm_board_receive' => 'Cobrar',
+        'm_board_pay' => 'Pagar',
+        'm_board_deliver' => 'Entregar',
+        'm_board_filter' => 'Confirmar Stock',
+
+
+
+
         //CATALOGO
         'm_catalog' => 'Catalogo',
         'm_catalog_icon' => 'collections',
