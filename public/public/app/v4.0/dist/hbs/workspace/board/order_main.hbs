@@ -65,11 +65,9 @@
             </div>
             <div class="btn-group dopdown pull-right margin-r-10 ">
                 <!-- Prioridad -->
-                <button class="success round s margin-0 btn-default pull-right dropdown-toggle" type="button"
+                <button class="dropdown-toggle select-btn xl  btn-round  btn btn-default" type="button"
                     data-toggle="dropdown">
-                    <div class="round-icon primary">
                         <span class="material-icons">sentiment_satisfied_alt</span>
-                    </div>
                 </button>
                 <ul class="dropdown-menu pull-right">
                     <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
@@ -113,6 +111,9 @@
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-left">
+                 <li class="header">
+                         Estado de la orden
+                        </li>
                 {{#each ../board_group_doc.board_group}}
                 <li class="margin-5">
                     <a class="" onclick="order_edit_group_select(this)" order_id="{{{../../order_id}}}"
@@ -138,7 +139,10 @@
                 <span class="">{{first_name }}</span>
                 <i class="material-icons">expand_more</i>
             </button>
-            <ul class="dropdown-menu pull-left padding-10">
+            <ul class="dropdown-menu pull-right padding-10">
+                   <li class="header">
+                           Datos del cliente
+                        </li>
                 <li>
                     <h4 class="">
                         <span class="material-icons">
@@ -186,14 +190,13 @@
                     </a>
                 </li>
 
-
             </ul>
 
         </div>
         {{/with}}
 
         {{#each order_doc.equipment}}
-        <div class="btn-group dopdown padding-t-10">
+        <div class="btn-group dopdown padding-t-10 margin-r-10">
 
             <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
                 aria-expanded="true">
@@ -204,6 +207,9 @@
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-left padding-10">
+                   <li class="header">
+                            Equipos del cliente
+                        </li>
                 <li>
                     <h4 class="">
                         <span class="material-icons">
@@ -263,17 +269,19 @@
         {{/each}}
 
 
-        <div class="btn-group dopdown padding-t-10">
-            <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
+        <div class="btn-group dopdown padding-t-10 margin-r-10">
+            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default" data-toggle="dropdown"
                 aria-expanded="true">
-                <span class="material-icons">devices_other</span>
-                <span class="">
+                <span class="material-icons">comment</span>
+                <!--span class="">
                     Informe
                 </span>
-
-                <i class="material-icons">expand_more</i>
+                <i class="material-icons">expand_more</i-->
             </button>
             <ul class="dropdown-menu pull-right padding-10 xl">
+                <li class="header">
+                    Informe al cliente
+                </li>
                 <div class="col-md-12 padding-0 ">
                     {{#with order_doc.comments}}
                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -316,12 +324,12 @@
                             </span>
                             <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
                                 input_id="solutions" onfocusout="order_edit(this)" class="form-control" type="textarea"
-                                placeholder="Informe" value="{{value}}  rows=" 10" cols="50"">
+                                placeholder="Informe" value="{{value}}" rows=" 10" cols="50">
                             <!--- ATRIBUTOS DE LA VARIABLE -->
                         </div>
                     </div>
                 </div>
-                 {{/with}}
+                {{/with}}
             </ul>
 
         </div>
@@ -331,508 +339,489 @@
                                 , "shipping_date" : "2023-05-15" , "shipping_status" : "pending" , "carrier" : { "name"
                                 : "Carrier Name" , "phone" : "Carrier Phone" , "vehicle" : "Carrier Vehicle" } }, -->
 
-                            {{#with order_doc.shipping}}
-                            <div class="btn-group dopdown padding-t-10">
-                                <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default"
-                                    data-toggle="dropdown" aria-expanded="true">
-                                    <span class="material-icons">location_on</span>
-                                    <span class="">
+        {{#with order_doc.shipping}}
+        <div class="btn-group dopdown padding-t-10 margin-r-10">
+            <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default" data-toggle="dropdown"
+                aria-expanded="true">
+                <span class="material-icons">location_on</span>
+                <!--span class="">
                                         Envio
                                     </span>
-                                    <i class="material-icons">expand_more</i>
-                                </button>
-                                <ul class="dropdown-menu pull-right padding-10 xl">
-                                    <div class="col-md-12 padding-0 ">
-                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <span class="material-icons">
-                                                        location_on
-                                                    </span>
-                                                </span>
-                                                <input doc_id="{{../order_doc._id}}"
-                                                    order_id="{{../ order_doc.order_id}}" input_id="shipping"
-                                                    input_value="address" onfocusout="order_edit(this)"
-                                                    class="form-control" type="textarea" placeholder="Direccion"
-                                                    value="{{address}}" rows="10" cols="50">
-                                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                                            </div>
-                                        </div>
-                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <span class="material-icons">
-                                                     location_on
-                                                    </span>
+                <i class="material-icons">expand_more</i-->
+            </button>
+            <ul class="dropdown-menu pull-right padding-10 xl">
+                <div class="col-md-12 padding-0 ">
+                    <span class="">
+                        <li class="header">
+                            Datos de envio
+                        </li>
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        location_on
+                                    </span>
+                                </span>
+                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                    input_id="shipping" input_value="address" onfocusout="order_edit(this)"
+                                    class="form-control" type="textarea" placeholder="Direccion" value="{{address}}"
+                                    rows="10" cols="50">
+                                <!--- ATRIBUTOS DE LA VARIABLE -->
+                            </div>
+                        </div>
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        location_on
+                                    </span>
 
-                                                </span>
-                                                <input doc_id="{{../order_doc._id}}"
-                                                    order_id="{{../ order_doc.order_id}}" input_id="shipping"
-                                                    input_value="city" onfocusout="order_edit(this)"
-                                                    class="form-control" type="textarea" placeholder="Ciudad"
-                                                    value="{{city}}" rows="10" cols="50">
-                                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                                            </div>
-                                        </div>
-                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <span class="material-icons">
-                                                      location_on
-                                                    </span>
+                                </span>
+                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                    input_id="shipping" input_value="city" onfocusout="order_edit(this)"
+                                    class="form-control" type="textarea" placeholder="Ciudad" value="{{city}}" rows="10"
+                                    cols="50">
+                                <!--- ATRIBUTOS DE LA VARIABLE -->
+                            </div>
+                        </div>
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        location_on
+                                    </span>
 
-                                                </span>
-                                                <input doc_id="{{../order_doc._id}}"
-                                                    order_id="{{../ order_doc.order_id}}" input_id="shipping"
-                                                    input_value="postal_code" onfocusout="order_edit(this)"
-                                                    class="form-control" type="textarea" placeholder="Codigo Postal"
-                                                    value="{{postal_code}}" rows="10" cols="50">
-                                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                                            </div>
-                                        </div>
-                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <span class="material-icons">
-                                                       location_on
-                                                    </span>
+                                </span>
+                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                    input_id="shipping" input_value="postal_code" onfocusout="order_edit(this)"
+                                    class="form-control" type="textarea" placeholder="Codigo Postal"
+                                    value="{{postal_code}}" rows="10" cols="50">
+                                <!--- ATRIBUTOS DE LA VARIABLE -->
+                            </div>
+                        </div>
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        location_on
+                                    </span>
 
-                                                </span>
-                                                <input doc_id="{{../order_doc._id}}"
-                                                    order_id="{{../ order_doc.order_id}}" input_id="shipping"
-                                                    input_value="city" onfocusout="order_edit(this)"
-                                                    class="form-control" type="textarea" placeholder="Ciudad"
-                                                    value="{{city}}" rows="10" cols="50">
-                                                <!--- ATRIBUTOS DE LA VARIABLE -->
-                                            </div>
-                                        </div>
-                                      
-                                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <span class="material-icons">
-                                                        location_on
-                                                    </span>
-                                                </span>
-                                                <input doc_id="{{../order_doc._id}}"
-                                                    order_id="{{../ order_doc.order_id}}" input_id="solutions"
-                                                    onfocusout="order_edit(this)" class="form-control" type="textarea"
-                                                    placeholder="Informe" value="{{value}}  rows=" 10" cols="50"">
+                                </span>
+                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                    input_id="shipping" input_value="city" onfocusout="order_edit(this)"
+                                    class="form-control" type="textarea" placeholder="Ciudad" value="{{city}}" rows="10"
+                                    cols="50">
+                                <!--- ATRIBUTOS DE LA VARIABLE -->
+                            </div>
+                        </div>
+
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="material-icons">
+                                        location_on
+                                    </span>
+                                </span>
+                                <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                    input_id="solutions" onfocusout="order_edit(this)" class="form-control"
+                                    type="textarea" placeholder="Informe" value="{{value}}  rows=" 10" cols="50"">
                             <!--- ATRIBUTOS DE LA VARIABLE -->
+                        </div>
+                                            </div>
+                                        </div>
+
+                                                    <button doc_id=" {{_id}}" order_id="{{order_id}}"
+                                    onclick="order_edit_shipping(this)" category_id="{{category_id}}" type="button"
+                                    class="margin-top cobrar-btn btn btn-primary btn-full-with">
+                                <span class="material-icons">save</span>
+                                {{#with ../ws_lang_data}}{{b_save}}{{/with}}
+                                </button>
+
+            </ul>
+        </div>
+        {{/with}}
+    </div>
+
+</div>
+
+<div class=" righ_nav_content">
+    <!-- Contact module -->
+    <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <button onclick="add_new_contact(this)" class="success round s margin-0">
+                <span class="material-icons">person_add</span>
+            </button>
+        </div>
+        <div id="cart_user_input_dropdown"
+            class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
+            <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
+                placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
+            <ul id="contact_auto_subjet" class="">
+
+            </ul>
+        </div>
+        <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="btn-group dropright">
+                <button type="button" class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    <div class="round-icon pr">
+                        <span id="select_price_list_cart" price_list_id="" price_list_value="">
+                            m </span>
+                    </div>
+
+                </button>
+                <ul class="dropdown-menu pull-right">
+
+                    <li class="header">Listas de precios</li>
+                    {{#each price_doc.price_list}}
+                    <li>
+                        <a href="#">
+                            <div class="round-icon user-top"><span> {{value}} </span></div>
+                            {{value}}
+                        </a>
+                    </li>
+                    {{/each}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product module -->
+    {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
+
+    <!-- Cart main module -->
+    <div class="tabs-main margin-t-30 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
+        <ul class="nav nav-tabs">
+
+            <li id="product_order_item_tab_icon" class="ripple  active">
+
+                <a data-toggle="tab" href="#product_order_items_tab">
+                    <span class="material-icons">{{#with ws_lang_data}} {{b_order_items_icon}}
+                        {{/with}}</span>
+                    <span class="order_items_n cart-number">
+                        {{#counter_items order_doc.products}}{{this}}{{/counter_items}}
+                    </span>
+                    <span class="hidden-xs">
+                        {{#with ws_lang_data}} {{b_order_items}} {{/with}}
+                    </span>
+                </a>
+            </li>
+            <li id="_item_tab_icon" class="ripple">
+                <a data-toggle="tab" href="#pay_items_tab">
+                    <span class="material-icons"> {{#with ws_lang_data}} {{b_order_pay_icon}}
+                        {{/with}}</span>
+                    <span class="pay_items_n fav_count">{{#counter_items
+                        order_doc.payment_history}}{{this}}{{/counter_items}}</span>
+                    <span class="hidden-xs">
+                        {{#with ws_lang_data}} {{b_order_pay_items}} {{/with}}
+                    </span>
+                </a>
+            </li>
+            <li id="_item_tab_icon" class="ripple">
+                <a data-toggle="tab" href="#activity_item_tab">
+                    <span class="material-icons"> {{#with ws_lang_data}}
+                        {{b_order_activity_icon}} {{/with}} </span>
+                    <span class="activity_items_n fav_count">{{#counter_items
+                        order_doc.update_history}}{{this}}{{/counter_items}}</span>
+                    <span class="hidden-xs">
+                        {{#with ws_lang_data}} {{b_order_activity_items}} {{/with}}
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <!--tab-content--->
+        <div class="tab-content ">
+            <!--tab--->
+            <div id="product_order_items_tab" class="tab-pane fade in active">
+                <div id="product_order_items" class="s-card-activ-cont gray">
+
+                    {{#with order_doc}}
+                    {{#each products}}
+                    {{#with doc}}
+                    <div id="{{_id}}" class="ripple s-card-actv-item padding-10">
+                        <div class="s-card-actv-item-body cart-item-active-butons">
+                            <div class="fav-item boton-round-mini-up-contenedor">
+                                <button type="button" onclick="dell_cart_item(this)" item_cart_rev="{{_rev}}"
+                                    item_cart_id="{{_id}}" class="boton-round-mini-up bg-danger">
+                                    <span class="material-icons">delete </span>
+                                </button>
+                            </div>
+                            {{#with variant}}
+                            <div class="s-card-mini-img ">
+                                {{#first pictures}}
+                                <img src="{{min}}" alt="">
+                                {{/first}}
+                            </div>
+
+                            <div class="s-card-actv-item-prod-fav-item">
+                                <div class="s-card-actv-item-name">
+                                    {{name}}
+                                </div>
+
+                                <span class="s-card-actv-item-price-left ">
+                                    <strong>
+                                        <small>{{currency}}</small>
+                                        <span class="price_uni"> {{price}}</span>
+                                    </strong>
+
+                                    <span class="hidden-xs text-red" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{#with ../ws_lang_data}} {{t_tax}}{{/with}}">
+
+                                        {{#each taxes}}
+                                        {{name}}:{{../currency}}{{price_tax}}
+                                        {{/each}}
+                                    </span>
+
+                                    <span class="text-red" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{#with ../ws_lang_data}} {{t_dicount}}{{/with}}">
+                                        {{#with ../ws_lang_data}} {{t_dicount_icon}}{{/with}}
+                                        {{discount}}% : {{currency}}{{discount_tot}}
+                                    </span>
+
+                                </span>
+
+                                <span class="s-card-actv-item-price-right">
+
+
+                                    <span class="currency">{{currency}}</span>
+                                    <span class="tot sub_tot_cart"> {{sub_tot_dis}}</span>
+                                    <span> </span>
+                                    <button type="button" onclick="variations_cart_res_uni(this)"
+                                        class="round-icon pr xd" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                                        data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_rest}}{{/with}}"><span>
+                                            - </span>
+                                    </button>
+                                    <span class="card_product_quantity" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{#with ../ws_lang_data}} {{m_catalog_add_stock}} {{/with}}">
+                                        {{quantity}}
+                                    </span>
+                                    <button type="button" onclick="variations_cart_sum_uni(this)"
+                                        class="round-icon pr xd" item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
+                                        data-toggle="tooltip" data-placement="top"
+                                        data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_sum}}{{/with}}"><span>
+                                            + </span>
+                                    </button>
+
+                                </span>
+                            </div>
+                            {{/with}}
+                        </div>
+                    </div>
+                    {{/with}}
+                    {{/each}}
+                    {{/with}}
+                </div>
+            </div>
+            <div id="pay_items_tab" class="tab-pane fade in">
+                <div id="service_order_items" class="s-card-activ-cont gray">
+
+                    <div class="padding-20 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        {{#with order_doc}}
+                        {{#each payment_history}}
+
+
+                        <li class="list-group-item ripple ">
+                            <span class="material-icons text-green">
+                                check_circle
+                            </span>
+
+                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                data-original-title="{{update_datetime}}">
+                                history
+                            </span>
+
+                            <span class="margin-10">
+                                <span class="badge">{{payment_method}}</span>
+                            </span>
+                            <span class="margin-r-10">
+                                {{currency.value}} {{total}}
+                            </span>
+
+                            <div class="pull-right">
+
+
+
+                                <span class="pull-right">
+                                    <span class="badge"> <i class="material-icons">print</i></span>
+                                </span>
+
+                            </div>
+                        </li>
+
+                        {{/each}}
+                        {{/with}}
+                    </div>
+
+
+                </div>
+            </div>
+            <div id="activity_item_tab" class="tab-pane fade in">
+                <div class="">
+                    <div class="timeline_content">
+                        <div class="box-header with-border">
+                            <div class="" style="vertical-align: middle; display: inline-block;">
+                                <a data-toggle="tooltip" data-placement="bottom"
+                                    data-original-title="Nuevos Comentarios" type="text"
+                                    class="new_activity botonR inactive">
+                                    <span class="btnSpan">
+                                        <span class="material-icons"> Chat</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <ul id="timeline_div" class="timeline">
+                            <li class="time-label"> <span class="bg-gray"> 03/09/2022 <i class="ion-clock"></i>
+                                    10:37:54 </span> </li>
+                            <li> <i class="glyphicon glyphicon-fire bg-red"></i>
+                                <div class="timeline-item">
+                                    <h3 class="timeline-header"><a href="#">Marcelo Retamar</a>
+                                    </h3>
+                                    <div class="timeline-body">lo Prometi para el martes
+                                    </div>
+                                    <div class="timeline-footer"><i class="fa fa-random" aria-hidden="true"></i>
+                                        Presup. Aceptado </div>
+                                </div>
+                            </li>
+                            <li class="time-label"> <span class="bg-gray"> 31/08/2022 <i class="ion-clock"></i>
+                                    14:18:21 </span> </li>
+                            <li> <i class="fa fa-handshake-o bg-green"></i>
+                                <div class="timeline-item">
+                                    <h3 class="timeline-header"><a href="#">Nicolas Riveros</a>
+                                    </h3>
+                                    <div class="timeline-body">Cambio el estado a </div>
+                                    <div class="timeline-footer"><i class="fa fa-random" aria-hidden="true"></i>
+                                        Presup. Aceptado </div>
+                                </div>
+                            </li>
+                            <li class="time-label"> <span class="bg-gray"> 31/08/2022 <i class="ion-clock"></i>
+                                    13:37:48 </span> </li>
+                            <li> <i class="fa fa-newspaper-o bg-yellow"></i>
+                                <div class="timeline-item">
+                                    <h3 class="timeline-header"><a href="#">Mariano</a></h3>
+                                    <div class="timeline-body">Cambio el estado a </div>
+                                    <div class="timeline-footer"><i class="fa fa-random" aria-hidden="true"></i>
+                                        Presupuesto </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-body">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--tab-content--->
+        </div>
+        <!--tabs-main--->
+    </div>
+
+</div>
+
+
+<!-- Cart footer module -->
+<div id="cart_footer">
+    <div class="righ_nav_footer_main cart_drop_up">
+        <div class="s-card-activ-footer ">
+            <div id="cart_total_items">
+                <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="row">
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                            {{#with ws_lang_data}} {{t_total}}{{/with}}
+                                        </h3>
+                                        <span class="drop-up-total-cart">
+                                            <span class="material-icons">
+                                                keyboard_double_arrow_up
+                                            </span>
+                                        </span>
+                                        <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                            {{#with ws_info}} {{money}}{{/with}}
+                                            <span id="total_cart_neto">
+                                                {{#with order_doc}}{{total}}{{/with}}
+                                            </span>
+                                        </h3>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
+                            aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_service}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_service"> {{#with
+                                            order_doc}}{{total_service}}{{/with}}</span>
+                                    </h4>
+                                </div>
+                                <div class="row ">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_product}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_prod"> {{#with
+                                            order_doc}}{{total_product}}{{/with}}</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_dicount}}{{/with}}:
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}} {{money}}{{/with}}
+                                        <span id="total_neto_discount">{{#with
+                                            order_doc}}{{total_discount}}{{/with}}</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-red">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_tax}}{{/with}}
+
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info}}
+                                        {{#each tax}} {{tax_name}} (% {{tax_value}})
+                                        {{/each}}
+                                        {{/with}}
+                                        <span id="total_neto_tax">{{#with
+                                            order_doc}}{{total_tax}}{{/with}}</span>
+                                    </h4>
+                                </div>
+                                <div class="row text-green">
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                                        {{#with ws_lang_data}} {{t_pay}}{{/with}}:
+
+                                    </h4>
+                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                                        {{#with ws_info_}} {{money}}{{/with}}:
+                                        <span id="total_neto_pay">0</span>
+                                    </h4>
+                                </div>
+
+                                <button type="button" class="btn btn-primary"><span class="material-icons"> print
+                                    </span> Imprimir </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-
-                               
-                                                    <button doc_id=" {{_id}}" order_id="{{order_id}}" onclick="order_edit_shipping(this)"
-                                                        category_id="{{category_id}}" type="button"
-                                                        class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                                    <span class="material-icons">monetization_on</span>
-                                                    {{#with ../../ws_lang_data}}{{b_save}}{{/with}}
-                                                    </button>
-                                
-                                </ul>
-                                </div>
-                            {{/with}}
-                        </div>
-
-                    </div>
-
-                    <div class=" righ_nav_content">
-                        <!-- Contact module -->
-                        <div class="righ_nav_users search-box padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                <button onclick="add_new_contact(this)" class="success round s margin-0">
-                                    <span class="material-icons">person_add</span>
-                                </button>
-                            </div>
-                            <div id="cart_user_input_dropdown"
-                                class="dropdown-auto-subjet-body padding-0 col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
-                                <input autocomplete="off" id="cart_user_input" class="form-control" type="text"
-                                    placeholder="{{#with ws_lang_data}} {{input_contact_search}} {{/with}}">
-                                <ul id="contact_auto_subjet" class="">
-
-                                </ul>
-                            </div>
-                            <div class="text-right padding-0 col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                <div class="btn-group dropright">
-                                    <button type="button"
-                                        class="success round s margin-0 dropdown-toggle dropdown-toggle-split"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                        <div class="round-icon pr">
-                                            <span id="select_price_list_cart" price_list_id="" price_list_value="">
-                                                m </span>
-                                        </div>
-
-                                    </button>
-                                    <ul class="dropdown-menu pull-right">
-
-                                        <li class="header">Listas de precios</li>
-                                        {{#each price_doc.price_list}}
-                                        <li>
-                                            <a href="#">
-                                                <div class="round-icon user-top"><span> {{value}} </span></div>
-                                                {{value}}
-                                            </a>
-                                        </li>
-                                        {{/each}}
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product module -->
-                        {{#ifEquals board_type_name 'purcharse'}}{{/ifEquals}}
-
-                        <!-- Cart main module -->
-                        <div class="tabs-main margin-t-30 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
-                            <ul class="nav nav-tabs">
-
-                                <li id="product_order_item_tab_icon" class="ripple  active">
-
-                                    <a data-toggle="tab" href="#product_order_items_tab">
-                                        <span class="material-icons">{{#with ws_lang_data}} {{b_order_items_icon}}
-                                            {{/with}}</span>
-                                        <span class="order_items_n cart-number">
-                                            {{#counter_items order_doc.products}}{{this}}{{/counter_items}}
-                                        </span>
-                                        <span class="hidden-xs">
-                                            {{#with ws_lang_data}} {{b_order_items}} {{/with}}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li id="_item_tab_icon" class="ripple">
-                                    <a data-toggle="tab" href="#pay_items_tab">
-                                        <span class="material-icons"> {{#with ws_lang_data}} {{b_order_pay_icon}}
-                                            {{/with}}</span>
-                                        <span class="pay_items_n fav_count">{{#counter_items
-                                            order_doc.payment_history}}{{this}}{{/counter_items}}</span>
-                                        <span class="hidden-xs">
-                                            {{#with ws_lang_data}} {{b_order_pay_items}} {{/with}}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li id="_item_tab_icon" class="ripple">
-                                    <a data-toggle="tab" href="#activity_item_tab">
-                                        <span class="material-icons"> {{#with ws_lang_data}}
-                                            {{b_order_activity_icon}} {{/with}} </span>
-                                        <span class="activity_items_n fav_count">{{#counter_items
-                                            order_doc.update_history}}{{this}}{{/counter_items}}</span>
-                                        <span class="hidden-xs">
-                                            {{#with ws_lang_data}} {{b_order_activity_items}} {{/with}}
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--tab-content--->
-                            <div class="tab-content ">
-                                <!--tab--->
-                                <div id="product_order_items_tab" class="tab-pane fade in active">
-                                    <div id="product_order_items" class="s-card-activ-cont gray">
-
-                                        {{#with order_doc}}
-                                        {{#each products}}
-                                        {{#with doc}}
-                                        <div id="{{_id}}" class="ripple s-card-actv-item padding-10">
-                                            <div class="s-card-actv-item-body cart-item-active-butons">
-                                                <div class="fav-item boton-round-mini-up-contenedor">
-                                                    <button type="button" onclick="dell_cart_item(this)"
-                                                        item_cart_rev="{{_rev}}" item_cart_id="{{_id}}"
-                                                        class="boton-round-mini-up bg-danger">
-                                                        <span class="material-icons">delete </span>
-                                                    </button>
-                                                </div>
-                                                {{#with variant}}
-                                                <div class="s-card-mini-img ">
-                                                    {{#first pictures}}
-                                                    <img src="{{min}}" alt="">
-                                                    {{/first}}
-                                                </div>
-
-                                                <div class="s-card-actv-item-prod-fav-item">
-                                                    <div class="s-card-actv-item-name">
-                                                        {{name}}
-                                                    </div>
-
-                                                    <span class="s-card-actv-item-price-left ">
-                                                        <strong>
-                                                            <small>{{currency}}</small>
-                                                            <span class="price_uni"> {{price}}</span>
-                                                        </strong>
-
-                                                        <span class="hidden-xs text-red" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            data-original-title="{{#with ../ws_lang_data}} {{t_tax}}{{/with}}">
-
-                                                            {{#each taxes}}
-                                                            {{name}}:{{../currency}}{{price_tax}}
-                                                            {{/each}}
-                                                        </span>
-
-                                                        <span class="text-red" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            data-original-title="{{#with ../ws_lang_data}} {{t_dicount}}{{/with}}">
-                                                            {{#with ../ws_lang_data}} {{t_dicount_icon}}{{/with}}
-                                                            {{discount}}% : {{currency}}{{discount_tot}}
-                                                        </span>
-
-                                                    </span>
-
-                                                    <span class="s-card-actv-item-price-right">
-
-
-                                                        <span class="currency">{{currency}}</span>
-                                                        <span class="tot sub_tot_cart"> {{sub_tot_dis}}</span>
-                                                        <span> </span>
-                                                        <button type="button" onclick="variations_cart_res_uni(this)"
-                                                            class="round-icon pr xd" item_cart_rev="{{_rev}}"
-                                                            item_cart_id="{{_id}}" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_rest}}{{/with}}"><span>
-                                                                - </span>
-                                                        </button>
-                                                        <span class="card_product_quantity" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            data-original-title="{{#with ../ws_lang_data}} {{m_catalog_add_stock}} {{/with}}">
-                                                            {{quantity}}
-                                                        </span>
-                                                        <button type="button" onclick="variations_cart_sum_uni(this)"
-                                                            class="round-icon pr xd" item_cart_rev="{{_rev}}"
-                                                            item_cart_id="{{_id}}" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            data-original-title="{{#with ../ws_lang_data}} {{m_cart_item_sum}}{{/with}}"><span>
-                                                                + </span>
-                                                        </button>
-
-                                                    </span>
-                                                </div>
-                                                {{/with}}
-                                            </div>
-                                        </div>
-                                        {{/with}}
-                                        {{/each}}
-                                        {{/with}}
-                                    </div>
-                                </div>
-                                <div id="pay_items_tab" class="tab-pane fade in">
-                                    <div id="service_order_items" class="s-card-activ-cont gray">
-
-                                        <div class="padding-20 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            {{#with order_doc}}
-                                            {{#each payment_history}}
-
-
-                                            <li class="list-group-item ripple ">
-                                                <span class="material-icons text-green">
-                                                    check_circle
-                                                </span>
-
-                                                <span class="material-icons" data-toggle="tooltip"
-                                                    data-placement="bottom" title=""
-                                                    data-original-title="{{update_datetime}}">
-                                                    history
-                                                </span>
-
-                                                <span class="margin-10">
-                                                    <span class="badge">{{payment_method}}</span>
-                                                </span>
-                                                <span class="margin-r-10">
-                                                    {{currency.value}} {{total}}
-                                                </span>
-
-                                                <div class="pull-right">
-
-
-
-                                                    <span class="pull-right">
-                                                        <span class="badge"> <i class="material-icons">print</i></span>
-                                                    </span>
-
-                                                </div>
-                                            </li>
-
-                                            {{/each}}
-                                            {{/with}}
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                                <div id="activity_item_tab" class="tab-pane fade in">
-                                    <div class="">
-                                        <div class="timeline_content">
-                                            <div class="box-header with-border">
-                                                <div class="" style="vertical-align: middle; display: inline-block;">
-                                                    <a data-toggle="tooltip" data-placement="bottom"
-                                                        data-original-title="Nuevos Comentarios" type="text"
-                                                        class="new_activity botonR inactive">
-                                                        <span class="btnSpan">
-                                                            <span class="material-icons"> Chat</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <ul id="timeline_div" class="timeline">
-                                                <li class="time-label"> <span class="bg-gray"> 03/09/2022 <i
-                                                            class="ion-clock"></i>
-                                                        10:37:54 </span> </li>
-                                                <li> <i class="glyphicon glyphicon-fire bg-red"></i>
-                                                    <div class="timeline-item">
-                                                        <h3 class="timeline-header"><a href="#">Marcelo Retamar</a>
-                                                        </h3>
-                                                        <div class="timeline-body">lo Prometi para el martes
-                                                        </div>
-                                                        <div class="timeline-footer"><i class="fa fa-random"
-                                                                aria-hidden="true"></i>
-                                                            Presup. Aceptado </div>
-                                                    </div>
-                                                </li>
-                                                <li class="time-label"> <span class="bg-gray"> 31/08/2022 <i
-                                                            class="ion-clock"></i>
-                                                        14:18:21 </span> </li>
-                                                <li> <i class="fa fa-handshake-o bg-green"></i>
-                                                    <div class="timeline-item">
-                                                        <h3 class="timeline-header"><a href="#">Nicolas Riveros</a>
-                                                        </h3>
-                                                        <div class="timeline-body">Cambio el estado a </div>
-                                                        <div class="timeline-footer"><i class="fa fa-random"
-                                                                aria-hidden="true"></i>
-                                                            Presup. Aceptado </div>
-                                                    </div>
-                                                </li>
-                                                <li class="time-label"> <span class="bg-gray"> 31/08/2022 <i
-                                                            class="ion-clock"></i>
-                                                        13:37:48 </span> </li>
-                                                <li> <i class="fa fa-newspaper-o bg-yellow"></i>
-                                                    <div class="timeline-item">
-                                                        <h3 class="timeline-header"><a href="#">Mariano</a></h3>
-                                                        <div class="timeline-body">Cambio el estado a </div>
-                                                        <div class="timeline-footer"><i class="fa fa-random"
-                                                                aria-hidden="true"></i>
-                                                            Presupuesto </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="box">
-                                            <div class="box-body">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!--tab-content--->
-                            </div>
-                            <!--tabs-main--->
-                        </div>
-
-                    </div>
-
-
-                    <!-- Cart footer module -->
-                    <div id="cart_footer">
-                        <div class="righ_nav_footer_main cart_drop_up">
-                            <div class="s-card-activ-footer ">
-                                <div id="cart_total_items">
-                                    <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading" role="tab" id="headingOne">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                                        href="#collapseOne" aria-expanded="true"
-                                                        aria-controls="collapseOne">
-                                                        <div class="row">
-                                                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                                {{#with ws_lang_data}} {{t_total}}{{/with}}
-                                                            </h3>
-                                                            <span class="drop-up-total-cart">
-                                                                <span class="material-icons">
-                                                                    keyboard_double_arrow_up
-                                                                </span>
-                                                            </span>
-                                                            <h3 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                                {{#with ws_info}} {{money}}{{/with}}
-                                                                <span id="total_cart_neto">
-                                                                    {{#with order_doc}}{{total}}{{/with}}
-                                                                </span>
-                                                            </h3>
-                                                        </div>
-                                                    </a>
-                                                </h4>
-                                            </div>
-
-                                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
-                                                aria-labelledby="headingOne">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                            {{#with ws_lang_data}} {{t_service}}{{/with}}:
-                                                        </h4>
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                            {{#with ws_info}} {{money}}{{/with}}
-                                                            <span id="total_neto_service"> {{#with
-                                                                order_doc}}{{total_service}}{{/with}}</span>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                            {{#with ws_lang_data}} {{t_product}}{{/with}}:
-                                                        </h4>
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                            {{#with ws_info}} {{money}}{{/with}}
-                                                            <span id="total_neto_prod"> {{#with
-                                                                order_doc}}{{total_product}}{{/with}}</span>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="row text-red">
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                            {{#with ws_lang_data}} {{t_dicount}}{{/with}}:
-                                                        </h4>
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                            {{#with ws_info}} {{money}}{{/with}}
-                                                            <span id="total_neto_discount">{{#with
-                                                                order_doc}}{{total_discount}}{{/with}}</span>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="row text-red">
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                            {{#with ws_lang_data}} {{t_tax}}{{/with}}
-
-                                                        </h4>
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                            {{#with ws_info}}
-                                                            {{#each tax}} {{tax_name}} (% {{tax_value}})
-                                                            {{/each}}
-                                                            {{/with}}
-                                                            <span id="total_neto_tax">{{#with
-                                                                order_doc}}{{total_tax}}{{/with}}</span>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="row text-green">
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                                                            {{#with ws_lang_data}} {{t_pay}}{{/with}}:
-
-                                                        </h4>
-                                                        <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                                                            {{#with ws_info_}} {{money}}{{/with}}:
-                                                            <span id="total_neto_pay">0</span>
-                                                        </h4>
-                                                    </div>
-
-                                                    <button type="button" class="btn btn-primary"><span
-                                                            class="material-icons"> print
-                                                        </span> Imprimir </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--  order_doc.category_id 'service_turn' 'service_order' 'sell' 'purcharse'
+        <!--  order_doc.category_id 'service_turn' 'service_order' 'sell' 'purcharse'
                                 'm_board_comment_tittle' => 'Datos adicionale',
                                 'm_board_failure_tittle' => 'La falla',
                                 'm_board_solutions_tittle' => 'La Solucion',
@@ -843,180 +832,176 @@
                                 'm_board_filter' => 'Confirmar Stock',
 
                                 --->
-                            <!-- Botones Ordenes --->
-                            {{#ifEquals order_doc.category_id 'sell' }}
-                            {{#with order_doc}}
-                            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
-                                category_id="{{category_id}}" type="button"
-                                class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                <span class="material-icons">monetization_on</span>
-                                {{#with ../../ws_lang_data}}{{m_board_pay}}{{/with}}
-                            </button>
-                            {{/with}}
-                            {{/ifEquals}}
+        <!-- Botones Ordenes --->
+        {{#ifEquals order_doc.category_id 'sell' }}
+        {{#with order_doc}}
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+            type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
+        </button>
+        {{/with}}
+        {{/ifEquals}}
 
-                            {{#ifEquals order_doc.category_id 'purcharse' }}
-                            {{#with order_doc}}
-                            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
-                                category_id="{{category_id}}" type="button"
-                                class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                <span class="material-icons">monetization_on</span>
-                                {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
-                            </button>
-                            {{/with}}
-                            {{/ifEquals}}
+        {{#ifEquals order_doc.category_id 'purcharse' }}
+        {{#with order_doc}}
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+            type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ../ws_lang_data}}{{m_board_pay}}{{/with}}
+        </button>
+        {{/with}}
+        {{/ifEquals}}
 
-                            {{#ifEquals order_doc.category_id 'service_order' }}
-                            {{#with order_doc}}
-                            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
-                                category_id="{{category_id}}" type="button"
-                                class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                <span class="material-icons">monetization_on</span>
-                                {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
-                            </button>
-                            {{/with}}
-                            {{/ifEquals}}
+        {{#ifEquals order_doc.category_id 'service_order' }}
+        {{#with order_doc}}
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+            type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
+        </button>
+        {{/with}}
+        {{/ifEquals}}
 
-                            {{#ifEquals order_doc.category_id 'service_turn' }}
-                            {{#with order_doc}}
-                            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
-                                category_id="{{category_id}}" type="button"
-                                class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                                <span class="material-icons">monetization_on</span>
-                                {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
-                            </button>
-                            {{/with}}
-                            {{/ifEquals}}
+        {{#ifEquals order_doc.category_id 'service_turn' }}
+        {{#with order_doc}}
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+            type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
+        </button>
+        {{/with}}
+        {{/ifEquals}}
 
 
-                        </div>
-                    </div>
+    </div>
+</div>
 
 
-                    <script>
-                        // Este es tu método de búsqueda asíncrono
+<script>
+    // Este es tu método de búsqueda asíncrono
 
-                        async function select_contact(element) {
+    async function select_contact(element) {
 
-                            try {
-                                let _id = $(element).attr('contact_id');
-                                contact_doc = await L_contact_db.get(_id, { include_docs: true, descending: true });
-                                price_list_id = contact_doc.price_list
-                                price_list_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
-                                // console.log('_id',_id)  
-                                // console.log('contact_doc',contact_doc)     
-                                // console.log('price_list_id',price_list_id)      
-                                // console.log('price_list_doc',price_list_doc)        
-                                const price_select = price_list_doc.price_list.find(element => element.id == price_list_id);
-                                //  console.log('price_select',price_select) 
-                                $('#cart_user_input').attr('contact_id', contact_doc._id);
-                                $('#cart_user_input').val(contact_doc.first_name + " " + contact_doc.last_name);
-                                $('#select_price_list_cart').attr('contact_id', contact_doc.price_list);
-                                $('#select_price_list_cart').attr('contact_id', price_list_doc.price_list);
-                                $('#cart_button_new_order').attr('contact_id', _id);
-                                const price_select_letra = price_select.value[0];
-                                $('#select_price_list_cart').text(price_select_letra);
-                                $('#contact_auto_subjet').removeClass('open');
+        try {
+            let _id = $(element).attr('contact_id');
+            contact_doc = await L_contact_db.get(_id, { include_docs: true, descending: true });
+            price_list_id = contact_doc.price_list
+            price_list_doc = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+            // console.log('_id',_id)  
+            // console.log('contact_doc',contact_doc)     
+            // console.log('price_list_id',price_list_id)      
+            // console.log('price_list_doc',price_list_doc)        
+            const price_select = price_list_doc.price_list.find(element => element.id == price_list_id);
+            //  console.log('price_select',price_select) 
+            $('#cart_user_input').attr('contact_id', contact_doc._id);
+            $('#cart_user_input').val(contact_doc.first_name + " " + contact_doc.last_name);
+            $('#select_price_list_cart').attr('contact_id', contact_doc.price_list);
+            $('#select_price_list_cart').attr('contact_id', price_list_doc.price_list);
+            $('#cart_button_new_order').attr('contact_id', _id);
+            const price_select_letra = price_select.value[0];
+            $('#select_price_list_cart').text(price_select_letra);
+            $('#contact_auto_subjet').removeClass('open');
 
-                            } catch (error) {
-                                // Muestra el error en un Snackbar
-                                Snackbar.show({
-                                    text: 'Error select_contact ' + error.message,
-                                    actionText: 'ok',
-                                    actionTextColor: "#0575e6",
-                                });
-                            }
-                        }
+        } catch (error) {
+            // Muestra el error en un Snackbar
+            Snackbar.show({
+                text: 'Error select_contact ' + error.message,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    }
 
-                        async function searchContacts(query) {
-                            try {
-                                const contact_search_options = {
-                                    includeScore: true,
-                                    keys: ['first_name', 'last_name', 'document_number', 'phone']
-                                };
-                                let contact_search_fuse;
-                                // Obtén todos los documentos que comienzan con 'contact_'
-                                const allDocs = await L_contact_db.allDocs({
-                                    include_docs: true,
-                                    startkey: 'contact_',
-                                    endkey: 'contact_\ufff0'
-                                });
-                                // Crea una nueva instancia de Fuse con los documentos obtenido
-                                contact_search_fuse = new Fuse(allDocs.rows.map(row => row.doc), contact_search_options);
-                                // Haz la búsqueda con Fuse
-                                const searchResults = contact_search_fuse.search(query);
-                                const data = { user_data: searchResults.map(result => result.item) };
+    async function searchContacts(query) {
+        try {
+            const contact_search_options = {
+                includeScore: true,
+                keys: ['first_name', 'last_name', 'document_number', 'phone']
+            };
+            let contact_search_fuse;
+            // Obtén todos los documentos que comienzan con 'contact_'
+            const allDocs = await L_contact_db.allDocs({
+                include_docs: true,
+                startkey: 'contact_',
+                endkey: 'contact_\ufff0'
+            });
+            // Crea una nueva instancia de Fuse con los documentos obtenido
+            contact_search_fuse = new Fuse(allDocs.rows.map(row => row.doc), contact_search_options);
+            // Haz la búsqueda con Fuse
+            const searchResults = contact_search_fuse.search(query);
+            const data = { user_data: searchResults.map(result => result.item) };
 
-                                if (searchResults.length > 0) {
-                                    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', '#contact_auto_subjet', data);
-                                } else {
-                                    $('#contact_auto_subjet').html('<h4 class="padding-10 text-center" >Sin resultados... </h4>');
-                                }
-
-
-                                console.log('DATA', data);
-                            } catch (err) {
-                                console.log('searchContacts', err);
-                                // Muestra el error en un Snackbar
-                                Snackbar.show({
-                                    text: 'Hubo un error en la búsqueda: ' + err,
-                                    actionText: 'ok',
-                                    actionTextColor: "#0575e6",
-                                });
-                            }
-                        }
-
-                        async function edit_order_contact(element) {
-                            try {
-                                const modal = document.getElementById('master_popup');
-                                const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-                                // const rev_id = $(element).attr('rev_id'); //Id del documento a editar
-                                // Listas de precio ws_collections_333433/
-                                ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
-                                doc = await L_contact_db.get(doc_id, { include_docs: true, descending: true });
-                                const data = {
-                                    ws_price_list: ws_price_list,
-                                    ws_info: ws_info,
-                                    ws_lang_data: ws_lang_data,
-                                    user_roles: user_Ctx.userCtx.roles,
-                                    doc: doc
-                                }
-
-                                console.log(data);
-                                $(modal).modal('show');
-                                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/popup/edit_contact.hbs', '#master_popup', data);
-                                // save_new_conctact();
-                            } catch (err) {
-                                console.log('ERROR add_new_contact', err)
-                                Snackbar.show({
-                                    text: err.reason,
-                                    actionText: '<span class="material-icons">refresh</span> Refresh ',
-                                    actionTextColor: "#0575e6",
-                                    //  duration: Snackbar.LENGTH_INDEFINITE,
-                                    //   action: () => { updateDocuments() }
-                                });
-                            }
-                        }
-
-                        // FUNCIONES 2023 aparece auto subjet
-                        $('#cart_user_input').on('focusin', function () {
-                            $('#contact_auto_subjet').addClass('open');
-                        });
-                        $('#contact_auto_subjet').on('click', function (event) {
-                            event.stopPropagation();
-                        });
-                        $(document).on('click focusout', function (event) {
-                            if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
-                                if (!$(event.target).is('#cart_button_new_order')) {
-                                    $('#contact_auto_subjet').removeClass('open');
-                                }
-                            }
-                        });
-
-                        $('#cart_user_input').on('keyup', function (event) {
-                            const value = event.target.value;
-                            searchContacts(value);
-                        });
+            if (searchResults.length > 0) {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/subjet_contact_list.hbs', '#contact_auto_subjet', data);
+            } else {
+                $('#contact_auto_subjet').html('<h4 class="padding-10 text-center" >Sin resultados... </h4>');
+            }
 
 
-                    </script>
+            console.log('DATA', data);
+        } catch (err) {
+            console.log('searchContacts', err);
+            // Muestra el error en un Snackbar
+            Snackbar.show({
+                text: 'Hubo un error en la búsqueda: ' + err,
+                actionText: 'ok',
+                actionTextColor: "#0575e6",
+            });
+        }
+    }
+
+    async function edit_order_contact(element) {
+        try {
+            const modal = document.getElementById('master_popup');
+            const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+            // const rev_id = $(element).attr('rev_id'); //Id del documento a editar
+            // Listas de precio ws_collections_333433/
+            ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+            doc = await L_contact_db.get(doc_id, { include_docs: true, descending: true });
+            const data = {
+                ws_price_list: ws_price_list,
+                ws_info: ws_info,
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc: doc
+            }
+
+            console.log(data);
+            $(modal).modal('show');
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/popup/edit_contact.hbs', '#master_popup', data);
+            // save_new_conctact();
+        } catch (err) {
+            console.log('ERROR add_new_contact', err)
+            Snackbar.show({
+                text: err.reason,
+                actionText: '<span class="material-icons">refresh</span> Refresh ',
+                actionTextColor: "#0575e6",
+                //  duration: Snackbar.LENGTH_INDEFINITE,
+                //   action: () => { updateDocuments() }
+            });
+        }
+    }
+
+    // FUNCIONES 2023 aparece auto subjet
+    $('#cart_user_input').on('focusin', function () {
+        $('#contact_auto_subjet').addClass('open');
+    });
+    $('#contact_auto_subjet').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $(document).on('click focusout', function (event) {
+        if (!$(event.target).closest('#contact_auto_subjet').length && !$(event.target).is('#cart_user_input')) {
+            if (!$(event.target).is('#cart_button_new_order')) {
+                $('#contact_auto_subjet').removeClass('open');
+            }
+        }
+    });
+
+    $('#cart_user_input').on('keyup', function (event) {
+        const value = event.target.value;
+        searchContacts(value);
+    });
+
+
+</script>

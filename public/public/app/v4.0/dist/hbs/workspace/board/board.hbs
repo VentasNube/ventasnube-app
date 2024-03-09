@@ -361,32 +361,18 @@
     // TRAE EL FORMULARIO
     async function get_edit_order(element) {
         try {
-
-            //var element = element.getElement();
-            //var orderId = element.getAttribute('id');
-            // var category_id = element.getAttribute('category_id');
-            // Crear un objeto URL basado en la URL actual
-            /*const url = new URL(window.location.href);
-            // Acceder a los parámetros de búsqueda de la URL
-            const searchParams = new URLSearchParams(url.search);
-            // Extraer el valor del parámetro 't'
-            const category_id = searchParams.get('t');
-            // Mostrar el valor en consola o usarlo según sea necesario
-            */
             var order_doc = await L_board_db.get(element._element.id);
             var doc_id = order_doc._id
             var order_id = order_doc.order_id
             var category_id = order_doc.category_id
             var group_position = order_doc.group_position;
             var group_id = order_doc.group_id;
-        
             var price_doc = await L_catalog_db.get('price_list');
             var tax_doc = await L_catalog_db.get('tax_list');
             var currency_doc = await L_catalog_db.get('currency_list');
             var board_group_doc = await L_board_db.get('board_group_'+category_id);
-          
             var user_roles_permisions = user_Ctx.userCtx.roles;
-        
+         /*
             console.log(category_id); // Debería mostrar 'sell'
             console.log('user_roles_permisions', user_roles_permisions);
             console.log('element.id', element._element.id);
@@ -397,8 +383,8 @@
             console.log(' board_group_doc',  board_group_doc);
             console.log(' group_id',  group_id);
             console.log(' ws_lang_data',  ws_lang_data);
-             console.log('  ws_left_nav_data',  ws_left_nav_data);
-             
+            console.log('  ws_left_nav_data',  ws_left_nav_data);
+             */
             var product_doc_array = {
                 price_list: price_doc.price_list,
                 tax_list: tax_doc,
@@ -416,12 +402,7 @@
                 ws_left_nav_data: ws_left_nav_data,
             }
 
-            // console.log('tax_doc CCCCC', product_doc_array);
-            //console.log('tax_doc currency_doc currency_doc', currency_doc);
-
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/order_main.hbs', '#right_main', product_doc_array);
-
-            //get_order_items(doc_id);
             createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
             var m_url = '?type=board&t=sell&edit=#' + order_id;
