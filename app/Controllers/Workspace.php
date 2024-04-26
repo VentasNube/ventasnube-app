@@ -2295,13 +2295,13 @@ class Workspace extends BaseController
                     ];
 
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
-                    /*  if ($result) {
+                     if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
-                    */
+                    
                 }
                 // Estadisticas 
                 if ($ws_statistics) {
