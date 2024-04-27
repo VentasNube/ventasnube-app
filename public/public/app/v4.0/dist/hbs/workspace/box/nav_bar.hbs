@@ -15,7 +15,7 @@
                                                     <ul class="dropdown-menu xl pull-left">
                                                         <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
                                                         <div class="body">
-                                                            <li class="header"> <span> {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span> Filtrar ordenes</li>
+                                                            <li class="header"> <span> {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span> Filtrar movimientos</li>
                                                             <li class="divider"></li>
                                                             <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
                                                                 <li>
@@ -90,12 +90,22 @@
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li role="separator" class="divider"></li>
+                             <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                                    title="{{address_title}}"><i class="material-icons">add</i>Gasto</a>
+                            </li>
                             <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">person_add</i>{{address_title}}</a>
+                                    title="{{address_title}}"><i class="material-icons">add</i>Ingreso</a>
+                            </li>
+                            <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                                    title="{{address_title}}"><i class="material-icons">add</i>Retiro efectivo</a>
+                            </li>
+                             <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                                    title="{{address_title}}"><i class="material-icons">add</i>Ingreso de efectivo</a>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="" data-toggle="modal" role="button" title="{{b_save}} {{contact_list}}"><i
-                                        class="material-icons">article</i> {{b_save}} {{contact_list}}</a></li>
+                               <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                                    title="{{address_title}}"><i class="material-icons">add</i>Cierre de CAJA</a>
+                            </li>
                         </ul>
                     </div>
              

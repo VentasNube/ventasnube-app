@@ -208,7 +208,7 @@ function get_nav_box(ws_info, ws_lang_data) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/contact/nav_bar.hbs', '#nav_bar_compiled', ws_contact_data);
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_contact_data);
     //alert('cargo el bucador');
     // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');

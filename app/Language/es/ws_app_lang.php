@@ -364,7 +364,22 @@ return [
         'm_cart' => 'Carrito',
         'm_favorite' => 'Favoritos',
         'm_myaccount' => 'Mi cuenta',
-        'm_myorders' => 'Mis compras'
+        'm_myorders' => 'Mis compras',
+         //MI CUENTA
+         'm_box_tittle' => 'Movimientos finacieros',
+         'm_box_tittle_icon' => 'app_settings_alt',
+         'm_box_tittle_buy' => '',
+         'm_box_edit_b' => 'Modificar datos',
+         'm_box_save_b' => 'Guardar cambios',
+         'm_box_edit_pic_b' => 'Modificar datos',
+         'm_box_name' => 'Nombre',
+         'm_box_surname' => 'Apellido',
+         'm_box_document' => 'Documento',
+         'm_box_phone' => 'Telefono',
+       //  'm_box_email' => 'Email',
+       //  'm_box_passwor_b' => 'Modificar contrase&ntilde;a',
+        // 'm_box_passwor' => 'Nueva Contrase&ntilde;a',
+       //  'm_box_passwor_repet' => 'Volver a escribir Contrase&ntilde;a'
     ],
 
     'ws_lang_us' => [

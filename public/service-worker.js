@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 121241112498712682573312422;
+const version = 12124111121224912121212871268121213122573312422;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -105,7 +105,7 @@ workbox.precaching.precacheAndRoute([
   //Contact
   { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
   //Box
-  { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_box.js ', revision: version },
+  { url: '/public/app/v4.0/dist/js/workspace/box/ventas_nube_box.js ', revision: version },
   //Config
   
   //Templates body de Top bar y left bar
