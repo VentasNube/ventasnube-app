@@ -122,8 +122,8 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
         alert('TRAIGO EL account');
     }
     else if (ws_m_s == 'box') {
-        alert('TRAIGO EL box');
-        // get_box();
+       // alert('TRAIGO EL box');
+        get_box();
     }
 };
 

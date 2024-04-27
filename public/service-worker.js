@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 12124119871211221111112111211211113478112212111111221112121111248876012123312422;
+const version = 121241112498712682573312422;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -104,6 +104,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/js/workspace/board/ventas_nube_board.js ', revision: version },
   //Contact
   { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_contact.js ', revision: version },
+  //Box
+  { url: '/public/app/v4.0/dist/js/workspace/contact/ventas_nube_box.js ', revision: version },
   //Config
   
   //Templates body de Top bar y left bar
@@ -143,12 +145,8 @@ workbox.precaching.precacheAndRoute([
   
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/list_product.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/card_product_get_variant.hbs', revision: version },
-
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_new_stock_get_list.hbs', revision: version },
 
-  
-  
-  
  // PRODUCTO
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/list/catalog_edit_item_cat_list.hbs', revision: version },
@@ -188,6 +186,15 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/contact.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', revision: version },
   
+
+   //BOX
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/new_mov.hbs', revision: version },
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/edit_mov.hbs', revision: version },
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', revision: version },
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/box.hbs', revision: version },
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', revision: version },
+   
+ 
 
 ]);
 
