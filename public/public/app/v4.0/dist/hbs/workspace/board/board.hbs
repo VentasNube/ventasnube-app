@@ -405,7 +405,7 @@
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/order_main.hbs', '#right_main', product_doc_array);
             createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
             $('#right_main').removeClass('move-right');
-            var m_url = '?type=board&t=sell&edit=#' + order_id;
+            var m_url = '?type=board&t='+category_id+'&edit=#' + order_id;
             history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
             return;
         } catch (err) {

@@ -1,134 +1,218 @@
- <!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  --->
+<!--- CATALOG BARRA NAVEGACION TOP TEMPLATE ( nav_bar.hbs )  --->
 <div class="box">
-    {{#with ws_lang_data }}
+
     <div class="box-header">
-            <div class="nav-header nav_bar_catalog_header">
-                <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
-                    <div class="nav_bar_catalog_search" >
-                            <div class="input-filters" >
-                                    <div class="group">
-                                                <div class="btn-group dopdown">
-                                                    <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
-                                                        {{b_filter}}
-                                                        <span class="material-icons"> filter_list </span>
-                                                    </button>
-                                                    <ul class="dropdown-menu xl pull-left">
-                                                        <!-- Con pull-right mueve para la derecha o hizquierda el poper-->
-                                                        <div class="body">
-                                                            <li class="header"> <span> {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span> Filtrar movimientos</li>
-                                                            <li class="divider"></li>
-                                                            <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
-                                                                <li>
-                                                                    <label>Cliente  {{#each ws_lang_data.ws_lang_data}} {{b_myaccount}}{{/each}}</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">account_circle</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente" value="">
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <label>Colaborador</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">group</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
-                                                                            value="">
-                                                                    </div>
-                                                                </li>
-                                                            </div>
-                                                            <div class="padding-10  col-xs-12 col-sm-6 col-md-6">
-                                                                <li>
-                                                                    <label>Prioridad</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">low_priority</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
-                                                                            value="">
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <label>Estado</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">mood</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input" placeholder="Nombre del cliente"
-                                                                            value="">
-                                                                    </div>
-                                                                </li>
-                                                          
-                                                                <li>
-                                                                    <label>Fecha de ingreso</label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon">
-                                                                            <span class="material-icons">today</span>
-                                                                        </div>
-                                                                        <input type="text" class="s-card-actv-input datetimepicker"
-                                                                            placeholder="Fecha limite" value="">
-                                                                    </div>
-                                                                </li>
-                                                            </div>
-                                                        </div>
-                                                    </ul>
+        <div class="nav-header nav_bar_catalog_header">
+            <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
+                <div class="nav_bar_catalog_search">
+                    <div class="input-filters">
+                        <!--div class="group">
+                            <div class="btn-group dopdown">
+                                <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
+                                    <span class="material-icons"> filter_list </span>
+                                    {{#with ws_lang_data}} {{b_filter}} {{/with}}
+                                </button>
+                                <ul class="dropdown-menu xl pull-left">
+                                    <div class="body">
+                                        <li class="header">
+                                             <span>   {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span>  {{#with ws_lang_data}} {{b_filter}} {{/with}}
+                                        </li>
+                                        <li class="divider"></li>
+                                        <div class="padding-10  col-xs-12 col-sm-6 col-md-6">
+                                            <li>
+                                                <label>Estados</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="material-icons">low_priority</span>
+                                                    </div>
+                                                    <input type="text" class="s-card-actv-input"
+                                                        placeholder="Nombre del cliente" value="">
                                                 </div>
+                                            </li>
+                                            <li>
+                                                <label>Medio de pagos</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="material-icons">mood</span>
+                                                    </div>
+                                                    <input type="text" class="s-card-actv-input"
+                                                        placeholder="Nombre del cliente" value="">
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <label>Periodo</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="material-icons">today</span>
+                                                    </div>
+                                                    <input type="text" class="s-card-actv-input datetimepicker"
+                                                        placeholder="Fecha limite" value="">
+                                                </div>
+                                            </li>
+                                        </div>
+                                        <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
+                                            <li>
+                                                <label>Colaborador</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="material-icons">group</span>
+                                                    </div>
+                                                    <input type="text" class="s-card-actv-input"
+                                                        placeholder="Nombre del cliente" value="">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <label>Cliente {{#each ws_lang_data.ws_lang_data}}
+                                                    {{b_myaccount}}{{/each}}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="material-icons">account_circle</span>
+                                                    </div>
+                                                    <input type="text" class="s-card-actv-input"
+                                                        placeholder="Nombre del cliente" value="">
+                                                </div>
+                                            </li>
+
+                                        </div>
+                                        <div class="s-card-footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <button onclick="filter_mov_reset(this)" doc_rev="" doc_id="" type="button"
+                                                class="btn xl btn-more  btn-primary line">
+                                                <span class="hidden-xs hidden-sm">Borrar</span>
+                                            </button>
+                                            <button onclick="filter_mov_save(this)" doc_rev="" doc_id="" type="button"
+                                                class="btn xl btn-more  btn-primary line ">
+                                                <span class="hidden-xs hidden-sm">Aplicar</span>
+                                            </button>
+
+                                        </div>
                                     </div>
-                                     <input class="contact_search s-card-actv-input" autocomplete="off" type="text" id="" name="contact_search" placeholder="{{input_contact_search}}">
+                                </ul>
                             </div>
+                        </div-->
+                        <!--input class="contact_search s-card-actv-input" autocomplete="off" type="text" id="" name="contact_search" placeholder="{{input_contact_search}}"-->
+                        <div class="input-group flex">
+                            <span class="input-group-addon">
+                                <div class="btn-group dropright">
+                                    <button id="" type="button"
+                                        class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
+                                            category
+                                        </span>
+
+                                        <span id="catalog_select_cat_tittle"> {{#with ws_lang_data}}
+                                            {{{m_catalog_edit_category}}} {{/with}} <span>
+                                    </button>
+
+                                    <ul class="dropdown-menu open-right  m">
+                                        <!--ul class="dropdown-menu m pull-right"></ul-->
+                                        <li class="header">
+                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                                data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
+                                                category
+                                            </span>
+                                            {{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}
+                                            <span class="material-icons">arrow_right</span>
+                                            <span id="catalog_select_cat_value"></span>
+                                        </li>
+
+                                        <li>
+                                            <div>
+                                                <input input_id="catalog_cat_input" id="catalog_new_cat_input"
+                                                    class="form-control"
+                                                    onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
+                                                    doc_id="{{_id }}"
+                                                    placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
+                                            </div>
+                                        </li>
+
+                                        <div id="box_filter_mov_cat">
+
+                                            
+                                            {{#each category_list/category_list }}
+                                            <li onclick='catalog_select_new_cat(this)' item_value_id="{{id}}"
+                                                item_value="{{value}}" item_id="category">
+                                                <div class="dropdown-item">
+                                                    <a href="#">
+                                                        {{value}}
+                                                    </a>
+                                                    <button>
+                                                        <span doc_id="" value="{{value}}" class="material-icons"
+                                                            onclick='catalog_dell_cat(this)'>delete</span>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                            {{/each}}
+                                        </div>
+
+                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="input-group">
+                                                <input id="add_stock_var_568_Botella-Corona-488362" class="form-control" type="number" placeholder="Cantidad" value="">
+
+                                                <span class="input-group-addon">
+                                                    <button onclick="box_sabe_filter(this)" class="success btn btn-default pull-right  margin-0 btn-primary" type="button">
+                                                        <span class="material-icons">add_circle</span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ul>
+
+                                </div>
+                            </span>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            <div class="nav-link col-xs-3 col-sm-4 col-md-4 col-lg-3 pull-right text-right">
-              
-                    <div class="btn-group ">
-                        <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle "
-                            data-toggle="dropdown" aria-expanded="true">
-                            <span class="material-icons">add_circle_outline</span> <span
-                                class="hidden-xs hidden-sm">{{b_new}}</span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li role="separator" class="divider"></li>
-                             <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">add</i>Gasto</a>
-                            </li>
-                            <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">add</i>Ingreso</a>
-                            </li>
-                            <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">add</i>Retiro efectivo</a>
-                            </li>
-                             <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">add</i>Ingreso de efectivo</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                               <li><a  onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
-                                    title="{{address_title}}"><i class="material-icons">add</i>Cierre de CAJA</a>
-                            </li>
-                        </ul>
-                    </div>
-             
-                <div class="btn-group ">
-                    <button type="button" class="btn btn-round xl dropdown-toggle" data-toggle="dropdown"
-                        aria-expanded="true">
-                        <span class="material-icons">settings</span>
-                    </button>
-                    <ul class="dropdown-menu pull-right">
-                        <!--li>
-                            <a onclick="catalog_config()">
-                                <i class="material-icons">create</i>
-                                Editar catalogo
-                            </a>    
-                              </li-->
-                        <li class="divider"></li>
-                        <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i
-                                    class="material-icons">view_carousel</i>{{m_add_board_group_collaborator}}</a></li>
-                    </ul>
-                </div>
-                
             </div>
         </div>
-    {{/with}}
+
+        {{#with ws_lang_data }}
+        <div class="nav-link col-xs-3 col-sm-4 col-md-4 col-lg-3 pull-right text-right">
+
+            <div class="btn-group ">
+                <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown"
+                    aria-expanded="true">
+                    <span class="material-icons">add_circle_outline</span> <span
+                        class="hidden-xs hidden-sm">{{b_new}}</span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li role="separator" class="divider"></li>
+                    <li><a onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                            title="{{address_title}}"><i class="material-icons">add</i>Gasto</a>
+                    </li>
+                    <li><a onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                            title="{{address_title}}"><i class="material-icons">add</i>Ingreso</a>
+                    </li>
+                    <li><a onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                            title="{{address_title}}"><i class="material-icons">add</i>Retiro efectivo</a>
+                    </li>
+                    <li><a onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                            title="{{address_title}}"><i class="material-icons">add</i>Ingreso de efectivo</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li><a onclick="add_new_contact(this)" href="" data-toggle="modal" role="button"
+                            title="{{address_title}}"><i class="material-icons">add</i>Cierre de CAJA</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="btn-group ">
+                <button type="button" class="btn btn-round xl dropdown-toggle" data-toggle="dropdown"
+                    aria-expanded="true">
+                    <span class="material-icons">settings</span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li class="divider"></li>
+                    <li><a id="new_board_group_btn" href="#new-stages" data-toggle="modal" role="button"><i
+                                class="material-icons">view_carousel</i>{{m_add_board_group_collaborator}}</a></li>
+                </ul>
+            </div>
+
+        </div>
     </div>
+    {{/with}}
+</div>
 </div>

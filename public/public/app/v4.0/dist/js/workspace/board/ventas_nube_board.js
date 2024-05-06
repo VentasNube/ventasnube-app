@@ -1606,3 +1606,67 @@ async function order_edit_shipping(element) {
         console.log(err);
     }
 }
+
+
+
+async function new_order_pay(element) {
+    const doc_id = $(element).attr('doc_id'); //Id del documento a edita
+    const doc_id_s = String(doc_id); // Convierto el id del doc en un string
+    const doc = await L_board_db.get(doc_id_s); // Traigo el documento
+    let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
+    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
+    const mov_id_new = letters + '-' + timestamp + '-mov';
+    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${doc.category_id}`;
+    //const { ws_id, hour, minutes } = doc;
+    const entry_date = { hour, minutes } = await getDateTimeMinutes();
+    try {
+        // Map the order document to an array
+     let response = await L_box_db.put({
+            _id: 'mov_' + new_doc_id, // Unique ID for the order
+            type:'box_mov',
+            order_id: doc_id,
+            mov_id: mov_id_new ,
+            status: 'Close',
+            entry_date: new Date(), //fecha actual del navegador
+            user_name: userCtx.userCtx.name ,
+            client: doc.customer,
+            total_service: doc.total_service,
+            total_products: doc.total_products,
+            total_tax: doc.total_tax,
+            total_discount: doc.total_discount,
+            total: doc.total,
+        });
+
+        if (response) {
+            Snackbar.show({
+                text: 'Realizo el pago '+ '#mov_' + new_doc_id+' con exito!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        } else {
+            Snackbar.show({
+                text: 'No se pudo realizar el pago!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        }
+
+       // console.log('Order processed and saved successfully in the local database.');
+    } catch (error) {
+        Snackbar.show({
+            text: 'No se pudo realizar el pago!',
+            actionText: 'OK',
+            actionTextColor: "#0575e6",
+            pos: 'bottom-right',
+            duration: 5000
+        });
+        console.error('Error processing and saving the order in the local database:', error);
+    }
+}
+
+
+

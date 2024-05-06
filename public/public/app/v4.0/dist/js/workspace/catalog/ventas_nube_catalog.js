@@ -134,10 +134,7 @@ function get_nav_catalog(ws_cart) {
         user_roles: user_Ctx.userCtx.roles
     }
     console.log('get_nav_catalog / ws_catalog_data', ws_catalog_data);
-
     renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/nav_bar.hbs', '#nav_bar_compiled', ws_catalog_data);
-    //alert('cargo el bucador');
-    // $('#cart_user_input').focus();
     console.log('NAV BAR CATALOG');
 };
 
@@ -188,8 +185,6 @@ function print_catalog_item(new_items) {
     }
 }
 
-
-
 //Tomo el array documents y los busco el input con fuse.js y compilo la vista de los productos 
 async function search_catalog_item(search_val) {
     //Armo el array para renderizar los items
@@ -217,7 +212,6 @@ async function search_catalog_item(search_val) {
         $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
-
 
 //Boton cambiar lista de precio
 async function cat_variations_price(element) {
