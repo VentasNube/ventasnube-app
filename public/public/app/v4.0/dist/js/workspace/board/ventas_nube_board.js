@@ -1635,6 +1635,11 @@ async function new_order_pay(element) {
             total_tax: doc.total_tax,
             total_discount: doc.total_discount,
             total: doc.total,
+            category:doc.category_id,
+            payment_type:'efectivo',
+            payment_type_id:'1',
+            payment_status:'saldado',
+            order_status:'close',
         });
 
         if (response) {

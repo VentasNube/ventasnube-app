@@ -6,164 +6,475 @@
             <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
                 <div class="nav_bar_catalog_search">
                     <div class="input-filters">
-                        <!--div class="group">
-                            <div class="btn-group dopdown">
-                                <button type="button" class="btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="material-icons"> filter_list </span>
-                                    {{#with ws_lang_data}} {{b_filter}} {{/with}}
+                         <div class="input-group flex padding-10">
+                        <i class="material-icons">point_of_sale</i>
+                        <span class="material-icons">
+                            chevron_right
+                        </span>
+                         Actividad
+                          <span class="material-icons">
+                            chevron_right
+                        </span>
+</div>
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                        data-original-title=" Categoria ">
+                                        date_range
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Periodo
                                 </button>
-                                <ul class="dropdown-menu xl pull-left">
-                                    <div class="body">
-                                        <li class="header">
-                                             <span>   {{#with ws_top_bar}} {{ws_lang_data.b_myaccount}}{{/with}}</span>  {{#with ws_lang_data}} {{b_filter}} {{/with}}
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title=" Categoria ">
+                                            date_range
+                                        </span>
+                                        Periodo
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
+
+                                    <li>
+                                        <div>
+                                            <input input_id="catalog_cat_input" id="catalog_new_cat_input"
+                                                class="form-control"
+                                                onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
+                                                doc_id="" placeholder=" Agregar Nueva Categoria  ">
+                                        </div>
+                                    </li>
+
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
+                                            item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Hoy
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_1" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">radio_button_unchecked</span>
+                                                </button>
+                                            </div>
                                         </li>
-                                        <li class="divider"></li>
-                                        <div class="padding-10  col-xs-12 col-sm-6 col-md-6">
-                                            <li>
-                                                <label>Estados</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <span class="material-icons">low_priority</span>
-                                                    </div>
-                                                    <input type="text" class="s-card-actv-input"
-                                                        placeholder="Nombre del cliente" value="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <label>Medio de pagos</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <span class="material-icons">mood</span>
-                                                    </div>
-                                                    <input type="text" class="s-card-actv-input"
-                                                        placeholder="Nombre del cliente" value="">
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <label>Periodo</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <span class="material-icons">today</span>
-                                                    </div>
-                                                    <input type="text" class="s-card-actv-input datetimepicker"
-                                                        placeholder="Fecha limite" value="">
-                                                </div>
-                                            </li>
-                                        </div>
-                                        <div class="padding-10 col-xs-12 col-sm-6 col-md-6">
-                                            <li>
-                                                <label>Colaborador</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <span class="material-icons">group</span>
-                                                    </div>
-                                                    <input type="text" class="s-card-actv-input"
-                                                        placeholder="Nombre del cliente" value="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <label>Cliente {{#each ws_lang_data.ws_lang_data}}
-                                                    {{b_myaccount}}{{/each}}</label>
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <span class="material-icons">account_circle</span>
-                                                    </div>
-                                                    <input type="text" class="s-card-actv-input"
-                                                        placeholder="Nombre del cliente" value="">
-                                                </div>
-                                            </li>
-
-                                        </div>
-                                        <div class="s-card-footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <button onclick="filter_mov_reset(this)" doc_rev="" doc_id="" type="button"
-                                                class="btn xl btn-more  btn-primary line">
-                                                <span class="hidden-xs hidden-sm">Borrar</span>
-                                            </button>
-                                            <button onclick="filter_mov_save(this)" doc_rev="" doc_id="" type="button"
-                                                class="btn xl btn-more  btn-primary line ">
-                                                <span class="hidden-xs hidden-sm">Aplicar</span>
-                                            </button>
-
-                                        </div>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
+                                            item_value="Ayer" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Ayer
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_2" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Ultima Semana
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_3" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Ultimo mes
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Mes Pasado
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_5" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Personalizado
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_5" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
                                     </div>
                                 </ul>
+
                             </div>
-                        </div-->
-                        <!--input class="contact_search s-card-actv-input" autocomplete="off" type="text" id="" name="contact_search" placeholder="{{input_contact_search}}"-->
-                        <div class="input-group flex">
-                            <span class="input-group-addon">
-                                <div class="btn-group dropright">
-                                    <button id="" type="button"
-                                        class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                            data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
-                                            category
-                                        </span>
-
-                                        <span id="catalog_select_cat_tittle"> {{#with ws_lang_data}}
-                                            {{{m_catalog_edit_category}}} {{/with}} <span>
-                                    </button>
-
-                                    <ul class="dropdown-menu open-right  m">
-                                        <!--ul class="dropdown-menu m pull-right"></ul-->
-                                        <li class="header">
-                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                                data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
-                                                category
-                                            </span>
-                                            {{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}
-                                            <span class="material-icons">arrow_right</span>
-                                            <span id="catalog_select_cat_value"></span>
-                                        </li>
-
-                                        <li>
-                                            <div>
-                                                <input input_id="catalog_cat_input" id="catalog_new_cat_input"
-                                                    class="form-control"
-                                                    onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
-                                                    doc_id="{{_id }}"
-                                                    placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
-                                            </div>
-                                        </li>
-
-                                        <div id="box_filter_mov_cat">
-
-                                            
-                                            {{#each category_list/category_list }}
-                                            <li onclick='catalog_select_new_cat(this)' item_value_id="{{id}}"
-                                                item_value="{{value}}" item_id="category">
-                                                <div class="dropdown-item">
-                                                    <a href="#">
-                                                        {{value}}
-                                                    </a>
-                                                    <button>
-                                                        <span doc_id="" value="{{value}}" class="material-icons"
-                                                            onclick='catalog_dell_cat(this)'>delete</span>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                            {{/each}}
-                                        </div>
-
-                                        <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                            <div class="input-group">
-                                                <input id="add_stock_var_568_Botella-Corona-488362" class="form-control" type="number" placeholder="Cantidad" value="">
-
-                                                <span class="input-group-addon">
-                                                    <button onclick="box_sabe_filter(this)" class="success btn btn-default pull-right  margin-0 btn-primary" type="button">
-                                                        <span class="material-icons">add_circle</span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </ul>
-
-                                </div>
-                            </span>
                         </div>
 
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                        data-original-title=" Categoria ">
+                                        category
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Categoria <span>
+                                        </span></span></button>
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title=" Categoria ">
+                                            category
+                                        </span>
+                                        Categoria
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
+
+                                    <li>
+                                        <div>
+                                            <input input_id="catalog_cat_input" id="catalog_new_cat_input"
+                                                class="form-control"
+                                                onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
+                                                doc_id="" placeholder=" Agregar Nueva Categoria  ">
+                                        </div>
+                                    </li>
+
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="9721802"
+                                            item_value="Peluqueria" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Peluqueria
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="Peluqueria" class="material-icons"
+                                                        onclick="catalog_dell_cat(this)">delete</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="1"
+                                            item_value="Bebidas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Bebidas
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="Bebidas" class="material-icons"
+                                                        onclick="catalog_dell_cat(this)">delete</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Galletitas
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="Galletitas" class="material-icons"
+                                                        onclick="catalog_dell_cat(this)">delete</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons">
+                                        swap_horiz
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Operaciones
+                                    </span>
+                                </button>
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title=" Categoria ">
+                                            date_range
+                                        </span>
+                                        Operaciones
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
+
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
+                                            item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Ventas
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="sell" class="material-icons"
+                                                        onclick="box_filter_select_operation(this)">radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
+                                            item_value="Ayer" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Compras
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_2" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Servicios
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_3" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Turnos
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                    </div>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    <span class="material-icons">
+                                        account_circle
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Colaboradores <span>
+                                        </span></span></button>
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons">
+                                            account_circle
+                                        </span>
+                                        colaboradores
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
+
+                                    <li>
+                                        <div>
+                                            <input input_id="catalog_cat_input" id="catalog_new_cat_input"
+                                                class="form-control"
+                                                onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
+                                                doc_id="" placeholder="Buscar Colaborador ">
+                                        </div>
+                                    </li>
+
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="9721802"
+                                            item_value="Peluqueria" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Mariano Marchesi
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="Peluqueria" class="material-icons"
+                                                        onclick="catalog_dell_cat(this)">delete</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="1"
+                                            item_value="Bebidas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Teo Marchesi
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="Bebidas" class="material-icons"
+                                                        onclick="catalog_dell_cat(this)">delete</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons">
+                                        account_balance_wallet
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Medio de pago
+                                    </span>
+                                </button>
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons">
+                                            account_balance_wallet
+                                        </span>
+                                        Medios de pago
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
+
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
+                                            item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Efectivo
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="sell" class="material-icons"
+                                                        onclick="box_filter_select_operation(this)">radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
+                                            item_value="Ayer" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Debito
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_2" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Transferencia
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_3" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Qr
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Tarjet de credito
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                    </div>
+                                </ul>
+
+                            </div>
+                        </div>
+
+
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons">
+                                        delete
+                                    </span>
+
+                                    <span id="catalog_select_cat_tittle">
+                                        Borrar filtros
+                                    </span>
+                                </button>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

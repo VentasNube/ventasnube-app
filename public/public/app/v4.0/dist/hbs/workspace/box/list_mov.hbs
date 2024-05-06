@@ -16,216 +16,105 @@
         <div class="table-body" id="tableBody">
             <!-- Filas de la tabla -->
             {{#each search_mov }}
-                <div class="table-row">
-                    <!-- Detalles -->
-                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <div class="cell-left">
-                            <!--div class="margin-0 ">
+            <div class="table-row">
+                <!-- Detalles -->
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                    <div class="cell-left">
+                        <!--div class="margin-0 ">
                                 <input type="checkbox" checked="" class="margin-r-10">
                             </div-->
-                            <div class="padding-0">
-                                <div class="btn-group dropright">
-                                    <button id="var_btn_{{{_id}}}" id="var_btn_{{{_id}}}"
-                                        onclick="cat_all_variations_get(this)" product_id="{{{_id}}}"
-                                        variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
-                                        aria-expanded="true">
+                        <div class="padding-0">
+                            <div class="btn-group dropright">
+                                <button id="var_btn_{{{_id}}}" id="var_btn_{{{_id}}}"
+                                    onclick="cat_all_variations_get(this)" product_id="{{{_id}}}"
+                                    variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
+                                    aria-expanded="true">
 
-                                           <div class="round-icon pr">
-                                            <span class="material-icons">person</span>
-                                                      
-                                                    </div>
+                                    <div class="round-icon pr">
+                                        <span class="material-icons">person</span>
 
-                                    </button>
-                                    
-                                </div>
-                            </div>
-
-                            <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                                    <h5>{{{client.last_name}}}</h5>
-                                    <h6> 
-                                       
-                                        <span class="text-uppercase margin-r-5 margin-top label bg-blue">Efectivo</span>
-                                      
-                                    </h6>
-                                </div>
-                                <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
-
-                                    <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                        <div class="btn-group dropright">
-                                            <button onclick="catalog_get_menu_price(this)" doc_id="{{{doc._id}}}"
-                                                id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                                variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
-                                                class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                                <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
-                                                    <div class="round-icon pr">
-                                                        <span> 
-                                                            $
-                                                        </span>
-                                                    </div>
-                                                    <label class="counter">
-                                                       10000
-                                                    </label>
-                                                    <span class="material-icons">arrow_drop_down</span>
-                                                </span>
-                                            </button>
-                                            <ul class="dropdown-menu l pull-right">
-                                                <li class="header">Listas de precios</li>
-
-                                                <div id="catalog_new_price_list_{{doc._id}}">
-                                                    {{#each doc.price_list as | pl |}}
-                                                    <li>
-                                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                            <!-- Nombre de lista de precio -->
-                                                            {{#each ../../price_list as | l1 |}}
-                                                            {{#ifEquals l1.id pl.id }}
-                                                            <div id="new_price_list_name_{{id}}" price_list_id="{{id}}"
-                                                                price_value="{{value}}">
-                                                                {{value}}
-                                                            </div>
-                                                            {{/ifEquals}}
-                                                            {{/each}}
-                                                            <!-- FIN Nombre de lista de precio -->
-                                                        </div>
-                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                            <!-- Tipo de moneda icono -->
-                                                            <span>{{../../currency}}</span>
-                                                            <!-- Input para editar precio -->
-                                                            <input id="new_price_var_{{id}}" class="form-control"
-                                                                type="number" placeholder="Precio" value="{{value}}">
-
-                                                        </div>
-                                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                            <!-- Boton de guardar cambios -->
-                                                            <div class="col-lg-6">
-                                                                <button type="button" onclick="edit_price_var(this)"
-                                                                    id="add_price_var_{{../doc.variant_id}}"
-                                                                    doc_id="{{{../doc._id}}}" price_id="{{id}}"
-                                                                    price_value="{{value}}"
-                                                                    variant_id="{{../doc.variant_id}}" input_id="price_list"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
-                                                                    aria-haspopup="true" aria-expanded="false">
-                                                                    <span class="material-icons">add_circle</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <button onclick="dell_price_var(this)"
-                                                                    id="dell_price_var_{{id}}"
-                                                                    class="round padding-0 margin-5  btn btn-primary line"
-                                                                    doc_id="{{{../doc._id}}}"
-                                                                    variant_id="{{{../doc.variant_id}}}" price_id="{{id}}"
-                                                                    price_value="{{value}}" input_id="price_list" href="#"
-                                                                    title="{{#with ../../ws_lang_data}} {{{m_catalog_edit_delete}}} {{/with}}">
-                                                                    <span class="material-icons">
-                                                                        delete
-                                                                    </span>
-                                                                </button>
-                                                            </div>
-                                                            <!-- Boton deEliminar -->
-                                                        </div>
-                                                    </li>
-                                                    {{/each}}
-                                                </div>
-                                                <div id="edit_price_form{{id}}" role="tabpanel"
-                                                    aria-labelledby="item-edit-variants" aria-expanded="true"
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <span class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                        Agregar precio
-                                                    </span>
-                                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <span class="material-icons" data-toggle="tooltip"
-                                                                    data-placement="bottom" title=""
-                                                                    data-original-title="Agregar precio">
-                                                                    price_change
-                                                                </span>
-                                                            </span>
-                                                            <select class="form-control md "
-                                                                name="price_list_var_{{doc.variant_id}}"
-                                                                id="price_list_var_{{doc.variant_id}}">
-                                                                {{#each ../price_list }}
-                                                                <option value="{{id}}">{{value}}</option>
-                                                                {{/each}}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                                        <div class="input-group">
-                                                            <input id="new_price_var_{{doc.variant_id}}" class="form-control" type="number" placeholder="Precio"   value="">
-                                                            <span class="input-group-addon">
-                                                                <button onclick="new_price_var(this)"
-                                                                    id="add_price_var_{{doc.variant_id}}"
-                                                                    doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}"
-                                                                    input_id="price_list"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary line pull-right "
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    type="button" aria-expanded="false">
-                                                                    <span class="material-icons">add_circle</span>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </ul>
-                                        </div>
                                     </div>
 
-                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <div class="btn-group dropright">
-                                            <button onclick="catalog_get_menu_stock(this)" doc_id="{{{doc._id}}}"
-                                                id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                                variant_id="{{doc.variant_id}}" type="button" class=" "
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                </button>
 
-                                                <span id="bg-select-color"
-                                                    class="card_item_selected_price btn btn-transparent">
-                                                    <div class="round-icon pr">
-                                                        <span class="material-icons">
-                                                            trending_up
-                                                        </span>
-                                                    </div>
-                                                    <span class="hidden-xs hidden-sm">
-
-                                                        {{#with ../ws_lang_data}} {{m_catalog_edit_stock}}: {{/with}}
-                                                    </span>
-
-                                                    <label class="counter">
-                                                        {{doc.available_quantity.value}}
-                                                    </label>
-                                                    <span class="material-icons">arrow_drop_down</span>
-                                                </span>
-                                            </button>
-                                            <ul class="dropdown-menu l pull-right">
-                                                <li class="header">  {{#with ../ws_lang_data}}{{m_catalog_edit_stock_update}}{{/with}} </li>
-
-                                                <div id="catalog_new_stock_list_{{doc._id}}">
-                                                    <!-- MAIN DE VENTANA -->
-
-                                                </div>
-                                
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
-
                         </div>
+
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <h5>{{{client.first_name}}}{{{client.last_name}}}</h5>
+                                <h6>
+                                    <span class="text-uppercase margin-r-5 margin-top label bg-blue">Efectivo</span>
+                                </h6>
+                            </div>
+                            <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+                                <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                    <div class="btn-group dropright">
+                                        <button onclick="catalog_get_menu_price(this)" doc_id="{{{doc._id}}}"
+                                            id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
+                                            variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
+                                            class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                            <span id="bg-select-color"
+                                                class="card_item_selected_price btn btn-transparent">
+                                                <div class="round-icon pr">
+                                                    <span>
+                                                        $
+                                                    </span>
+                                                </div>
+                                                <label class="counter">
+                                                    {{total}}
+                                                </label>
+                                                <span class="material-icons">arrow_drop_down</span>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu l pull-right">
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="btn-group dropright">
+                                        <button onclick="catalog_get_menu_stock(this)" doc_id="{{{doc._id}}}"
+                                            id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
+                                            variant_id="{{doc.variant_id}}" type="button" class=" "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                            <span id="" class="card_item_selected_price btn btn-transparent">
+                                                <span class="material-icons">
+                                                    account_balance_wallet
+                                                </span>
+                                                Efectivo
+                                                 {{payment_type}}
+                                                <span class="material-icons">arrow_drop_down</span>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu l pull-right">
+                                            <li class="header"> {{#with ../ws_lang_data}}{{m_catalog_edit_stock_update}}{{/with}} </li>
+                                            <div id="catalog_new_stock_list_{{doc._id}}">
+                                                <!-- MAIN DE VENTANA -->
+                                            </div>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
-                    <!-- Agregar Precio --><!-- Agregar Stock -->
-                    <div class=" cell-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <div class="pull-right">
+                </div>
+                <!-- Agregar Precio --><!-- Agregar Stock -->
+                <div class=" cell-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <div class="pull-right">
 
 
-                            {{#userCtx 'catalog' 'edit'}}
-                            
-                            <!--div class="Switch" onclick="">
+                        {{#userCtx 'catalog' 'edit'}}
+
+                        <!--div class="Switch" onclick="">
                                 <input id="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" name="switch_variation"
                                     {{#ifEquals doc.status.status true }} checked {{/ifEquals}} value="" type="checkbox"
                                     doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" input_id="status"
@@ -233,38 +122,38 @@
                                 <label for="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" class="label-primary"></label>
                             </div-->
 
-                            <div class="margin-t-5 padding-10 indicator btn-group">
-                                <button id="" type="button"
-                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-left "
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="material-icons">more_vert</span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li>
-                                        <a onclick="catalog_edit_item(this)" doc_id="{{{doc._id}}}"
-                                            id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                            variant_id="{{doc.variant_id}}" href="#">
-                                            <span class="material-icons">
-                                                create
-                                            </span>
-                                            <span>Editar</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a onclick="catalog_product_delete(this)" doc_id="{{{doc._id}}}"
-                                            variant_id="{{doc.variant_id}}" href="#">
-                                            <span class="material-icons">
-                                                delete
-                                            </span>
-                                            <span>Eliminar</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {{/userCtx}}
+                        <div class="margin-t-5 padding-10 indicator btn-group">
+                            <button id="" type="button"
+                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-left "
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="material-icons">more_vert</span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a onclick="catalog_edit_item(this)" doc_id="{{{doc._id}}}"
+                                        id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
+                                        variant_id="{{doc.variant_id}}" href="#">
+                                        <span class="material-icons">
+                                            create
+                                        </span>
+                                        <span>Editar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a onclick="catalog_product_delete(this)" doc_id="{{{doc._id}}}"
+                                        variant_id="{{doc.variant_id}}" href="#">
+                                        <span class="material-icons">
+                                            delete
+                                        </span>
+                                        <span>Eliminar</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                        {{/userCtx}}
                     </div>
                 </div>
+            </div>
             {{/each}}
             <!-- Repetir para más filas -->
         </div>
