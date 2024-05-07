@@ -236,6 +236,7 @@ function print_mov_item(new_items) {
 
     console.log('search_result ws_catalog_viwe', search_result);
     console.log(search_result);
+    
     if (new_items.length > 0) {
 
         if (ws_box_view == 'list') {
@@ -327,6 +328,7 @@ async function get_all_box_intems() {
 
 // TRAIGO LOS CONTACTOS
 function get_items_box(ws_id) {
+    
 
     var ws_contact = {
         ws_info: ws_info,

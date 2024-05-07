@@ -46,6 +46,15 @@ function registerHandlebarsHelpers() {
         // ret = 10;
         return ret;
     });
+
+
+    // Suponiendo que 'Handlebars' está disponible globalmente o importado correctamente en tu archivo JS
+    Handlebars.registerHelper('formatDate', function(date) {
+        // 'date' es la fecha que quieres formatear (debe ser un objeto Date o algo que moment.js pueda interpretar)
+        return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    });
+  
+
     //Logica de suma de stok new 2023
      // Suma el valor del objeto quantity en stock_inventari
     Handlebars.registerHelper("available_stock", function(value) {

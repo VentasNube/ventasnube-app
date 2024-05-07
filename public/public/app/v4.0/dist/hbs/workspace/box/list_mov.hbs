@@ -57,9 +57,10 @@
                                             variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
                                             class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                                            <span id="bg-select-color"
-                                                class="card_item_selected_price btn btn-transparent">
+                                            <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
+                                                +
                                                 <div class="round-icon pr">
+                                                    
                                                     <span>
                                                         $
                                                     </span>
@@ -77,29 +78,18 @@
                                 </div>
 
                                 <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="btn-group dropright">
-                                        <button onclick="catalog_get_menu_stock(this)" doc_id="{{{doc._id}}}"
-                                            id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                            variant_id="{{doc.variant_id}}" type="button" class=" "
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                                            <span id="" class="card_item_selected_price btn btn-transparent">
-                                                <span class="material-icons">
-                                                    account_balance_wallet
-                                                </span>
-                                                Efectivo
-                                                 {{payment_type}}
-                                                <span class="material-icons">arrow_drop_down</span>
-                                            </span>
-                                        </button>
-                                        <ul class="dropdown-menu l pull-right">
-                                            <li class="header"> {{#with ../ws_lang_data}}{{m_catalog_edit_stock_update}}{{/with}} </li>
-                                            <div id="catalog_new_stock_list_{{doc._id}}">
-                                                <!-- MAIN DE VENTANA -->
-                                            </div>
+                                    <span class="material-icons">
+                                        account_balance_wallet
+                                    </span>
+                                    Efectivo
+                                    {{payment_type}}
 
-                                        </ul>
-                                    </div>
+                                    <span class="material-icons">
+                                        access_time
+                                    </span>
+                                    {{formatDate entry_date}}
+
                                 </div>
 
                             </div>
