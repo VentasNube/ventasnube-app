@@ -2284,6 +2284,20 @@ class Workspace extends BaseController
 
                 // Control de caja  
                 if ($ws_mov_box) {
+                            $ws_mov_box_get = [
+                                '_id' => '_design/box_mov_get',
+                                'views' => [
+                                    'by_type_and_status' => [
+                                        'map' =>  "function(doc) {\n    if (doc.type === 'contact' && doc.status === 'active') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"
+                                    ],
+                                    'by_user_and_status' => [
+                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"  
+                                    ],
+                                    'by_dat' => [
+                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n        emit(doc.entry_date, doc);\n    }\n}"  
+                                    ],                          
+                                    ]
+                                ];
                     $db_name = "ws_mov_box_" . $workspace_id_hex;
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id_dec,
@@ -2298,7 +2312,7 @@ class Workspace extends BaseController
                      if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/get", $ws_get_type_doc); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . "/_design/box_mov_get", $ws_mov_box_get); //Creo el documento de diseno par filtrar documentos por tipo
                         $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
                     }
                     
