@@ -2288,6 +2288,9 @@ class Workspace extends BaseController
                                 '_id' => '_design/box_mov_get',
                                 'views' => [
                                     'by_user_date_and_client' => [
+                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date) {\n        emit([doc.type, doc.user_name,  doc.entry_date], doc);\n    }\n}"
+                                    ],
+                                    'by_user_date_and_client2' => [
                                         'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date && doc.client) {\n        emit([doc.type, doc.user_name, doc.entry_date, doc.client.id], doc);\n    }\n}"
                                     ],
                                     'by_type_and_status' => [
