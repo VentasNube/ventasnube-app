@@ -16,24 +16,6 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
     retry: true
 });
 
-
-///////// VERSION NUEVA 2024 CON PAGINADOR/////
-/*function print_box_item(new_items) {
-    var search_result = {
-        search_contact: new_items,
-        price_list: price_doc.price_list,
-        ws_lang_data: ws_lang_data,
-        user_roles: user_Ctx.userCtx.roles,
-    }
-    console.log('print_mov_item:', search_result);
-    if (new_items.length > 0) {
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', '#content_contact_commpiled', search_result);
-    } else {
-        $('#card_product_result_items').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
-    }
-}
-*/
-
 // TRAIGO LA BARRA
 async function get_nav_box() {
     try {
@@ -78,7 +60,6 @@ async function get_nav_box() {
     }
 }
 
-
 // IMPRIMO MOV
 function print_mov_item(new_items) {
     var ws_info = ws_info;
@@ -110,58 +91,75 @@ function print_mov_item(new_items) {
         $('#content_catalog_commpiled').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
+function getCurrentDateWithTime(hour, minute) {
+    var currentDate = new Date(); // Obtenemos la fecha y hora actual
+    var year = currentDate.getFullYear(); // Obtenemos el año
+    var month = currentDate.getMonth(); // Obtenemos el mes (los meses empiezan desde 0)
+    var day = currentDate.getDate(); // Obtenemos el día del mes
+
+    // Creamos una nueva fecha con los mismos datos pero con las horas y minutos actualizados
+    var newDate = new Date(year, month, day, hour, minute);
+
+    return newDate;
+}
+/// ------------------------------------ 2024 -------------------//
 
 
-// TRAE DATOS DE LA DB FILTRADOS
-async function get_all_box_intems() {
-    // Traigo los resultados de una vista
-    let response = await L_box_db.query(
-        'box_mov_get/by_type_and_status', {
+// Función para cambiar el tamaño de página
+function changePageSize(pageNumber, pageSize) {
+    const selectedPageSize = document.getElementById("pageSizeSelect").value;
+        //var button = document.getElementById("catalog_select_cat_tittle");
+               //    startDate = getCurrentDateWithTime(0, 0);
+                //    endDate = getCurrentDateWithTime(23, 59);
+                   // button.textContent = "Hoy";
+  get_box(startDate, endDate, pageNumber, selectedPageSize);
+}
+
+async function get_all_box_intems(startDate, endDate, pageNumber, pageSize ) {
+   
+    username = 'smartmobile.com.ar@gmail.com';
+    console.log('startDate BOX', startDate);
+    console.log('endDate BOX', endDate);
+   //console.log('pageNumber BOX', pageNumber);
+  //  console.log('pageSize BOX', pageSize);
+  //  let pageNumber = 1;
+    //let pageSize = 5;
+
+    let response_user = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
-        descending: true
-    }
-    ); //Conceto con la vista de diseno
-    if (response.rows) {
-        const rows = response.rows;
-        console.log('rows contact',rows);
+        startkey: ["box_mov", username, startDate.toISOString()],
+        endkey: ["box_mov", username, endDate.toISOString() + "\ufff0"],
+        limit: pageSize,
+        skip: (pageNumber - 1) * pageSize
+    });
+
+
+    if (response_user.rows) {
+        const rows = response_user.rows;
         all_items_array = await rows.map(item => {
             new_items = {};
-            // Mapeo el array
-               new_items['_id'] = item.value._id;
-               new_items['_rev'] = item.value._rev;
-               new_items['type'] =item.value.box_mov,
-               new_items['order_id'] = item.value.order_id;
-               new_items['mov_id'] = item.value.mov_id;
-               new_items['user_name'] = item.value.user_name;
-               new_items['entry_date'] = item.value.entry_date;
-               new_items['client'] = item.value.client;
-               new_items['total_service'] = item.value.total_service;
-               new_items['total_products'] = item.value.total_products;
-               new_items['total_tax'] = item.value.total_tax;
-               new_items['total_discount'] = item.value.total_discount;
-               new_items['total'] = item.value.total;
-               new_items['first_name'] = item.value.client.first_name;
-               new_items['last_name'] = item.value.client.last_name;
-               new_items['phone'] = item.value.client.phone;
+            new_items['_id'] = item.value._id;
+            new_items['_rev'] = item.value._rev;
+            new_items['type'] = item.value.box_mov;
+            new_items['order_id'] = item.value.order_id;
+            new_items['mov_id'] = item.value.mov_id;
+            new_items['user_name'] = item.value.user_name;
+            new_items['entry_date'] = item.value.entry_date;
+            new_items['client'] = item.value.client;
+            new_items['total_service'] = item.value.total_service;
+            new_items['total_products'] = item.value.total_products;
+            new_items['total_tax'] = item.value.total_tax;
+            new_items['total_discount'] = item.value.total_discount;
+            new_items['total'] = item.value.total;
+            new_items['first_name'] = item.value.client.first_name;
+            new_items['last_name'] = item.value.client.last_name;
+            new_items['phone'] = item.value.client.phone;
             return new_items;
         });
-        // search_print_item
-        //Imprimo el resultado en patalla
+
         print_mov_item(all_items_array);
-        // CONFIGURO LA VARIABLE GLOBAL FUSE PARA USAR EN TODOS LADOS ya con el array de los resultados
+
         var options = {
-            // isCaseSensitive: false,
-            // includeScore: false,
-            // shouldSort: true,
-            // includeMatches: false,
-            // findAllMatches: false,
-            // minMatchCharLength: 1,
-            // location: 0,
-            // threshold: 0.6,
-            // distance: 100,
-            // useExtendedSearch: false,
-            // ignoreLocation: false,
-            // ignoreFieldNorm: false,
             includeScore: true,
             useExtendedSearch: true,
             keys: [
@@ -173,29 +171,152 @@ async function get_all_box_intems() {
             ]
         };
         var myIndex = Fuse.createIndex(options.keys, all_items_array);
-        // initialize Fuse with the index
-        search_contact_fuse = new Fuse(all_items_array, options, myIndex);
-    }
-    else {
-        //return all_cart_item(false);
+        search_mov_fuse = new Fuse(all_items_array, options, myIndex);
+    } else {
+        return print_mov_item(false);
     }
 }
 
+// Implementa la lógica del paginador en la función get_box
+async function get_box(startDate, endDate, pageNumber, pageSize) {
+    // Renderiza la plantilla del módulo
+    // Añade los controles del paginador a la interfaz de usuario
+    // Escucha eventos de cambio de página
+    // Cuando se cambie la página, llama a get_all_box_intems con el número de página actualizado
+//alert('Holaaa')
 
-// TRAIGO EL MODULO Y LO IMPRIMO
-async function get_box(ws_id) {
+        if(!startDate){
+            
+//var button = document.getElementById("catalog_select_cat_tittle");
+            startDate = getCurrentDateWithTime(0, 0);
+            endDate = getCurrentDateWithTime(23, 59);
+           // button.textContent = "Hoy";
+        }
 
-    //alert('Holaaa')
-    var ws_cart = {
+    var ws_box = {
         ws_info: ws_info,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles
     }
-    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', ws_cart);
+
+    // Obtiene el total de elementos para calcular el número total de páginas
+    let response = await L_box_db.query('box_mov_get/by_type_and_status', {
+        include_docs: true
+    });
+    
+    const totalItems = response.total_rows;
+    const totalPages = Math.ceil(totalItems / pageSize);
+
+    // Crea el array de páginas
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pages.push({
+            pageNumber: i,
+            active: i === pageNumber
+        });
+    }
+
+/*
+    console.log('response BOX',response);
+    console.log('totalItems BOX',totalItems);
+    console.log('totalPages BOX',totalPages);
+    console.log('pages BOX',pages);
+    console.log('pageSize',pageSize);
+*/
+    // Renderiza la plantilla con los objetos del array de páginas
+    renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', {
+        ws_box: ws_box,
+        pages: pages,
+        pageSize: pageSize,
+        nextPage: pageNumber < totalPages ? pageNumber + 1 : totalPages,
+        lastPage: totalPages
+    });
+    
     get_nav_box(ws_info,ws_lang_data);
-    get_all_box_intems();
+    get_all_box_intems(startDate, endDate, pageNumber, pageSize);
+    
 }
 
+
+function box_filter_select_date(element) {
+    var dateValue = element.getAttribute("value");
+    var startDate, endDate;
+    var button = document.getElementById("catalog_select_cat_tittle");
+
+    switch (dateValue) {
+        case "date_1": // Hoy
+            startDate = getCurrentDateWithTime(0, 0);
+            endDate = getCurrentDateWithTime(23, 59);
+            button.textContent = "Hoy";
+            break;
+        case "date_2": // Ayer
+            var today = new Date();
+            var yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+
+            // Establecer la fecha de inicio al primer milisegundo de ayer
+            startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
+            
+            // Establecer la fecha de fin al último milisegundo de ayer
+            endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
+
+            button.textContent = "Ayer";
+            break;
+        case "date_3": // Última semana
+            endDate = getCurrentDateWithTime(23, 59);
+            startDate = new Date(endDate);
+            startDate.setDate(startDate.getDate() - 6);
+            startDate.setHours(0, 0, 0, 0);
+            button.textContent = "Última Semana";
+            break;
+        case "date_4": // Último mes
+            endDate = getCurrentDateWithTime(23, 59);
+            startDate = new Date(endDate);
+            startDate.setMonth(startDate.getMonth() - 1);
+            startDate.setDate(1);
+            startDate.setHours(0, 0, 0, 0);
+            button.textContent = "Último Mes";
+            break;
+        case "date_5": // Mes Pasado
+            var today = new Date();
+            var firstDayOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            var lastDayOfLastMonth = new Date(firstDayOfThisMonth);
+            lastDayOfLastMonth.setDate(0);
+
+            // Establecer la fecha de inicio al primer día del mes pasado
+            startDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), 1, 0, 0, 0, 0);
+
+            // Establecer la fecha de fin al último día del mes pasado
+            endDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), lastDayOfLastMonth.getDate(), 23, 59, 59, 999);
+
+            button.textContent = "Mes Pasado";
+            break;
+        case "date_6": // Personalizado
+            // Agrega tu lógica para el período personalizado aquí
+            break;
+        default:
+            break;
+    }
+
+    // Lógica para seleccionar el checkbox
+    var allCheckboxes = document.querySelectorAll(".dropdown-item button span.material-icons");
+    allCheckboxes.forEach(function (checkbox) {
+        checkbox.textContent = "radio_button_unchecked";
+    });
+    var checkbox = element.querySelector("button span.material-icons");
+    checkbox.textContent = "radio_button_checked";
+
+    updateFilterAndViews(startDate, endDate);
+}
+
+function updateFilterAndViews(startDate, endDate) {
+    // Aquí puedes hacer lo que necesites con las fechas seleccionadas,
+    // como pasarlas a un filtro o actualizar la vista.
+    console.log("Fecha de inicio:", startDate);
+    console.log("Fecha de fin:", endDate);
+    get_all_box_intems(startDate, endDate)
+
+}
 
 
 //---------------------------------------------------------//

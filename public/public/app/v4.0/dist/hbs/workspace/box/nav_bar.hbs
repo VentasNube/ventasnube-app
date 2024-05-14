@@ -6,16 +6,16 @@
             <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
                 <div class="nav_bar_catalog_search">
                     <div class="input-filters">
-                         <div class="input-group flex padding-10">
-                        <i class="material-icons">point_of_sale</i>
-                        <span class="material-icons">
-                            chevron_right
-                        </span>
-                         Actividad
-                          <span class="material-icons">
-                            chevron_right
-                        </span>
-</div>
+                        <div class="input-group flex padding-10">
+                            <i class="material-icons">point_of_sale</i>
+                            <span class="material-icons">
+                                chevron_right
+                            </span>
+                            Actividad
+                            <span class="material-icons">
+                                chevron_right
+                            </span>
+                        </div>
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -28,10 +28,10 @@
 
                                     <span id="catalog_select_cat_tittle">
                                         Periodo
+                                    </span>
                                 </button>
 
-                                <ul class="dropdown-menu open-right  m">
-                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                <ul class="dropdown-menu open-right m">
                                     <li class="header">
                                         <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
                                             data-original-title=" Categoria ">
@@ -42,90 +42,53 @@
                                         <span id="catalog_select_cat_value"></span>
                                     </li>
 
-                                    <li>
-                                        <div>
-                                            <input input_id="catalog_cat_input" id="catalog_new_cat_input"
-                                                class="form-control"
-                                                onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
-                                                doc_id="" placeholder=" Agregar Nueva Categoria  ">
-                                        </div>
-                                    </li>
-
+                                    
                                     <div id="catalog_select_new_cat_list">
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
-                                            item_id="filter_date">
+                                        <li onclick="box_filter_select_date(this)" value="date_1">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Hoy
-                                                </a>
+                                                <a href="#">Hoy</a>
                                                 <button>
-                                                    <span doc_id="" value="date_1" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
-                                            item_value="Ayer" item_id="filter_date">
+                                        <li onclick="box_filter_select_date(this)" value="date_2">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Ayer
-                                                </a>
+                                                <a href="#">Ayer</a>
                                                 <button>
-                                                    <span doc_id="" value="date_2" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="filter_date">
+                                        <li onclick="box_filter_select_date(this)" value="date_3">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Ultima Semana
-                                                </a>
+                                                <a href="#">Ultima Semana</a>
                                                 <button>
-                                                    <span doc_id="" value="date_3" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="category">
+                                        <li onclick="box_filter_select_date(this)" value="date_4">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Ultimo mes
-                                                </a>
+                                                <a href="#">Ultimo mes</a>
                                                 <button>
-                                                    <span doc_id="" value="date_4" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="category">
+                                        <li onclick="box_filter_select_date(this)" value="date_5">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Mes Pasado
-                                                </a>
+                                                <a href="#">Mes Pasado</a>
                                                 <button>
-                                                    <span doc_id="" value="date_5" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="category">
+                                        <li onclick="box_filter_select_date(this)" value="date_6">
                                             <div class="dropdown-item">
-                                                <a href="#">
-                                                    Personalizado
-                                                </a>
+                                                <a href="#">Personalizado</a>
                                                 <button>
-                                                    <span doc_id="" value="date_5" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
+                                                    <span class="material-icons">radio_button_unchecked</span>
                                                 </button>
                                             </div>
                                         </li>
@@ -134,7 +97,6 @@
 
                             </div>
                         </div>
-
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -360,7 +322,6 @@
 
                             </div>
                         </div>
-
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -457,8 +418,6 @@
 
                             </div>
                         </div>
-
-
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
