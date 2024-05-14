@@ -13,9 +13,9 @@
             <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
         </ul> 
         <div class="pagination-info pull-right">
-            Mostrar 
-            <select id="pageSizeSelect" onchange="changePageSize()">
-                  <option value="5">5</option>
+            Mostrar
+            <select onchange="change_page_size(this)">
+                <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
@@ -37,15 +37,6 @@
             <li><a href="#" onclick="get_all_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
             <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
         </ul> 
-        <div class="pagination-info  pull-right">
-            Mostrar 
-            <select id="pageSizeSelect" onchange="changePageSize({{nextPage}}, {{pageSize}})">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
     </div>
 </div>
 <!--

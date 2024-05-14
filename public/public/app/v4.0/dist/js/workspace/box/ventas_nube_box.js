@@ -22,7 +22,7 @@ async function get_nav_box() {
         // Intentar obtener el documento de filtros de la base de datos local
         const doc = await box_local_db.get('filtros');
         // Si se encuentra el documento, devolver los filtros
-
+        console.log('FILTROS',doc);
             var ws_box_data_nav = {
                     box_fitler:doc.filter,
                     // category_list:category_list,
@@ -44,6 +44,7 @@ async function get_nav_box() {
             // Devolver un array vacío como filtros
             const doc = await box_local_db.get('filtros');
             // Si se encuentra el documento, devolver los filtros
+            console.log('FILTROS',doc);
             var ws_box_data_nav = {
                     box_fitler:doc.filter,
                     // category_list:category_list,
@@ -91,46 +92,98 @@ function print_mov_item(new_items) {
         $('#content_catalog_commpiled').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
     }
 }
+
 function getCurrentDateWithTime(hour, minute) {
     var currentDate = new Date(); // Obtenemos la fecha y hora actual
     var year = currentDate.getFullYear(); // Obtenemos el año
     var month = currentDate.getMonth(); // Obtenemos el mes (los meses empiezan desde 0)
     var day = currentDate.getDate(); // Obtenemos el día del mes
-
     // Creamos una nueva fecha con los mismos datos pero con las horas y minutos actualizados
     var newDate = new Date(year, month, day, hour, minute);
-
     return newDate;
 }
 /// ------------------------------------ 2024 -------------------//
 
+async function change_page_size_OLD(element) {
+    const pageSize = $(element).val(); // Obtener el valor seleccionado del elemento
+    console.log("ITEMS POR PAGINA", pageSize);
+    
 
-// Función para cambiar el tamaño de página
-function changePageSize(pageNumber, pageSize) {
-    const selectedPageSize = document.getElementById("pageSizeSelect").value;
-        //var button = document.getElementById("catalog_select_cat_tittle");
-               //    startDate = getCurrentDateWithTime(0, 0);
-                //    endDate = getCurrentDateWithTime(23, 59);
-                   // button.textContent = "Hoy";
-  get_box(startDate, endDate, pageNumber, selectedPageSize);
+    await box_local_db.put({
+        _id: 'filtros',
+        filter: [],
+        pageSize: pageSize, // Usar el valor seleccionado
+        //startDate: startDate, // Asegúrate de tener definidas estas variables en algún lugar del código
+      //  endDate: endDate,
+    });
+
+    get_box(startDate, endDate, pageNumber, selectedPageSize);
+}
+
+// Función para actualizar o crear el documento en la base de datos
+async function updateOrCreateDocument(params) {
+    try {
+        // Intentar obtener el documento
+        const existingDoc = await box_local_db.get('filtros');
+        // Combinar los campos existentes con los campos a actualizar
+        const updatedDoc = { ...existingDoc, ...params };
+        // Actualizar el documento en la base de datos
+        await box_local_db.put(updatedDoc);
+        console.log('Documento actualizado.',existingDoc);
+    } catch (error) {
+        // Si el documento no existe, crearlo con los campos especificados
+        if (error.name === 'not_found') {
+            const newDoc = {
+                _id: 'filtros',
+                //filter: [],
+                ...params,
+            };
+
+            // Guardar el nuevo documento en la base de datos
+            await box_local_db.put(newDoc);
+
+            console.log('Documento creado.');
+        } else {
+            console.error('Error al intentar obtener el documento:', error);
+        }
+    }
+}
+
+// Función para seleccionar el elemento del DOM y llamar a la función de actualización
+async function change_page_size(element) {
+    const pageSize = $(element).val(); // Obtener el valor seleccionado del elemento
+    console.log("ITEMS POR PAGINA", pageSize);
+    // Definir los campos a actualizar en el documento
+    const updateFields = {
+        pageSize: pageSize, // Usar el valor seleccionado
+    };
+    // Llamar a la función para actualizar o crear el documento
+    await updateOrCreateDocument(updateFields);
+    // Llamar a otras funciones necesarias
+    get_box();
 }
 
 async function get_all_box_intems(startDate, endDate, pageNumber, pageSize ) {
-   
+    var filters = await box_local_db.get('filtros');
     username = 'smartmobile.com.ar@gmail.com';
     console.log('startDate BOX', startDate);
     console.log('endDate BOX', endDate);
-   //console.log('pageNumber BOX', pageNumber);
-  //  console.log('pageSize BOX', pageSize);
-  //  let pageNumber = 1;
+     //console.log('pageNumber BOX', pageNumber);
+    //  console.log('pageSize BOX', pageSize);
+    //  let pageNumber = 1;
     //let pageSize = 5;
+    //  var pageSize = document.getElementById("pageSizeSelect").value;
+    // Intentar obtener el documento
+    console.log('filters', filters);
+    var startDate = filters.startDate;
+    var endDate = filters.endDate;
 
     let response_user = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
-        startkey: ["box_mov", username, startDate.toISOString()],
-        endkey: ["box_mov", username, endDate.toISOString() + "\ufff0"],
-        limit: pageSize,
-        skip: (pageNumber - 1) * pageSize
+        startkey: ["box_mov", username, startDate],
+        endkey: ["box_mov", username, endDate + "\ufff0"],
+        limit: filters.pageSize,
+        skip: (filters.pageNumber - 1) * filters.pageSize
     });
 
 
@@ -172,6 +225,8 @@ async function get_all_box_intems(startDate, endDate, pageNumber, pageSize ) {
         };
         var myIndex = Fuse.createIndex(options.keys, all_items_array);
         search_mov_fuse = new Fuse(all_items_array, options, myIndex);
+
+
     } else {
         return print_mov_item(false);
     }
@@ -183,15 +238,17 @@ async function get_box(startDate, endDate, pageNumber, pageSize) {
     // Añade los controles del paginador a la interfaz de usuario
     // Escucha eventos de cambio de página
     // Cuando se cambie la página, llama a get_all_box_intems con el número de página actualizado
-//alert('Holaaa')
+    //alert('Holaaa')
+    ///Taer el archivo de filtros y completar la solicitud 
 
-        if(!startDate){
-            
-//var button = document.getElementById("catalog_select_cat_tittle");
+
+    // Cuando inicias te trae la fecha de hoy
+     /*   if(!startDate){
+            //var button = document.getElementById("catalog_select_cat_tittle");
             startDate = getCurrentDateWithTime(0, 0);
             endDate = getCurrentDateWithTime(23, 59);
            // button.textContent = "Hoy";
-        }
+        }*/
 
     var ws_box = {
         ws_info: ws_info,
@@ -203,6 +260,8 @@ async function get_box(startDate, endDate, pageNumber, pageSize) {
     let response = await L_box_db.query('box_mov_get/by_type_and_status', {
         include_docs: true
     });
+
+    console.log("TOTAL DE RESULTADOS PARA PAGINAR",response);
     
     const totalItems = response.total_rows;
     const totalPages = Math.ceil(totalItems / pageSize);
@@ -233,15 +292,21 @@ async function get_box(startDate, endDate, pageNumber, pageSize) {
     });
     
     get_nav_box(ws_info,ws_lang_data);
+
     get_all_box_intems(startDate, endDate, pageNumber, pageSize);
+
+   // get_all_box_intems(startDate, endDate);
+    
     
 }
 
-
-function box_filter_select_date(element) {
+async function box_filter_select_date(element) {
     var dateValue = element.getAttribute("value");
     var startDate, endDate;
     var button = document.getElementById("catalog_select_cat_tittle");
+
+
+
 
     switch (dateValue) {
         case "date_1": // Hoy
@@ -306,9 +371,23 @@ function box_filter_select_date(element) {
     var checkbox = element.querySelector("button span.material-icons");
     checkbox.textContent = "radio_button_checked";
 
-    updateFilterAndViews(startDate, endDate);
+    /// ACTUALIZO EL DOCUMENTO CON EL FILTRO
+    const updateFields = {
+       startDate : startDate, 
+       endDate : endDate,
+    };
+    // Llamar a la función para actualizar o crear el documento
+   response = await updateOrCreateDocument(updateFields);
+
+   console.log('ACTUALIZO DOC',response)
+
+
+     get_all_box_intems(startDate, endDate);
 }
 
+
+
+/*
 function updateFilterAndViews(startDate, endDate) {
     // Aquí puedes hacer lo que necesites con las fechas seleccionadas,
     // como pasarlas a un filtro o actualizar la vista.
@@ -317,7 +396,7 @@ function updateFilterAndViews(startDate, endDate) {
     get_all_box_intems(startDate, endDate)
 
 }
-
+*/
 
 //---------------------------------------------------------//
 /// COSAS Q FALTAN 24
