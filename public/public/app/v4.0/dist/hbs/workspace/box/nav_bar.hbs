@@ -2,6 +2,8 @@
 <div class="box">
 
     <div class="box-header">
+
+
         <div class="nav-header nav_bar_catalog_header">
             <div class="padding-0 col-xs-9 col-sm-8 col-md-8 col-lg-8">
                 <div class="nav_bar_catalog_search">
@@ -25,10 +27,7 @@
                                         data-original-title=" Categoria ">
                                         date_range
                                     </span>
-
-                                    <span id="catalog_select_cat_tittle">
-                                        Periodo
-                                    </span>
+                                    <span id="box_date_filter_btn"> {{filters.name_date}}  </span>
                                 </button>
 
                                 <ul class="dropdown-menu open-right m">
@@ -37,9 +36,9 @@
                                             data-original-title=" Categoria ">
                                             date_range
                                         </span>
-                                        Periodo
+                                    Periodo
                                         <span class="material-icons">arrow_right</span>
-                                        <span id="catalog_select_cat_value"></span>
+                                         <span id="box_date_filter_btn_tittle">   {{filters.name_date}} </span>
                                     </li>
 
                                     
@@ -438,7 +437,6 @@
                 </div>
             </div>
         </div>
-
         {{#with ws_lang_data }}
         <div class="nav-link col-xs-3 col-sm-4 col-md-4 col-lg-3 pull-right text-right">
 

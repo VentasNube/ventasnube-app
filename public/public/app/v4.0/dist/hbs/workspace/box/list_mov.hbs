@@ -3,149 +3,147 @@
 
 <div class="margin-b-30 padding-b-30">
     <div class="new_table table flex-table">
-        <!-- Encabezado de la tabla -->
-        <!--div class="table-header">
-            <div class="cell"></div>
-            <div class="cell">Variable</div>
-            <div class="cell">Valor venta </div>
-            <div class="cell">Valor Costo</div>
-            <div class="cell">Stock</div>
-            <div class="cell"></div>
-        </div-->
         <!-- Cuerpo de la tabla -->
         <div class="table-body" id="tableBody">
             <!-- Filas de la tabla -->
-            {{#each search_mov }}
-            <div class="table-row">
-                <!-- Detalles -->
-                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                    <div class="cell-left">
-                        <!--div class="margin-0 ">
-                                <input type="checkbox" checked="" class="margin-r-10">
-                            </div-->
-                        <div class="padding-0">
-                            <div class="btn-group dropright">
-                                <button id="var_btn_{{{_id}}}" id="var_btn_{{{_id}}}"
-                                    onclick="cat_all_variations_get(this)" product_id="{{{_id}}}"
-                                    variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
-                                    aria-expanded="true">
+            {{#if search_mov}}
+                {{#each search_mov }}
+                <div class="table-row">
+                    <!-- Detalles -->
+                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <div class="cell-left">
+                            <!--div class="margin-0 ">
+                                        <input type="checkbox" checked="" class="margin-r-10">
+                                    </div-->
+                            <div class="padding-0">
+                                <div class="btn-group dropright">
+                                    <button id="var_btn_{{{_id}}}" id="var_btn_{{{_id}}}"
+                                        onclick="cat_all_variations_get(this)" product_id="{{{_id}}}"
+                                        variant_id="{{doc.variant_id}}" type="button" data-toggle="dropdown"
+                                        aria-expanded="true">
 
-                                    <div class="round-icon pr">
-                                        <span class="material-icons">person</span>
+                                        <div class="round-icon pr">
+                                            <span class="material-icons">person</span>
+
+                                        </div>
+
+                                    </button>
+
+                                </div>
+                            </div>
+
+                            <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    <h5>{{{client.first_name}}}{{{client.last_name}}}</h5>
+                                    <h6>
+                                        <span class="text-uppercase margin-r-5 margin-top label bg-blue">Efectivo</span>
+                                    </h6>
+                                </div>
+                                <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+                                    <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <div class="btn-group dropright">
+                                            <button onclick="catalog_get_menu_price(this)" doc_id="{{{doc._id}}}"
+                                                id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
+                                                variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
+                                                class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                                <span id="bg-select-color"
+                                                    class="card_item_selected_price btn btn-transparent">
+                                                    +
+                                                    <div class="round-icon pr">
+
+                                                        <span>
+                                                            $
+                                                        </span>
+                                                    </div>
+                                                    <label class="counter">
+                                                        {{total}}
+                                                    </label>
+                                                    <span class="material-icons">arrow_drop_down</span>
+                                                </span>
+                                            </button>
+                                            <ul class="dropdown-menu l pull-right">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <span class="material-icons">
+                                            account_balance_wallet
+                                        </span>
+                                        Efectivo
+                                        {{payment_type}}
+
+                                        <span class="material-icons">
+                                            access_time
+                                        </span>
+                                        {{formatDate entry_date}}
 
                                     </div>
 
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Agregar Precio --><!-- Agregar Stock -->
+                    <div class=" cell-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <div class="pull-right">
+
+
+                            {{#userCtx 'catalog' 'edit'}}
+
+                            <!--div class="Switch" onclick="">
+                                        <input id="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" name="switch_variation"
+                                            {{#ifEquals doc.status.status true }} checked {{/ifEquals}} value="" type="checkbox"
+                                            doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" input_id="status"
+                                            onclick="cat_edit_chekbox(this)" />
+                                        <label for="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" class="label-primary"></label>
+                                    </div-->
+
+                            <div class="margin-t-5 padding-10 indicator btn-group">
+                                <button id="" type="button"
+                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-left "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons">more_vert</span>
                                 </button>
-
-                            </div>
-                        </div>
-
-                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                                <h5>{{{client.first_name}}}{{{client.last_name}}}</h5>
-                                <h6>
-                                    <span class="text-uppercase margin-r-5 margin-top label bg-blue">Efectivo</span>
-                                </h6>
-                            </div>
-                            <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
-
-                                <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                    <div class="btn-group dropright">
-                                        <button onclick="catalog_get_menu_price(this)" doc_id="{{{doc._id}}}"
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a onclick="catalog_edit_item(this)" doc_id="{{{doc._id}}}"
                                             id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                            variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
-                                            class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                            <span id="bg-select-color" class="card_item_selected_price btn btn-transparent">
-                                                +
-                                                <div class="round-icon pr">
-                                                    
-                                                    <span>
-                                                        $
-                                                    </span>
-                                                </div>
-                                                <label class="counter">
-                                                    {{total}}
-                                                </label>
-                                                <span class="material-icons">arrow_drop_down</span>
+                                            variant_id="{{doc.variant_id}}" href="#">
+                                            <span class="material-icons">
+                                                create
                                             </span>
-                                        </button>
-                                        <ul class="dropdown-menu l pull-right">
-
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                                    <span class="material-icons">
-                                        account_balance_wallet
-                                    </span>
-                                    Efectivo
-                                    {{payment_type}}
-
-                                    <span class="material-icons">
-                                        access_time
-                                    </span>
-                                    {{formatDate entry_date}}
-
-                                </div>
-
+                                            <span>Editar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a onclick="catalog_product_delete(this)" doc_id="{{{doc._id}}}"
+                                            variant_id="{{doc.variant_id}}" href="#">
+                                            <span class="material-icons">
+                                                delete
+                                            </span>
+                                            <span>Eliminar</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
+                            {{/userCtx}}
                         </div>
-
                     </div>
                 </div>
-                <!-- Agregar Precio --><!-- Agregar Stock -->
-                <div class=" cell-right col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <div class="pull-right">
-
-
-                        {{#userCtx 'catalog' 'edit'}}
-
-                        <!--div class="Switch" onclick="">
-                                <input id="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" name="switch_variation"
-                                    {{#ifEquals doc.status.status true }} checked {{/ifEquals}} value="" type="checkbox"
-                                    doc_id="{{{doc._id}}}" variant_id="{{doc.variant_id}}" input_id="status"
-                                    onclick="cat_edit_chekbox(this)" />
-                                <label for="{{{doc._id}}}_{{doc.variant_id}}_status_checkbox" class="label-primary"></label>
-                            </div-->
-
-                        <div class="margin-t-5 padding-10 indicator btn-group">
-                            <button id="" type="button"
-                                class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-left "
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="material-icons">more_vert</span>
-                            </button>
-                            <ul class="dropdown-menu pull-right">
-                                <li>
-                                    <a onclick="catalog_edit_item(this)" doc_id="{{{doc._id}}}"
-                                        id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                        variant_id="{{doc.variant_id}}" href="#">
-                                        <span class="material-icons">
-                                            create
-                                        </span>
-                                        <span>Editar</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a onclick="catalog_product_delete(this)" doc_id="{{{doc._id}}}"
-                                        variant_id="{{doc.variant_id}}" href="#">
-                                        <span class="material-icons">
-                                            delete
-                                        </span>
-                                        <span>Eliminar</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        {{/userCtx}}
-                    </div>
+                {{/each}}
+            {{else}}
+                <div class="no-results">
+                    <i class="material-icons md-96">sentiment_very_dissatisfied</i>
+                    <p>No se encontraron resultados.</p>
                 </div>
-            </div>
-            {{/each}}
-            <!-- Repetir para más filas -->
+            {{/if}}
         </div>
     </div>
 </div>
