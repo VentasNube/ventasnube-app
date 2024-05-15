@@ -1550,15 +1550,13 @@ async function order_edit_shippingNO(element) {
 async function order_edit_shipping(element) {
     try {
         const doc_id = $(element).attr('doc_id'); //Id del documento a editar
-        console.log("doc_id", doc_id);
-        
+      //  console.log("doc_id", doc_id);
         const newDate = new Date(); // Fecha actual del navegador
         const userName = userCtx.userCtx.name;
         const doc_id_s = String(doc_id); // Convierto el id del doc en un string
         const doc = await L_board_db.get(doc_id_s); // Traigo el documento
 
-        console.log("doc AAAAAAAA", doc);
-
+        // console.log("doc AAAAAAAA", doc);
         // Objeto para almacenar los datos del formulario
         const form = {};
         
@@ -1574,13 +1572,144 @@ async function order_edit_shipping(element) {
         form.updateUser = userName;
         form.updateDate = newDate;
 
-        console.log("form", form);
-
+        //   console.log("form", form);
         // Guardar los datos del formulario en el documento
         doc.shipping = form;
+        // console.log("doc con datos de envío", doc);
+        // Guardar el documento actualizado
+        const response = await L_board_db.put(doc);
 
-        console.log("doc con datos de envío", doc);
+        // Mostrar mensaje de éxito o error
+        if (response) {
+            Snackbar.show({
+                text: 'Se editó la orden con éxito!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        } else {
+            Snackbar.show({
+                text: 'No se pudo editar la orden!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
+async function dell_order_itemOLD(element) {
+    try {
+        const doc_id = $(element).attr('doc_id'); //Id del documento a editar
+      //  console.log("doc_id", doc_id);
+        const newDate = new Date(); // Fecha actual del navegador
+        const userName = userCtx.userCtx.name;
+        const doc_id_s = String(doc_id); // Convierto el id del doc en un string
+        const doc = await L_board_db.get(doc_id_s); // Traigo el documento
+
+        // console.log("doc AAAAAAAA", doc);
+        // Objeto para almacenar los datos del formulario
+        const form = {};
+        
+        // Recorrer todos los inputs dentro del formulario
+       /* $('.order_edit_shipping_form input').each(function () {
+            const name = $(this).attr('name'); // Obtener el nombre del input
+            const value = $(this).val(); // Obtener el valor del input
+            // Agregar el valor al objeto form con el nombre como clave
+            form[name] = value;
+        });*/
+
+        //form[name] = value;
+        // Agregar otros campos requeridos al objeto form
+        form.updateUser = userName;
+        form.updateDate = newDate;
+        //   console.log("form", form);
+        // Guardar los datos del formulario en el documento
+        doc.shipping = form;
+        // console.log("doc con datos de envío", doc);
+        // Guardar el documento actualizado
+        const response = await L_board_db.put(doc);
+
+        // Mostrar mensaje de éxito o error
+        if (response) {
+            Snackbar.show({
+                text: 'Se editó la orden con éxito!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        } else {
+            Snackbar.show({
+                text: 'No se pudo editar la orden!',
+                actionText: 'OK',
+                actionTextColor: "#0575e6",
+                pos: 'bottom-right',
+                duration: 5000
+            });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Elimina un producto de la ORDEN
+async function dell_order_itemNO(element) {
+    var order_id = $(element).attr('order_id');
+    console.log('item_cart_id, item_cart_rev',order_id);
+    try {
+        // Obtener el documento actualizado del carrito
+        const doc = await user_db.get(order_id);
+        // Tomar la revisión actualizada
+        const item_cart_rev = doc._rev;
+        console.log('item_cart_id, item_cart_rev',order_id, item_cart_rev);
+        // Eliminar el elemento del carrito utilizando la revisión actualizada
+        await user_db.remove(order_id, item_cart_rev);
+        
+        // La eliminación fue exitosa, actualizar el carrito
+        get_cart(ws_id);
+    } catch (err) {
+        if (err.name === 'conflict') {
+            // Hubo un conflicto de actualización, reintentar la eliminación después de un breve retraso
+            setTimeout(async () => {
+                try {
+                    await dell_cart_item(element); // Reintento de la operación
+                } catch (err) {
+                    console.error('Error al reintentar eliminar el elemento del carrito:', err);
+                    Snackbar.show({
+                        text: 'Error al eliminar el elemento del carrito',
+                        // Otros detalles del Snackbar...
+                    });
+                }
+            }, 1000); // Retraso de 1 segundo antes de reintentar
+        } else {
+            // Si el error no es un conflicto, manejarlo de otra manera
+            console.error('Error al eliminar el elemento del carrito:', err);
+            Snackbar.show({
+                text: 'Error al eliminar el elemento del carrito',
+                // Otros detalles del Snackbar...
+            });
+        }
+    }
+}
+
+async function dell_order_item(element) {
+    try {
+        const order_id = $(element).attr('order_id'); // Id del documento a editar
+        const product_id = $(element).attr('product_id'); // Id del documento a editar
+        const newDate = new Date(); // Fecha actual del navegador
+        const userName = userCtx.userCtx.name;
+        const doc_id_s = String(order_id); // Convierto el id del doc en un string
+        const doc = await L_board_db.get(doc_id_s); // Traigo el documento
+        // Eliminar el producto específico de la matriz de productos
+        const productIdToRemove = product_id; // ID del producto a eliminar
+        doc.products = doc.products.filter(product => product.doc.variant.product_id !== productIdToRemove);
+        // Guardar los datos del formulario en el documento
+       // doc.shipping = form;
         // Guardar el documento actualizado
         const response = await L_board_db.put(doc);
 
@@ -1608,6 +1737,9 @@ async function order_edit_shipping(element) {
 }
 
 
+
+
+///PAGO DE ORDEN CREA MOVIMIENTO
 
 async function new_order_pay(element) {
     const doc_id = $(element).attr('doc_id'); //Id del documento a edita

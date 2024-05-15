@@ -17,55 +17,11 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
 });
 
 // TRAIGO LA BARRA
-async function get_nav_box_OLD() {
-    try {
-        // Intentar obtener el documento de filtros de la base de datos local
-        const doc = await box_local_db.get('filtros');
-        // Si se encuentra el documento, devolver los filtros
-        console.log('FILTROS',doc);
-            var ws_box_data_nav = {
-                    box_fitler:doc.filter,
-                    // category_list:category_list,
-                    ws_info: ws_info,
-                    ws_lang_data: ws_lang_data,
-                    user_roles: user_Ctx.userCtx.roles
-                }
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
-       // return ;
-    } catch (error) {
-        if (error.name === 'not_found') {
-            // Si el documento no se encuentra, crear un nuevo documento con filtros vacíos
-            console.log('El documento de filtros no se encontró. Creando nuevo documento con filtros vacíos.');
-            await box_local_db.put({
-                _id: 'filtros',
-                filter: []
-            });
-
-            // Devolver un array vacío como filtros
-            const doc = await box_local_db.get('filtros');
-            // Si se encuentra el documento, devolver los filtros
-            console.log('FILTROS',doc);
-            var ws_box_data_nav = {
-                    box_fitler:doc.filter,
-                    // category_list:category_list,
-                    ws_info: ws_info,
-                    ws_lang_data: ws_lang_data,
-                    user_roles: user_Ctx.userCtx.roles
-                }
-                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
-            //return [];
-        } else {
-            // Si ocurre otro tipo de error, lanzar una excepción
-            throw error;
-        }
-    }
-}
 async function get_nav_box() {
     try {
         // Intentar obtener el documento de filtros de la base de datos local
         const filters = await box_local_db.get('filtros');
         // Si se encuentra el documento, devolver los filtros
-      
         // Preparar los datos para la plantilla
         var ws_box_data_nav = {
             filters: filters,
@@ -74,7 +30,7 @@ async function get_nav_box() {
             user_roles: user_Ctx.userCtx.roles,
            // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
         }
-        console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
+       // console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
         // Renderizar la plantilla con los datos
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
 
@@ -86,55 +42,45 @@ async function get_nav_box() {
                 _id: 'filtros',
                 skip: 0,
                 limit: 10
-
             });
-
             // Devolver un array vacío como filtros
             const filters = await box_local_db.get('filtros');
             // Si se encuentra el documento, devolver los filtros
-            console.log('FILTROS', filters);
+        //    console.log('FILTROS', filters);
             var ws_box_data_nav = {
                 filters:filters,
                 ws_info: ws_info,
                 ws_lang_data: ws_lang_data,
                 user_roles: user_Ctx.userCtx.roles,
             }
-            console.log('ws_box_data_nav',ws_box_data_nav);
-            // Renderizar la plantilla con los datos
+         //   console.log('ws_box_data_nav',ws_box_data_nav);
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
         }
     }
 }
+
 // IMPRIMO MOV
 function print_mov_item(new_items) {
     var ws_info = ws_info;
-    // var ws_catalog_view = ws_info.ws_catalog_view
     var ws_box_view = 'list'
-    // console.log('ws_info ws_catalog_viwe', ws_info, ws_catalog_view);
     var search_result = {
         search_mov: new_items,
         price_list: price_doc.price_list,
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
-
     }
-
-    console.log('search_result ws_catalog_viwe', search_result);
-    console.log(search_result);
-
+    // COMPARO SI TIENE RESULTADOS Y EL TIPO DE PLANTILLA Q USO LIST o CARD
     if (new_items.length > 0) {
-
         if (ws_box_view == 'list') {
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/list_mov.hbs', '#content_box_commpiled', search_result);
-
         }
         else if (ws_box_view == 'card') {
             renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', '#content_catalog_commpiled', search_result);
         }
-
     } else {
-        $('#content_catalog_commpiled').html('<h3 class="padding-20 text-left" >Sin resultados... </h3>');
+        $('#content_box_commpiled').html('<div class="cart_items_trash"><span class="material-icons xl"> pageview</span><br><span class="cart_items_title">Sin resultados...</span></div>');
     }
+    
 }
 
 function getCurrentDateWithTime(hour, minute) {
@@ -146,23 +92,8 @@ function getCurrentDateWithTime(hour, minute) {
     var newDate = new Date(year, month, day, hour, minute);
     return newDate;
 }
+
 /// ------------------------------------ 2024 -------------------//
-
-async function change_page_size_OLD(element) {
-    const pageSize = $(element).val(); // Obtener el valor seleccionado del elemento
-    console.log("ITEMS POR PAGINA", pageSize);
-    
-
-    await box_local_db.put({
-        _id: 'filtros',
-        filter: [],
-        pageSize: pageSize, // Usar el valor seleccionado
-        //startDate: startDate, // Asegúrate de tener definidas estas variables en algún lugar del código
-      //  endDate: endDate,
-    });
-
-    get_box(startDate, endDate, pageNumber, selectedPageSize);
-}
 
 // Función para actualizar o crear el documento en la base de datos
 async function updateOrCreateDocument(params) {
@@ -196,7 +127,7 @@ async function updateOrCreateDocument(params) {
 // Función para seleccionar el elemento del DOM y llamar a la función de actualización
 async function change_page_size(element) {
     const pageSize = $(element).val(); // Obtener el valor seleccionado del elemento
-    console.log("ITEMS POR PAGINA", pageSize);
+  //  console.log("ITEMS POR PAGINA", pageSize);
     // Definir los campos a actualizar en el documento
     const updateFields = {
         pageSize: pageSize, // Usar el valor seleccionado
@@ -245,26 +176,9 @@ async function get_all_box_items() {
             new_items['phone'] = item.value.client.phone;
             return new_items;
         });
-
         print_mov_item(all_items_array);
-
-        var options = {
-            includeScore: true,
-            useExtendedSearch: true,
-            keys: [
-                "first_name",
-                "last_name",
-                "phone",
-                "document_number",
-                "email"
-            ]
-        };
-        var myIndex = Fuse.createIndex(options.keys, all_items_array);
-        search_mov_fuse = new Fuse(all_items_array, options, myIndex);
-
-
     } else {
-        return print_mov_item(false);
+        print_mov_item();
     }
 }
 
@@ -284,7 +198,7 @@ async function get_box() {
     let pageNumber = filters.pageNumber;
     let pageSize = filters.pageSize;
 
-    console.log('filters',filters);
+   // console.log('filters',filters);
 
     let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
@@ -326,7 +240,6 @@ async function box_filter_select_date(element) {
     var startDate, endDate;
     var button = document.getElementById("box_date_filter_btn");
     var button_title = document.getElementById("box_date_filter_btn_tittle");
-
 
     switch (dateValue) {
         case "date_1": // Hoy
@@ -398,11 +311,10 @@ async function box_filter_select_date(element) {
     };
     // Llamar a la función para actualizar o crear el documento
    response = await updateOrCreateDocument(updateFields);
-   console.log('ACTUALIZO DOC',response);
+   //console.log('ACTUALIZO DOC',response);
    get_all_box_items();
 }
 
-//---------------------------------------------------------//
 /// COSAS Q FALTAN 24
 async function mov_edit_put(formData,doc_id) {
     try {
@@ -444,6 +356,7 @@ async function mov_edit_put(formData,doc_id) {
     }
    // catalog_edit_item_url(doc_id, 1);
 }
+
 //Nuevo Movimiento
 async function add_new_mov(element) {
     try {

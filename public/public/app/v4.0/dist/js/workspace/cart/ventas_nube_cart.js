@@ -555,8 +555,52 @@ async function add_cart_item(data) {
     }
 }
 
-// Eliminar productos del carrito
+
+
+
+
+
 async function dell_cart_item(element) {
+    var item_cart_id = $(element).attr('item_cart_id');
+    console.log('item_cart_id, item_cart_rev',item_cart_id);
+    try {
+        // Obtener el documento actualizado del carrito
+        const doc = await user_db.get(item_cart_id);
+        // Tomar la revisión actualizada
+        const item_cart_rev = doc._rev;
+        console.log('item_cart_id, item_cart_rev',item_cart_id, item_cart_rev);
+        // Eliminar el elemento del carrito utilizando la revisión actualizada
+        await user_db.remove(item_cart_id, item_cart_rev);
+        
+        // La eliminación fue exitosa, actualizar el carrito
+        get_cart(ws_id);
+    } catch (err) {
+        if (err.name === 'conflict') {
+            // Hubo un conflicto de actualización, reintentar la eliminación después de un breve retraso
+            setTimeout(async () => {
+                try {
+                    await dell_cart_item(element); // Reintento de la operación
+                } catch (err) {
+                    console.error('Error al reintentar eliminar el elemento del carrito:', err);
+                    Snackbar.show({
+                        text: 'Error al eliminar el elemento del carrito',
+                        // Otros detalles del Snackbar...
+                    });
+                }
+            }, 1000); // Retraso de 1 segundo antes de reintentar
+        } else {
+            // Si el error no es un conflicto, manejarlo de otra manera
+            console.error('Error al eliminar el elemento del carrito:', err);
+            Snackbar.show({
+                text: 'Error al eliminar el elemento del carrito',
+                // Otros detalles del Snackbar...
+            });
+        }
+    }
+}
+
+// Eliminar productos del carrito
+async function dell_cart_itemNO(element) {
 
     var item_cart_id = $(element).attr('item_cart_id');
     var item_cart_rev = $(element).attr('item_cart_rev');
