@@ -198,7 +198,7 @@ async function get_box() {
     let pageNumber = filters.pageNumber;
     let pageSize = filters.pageSize;
 
-   // console.log('filters',filters);
+    // console.log('filters',filters);
 
     let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
@@ -297,11 +297,11 @@ async function box_filter_select_date(element) {
     }
 
     // Lógica para seleccionar el checkbox
-    var allCheckboxes = document.querySelectorAll(".dropdown-item button span.material-icons");
+    var allCheckboxes = document.querySelectorAll(".dropdown-item span span.material-icons");
     allCheckboxes.forEach(function (checkbox) {
         checkbox.textContent = "radio_button_unchecked";
     });
-    var checkbox = element.querySelector("button span.material-icons");
+    var checkbox = element.querySelector("span span.material-icons");
     checkbox.textContent = "radio_button_checked";
     /// ACTUALIZO EL DOCUMENTO CON EL FILTRO
     const updateFields = {

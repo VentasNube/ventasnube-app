@@ -13,7 +13,7 @@
                             <span class="material-icons">
                                 chevron_right
                             </span>
-                            Actividad
+                            {{#with ws_lang_data}}{{box_bt_filter_mov_date_name}}{{/with}}
                             <span class="material-icons">
                                 chevron_right
                             </span>
@@ -27,71 +27,119 @@
                                         data-original-title=" Categoria ">
                                         date_range
                                     </span>
-                                    <span id="box_date_filter_btn"> {{filters.name_date}}  </span>
+                                    <span id="box_date_filter_btn"> {{filters.name_date}}</span>
                                 </button>
 
                                 <ul class="dropdown-menu open-right m">
+                                    {{#with ws_lang_data}}
                                     <li class="header">
                                         <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
                                             data-original-title=" Categoria ">
                                             date_range
                                         </span>
-                                    Periodo
+                                        {{box_bt_filter_mov_date_sub_tille}}
                                         <span class="material-icons">arrow_right</span>
-                                         <span id="box_date_filter_btn_tittle">   {{filters.name_date}} </span>
+                                        <span id="box_date_filter_btn_tittle"> {{../filters.name_date}} </span>
                                     </li>
-
-                                    
                                     <div id="catalog_select_new_cat_list">
                                         <li onclick="box_filter_select_date(this)" value="date_1">
                                             <div class="dropdown-item">
-                                                <a href="#">Hoy</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Today}}
+                                                     <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond box_bt_filter_mov_date_Today ../filters.name_date }}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                   </span>
+                                                </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_2">
                                             <div class="dropdown-item">
-                                                <a href="#">Ayer</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Yesterday}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond box_bt_filter_mov_date_Yesterday 
+                                                            ../filters.name_date }}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                  </span>
+                                                </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_3">
                                             <div class="dropdown-item">
-                                                <a href="#">Ultima Semana</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Last_Week}}
+                                                     <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond    box_bt_filter_mov_date_Last_Week ../filters.name_date}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                  </span>
+                                                </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_4">
                                             <div class="dropdown-item">
-                                                <a href="#">Ultimo mes</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Last_Month}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Last_Month}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                  </span>
+                                                </a>
+
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_5">
                                             <div class="dropdown-item">
-                                                <a href="#">Mes Pasado</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Past_Month}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Past_Month}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                   </span>
+                                                </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_6">
                                             <div class="dropdown-item">
-                                                <a href="#">Personalizado</a>
-                                                <button>
-                                                    <span class="material-icons">radio_button_unchecked</span>
-                                                </button>
+                                                <a href="#">{{box_bt_filter_mov_date_Custom}}
+                                                     <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Custom}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                  </span>
+                                                </a>
                                             </div>
                                         </li>
                                     </div>
+
+                                    {{/with}}
                                 </ul>
 
                             </div>

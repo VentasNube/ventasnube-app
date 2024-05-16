@@ -104,10 +104,26 @@ return [
         'm_board_delivery_place' => 'Habilitar delibery',
         //CONTROL STOCK
         'board_control_stock' => 'Habilitar el controlor de stock?',
-        'board_control_stock_block' => '(SI) Bloquear la orden si no hay stock suficiente.',
+        'board_control_stock_block=>(SI) Bloquear la orden si no hay stock suficiente.',
         'board_control_stock_negative' => '(NO) Solo avisar si no hay stock suficiente.',
         'board_control_update_stock_close' => 'Habilitar el la actualizacion de stock al cerrar orden?',
+
+
+        //BOX BOTONES y TEXTOS
+        
+        'box_bt_filter_mov_date_name'=> 'Periodo',
+        
+        'box_bt_filter_mov_date_tille'=> 'Periodo',
+        'box_bt_filter_mov_date_sub_tille'=> 'Periodo',
+        'box_bt_filter_mov_date_Today' => 'Hoy',
+        'box_bt_filter_mov_date_Yesterday' => 'Ayer',
+        'box_bt_filter_mov_date_Last_Week' => 'Última Semana',
+        'box_bt_filter_mov_date_Last_Month' =>  'Último Mes',
+        'box_bt_filter_mov_date_Past_Month' => ' Mes Pasado',
+        'box_bt_filter_mov_date_Custom' => 'Personalizado',
+        
          //BOX config
+         
         'board_control_cash' => 'Habilitar la apertura y cierre de la caja?',
         'board_control_cash_flow' => 'Habilitar ingreso y egreso de movimientos de caja?',
         'board_control_cash_close_box_tittle' => 'Habilitar la apertura y cierre de la caja?',
@@ -293,6 +309,13 @@ return [
         'm_myaccount' => 'Mi cuenta',
         //MIS ORDENES
         'm_myorders' => 'Mis compras',
+
+        // Movimiento BOX
+        
+        
+
+
+
 
         //CONFIGURACION WORKSPACE
         //TEXTOS
