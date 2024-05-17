@@ -62,6 +62,8 @@ async function get_nav_box() {
 // IMPRIMO MOV
 function print_mov_item(new_items) {
     var ws_info = ws_info;
+    ///CONFIGURO EL TIPO DE TEMPLATE Litst o Card 
+
     var ws_box_view = 'list'
     var search_result = {
         search_mov: new_items,
@@ -69,14 +71,11 @@ function print_mov_item(new_items) {
         ws_lang_data: ws_lang_data,
         user_roles: user_Ctx.userCtx.roles,
     }
+
+    console.log('search_mov new_items',new_items);
     // COMPARO SI TIENE RESULTADOS Y EL TIPO DE PLANTILLA Q USO LIST o CARD
     if (new_items.length > 0) {
-        if (ws_box_view == 'list') {
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/list_mov.hbs', '#content_box_commpiled', search_result);
-        }
-        else if (ws_box_view == 'card') {
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', '#content_catalog_commpiled', search_result);
-        }
+            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/'+ ws_box_view +'_mov.hbs', '#content_box_commpiled', search_result);
     } else {
         $('#content_box_commpiled').html('<div class="cart_items_trash"><span class="material-icons xl"> pageview</span><br><span class="cart_items_title">Sin resultados...</span></div>');
     }
@@ -140,45 +139,55 @@ async function change_page_size(element) {
 
 async function get_all_box_items() {
     const filters = await box_local_db.get('filtros');
-    username = user_data.user_email;
+    const username = user_data.user_email;
 
     let startDate = filters.startDate;
     let endDate = filters.endDate;
 
-    let response_user = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+    let pageNumber = filters.pageNumber;
+    let pageSize = filters.pageSize;
+
+    let items_mov_filtered = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
         startkey: ["box_mov", username, startDate],
         endkey: ["box_mov", username, endDate + "\ufff0"],
-        limit: filters.pageSize,
-        skip: (filters.pageNumber - 1) * filters.pageSize
+        limit: filters.limit,
+        skip: (pageNumber - 1) * pageSize
     });
 
 
-    if (response_user.rows) {
-        const rows = response_user.rows;
-        all_items_array = await rows.map(item => {
-            new_items = {};
-            new_items['_id'] = item.value._id;
-            new_items['_rev'] = item.value._rev;
-            new_items['type'] = item.value.box_mov;
-            new_items['order_id'] = item.value.order_id;
-            new_items['mov_id'] = item.value.mov_id;
-            new_items['user_name'] = item.value.user_name;
-            new_items['entry_date'] = item.value.entry_date;
-            new_items['client'] = item.value.client;
-            new_items['total_service'] = item.value.total_service;
-            new_items['total_products'] = item.value.total_products;
-            new_items['total_tax'] = item.value.total_tax;
-            new_items['total_discount'] = item.value.total_discount;
-            new_items['total'] = item.value.total;
-            new_items['first_name'] = item.value.client.first_name;
-            new_items['last_name'] = item.value.client.last_name;
-            new_items['phone'] = item.value.client.phone;
-            return new_items;
-        });
+    //console.log('RESPONSE items_mov_filtered',items_mov_filtered);
+
+    if (items_mov_filtered.rows != null) {
+
+        const all_items_array = items_mov_filtered.rows.map(({ value }) => ({
+            _id: value._id,
+            _rev: value._rev,
+            type: value.box_mov,
+            order_id: value.order_id,
+            mov_id: value.mov_id,
+            user_name: value.user_name,
+            entry_date: value.entry_date,
+            client: value.client,
+            total_service: value.total_service,
+            total_products: value.total_products,
+            total_tax: value.total_tax,
+            total_discount: value.total_discount,
+            total: value.total,
+            first_name: value.client.first_name,
+            last_name: value.client.last_name,
+            category: value.category,
+            payment_type: value.payment_type,
+            payment_type_id: value.payment_type_id,
+            payment_status: value.payment_status,
+            order_status: value.order_status, 
+            status: value.status,
+        }));
+
+    console.log('RESPONSE all_items_array',all_items_array);
         print_mov_item(all_items_array);
     } else {
-        print_mov_item();
+        print_mov_item(null);
     }
 }
 
@@ -194,18 +203,21 @@ async function get_box() {
     let startDate = filters.startDate;
     let endDate = filters.endDate;
     let limit = filters.limit;    
-    let skip = filters.skip;
+
     let pageNumber = filters.pageNumber;
     let pageSize = filters.pageSize;
 
+    let skip = (pageNumber - 1) * pageSize; // Calcula el valor de skip
+
     // console.log('filters',filters);
+ 
 
     let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
         include_docs: true,
         startkey: ["box_mov", username, startDate],
         endkey: ["box_mov", username, endDate + "\ufff0"],
         limit: limit,
-        skip: (pageNumber - 1) * pageSize,
+        skip: skip,
     });
 
     var ws_box = {
@@ -231,8 +243,25 @@ async function get_box() {
         nextPage: pageNumber < totalPages ? pageNumber + 1 : totalPages,
         lastPage: totalPages
     });
+
+    console.log('RESPONSE totalItems',totalItems);
+    console.log('RESPONSE totalPages',totalPages);
+    console.log('RESPONSE nextPage',pageNumber < totalPages ? pageNumber + 1 : totalPages);
+    console.log('RESPONSE pageSize',pageSize);
+    console.log('RESPONSE pages',pages);
+
     get_nav_box(ws_info,ws_lang_data);
     get_all_box_items();
+}
+
+//
+async function get_page_box_items(pageNumber,pageSize){
+
+
+}
+//Traigo los datos de la orden para imprimir descargar boleta, enviar factura y facturar
+async function box_get_order_info(pageNumber,pageSize){
+
 }
 
 async function box_filter_select_date(element) {

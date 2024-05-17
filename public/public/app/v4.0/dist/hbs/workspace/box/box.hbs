@@ -6,11 +6,11 @@
                 {{#if active}}
                     <li><a class="active"><b>{{pageNumber}}</b></a></li>
                 {{else}}
-                    <li><a href="#" onclick="get_all_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
+                    <li><a href="#" onclick="get_page_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
                 {{/if}}
             {{/each}}
-            <li><a href="#" onclick="get_all_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
-            <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
+            <li><a href="#" onclick="get_page_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
+            <li><a href="#" onclick="get_page_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
         </ul> 
         <div class="pagination-info pull-right">
             Mostrar
@@ -23,9 +23,7 @@
         </div>
     </div>
     <div id="content_box_commpiled" class="box-body no-padding">
-
-
-    
+    <!-- Imprimo Resultados -->
     </div>
     <div class="box-footer clearfix">                 
         <ul class="pagination pagination-md no-margin pull-left">
@@ -41,66 +39,3 @@
         </ul> 
     </div>
 </div>
-<!--
-<div class="content_box">
-    <div class="box-header clearfix">                 
-        <ul class="pagination pagination-md no-margin pull-left">
-            {{#each pages}}
-                {{#if active}}
-                    <li><a class="active"><b>{{pageNumber}}</b></a></li>
-                {{else}}
-                    <li><a href="#" onclick="get_all_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
-                {{/if}}
-            {{/each}}
-            <li><a href="#" onclick="get_all_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
-            <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
-        </ul> 
-    </div>
-    <div id="content_box_commpiled" class="box-body no-padding">
-    
-    </div>
-    <div class="box-footer clearfix">                 
-        <ul class="pagination pagination-md no-margin pull-left">
-            {{#each pages}}
-                {{#if active}}
-                    <li><a class="active"><b>{{pageNumber}}</b></a></li>
-                {{else}}
-                    <li><a href="#" onclick="get_all_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
-                {{/if}}
-            {{/each}}
-            <li><a href="#" onclick="get_all_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
-            <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
-        </ul> 
-    </div>
-</div>
--->
-<!--MODULE Catalogo COPILED-->
-<!-- MODULE BOX mov COPILED 
-
-    <div class="content_box">
-        <div class="box-header clearfix">                 
-            <ul class="pagination pagination-md no-margin pull-left">
-                <li><a class="active"><b>1</b></a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">Próxima</a></li>
-                <li><a href="#">Última</a></li>
-            </ul> 
-        </div>
-        <div id="content_box_commpiled" class="box-body no-padding">
-        
-        </div>
-
-        <div class="box-footer clearfix">                 
-            <ul class="pagination pagination-md no-margin pull-left">
-                <li><a class="active"><b>1</b></a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">Próxima</a></li>
-                <li><a href="#">Última</a></li>
-            </ul> 
-        </div>
-    </div>
-    </div>
-    -->
-<!--MODULE Catalogo COPILED-->

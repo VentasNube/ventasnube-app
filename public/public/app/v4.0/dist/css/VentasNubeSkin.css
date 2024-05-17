@@ -8696,8 +8696,8 @@ label:focus {
 .alert-success,
 .label-success {
     /* background-color: #00C851 !important;*/
-
-    background: linear-gradient(40deg, #379e1f, #80ea69) !important;
+   /* background: linear-gradient(40deg, #379e1f, #80ea69) !important;*/
+    background: linear-gradient(40deg, #009688, #66BB6A) !important
 }
 
 .bg-navy {
@@ -10685,6 +10685,23 @@ h1 span{
     cursor: pointer;
     text-transform: capitalize;
 }
+.round-icon.line {
+border: 2px solid #575757!important;
+border-radius: 50%;
+color: #575757!important;
+text-align: center;
+position: relative;
+display: inline-block;
+cursor: pointer;
+text-transform: capitalize;
+padding: 5px!important;
+}
+
+.round-icon.line.blue {
+    border: 2px solid #0575e6!important;
+    color: #0575e6;
+    }
+
 
 .round-icon.primary {
     width: 25px;
