@@ -16,6 +16,44 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
     retry: true
 });
 
+
+// CHEKEO O CREO LOS FILTROS
+async function check_filters() {
+    try {
+        // Intentar obtener el documento de filtros de la base de datos local
+        const filters = await box_local_db.get('filtros');
+        console.log(filter)
+        return true;
+    } catch (error) {
+        if (error.name === 'not_found') {
+            // Si el documento no se encuentra, crear un nuevo documento con filtros vacíos
+            console.log('El documento de filtros no se encontró. Creando nuevo documento con filtros vacíos.');
+            // TRAIGO LOS FILTROS DE FECHA DINAMICOS HOY
+            var today = new Date();
+            var yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            // Establecer la fecha de inicio al primer milisegundo de ayer
+            let startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
+            // Establecer la fecha de fin al último milisegundo de ayer
+            let endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
+
+            await box_local_db.put({
+                _id: 'filtros',
+                name_date: ws_lang_data.box_bt_filter_mov_date_Today,
+                startDate: startDate,
+                endDate: endDate,
+                pageNumber: 1,
+                skip: 0,
+                limit: 10,
+            });
+
+            return true;
+        }
+    }
+}
+//CHEKETO O CREO LOS FILTROS POR DEFECTO DE LA SESION
+check_filters();
+
 // TRAIGO LA BARRA
 async function get_nav_box() {
     try {
@@ -32,47 +70,12 @@ async function get_nav_box() {
         }
         // console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
         // Renderizar la plantilla con los datos
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
+        return  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
 
     } catch (error) {
         if (error.name === 'not_found') {
             // Si el documento no se encuentra, crear un nuevo documento con filtros vacíos
-            console.log('El documento de filtros no se encontró. Creando nuevo documento con filtros vacíos.');
-            // TRAIGO LOS FILTROS DE FECHA DINAMICOS HOY
-            var today = new Date();
-            var yesterday = new Date(today);
-            yesterday.setDate(today.getDate() - 1);
-            // Establecer la fecha de inicio al primer milisegundo de ayer
-            let startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
-            // Establecer la fecha de fin al último milisegundo de ayer
-            let endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
-            //button.textContent = "Ayer";
-            //  button_title.textContent = 'Ayer';
-            // name_date: button.textContent,
-            //var name_date = document.getElementById("box_date_filter_btn_tittle");
-
-            await box_local_db.put({
-                _id: 'filtros',
-                skip: 0,
-                limit: 10,
-                //   name_date: name_date,
-                startDate: startDate,
-                endDate: endDate,
-                pageNumber: 1,
-                pageSize: 10,
-            });
-            // Devolver un array vacío como filtros
-            const filters = await box_local_db.get('filtros');
-            // Si se encuentra el documento, devolver los filtros
-            //    console.log('FILTROS', filters);
-            var ws_box_data_nav = {
-                filters: filters,
-                ws_info: ws_info,
-                ws_lang_data: ws_lang_data,
-                user_roles: user_Ctx.userCtx.roles,
-            }
-            //   console.log('ws_box_data_nav',ws_box_data_nav);
-            renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
+           return check_filters();
         }
     }
 }
@@ -172,8 +175,10 @@ async function get_box(pageNumber = 1, limit = 0) {
         //var pageNumber = getPageNumber();
         // var pageSize = filters.pageSize;
         var skip = (pageNumber - 1) * limit;
-       // console.log(skip, 'skip');
-       // console.log(limit, 'Limit');
+        console.log(skip, 'skip');
+        console.log(limit, 'Limit');
+        console.log( filters, 'filters');
+       
         /*
         const updateFields = {
             limit: limit,
@@ -289,7 +294,7 @@ async function get_box(pageNumber = 1, limit = 0) {
             limit: limit
         }
 
-        //console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems',totalFilterItems, 'startKey:', startKey, 'endKey:', endKey);     
+        console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems',totalFilterItems, 'startKey:', startKey, 'endKey:', endKey);     
         await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
         console.log('Imprimo 1')
         await get_nav_box();
@@ -301,6 +306,7 @@ async function get_box(pageNumber = 1, limit = 0) {
         console.error('Error al obtener los datos de la caja:', error);
     }
 }
+
 
 // Selecciono filtro de fecha
 async function box_filter_select_date(element) {
@@ -314,8 +320,9 @@ async function box_filter_select_date(element) {
     // let startDate = filters.startDate;
     //  let endDate = filters.endDate;
     let limit = filters.limit;
+    var skip = filters.skip;
     let pageNumber = filters.pageNumber;
-    let pageSize = filters.pageSize;
+   // let pageSize = filters.limit;
 
     switch (dateValue) {
         case "date_1": // Hoy
@@ -383,9 +390,8 @@ async function box_filter_select_date(element) {
         startDate: startDate,
         endDate: endDate,
         pageNumber: pageNumber,
-        pageSize: pageSize,
-        limit: pageSize,
-        //skip: 0,
+        limit:limit,
+        skip: skip,
     };
     // Llamar a la función para actualizar o crear el documento
     response = await updateOrCreateDocument(updateFields);
