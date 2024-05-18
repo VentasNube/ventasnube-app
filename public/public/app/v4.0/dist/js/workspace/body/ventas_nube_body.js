@@ -243,7 +243,7 @@ function put_left_nav_docOLDOK() {
 };
 
 
-function put_left_nav_doc() {
+async function put_left_nav_doc() {
     // DOC DE NAVEGACION
     try {
         // Código que puede generar errores en PouchDB
@@ -316,9 +316,9 @@ function put_left_nav_doc() {
                             });
                             console.log(err);
                         }
-                        console.log('SE ACTUALIZO EL LEFT NAV');
-                        console.log(userCtx);
-                        console.log(data);
+                       // console.log('SE ACTUALIZO EL LEFT NAV');
+                       // console.log(userCtx);
+                       // console.log(data);
                        // console.log(response);
                     });
                 }

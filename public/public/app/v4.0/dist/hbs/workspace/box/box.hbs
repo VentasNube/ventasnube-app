@@ -1,41 +1,41 @@
 <!-- MODULE BOX mov COPILED -->
-<div class="content_box"></div>
-    <div class="box-header clearfix">                 
-       <ul class="pagination pagination-md no-margin pull-left">
-            {{#each pages}}
-                {{#if active}}
-                    <li><a class="active"><b>{{pageNumber}}</b></a></li>
-                {{else}}
-                    <li><a href="#" onclick="get_page_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
-                {{/if}}
-            {{/each}}
+<div class="content_box">
+    
+</div>
+
+<div class="box-header clearfix">
+        <div class="pagination-info pull-left">
+    <ul class="pagination pagination-md no-margin pull-left">
+        {{#each pages}}
+            {{#if active}}
+            <li><a href="#" class="active"><b>{{pageNumber}}</b></a></li>
+            {{else}}
+            <li><a href="#" pageNumber="{{pageNumber}}" onclick="get_items_box_page_number(this)">{{pageNumber}}</a></li>
+            {{/if}}
+        {{/each}}
+          {{#if  pages/active}}
             <li><a href="#" onclick="get_page_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
             <li><a href="#" onclick="get_page_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
-        </ul> 
-        <div class="pagination-info pull-right">
-            Mostrar
-            <select onchange="change_page_size(this)">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
+               {{/if}}
+        <li class="pull-right">
+            <h5>     ({{{totalItems}}}) Registros encontrados.. </h5>
+        </li>
+    </ul>
     </div>
-    <div id="content_box_commpiled" class="box-body no-padding">
+    <div class="pagination-info pull-right">
+        Mostrar
+        <select onchange="change_page_size(this)">
+            <option {{#ifCond pageSize '5' }} selected {{/ifCond}} value="5">5</option>
+            <option {{#ifCond pageSize '10' }} selected {{/ifCond}} value="10">10</option>
+            <option {{#ifCond pageSize '20' }} selected {{/ifCond}} value="20">20</option>
+            <option {{#ifCond pageSize '50' }} selected {{/ifCond}} value="50">50</option>
+            <option {{#ifCond pageSize '100' }} selected {{/ifCond}} value="100">100</option>
+        </select>
+    </div>
+</div>
+
+<div id="content_box_commpiled" class="box-body no-padding">
     <!-- Imprimo Resultados -->
-    </div>
-    <div class="box-footer clearfix">                 
-        <ul class="pagination pagination-md no-margin pull-left">
-            {{#each pages}}
-                {{#if active}}
-                    <li><a class="active"><b>{{pageNumber}}</b></a></li>
-                {{else}}
-                    <li><a href="#" onclick="get_all_box_items({{pageNumber}}, {{pageSize}})">{{pageNumber}}</a></li>
-                {{/if}}
-            {{/each}}
-            <li><a href="#" onclick="get_all_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
-            <li><a href="#" onclick="get_all_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
-        </ul> 
-    </div>
+    <div class="cart_items_trash"><span class="material-icons xl"> pageview</span><br><span class="cart_items_title">Sin resultados...</span></div>
+</div>
 </div>

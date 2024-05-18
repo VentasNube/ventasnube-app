@@ -6658,13 +6658,13 @@ button:focus {
 }
 
 .pagination>li>a:hover {
-    background-color: #9c27b0;
+    background-color: #575757;
     color: #fff;
 }
 
 .pagination>li>a.active {
     color: #fff;
-    background-color: #9c27b0;
+    background-color: #575757;
     box-shadow: 0 4px 5px 0 #CFD8DC, 0 1px 10px 0 #BDBDBD, 0 2px 4px -1px #B0BEC5;
 }
 
