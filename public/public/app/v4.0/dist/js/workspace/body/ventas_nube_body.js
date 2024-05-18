@@ -9,7 +9,20 @@ ws_info = null; // Doc con la info y configuracion del Ws
 ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 ws_left_nav_data = null;
-
+ws_lang_data_doc = null;
+/*
+//Chekea q los modulos del la URL tengan permisos de lectura
+async function check_ws_lang(ws_id) {
+ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
+// Mapeo el objeto
+var ws_lang = ws_lang_data_doc;
+// SETEO EL ARRAY CON EL IDIOMA Con la variable
+// Recorro el objeto y busco el nombre ws_lang_es o ws_lang_us dependiendo lo que configuro el admin
+ws_lang_default = ws_lang['ws_land_default'];
+// Recorro el objeto con la confuracion seteada en el DOC lang por default
+ws_lang_data = ws_lang[ws_lang_default];
+}*/
+//check_ws_lang(ws_id);
 // ACTUALIZO EL HISTORIAL DE NAVEGACION 
 function updateHistory(curr) {
     window.location.lasthash.Push(window.location.hash);
@@ -45,6 +58,7 @@ async function check_content_module(ws_module_name, m_t_id, m_id, m_var_id) {
 /// MODULE CONFIG
 async function ws_module_config() {
     try {
+       // check_ws_lang(ws_id);
         // userCtx variable global de permisos y roles para filtrar las vistas
         // DOC DE CONFIGURACION GENERAL
         ws_info = await L_catalog_db.get('ws_module_config', { include_docs: true, descending: true });

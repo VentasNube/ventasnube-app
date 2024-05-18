@@ -30,9 +30,18 @@ function chek_cart_open_ws() {
 
 async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_name) {
     try {
-        if (!board_name) {
+      /*  if (!board_name) {
             board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
-        }
+        }   */   
+        if (!board_name) {
+            reedCookie = readCookie('board-now-' + ws_id);
+            board_name = reedCookie;
+            console.log( 'board_name COKIE FAV',  board_name);
+            if(!reedCookie){
+                board_name = 'sell'
+                 console.log( 'board_name DEFECTO FAV',  board_name);
+            }
+        }  
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var ws_cart = {
@@ -61,9 +70,23 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_nam
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id, board_name) {
 
-    if (!board_name) {
+    /*if (!board_name) {
         board_name = readCookie('board-now-' + ws_id);
+    }else{
+        board_name = 'board-now-sell';
     }
+*/
+if (!board_name) {
+    reedCookie = readCookie('board-now-' + ws_id);
+    board_name = reedCookie;
+    console.log( 'board_name COKIE FAV',  board_name);
+    if(!reedCookie){
+        board_name = 'sell'
+         console.log( 'board_name DEFECTO FAV',  board_name);
+    }
+}
+
+    console.log('board_name',board_name);
     let response = await user_db.query(
         'get-cart-' + ws_id + '/cart-item-' + board_name, {
         include_docs: true,
@@ -556,10 +579,6 @@ async function add_cart_item(data) {
 }
 
 
-
-
-
-
 async function dell_cart_item(element) {
     var item_cart_id = $(element).attr('item_cart_id');
     console.log('item_cart_id, item_cart_rev',item_cart_id);
@@ -641,7 +660,13 @@ $(document).on('click', '.right_nav_close', function (event) {
 async function get_fav(ws_id, board_name) {
 
     if (!board_name) {
-        board_name = readCookie('board-now-' + ws_id);
+        reedCookie = readCookie('board-now-' + ws_id);
+        board_name = reedCookie;
+        console.log( 'board_name COKIE FAV',  board_name);
+        if(!reedCookie){
+            board_name = 'sell'
+             console.log( 'board_name DEFECTO FAV',  board_name);
+        }
     }
     // Traigo los resultados de una vista
     let response = await user_db.query(

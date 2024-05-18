@@ -95,11 +95,28 @@ async function get_nav_box() {
         if (error.name === 'not_found') {
             // Si el documento no se encuentra, crear un nuevo documento con filtros vacíos
             console.log('El documento de filtros no se encontró. Creando nuevo documento con filtros vacíos.');
+            // TRAIGO LOS FILTROS DE FECHA DINAMICOS HOY
+            var today = new Date();
+            var yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            // Establecer la fecha de inicio al primer milisegundo de ayer
+            let startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
+            // Establecer la fecha de fin al último milisegundo de ayer
+            let endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
+            //button.textContent = "Ayer";
+            //  button_title.textContent = 'Ayer';
+            // name_date: button.textContent,
+            //var name_date = document.getElementById("box_date_filter_btn_tittle");
+
             await box_local_db.put({
                 _id: 'filtros',
                 skip: 0,
                 limit: 10,
+              //  name_date: name_date,
+                startDate: startDate,
+                endDate: endDate,
                 pageNumber: 1,
+                pageSize: 10,
             });
             // Devolver un array vacío como filtros
             const filters = await box_local_db.get('filtros');
@@ -139,7 +156,11 @@ function getCurrentDateWithTime(hour, minute) {
     return newDate;
 }
 
-// Función para actualizar o crear el documento en la base de datos
+// Llamar a la función para actualizar o crear el documento
+// response = await updateOrCreateDocument(updateFields);
+
+
+// Función para actualizar o crear el documento en la base de datos FILTRO
 async function updateOrCreateDocument(params) {
     try {
         // Intentar obtener el documento
@@ -151,16 +172,34 @@ async function updateOrCreateDocument(params) {
         console.log('Documento actualizado.', existingDoc);
     } catch (error) {
         // Si el documento no existe, crearlo con los campos especificados
+
+        // TRAIGO LOS FILTROS DE FECHA DINAMICOS HOY
+        var today = new Date();
+        var yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        // Establecer la fecha de inicio al primer milisegundo de ayer
+        let startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
+        // Establecer la fecha de fin al último milisegundo de ayer
+        let endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
+        //button.textContent = "Ayer";
+      //  button_title.textContent = 'Ayer';
+       // name_date: button.textContent,
+        var name_date = document.getElementById("box_date_filter_btn_tittle");
+        const params = {
+            name_date: name_date,
+            startDate: startDate,
+            endDate: endDate,
+            pageNumber: 1,
+            pageSize: 10,
+
+        };
         if (error.name === 'not_found') {
             const newDoc = {
                 _id: 'filtros',
-                //filter: [],
                 ...params,
             };
-
             // Guardar el nuevo documento en la base de datos
             await box_local_db.put(newDoc);
-
             console.log('Documento creado.');
         } else {
             console.error('Error al intentar obtener el documento:', error);
@@ -187,7 +226,7 @@ function getPageNumber() {
 // TRAIGO Y ARMO EL MODDULO COMPLETO BOX
 async function get_box() {
     try {
-
+        updateOrCreateDocument();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         //Faltan cargar
