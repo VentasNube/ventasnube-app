@@ -112,7 +112,7 @@ async function get_nav_box() {
                 _id: 'filtros',
                 skip: 0,
                 limit: 10,
-              //  name_date: name_date,
+            //   name_date: name_date,
                 startDate: startDate,
                 endDate: endDate,
                 pageNumber: 1,
@@ -191,6 +191,7 @@ async function updateOrCreateDocument(params) {
             endDate: endDate,
             pageNumber: 1,
             pageSize: 10,
+            limit:5,
 
         };
         if (error.name === 'not_found') {
@@ -226,7 +227,7 @@ function getPageNumber() {
 // TRAIGO Y ARMO EL MODDULO COMPLETO BOX
 async function get_box() {
     try {
-        updateOrCreateDocument();
+        //updateOrCreateDocument();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         //Faltan cargar
@@ -238,11 +239,15 @@ async function get_box() {
         let username = user_data.user_email;
         let startDate = filters.startDate;
         let endDate = filters.endDate;
-        let limit = filters.limit;
+       
         var pageNumber = getPageNumber();
         var pageSize = filters.pageSize;
         var skip = (pageNumber - 1) * pageSize;
+        let limit = filters.limit;
 
+        console.log('FILTER ',filters);
+        console.log('LIMIT',filters.limit);
+        //console.log('LIMIT',limit, skip, pageSize, pageNumber, startKey, endKey)
         // Construye las claves de inicio y fin para la consulta
         let startKey = ["box_mov", username, startDate];
         let endKey = ["box_mov", username, endDate + "\ufff0"];
@@ -263,6 +268,8 @@ async function get_box() {
             startKey.push(...operationTypeList);
             endKey.push(...operationTypeList);
         }
+
+        console.log('LIMIT',limit, skip, pageSize, pageNumber, startKey, endKey)
         // Realiza la consulta en la base de datos utilizando los parámetros proporcionados
         let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
             include_docs: true,
@@ -303,8 +310,14 @@ async function get_box() {
             user_roles: user_Ctx.userCtx.roles
         }
 
-        const totalItems = response.rows.length;
-        const totalPages = Math.ceil(totalItems / pageSize);
+       // const totalItems = response.total_rows;
+        const totalItems = response.total_rows; //ITEMS TOTALES DE LA CONSULTA
+       // const totalFilterItems = response.rows.length;
+        const totalFilterItems = response.rows.length; // ITEMS TOTALES DE LA CONSULTA CON FILTROS
+        const items_rows = response.rows;
+        console.log('RESPONSE response', response);
+        console.log('RESPONSE totalItems', totalItems);
+        const totalPages = Math.ceil(totalItems / pageSize); 
         const pages = [];
         for (let i = 1; i <= totalPages; i++) {
 
@@ -338,10 +351,11 @@ async function get_box() {
             pages: pages,
             pageSize: pageSize,
             nextPage: nextPage,
-            lastPage: totalPages,
+            lastPage: lastPage,
             totalItems: totalItems,
-        }
-       // console.log('IMPRIMO NAV BOX 1');
+            limit:pageSize
+                }
+        console.log('IMPRIMO mov_content', mov_content);
         get_nav_box();
         //  console.log('IMPRIMO CONTENT BOX 2');
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
@@ -435,6 +449,8 @@ async function box_filter_select_date(element) {
         endDate: endDate,
         pageNumber: pageNumber,
         pageSize: pageSize,
+        limit:pageSize,
+        //skip: 0,
     };
     // Llamar a la función para actualizar o crear el documento
     response = await updateOrCreateDocument(updateFields);
@@ -452,6 +468,7 @@ async function change_page_size(element) {
     const updateFields = {
         pageSize: pageSize, // Usar el valor seleccionado
         pageNumber: pageNumber,
+        limit:pageSize,
     };
     // Llamar a la función para actualizar o crear el documento
     await updateOrCreateDocument(updateFields);
@@ -462,7 +479,6 @@ async function change_page_size(element) {
 // TRAE LA PAGINA ESPESIFICA
 async function get_items_box_page_number(element) {
     var pageNumber = element.getAttribute("pageNumber");
-
     const updateFields = {
         // name_date: button.textContent,
         // startDate: startDate,
