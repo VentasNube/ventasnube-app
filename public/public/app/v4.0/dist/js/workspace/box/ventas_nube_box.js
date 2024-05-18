@@ -147,23 +147,7 @@ async function updateOrCreateDocument(params) {
         }
     }
 }
-
-//Traigo la pagina seleccionada del DOM
-function getPageNumberNO() {
-    // Busca el elemento <li> con la clase 'active' dentro del paginador
-    var pageNumber = 1;
-    const activePageItem = document.querySelector('.pagination li.active');
-    // Verifica si se encontró un elemento activo
-    if (activePageItem) {
-        // Si se encontró, obtén el número de página del texto dentro del <a>
-        var pageNumber = parseInt(activePageItem.querySelector('a').innerText);
-        return pageNumber;
-    } else {
-        // Si no se encontró ningún elemento activo, devuelve -1
-        return pageNumber;
-    }
-}
-
+// ARMO Y Traigo el box filtrado
 async function get_box(pageNumber = 1, limit = 0) {
     try {
         // Obtener el documento de filtros
