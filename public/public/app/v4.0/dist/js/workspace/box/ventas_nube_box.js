@@ -16,63 +16,6 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
     retry: true
 });
 
-
-
-
-
-
-
-/* PRUEBA GOOGLE  GEMINI
-
-async function get_box() {
-    try {
-      // ... código existente para obtener datos ...
-  
-      // Esperar a que finalicen todas las operaciones asíncronas antes de renderizar
-      const [ws_box, pages, totalItems, nextPage, lastPage] = await Promise.all([
-        getNavBoxData(), // Llamar a getNavBoxData para obtener datos para la barra de navegación
-        getPaginationData(totalItems, pageSize), // Calcular datos de paginación
-      ]);
-  
-      mov_content = {
-        ws_box,
-        pages,
-        pageSize,
-        nextPage,
-        lastPage,
-        totalItems,
-      };
-  
-      renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
-      renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box);
-      print_mov_item(all_items_array);
-    } catch (error) {
-      console.error('Error al obtener los datos de la caja:', error);
-    }
-  }
-  
-  async function getNavBoxData() {
-    // ... código existente para obtener datos para la barra de navegación ...
-    return ws_box_data_nav; // Devolver el objeto de datos
-  }
-  
-  function getPaginationData(totalItems, pageSize) {
-    const totalPages = Math.ceil(totalItems / pageSize);
-    const pages = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push({
-        pageNumber: i,
-        active: i === pageNumber,
-      });
-    }
-    const nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
-    const lastPage = totalPages;
-    return [pages, totalItems, nextPage, lastPage]; // Devolver una matriz de datos de paginación
-  }
-  */ 
-  // ... función print_mov_item existente ...
-  
-
 // TRAIGO LA BARRA
 async function get_nav_box() {
     try {
@@ -112,7 +55,7 @@ async function get_nav_box() {
                 _id: 'filtros',
                 skip: 0,
                 limit: 10,
-            //   name_date: name_date,
+                //   name_date: name_date,
                 startDate: startDate,
                 endDate: endDate,
                 pageNumber: 1,
@@ -136,7 +79,7 @@ async function get_nav_box() {
 
 // IMPRIMO MOV
 async function print_mov_item(all_items_array) {
-   // let total_items = all_items_array.length;
+    // let total_items = all_items_array.length;
     var search_result = {
         search_mov: all_items_array,
         price_list: price_doc.price_list,
@@ -155,11 +98,6 @@ function getCurrentDateWithTime(hour, minute) {
     var newDate = new Date(year, month, day, hour, minute);
     return newDate;
 }
-
-// Llamar a la función para actualizar o crear el documento
-// response = await updateOrCreateDocument(updateFields);
-
-
 // Función para actualizar o crear el documento en la base de datos FILTRO
 async function updateOrCreateDocument(params) {
     try {
@@ -182,16 +120,15 @@ async function updateOrCreateDocument(params) {
         // Establecer la fecha de fin al último milisegundo de ayer
         let endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
         //button.textContent = "Ayer";
-      //  button_title.textContent = 'Ayer';
-       // name_date: button.textContent,
+        //  button_title.textContent = 'Ayer';
+        // name_date: button.textContent,
         var name_date = document.getElementById("box_date_filter_btn_tittle");
         const params = {
             name_date: name_date,
             startDate: startDate,
             endDate: endDate,
             pageNumber: 1,
-            pageSize: 10,
-            limit:5,
+            limit: 5,
 
         };
         if (error.name === 'not_found') {
@@ -209,7 +146,7 @@ async function updateOrCreateDocument(params) {
 }
 
 //Traigo la pagina seleccionada del DOM
-function getPageNumber() {
+function getPageNumberNO() {
     // Busca el elemento <li> con la clase 'active' dentro del paginador
     var pageNumber = 1;
     const activePageItem = document.querySelector('.pagination li.active');
@@ -224,33 +161,37 @@ function getPageNumber() {
     }
 }
 
-// TRAIGO Y ARMO EL MODDULO COMPLETO BOX
-async function get_box() {
+async function get_box(pageNumber = 1, limit = 0) {
     try {
-        //updateOrCreateDocument();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
-        //Faltan cargar
+        let username = user_data.user_email;
+        let startDate = filters.startDate;
+        let endDate = filters.endDate;
+        var limit = filters.limit;
+        //var pageNumber = getPageNumber();
+        // var pageSize = filters.pageSize;
+        var skip = (pageNumber - 1) * limit;
+       // console.log(skip, 'skip');
+       // console.log(limit, 'Limit');
+        /*
+        const updateFields = {
+            limit: limit,
+            skip:skip,
+        };
+        // Actualiza el filtro de limite actual, en la db
+        await updateOrCreateDocument(updateFields);
+        */
+        //FILTROS ADICIONALES
         let userList;
         let clientList;
         let paymentTypeList;
         let operationTypeList;
-        // Ya se toman de la configuracion
-        let username = user_data.user_email;
-        let startDate = filters.startDate;
-        let endDate = filters.endDate;
-       
-        var pageNumber = getPageNumber();
-        var pageSize = filters.pageSize;
-        var skip = (pageNumber - 1) * pageSize;
-        let limit = filters.limit;
-
-        console.log('FILTER ',filters);
-        console.log('LIMIT',filters.limit);
-        //console.log('LIMIT',limit, skip, pageSize, pageNumber, startKey, endKey)
-        // Construye las claves de inicio y fin para la consulta
+        // Construir las claves de inicio y fin para la consulta
         let startKey = ["box_mov", username, startDate];
         let endKey = ["box_mov", username, endDate + "\ufff0"];
+
+        // Construye las claves de inicio y fin para la consulta\
         // Agrega filtros adicionales a las claves de inicio y fin, si están presentes
         if (userList && userList.length > 0) {
             startKey.push(...userList);
@@ -269,10 +210,22 @@ async function get_box() {
             endKey.push(...operationTypeList);
         }
 
-        console.log('LIMIT',limit, skip, pageSize, pageNumber, startKey, endKey)
-        // Realiza la consulta en la base de datos utilizando los parámetros proporcionados
+        // Realizar una consulta para contar todos los documentos filtrados
+        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+            include_docs: false,
+            startkey: startKey,
+            endkey: endKey,
+            inclusive_end: true,
+            reduce: true,
+            group_level: 0
+        });
+        
+        //console.log(countResponse, 'countResponse');
+        // Total de documentos filtrados
+        const totalFilterItems = countResponse.rows.length;
+        // Realizar la consulta paginada
         let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            include_docs: true,
+            include_docs: false,
             startkey: startKey,
             endkey: endKey,
             limit: limit,
@@ -304,23 +257,9 @@ async function get_box() {
             status: value.status,
         }));
 
-        var ws_box = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles
-        }
-
-       // const totalItems = response.total_rows;
-        const totalItems = response.total_rows; //ITEMS TOTALES DE LA CONSULTA
-       // const totalFilterItems = response.rows.length;
-        const totalFilterItems = response.rows.length; // ITEMS TOTALES DE LA CONSULTA CON FILTROS
-        const items_rows = response.rows;
-        console.log('RESPONSE response', response);
-        console.log('RESPONSE totalItems', totalItems);
-        const totalPages = Math.ceil(totalItems / pageSize); 
+        const totalPages = Math.ceil(totalFilterItems / limit);
         const pages = [];
         for (let i = 1; i <= totalPages; i++) {
-
             if (i === pageNumber) {
                 pages.push({
                     pageNumber: i,
@@ -336,31 +275,27 @@ async function get_box() {
 
         let nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
         let lastPage = totalPages;
-
-       /* console.log('RESPONSE pages', pageNumber);
-        console.log('RESPONSE pages', pages);
-        console.log('RESPONSE skip', skip);
-        console.log('RESPONSE pageSize', pageSize);
-        console.log('RESPONSE nextPage', nextPage);
-        console.log('RESPONSE lastPage', lastPage);
-        console.log('RESPONSE totalItems', totalItems);
-        console.log('RESPONSE totalPages', totalPages);
-        */
+        var ws_box = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles
+        }
         mov_content = {
             ws_box: ws_box,
             pages: pages,
-            pageSize: pageSize,
             nextPage: nextPage,
             lastPage: lastPage,
-            totalItems: totalItems,
-            limit:pageSize
-                }
-        console.log('IMPRIMO mov_content', mov_content);
-        get_nav_box();
-        //  console.log('IMPRIMO CONTENT BOX 2');
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
-        //  console.log('IMPRIMO ITEMS BOX 3');
-        print_mov_item(all_items_array);
+            totalItems: totalFilterItems,
+            limit: limit
+        }
+
+        //console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems',totalFilterItems, 'startKey:', startKey, 'endKey:', endKey);     
+        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
+        console.log('Imprimo 1')
+        await get_nav_box();
+        console.log('Imprimo 2')
+        await print_mov_item(all_items_array);
+        console.log('Imprimo 3')
 
     } catch (error) {
         console.error('Error al obtener los datos de la caja:', error);
@@ -449,7 +384,7 @@ async function box_filter_select_date(element) {
         endDate: endDate,
         pageNumber: pageNumber,
         pageSize: pageSize,
-        limit:pageSize,
+        limit: pageSize,
         //skip: 0,
     };
     // Llamar a la función para actualizar o crear el documento
@@ -459,41 +394,17 @@ async function box_filter_select_date(element) {
 }
 
 // Selecciono cantidad por pagina
-async function change_page_size(element) {
-    const pageSize = $(element).val(); // Obtener el valor seleccionado del elemento
-    console.log("ITEMS POR PAGINA", pageSize);
-    // Definir los campos a actualizar en el documento
-    const pageNumber = getPageNumber();
-
+async function change_page_limit(element) {
+    const limit = $(element).val(); // Obtener el valor seleccionado del elemento
+    const page = 1;
+    console.log("ITEMS POR PAGINA", limit);
     const updateFields = {
-        pageSize: pageSize, // Usar el valor seleccionado
-        pageNumber: pageNumber,
-        limit:pageSize,
+        limit: limit,
     };
     // Llamar a la función para actualizar o crear el documento
     await updateOrCreateDocument(updateFields);
     // Llamar a otras funciones necesarias
-    get_box();
-}
-
-// TRAE LA PAGINA ESPESIFICA
-async function get_items_box_page_number(element) {
-    var pageNumber = element.getAttribute("pageNumber");
-    const updateFields = {
-        // name_date: button.textContent,
-        // startDate: startDate,
-        //  endDate: endDate,
-        pageNumber: pageNumber,
-        //   pageSize: pageSize,
-    };
-    // Llamar a la función para actualizar o crear el documento
-    response = await updateOrCreateDocument(updateFields);
-    get_box();
-}
-
-//Traigo los datos de la orden para imprimir descargar boleta, enviar factura y facturar
-async function box_get_order_info(pageNumber, pageSize) {
-
+    get_box(page,limit);
 }
 
 /// COSAS Q FALTAN 24

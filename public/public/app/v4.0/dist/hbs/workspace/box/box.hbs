@@ -1,6 +1,6 @@
 <!-- MODULE BOX mov COPILED -->
 <div class="content_box">
-    
+
 </div>
 
 <div class="box-header clearfix">
@@ -10,13 +10,13 @@
             {{#if active}}
             <li><a href="#" class="active"><b>{{pageNumber}}</b></a></li>
             {{else}}
-            <li><a href="#" pageNumber="{{pageNumber}}" onclick="get_items_box_page_number(this)">{{pageNumber}}</a></li>
+            <li><a href="#" onclick="get_box({{pageNumber}})">{{pageNumber}}</a></li>
             {{/if}}
         {{/each}}
-          {{#if  pages/active}}
-            <li><a href="#" onclick="get_page_box_items({{nextPage}}, {{pageSize}})">Próxima</a></li>
-            <li><a href="#" onclick="get_page_box_items({{lastPage}}, {{pageSize}})">Última</a></li>
-               {{/if}}
+        {{#if  pages}}
+            <li><a href="#" onclick="get_box({{nextPage}})">Próxima</a></li>
+            <li><a href="#" onclick="get_box({{lastPage}})">Última</a></li>
+        {{/if}}
         <li class="pull-right">
             <h5>     ({{{totalItems}}}) Registros encontrados.. </h5>
         </li>
@@ -24,12 +24,12 @@
     </div>
     <div class="pagination-info pull-right">
         Mostrar
-        <select onchange="change_page_size(this)">
-            <option {{#ifCond pageSize '5' }} selected {{/ifCond}} value="5">5</option>
-            <option {{#ifCond pageSize '10' }} selected {{/ifCond}} value="10">10</option>
-            <option {{#ifCond pageSize '20' }} selected {{/ifCond}} value="20">20</option>
-            <option {{#ifCond pageSize '50' }} selected {{/ifCond}} value="50">50</option>
-            <option {{#ifCond pageSize '100' }} selected {{/ifCond}} value="100">100</option>
+        <select onchange="change_page_limit(this)">
+            <option {{#ifCond limit '5' }} selected {{/ifCond}} value="5">5</option>
+            <option {{#ifCond limit '10' }} selected {{/ifCond}} value="10">10</option>
+            <option {{#ifCond limit '20' }} selected {{/ifCond}} value="20">20</option>
+            <option {{#ifCond limit '50' }} selected {{/ifCond}} value="50">50</option>
+            <option {{#ifCond limit '100' }} selected {{/ifCond}} value="100">100</option>
         </select>
     </div>
 </div>
