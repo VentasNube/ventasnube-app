@@ -1751,6 +1751,14 @@ async function new_order_pay(element) {
     const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${doc.category_id}`;
     //const { ws_id, hour, minutes } = doc;
     const entry_date = { hour, minutes } = await getDateTimeMinutes();
+
+    ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    // Mapeo el contenido del objeto ws_left_nav M
+    ws_left_nav_data = ws_left_nav['ws_left_nav'];
+     user_Ctx = ws_left_nav.userCtx;
+    // Mapeo el contenido del objeto userCtx
+    userCtx = user_Ctx.userCtx;
     try {
         // Map the order document to an array
      let response = await L_box_db.put({
@@ -1760,7 +1768,8 @@ async function new_order_pay(element) {
             mov_id: mov_id_new ,
             status: 'Close',
             entry_date: new Date(), //fecha actual del navegador
-            user_name: userCtx.userCtx.name ,
+            user_name: userCtx.name ,
+            client_id: doc.customer.id,
             client: doc.customer,
             total_service: doc.total_service,
             total_products: doc.total_products,

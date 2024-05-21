@@ -147,6 +147,7 @@ async function updateOrCreateDocument(params) {
         }
     }
 }
+
 // ARMO Y Traigo el box filtrado
 async function get_box(pageNumber = 1, limit = 0) {
     try {
@@ -173,6 +174,7 @@ async function get_box(pageNumber = 1, limit = 0) {
         */
         //FILTROS ADICIONALES
         let userList;
+        //let clientList = ['contact_17157362925334996911079436024','contact_17157363131576457076707513922','contact_17157362997728088647513453167'];
         let clientList;
         let paymentTypeList;
         let operationTypeList;
@@ -277,6 +279,10 @@ async function get_box(pageNumber = 1, limit = 0) {
             totalItems: totalFilterItems,
             limit: limit
         }
+
+
+        console.log( 'all_items_array',   all_items_array ) 
+
 
         console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems',totalFilterItems, 'startKey:', startKey, 'endKey:', endKey);     
         await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);

@@ -144,11 +144,22 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
 
 ////----(1 LEFT NAV)---/////
 //Creo el doc y lo guardo el la db
-function put_left_nav_docOLDOK() {
+async function put_left_nav_doc() {
     // DOC DE NAVEGACION
-    ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-    if (ws_left_nav) {
+   // ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    // Mapeo el contenido del objeto ws_left_nav M
+    ws_left_nav_data = ws_left_nav['ws_left_nav'];
+     user_Ctx = ws_left_nav.userCtx;
+    // Verificar si el documento ya existe y tiene una revisión (_rev)
+    if (ws_left_nav && ws_left_nav._rev) {
+        // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
+        //alert('El documento ya ha sido editado. Se encontró un conflicto de documentos.');
+        return;
     }
+
     $.ajax({
         url: "/body/left_nav",
         type: "POST",
@@ -156,8 +167,8 @@ function put_left_nav_docOLDOK() {
         success: function (ws_left_nav) {
             if (ws_left_nav.result == true) {
               //  console.log('Solicitud ajax ws_left_nav ok! ws_id:' + ws_id);
-                // console.log('userCtx L nav doc 1');
-               // console.log(userCtx);
+             console.log('userCtx L nav doc 1');
+               console.log(userCtx);
                // console.log('ws_left_nav');
                // console.log(ws_left_nav);
 
@@ -257,12 +268,14 @@ function put_left_nav_docOLDOK() {
 };
 
 
-async function put_left_nav_doc() {
+async function put_left_nav_docOKOLD() {
     // DOC DE NAVEGACION
     try {
         // Código que puede generar errores en PouchDB
         // ...
     ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    console.log('userCtx',userCtx)
     // Verificar si el documento ya existe y tiene una revisión (_rev)
     if (ws_left_nav && ws_left_nav._rev) {
         // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
@@ -308,6 +321,7 @@ async function put_left_nav_doc() {
                         });
                     });
                 } else {
+                  
                     user_db.put({
                         _id: 'ws_left_nav_' + ws_id,
                         _rev: doc._rev,
