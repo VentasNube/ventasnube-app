@@ -59,6 +59,11 @@ async function get_nav_box() {
     try {
         // Intentar obtener el documento de filtros de la base de datos local
         const filters = await box_local_db.get('filtros');
+       // const category_list = await  L_box_db.get('category_list');
+       //   const operation_type_list = await  L_box_db.get('operation_type_list');
+       //    const payment_type_list = await  L_box_db.get('payment_type_list');
+       //  const colaboration_list = await  L_box_db.get('colaboration_list');
+
         // Si se encuentra el documento, devolver los filtros
         // Preparar los datos para la plantilla
         var ws_box_data_nav = {
@@ -66,6 +71,9 @@ async function get_nav_box() {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
+         // category_list:category_list,
+          //  operation_type_list:operation_type_list,
+            //payment_type_list:payment_type_list,
             // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
         }
         // console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
@@ -297,7 +305,6 @@ async function get_box(pageNumber = 1, limit = 0) {
     }
 }
 
-
 // Selecciono filtro de fecha
 async function box_filter_select_date(element) {
     var dateValue = element.getAttribute("value");
@@ -402,6 +409,258 @@ async function change_page_limit(element) {
     // Llamar a otras funciones necesarias
     get_box(page,limit);
 }
+
+/// CRUD CATEGORIAS 2024
+
+// CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023
+// BUSCO
+async function box_search_cat(e, element) {
+    //traigo el resultado mas parecido con find
+    var doc_id = $(element).attr('doc_id');
+    var new_cat_val = $(element).val();
+    var select_div_id = "#box_select_new_cat_list";
+    var new_cat = String(new_cat_val);
+    if (new_cat) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_box_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_cat);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                cat_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                no_result: true
+            }
+        }
+        // console.log('CAT LIST LIST LISTTTT', cat_list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/list/box_edit_item_cat_list.hbs', select_div_id, cat_list_search);
+
+
+    }
+
+}
+
+///  LISTADO EN FORM NUEVO PRODUCTO
+async function box_search_new_prod_cat(e, element) {
+    //traigo el resultado mas parecido con find
+    var doc_id = $(element).attr('doc_id');
+    var new_cat_val = $(element).val();
+    var select_div_id = "#box_select_new_cat_list";
+    var new_cat = String(new_cat_val);
+    if (new_cat) {
+        // let doc_id_s = String(doc_id);  // Me aseguro q sea un string
+        let doc = await L_box_db.get('category_list'); //Filstro con una busqueda que incluya las palabras que ingreso al input
+
+        const filterItems = query => {
+            return doc.category_list.filter((el) =>
+                el.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
+        }
+
+        var search_list = filterItems(new_cat);
+
+        if (search_list.length >= 1) {
+            // creo un array con los datos del producto y la lista de categorias actualizadas
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                cat_find_list: search_list
+            }
+            //renderizo las categorias nuevas filtradas
+
+        } else if (search_list == null) {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                cat_find_list: doc.category_list
+            }
+        }
+        else {
+            var cat_list_search = {
+                ws_lang_data: ws_lang_data,
+                user_roles: user_Ctx.userCtx.roles,
+                doc_id: doc_id,
+                no_result: true
+            }
+        }
+        // console.log('CAT LIST LIST LISTTTT', cat_list_search);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/box_new_item_cat_list.hbs', select_div_id, cat_list_search);
+    }
+}
+
+
+// ELIMINO
+async function box_dell_cat(element) {
+    event.preventDefault(element);
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let value = $(element).attr('value');
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar la categoria ' + value + ' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+            onActionClick: async function (element) {
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_box_db.get('category_list');
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+                const new_cat_list = doc.category_list.filter(word => word.value != value);
+                //Reemplazo el array por el filtrado
+                console.log(new_cat_list);
+                doc.category_list = new_cat_list;
+                console.log(doc.category_list);
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_box_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        box_edit_item_url(doc_id, 1);
+                        $(element).parent('li').remove();
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+// AGREGO
+async function box_add_new_cat(element) {
+    event.preventDefault(element);
+    try {
+        var doc_id = $(element).attr('doc_id');
+        var new_cat_val = $('#box_new_cat_input').val();
+        //  var input_value = $(element).attr('input_value');
+        //var input_id = $(element).attr('doc_id');
+        var new_cat = String(new_cat_val);
+        // .toLowerCase()
+        // Filtro si el input esta bacio
+        if (new_cat) {
+            let doc_id_s = String('category_list');  // Me aseguro q sea un string
+            let doc = await L_box_db.get(doc_id_s);
+            const tag_index = doc.category_list.find((objeto) => objeto.value == new_cat);  // Verigico q el item a agregar ya no este repetido
+            if (tag_index) {
+                Snackbar.show({
+                    text: ' <span class="material-icons">category</span> La categoria ' + new_cat_val + ' ya existe!',
+                    width: '475px',
+                    pos: 'bottom-right',
+                    actionTextColor: "#4CAF50",
+                });
+            }
+            else {
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
+                var arr_number_id_valid = doc.category_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
+                    var new_item = {
+                        id: arr_number_id,
+                        value: new_cat,
+                        sub_category: []
+                    }
+                }
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+                var new_doc = doc.category_list.unshift(new_item);  //Envio los datos editados al documento
+
+                var response = await L_box_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    $('#catalog_select_cat_value').html(new_cat);
+                    $('#catalog_select_cat_value').attr('catalog_select_cat_value', arr_number_id);
+
+                    Snackbar.show({
+                        text: 'La categoria ' + new_cat_val + ' se agrego!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+
+                    box_select_new_cat(element, new_cat);
+                } else {
+                    alert("no se actualizo");
+                }
+            }
+        }
+        else {
+            Snackbar.show({
+                text: ' La categoria no puede estar bacia',
+                width: '475px',
+                pos: 'bottom-right',
+                actionTextColor: "#4CAF50"
+            });
+        }
+    } catch (err) {
+
+    }
+}
+
+
+// SELECCIONO
+async function box_select_new_cat(element, new_cat) {
+    let item_value_id = $(element).attr('item_value_id');
+    var new_item = new_cat;
+    if (new_item) {
+        var item_value = new_item;
+    } else {
+        var item_value = $(element).attr('item_value');
+    }
+    try {
+        $('#box_select_cat_value').attr('box_select_cat_value', item_value_id);
+        $('#box_select_cat_value').html(item_value);
+        $('#box_select_cat_tittle').html(item_value);
+        //traigo el documento a editar
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 
 /// COSAS Q FALTAN 24
 async function mov_edit_put(formData, doc_id) {

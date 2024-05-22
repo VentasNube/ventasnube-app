@@ -1117,6 +1117,7 @@ async function add_new_tag(element) {
         $(element).css("color", "red");
     }
 }
+
 // ELIMINO
 async function dell_tag(element) {
     try {
@@ -1343,7 +1344,6 @@ async function catalog_product_edit_model(element) {
     }
     // catalog_edit_item_url(doc_id, 1);
 }
-
 
 ////////////////////////////////////
 // CREAR NUEVO ( PRODUCTO ) 2023 //
