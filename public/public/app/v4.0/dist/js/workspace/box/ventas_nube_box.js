@@ -59,10 +59,10 @@ async function get_nav_box() {
     try {
         // Intentar obtener el documento de filtros de la base de datos local
         const filters = await box_local_db.get('filtros');
-       // const category_list = await  L_box_db.get('category_list');
-       //   const operation_type_list = await  L_box_db.get('operation_type_list');
-       //    const payment_type_list = await  L_box_db.get('payment_type_list');
-       //  const colaboration_list = await  L_box_db.get('colaboration_list');
+        const category_list = await  L_box_db.get('category_list');
+        const payment_type_list = await  L_box_db.get('payment_type_list');
+      //  const operation_type_list = await  L_box_db.get('operation_type_list');
+       const colaboration_list = await  L_board_db.get('colaborator_list');
 
         // Si se encuentra el documento, devolver los filtros
         // Preparar los datos para la plantilla
@@ -71,12 +71,13 @@ async function get_nav_box() {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-         // category_list:category_list,
-          //  operation_type_list:operation_type_list,
-            //payment_type_list:payment_type_list,
+            colaborator_list:colaboration_list,
+            category_list:category_list,
+            payment_type_list:payment_type_list,
+            // operation_type_list:operation_type_list,
             // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
         }
-        // console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
+        console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
         // Renderizar la plantilla con los datos
         return  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
 

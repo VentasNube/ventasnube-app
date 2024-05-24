@@ -15,6 +15,7 @@
                                 chevron_right
                             </span>
                         </div>
+                        <!-- FILTRO POR FECHA -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -26,7 +27,6 @@
                                     </span>
                                     <span id="box_date_filter_btn"> {{filters.name_date}}</span>
                                 </button>
-
                                 <ul class="dropdown-menu open-right m">
                                     {{#with ws_lang_data}}
                                     <li class="header">
@@ -42,15 +42,16 @@
                                         <li onclick="box_filter_select_date(this)" value="date_1">
                                             <div class="dropdown-item">
                                                 <a href="#">{{box_bt_filter_mov_date_Today}}
-                                                     <span class="pull-right margin-r-10">
+                                                    <span class="pull-right margin-r-10">
                                                         <span class="material-icons">
-                                                            {{#ifCond box_bt_filter_mov_date_Today ../filters.name_date }}
+                                                            {{#ifCond box_bt_filter_mov_date_Today ../filters.name_date
+                                                            }}
                                                             radio_button_checked
                                                             {{else}}
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                   </span>
+                                                    </span>
                                                 </a>
                                             </div>
                                         </li>
@@ -59,29 +60,30 @@
                                                 <a href="#">{{box_bt_filter_mov_date_Yesterday}}
                                                     <span class="pull-right margin-r-10">
                                                         <span class="material-icons">
-                                                            {{#ifCond box_bt_filter_mov_date_Yesterday 
+                                                            {{#ifCond box_bt_filter_mov_date_Yesterday
                                                             ../filters.name_date }}
                                                             radio_button_checked
                                                             {{else}}
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                  </span>
+                                                    </span>
                                                 </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_3">
                                             <div class="dropdown-item">
                                                 <a href="#">{{box_bt_filter_mov_date_Last_Week}}
-                                                     <span class="pull-right margin-r-10">
+                                                    <span class="pull-right margin-r-10">
                                                         <span class="material-icons">
-                                                            {{#ifCond    box_bt_filter_mov_date_Last_Week ../filters.name_date}}
+                                                            {{#ifCond box_bt_filter_mov_date_Last_Week
+                                                            ../filters.name_date}}
                                                             radio_button_checked
                                                             {{else}}
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                  </span>
+                                                    </span>
                                                 </a>
                                             </div>
                                         </li>
@@ -97,7 +99,7 @@
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                  </span>
+                                                    </span>
                                                 </a>
 
                                             </div>
@@ -114,14 +116,14 @@
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                   </span>
+                                                    </span>
                                                 </a>
                                             </div>
                                         </li>
                                         <li onclick="box_filter_select_date(this)" value="date_6">
                                             <div class="dropdown-item">
                                                 <a href="#">{{box_bt_filter_mov_date_Custom}}
-                                                     <span class="pull-right margin-r-10">
+                                                    <span class="pull-right margin-r-10">
                                                         <span class="material-icons">
                                                             {{#ifCond ../filters.name_date
                                                             box_bt_filter_mov_date_Custom}}
@@ -130,7 +132,7 @@
                                                             radio_button_unchecked
                                                             {{/ifCond}}
                                                         </span>
-                                                  </span>
+                                                    </span>
                                                 </a>
                                             </div>
                                         </li>
@@ -138,16 +140,18 @@
 
                                     {{/with}}
                                 </ul>
-
                             </div>
                         </div>
-                         <div class="input-group flex">
+                        <!-- FILTRO POR COLABORADOR -->
+                        <div class="input-group flex">
                             <div class="btn-group dropright">
-                                <button id="" type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="material-icons">
                                         account_circle
                                     </span>
-                                    <span id="catalog_select_cat_tittle">Colaboradores <span> </span></span></button>
+                                    <span id="catalog_select_cat_tittle">Colaboradores <span> </span></span>
+                                </button>
 
                                 <ul class="dropdown-menu open-right  m">
                                     <!--ul class="dropdown-menu m pull-right"></ul-->
@@ -157,9 +161,8 @@
                                         </span>
                                         colaboradores
                                         <span class="material-icons">arrow_right</span>
-                                        <span id="catalog_select_cat_value"></span>
+                                        <span id="box_select_cat_value"></span>
                                     </li>
-
                                     <li>
                                         <div>
                                             <input input_id="catalog_cat_input" id="catalog_new_cat_input"
@@ -169,92 +172,99 @@
                                         </div>
                                     </li>
 
-                                    <div id="catalog_select_new_cat_list">
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="9721802"
-                                            item_value="Peluqueria" item_id="category">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Mariano Marchesi
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="Peluqueria" class="material-icons"
-                                                        onclick="catalog_dell_cat(this)">delete</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="1"
-                                            item_value="Bebidas" item_id="category">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Teo Marchesi
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="Bebidas" class="material-icons"
-                                                        onclick="catalog_dell_cat(this)">delete</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                    </div>
-                                </ul>
-
-                            </div>
-                        </div>
-                          <div class="input-group flex">
-                                    <div class="btn-group dropright">
-                                        <button id="" type="button"
-                                            class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                                data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
-                                                category
-                                            </span>
-
-                                            <span id="box_select_cat_tittle"> {{#with ws_lang_data}}
-                                                {{{m_catalog_edit_category}}} {{/with}} <span>
-                                        </button>
-
-                                        <ul class="dropdown-menu open-right  m">
-                                            <!--ul class="dropdown-menu m pull-right"></ul-->
-                                            <li class="header">
-                                                <span class="material-icons" data-toggle="tooltip"
-                                                    data-placement="bottom"
-                                                    data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
-                                                    category
-                                                </span>
-                                                {{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}
-                                                <span class="material-icons">arrow_right</span>
-                                                <span id="box_select_cat_value"></span>
-                                            </li>
-
-                                            <li>
-                                                <div>
-                                                    <input input_id="box_cat_input" id="box_new_cat_input"
-                                                        class="form-control"
-                                                        onkeypress="box_search_new_prod_cat(event,this)" type="text"
-                                                        doc_id="{{_id }}"
-                                                        placeholder="{{#with ws_lang_data}} {{{m_catalog_edit_add}}} {{{m_catalog_edit_new}}} {{{m_catalog_edit_category}}} {{/with}} ">
+                                    <div id="box_select_new_cat_list">
+                                        {{#each colaborator_list/colaborator_list}}
+                                            <li onclick="box_filter_select_colaborator(this)" item_value_id="{{id}}"
+                                                item_value="{{first_name}} {{ last_name}}" item_id="{{id}}">
+                                                <div class="dropdown-item">
+                                                    <a href="#"> {{first_name}} {{ last_name}}
+                                                        <span class="pull-right margin-r-10">
+                                                            <span class="material-icons">
+                                                                {{#ifCond colaborator_list.id ../filters.colaborator.id }}
+                                                                check_box
+                                                                {{else}}
+                                                                check_box_outline_blank
+                                                                {{/ifCond}}
+                                                            </span>
+                                                        </span>
+                                                    </a>
                                                 </div>
                                             </li>
-
-                                            <div id="box_select_new_cat_list">
-                                                {{#each category_list/category_list }}
-                                                <li onclick='box_select_new_cat(this)' item_value_id="{{id}}"
-                                                    item_value="{{value}}" item_id="category">
-                                                    <div class="dropdown-item">
-                                                        <a href="#">
-                                                            {{value}}
-                                                        </a>
-                                                        <button>
-                                                            <span doc_id="" value="{{value}}" class="material-icons"
-                                                                onclick='box_dell_cat(this)'>delete</span>
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                                {{/each}}
-                                            </div>
-                                        </ul>
+                                        {{/each}}
+                                      
                                     </div>
+                                      <div class="dropdown-menu-footer">
+                                            <button class="btn btn-primary btn-full-with md">
+                                                Guardar
+                                            </button>
+                                        </div>
+                                </ul>
+                               
                             </div>
+                        </div>
+                          <!-- FILTRO POR CATEGORIA -->
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                        data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
+                                        category
+                                    </span>
+
+                                    <span id="box_select_cat_tittle"> {{#with ws_lang_data}}
+                                        {{{m_catalog_edit_category}}} {{/with}} <span>
+                                </button>
+
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
+                                            category
+                                        </span>
+                                        {{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="box_select_cat_value"></span>
+                                    </li>
+                                      <li>
+                                        <div>
+                                            <input input_id="catalog_cat_input" id="catalog_new_cat_input"
+                                                class="form-control"
+                                                onkeypress="catalog_search_new_prod_cat(event,this)" type="text"
+                                                doc_id="" placeholder="Buscar Colaborador ">
+                                        </div>
+                                    </li>
+
+                                    <div id="box_select_new_cat_list">
+                                        {{#each category_list/category_list}}
+                                        <li onclick="box_filter_select_colaborator(this)" item_value_id="{{value}}"
+                                            item_value="  {{value}}" item_id="{{id}}">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                     {{value}}
+                                                </a>
+                                                <button>
+                                                    <input {{#ifCond category_list.id ../filters.category_list.id }}
+                                                                checked
+                                                                {{else}}
+                                                            {{/ifCond}}
+                                                     type="checkbox" doc_id="{{id}}"onclick="box_filter_select_category(this)">
+                                                </button>
+                                            </div>
+                                        </li>
+                                        {{/each}}
+                                    </div>
+                                    <div class="dropdown-menu-footer">
+                                            <button class="btn btn-primary btn-full-with md">
+                                                Guardar
+                                            </button>
+                                        </div>
+                                </ul>
+                            </div>
+                        </div>
+                          <!-- FILTRO POR OPERACIONES -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -339,7 +349,7 @@
 
                             </div>
                         </div>
-                       
+                         <!-- FILTRO POR MEDIO DE PAGO -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -436,6 +446,7 @@
 
                             </div>
                         </div>
+                        <!-- BARRAR FILTROS -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
                                 <button id="" type="button"
@@ -501,6 +512,6 @@
         </div>
         {{/with}}
     </div>
-  
+
 </div>
 </div>
