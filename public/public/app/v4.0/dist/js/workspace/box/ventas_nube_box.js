@@ -333,13 +333,12 @@ async function get_box(pageNumber = 1, limit = 10) {
     try {
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
-       // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
+        // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
         let username = 'smartmobile.com.ar@gmail.com';  // Puedes cambiarlo según el usuario actual
 
-        
         let startDate = filters.startDate;
         let endDate = filters.endDate;
-        limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
+        let limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
         var skip = (pageNumber - 1) * limit;
 
         // Definir listas de filtros
@@ -810,6 +809,392 @@ async function box_select_new_cat(element, new_cat) {
         console.log(err);
     }
 
+}
+
+async function put_new_boxNOOLD() {
+    try {
+        const docId = '_' + board_name; // Generar un ID único
+        const ws_id = 'your_workspace_id'; // Asegúrate de definir tu workspace_id
+
+        // Listas de categorías, tipos de pago y tipos de operación
+        const category_list = [
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "out",
+            },
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            },
+            {
+                "value": 'Ingreso cambio',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            },
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            }
+        ];
+
+        const payment_type_list = [
+            {
+                "value": 'Efectivo',
+                "color": "bg-green",
+                "icon": "payments",
+                "type": "out",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Tarjeta de credito',
+                "color": "bg-green",
+                "icon": "credit_card",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Qr',
+                "color": "bg-green",
+                "icon": "qr_code",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Debito',
+                "color": "bg-green",
+                "icon": "account_balance_wallet",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Transferencia',
+                "color": "bg-green",
+                "icon": "account_balance",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            }
+        ];
+
+        const operation_type_list = [
+            {
+                "value": 'Ventas',
+                "color": "bg-green",
+                "icon": "payments",
+                "type": "in",
+            },
+            {
+                "value": 'Compras',
+                "color": "bg-green",
+                "icon": "credit_card",
+                "type": "out",
+            },
+            {
+                "value": 'Servicios',
+                "color": "bg-green",
+                "icon": "qr_code",
+                "type": "in",
+            },
+            {
+                "value": 'Turnos',
+                "color": "bg-green",
+                "icon": "account_balance_wallet",
+                "type": "in",
+            },
+            {
+                "value": 'Transferencia',
+                "color": "bg-green",
+                "icon": "account_balance",
+                "type": "in",
+            }
+        ];
+
+        // Crear un nuevo documento general para el board
+        let new_doc = {
+            "_id": docId,
+            "category_id": board_name,
+            "workspace_id": ws_id,
+            "status": "open",
+        };
+
+        let doc;
+        try {
+            doc = await L_box_db.get(docId); // Verificar si el documento ya existe
+        } catch (error) {
+            if (error.name !== 'not_found') {
+                throw error;
+            }
+        }
+
+        let response;
+        if (doc && doc._rev) {
+            new_doc._rev = doc._rev;
+            response = await L_box_db.put(new_doc); // Actualizar el documento existente
+        } else {
+            response = await L_box_db.put(new_doc); // Crear un nuevo documento
+        }
+
+        // Crear/actualizar documentos para cada lista
+        const lists = { category_list, payment_type_list, operation_type_list };
+
+        for (const [list_name, list] of Object.entries(lists)) {
+            const listDocId = list_name; // El ID del documento es el nombre de la lista
+            const listDoc = {
+                "_id": listDocId,
+                "items": list
+            };
+
+            try {
+                let existingDoc = await L_box_db.get(listDocId);
+                listDoc._rev = existingDoc._rev;
+            } catch (error) {
+                if (error.name !== 'not_found') {
+                    throw error;
+                }
+            }
+            await L_box_db.put(listDoc);
+        }
+
+        // Mostrar mensaje en un snackbar
+        Snackbar.show({
+            text: '¡Se creó el board con éxito!',
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+
+    } catch (error) {
+        // Mostrar mensaje de error en un snackbar
+        Snackbar.show({
+            text: error.message,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+    }
+}
+
+
+// Welcome BOX configuracion inicial del box
+
+/// CREAR NUEVO TABLERO 2023
+/// NEW BOARD POPUP START
+async function  box_welcome(ws_lang_data) {
+    try {
+        const modal = document.getElementById('master_popup');
+        $(modal).modal('show');
+        console.log(ws_lang_data, 'ws_lang_data');
+        var data = {
+            //board_type_name: board_type_name,
+         //   ws_info: ws_info,
+         ws_lang_data: ws_lang_data,
+           // ws_lang_data: ws_lang_data,
+           // user_roles: user_Ctx.userCtx.roles
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', data);
+    } catch (err) {
+        Snackbar.show({
+            text: err,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+box_welcome(); 
+/// PUT NUEVO BOARD 
+
+async function put_new_box(b) {
+    try {
+        const ws_id = ws_id; // Asegúrate de definir tu workspace_id
+
+        // Listas de categorías, tipos de pago, tipos de operación y colaboradores
+        const category_list = [
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "out",
+            },
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            },
+            {
+                "value": 'Ingreso cambio',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            },
+            {
+                "value": 'Gastos diarios',
+                "color": "bg-green",
+                "icon": "done",
+                "type": "in",
+            }
+        ];
+
+        const payment_type_list = [
+            {
+                "value": 'Efectivo',
+                "color": "bg-green",
+                "icon": "payments",
+                "type": "out",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Tarjeta de credito',
+                "color": "bg-green",
+                "icon": "credit_card",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Qr',
+                "color": "bg-green",
+                "icon": "qr_code",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Debito',
+                "color": "bg-green",
+                "icon": "account_balance_wallet",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            },
+            {
+                "value": 'Transferencia',
+                "color": "bg-green",
+                "icon": "account_balance",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            }
+        ];
+
+        const operation_type_list = [
+            {
+                "value": 'Ventas',
+                "color": "bg-green",
+                "icon": "payments",
+                "type": "in",
+            },
+            {
+                "value": 'Compras',
+                "color": "bg-green",
+                "icon": "credit_card",
+                "type": "out",
+            },
+            {
+                "value": 'Servicios',
+                "color": "bg-green",
+                "icon": "qr_code",
+                "type": "in",
+            },
+            {
+                "value": 'Turnos',
+                "color": "bg-green",
+                "icon": "account_balance_wallet",
+                "type": "in",
+            },
+            {
+                "value": 'Transferencia',
+                "color": "bg-green",
+                "icon": "account_balance",
+                "type": "in",
+                "porcent": 15,
+                "tax": 21,
+            }
+        ];
+
+        const colaborator_list = [
+            {
+                "name": 'Juan Perez',
+                "role": 'Developer',
+            },
+            {
+                "name": 'Maria Lopez',
+                "role": 'Designer',
+            }
+        ];
+
+        const filtros = [
+            {
+                "filter": "today",
+                "value": "Hoy"
+            },
+            {
+                "filter": "week",
+                "value": "Esta Semana"
+            }
+        ];
+
+        // Crear/actualizar documentos específicos en la base de datos
+        const lists = {
+            filtros,
+            category_list,
+            payment_type_list,
+            colaborator_list
+        };
+
+        for (const [list_name, list] of Object.entries(lists)) {
+            const listDocId = list_name; // El ID del documento es el nombre de la lista
+            const listDoc = {
+                "_id": listDocId,
+                "items": list
+            };
+
+            try {
+                let existingDoc = await L_box_db.get(listDocId);
+                listDoc._rev = existingDoc._rev;
+            } catch (error) {
+                if (error.name !== 'not_found') {
+                    throw error;
+                }
+            }
+            await L_box_db.put(listDoc);
+        }
+
+        // Mostrar mensaje en un snackbar
+        Snackbar.show({
+            text: '¡Se creó el board con éxito!',
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+
+    } catch (error) {
+        // Mostrar mensaje de error en un snackbar
+        Snackbar.show({
+            text: error.message,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 5000
+        });
+    }
 }
 
 

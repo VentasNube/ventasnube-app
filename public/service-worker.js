@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 112251121212122222222122222212422;
+const version = 11225112121212332211222222222122223422212422;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -176,7 +176,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/board/order_item.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/board/order_total_items.hbs', revision: version },
 
-
   //CONTACT
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/new_contact.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/popup/edit_contact.hbs', revision: version },
@@ -186,7 +185,6 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/contact.hbs', revision: version },
   { url: '/public/app/v4.0/dist/hbs/workspace/contact/card_contact.hbs', revision: version },
   
-
    //BOX
    { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/new_mov.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/edit_mov.hbs', revision: version },
@@ -195,7 +193,7 @@ workbox.precaching.precacheAndRoute([
    { url: '/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', revision: version },
 
    { url: '/public/app/v4.0/dist/hbs/workspace/box/list_mov.hbs', revision: version },
-   
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', revision: version },
  
 
 ]);
