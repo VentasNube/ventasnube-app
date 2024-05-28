@@ -8,7 +8,7 @@
                         <span class="material-icons">arrow_back</span>
                     </span>
                     <span class="modal-title">
-                     Configuracion de box
+                        Configuracion de box
                     </span>
                 </div>
             </div>
@@ -19,20 +19,24 @@
                                         background-size: 230px 230px!important;
                                         background-position: 94% 15% !important; ">
                     <div class="text-left ">
-                        <h2 class="margin-l-20">Puedes ver y filtrar y administrar tus ingresos y egresos. {{{m_box_tour_title_welcome}}}</h2>
-                        <h3 class="margin-20">Ver estadisticas, Imprimir listados/reoprtes y hacer facturas {{{m_box_tour_title}}}</h3>
-                        <h4 class="margin-20">Configura algunos parametros de tu negocio.<strong>{{{m_box_tour_title_sub}}}</strong></h4>
+                        <h2 class="margin-l-20">Puedes ver y filtrar y administrar tus ingresos y egresos.
+                            {{{m_box_tour_title_welcome}}}</h2>
+                        <h3 class="margin-20">Ver estadisticas, Imprimir listados/reoprtes y hacer facturas
+                            {{{m_box_tour_title}}}</h3>
+                        <h4 class="margin-20">Configura algunos parametros de tu
+                            negocio.<strong>{{{m_box_tour_title_sub}}}</strong></h4>
                         <div class="margin-l-30">
                             <p>
-                                <input module_type="{{m_board_name_purchase}}" icon="local_shipping" bg-color="btn-danger" type="radio" name="board-type"
-                                    value="purcharse" id="radio-1">
+                                <input module_type="{{m_board_name_purchase}}" icon="local_shipping"
+                                    bg-color="btn-danger" type="radio" name="board-type" value="purcharse" id="radio-1">
                                 <label for="radio-1">
                                     <strong>Configura tipos de pago</strong>
                                     <small> Efectivo, Debito, Qr, Tarjeta de credito</small>
                                 </label>
                             </p>
                             <p>
-                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary" type="radio" name="board-type"  value="sell" id="radio-2">
+                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
+                                    type="radio" name="board-type" value="sell" id="radio-2">
                                 <label for="radio-2">
                                     <strong>Agregar nuevas categorias</strong>
                                     <small>Gastos diarios, Gasolina, Viaticos etc</small>
@@ -41,74 +45,102 @@
                         </div>
 
                         <div id="new-board-step-1" class=" margin-20 ">
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input type="text" class="form-control" id="" name=""
-                                        placeholder="Tipo de pago">
-                            </div>
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input type="text" class="form-control" id="" name=""
-                                        placeholder="Tasa interes %">
-                            </div>
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input type="text" class="form-control" id="" name="" placeholder="Cantidad de cuotas %">
-                            </div>
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input type="text" class="form-control" id="" name=""
-                                        placeholder="Impuestos Base Imponible %">
-                            </div>
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input type="text" class="form-control" id="" name="" placeholder="Valor iva %">
-                            </div>
-
-                            <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                 <label>
-                                    <strong>{{m_board_color_title}}</strong>
+                                    <strong>Medio de pago</strong>
                                 </label>
                                 <button type="button" class="dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
-                                    <span bg-color="" id="bg-select-color" class="btn btn-default">
-                                        <span id="bg-select-icon" class="material-icons">
+                                    <span bg-color="" id="tp-select-color" class="btn btn-default">
+                                        <span id="tp-select-icon" class="material-icons">
                                             palette
                                         </span>
-                                        <span class="new_board_name" id="bg-select-text"> {{m_board_icon_select}}</span>
+                                        <span class="" id="tp-select-text"> Efectivo</span>
                                         <span class="material-icons">arrow_drop_down</span>
                                     </span>
                                 </button>
-                                <ul class="dropdown-menu mini">
-                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-danger" class="bg-color btn-status btn btn-danger"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
+                                <ul class="dropdown-menu open-right  m">
+                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                    <li class="header">
+                                        <span class="material-icons">
+                                            account_balance_wallet
+                                        </span>
+                                        Medios de pago
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="catalog_select_cat_value"></span>
+                                    </li>
 
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
+                                            item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Efectivo
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="sell" class="material-icons"
+                                                        onclick="box_filter_select_operation(this)">radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
+                                            item_value="Ayer" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Debito
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_2" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="filter_date">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Transferencia
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_3" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Qr
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                            item_value="Galletitas" item_id="category">
+                                            <div class="dropdown-item">
+                                                <a href="#">
+                                                    Tarjet de credito
+                                                </a>
+                                                <button>
+                                                    <span doc_id="" value="date_4" class="material-icons"
+                                                        onclick="box_filter_select_date(this)">
+                                                        radio_button_unchecked</span>
+                                                </button>
+                                            </div>
+                                        </li>
+
+                                    </div>
                                 </ul>
+
                             </div>
-                              <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input value="ibb" type="text" class="form-control" id="" name="" placeholder="Retenciones IBB">
-                            </div>
-                             <div class="form-group   col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                 <input value="0.5" type="text" class="form-control" id="" name="" placeholder="Valor Retenciones %">
-                            </div>
-                            <div id="board-type-icon" class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div id="board-type-icon" class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                 <label>
                                     <strong> {{m_board_icon_title}}</strong>
                                 </label>
@@ -299,6 +331,70 @@
                                 </ul>
 
                             </div>
+                            <div class="form-group   col-lg-3  col-md-3 col-sm-4 col-xs-12">
+                                <input type="text" class="form-control" id="" name=""
+                                    placeholder="Cantidad de cuotas %">
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <input type="text" class="form-control" id="" name="" placeholder="Tasa interes %">
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <input type="text" class="form-control" id="" name=""
+                                    placeholder="Impuestos Base Imponible %">
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <input type="text" class="form-control" id="" name="" placeholder="Valor iva %">
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <label>
+                                    <strong>{{m_board_color_title}}</strong>
+                                </label>
+                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="true">
+                                    <span bg-color="" id="bg-select-color" class="btn btn-default">
+                                        <span id="bg-select-icon" class="material-icons">
+                                            palette
+                                        </span>
+                                        <span class="new_board_name" id="bg-select-text"> {{m_board_icon_select}}</span>
+                                        <span class="material-icons">arrow_drop_down</span>
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu mini">
+                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-danger" class="bg-color btn-status btn btn-danger"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
+                                            class="material-icons">panorama_fish_eye</span></li>
+
+                                </ul>
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <input value="ibb" type="text" class="form-control" id="" name=""
+                                    placeholder="Retenciones IBB">
+                            </div>
+                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                <input value="0.5" type="text" class="form-control" id="" name=""
+                                    placeholder="Valor Retenciones %">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,7 +411,7 @@
             </div>
         </form>
     </div>
-      {{/with}}
+    {{/with}}
 </div>
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
@@ -334,13 +430,13 @@
         handle: '',
         increaseArea: '20%' // optional
     });
-   $('input[type="radio"]').iCheck({
+    $('input[type="radio"]').iCheck({
         checkboxClass: 'icheckbox_square-blue',
         radioClass: 'iradio_square-blue',
         increaseArea: '20%' // Ajusta el área de clic para ser más grande que el propio elemento
     });
-     // FIN ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
-  
+    // FIN ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
+
     // NEW 2023
     $('input:radio[name=board-type]').on('ifChecked', function (event) {
         var select = $(this);
@@ -350,14 +446,14 @@
         var board_icon = select.attr('icon');
         var board_bg = select.attr('bg-color');
         var board_name = select.attr('module_type');
-            $("#board-type-icon").show();
-            $("#new-board-step-1").show();
-            $(".new_board_name").html(board_name);
-            $("#bt-text-icon").attr('icon', board_icon).children('.material-icons:first').text(board_icon);
-            $("#bg-select-color").children('.material-icons:first').text(board_icon).attr('bg-color', board_bg);
-            $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
-            $("#bg-select-text").html(board_name);
-            $("#btn-next").removeAttr('disabled');
+        $("#board-type-icon").show();
+        $("#new-board-step-1").show();
+        $(".new_board_name").html(board_name);
+        $("#bt-text-icon").attr('icon', board_icon).children('.material-icons:first').text(board_icon);
+        $("#bg-select-color").children('.material-icons:first').text(board_icon).attr('bg-color', board_bg);
+        $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
+        $("#bg-select-text").html(board_name);
+        $("#btn-next").removeAttr('disabled');
 
     }).on('ifUnchecked', function (event) {
         $("#btn-next").attr('disabled', 'disabled');
