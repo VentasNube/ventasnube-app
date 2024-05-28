@@ -104,6 +104,33 @@ async function  box_welcome() {
     }
 }
 
+// Welcome BOX configuracion inicial del box
+async function  box_facturar_mov(element) {
+    try {
+        const modal = document.getElementById('master_popup');
+        $(modal).modal('show');
+        console.log('box_facturar ws_lang_data:', ws_lang_data );
+
+        var data = {
+            //board_type_name: board_type_name,
+         //   ws_info: ws_info,
+         ws_lang_data: ws_lang_data,
+           // ws_lang_data: ws_lang_data,
+           // user_roles: user_Ctx.userCtx.roles
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/facturacion_box.hbs', '#master_popup', data);
+    } catch (err) {
+        Snackbar.show({
+            text: err,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+
 // CHEKEO O CREO LOS FILTROS
 async function check_filters() {
     try {

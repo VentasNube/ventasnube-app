@@ -93,6 +93,15 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('reset-password', 'home::resetPassword', ['as' => 'reset-password']);
     //Change new
     $routes->post('reset-password', 'AuthController::attemptReset');
+    //DATOS AFIP
+    $routes->get('/afip/getTaxTypes', 'Facturacion::getTaxTypes');
+    /*$routes->get('/afip/getConceptTypes', 'Facturacion::getConceptTypes');
+    $routes->get('/afip/getDocumentTypes', 'Facturacion::getDocumentTypes');
+    $routes->get('/afip/getIvaTypes', 'Facturacion::getIvaTypes');
+    $routes->get('/afip/getMonedaTypes', 'Facturacion::getMonedaTypes');
+    $routes->get('/afip/getCbteTypes', 'Facturacion::getCbteTypes');
+    $routes->get('/afip/getCbteAsocTypes', 'Facturacion::getCbteAsocTypes');
+*/
 
 });
 
