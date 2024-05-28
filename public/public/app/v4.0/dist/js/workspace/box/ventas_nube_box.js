@@ -5,10 +5,17 @@
 
 //// VARIABLES GLOBALES 
 ws_mov_box_db = 'ws_mov_box_' + ws_id;
+
+var ws_left_nav_data = null;
+var ws_lang_data = null;
+
 // Creando la base de datos local
 L_box_db = new PouchDB(ws_mov_box_db, { skip_setup: true });
 // BASE LOCAL DE SETING
 box_local_db = new PouchDB('box_local_db_' + ws_id);
+
+//DEFINO VARIABLE GLOBAL
+ws_lang_data;
 
 //SYNCRONIZO LOS DATOS
 L_box_db.sync(url_R_db + ws_mov_box_db, {
@@ -16,6 +23,86 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
     retry: true
 });
 
+
+//COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
+async function ws_box_start() {
+    try {
+
+       // board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
+      //  module_info = await L_board_db.get('board_group_' + board_name);
+        // userCtx variable global de permisos y roles para filtrar las vistas
+        // DOC DE CONFIGURACION GENERAL
+        // ws_info = await L_board_db.get('ws_module_config', { include_docs: true, descending: true });
+        // DOC DE NAVEGACION
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el contenido del objeto ws_left_nav M
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];
+        // DOC DE LEGUAJE  DOCUMENTO DE LENGUAJE GUARDADO EN USER DB
+        ws_lang_data_doc = await user_db.get('ws_lang_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el objeto
+        var ws_lang = ws_lang_data_doc;
+        // SETEO EL ARRAY CON EL IDIOMA Con la variable
+        // Recorro el objeto y busco el nombre ws_lang_es o ws_lang_us dependiendo lo que configuro el admin
+        ws_lang_default = ws_lang['ws_land_default'];
+        // Recorro el objeto con la confuracion seteada en el DOC lang por default
+        ws_lang_data = ws_lang[ws_lang_default];
+
+
+
+       console.log(ws_lang_data,'CHEEEK INICIAL ws_lang_data');
+        // Envio los datos a la funciones y imprimo
+        //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
+        //  get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
+        // get_right_nav(ws_info, ws_lang_data); // Imprimo el cart
+        //  get_right_cart(ws_info, ws_lang_data, user_Ctx);
+        // get_nav_cart(ws_info, ws_lang_data);//Imprimo el cart
+        //get_search_module(ws_info, ws_lang_data, user_Ctx); // Imprimo el search 
+        //  put_left_nav_doc() // Actualizo o envio la cokkie de navegacion lateral
+        // check_url_module(ws_left_nav, ws_lang_data, user_Ctx); // Chequeo y cargo el modulo segun la url actual y la cargo
+
+    } catch (err) {
+        // put_left_nav_doc(); //Si hay un error vuelvo a traer el documento actualizado
+        console.log('ERROR BOARD START', err)
+        Snackbar.show({
+            text: err.reason,
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+            action: () => { updateDocuments() }
+        });
+    }
+}
+
+
+ws_box_start();
+
+// Welcome BOX configuracion inicial del box
+async function  box_welcome() {
+    try {
+        const modal = document.getElementById('master_popup');
+        $(modal).modal('show');
+        console.log(ws_lang_data, 'ws_lang_data');
+
+
+
+        var data = {
+            //board_type_name: board_type_name,
+         //   ws_info: ws_info,
+         ws_lang_data: ws_lang_data,
+           // ws_lang_data: ws_lang_data,
+           // user_roles: user_Ctx.userCtx.roles
+        }
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', data);
+    } catch (err) {
+        Snackbar.show({
+            text: err,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
 
 // CHEKEO O CREO LOS FILTROS
 async function check_filters() {
@@ -331,6 +418,8 @@ async function get_boxOK(pageNumber = 1, limit = 0) {
 
 async function get_box(pageNumber = 1, limit = 10) {
     try {
+        
+        box_welcome(); 
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
@@ -988,34 +1077,6 @@ async function put_new_boxNOOLD() {
 }
 
 
-// Welcome BOX configuracion inicial del box
-
-/// CREAR NUEVO TABLERO 2023
-/// NEW BOARD POPUP START
-async function  box_welcome(ws_lang_data) {
-    try {
-        const modal = document.getElementById('master_popup');
-        $(modal).modal('show');
-        console.log(ws_lang_data, 'ws_lang_data');
-        var data = {
-            //board_type_name: board_type_name,
-         //   ws_info: ws_info,
-         ws_lang_data: ws_lang_data,
-           // ws_lang_data: ws_lang_data,
-           // user_roles: user_Ctx.userCtx.roles
-        }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', data);
-    } catch (err) {
-        Snackbar.show({
-            text: err,
-            actionText: 'Ok',
-            actionTextColor: '#0575e6',
-            pos: 'bottom-left',
-            duration: 50000
-        });
-    }
-}
-box_welcome(); 
 /// PUT NUEVO BOARD 
 
 async function put_new_box(b) {
