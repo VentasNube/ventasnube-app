@@ -81,18 +81,41 @@ async function  box_welcome() {
     try {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
+
         console.log(ws_lang_data, 'ws_lang_data');
 
 
+        // Intentar obtener el documento de filtros de la base de datos local
+        const filters = await box_local_db.get('filtros');
+        const category_list = await  L_box_db.get('category_list');
+        const payment_type_list = await  L_box_db.get('payment_type_list');
+        // const operation_type_list = await  L_box_db.get('operation_type_list');
+        const colaboration_list = await  L_board_db.get('colaborator_list');
 
-        var data = {
+        /// NEW 2024
+
+        var price_list = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+        var tax_list = await L_catalog_db.get('tax_list');
+
+        var box_config = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            tax_list: tax_list.tax,
+        }
+
+            console.log('box_config',box_config);
+       /* var data = {
             //board_type_name: board_type_name,
          //   ws_info: ws_info,
          ws_lang_data: ws_lang_data,
            // ws_lang_data: ws_lang_data,
            // user_roles: user_Ctx.userCtx.roles
-        }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', data);
+        }*/
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', box_config);
     } catch (err) {
         Snackbar.show({
             text: err,
@@ -114,7 +137,7 @@ async function  box_facturar_mov(element) {
         var data = {
             //board_type_name: board_type_name,
          //   ws_info: ws_info,
-         ws_lang_data: ws_lang_data,
+            ws_lang_data: ws_lang_data,
            // ws_lang_data: ws_lang_data,
            // user_roles: user_Ctx.userCtx.roles
         }

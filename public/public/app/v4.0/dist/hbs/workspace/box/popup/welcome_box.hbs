@@ -26,11 +26,19 @@
                         <h4 class="margin-20">Configura algunos parametros de tu
                             negocio.<strong>{{{m_box_tour_title_sub}}}</strong></h4>
                         <div class="margin-l-30">
+                             <p>
+                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
+                                    type="radio" name="board-type" value="sell" id="radio-2">
+                                <label for="radio-2">
+                                    <strong>Definir tipos de impuestos</strong>
+                                    <small>IVA 21% IVA 10% IIBB 3,5%</small>
+                                </label>
+                            </p>
                             <p>
                                 <input module_type="{{m_board_name_purchase}}" icon="local_shipping"
                                     bg-color="btn-danger" type="radio" name="board-type" value="purcharse" id="radio-1">
                                 <label for="radio-1">
-                                    <strong>Configura tipos de pago</strong>
+                                    <strong>Definir tipos de pago</strong>
                                     <small> Efectivo, Debito, Qr, Tarjeta de credito</small>
                                 </label>
                             </p>
@@ -38,11 +46,509 @@
                                 <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
                                     type="radio" name="board-type" value="sell" id="radio-2">
                                 <label for="radio-2">
-                                    <strong>Agregar nuevas categorias</strong>
+                                    <strong>Agregar nuevas categorias de movimientos</strong>
                                     <small>Gastos diarios, Gasolina, Viaticos etc</small>
                                 </label>
                             </p>
                         </div>
+{{/with}}
+                         <div id="edit-new-tax" class=" margin-20 ">
+                             <!-- Cart main module -->
+        <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+            <ul class="nav nav-tabs">
+              
+                <!--li class="ripple">
+                    <a data-toggle="tab" href="#ws_box_config_money">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}}{{m_config_catalog_list_money_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}}{{ ws_catalog_settings_money }} {{/with}}
+                    </a>
+                </li-->
+                <li class="ripple">
+                    <a data-toggle="tab" href="#ws_box_config_tax">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}} {{m_config_catalog_list_tax_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}} {{ws_catalog_settings_tax}} {{/with}}
+                    </a>
+                </li>
+                  <li class="ripple">
+                    <a data-toggle="tab" href="#ws_box_paymet_type">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}}{{m_config_catalog_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}} Formas de pago {{/with}}
+                    </a>
+                </li>
+                  <li class="ripple  active">
+                    <a data-toggle="tab" href="#ws_box_config_list">
+                        <span class="material-icons">
+                            {{#with ws_lang_data}}{{m_config_catalog_icon}}{{/with}}
+                        </span>
+                        {{#with ws_lang_data}} {{ws_catalog_settings_list}} {{/with}}
+                    </a>
+                </li>
+            </ul>
+            <!--tab-content--->
+            <div class="tab-content ">
+                <!--tab--->
+                <div id="ws_box_config_money" class="tab-pane fade">
+                    <div id="" class="padding-0 s-card-activ-cont">
+                        <!-- LISTADO --->
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{#each currency_list as | pl |}}
+                            <li
+                                class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
+                                <div class="round-icon pr uper">
+                                    {{value}}
+                                </div>
+                                {{value}}
+                                {{currency_name}}
+                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                    history
+                                </span>
+
+
+
+                                <div class="pull-right">
+
+                                    {{#each ../currency_list as | cu |}}
+                                    <!-- Relaciono los dos valores por la ID --->
+                                    {{#ifEquals cu.id pl.currency_id }}
+                                    <div class="label padding-10 bg-gray">
+                                        {{value}}
+                                    </div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a onclick="catalog_config_show_edit(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}}
+                                                        {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="catalog_config_save_block(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    price_status="{{status}}" href="#">
+                                                    <span class="material-icons">
+                                                        {{#ifEquals pl.status 'active' }}
+                                                        visibility
+                                                        {{else}}
+                                                        visibility_off
+                                                        {{/ifEquals}}
+                                                    </span>
+                                                    <span> {{#ifEquals pl.status 'active' }} {{#with ../ws_lang_data}}
+                                                        {{{m_catalog_edit_inactive}}} {{/with}} {{else}} {{#with
+                                                        ../ws_lang_data}} {{{m_catalog_edit_active}}} {{/with}}
+                                                        {{/ifEquals}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </div>
+                        <div id="edit_panel_config_money" hidden=""
+                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <form class="" role="">
+                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_list}} {{/with}} </label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons">
+                                                    {{#with ws_lang_data}} {{m_config_catalog_list_icon}} {{/with}}
+                                                </span>
+                                            </span>
+                                            <input class="form-control" autocomplete="off" type="text"
+                                                id="new_price_list_name_value" name="new_list_price"
+                                                placeholder="Buscar..">
+                                        </div>
+                                    </div>
+                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_money}} {{/with}} </label>
+
+                                        <div class="input-group">
+                                            <select id="new_price_list_money_value" class="form-control md">
+                                                {{#each currency_list }}
+                                                <option value="{{{id}}}"> {{value}} </option>
+                                                {{/each}}
+                                            </select>
+                                            <span class="input-group-addon">
+                                                <button type="button" onclick="catalog_config_save_edit(this)"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
+                                                    <span class="material-icons"> {{#with ws_lang_data}}
+                                                        {{ws_catalog_settings_add_icon}} {{/with}} </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="ws_box_config_tax" class="tab-pane fade ">
+                    <div id="" class="padding-0 s-card-activ-cont">
+                        <!-- LISTADO --->
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{#each tax_list as | pl |}}
+                            <li
+                                class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
+
+                                {{name}}
+
+                                <span class="label padding-10 bg-gray">
+                                    {{value}}
+                                    %
+                                </span>
+
+                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                    history
+                                </span>
+
+
+                                <div class="pull-right">
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a onclick="catalog_config_show_tax_edit(this)" id="{{id}}"
+                                                    value="{{value}}" name="{{name}}" href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}}
+                                                        {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="catalog_config_tax_delete(this)" id=" {{id}}"
+                                                    value="{{value}}" href="#">
+                                                    <span class="material-icons">
+                                                        delete
+                                                    </span>
+                                                    <span> {{#with ../ws_lang_data}} {{m_catalog_edit_delete}}
+                                                        {{/with}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </div>
+                        <div id="edit_panel_config_tax" hidden=""
+                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <form class="" role="">
+                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_tax}} {{/with}} </label>
+
+                                        <div class="input-group">
+
+                                            <input class="form-control" autocomplete="off" type="text"
+                                                id="new_name_tax_input" placeholder="...">
+
+                                            <span class="input-group-addon">
+                                                <button id="catalog_config_tax_money_send" type="button" tax_id=""
+                                                    onclick="catalog_config_tax_money_edit(this)"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right">
+                                                    <span class="material-icons"> {{#with ws_lang_data}}
+                                                        {{ws_catalog_settings_add_icon}} {{/with}} </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_tax}} {{/with}} </label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons">
+                                                    {{#with ws_lang_data}} {{m_config_catalog_list_tax_icon}} {{/with}}
+                                                </span>
+                                            </span>
+                                            <input class="form-control" autocomplete="off" type="text"
+                                                id="new_value_tax_edit" placeholder="...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    </br>
+                    </br>
+                    <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button onclick="catalog_config_new_tax()" doc_id="" type="button" class="btn btn-primary">
+                            Nuevo impuesto
+                        </button>
+                    </div>
+                </div>
+                 <div id="ws_box_paymet_type" class="tab-pane fade">
+                    <div id="" class="padding-0 s-card-activ-cont">
+                        <!-- LISTADO DE MEDIOS DE PAGO--->
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{#each payment_type_list as | pl |}}
+                            <li
+                                class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
+                                <!-- Hago un each de los precios --->
+                                <span class="material-icons">
+                                    {{#ifEquals pl.status 'active' }}
+                                    visibility
+                                    {{else}}
+                                    visibility_off
+                                    {{/ifEquals}}
+                                </span>
+                                <div class="round-icon pr uper">
+                                    {{value}}
+                                </div>
+                                {{value}}
+                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                    history
+                                </span>
+
+                                <div class="pull-right">
+                                    {{#each ../currency_list as | cu |}}
+                                    <!-- Relaciono los dos valores por la ID --->
+                                    {{#ifEquals cu.id pl.currency_id }}
+                                    <div class="label padding-10 bg-gray">
+                                        {{value}}
+                                    </div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a onclick="catalog_config_show_edit(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}}
+                                                        {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="catalog_config_save_block(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    price_status="{{status}}" href="#">
+                                                    <span class="material-icons">
+                                                        {{#ifEquals pl.status 'active' }}
+                                                        visibility
+                                                        {{else}}
+                                                        visibility_off
+                                                        {{/ifEquals}}
+                                                    </span>
+                                                    <span> {{#ifEquals pl.status 'active' }} {{#with ../ws_lang_data}}
+                                                        {{{m_catalog_edit_inactive}}} {{/with}} {{else}} {{#with
+                                                        ../ws_lang_data}} {{{m_catalog_edit_active}}} {{/with}}
+                                                        {{/ifEquals}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </div>
+                        <div id="edit_panel_config_name_price_list" hidden=""
+                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <form class="" role="">
+                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_list}} {{/with}} </label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons">
+                                                    {{#with ws_lang_data}} {{m_config_catalog_list_icon}} {{/with}}
+                                                </span>
+                                            </span>
+                                            <input class="form-control" autocomplete="off" type="text"
+                                                id="new_price_list_name_value" name="new_list_price"
+                                                placeholder="Buscar..">
+                                        </div>
+                                    </div>
+                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_money}} {{/with}} </label>
+
+                                        <div class="input-group">
+                                            <select id="new_price_list_money_value" class="form-control md">
+                                                {{#each currency_list }}
+                                                <option value="{{{id}}}"> {{value}} </option>
+                                                {{/each}}
+                                            </select>
+                                            <span class="input-group-addon">
+                                                <button type="button" onclick="catalog_config_save_edit(this)"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
+                                                    <span class="material-icons"> {{#with ws_lang_data}}
+                                                        {{ws_catalog_settings_add_icon}} {{/with}} </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--tab-content--->
+                </div>
+                <div id="ws_box_config_list" class="tab-pane fade in active">
+                    <div id="" class="padding-0 s-card-activ-cont">
+                        <!-- LISTADO --->
+                        <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            {{#each price_list as | pl |}}
+                            <li
+                                class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
+                                <!-- Hago un each de los precios --->
+                                <span class="material-icons">
+                                    {{#ifEquals pl.status 'active' }}
+                                    visibility
+                                    {{else}}
+                                    visibility_off
+                                    {{/ifEquals}}
+                                </span>
+                                <div class="round-icon pr uper">
+                                    {{value}}
+                                </div>
+                                {{value}}
+                                <span class="material-icons" data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
+                                    history
+                                </span>
+
+                                <div class="pull-right">
+                                    {{#each ../currency_list as | cu |}}
+                                    <!-- Relaciono los dos valores por la ID --->
+                                    {{#ifEquals cu.id pl.currency_id }}
+                                    <div class="label padding-10 bg-gray">
+                                        {{value}}
+                                    </div>
+                                    {{/ifEquals}}
+                                    {{/each}}
+                                    <div class="btn-group dropright">
+                                        <button id="" type="button"
+                                            class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a onclick="catalog_config_show_edit(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    href="#">
+                                                    <span class="material-icons">
+                                                        edit
+                                                    </span><span> {{#with ../ws_lang_data}} {{{m_catalog_edit_edit}}}
+                                                        {{/with}}</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onclick="catalog_config_save_block(this)" price_id=" {{id}}"
+                                                    price_value="{{value}}" price_currency_id="{{currency_id}}"
+                                                    price_status="{{status}}" href="#">
+                                                    <span class="material-icons">
+                                                        {{#ifEquals pl.status 'active' }}
+                                                        visibility
+                                                        {{else}}
+                                                        visibility_off
+                                                        {{/ifEquals}}
+                                                    </span>
+                                                    <span> {{#ifEquals pl.status 'active' }} {{#with ../ws_lang_data}}
+                                                        {{{m_catalog_edit_inactive}}} {{/with}} {{else}} {{#with
+                                                        ../ws_lang_data}} {{{m_catalog_edit_active}}} {{/with}}
+                                                        {{/ifEquals}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </div>
+                        <div id="edit_panel_config_name_price_list" hidden=""
+                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <form class="" role="">
+                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_list}} {{/with}} </label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <span class="material-icons">
+                                                    {{#with ws_lang_data}} {{m_config_catalog_list_icon}} {{/with}}
+                                                </span>
+                                            </span>
+                                            <input class="form-control" autocomplete="off" type="text"
+                                                id="new_price_list_name_value" name="new_list_price"
+                                                placeholder="Buscar..">
+                                        </div>
+                                    </div>
+                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                        <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
+                                            {{ws_catalog_settings_money}} {{/with}} </label>
+
+                                        <div class="input-group">
+                                            <select id="new_price_list_money_value" class="form-control md">
+                                                {{#each currency_list }}
+                                                <option value="{{{id}}}"> {{value}} </option>
+                                                {{/each}}
+                                            </select>
+                                            <span class="input-group-addon">
+                                                <button type="button" onclick="catalog_config_save_edit(this)"
+                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
+                                                    <span class="material-icons"> {{#with ws_lang_data}}
+                                                        {{ws_catalog_settings_add_icon}} {{/with}} </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--tab-content--->
+                </div>
+                <!--tabs-main--->
+            </div>
+        </div>
+
+</div>
 
                         <div id="new-board-step-1" class=" margin-20 ">
                             <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
@@ -399,6 +905,7 @@
                     </div>
                 </div>
             </div>
+            {{#with ws_lang_data}} 
             <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
                 <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
                     aria-label="Close">
@@ -409,9 +916,10 @@
                     <span class="">{{b_next}}</span>
                 </button>
             </div>
+
+    {{/with}}
         </form>
     </div>
-    {{/with}}
 </div>
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
