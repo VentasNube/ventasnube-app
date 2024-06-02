@@ -5,24 +5,19 @@
 
 //// VARIABLES GLOBALES 
 ws_mov_box_db = 'ws_mov_box_' + ws_id;
-
 var ws_left_nav_data = null;
 var ws_lang_data = null;
-
 // Creando la base de datos local
 L_box_db = new PouchDB(ws_mov_box_db, { skip_setup: true });
 // BASE LOCAL DE SETING
 box_local_db = new PouchDB('box_local_db_' + ws_id);
-
 //DEFINO VARIABLE GLOBAL
 ws_lang_data;
-
 //SYNCRONIZO LOS DATOS
 L_box_db.sync(url_R_db + ws_mov_box_db, {
     live: true,
     retry: true
 });
-
 
 //COFIGURACION Y DOC NECESARIOS PARA TODOS LOS BOARDS
 async function ws_box_start() {
@@ -73,7 +68,6 @@ async function ws_box_start() {
     }
 }
 
-
 ws_box_start();
 
 // Welcome BOX configuracion inicial del box
@@ -84,27 +78,26 @@ async function  box_welcome() {
 
         console.log(ws_lang_data, 'ws_lang_data');
 
-
         // Intentar obtener el documento de filtros de la base de datos local
-        const filters = await box_local_db.get('filtros');
-        const category_list = await  L_box_db.get('category_list');
-        const payment_type_list = await  L_box_db.get('payment_type_list');
+   //     const filters = await box_local_db.get('filtros');
+    //    const category_list = await  L_box_db.get('category_list');
+   //    const payment_type_list = await  L_box_db.get('payment_type_list');
         // const operation_type_list = await  L_box_db.get('operation_type_list');
-        const colaboration_list = await  L_board_db.get('colaborator_list');
+   //     const colaboration_list = await  L_board_db.get('colaborator_list');
 
         /// NEW 2024
 
-        var price_list = await L_catalog_db.get('price_list');
-        var currency_list = await L_catalog_db.get('currency_list');
-        var tax_list = await L_catalog_db.get('tax_list');
+ //   var price_list = await L_catalog_db.get('price_list');
+   //     var currency_list = await L_catalog_db.get('currency_list');
+   //     var tax_list = await L_catalog_db.get('tax_list');
 
         var box_config = {
-            ws_info: ws_info,
+         //   ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            price_list: price_list.price_list,
-            currency_list: currency_list.currency_list,
-            tax_list: tax_list.tax,
+       //     price_list: price_list.price_list,
+      //      currency_list: currency_list.currency_list,
+       //     tax_list: tax_list.tax,
         }
 
             console.log('box_config',box_config);
@@ -117,8 +110,9 @@ async function  box_welcome() {
         }*/
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', box_config);
     } catch (err) {
+        console.log('ERROR EN BOX WELCOME',err);
         Snackbar.show({
-            text: err,
+            text: err.msj,
             actionText: 'Ok',
             actionTextColor: '#0575e6',
             pos: 'bottom-left',
@@ -152,7 +146,6 @@ async function  box_facturar_mov(element) {
         });
     }
 }
-
 
 // CHEKEO O CREO LOS FILTROS
 async function check_filters() {
@@ -293,179 +286,7 @@ async function updateOrCreateDocument(params) {
         }
     }
 }
-
 // ARMO Y Traigo el box filtrado
-async function get_boxOK(pageNumber = 1, limit = 0) {
-    try {
-        // Obtener el documento de filtros
-        const filters = await box_local_db.get('filtros');
-       // let username = user_data.user_email;
-
-        let username = null;
-       // let username = 'marianomarchesi@hotmail.com';
-        let startDate = filters.startDate;
-        let endDate = filters.endDate;
-        var limit = filters.limit;
-        //var pageNumber = getPageNumber();
-        // var pageSize = filters.pageSize;
-        var skip = (pageNumber - 1) * limit;
-        console.log(skip, 'skip');
-        console.log(limit, 'Limit');
-        console.log( filters, 'filters');
-       
-        /*
-        const updateFields = {
-            limit: limit,
-            skip:skip,
-        };
-        // Actualiza el filtro de limite actual, en la db
-        await updateOrCreateDocument(updateFields);
-        */
-
-        //'contact_17157362925334996911079436024','contact_17157363131576457076707513922','contact_17157362997728088647513453167'];
-        /// GASTON AMRCHESI card_contact_17159039046109420031853099771
-
-         let federico = 'contact_17156244459017923694954517382';
-         let mariano =  'contact_17156316544479361594260343062';
-       //  let gaston =  'contact_17159039046109420031853099771';
-         let gaston =  '17159039046109420031853099771';
-        // contact_17159039046109420031853099771
-
-         
-
-        //FILTROS ADICIONALES
-        let userList;
-
-
-        let clientList = [gaston];
-       // let clientList;
-        let paymentTypeList;
-        let operationTypeList;
-        // Construir las claves de inicio y fin para la consulta
-        let startKey = ["box_mov", username, startDate];
-        let endKey = ["box_mov", username, endDate + "\ufff0"];
-
-        // Construye las claves de inicio y fin para la consulta\
-        // Agrega filtros adicionales a las claves de inicio y fin, si están presentes
-        if (userList && userList.length > 0) {
-            startKey.push(...userList);
-            endKey.push(...userList);
-        }
-        if (clientList && clientList.length > 0) {
-            startKey.push(...clientList);
-            endKey.push(...clientList);
-        }
-        if (paymentTypeList && paymentTypeList.length > 0) {
-            startKey.push(...paymentTypeList);
-            endKey.push(...paymentTypeList);
-        }
-        if (operationTypeList && operationTypeList.length > 0) {
-            startKey.push(...operationTypeList);
-            endKey.push(...operationTypeList);
-        }
-
-        // Realizar una consulta para contar todos los documentos filtrados
-        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            include_docs: false,
-            startkey: startKey,
-            endkey: endKey,
-            inclusive_end: true,
-            reduce: true,
-            group_level: 0
-        });
-        
-        //console.log(countResponse, 'countResponse');
-        // Total de documentos filtrados
-        const totalFilterItems = countResponse.rows.length;
-        // Realizar la consulta paginada
-        let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            include_docs: false,
-            startkey: startKey,
-            endkey: endKey,
-            limit: limit,
-            skip: skip
-        });
-
-        // MAPEO LOS ITEMS A IMPRIMIR
-        const all_items_array = response.rows.map(({ value }) => ({
-            _id: value._id,
-            _rev: value._rev,
-            type: value.box_mov,
-            order_id: value.order_id,
-            mov_id: value.mov_id,
-            user_name: value.user_name,
-            entry_date: value.entry_date,
-            client_id: value.client_id,
-            client: value.client,
-            total_service: value.total_service,
-            total_products: value.total_products,
-            total_tax: value.total_tax,
-            total_discount: value.total_discount,
-            total: value.total,
-            first_name: value.client.first_name,
-            last_name: value.client.last_name,
-            category: value.category,
-            payment_type: value.payment_type,
-            payment_type_id: value.payment_type_id,
-            payment_status: value.payment_status,
-            order_status: value.order_status,
-            status: value.status,
-        }));
-
-        const totalPages = Math.ceil(totalFilterItems / limit);
-        const pages = [];
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === pageNumber) {
-                pages.push({
-                    pageNumber: i,
-                    active: true
-                });
-            } else {
-                pages.push({
-                    pageNumber: i,
-                    active: i === pageNumber
-                });
-            }
-        }
-
-        let nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
-        let lastPage = totalPages;
-        var ws_box = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles
-        }
-        mov_content = {
-            ws_box: ws_box,
-            pages: pages,
-            nextPage: nextPage,
-            lastPage: lastPage,
-            totalItems: totalFilterItems,
-            limit: limit
-        }
-
-
-        console.log( 'client_id:',    clientList );
-        console.log( 'startKey:', startKey, 'endKey:', endKey );
-        console.log( 'RESULTADO DE CONSULTA:',   all_items_array );
-
-
-
-
-        console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems',totalFilterItems, 'startKey:', startKey, 'endKey:', endKey);     
-        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
-      //  console.log('Imprimo 1')
-        await get_nav_box();
-      //  console.log('Imprimo 2')
-        await print_mov_item(all_items_array);
-       // console.log('Imprimo 3')
-
-    } catch (error) {
-        console.error('Error al obtener los datos de la caja:', error);
-    }
-}
-
-
 async function get_box(pageNumber = 1, limit = 10) {
     try {
         
@@ -593,7 +414,6 @@ async function get_box(pageNumber = 1, limit = 10) {
         console.error('Error al obtener los datos de la caja:', error);
     }
 }
-
 // Selecciono filtro de fecha
 async function box_filter_select_date(element) {
     var dateValue = element.getAttribute("value");
@@ -684,7 +504,6 @@ async function box_filter_select_date(element) {
     get_box();
 
 }
-
 // Selecciono cantidad por pagina
 async function change_page_limit(element) {
     const limit = $(element).val(); // Obtener el valor seleccionado del elemento
@@ -698,9 +517,7 @@ async function change_page_limit(element) {
     // Llamar a otras funciones necesarias
     get_box(page,limit);
 }
-
 /// CRUD CATEGORIAS 2024
-
 // CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023
 // BUSCO
 async function box_search_cat(e, element) {
@@ -754,7 +571,6 @@ async function box_search_cat(e, element) {
     }
 
 }
-
 ///  LISTADO EN FORM NUEVO PRODUCTO
 async function box_search_new_prod_cat(e, element) {
     //traigo el resultado mas parecido con find
@@ -804,8 +620,6 @@ async function box_search_new_prod_cat(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/box_new_item_cat_list.hbs', select_div_id, cat_list_search);
     }
 }
-
-
 // ELIMINO
 async function box_dell_cat(element) {
     event.preventDefault(element);
@@ -854,8 +668,6 @@ async function box_dell_cat(element) {
         console.log(err);
     }
 }
-
-
 // AGREGO
 async function box_add_new_cat(element) {
     event.preventDefault(element);
@@ -928,8 +740,6 @@ async function box_add_new_cat(element) {
 
     }
 }
-
-
 // SELECCIONO
 async function box_select_new_cat(element, new_cat) {
     let item_value_id = $(element).attr('item_value_id');
@@ -949,186 +759,7 @@ async function box_select_new_cat(element, new_cat) {
     }
 
 }
-
-async function put_new_boxNOOLD() {
-    try {
-        const docId = '_' + board_name; // Generar un ID único
-        const ws_id = 'your_workspace_id'; // Asegúrate de definir tu workspace_id
-
-        // Listas de categorías, tipos de pago y tipos de operación
-        const category_list = [
-            {
-                "value": 'Gastos diarios',
-                "color": "bg-green",
-                "icon": "done",
-                "type": "out",
-            },
-            {
-                "value": 'Gastos diarios',
-                "color": "bg-green",
-                "icon": "done",
-                "type": "in",
-            },
-            {
-                "value": 'Ingreso cambio',
-                "color": "bg-green",
-                "icon": "done",
-                "type": "in",
-            },
-            {
-                "value": 'Gastos diarios',
-                "color": "bg-green",
-                "icon": "done",
-                "type": "in",
-            }
-        ];
-
-        const payment_type_list = [
-            {
-                "value": 'Efectivo',
-                "color": "bg-green",
-                "icon": "payments",
-                "type": "out",
-                "porcent": 15,
-                "tax": 21,
-            },
-            {
-                "value": 'Tarjeta de credito',
-                "color": "bg-green",
-                "icon": "credit_card",
-                "type": "in",
-                "porcent": 15,
-                "tax": 21,
-            },
-            {
-                "value": 'Qr',
-                "color": "bg-green",
-                "icon": "qr_code",
-                "type": "in",
-                "porcent": 15,
-                "tax": 21,
-            },
-            {
-                "value": 'Debito',
-                "color": "bg-green",
-                "icon": "account_balance_wallet",
-                "type": "in",
-                "porcent": 15,
-                "tax": 21,
-            },
-            {
-                "value": 'Transferencia',
-                "color": "bg-green",
-                "icon": "account_balance",
-                "type": "in",
-                "porcent": 15,
-                "tax": 21,
-            }
-        ];
-
-        const operation_type_list = [
-            {
-                "value": 'Ventas',
-                "color": "bg-green",
-                "icon": "payments",
-                "type": "in",
-            },
-            {
-                "value": 'Compras',
-                "color": "bg-green",
-                "icon": "credit_card",
-                "type": "out",
-            },
-            {
-                "value": 'Servicios',
-                "color": "bg-green",
-                "icon": "qr_code",
-                "type": "in",
-            },
-            {
-                "value": 'Turnos',
-                "color": "bg-green",
-                "icon": "account_balance_wallet",
-                "type": "in",
-            },
-            {
-                "value": 'Transferencia',
-                "color": "bg-green",
-                "icon": "account_balance",
-                "type": "in",
-            }
-        ];
-
-        // Crear un nuevo documento general para el board
-        let new_doc = {
-            "_id": docId,
-            "category_id": board_name,
-            "workspace_id": ws_id,
-            "status": "open",
-        };
-
-        let doc;
-        try {
-            doc = await L_box_db.get(docId); // Verificar si el documento ya existe
-        } catch (error) {
-            if (error.name !== 'not_found') {
-                throw error;
-            }
-        }
-
-        let response;
-        if (doc && doc._rev) {
-            new_doc._rev = doc._rev;
-            response = await L_box_db.put(new_doc); // Actualizar el documento existente
-        } else {
-            response = await L_box_db.put(new_doc); // Crear un nuevo documento
-        }
-
-        // Crear/actualizar documentos para cada lista
-        const lists = { category_list, payment_type_list, operation_type_list };
-
-        for (const [list_name, list] of Object.entries(lists)) {
-            const listDocId = list_name; // El ID del documento es el nombre de la lista
-            const listDoc = {
-                "_id": listDocId,
-                "items": list
-            };
-
-            try {
-                let existingDoc = await L_box_db.get(listDocId);
-                listDoc._rev = existingDoc._rev;
-            } catch (error) {
-                if (error.name !== 'not_found') {
-                    throw error;
-                }
-            }
-            await L_box_db.put(listDoc);
-        }
-
-        // Mostrar mensaje en un snackbar
-        Snackbar.show({
-            text: '¡Se creó el board con éxito!',
-            actionText: 'Ok',
-            actionTextColor: '#0575e6',
-            pos: 'bottom-left',
-            duration: 5000
-        });
-
-    } catch (error) {
-        // Mostrar mensaje de error en un snackbar
-        Snackbar.show({
-            text: error.message,
-            actionText: 'Ok',
-            actionTextColor: '#0575e6',
-            pos: 'bottom-left',
-            duration: 5000
-        });
-    }
-}
-
-
 /// PUT NUEVO BOARD 
-
 async function put_new_box(b) {
     try {
         const ws_id = ws_id; // Asegúrate de definir tu workspace_id
@@ -1307,8 +938,6 @@ async function put_new_box(b) {
         });
     }
 }
-
-
 /// COSAS Q FALTAN 24
 async function mov_edit_put(formData, doc_id) {
     try {
@@ -1350,7 +979,6 @@ async function mov_edit_put(formData, doc_id) {
     }
     // catalog_edit_item_url(doc_id, 1);
 }
-
 //Nuevo Movimiento
 async function add_new_mov(element) {
     try {

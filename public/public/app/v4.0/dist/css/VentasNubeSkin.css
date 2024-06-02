@@ -632,6 +632,23 @@ form {
     display: block;
 }
 
+
+.img-card-200 {
+    height: 200px !important;
+    width: auto !important;
+   /* max-width: 200px !important;*/
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.img-card-250 {
+    height: 250px !important;
+    width: auto !important;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
 .img-card-catalog-list {
     height: 70px !important;
     width: auto !important;
@@ -7380,9 +7397,11 @@ label:focus {
 }
 
 .modal-header {
-    padding: 20px;
+   /* padding: 20px;*/
     border-radius: 20px 20px 0 0 !important;
     color: #fff !important;
+    padding: 15px!important;
+    border-bottom: none!important;
 }
 
 .modal-footer {

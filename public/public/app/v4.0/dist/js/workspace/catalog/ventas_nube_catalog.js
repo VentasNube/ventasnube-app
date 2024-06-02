@@ -2268,6 +2268,7 @@ async function catalog_config(tab_id) {
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
         }
+        console.log('catalog_config',catalog_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/config/catalog_config.hbs', '#right_main', catalog_config);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
