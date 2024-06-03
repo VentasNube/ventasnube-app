@@ -23,8 +23,8 @@ L_box_db.sync(url_R_db + ws_mov_box_db, {
 async function ws_box_start() {
     try {
 
-       // board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
-      //  module_info = await L_board_db.get('board_group_' + board_name);
+        // board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
+        //  module_info = await L_board_db.get('board_group_' + board_name);
         // userCtx variable global de permisos y roles para filtrar las vistas
         // DOC DE CONFIGURACION GENERAL
         // ws_info = await L_board_db.get('ws_module_config', { include_docs: true, descending: true });
@@ -44,7 +44,7 @@ async function ws_box_start() {
 
 
 
-       console.log(ws_lang_data,'CHEEEK INICIAL ws_lang_data');
+        console.log(ws_lang_data, 'CHEEEK INICIAL ws_lang_data');
         // Envio los datos a la funciones y imprimo
         //   get_top_bar(ws_info, ws_lang_data, user_Ctx); // Imprimo el top bar
         //  get_left_nav(ws_left_nav, ws_lang_data, user_Ctx);// Traigo y imprimo el documento de navegacion lateral 
@@ -71,7 +71,7 @@ async function ws_box_start() {
 ws_box_start();
 
 // Welcome BOX configuracion inicial del box
-async function  box_welcome() {
+async function box_welcome() {
     try {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
@@ -79,38 +79,38 @@ async function  box_welcome() {
         console.log(ws_lang_data, 'ws_lang_data');
 
         // Intentar obtener el documento de filtros de la base de datos local
-   //     const filters = await box_local_db.get('filtros');
-    //    const category_list = await  L_box_db.get('category_list');
-   //    const payment_type_list = await  L_box_db.get('payment_type_list');
+        //     const filters = await box_local_db.get('filtros');
+        //    const category_list = await  L_box_db.get('category_list');
+        //    const payment_type_list = await  L_box_db.get('payment_type_list');
         // const operation_type_list = await  L_box_db.get('operation_type_list');
-   //     const colaboration_list = await  L_board_db.get('colaborator_list');
+        //     const colaboration_list = await  L_board_db.get('colaborator_list');
 
         /// NEW 2024
 
- //   var price_list = await L_catalog_db.get('price_list');
-   //     var currency_list = await L_catalog_db.get('currency_list');
-   //     var tax_list = await L_catalog_db.get('tax_list');
+        //   var price_list = await L_catalog_db.get('price_list');
+        //     var currency_list = await L_catalog_db.get('currency_list');
+        //     var tax_list = await L_catalog_db.get('tax_list');
 
         var box_config = {
-         //   ws_info: ws_info,
+            //   ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-       //     price_list: price_list.price_list,
-      //      currency_list: currency_list.currency_list,
-       //     tax_list: tax_list.tax,
+            //     price_list: price_list.price_list,
+            //      currency_list: currency_list.currency_list,
+            //     tax_list: tax_list.tax,
         }
 
-            console.log('box_config',box_config);
-       /* var data = {
-            //board_type_name: board_type_name,
-         //   ws_info: ws_info,
-         ws_lang_data: ws_lang_data,
-           // ws_lang_data: ws_lang_data,
-           // user_roles: user_Ctx.userCtx.roles
-        }*/
+        console.log('box_config', box_config);
+        /* var data = {
+             //board_type_name: board_type_name,
+          //   ws_info: ws_info,
+          ws_lang_data: ws_lang_data,
+            // ws_lang_data: ws_lang_data,
+            // user_roles: user_Ctx.userCtx.roles
+         }*/
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', '#master_popup', box_config);
     } catch (err) {
-        console.log('ERROR EN BOX WELCOME',err);
+        console.log('ERROR EN BOX WELCOME', err);
         Snackbar.show({
             text: err.msj,
             actionText: 'Ok',
@@ -121,19 +121,70 @@ async function  box_welcome() {
     }
 }
 
+
 // Welcome BOX configuracion inicial del box
-async function  box_facturar_mov(element) {
+async function setting_box() {
     try {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
-        console.log('box_facturar ws_lang_data:', ws_lang_data );
+        console.log(ws_lang_data, 'ws_lang_data');
+        // Intentar obtener el documento de filtros de la base de datos local
+        //     const filters = await box_local_db.get('filtros');
+        //    const category_list = await  L_box_db.get('category_list');
+        //    const payment_type_list = await  L_box_db.get('payment_type_list');
+        // const operation_type_list = await  L_box_db.get('operation_type_list');
+        //     const colaboration_list = await  L_board_db.get('colaborator_list');
+        /// NEW 2024
+
+        //   var price_list = await L_catalog_db.get('price_list');
+        //     var currency_list = await L_catalog_db.get('currency_list');
+        //     var tax_list = await L_catalog_db.get('tax_list');
+
+        var box_config = {
+            //   ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            //     price_list: price_list.price_list,
+            //      currency_list: currency_list.currency_list,
+            //     tax_list: tax_list.tax,
+        }
+
+        console.log('box_config', box_config);
+        /* var data = {
+             //board_type_name: board_type_name,
+          //   ws_info: ws_info,
+          ws_lang_data: ws_lang_data,
+            // ws_lang_data: ws_lang_data,
+            // user_roles: user_Ctx.userCtx.roles
+         }*/
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
+    } catch (err) {
+        
+        console.log('ERROR EN BOX SETTING', err);
+        Snackbar.show({
+            text: err.msj,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+
+// Welcome BOX configuracion inicial del box
+async function box_facturar_mov(element) {
+    try {
+        const modal = document.getElementById('master_popup');
+        $(modal).modal('show');
+        console.log('box_facturar ws_lang_data:', ws_lang_data);
 
         var data = {
             //board_type_name: board_type_name,
-         //   ws_info: ws_info,
+            //   ws_info: ws_info,
             ws_lang_data: ws_lang_data,
-           // ws_lang_data: ws_lang_data,
-           // user_roles: user_Ctx.userCtx.roles
+            // ws_lang_data: ws_lang_data,
+            // user_roles: user_Ctx.userCtx.roles
         }
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/facturacion_box.hbs', '#master_popup', data);
     } catch (err) {
@@ -189,10 +240,10 @@ async function get_nav_box() {
     try {
         // Intentar obtener el documento de filtros de la base de datos local
         const filters = await box_local_db.get('filtros');
-        const category_list = await  L_box_db.get('category_list');
-        const payment_type_list = await  L_box_db.get('payment_type_list');
-      //  const operation_type_list = await  L_box_db.get('operation_type_list');
-       const colaboration_list = await  L_board_db.get('colaborator_list');
+        const category_list = await L_box_db.get('category_list');
+        const payment_type_list = await L_box_db.get('payment_type_list');
+        //  const operation_type_list = await  L_box_db.get('operation_type_list');
+        const colaboration_list = await L_board_db.get('colaborator_list');
 
         // Si se encuentra el documento, devolver los filtros
         // Preparar los datos para la plantilla
@@ -201,20 +252,20 @@ async function get_nav_box() {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            colaborator_list:colaboration_list,
-            category_list:category_list,
-            payment_type_list:payment_type_list,
+            colaborator_list: colaboration_list,
+            category_list: category_list,
+            payment_type_list: payment_type_list,
             // operation_type_list:operation_type_list,
             // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
         }
-        console.log('FILTROS ws_box_data_nav',ws_box_data_nav);
+        console.log('FILTROS ws_box_data_nav', ws_box_data_nav);
         // Renderizar la plantilla con los datos
-        return  renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
+        return renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
 
     } catch (error) {
         if (error.name === 'not_found') {
             // Si el documento no se encuentra, crear un nuevo documento con filtros vacíos
-           return check_filters();
+            return check_filters();
         }
     }
 }
@@ -289,8 +340,8 @@ async function updateOrCreateDocument(params) {
 // ARMO Y Traigo el box filtrado
 async function get_box(pageNumber = 1, limit = 10) {
     try {
-        
-        box_welcome(); 
+
+        box_welcome();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
@@ -428,7 +479,7 @@ async function box_filter_select_date(element) {
     let limit = filters.limit;
     var skip = filters.skip;
     let pageNumber = filters.pageNumber;
-   // let pageSize = filters.limit;
+    // let pageSize = filters.limit;
 
     switch (dateValue) {
         case "date_1": // Hoy
@@ -496,7 +547,7 @@ async function box_filter_select_date(element) {
         startDate: startDate,
         endDate: endDate,
         pageNumber: pageNumber,
-        limit:limit,
+        limit: limit,
         skip: skip,
     };
     // Llamar a la función para actualizar o crear el documento
@@ -515,7 +566,7 @@ async function change_page_limit(element) {
     // Llamar a la función para actualizar o crear el documento
     await updateOrCreateDocument(updateFields);
     // Llamar a otras funciones necesarias
-    get_box(page,limit);
+    get_box(page, limit);
 }
 /// CRUD CATEGORIAS 2024
 // CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023

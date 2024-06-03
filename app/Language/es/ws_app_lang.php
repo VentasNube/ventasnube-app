@@ -399,6 +399,14 @@ return [
          'm_box_surname' => 'Apellido',
          'm_box_document' => 'Documento',
          'm_box_phone' => 'Telefono',
+
+         'ws_box_settings_title' => ' Bienvenido a movimientos, informes y facturación.',
+         'ws_box_settings_title_sub' => 'En esta sección vas a encontrar toda la información que necesitás <br> para llevar el control de los movimientos de tu dinero.',
+         'ws_box_settings_title_sub_2' => 'Ver estadisticas, Imprimir listados, reportes y hacer facturas.',
+         'ws_box_settings_title_sub_3' => ' Antes de empezar configura algunos datos de tu negocio.',
+         'ws_box_settings_title_sub_4' => 'Configurar mi negocio',
+
+         
        //  'm_box_email' => 'Email',
        //  'm_box_passwor_b' => 'Modificar contrase&ntilde;a',
         // 'm_box_passwor' => 'Nueva Contrase&ntilde;a',

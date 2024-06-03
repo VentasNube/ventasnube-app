@@ -8,7 +8,7 @@
                         <span class="material-icons">arrow_back</span>
                     </span>
                     <span class="modal-title">
-                        Configuracion de box
+                        Configuraciones generales
                     </span>
                 </div>
             </div>
@@ -19,12 +19,7 @@
                                         background-size: 230px 230px!important;
                                         background-position: 94% 15% !important; ">
                     <div class="text-left ">
-                        <h2 class="margin-l-20">Puedes ver y filtrar y administrar tus ingresos y egresos.
-                            {{{m_box_tour_title_welcome}}}</h2>
-                        <h3 class="margin-20">Ver estadisticas, Imprimir listados/reoprtes y hacer facturas
-                            {{{m_box_tour_title}}}</h3>
-                        <h4 class="margin-20">Configura algunos parametros de tu
-                            negocio.<strong>{{{m_box_tour_title_sub}}}</strong></h4>
+
                         <div class="margin-l-30">
                              <p>
                                 <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
@@ -57,14 +52,14 @@
         <div class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
             <ul class="nav nav-tabs">
               
-                <!--li class="ripple">
+                <li class="ripple">
                     <a data-toggle="tab" href="#ws_box_config_money">
                         <span class="material-icons">
                             {{#with ws_lang_data}}{{m_config_catalog_list_money_icon}}{{/with}}
                         </span>
                         {{#with ws_lang_data}}{{ ws_catalog_settings_money }} {{/with}}
                     </a>
-                </li-->
+                </li>
                 <li class="ripple">
                     <a data-toggle="tab" href="#ws_box_config_tax">
                         <span class="material-icons">
@@ -905,7 +900,7 @@
                     </div>
                 </div>
             </div>
-            {{#with ws_lang_data}} 
+{{#with ws_lang_data}} 
             <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
                 <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
                     aria-label="Close">
