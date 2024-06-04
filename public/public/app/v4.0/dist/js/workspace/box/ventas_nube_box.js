@@ -68,7 +68,177 @@ async function ws_box_start() {
     }
 }
 
-ws_box_start();
+// CREO NUEVO DOC PAYMENT TYPE LIST
+async function new_payment_type_list_doc() {
+    try {
+        const paymentTypeList = {
+            "_id": "payment_type_list",
+            "type": "payment_type_list",
+            "status": "active",
+            'newDate' : new Date(), //fecha actual del navegador
+           // 'userName': userCtx.userCtx.name,
+            "payment_type_list_default_id": 1,
+            "payment_type_list": [
+              {
+                "id": 0,
+                "status": "desactive",
+                "name": "Efectivo",
+                "icon":"money",
+                "tasa_int": 8,
+                "pay_quantity": 1
+              },
+              {
+                "id": 1,
+                "status": "active",
+                "name": "Tarjeta Visa",
+                "tasa_int": 8,
+                "pay_quantity": 1,
+                "icon":"credit_card",
+                "quote_list": [
+                  {
+                    "id": 1,
+                    "status": "active",
+                    "tasa_int": 8,
+                    "pay_quantity": 1
+                    
+                  },
+                  {
+                    "id": 2,
+                    "status": "active",
+                    "tasa_int": 15,
+                    "pay_quantity": 3
+                  },
+                  {
+                    "id": 3,
+                    "status": "active",
+                    "tasa_int": 25,
+                    "pay_quantity": 6
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "status": "active",
+                "name": "Debito",
+                "icon":"credit_card",
+                "tasa_int": 8,
+                "pay_quantity": 1
+                
+              },
+              {
+                "id": 3,
+                "status": "active",
+                "name": "Qr",
+                "icon":"qr_code",
+                "tasa_int": 4,
+                "pay_quantity": 1
+              },
+              {
+                "id": 4,
+                "status": "active",
+                "name": "Transferencia",
+                "icon":"account_balance",
+                "tasa_int": 5,
+                "pay_quantity": 1
+              },
+              {
+                "id": 5,
+                "status": "active",
+                "name": "Mercado Pago",
+                "icon":"account_balance",
+                "tasa_int": 5,
+                "pay_quantity": 1
+              }
+            ]
+          };
+        var response = await L_box_db.put(paymentTypeList);
+        if (response.ok) {
+            
+            Snackbar.show({ text: 'Se agrego el tipo de pago con éxito!', actionText: 'ok', actionTextColor: "#0575e6", });
+        }
+    }
+    catch (error) {
+        if (error.msj == 'conflict' ) {
+            Snackbar.show({ text: 'Payment list ', actionText: 'ok', actionTextColor: "#0575e6", });
+        } 
+        console.log('ERROR EN BOX SETTING', error);
+        Snackbar.show({ text: error.reason, actionText: 'ok', actionTextColor: "#0575e6", });
+    }
+}
+
+async function payment_type_list_save_block(element) {
+    try {
+        // Traigo los valores
+        const payment_id = $(element).attr('payment_id');
+        let payment_status = $(element).attr('payment_status');
+        // Cambia el estado del pago
+        payment_status = payment_status === 'active' ? 'inactive' : 'active';
+
+        // Filtra los resultados
+        const payment_id_n = Number(payment_id);
+        const newDate = new Date(); // Fecha actual del navegador
+        const userName = userCtx.userCtx.name;
+
+        // Obtiene el documento de la lista de tipos de pago
+        const doc = await L_box_db.get('payment_type_list');
+
+        // Verifica que la estructura del documento sea la esperada
+        if (!doc.payment_type_list || !Array.isArray(doc.payment_type_list)) {
+            throw new Error('La estructura del documento no es válida o el campo payment_type_list no existe.');
+        }
+        console.log('payment_type_list', doc);
+       const payment_array = doc.payment_type_list.find(response => response.id == payment_id_n); // Traigo el elemento por la id variant
+
+        // Actualiza los arrays con la fecha y el usuario que lo actualizó
+        if (payment_array) {
+            const payment = payment_array; // Traigo el objeto específico
+            payment.status = payment_status; // Edito el valor del estado
+            payment.updateDate = newDate;
+            payment.updateUser = userName;
+            // Actualiza el documento
+            const response = await L_box_db.put({
+                ...doc,
+                _id: doc._id,
+                _rev: doc._rev,
+            });
+            // Muestra mensaje de éxito o error
+            if (response.ok) {
+               
+                Snackbar.show({
+                    text: 'Se actualizó con éxito!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+                setting_box();
+            } else {
+                Snackbar.show({
+                    text: 'No se actualizó!!',
+                    actionText: 'ok',
+                    pos: 'bottom-right',
+                    actionTextColor: "#0575e6",
+                });
+            }
+        } else {
+            Snackbar.show({
+                text: 'No se encontró el tipo de pago!!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        Snackbar.show({
+            text: 'Error al actualizar!!',
+            actionText: 'ok',
+            pos: 'bottom-right',
+            actionTextColor: "#0575e6",
+        });
+    }
+}
+
+new_payment_type_list_doc();
 
 // Welcome BOX configuracion inicial del box
 async function box_welcome() {
@@ -121,7 +291,6 @@ async function box_welcome() {
     }
 }
 
-
 // Welcome BOX configuracion inicial del box
 async function setting_box() {
     try {
@@ -129,26 +298,30 @@ async function setting_box() {
         $(modal).modal('show');
         console.log(ws_lang_data, 'ws_lang_data');
         // Intentar obtener el documento de filtros de la base de datos local
-        //     const filters = await box_local_db.get('filtros');
-        //    const category_list = await  L_box_db.get('category_list');
-        //    const payment_type_list = await  L_box_db.get('payment_type_list');
-        // const operation_type_list = await  L_box_db.get('operation_type_list');
-        //     const colaboration_list = await  L_board_db.get('colaborator_list');
+        //      const filters = await box_local_db.get('filtros');
+        //      const category_list = await  L_box_db.get('category_list');
+       //       const payment_type_list = await  L_box_db.get('payment_type_list');
+        //      const operation_type_list = await  L_box_db.get('operation_type_list');
+        //      const colaboration_list = await  L_board_db.get('colaborator_list');
         /// NEW 2024
-
-        //   var price_list = await L_catalog_db.get('price_list');
-        //     var currency_list = await L_catalog_db.get('currency_list');
-        //     var tax_list = await L_catalog_db.get('tax_list');
+        var payment_type_list = await  L_box_db.get('payment_type_list');
+        var price_list = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+        var tax_list = await L_catalog_db.get('tax_list');
 
         var box_config = {
-            //   ws_info: ws_info,
+            ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            //     price_list: price_list.price_list,
-            //      currency_list: currency_list.currency_list,
-            //     tax_list: tax_list.tax,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            tax_list: tax_list.tax,
+            payment_type_list:payment_type_list.payment_type_list,
         }
 
+        console.log('price_list', price_list);
+        console.log('currency_list', currency_list);
+        console.log('tax_list', tax_list);
         console.log('box_config', box_config);
         /* var data = {
              //board_type_name: board_type_name,
@@ -159,8 +332,11 @@ async function setting_box() {
          }*/
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
     } catch (err) {
-        
+
         console.log('ERROR EN BOX SETTING', err);
+        if(err.msj == 'missing' || err.msj == 'deleted'  || err.msj == 'not_found' ){
+            new_payment_type_list_doc()
+        }
         Snackbar.show({
             text: err.msj,
             actionText: 'Ok',
@@ -170,6 +346,161 @@ async function setting_box() {
         });
     }
 }
+
+/*
+async function add_payment_type_list(){
+
+}
+async function edit_payment_type_list(){
+
+}
+// SELECCIONO
+async function select_payment_type_list(element, new_item) {
+
+    var item_value_id = $(element).attr('item_value_id');
+    var new_item = new_item;
+    if (new_item) {
+        var item_value = new_item;
+    } else {
+        var item_value = $(element).attr('item_value');
+    }
+    try {
+        // console.log('id',item_value_id);
+        //  console.log('value',item_value);
+        //alert('item_value_id',item_value_id);
+        $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
+        $('#catalog_select_trade_value').html(item_value);
+        $('#catalog_select_trade_tittle').html(item_value);
+        $('#catalog_select_trade_tittle').attr('item_value_id', item_value_id);
+
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// AGREGO
+async function add_payment_type_list(element) {
+    event.preventDefault(element);
+    try {
+        var doc_id = $(element).attr('doc_id');
+        var new_trade_val = $('#catalog_new_trade_input').val();
+        var new_trade = String(new_trade_val);
+        // .toLowerCase()
+        // Filtro si el input esta bacio
+        if (new_trade) {
+            let doc_id_s = String('trade_list');  // Me aseguro q sea un string
+            let doc = await L_catalog_db.get(doc_id_s);
+            const tag_index = doc.trade_list.find((objeto) => objeto.value == new_trade);  // Verigico q el item a agregar ya no este repetido
+            if (tag_index) {
+                Snackbar.show({
+                    text: ' <span class="material-icons">category</span> La marca ' + new_trade_val + ' ya existe!',
+                    width: '475px',
+                    pos: 'bottom-right',
+                    actionTextColor: "#4CAF50",
+                });
+            }
+            else {
+                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
+                var arr_number_id_valid = doc.trade_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
+                if (!arr_number_id_valid) {
+                    var new_item = {
+                        id: arr_number_id,
+                        value: new_trade,
+                        sub_category: []
+                    }
+                }
+                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
+                var new_doc = doc.trade_list.unshift(new_item);  //Envio los datos editados al documento
+
+                var response = await L_catalog_db.put({
+                    _id: doc._id,
+                    _rev: doc._rev,
+                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
+                });
+                if (response) {
+                    // load_all_cat(doc_id,arr_number_id );
+                    // catalog_edit_item_url(doc_id, 1);
+                    $('#catalog_select_trade_value').html(new_trade);
+                    $('#catalog_select_trade_value').attr('catalog_select_trade_value', arr_number_id);
+
+                    Snackbar.show({
+                        text: 'La marca ' + new_trade_val + ' se agrego!',
+                        actionText: 'ok',
+                        pos: 'bottom-right',
+                        actionTextColor: "#0575e6",
+                    });
+                    catalog_select_new_trade(element, new_trade);
+                    //catalog_search_trade(e, element);
+                    //  catalog_edit_item_url(doc_id, 1);
+                } else {
+                    alert("no se actualizo");
+                }
+            }
+        }
+        else {
+            Snackbar.show({
+                text: ' La categoria no puede estar bacia',
+                width: '475px',
+                pos: 'bottom-right',
+                actionTextColor: "#4CAF50"
+            });
+        }
+    } catch (err) {
+
+    }
+}
+
+// ELIMINO
+async function edit_payment_type_list(element) {
+    event.preventDefault(element);
+    try {
+        //Datos del cocumento y el id 
+        let doc_id = $(element).attr('doc_id');
+        let value = $(element).attr('value');
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar la Marca ' + value + ' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+            onActionClick: async function (element) {
+                //Efecto y verificacion del tag
+                let doc_id_s = String(doc_id);
+                //Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_catalog_db.get('trade_list');
+                console.log(doc);
+                //Filtro los resultados del array menos el que quiero eliminar
+                const new_trade_list = doc.trade_list.filter(word => word.value !== value);
+                //Reemplazo el array por el filtrado
+                console.log(new_trade_list);
+                doc.trade_list = new_trade_list;
+
+                console.log(doc.trade);
+                //Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc,// trae todos los datos del doc y los pega en la raiz
+                    });
+                    if (response) {
+                        //Limpio el item de la pantalla
+                        //catalog_edit_item_url(doc_id, 1);
+                        $(element).parent('li').remove();
+                    } else {
+                        //Si no se grabo tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+*/
 
 
 // Welcome BOX configuracion inicial del box
@@ -462,7 +793,24 @@ async function get_box(pageNumber = 1, limit = 10) {
         console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems:', totalFilterItems);
 
     } catch (error) {
-        console.error('Error al obtener los datos de la caja:', error);
+
+
+        console.log('ERROR EN BOX SETTING', err);
+        if(err.msj == 'missing' || err.msj == 'deleted'  || err.msj == 'not_found' ){
+
+
+            box_welcome();
+            new_payment_type_list_doc();
+        }
+        Snackbar.show({
+            text: err.msj,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+
+       // console.error('Error al obtener los datos de la caja:', error);
     }
 }
 // Selecciono filtro de fecha
