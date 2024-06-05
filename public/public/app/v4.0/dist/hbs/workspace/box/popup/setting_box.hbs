@@ -55,14 +55,15 @@
                             </p>
                         </div>
                         {{/with}}
-                        
-                        <div  class=" margin-20 ">
-                            <!-- TABAS MAIN -->
-                            <div  class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+
+                        <div id="edit-new-tax" class=" margin-20 ">
+                            <!-- Cart main module -->
+                            <div
+                                class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
                                 <ul class="nav nav-tabs">
 
                                     <li class="ripple">
-                                        <a data-toggle="tab"  for="radio-1" href="#ws_box_config_tax">
+                                        <a data-toggle="tab" for="radio-1" href="#ws_box_config_tax">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}} {{m_config_catalog_list_tax_icon}}{{/with}}
                                             </span>
@@ -70,7 +71,7 @@
                                         </a>
                                     </li>
                                     <li class="ripple">
-                                        <a data-toggle="tab"  for="radio-2" href="#ws_box_paymet_type">
+                                        <a data-toggle="tab" for="radio-2" href="#ws_box_paymet_type">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}}add_card{{/with}}
                                             </span>
@@ -158,10 +159,12 @@
                                                 </li>
                                                 {{/each}}
                                             </div>
-                                            <div id="edit_panel_config_tax" 
+                                            <!-- EDITAR TAX --->
+                                            <div id="edit_panel_config_tax"
                                                 class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <form class="" role="">
-                                                    <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <div
+                                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                                         <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
@@ -187,7 +190,8 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <div
+                                                            class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                             <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
                                                                 {{ws_catalog_settings_tax}} {{/with}} </label>
                                                             <div class="input-group">
@@ -215,10 +219,12 @@
                                             </button>
                                         </div>
                                     </div>
-
+                                    <!-- PAYPMENT LIST --->
                                     <div id="ws_box_paymet_type" class="tab-pane fade">
+
                                         <div id="" class="padding-0 s-card-activ-cont">
                                             <!-- LISTADO DE MEDIOS DE PAGO--->
+
                                             <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 {{#each payment_type_list as | pl |}}
                                                 <li
@@ -231,13 +237,12 @@
                                                         visibility_off
                                                         {{/ifEquals}}
                                                     </span>
-                                                       <span class="material-icons">
-                                             {{icon}}
-                                                       </span>
-                                        
-                                                    {{name}} 
+                                                    <span class="material-icons">
+                                                        {{icon}}
+                                                    </span>
+                                                    {{name}}
                                                     Cuotas = {{pay_quantity}}
-                                                        Tasa Interes= {{ tasa_int}}%
+                                                    Tasa Interes= {{ tasa_int}}%
 
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom" title=""
@@ -263,7 +268,7 @@
                                                             </button>
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li>
-                                                                    <a onclick="catalog_config_show_edit(this)"
+                                                                    <a onclick="payment_type_show_edit(this)"
                                                                         price_id=" {{id}}" price_value="{{value}}"
                                                                         price_currency_id="{{currency_id}}" href="#">
                                                                         <span class="material-icons">
@@ -274,9 +279,10 @@
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a status="active" doc_id="{{_id}}" 
+                                                                    <a status="active" doc_id="{{_id}}"
                                                                         onclick="payment_type_list_save_block(this)"
-                                                                        payment_id=" {{id}}"  payment_status="{{status}}" href="#">
+                                                                        payment_id=" {{id}}" payment_status="{{status}}"
+                                                                        href="#">
                                                                         <span class="material-icons">
                                                                             {{#ifEquals pl.status 'active' }}
                                                                             visibility
@@ -299,15 +305,14 @@
                                                 </li>
                                                 {{/each}}
                                             </div>
-                                            <div id="edit_panel_config_name_price_list" hidden=""
+
+                                            <!-- EDIT  NAME PRICE LIST  edit_panel_config_name_price_list --->
+                                            <div id="edit_panel_config_paymet_type" hidden=""
                                                 class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <form class="" role="">
-                                                    <div
-                                                        class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                        <div
-                                                            class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                            <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
-                                                                {{ws_catalog_settings_list}} {{/with}} </label>
+                                                    <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                        <div  class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                            <label> {{#with ws_lang_data}} Medio de pago {{/with}} </label>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">
                                                                     <span class="material-icons">
@@ -316,8 +321,8 @@
                                                                     </span>
                                                                 </span>
                                                                 <input class="form-control" autocomplete="off"
-                                                                    type="text" id="new_price_list_name_value"
-                                                                    name="new_list_price" placeholder="Buscar..">
+                                                                    type="text" id="new_paymet_type_list_name_value"
+                                                                    name="new_paymet_type_price" placeholder="Nombre del medio..">
                                                             </div>
                                                         </div>
                                                         <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -326,7 +331,7 @@
                                                                 {{ws_catalog_settings_money}} {{/with}} </label>
 
                                                             <div class="input-group">
-                                                                <select id="new_price_list_money_value"
+                                                                <select id="payment_type_list_money_value"
                                                                     class="form-control md">
                                                                     {{#each currency_list }}
                                                                     <option value="{{{id}}}"> {{value}} </option>
@@ -334,7 +339,7 @@
                                                                 </select>
                                                                 <span class="input-group-addon">
                                                                     <button type="button"
-                                                                        onclick="catalog_config_save_edit(this)"
+                                                                        onclick="payment_type_list_save_edit(this)"
                                                                         class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
                                                                         <span class="material-icons"> {{#with
                                                                             ws_lang_data}}
@@ -350,10 +355,11 @@
                                         </div>
                                         <!--tab-content--->
                                     </div>
-
+                                    <!-- CONFIG LIST  ws_box_config_list --->
                                     <div id="ws_box_config_list" class="tab-pane fade ">
                                         <div id="" class="padding-0 s-card-activ-cont">
-                                            <!-- LISTADO --->
+
+                                            <!-- LISTADO PRICE LIST --->
                                             <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 {{#each price_list as | pl |}}
                                                 <li
@@ -431,6 +437,8 @@
                                                 </li>
                                                 {{/each}}
                                             </div>
+
+                                            <!-- EDIT  PRICE LIST--->
                                             <div id="edit_panel_config_name_price_list" hidden=""
                                                 class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <form class="" role="">
@@ -478,11 +486,432 @@
                                                     </div>
                                                 </form>
                                             </div>
+
                                         </div>
                                         <!--tab-content--->
                                     </div>
                                     <div id="ws_box_config_print" class="tab-pane fade ">
+                                        <div id="new-board-step-1" class=" margin-20 ">
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <label>
+                                                    <strong>Medio de pago</strong>
+                                                </label>
+                                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                                    aria-expanded="true">
+                                                    <span bg-color="" id="tp-select-color" class="btn btn-default">
+                                                        <span id="tp-select-icon" class="material-icons">
+                                                            palette
+                                                        </span>
+                                                        <span class="" id="tp-select-text"> Efectivo</span>
+                                                        <span class="material-icons">arrow_drop_down</span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu open-right  m">
+                                                    <!--ul class="dropdown-menu m pull-right"></ul-->
+                                                    <li class="header">
+                                                        <span class="material-icons">
+                                                            account_balance_wallet
+                                                        </span>
+                                                        Medios de pago
+                                                        <span class="material-icons">arrow_right</span>
+                                                        <span id="catalog_select_cat_value"></span>
+                                                    </li>
 
+                                                    <div id="catalog_select_new_cat_list">
+                                                        <li onclick="catalog_select_new_cat(this)" item_value_id=""
+                                                            item_value="Hoy" item_id="filter_date">
+                                                            <div class="dropdown-item">
+                                                                <a href="#">
+                                                                    Efectivo
+                                                                </a>
+                                                                <button>
+                                                                    <span doc_id="" value="sell" class="material-icons"
+                                                                        onclick="box_filter_select_operation(this)">radio_button_unchecked</span>
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                        <li onclick="catalog_select_new_cat(this)"
+                                                            item_value_id="date_2" item_value="Ayer"
+                                                            item_id="filter_date">
+                                                            <div class="dropdown-item">
+                                                                <a href="#">
+                                                                    Debito
+                                                                </a>
+                                                                <button>
+                                                                    <span doc_id="" value="date_2"
+                                                                        class="material-icons"
+                                                                        onclick="box_filter_select_date(this)">
+                                                                        radio_button_unchecked</span>
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                                            item_value="Galletitas" item_id="filter_date">
+                                                            <div class="dropdown-item">
+                                                                <a href="#">
+                                                                    Transferencia
+                                                                </a>
+                                                                <button>
+                                                                    <span doc_id="" value="date_3"
+                                                                        class="material-icons"
+                                                                        onclick="box_filter_select_date(this)">
+                                                                        radio_button_unchecked</span>
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                                            item_value="Galletitas" item_id="category">
+                                                            <div class="dropdown-item">
+                                                                <a href="#">
+                                                                    Qr
+                                                                </a>
+                                                                <button>
+                                                                    <span doc_id="" value="date_4"
+                                                                        class="material-icons"
+                                                                        onclick="box_filter_select_date(this)">
+                                                                        radio_button_unchecked</span>
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
+                                                            item_value="Galletitas" item_id="category">
+                                                            <div class="dropdown-item">
+                                                                <a href="#">
+                                                                    Tarjet de credito
+                                                                </a>
+                                                                <button>
+                                                                    <span doc_id="" value="date_4"
+                                                                        class="material-icons"
+                                                                        onclick="box_filter_select_date(this)">
+                                                                        radio_button_unchecked</span>
+                                                                </button>
+                                                            </div>
+                                                        </li>
+
+                                                    </div>
+                                                </ul>
+
+                                            </div>
+                                            <div id="board-type-icon"
+                                                class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <label>
+                                                    <strong> {{m_board_icon_title}}</strong>
+                                                </label>
+                                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                                    aria-expanded="true">
+                                                    <span id="bt-text-icon" class="btn btn-default">
+                                                        <span class="material-icons">arrow_drop_down</span>
+                                                        .
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu mini">
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_shipping </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">add_shopping_cart </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">store </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">shopping_basket </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">shopping_cart</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">shopping_bag</span>
+                                                    </li>
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">handyman</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">design_services</span>
+                                                    </li>
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">cleaning_services</span>
+                                                    </li>
+
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class=" board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">devices_other </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">computer</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">desktop_mac</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">tablet_mac</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">phone_iphone</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">videogame_asset</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">speaker</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">linked_camera</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">watch </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">kitchen </span>
+                                                    </li>
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">monetization_on</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">headset_mic</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_activity</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">directions_bike</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">two_wheeler</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">directions_car</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">directions_boat</span>
+                                                    </li>
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">airport_shuttle</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">room_service</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">business_center</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">whatshot</span>
+                                                    </li>
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_florist</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">cake</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">flash_on</span>
+                                                    </li>
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">restaurant </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">fastfood </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_pizza </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_bar</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_cafe</span>
+                                                    </li>
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">local_offer </span>
+                                                    </li>
+
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">weekend </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">extension </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-primary text">
+                                                        <span class="material-icons">domain </span>
+                                                    </li>
+
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">airline_seat_flat </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">hot_tub</span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">pets </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">content_cut </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">fitness_center </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">sentiment_very_dissatisfied </span>
+                                                    </li>
+
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">school </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">local_laundry_service </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">book_online </span>
+                                                    </li>
+                                                    <li board-icon="btn-primary"
+                                                        class="board-icon btn-status btn btn-secondary text">
+                                                        <span class="material-icons">biotech </span>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                            <div class="form-group   col-lg-3  col-md-3 col-sm-4 col-xs-12">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Cantidad de cuotas %">
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Tasa interes %">
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Impuestos Base Imponible %">
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Valor iva %">
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <label>
+                                                    <strong>{{m_board_color_title}}</strong>
+                                                </label>
+                                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
+                                                    aria-expanded="true">
+                                                    <span bg-color="" id="bg-select-color" class="btn btn-default">
+                                                        <span id="bg-select-icon" class="material-icons">
+                                                            palette
+                                                        </span>
+                                                        <span class="new_board_name" id="bg-select-text">
+                                                            {{m_board_icon_select}}</span>
+                                                        <span class="material-icons">arrow_drop_down</span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu mini">
+                                                    <li bg-color="btn-primary"
+                                                        class="bg-color btn-status btn btn-primary"><span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-secondary"
+                                                        class="bg-color btn-status btn btn-secondary "><span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark">
+                                                        <span class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-yellow"
+                                                        class="bg-color btn-status btn btn-yellow "> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-success"
+                                                        class="bg-color btn-status btn btn-success"> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info ">
+                                                        <span class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-danger"
+                                                        class="bg-color btn-status btn btn-danger"> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray ">
+                                                        <span class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-warning"
+                                                        class="bg-color btn-status btn btn-warning "> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown">
+                                                        <span class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-green-dark"
+                                                        class="bg-color btn-status btn btn-green-dark"> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+                                                    <li bg-color="btn-fuchsia"
+                                                        class="bg-color btn-status btn btn-fuchsia"> <span
+                                                            class="material-icons">panorama_fish_eye</span></li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <input value="ibb" type="text" class="form-control" id="" name=""
+                                                    placeholder="Retenciones IBB">
+                                            </div>
+                                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <input value="0.5" type="text" class="form-control" id="" name=""
+                                                    placeholder="Valor Retenciones %">
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--tabs-main--->
                                 </div>
@@ -490,375 +919,13 @@
 
                         </div>
 
-                        <div id="new-board-step-1" class=" margin-20 ">
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <label>
-                                    <strong>Medio de pago</strong>
-                                </label>
-                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="true">
-                                    <span bg-color="" id="tp-select-color" class="btn btn-default">
-                                        <span id="tp-select-icon" class="material-icons">
-                                            palette
-                                        </span>
-                                        <span class="" id="tp-select-text"> Efectivo</span>
-                                        <span class="material-icons">arrow_drop_down</span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu open-right  m">
-                                    <!--ul class="dropdown-menu m pull-right"></ul-->
-                                    <li class="header">
-                                        <span class="material-icons">
-                                            account_balance_wallet
-                                        </span>
-                                        Medios de pago
-                                        <span class="material-icons">arrow_right</span>
-                                        <span id="catalog_select_cat_value"></span>
-                                    </li>
-
-                                    <div id="catalog_select_new_cat_list">
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="" item_value="Hoy"
-                                            item_id="filter_date">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Efectivo
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="sell" class="material-icons"
-                                                        onclick="box_filter_select_operation(this)">radio_button_unchecked</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="date_2"
-                                            item_value="Ayer" item_id="filter_date">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Debito
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="date_2" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="filter_date">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Transferencia
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="date_3" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="category">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Qr
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="date_4" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
-                                                </button>
-                                            </div>
-                                        </li>
-                                        <li onclick="catalog_select_new_cat(this)" item_value_id="2"
-                                            item_value="Galletitas" item_id="category">
-                                            <div class="dropdown-item">
-                                                <a href="#">
-                                                    Tarjet de credito
-                                                </a>
-                                                <button>
-                                                    <span doc_id="" value="date_4" class="material-icons"
-                                                        onclick="box_filter_select_date(this)">
-                                                        radio_button_unchecked</span>
-                                                </button>
-                                            </div>
-                                        </li>
-
-                                    </div>
-                                </ul>
-
-                            </div>
-                            <div id="board-type-icon" class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <label>
-                                    <strong> {{m_board_icon_title}}</strong>
-                                </label>
-                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="true">
-                                    <span id="bt-text-icon" class="btn btn-default">
-                                        <span class="material-icons">arrow_drop_down</span>
-                                        .
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu mini">
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_shipping </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">add_shopping_cart </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">store </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_basket </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_cart</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">shopping_bag</span>
-                                    </li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">handyman</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">design_services</span>
-                                    </li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">cleaning_services</span>
-                                    </li>
-
-
-
-                                    <li board-icon="btn-primary" class=" board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">devices_other </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">computer</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">desktop_mac</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">tablet_mac</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">phone_iphone</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">videogame_asset</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">speaker</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">linked_camera</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">watch </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">kitchen </span>
-                                    </li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">monetization_on</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">headset_mic</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_activity</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_bike</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">two_wheeler</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_car</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">directions_boat</span>
-                                    </li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">airport_shuttle</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">room_service</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">business_center</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">whatshot</span>
-                                    </li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_florist</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">cake</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">flash_on</span>
-                                    </li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">restaurant </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">fastfood </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_pizza </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_bar</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_cafe</span>
-                                    </li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">local_offer </span>
-                                    </li>
-
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">weekend </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">extension </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-primary text">
-                                        <span class="material-icons">domain </span>
-                                    </li>
-
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">airline_seat_flat </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">hot_tub</span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">pets </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">content_cut </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">fitness_center </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">sentiment_very_dissatisfied </span>
-                                    </li>
-
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">school </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">local_laundry_service </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">book_online </span>
-                                    </li>
-                                    <li board-icon="btn-primary" class="board-icon btn-status btn btn-secondary text">
-                                        <span class="material-icons">biotech </span>
-                                    </li>
-                                </ul>
-
-                            </div>
-                            <div class="form-group   col-lg-3  col-md-3 col-sm-4 col-xs-12">
-                                <input type="text" class="form-control" id="" name=""
-                                    placeholder="Cantidad de cuotas %">
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <input type="text" class="form-control" id="" name="" placeholder="Tasa interes %">
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <input type="text" class="form-control" id="" name=""
-                                    placeholder="Impuestos Base Imponible %">
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <input type="text" class="form-control" id="" name="" placeholder="Valor iva %">
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <label>
-                                    <strong>{{m_board_color_title}}</strong>
-                                </label>
-                                <button type="button" class="dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="true">
-                                    <span bg-color="" id="bg-select-color" class="btn btn-default">
-                                        <span id="bg-select-icon" class="material-icons">
-                                            palette
-                                        </span>
-                                        <span class="new_board_name" id="bg-select-text"> {{m_board_icon_select}}</span>
-                                        <span class="material-icons">arrow_drop_down</span>
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu mini">
-                                    <li bg-color="btn-primary" class="bg-color btn-status btn btn-primary"><span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-secondary" class="bg-color btn-status btn btn-secondary "><span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-dark" class="bg-color btn-status btn btn-dark"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-yellow" class="bg-color btn-status btn btn-yellow "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-success" class="bg-color btn-status btn btn-success"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-info" class="bg-color btn-status btn btn-info "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-danger" class="bg-color btn-status btn btn-danger"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-gray " class="bg-color btn-status btn  btn-gray "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-warning" class="bg-color btn-status btn btn-warning "> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-brown" class="bg-color btn-status btn btn-brown"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-green-dark" class="bg-color btn-status btn btn-green-dark"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-                                    <li bg-color="btn-fuchsia" class="bg-color btn-status btn btn-fuchsia"> <span
-                                            class="material-icons">panorama_fish_eye</span></li>
-
-                                </ul>
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <input value="ibb" type="text" class="form-control" id="" name=""
-                                    placeholder="Retenciones IBB">
-                            </div>
-                            <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                <input value="0.5" type="text" class="form-control" id="" name=""
-                                    placeholder="Valor Retenciones %">
-                            </div>
-                        </div>
 
                     </div>
                 </div>
             </div>
             {{#with ws_lang_data}}
-                <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
-                    <!--
-                    <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
-                        aria-label="Close">
-                        <span class="">{{b_cancelar}}</span>
-                    </button>
-                    <button onclick="btn_next_new_board(this)" disabled="" id="btn-next" step="1" type="button"
-                        class="btn btn-primary ">
-                        <span class="">{{b_next}}</span>
-                    </button>
-                    -->
-                </div>
+            <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+            </div>
             {{/with}}
     </div>
 </div>
