@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl" role="document">
     {{#with ws_lang_data }}
     <div class="modal-content">
-        <form class="">
+    
             <div class="modal-header">
                 <div class="modal-nav">
                     <span class="back-arrow btn-previus">
@@ -49,17 +49,16 @@
                                 <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
                                     type="radio" name="board-type" value="sell" id="radio-4">
                                 <label for="radio-4">
-                                    <strong>Impresiones y comprobantes</strong>
+                                    <strong>Impresion de comprobantes</strong>
                                     <small>Imagen de cabecera, datos de comprobantes etc.</small>
                                 </label>
                             </p>
                         </div>
                         {{/with}}
                         
-                        <div id="edit-new-tax" class=" margin-20 ">
-                            <!-- Cart main module -->
-                            <div
-                                class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
+                        <div  class=" margin-20 ">
+                            <!-- TABAS MAIN -->
+                            <div  class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
                                 <ul class="nav nav-tabs">
 
                                     <li class="ripple">
@@ -86,12 +85,13 @@
                                             {{#with ws_lang_data}} {{ws_catalog_settings_list}} {{/with}}
                                         </a>
                                     </li>
+
                                     <li class="ripple">
                                         <a data-toggle="tab" href="#ws_box_config_print">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}}print{{/with}}
                                             </span>
-                                            {{#with ws_lang_data}}Impresion documentos.{{/with}}
+                                            {{#with ws_lang_data}}Comprobantes.{{/with}}
                                         </a>
                                     </li>
 
@@ -436,8 +436,7 @@
                                                 <form class="" role="">
                                                     <div
                                                         class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                        <div
-                                                            class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                        <div  class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                             <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
                                                                 {{ws_catalog_settings_list}} {{/with}} </label>
                                                             <div class="input-group">
@@ -843,11 +842,13 @@
                                     placeholder="Valor Retenciones %">
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
             {{#with ws_lang_data}}
                 <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+                    <!--
                     <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default" data-dismiss="modal"
                         aria-label="Close">
                         <span class="">{{b_cancelar}}</span>
@@ -856,9 +857,9 @@
                         class="btn btn-primary ">
                         <span class="">{{b_next}}</span>
                     </button>
+                    -->
                 </div>
             {{/with}}
-        </form>
     </div>
 </div>
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
