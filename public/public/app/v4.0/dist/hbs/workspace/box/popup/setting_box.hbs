@@ -99,22 +99,18 @@
                                 </ul>
                                 <!--tab-content--->
                                 <div class="tab-content ">
-                                    <!--tab--->
+                                     <!-- TAX --->
                                     <div id="ws_box_config_tax" class="tab-pane fade ">
                                         <div id="" class="padding-0 s-card-activ-cont">
                                             <!-- LISTADO --->
                                             <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 {{#each tax_list as | pl |}}
-                                                <li
-                                                    class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
-
+                                                <li class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
                                                     {{name}}
-
                                                     <span class="label padding-10 bg-gray">
-                                                        {{value}}
+                                                    {{value}}
                                                         %
                                                     </span>
-
                                                     <span class="material-icons" data-toggle="tooltip"
                                                         data-placement="bottom" title=""
                                                         data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
@@ -490,6 +486,7 @@
                                         </div>
                                         <!--tab-content--->
                                     </div>
+                                       <!-- IMPRESION  --->
                                     <div id="ws_box_config_print" class="tab-pane fade ">
                                         <div id="new-board-step-1" class=" margin-20 ">
                                             <div class="form-group   col-lg-3 col-md-3 col-sm-4 col-xs-12">
