@@ -2284,27 +2284,30 @@ class Workspace extends BaseController
 
                 // Control de caja  
                 if ($ws_mov_box) {
-                            $ws_mov_box_get = [
+
+                    $ws_mov_box_get = [
                                 '_id' => '_design/box_mov_get',
                                 'views' => [
-                                    'by_user_date_and_client' => [
-                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date) {\n        emit([doc.type, doc.user_name,  doc.entry_date], doc);\n    }\n}"
-                                    ],
-                                    'by_user_date_and_client2' => [
-                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date && doc.client) {\n        emit([doc.type, doc.user_name, doc.entry_date, doc.client.id], doc);\n    }\n}"
-                                    ],
-                                    'by_type_and_status' => [
-                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.status === 'Close'&& doc.entry_date) {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"
-                                    ],
-                                    'by_user_and_status' => [
-                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"  
-                                    ],
-                                    'by_dat' => [
-                                        'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n        emit(doc.entry_date, doc);\n    }\n}"  
-                                    ],                          
+                                        'by_user_date_and_client' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date) {\n        emit([doc.type, doc.user_name,  doc.entry_date], doc);\n    }\n}"
+                                        ],
+                                        'by_user_date_and_client2' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date && doc.client) {\n        emit([doc.type, doc.user_name, doc.entry_date, doc.client.id], doc);\n    }\n}"
+                                        ],
+                                        'by_type_and_status' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.status === 'Close'&& doc.entry_date) {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"
+                                        ],
+                                        'by_user_and_status' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"  
+                                        ],
+                                        'by_dat' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n        emit(doc.entry_date, doc);\n    }\n}"  
+                                        ],                          
                                     ]
                                 ];
+
                     $db_name = "ws_mov_box_" . $workspace_id_hex;
+                   
                     $ws_user_workspace_permission = [
                         'ws_id' => $workspace_id_dec,
                         'ws_id_hex' => $workspace_id_hex,
@@ -2314,12 +2317,157 @@ class Workspace extends BaseController
                         'auth_permissions_id' => '1',
                     ];
 
-                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                    $payment_type_list = [
+                        '_id'=> 'payment_type_list',
+                        'type'=> 'payment_type_list',
+                        'status'=> 'active',
+                        'payment_type_list_default_id'=> 1,
+                        'payment_type_list'=> [
+                          [
+                            'id'=> 0,
+                            'status'=> 'desactive',
+                            'name'=> 'Efectivo',
+                            'icon'=> 'money',
+                            'tasa_int'=> 8,
+                            'pay_quantity'=> 1
+                          ],
+                          [
+                            'id'=> 1,
+                            'status'=> 'active',
+                            'name'=> 'Tarjeta Visa',
+                            'tasa_int'=> 8,
+                            'pay_quantity'=> 1,
+                            'icon'=> 'credit_card',
+                            'quote_list'=> [
+                              [
+                                'id'=> 1,
+                                'status'=> 'active',
+                                'tasa_int'=> 8,
+                                'pay_quantity'=> 1
+                              ],
+                              [
+                                'id'=> 2,
+                                'status'=> 'active',
+                                'tasa_int'=> 15,
+                                'pay_quantity'=> 3
+                              ],
+                              [
+                                'id'=> 3,
+                                'status'=> 'active',
+                                'tasa_int'=> 25,
+                                'pay_quantity'=> 6
+                              ]
+                            ]
+                          ],
+                          [
+                            'id'=> 2,
+                            'status'=> 'active',
+                            'name'=> 'Debito',
+                            'icon'=> 'credit_card',
+                            'tasa_int'=> 8,
+                            'pay_quantity'=> 1
+                          ],
+                          [
+                            'id'=> 3,
+                            'status'=> 'active',
+                            'name'=> 'Qr',
+                            'icon'=> 'qr_code',
+                            'tasa_int'=> 4,
+                            'pay_quantity'=> 1
+                          ],
+                          [
+                            'id'=> 4,
+                            'status'=> 'active',
+                            'name'=> 'Transferencia',
+                            'icon'=> 'account_balance',
+                            'tasa_int'=> 5,
+                            'pay_quantity'=> 1
+                          ],
+                          [
+                            'id'=> 5,
+                            'status'=> 'active',
+                            'name'=> 'Mercado Pago',
+                            'icon'=> 'account_balance',
+                            'tasa_int'=> 5,
+                            'pay_quantity'=> 1
+                          ]
+                        ]
+                    ];
+                    
+                    $operation_type_list = [
+                        '_id' => 'operation_type_list',
+                        'type' => 'operation_type_listt',
+                        'status' => 'active',
+                        'operation_type_list'=> [
+                            [
+                              'id'=> '1',
+                              'value'=> 'Venta'
+                            ],
+                            [
+                              'id'=> '2',
+                              'value'=> 'Compra'
+                            ],
+                            [
+                              'id'=> '3',
+                              'value'=> 'Servicios'
+                            ],
+                            [
+                              'id'=> '4',
+                              'value'=> 'Turnos'
+                            ]
+                          ]
+
+                    ];
+
+
+                      $category_list = [
+                        '_id'=> 'category_list',
+                        'type'=> 'category_list',
+                        'status'=> 'active',
+                        'category_list'=> [
+                          [
+                            'id'=> '1',
+                            'value'=> 'Gastos'
+                          ],
+                          [
+                            'id'=> '2',
+                            'value'=> 'Ingresos'
+                          ],
+                          [
+                            'id'=> '3',
+                            'value'=> 'Servicios generales'
+                          ],
+                          [
+                            'id'=> '4',
+                            'value'=> 'Gastos diarios'
+                          ],
+                          [
+                            'id'=> '5',
+                            'value'=> 'Servicio de limpieza'
+                          ],
+                          [
+                            'id'=> '6',
+                            'value'=> 'Agua mineral'
+                          ],
+                          [
+                            'id'=> '7',
+                            'value'=> 'Compras Almacen'
+                          ]
+                        ]
+
+                          ];                    
+                   
+                $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+
                      if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
-                        $this->WorkspaceModel->curl_put($db_name . "/_security", $ws_security_doc); //Creo la base de datos de seguridad con los roles
-                        $this->WorkspaceModel->curl_put($db_name . "/_design/box_mov_get", $ws_mov_box_get); //Creo el documento de diseno par filtrar documentos por tipo
-                        $this->WorkspaceModel->curl_put($db_name . "/ws_module_config", $ws_module_config); //Creo un doc con la informacion del workspace
+                        $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/box_mov_get', $ws_mov_box_get); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
+
+                        $this->WorkspaceModel->curl_put($db_name . '/payment_type_list', $payment_type_list);
+                        $this->WorkspaceModel->curl_put($db_name . '/operation_type_list', $operation_type_list); 
+                    //    $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); 
                     }
                     
                 }

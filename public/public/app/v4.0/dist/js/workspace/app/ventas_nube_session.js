@@ -82,6 +82,9 @@ if (!ws_id) {
 
 //Chekeo q se alla instalado todas las bases de datos y en especial la left bar y refrezco para inciar las dbs
 const ws_install = readCookie('ws_install-' + ws_id);
+
+console.log('INSTAL PROCESS de la cokie', ws_install )
+
 function chek_ws_updates() {
     // var cart_open = readCookie("cart_open_ws_"+ws_id);
     const ws_install = readCookie('ws_install-' + ws_id);
@@ -161,6 +164,7 @@ user_db.sync(url_R_db + userDb, {
 
 // Creo y conecto con userDB local 
 const u_session = new PouchDB(url_R_db, { skip_setup: true });
+
 
 function _session(callback) {
   u_session.get('_session', { include_docs: true })

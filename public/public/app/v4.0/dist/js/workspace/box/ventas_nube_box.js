@@ -70,104 +70,11 @@ async function ws_box_start() {
 
 // CREO NUEVO DOC PAYMENT TYPE LIST
 async function new_payment_type_list_doc() {
-    try {
-        const paymentTypeList = {
-            "_id": "payment_type_list",
-            "type": "payment_type_list",
-            "status": "active",
-            'newDate' : new Date(), //fecha actual del navegador
-           // 'userName': userCtx.userCtx.name,
-            "payment_type_list_default_id": 1,
-            "payment_type_list": [
-              {
-                "id": 0,
-                "status": "desactive",
-                "name": "Efectivo",
-                "icon":"money",
-                "tasa_int": 8,
-                "pay_quantity": 1
-              },
-              {
-                "id": 1,
-                "status": "active",
-                "name": "Tarjeta Visa",
-                "tasa_int": 8,
-                "pay_quantity": 1,
-                "icon":"credit_card",
-                "quote_list": [
-                  {
-                    "id": 1,
-                    "status": "active",
-                    "tasa_int": 8,
-                    "pay_quantity": 1
-                    
-                  },
-                  {
-                    "id": 2,
-                    "status": "active",
-                    "tasa_int": 15,
-                    "pay_quantity": 3
-                  },
-                  {
-                    "id": 3,
-                    "status": "active",
-                    "tasa_int": 25,
-                    "pay_quantity": 6
-                  }
-                ]
-              },
-              {
-                "id": 2,
-                "status": "active",
-                "name": "Debito",
-                "icon":"credit_card",
-                "tasa_int": 8,
-                "pay_quantity": 1
-                
-              },
-              {
-                "id": 3,
-                "status": "active",
-                "name": "Qr",
-                "icon":"qr_code",
-                "tasa_int": 4,
-                "pay_quantity": 1
-              },
-              {
-                "id": 4,
-                "status": "active",
-                "name": "Transferencia",
-                "icon":"account_balance",
-                "tasa_int": 5,
-                "pay_quantity": 1
-              },
-              {
-                "id": 5,
-                "status": "active",
-                "name": "Mercado Pago",
-                "icon":"account_balance",
-                "tasa_int": 5,
-                "pay_quantity": 1
-              }
-            ]
-          };
-        var response = await L_box_db.put(paymentTypeList);
-        if (response.ok) {
-            
-            Snackbar.show({ text: 'Se agrego el tipo de pago con éxito!', actionText: 'ok', actionTextColor: "#0575e6", });
-        }
-    }
-    catch (error) {
-        if (error.msj == 'conflict' ) {
-            Snackbar.show({ text: 'Payment list ', actionText: 'ok', actionTextColor: "#0575e6", });
-        } 
-        console.log('ERROR EN BOX SETTING', error);
-        Snackbar.show({ text: error.reason, actionText: 'ok', actionTextColor: "#0575e6", });
-    }
+    console.log('Ya se cargo el documento new_payment_type_list_doc');
 }
 
 // ABRE EDITAR
-async function  payment_type_show_edit(element) {
+async function payment_type_show_edit(element) {
     try {
         //Traigo los valores
         let price_id = $(element).attr('price_id');
@@ -181,16 +88,16 @@ async function  payment_type_show_edit(element) {
         $('#payment_type_list_name_value').val(new_value); //Tomo el valor de input
         $('#payment_type_list_name_value').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
         $("#payment_type_list_money_value option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
-       
+
         $("#edit_panel_config_paymet_type").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_paymet_type_list_name_value').focus(); //llevo el foco al input 
-       
+
     } catch (err) {
         console.log(err);
     }
 }
 // EDITAR
-async function  payment_type_list_save_edit(element) {
+async function payment_type_list_save_edit(element) {
     try {
 
         let price_id = $('#new_price_list_name_value').attr('price_id');
@@ -274,7 +181,7 @@ async function payment_type_list_save_block(element) {
             throw new Error('La estructura del documento no es válida o el campo payment_type_list no existe.');
         }
         console.log('payment_type_list', doc);
-       const payment_array = doc.payment_type_list.find(response => response.id == payment_id_n); // Traigo el elemento por la id variant
+        const payment_array = doc.payment_type_list.find(response => response.id == payment_id_n); // Traigo el elemento por la id variant
 
         // Actualiza los arrays con la fecha y el usuario que lo actualizó
         if (payment_array) {
@@ -290,7 +197,7 @@ async function payment_type_list_save_block(element) {
             });
             // Muestra mensaje de éxito o error
             if (response.ok) {
-               
+
                 Snackbar.show({
                     text: 'Se actualizó con éxito!!',
                     actionText: 'ok',
@@ -387,11 +294,11 @@ async function setting_box() {
         // Intentar obtener el documento de filtros de la base de datos local
         //      const filters = await box_local_db.get('filtros');
         //      const category_list = await  L_box_db.get('category_list');
-       //       const payment_type_list = await  L_box_db.get('payment_type_list');
+        //       const payment_type_list = await  L_box_db.get('payment_type_list');
         //      const operation_type_list = await  L_box_db.get('operation_type_list');
         //      const colaboration_list = await  L_board_db.get('colaborator_list');
         /// NEW 2024
-        var payment_type_list = await  L_box_db.get('payment_type_list');
+        var payment_type_list = await L_box_db.get('payment_type_list');
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
         var tax_list = await L_catalog_db.get('tax_list');
@@ -403,7 +310,7 @@ async function setting_box() {
             price_list: price_list.price_list,
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
-            payment_type_list:payment_type_list.payment_type_list,
+            payment_type_list: payment_type_list.payment_type_list,
         }
 
         console.log('price_list', price_list);
@@ -421,7 +328,7 @@ async function setting_box() {
     } catch (err) {
 
         console.log('ERROR EN BOX SETTING', err);
-        if(err.msj == 'missing' || err.msj == 'deleted'  || err.msj == 'not_found' ){
+        if (err.msj == 'missing' || err.msj == 'deleted' || err.msj == 'not_found') {
             new_payment_type_list_doc()
         }
         Snackbar.show({
@@ -883,7 +790,7 @@ async function get_box(pageNumber = 1, limit = 10) {
 
 
         console.log('ERROR EN BOX SETTING', err);
-        if(err.msj == 'missing' || err.msj == 'deleted'  || err.msj == 'not_found' ){
+        if (err.msj == 'missing' || err.msj == 'deleted' || err.msj == 'not_found') {
 
 
             box_welcome();
@@ -897,7 +804,7 @@ async function get_box(pageNumber = 1, limit = 10) {
             duration: 50000
         });
 
-       // console.error('Error al obtener los datos de la caja:', error);
+        // console.error('Error al obtener los datos de la caja:', error);
     }
 }
 // Selecciono filtro de fecha

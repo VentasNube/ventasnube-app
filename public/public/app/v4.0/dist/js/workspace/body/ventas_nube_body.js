@@ -10,6 +10,7 @@ ws_lang_data = null; //Doc con el lenguaje
 ws_left_nav = null; //DOC con los modulo
 ws_left_nav_data = null;
 ws_lang_data_doc = null;
+user_Ctx = null;
 /*
 //Chekea q los modulos del la URL tengan permisos de lectura
 async function check_ws_lang(ws_id) {
@@ -104,7 +105,10 @@ async function ws_module_config() {
 async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
     const ws_m_s = ws_module_select;
     ws_module_array = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+
     var userCtx = ws_module_array['userCtx'].userCtx;
+
     //console.log('userCtx',userCtx)
     //compara si el modulo del la URL y Trae los modulos y las funciones segun la URL
     if (ws_m_s == 'catalog') {
@@ -144,8 +148,265 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
 
 
 ////----(1 LEFT NAV)---/////
-//Creo el doc y lo guardo el la db
+
+
 async function put_left_nav_doc() {
+    // DOC DE NAVEGACION
+    try {
+        // Código que puede generar errores en PouchDB
+        // ...
+    ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+
+    console.log('userCtx',userCtx)
+    // Verificar si el documento ya existe y tiene una revisión (_rev)
+    if (ws_left_nav && ws_left_nav._rev) {
+        // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
+        alert('El documento ws_left_nav ya ha sido editado. Se encontró un conflicto de documentos.');
+        return;
+    }
+    //Hago la consulta de permisos al serverer
+    fetch("/body/left_nav", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(ws_left_nav)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === true) {
+           // console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
+           // console.log(userCtx);
+          //  console.log(data);
+           // console.log('ws_left_nav');
+
+            user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
+                if (err) {
+                    msj_alert(err);
+                   // alert('Falta el archivo ws_left_nav');
+                    user_db.put({
+                        _id: 'ws_left_nav_' + ws_id,
+                        ws_left_nav: data,
+                        userCtx: userCtx
+                    });
+                    user_db.changes().on('change', function () {
+                        Snackbar.show({
+                            text: 'HAY CANBIOS El LEFT NAV',
+                            width: '475px',
+                            actionTextColor: '#ff0000',
+                            actionText: 'Refrescar',
+                            pos: 'bottom-center',
+                            onActionClick: function (element) {
+                                $(element).css('opacity', 0);
+                                location.reload();
+                            }
+                        });
+                    });
+                } else {
+                  
+                    user_db.put({
+                        _id: 'ws_left_nav_' + ws_id,
+                        _rev: doc._rev,
+                        ws_left_nav: data,
+                        userCtx: userCtx
+                    }, function (err, response) {
+                        if (response) {
+                            createCookie('ws_install-' + ws_id, true, 30);
+                        } else if (err) {
+                            Snackbar.show({
+                                text: err.reason,
+                                width: '475px',
+                                actionTextColor: '#ff0000',
+                                actionText: 'Refrescar',
+                                pos: 'bottom-center',
+                                onActionClick: function (element) {
+                                    $(element).css('opacity', 0);
+                                    location.reload();
+                                }
+                            });
+                            console.log(err);
+                        }
+                       // console.log('SE ACTUALIZO EL LEFT NAV');
+                       // console.log(userCtx);
+                       // console.log(data);
+                       // console.log(response);
+                    });
+                }
+            });
+        } else {
+            /*Snackbar.show({
+                text: err.reason,
+                width: '475px',
+                actionTextColor: '#ff0000',
+                actionText: 'Refrescar',
+                pos: 'bottom-center',
+                onActionClick: function (element) {
+                    $(element).css('opacity', 0);
+                    location.reload();
+                }
+            });*/
+            alert(data.msj + 'Workspace ID: ' + data.ws_id);
+        }
+    })
+    .catch(error => {
+        Snackbar.show({
+            text: error.reason,
+            width: '475px',
+            actionTextColor: '#ff0000',
+            actionText: 'Refrescar',
+            pos: 'bottom-center',
+            onActionClick: function (element) {
+                $(element).css('opacity', 0);
+                location.reload();
+            }
+        });
+        if (error.name === 'AbortError') {
+            // La solicitud fue cancelada
+            return;
+        }
+        // Manejar errores de Fetch
+        console.log('Error de Fetch:', error);
+    });
+} catch (error) {
+    console.error('Se produjo un error en ws_left_nav:', error);
+    // Maneja el error según tus necesidades
+  }
+
+}
+
+//Creo el doc y lo guardo el la db
+async function put_left_nav_doc_New_no() {
+    // DOC DE NAVEGACION
+   // ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+   ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+try{
+    if(ws_left_nav){
+        // Mapeo el contenido del objeto ws_left_nav M
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];
+        user_Ctx = ws_left_nav.userCtx;
+        // Verificar si el documento ya existe y tiene una revisión (_rev)
+        if (ws_left_nav && ws_left_nav._rev) {
+            // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
+            //alert('El documento ya ha sido editado. Se encontró un conflicto de documentos.');
+            return;
+        }
+        $.ajax({
+            url: "/body/left_nav",
+            type: "POST",
+            dataType: "json",
+            success: function (ws_left_nav) {
+                if (ws_left_nav.result == true) {
+                //  console.log('Solicitud ajax ws_left_nav ok! ws_id:' + ws_id);
+                console.log('userCtx L nav doc 1');
+                    console.log(userCtx);
+                    // console.log('ws_left_nav');
+                    // console.log(ws_left_nav);
+
+                    ///// IMPRIME ////
+                    user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
+                        if (err) {
+                            msj_alert(err);
+                            alert('Falta el archivo ws_left_nav');
+
+                            user_db.put({
+                                _id: 'ws_left_nav_' + ws_id,
+                                ws_left_nav: ws_left_nav,
+                                userCtx: userCtx
+                            });
+
+                            user_db.changes().on('change', function () {
+                                Snackbar.show({
+                                    text: 'New changes in (Ws_left_nav)',
+                                    width: '475px',
+                                    actionTextColor: '#ff0000',
+                                    actionText: 'Refrezcar',
+                                    pos: 'bottom-center',
+                                    onActionClick: function (element) {
+                                        $(element).css('opacity', 0);
+                                        location.reload();
+                                    }
+                                });
+                            });
+                        }
+                        user_db.put({
+                            _id: 'ws_left_nav_' + ws_id,
+                            _rev: doc._rev,
+                            ws_left_nav: ws_left_nav,
+                            userCtx: userCtx
+                        }, function (err, response) {
+                            if (response) {
+                                //Si se guara el documento guardo una cookie de que ya fue instalado el wscada vez q cargo la pagina por primera vez q caduque todos los dias
+                                createCookie('ws_install-' + ws_id, true), 30;
+                                //Si se carga el left nav ya se carga como instalada la app en una COchkie q uso para comprobar
+                            }
+                            else if (err) {
+                                // msj_alert(err);
+                                Snackbar.show({
+                                    text: err.reason,
+                                    width: '475px',
+                                    actionTextColor: '#ff0000',
+                                    actionText: 'Refrezcar',
+                                    pos: 'bottom-center',
+                                    onActionClick: function (element) {
+                                        //Set opacity of element to 0 to close snackba
+                                        $(element).css('opacity', 0);
+                                        location.reload();
+                                        //newWorker.postMessage({ action: 'install' });                                           
+                                        //alert('Refrezcar pagina!');
+                                    }
+                                });
+                                return console.log(err);
+                            }
+                            //   msj_alert('Se actualizo el left_nav_doc','top-center');
+                            //   console.log('userCtx L nav doc 3');
+                            //  console.log(userCtx);
+                            // console.log('Se actualizo el left bar doc');
+                        //  console.log(userCtx);
+                        //  console.log(response);
+                        //  console.log(ws_left_nav);
+                            // handle response
+                        });
+                    });
+
+                } else {
+                    //console.log('ws_left_nav 2');
+                    // console.log(ws_left_nav);
+                    alert(ws_left_nav.msj + 'Workspace ID:' + ws_left_nav.ws_id);
+                }
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 0) {
+                msj_alert('Not connect: Verify Network.', 'top-center');
+                //response_msj = 'Not connect: Verify Network.';
+            } else if (jqXHR.status == 404) {
+                msj_alert('Requested page not found [404]', 'top-center');
+                // response_msj = 'Requested page not found [404]';
+            } else if (jqXHR.status == 500) {
+                msj_alert('Internal Server Error [500].', 'top-center');
+                // response_msj = 'Internal Server Error [500].';
+            } else if (textStatus === 'parsererror') {
+                response_msj = 'Requested JSON parse failed.';
+
+            } else if (textStatus === 'timeout') {
+                response_msj = 'Time out error.';
+            } else if (textStatus === 'abort') {
+                response_msj = 'Ajax request aborted';
+            } else {
+                response_msj = 'Uncaught Error: ' + jqXHR.responseText;
+            }
+        });
+
+    }
+} 
+catch (err) {
+    console.log(err);
+}
+  
+};
+
+
+//Creo el doc y lo guardo el la db
+async function put_left_nav_doc_OK_26_6() {
     // DOC DE NAVEGACION
    // ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
 
@@ -269,129 +530,6 @@ async function put_left_nav_doc() {
 };
 
 
-async function put_left_nav_docOKOLD() {
-    // DOC DE NAVEGACION
-    try {
-        // Código que puede generar errores en PouchDB
-        // ...
-    ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-    console.log('userCtx',userCtx)
-    // Verificar si el documento ya existe y tiene una revisión (_rev)
-    if (ws_left_nav && ws_left_nav._rev) {
-        // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
-        alert('El documento ya ha sido editado. Se encontró un conflicto de documentos.');
-        return;
-    }
-    //Hago la consulta de permisos al serverer
-    fetch("/body/left_nav", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(ws_left_nav)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.result === true) {
-           // console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
-           // console.log(userCtx);
-          //  console.log(data);
-           // console.log('ws_left_nav');
-
-            user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
-                if (err) {
-                    msj_alert(err);
-                   // alert('Falta el archivo ws_left_nav');
-                    user_db.put({
-                        _id: 'ws_left_nav_' + ws_id,
-                        ws_left_nav: data,
-                        userCtx: userCtx
-                    });
-                    user_db.changes().on('change', function () {
-                        Snackbar.show({
-                            text: 'HAY CANBIOS El LEFT NAV',
-                            width: '475px',
-                            actionTextColor: '#ff0000',
-                            actionText: 'Refrescar',
-                            pos: 'bottom-center',
-                            onActionClick: function (element) {
-                                $(element).css('opacity', 0);
-                                location.reload();
-                            }
-                        });
-                    });
-                } else {
-                  
-                    user_db.put({
-                        _id: 'ws_left_nav_' + ws_id,
-                        _rev: doc._rev,
-                        ws_left_nav: data,
-                        userCtx: userCtx
-                    }, function (err, response) {
-                        if (response) {
-                            createCookie('ws_install-' + ws_id, true, 30);
-                        } else if (err) {
-                            Snackbar.show({
-                                text: err.reason,
-                                width: '475px',
-                                actionTextColor: '#ff0000',
-                                actionText: 'Refrescar',
-                                pos: 'bottom-center',
-                                onActionClick: function (element) {
-                                    $(element).css('opacity', 0);
-                                    location.reload();
-                                }
-                            });
-                            console.log(err);
-                        }
-                       // console.log('SE ACTUALIZO EL LEFT NAV');
-                       // console.log(userCtx);
-                       // console.log(data);
-                       // console.log(response);
-                    });
-                }
-            });
-        } else {
-            /*Snackbar.show({
-                text: err.reason,
-                width: '475px',
-                actionTextColor: '#ff0000',
-                actionText: 'Refrescar',
-                pos: 'bottom-center',
-                onActionClick: function (element) {
-                    $(element).css('opacity', 0);
-                    location.reload();
-                }
-            });*/
-            alert(data.msj + 'Workspace ID: ' + data.ws_id);
-        }
-    })
-    .catch(error => {
-        Snackbar.show({
-            text: error.reason,
-            width: '475px',
-            actionTextColor: '#ff0000',
-            actionText: 'Refrescar',
-            pos: 'bottom-center',
-            onActionClick: function (element) {
-                $(element).css('opacity', 0);
-                location.reload();
-            }
-        });
-        if (error.name === 'AbortError') {
-            // La solicitud fue cancelada
-            return;
-        }
-        // Manejar errores de Fetch
-        console.log('Error de Fetch:', error);
-    });
-} catch (error) {
-    console.error('Se produjo un error en ws_left_nav:', error);
-    // Maneja el error según tus necesidades
-  }
-
-}
 
 //Leo el doc y imprimo la vista
 function get_left_nav(ws_left_nav_data, ws_lang_data) {

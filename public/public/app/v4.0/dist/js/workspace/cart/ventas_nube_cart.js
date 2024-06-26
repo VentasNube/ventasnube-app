@@ -28,11 +28,29 @@ function chek_cart_open_ws() {
     }
 }
 
+async function get_user_Ctx_now(){
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el contenido del objeto ws_left_nav M
+        //ws_left_nav_data = ws_left_nav['ws_left_nav'];
+
+        user_Ctx = ws_left_nav.userCtx;
+
+        console.log( 'ws_left_nav',ws_left_nav);
+
+        return user_Ctx;
+}
+
 async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_name) {
     try {
       /*  if (!board_name) {
             board_name = readCookie('board-now-' + ws_id); // LEO LA COKIE PARA SABER EN Q MODULO ESTABA
         }   */   
+
+        let userCtx_now = await get_user_Ctx_now()
+
+
+        console.log('userCtx_now',userCtx_now);
+
         if (!board_name) {
             reedCookie = readCookie('board-now-' + ws_id);
             board_name = reedCookie;
@@ -42,8 +60,10 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_nam
                  console.log( 'board_name DEFECTO FAV',  board_name);
             }
         }  
+
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
+
         var ws_cart = {
             price_doc: price_doc,
             currency_doc: currency_doc,
@@ -63,6 +83,8 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_nam
         // search_open();
     }
     catch (err) {
+
+        
         console.log(err);
     }
 };
