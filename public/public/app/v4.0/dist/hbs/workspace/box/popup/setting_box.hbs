@@ -22,7 +22,7 @@
 
                         <div class="margin-l-30">
                             <p>
-                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
+                                <input class="radio-chek" module_type="{{m_board_name_sell}}" bg-color="btn-primary"
                                     type="radio" name="board-type" value="sell" id="radio-1">
                                 <label for="radio-1">
                                     <strong>Definir datos fiscales.</strong>
@@ -30,24 +30,24 @@
                                 </label>
                             </p>
                             <p>
-                                <input module_type="{{m_board_name_purchase}}" icon="local_shipping"
-                                    bg-color="btn-danger" type="radio" name="board-type" value="purcharse" id="radio-2">
+                                <input class="radio-chek" module_type="{{m_board_name_purchase}}" 
+                                    bg-color="btn-danger" type="radio" name="board-type" id="radio-2">
                                 <label for="radio-2">
                                     <strong>Agregar Medios de pago.</strong>
                                     <small> Efectivo, Debito, Qr, Tarjeta de credito, etc..</small>
                                 </label>
                             </p>
                             <p>
-                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
-                                    type="radio" name="board-type" value="sell" id="radio-3">
+                                <input class="radio-chek" module_type="{{m_board_name_sell}}" bg-color="btn-primary"
+                                    type="radio" name="board-type" id="radio-3">
                                 <label for="radio-3">
                                     <strong>Crear listas de precios.</strong>
                                     <small>Agrega listas dinamicas, Consumido final, Mayorista, etc</small>
                                 </label>
                             </p>
                             <p>
-                                <input module_type="{{m_board_name_sell}}" icon="shopping_cart" bg-color="btn-primary"
-                                    type="radio" name="board-type" value="sell" id="radio-4">
+                                <input class="radio-chek" module_type="{{m_board_name_sell}}" bg-color="btn-primary"
+                                    type="radio" name="board-type" id="radio-4">
                                 <label for="radio-4">
                                     <strong>Impresion de comprobantes</strong>
                                     <small>Imagen de cabecera, datos de comprobantes etc.</small>
@@ -62,7 +62,7 @@
                                 class="tabs-main margin-t-10 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-0">
                                 <ul class="nav nav-tabs">
 
-                                    <li class="ripple">
+                                    <li class="ripple" for="radio-1">
                                         <a data-toggle="tab" for="radio-1" href="#ws_box_config_tax">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}} {{m_config_catalog_list_tax_icon}}{{/with}}
@@ -70,25 +70,24 @@
                                             {{#with ws_lang_data}} {{ws_catalog_settings_tax}} {{/with}}
                                         </a>
                                     </li>
-                                    <li class="ripple">
-                                        <a data-toggle="tab" for="radio-2" href="#ws_box_paymet_type">
+                                    <li class="ripple" for="radio-2">
+                                        <a data-toggle="tab" for="radio-2"  href="#ws_box_paymet_type">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}}add_card{{/with}}
                                             </span>
                                             {{#with ws_lang_data}} Formas de pago {{/with}}
                                         </a>
                                     </li>
-                                    <li class="ripple">
-                                        <a data-toggle="tab" href="#ws_box_config_list">
+                                    <li class="ripple" for="radio-3">
+                                        <a data-toggle="tab" for="radio-3" href="#ws_box_config_list">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}}fact_check{{/with}}
                                             </span>
                                             {{#with ws_lang_data}} {{ws_catalog_settings_list}} {{/with}}
                                         </a>
                                     </li>
-
-                                    <li class="ripple">
-                                        <a data-toggle="tab" href="#ws_box_config_print">
+                                    <li class="ripple" for="radio-4">
+                                        <a data-toggle="tab" for="radio-4" href="#ws_box_config_print">
                                             <span class="material-icons">
                                                 {{#with ws_lang_data}}print{{/with}}
                                             </span>
@@ -930,50 +929,48 @@
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
 <script>
     $('[data-toggle="tooltip"]').tooltip()
-    $("#new-board-step-1").hide();
-    $("#board-type-radio-4").hide();
-    $("#board-type-radio-5").hide();
-    $("#board-type-icon").hide();
-    $("#step-2").hide();
-    $("#step-3").hide();
+
     // ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
+  $('input[type="radio"]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // Ajusta el área de clic
+    });
+    // Inicializar iCheck para los elementos con clase 'radio-chek'
     $('.radio-chek').iCheck({
         checkboxClass: 'icheckbox_square-blue',
         radioClass: 'iradio_square-blue',
-        handle: '',
-        increaseArea: '20%' // optional
-    });
-    $('input[type="radio"]').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' // Ajusta el área de clic para ser más grande que el propio elemento
-    });
-    // FIN ICHECK NEW COMPATIBLE CON LOS SWICH PARA Q NO LOS ANULE
-
-    // NEW 2023
-    $('input:radio[name=board-type]').on('ifChecked', function (event) {
-        var select = $(this);
-        var id = select.attr('id');
-        $("#new-board-detail-1").show();
-        var board_type = select.val();
-        var board_icon = select.attr('icon');
-        var board_bg = select.attr('bg-color');
-        var board_name = select.attr('module_type');
-        $("#board-type-icon").show();
-        $("#new-board-step-1").show();
-        $(".new_board_name").html(board_name);
-        $("#bt-text-icon").attr('icon', board_icon).children('.material-icons:first').text(board_icon);
-        $("#bg-select-color").children('.material-icons:first').text(board_icon).attr('bg-color', board_bg);
-        $("#bg-select-color").removeClass().addClass('btn ' + board_bg + ' line');
-        $("#bg-select-text").html(board_name);
-        $("#btn-next").removeAttr('disabled');
-
-    }).on('ifUnchecked', function (event) {
-        $("#btn-next").attr('disabled', 'disabled');
+        increaseArea: '20%' // Ajusta el área de clic
     });
 
+    // Maneja el evento 'ifClicked' de iCheck para los radio buttons
+    $('.radio-chek').on('ifClicked', function(event) {
+        var radioId = $(this).attr('id');
 
-    $(".board-icon").click(function () {
+        // Encuentra el tab correspondiente usando el atributo 'for'
+        var tabToActivate = $('.nav-tabs li[for="' + radioId + '"]');
+        console.log('tabToActivate:', tabToActivate);
+
+        if (tabToActivate.length > 0) {
+            // Activa el tab correspondiente
+            tabToActivate.find('a').tab('show');
+            // Cambia la clase activa de los tabs
+            $('.nav-tabs li').removeClass('active');
+            tabToActivate.addClass('active');
+        }
+    });
+
+    // Maneja el clic en los tabs para activar el radio button correspondiente
+    $('.nav-tabs li').on('click', function() {
+        var radioId = $(this).attr('for');
+
+        // Activa el radio button correspondiente
+        if ($('#' + radioId).length > 0) {
+            $('#' + radioId).iCheck('check');
+        }
+    });
+ /*
+   // $(".board-icon").click(function () {
         var bgColor = $(this).attr('board-icon');
         var bgText = $(this).html();
         var icon = $(this).children(':first').text();
@@ -985,7 +982,7 @@
         $("#input-select-icon").val(bgColor);
         $("#bg-select-color").children('.material-icons:first').text(icon);
     });
-    $(".board-type").click(function () {
+   // $(".board-type").click(function () {
         var bgColor = $(this).attr('board-type');
         var bgText = $(this).html();
         var icon = $(this).children('.material-icons:first').text();
@@ -1003,7 +1000,7 @@
             $("#new-board-step-objects").hide();
         }
     });
-    $(".board-type-2").click(function () {
+    //$(".board-type-2").click(function () {
         var bgColor = $(this).attr('board-type');
         var bgText = $(this).html();
         var icon = $(this).children(':first').text();
@@ -1024,6 +1021,7 @@
             $("#new-board-step-objects").hide();
         }
     });
+  */
     $("li.bg-color").click(function () {
         var bgColor = $(this).attr('bg-color');
         $("#bg-select-color").removeClass();
@@ -1048,7 +1046,9 @@
 
         // $("#input-select-3").val(bgColor);    
     });
-    $('#switch-9').click(function () {
+ 
+  /*
+ //   $('#switch-9').click(function () {
         // Si esta seleccionado (si la propiedad checked es igual a true)
         if ($(this).prop('checked')) {
             $('input:radio[name=board_delivery_place]').iCheck('enable');
@@ -1058,7 +1058,7 @@
             $('input:radio[name=board_delivery_place]').iCheck('disable');
         }
     });
-    $('#switch-16').click(function () {
+ //   $('#switch-16').click(function () {
         // Si esta seleccionado (si la propiedad checked es igual a true)
         if ($(this).prop('checked')) {
             $('input:radio[name=board_control_stock]').iCheck('enable');
@@ -1068,7 +1068,7 @@
             $('input:radio[name=board_control_stock]').iCheck('disable');
         }
     });
-    $('#switch-18').click(function () {
+ //   $('#switch-18').click(function () {
         // Si esta seleccionado (si la propiedad checked es igual a true)
         if ($(this).prop('checked')) {
             $('input:radio[name=board_control_cash_close_box]').iCheck('enable');
@@ -1078,7 +1078,7 @@
             $('input:radio[name=board_control_cash_close_box]').iCheck('disable');
         }
     });
-    $('#switch-19').click(function () {
+ //   $('#switch-19').click(function () {
         // Si esta seleccionado (si la propiedad checked es igual a true)
         if ($(this).prop('checked')) {
             $('input.control_cash').iCheck('enable');
@@ -1088,7 +1088,7 @@
             $('input.control_cash').iCheck('disable');
         }
     });
-    $(".btn-previus").click(function () {
+ //   $(".btn-previus").click(function () {
         var step = $("#btn-previus").attr('step');
         if (step == 1) {
             $("#btn-next").text('Siguiente');
@@ -1109,6 +1109,6 @@
             $("#step-3").hide();
         }
     });
-
+  */
 
 </script>

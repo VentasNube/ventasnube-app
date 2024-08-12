@@ -616,6 +616,7 @@ function getCurrentDateWithTime(hour, minute) {
     var newDate = new Date(year, month, day, hour, minute);
     return newDate;
 }
+
 // Función para actualizar o crear el documento en la base de datos FILTRO
 async function updateOrCreateDocument(params) {
     try {
@@ -662,6 +663,7 @@ async function updateOrCreateDocument(params) {
         }
     }
 }
+
 // ARMO Y Traigo el box filtrado
 async function get_box(pageNumber = 1, limit = 10) {
     try {
@@ -807,6 +809,7 @@ async function get_box(pageNumber = 1, limit = 10) {
         // console.error('Error al obtener los datos de la caja:', error);
     }
 }
+
 // Selecciono filtro de fecha
 async function box_filter_select_date(element) {
     var dateValue = element.getAttribute("value");
@@ -897,6 +900,7 @@ async function box_filter_select_date(element) {
     get_box();
 
 }
+
 // Selecciono cantidad por pagina
 async function change_page_limit(element) {
     const limit = $(element).val(); // Obtener el valor seleccionado del elemento
@@ -910,6 +914,7 @@ async function change_page_limit(element) {
     // Llamar a otras funciones necesarias
     get_box(page, limit);
 }
+
 /// CRUD CATEGORIAS 2024
 // CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023
 // BUSCO
@@ -964,6 +969,7 @@ async function box_search_cat(e, element) {
     }
 
 }
+
 ///  LISTADO EN FORM NUEVO PRODUCTO
 async function box_search_new_prod_cat(e, element) {
     //traigo el resultado mas parecido con find
@@ -1013,6 +1019,7 @@ async function box_search_new_prod_cat(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/box_new_item_cat_list.hbs', select_div_id, cat_list_search);
     }
 }
+
 // ELIMINO
 async function box_dell_cat(element) {
     event.preventDefault(element);
