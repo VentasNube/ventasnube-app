@@ -2672,10 +2672,15 @@ async function catalog_config_tax_new(element) {
         });
         if (response) {
             var print_item = await catalog_config(); //Refrezco la pantalla
+
+           $(element).hide();
+           $('#edit_panel_config_tax').hide();   
+           catalog_config(); //Refrezco la pantalla
+           setting_box();
             Snackbar.show({
-                text: 'Se actualizo con exito!!',
+                text: 'Se agrego con exito!!',
                 actionText: 'ok',
-                pos: 'bottom-right',
+                pos: 'top-left',
                 actionTextColor: "#0575e6",
             });
         } else {
@@ -2690,11 +2695,63 @@ async function catalog_config_tax_new(element) {
         console.log(err);
     }
 }
+// NEW AGREGAR NUEVO TAX 
 
-// EDITAR 
+// Agregar nuevo impuesto 2024
 async function catalog_config_new_tax(element) {
     try {
+        // Traigo los valores
+        var edit_panel_config_tax = $('#edit_panel_config_tax');
+        var id = $(element).attr('id');
+        let new_value = $(element).attr('value');
+        let new_name = $(element).attr('name');
+        // Ocultar el botón que fue presionado
+
+        //$(element).attr('hidden=""');
+       
+        // Filtro los resultados
+        var id_n = Number(id);
+        var value_n = Number(new_value);
+        var name_n = Number(new_name);
+
+        // Modifico el DOM
+        var doc = await L_catalog_db.get('tax_list');
+
+        if (id) {
+            var tax_array = doc.tax.find(response => response.id == id_n); // Traigo el elemento por la id variant
+            var final_id_tax = doc.tax[doc.tax.length - 1]; // Traigo el último id tax
+            alert(final_id_tax);
+        } else {
+            var final_id_tax = 1;
+            var id = 0;
+        }
+
+        $('#new_value_tax_edit').val(''); // Limpio el valor del input
+        $('#new_value_tax_edit').attr('tax_id', id); // Grabo el valor en un attr en el input
+        $("#new_name_tax_input").val(new_name); // Cambio el valor del select
+        $("#edit_panel_config_tax").first().fadeIn("slow"); // Muestro el div con efecto
+
+       // new_name_tax_input
+        $('#new_name_tax_input').focus(); // Llevo el foco al input 
+
+
+        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); // Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); // Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('type', 'number'); // Grabo el valor en un attr en el input
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); // Grabo el valor en un attr en el input
+        $(element).hide();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// EDITAR 
+async function catalog_config_new_tax_old(element) {
+    try {
         //Traigo los valores
+
+        edit_panel_config_tax
+        var edit_panel_config_tax = $('#edit_panel_config_tax');
         var id = $(element).attr('id');
         let new_value = $(element).attr('value');
         let new_name = $(element).attr('name');
@@ -2720,7 +2777,11 @@ async function catalog_config_new_tax(element) {
         $("#new_name_tax_input").val(new_name); // cambio el valor del select
         $("#edit_panel_config_tax").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_value_tax_edit').focus(); //llevo el foco al input 
+
+
         $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); //Grabo el valor en un attr en el input
+       
+       
         // new_value_tax_edit
         $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); //Grabo el valor en un attr en el input
         $('#new_value_tax_edit').attr('type', 'number'); //Grabo el valor en un attr en el input
@@ -2749,7 +2810,8 @@ async function catalog_config_tax_delete(element) {
             ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
         });
         if (response) {
-            var print_item = await catalog_config(); //Refrezco la pantalla
+            //catalog_config(); //Refrezco la pantalla
+            setting_box();
             Snackbar.show({
                 text: 'Se actualizo con exito!!',
                 actionText: 'ok',
@@ -2770,6 +2832,32 @@ async function catalog_config_tax_delete(element) {
 }
 
 /*** FIN CONFIGURACION DE CATALOGO  ****/
+
+
+/// INICIO FUNCIONES FORMAS DE PAGO 
+
+// Agregar nuevo impuesto 2024
+async function new_payment_type(element) {
+    try {
+        // Traigo los valores
+        var edit_panel_config_tax = $('#edit_panel_config_tax');
+        //$(element).attr('hidden=""');
+
+        $("#edit_panel_config_paymet_type").first().fadeIn("slow"); // Muestro el div con efecto
+
+       // new_name_tax_input
+        $('#new_paymet_type_list_name_value').focus(); // Llevo el foco al input 
+       // $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); // Grabo el valor en un attr en el input
+      //  $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); // Grabo el valor en un attr en el input
+       // $('#new_value_tax_edit').attr('type', 'number'); // Grabo el valor en un attr en el input
+      //  $('#new_name_tax_input').attr('placeholder', 'Nombre'); // Grabo el valor en un attr en el input
+        $(element).hide();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
 
 async function new_price_list(element) {
     try {

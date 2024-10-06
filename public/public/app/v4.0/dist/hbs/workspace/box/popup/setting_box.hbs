@@ -156,6 +156,7 @@
                                         </div>
                                         <!-- EDITAR TAX --->
                                         <div id="edit_panel_config_tax"
+                                        hidden=""
                                             class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
                                                 <div
@@ -184,8 +185,8 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <span class="material-icons">
-                                                                    {{#with ws_lang_data}}
-                                                                    {{m_config_catalog_list_tax_icon}} {{/with}}
+                                                                    %
+                                                                    {{#with ws_lang_data}}{{/with}}
                                                                 </span>
                                                             </span>
 
@@ -214,8 +215,8 @@
                                     </div>
                                     </br>
                                     </br>
-                                    <div class="text-center margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <button onclick="catalog_config_new_tax()" doc_id="" type="button"
+                                    <div class="text-left margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <button onclick="catalog_config_new_tax(this)" doc_id="" type="button"
                                             class="btn btn-primary">
                                             Nuevo impuesto
                                         </button>
@@ -229,8 +230,7 @@
 
                                         <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             {{#each payment_type_list as | pl |}}
-                                            <li
-                                                class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
+                                            <li class="{{#ifEquals pl.status 'inactive' }} disabled {{/ifEquals}} list-group-item ripple">
                                                 <!-- Hago un each de los precios --->
                                                 <span class="material-icons">
                                                     {{#ifEquals pl.status 'active' }}
@@ -275,7 +275,8 @@
                                                                     price_currency_id="{{currency_id}}" href="#">
                                                                     <span class="material-icons">
                                                                         edit
-                                                                    </span><span> {{#with ../ws_lang_data}}
+                                                                    </span><span> 
+                                                                        {{#with ../ws_lang_data}}
                                                                         {{{m_catalog_edit_edit}}}
                                                                         {{/with}}</span>
                                                                 </a>
@@ -306,16 +307,20 @@
                                                 </div>
                                             </li>
                                             {{/each}}
+                                                <div class="text-left margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <button onclick="new_payment_type(this)" doc_id="" type="button"
+                                                        class="btn btn-primary">
+                                                        Nuevo medio de pago
+                                                    </button>
+                                                </div>
                                         </div>
 
                                         <!-- EDIT  NAME PRICE LIST  edit_panel_config_name_price_list --->
                                         <div id="edit_panel_config_paymet_type" hidden=""
                                             class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
-                                                <div
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div
-                                                        class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <div class="padding-0 margin-0  col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                         <label> {{#with ws_lang_data}} Medio de pago {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -330,7 +335,22 @@
                                                                 placeholder="Nombre del medio..">
                                                         </div>
                                                     </div>
-                                                    <div class="padding-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <div class="padding-0 margin-0  col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                        <label> {{#with ws_lang_data}} Tasa de interes {{/with}} </label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <span class="material-icons">
+                                                                    {{#with ws_lang_data}}
+                                                                    {{m_config_catalog_list_icon}} {{/with}}
+                                                                </span>
+                                                            </span>
+                                                            <input class="form-control" autocomplete="off" type="text"
+                                                                id="new_paymet_type_list_tasa_value"
+                                                                name="new_paymet_type_list_tasa_value"
+                                                                placeholder="Tasa de interes..">
+                                                        </div>
+                                                    </div>
+                                                    <div class="padding-0 col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
                                                         <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
                                                             {{ws_catalog_settings_money}} {{/with}} </label>
@@ -345,11 +365,15 @@
                                                             <span class="input-group-addon">
                                                                 <button type="button"
                                                                     onclick="payment_type_list_save_edit(this)"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
+                                                                    class="margin-5 btn xl btn-primary pull-right">
+                                                             
+
                                                                     <span class="material-icons"> {{#with
                                                                         ws_lang_data}}
                                                                         {{ws_catalog_settings_add_icon}} {{/with}}
                                                                     </span>
+                                                                       {{#with ws_lang_data}}
+                                                                        {{ws_catalog_settings_add}} {{/with}}
                                                                 </button>
                                                             </span>
                                                         </div>
