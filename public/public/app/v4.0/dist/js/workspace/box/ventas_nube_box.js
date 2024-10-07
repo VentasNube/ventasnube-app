@@ -96,6 +96,7 @@ async function payment_type_show_edit(element) {
         console.log(err);
     }
 }
+
 // EDITAR
 async function payment_type_list_save_edit(element) {
     try {
@@ -103,6 +104,9 @@ async function payment_type_list_save_edit(element) {
         let price_id = $('#new_price_list_name_value').attr('price_id');
         let new_name = $('#new_price_list_name_value').val();
         let new_money_id = $('#new_price_list_money_value').val();
+
+        let tasa_value = $('#new_paymet_type_list_tasa_value').val();
+
         const price_id_n = Number(price_id);
         var new_name_n = String(new_name);
         var new_money_id_n = Number(new_money_id);
@@ -116,6 +120,9 @@ async function payment_type_list_save_edit(element) {
         if (price_array) {
             const price = price_array;//Traigo el ojeto especifico 
             price.value = new_name_n; //Edito el valor del value por el valor nuevo
+
+            price.tasa_value = tasa_value; //Edito el valor del value por el valor nuevo
+            
             price.id = price_id_n;//Edito el valor del value por el valor nuevo
             price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
             price.status = 'active';//Edito el valor del value por el valor nuevo
@@ -138,7 +145,7 @@ async function payment_type_list_save_edit(element) {
                 });
             } else {
                 Snackbar.show({
-                    text: 'NO actualizo!!',
+                    text: 'no actualizo!!',
                     actionText: 'ok',
                     pos: 'bottom-right',
                     actionTextColor: "#0575e6",
@@ -147,7 +154,7 @@ async function payment_type_list_save_edit(element) {
 
         } else {
             Snackbar.show({
-                text: 'NO actualizo!!',
+                text: 'No actualizo!!',
                 actionText: 'ok',
                 pos: 'bottom-right',
                 actionTextColor: "#0575e6",
@@ -158,6 +165,151 @@ async function payment_type_list_save_edit(element) {
     }
 }
 
+// CEAR NUEVO DOC
+async function payment_type_list_newNOO(element) {
+    try {
+        let new_name = $('#new_paymet_type_list_name_value').val(),
+            new_money_id = $('#payment_type_list_money_value').val(),
+            tasa_value = $('#new_paymet_type_list_tasa_value').val(),
+            new_name_n = String(new_name),
+            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
+            newDate = new Date(),
+            userName = userCtx.userCtx.name;
+
+        // Intentar obtener el documento payment_type_list
+        let doc;
+        try {
+
+           // var payment_type_list = await L_box_db.get('payment_type_list');
+            doc = await L_box_db.get('payment_type_list');
+        } catch (err) {
+            if (err.status === 404) {
+                // Si el documento no existe, crearlo
+                doc = {
+                    _id: 'payment_type_list',
+                    payment_type_list: []
+                };
+            } else {
+                throw err; // Si es otro tipo de error, lanzarlo
+            }
+        }
+
+        let payment_type_array = doc.payment_type_list.find(response => response.value == new_name_n);
+
+        console.log('doc.payment_type_list', doc.payment_type_list);
+        console.log('payment_type_array', payment_type_array);
+
+        if (!payment_type_array) {
+            // Generar un nuevo id aleatorio y único
+            let payment_type_id_n;
+            do {
+                payment_type_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
+            } while (doc.payment_type_list.some(response => response.id === payment_type_id_n));
+
+            // Obtener el valor de la moneda desde el select
+            let currency_value = $('#payment_type_list_money_value option:selected').text();
+
+            let new_payment_type = { 
+                id: payment_type_id_n, 
+                value: new_name_n, 
+                tasa_value: tasa_value, 
+                currency: { id: new_money_id_n, value: currency_value }, 
+                status: true, 
+                delete: false, 
+                updateDate: newDate, 
+                updateUser: userName 
+            };
+            doc.payment_type_list.push(new_payment_type);
+            let response = await L_box_db.put(doc);
+
+            console.log('payment_type_list', response);
+            setting_box();
+            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+            if (response.ok) await catalog_config();
+        } else {
+            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+// CEAR NUEVO DOC
+async function payment_type_list_new(element) {
+    try {
+        let new_name = $('#new_paymet_type_list_name_value').val(),
+            new_money_id = $('#payment_type_list_money_value').val(),
+            tasa_value = $('#new_paymet_type_list_tasa_value').val(),
+            new_name_n = String(new_name),
+            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
+            newDate = new Date(),
+            userName = userCtx.userCtx.name;
+
+        // Intentar obtener el documento payment_type_list
+        let doc;
+        try {
+            doc = await L_box_db.get('payment_type_list');
+        } catch (err) {
+            if (err.status === 404) {
+                // Si el documento no existe, crearlo
+                doc = {
+                    _id: 'payment_type_list',
+                    payment_type_list: []
+                };
+            } else {
+                throw err; // Si es otro tipo de error, lanzarlo
+            }
+        }
+
+        let payment_type_array = doc.payment_type_list.find(response => response.value == new_name_n);
+
+        console.log('doc.payment_type_list', doc.payment_type_list);
+        console.log('payment_type_array', payment_type_array);
+
+        if (!payment_type_array) {
+            // Generar un nuevo id aleatorio y único
+            let payment_type_id_n;
+            do {
+                payment_type_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
+            } while (doc.payment_type_list.some(response => response.id === payment_type_id_n));
+
+            // Obtener el valor de la moneda desde el select
+            let currency_value = $('#payment_type_list_money_value option:selected').text();
+
+            // Datos adicionales
+            let icon = 'credit_card'; // Puedes cambiar esto según sea necesario
+            let pay_quantity = 1; // Puedes cambiar esto según sea necesario
+            let tasa_int = tasa_value; // Puedes cambiar esto según sea necesario
+            let status = true; // Puedes cambiar esto según sea necesario
+
+            let new_payment_type = { 
+                id: payment_type_id_n, 
+                name: new_name_n, 
+              //  tasa_value: tasa_value, 
+                currency: { id: new_money_id_n, value: currency_value }, 
+                status: status, 
+                delete: false, 
+                updateDate: newDate, 
+                updateUser: userName,
+                icon: icon,
+                pay_quantity: pay_quantity,
+                tasa_int: tasa_int
+            };
+            doc.payment_type_list.push(new_payment_type);
+            let response = await L_box_db.put(doc);
+
+            console.log('payment_type_list', response);
+            setting_box();
+            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+            if (response.ok) await catalog_config();
+        } else {
+            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 
 async function payment_type_list_save_block(element) {
