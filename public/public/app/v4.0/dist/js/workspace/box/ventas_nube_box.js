@@ -165,82 +165,14 @@ async function payment_type_list_save_edit(element) {
     }
 }
 
-// CEAR NUEVO DOC
-async function payment_type_list_newNOO(element) {
-    try {
-        let new_name = $('#new_paymet_type_list_name_value').val(),
-            new_money_id = $('#payment_type_list_money_value').val(),
-            tasa_value = $('#new_paymet_type_list_tasa_value').val(),
-            new_name_n = String(new_name),
-            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
-            newDate = new Date(),
-            userName = userCtx.userCtx.name;
-
-        // Intentar obtener el documento payment_type_list
-        let doc;
-        try {
-
-           // var payment_type_list = await L_box_db.get('payment_type_list');
-            doc = await L_box_db.get('payment_type_list');
-        } catch (err) {
-            if (err.status === 404) {
-                // Si el documento no existe, crearlo
-                doc = {
-                    _id: 'payment_type_list',
-                    payment_type_list: []
-                };
-            } else {
-                throw err; // Si es otro tipo de error, lanzarlo
-            }
-        }
-
-        let payment_type_array = doc.payment_type_list.find(response => response.value == new_name_n);
-
-        console.log('doc.payment_type_list', doc.payment_type_list);
-        console.log('payment_type_array', payment_type_array);
-
-        if (!payment_type_array) {
-            // Generar un nuevo id aleatorio y único
-            let payment_type_id_n;
-            do {
-                payment_type_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
-            } while (doc.payment_type_list.some(response => response.id === payment_type_id_n));
-
-            // Obtener el valor de la moneda desde el select
-            let currency_value = $('#payment_type_list_money_value option:selected').text();
-
-            let new_payment_type = { 
-                id: payment_type_id_n, 
-                value: new_name_n, 
-                tasa_value: tasa_value, 
-                currency: { id: new_money_id_n, value: currency_value }, 
-                status: true, 
-                delete: false, 
-                updateDate: newDate, 
-                updateUser: userName 
-            };
-            doc.payment_type_list.push(new_payment_type);
-            let response = await L_box_db.put(doc);
-
-            console.log('payment_type_list', response);
-            setting_box();
-            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
-            if (response.ok) await catalog_config();
-        } else {
-            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-
-// CEAR NUEVO DOC
+// CEAR NUEVA FORMA DE PAGO 
 async function payment_type_list_new(element) {
     try {
         let new_name = $('#new_paymet_type_list_name_value').val(),
             new_money_id = $('#payment_type_list_money_value').val(),
             tasa_value = $('#new_paymet_type_list_tasa_value').val(),
+            new_paymet_type_list_cuote_value = $('#new_paymet_type_list_cuote_value').val(),
+            new_paymet_type_list_cuote_value_n = String(new_paymet_type_list_cuote_value),
             new_name_n = String(new_name),
             new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
             newDate = new Date(),
@@ -279,7 +211,7 @@ async function payment_type_list_new(element) {
 
             // Datos adicionales
             let icon = 'credit_card'; // Puedes cambiar esto según sea necesario
-            let pay_quantity = 1; // Puedes cambiar esto según sea necesario
+            let pay_quantity = new_paymet_type_list_cuote_value_n; // Puedes cambiar esto según sea necesario
             let tasa_int = tasa_value; // Puedes cambiar esto según sea necesario
             let status = true; // Puedes cambiar esto según sea necesario
 
@@ -306,6 +238,56 @@ async function payment_type_list_new(element) {
         } else {
             Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
         }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// ELIMINO FORMA DE PAGO
+async function dell_payment_type(element) {
+    event.preventDefault(element);
+    try {
+        // Datos del documento y el id 
+        let doc_id = $(element).attr('id');
+        let value = $(element).attr('value');
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar tipo de pago? ' + value + ' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+            onActionClick: async function () {
+                // Efecto y verificación del tag
+                let doc_id_s = String(doc_id);
+                // Traigo el documento actualizado
+                console.log(doc_id_s);
+                let doc = await L_box_db.get('payment_type_list');
+                console.log(doc);
+                // Filtro los resultados del array menos el que quiero eliminar
+                const payment_type_list = doc.payment_type_list.filter(word => word.id != doc_id_s);
+                // Reemplazo el array por el filtrado
+                console.log('payment_type_list', payment_type_list);
+                doc.payment_type_list = payment_type_list;
+                console.log(doc.payment_type_list);
+                // Guardo los cambios
+                if (doc) {
+                    var response = await L_box_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc, // trae todos los datos del doc y los pega en la raíz
+                    });
+                    if (response.ok) {
+                        // Limpio el item de la pantalla
+                        setting_box();
+                        // box_edit_item_url(doc_id, 1);
+                        // $(element).parent('li').remove();
+                    } else {
+                        // Si no se grabó, tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+            }
+        });
     } catch (err) {
         console.log(err);
     }

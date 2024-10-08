@@ -282,6 +282,17 @@
                                                                 </a>
                                                             </li>
                                                             <li>
+                                                                <a onclick="dell_payment_type(this)"
+                                                                    id="{{id}}" value="{{value}}" href="#">
+                                                                    <span class="material-icons">
+                                                                        delete
+                                                                    </span>
+                                                                    <span> {{#with ../ws_lang_data}}
+                                                                        {{m_catalog_edit_delete}}
+                                                                        {{/with}}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
                                                                 <a status="active" doc_id="{{_id}}"
                                                                     onclick="payment_type_list_save_block(this)"
                                                                     payment_id=" {{id}}" payment_status="{{status}}"
@@ -320,7 +331,7 @@
                                             class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
                                                 <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div class="padding-0 margin-0  col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                         <label> {{#with ws_lang_data}} Medio de pago {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -332,16 +343,32 @@
                                                             <input class="form-control" autocomplete="off" type="text"
                                                                 id="new_paymet_type_list_name_value"
                                                                 name="new_paymet_type_price"
-                                                                placeholder="Nombre del medio..">
+                                                                placeholder="Nombre..">
                                                         </div>
                                                     </div>
-                                                    <div class="padding-0 margin-0  col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                        <label> {{#with ws_lang_data}} Tasa de interes {{/with}} </label>
+
+                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                        <label> {{#with ws_lang_data}} Cuotas {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <span class="material-icons">
-                                                                    {{#with ws_lang_data}}
+                                                                    {{#with ws_lang_data}} x
                                                                     {{m_config_catalog_list_icon}} {{/with}}
+                                                                </span>
+                                                            </span>
+                                                            <input class="form-control" autocomplete="off" type="text"
+                                                                id="new_paymet_type_list_cuote_value"
+                                                                name="new_paymet_type_list_cuote_value"
+                                                                placeholder="Cuotas..">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                        <label> {{#with ws_lang_data}} Interes {{/with}} </label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <span class="material-icons">%
+                                                                    {{#with ws_lang_data}} {{/with}}
                                                                 </span>
                                                             </span>
                                                             <input class="form-control" autocomplete="off" type="text"
@@ -350,7 +377,7 @@
                                                                 placeholder="Tasa de interes..">
                                                         </div>
                                                     </div>
-                                                    <div class="padding-0 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                    <div class="padding-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
                                                         <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
                                                             {{ws_catalog_settings_money}} {{/with}} </label>
@@ -439,6 +466,7 @@
                                                                         {{/with}}</span>
                                                                 </a>
                                                             </li>
+                                                             
                                                             <li>
                                                                 <a onclick="catalog_config_save_block(this)"
                                                                     price_id=" {{id}}" price_value="{{value}}"
