@@ -376,6 +376,7 @@
                                     <h4 class="tittle_input"><strong>{{#with ws_lang_data}}
                                             {{{m_catalog_add_stock_profit_sel}}} {{/with}}</strong></h4>
                                     <div class="input-group">
+
                                         <span class="input-group-addon font-size-25 padding-0">
                                             <div class="Switch" onclick="">
                                                 <input class="new_porcent_checkbox" id="new_porcent_checkbox"
@@ -383,9 +384,11 @@
                                                 <label for="new_porcent_checkbox" class="label-primary"></label>
                                             </div>
                                         </span>
+
                                         <span class="input-group-addon font-size-25 padding-0">
                                             %
                                         </span>
+
                                         <input disabled="" onkeyup="new_porcent_price(this)" name="new_porcent_value"
                                             class="new_porcent_value form-control font-size-25" type="number"
                                             placeholder="{{#with ws_lang_data}} {{{m_catalog_add_stock_profit}}} {{/with}}"
@@ -404,19 +407,51 @@
                                             value="">
                                     </div>
                                 </div>
-                                <div class="padding-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                        href="#main-price-variation-option" aria-expanded="true"
-                                        aria-controls="main-price-variation-option" class="">
-                                        Mas opciones..
-                                    </a>
-                                </div>
-                                <div id="main-price-variation-option" class="panel-collapse collapse out"
-                                    role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                                
+                                <div id="main-price-variation-option" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
 
-                                    <div class="padding-10 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <h4 class="tittle_input"><strong>{{#with
-                                                ws_lang_data}}{{{m_catalog_edit_price_list}}} {{/with}}</strong></h4>
+                                   
+                                   
+                                    <div class="padding-t-10 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                            
+                                                        <div class="chips_main">
+                                                            <div class="padding-t-10 margin-t-6 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                                <div class="input-group">
+                                                                    <span class="chips_items_main"> Agregar impuestos</span>  
+                                                                        <select onchange="select_add_new_tax_paytment(this)" id="payment_type_taxt_value_add" class="form-control md">
+                                                                            {{#each tax_list.tax }}
+                                                                                <option  input_value="{{value}}" input_id="{{id}}" class="chips_input form-control"  value="{{{name}}}"> {{name}} %{{value}} </option>
+                                                                            {{/each}}
+                                                                        </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="padding-t-10 margin-t-6 col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                                                <div id="new_tax_tag_main" class="chips_items_main">
+                                                                    {{#each tax_list.tax }}
+                                                                        <div class="catalog_new_tag_item_input_IVA 21 catalog_new_tag_item  s-card-cat pull-left" val_text="IVA 21"> 
+                                                                            <a new_tag="IVA 21" input_id="{{value}}" val_text="{{name}}" href="#" onclick="catolog_dell_new_tag(this)">
+                                                                                <span class="button material-icons text-s lh-n">  highlight_off</span> </a>
+                                                                                <span class="chips_text">{{name}} %{{value}}</span>
+                                                                        </div>
+                                                                    {{/each}}
+                                                                </div>
+                                                           </div>
+                                                            <!---input doc_id="" input_id="tags" class="chips_input form-control" placeholder=" Etiquetas " name="keywords" type="text" onkeypress="catalog_add_new_tag_press(event,this)" style=""-->
+                                                        
+                                                           
+
+                                                            
+
+                                                          
+
+                                                        </div>
+                                                      
+                                                                
+                                                          
+                                    </div>
+
+                                     <div class="padding-10 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <h4 class="tittle_input"><strong>{{#with ws_lang_data}}{{{m_catalog_edit_price_list}}} {{/with}}</strong></h4>
                                         <div class="input-group font-size-25">
                                             <span class="input-group-addon">
                                                 <span class="material-icons" data-toggle="tooltip"
@@ -433,29 +468,15 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="padding-10 col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                        <h4 class="tittle_input"><strong>{{#with
-                                                ws_lang_data}}{{{m_catalog_edit_tax}}}{{/with}}</strong></h4>
 
-                                        <div class="input-group font-size-25">
-                                            <span class="input-group-addon">
-                                                <span class="material-icons" data-toggle="tooltip"
-                                                    data-placement="bottom" title=""
-                                                    data-original-title="Agregar precio">
-                                                    price_change
-                                                </span>
-                                            </span>
-                                            <select class="new_tax_list_var_select form-control  md "
-                                                name="new_tax_list" id="new_tax_list_var_select">
-                                                {{#with tax_list}}
-                                                {{#each tax }}
-                                                <option value="{{id}}">{{name}} ( {{value}} )</option>
-                                                {{/each}}
-                                                {{/with}}
-                                            </select>
-                                        </div>
-                                    </div>
+                                </div>
 
+                                <div class="padding-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                        href="#main-price-variation-option" aria-expanded="true"
+                                        aria-controls="main-price-variation-option" class="">
+                                        Mas opciones..
+                                    </a>
                                 </div>
                             </div>
 
@@ -679,11 +700,21 @@
             const new_price = $('#new_price').val();
 
 
-            // TAX ARRAY
-            const tax_doc = await L_catalog_db.get('tax_list');
+            // TAX ARRAY            
+           /* const tax_doc = await L_catalog_db.get('tax_list');
             const new_tax_list_id = $('#new_tax_list_var_select').val();
             const taxItem = tax_doc.tax.find(response => response.id == new_tax_list_id);
             const tax = [taxItem];
+            */
+               // TAX ARRAY
+            const tax_chips = document.querySelectorAll('#new_tax_tag_main .catalog_new_tag_item');
+            const tax = Array.from(tax_chips).map(chip => ({
+                id: chip.getAttribute('input_id'),
+                value: chip.getAttribute('val_text')
+            }));
+
+
+
             const currency_doc = await L_catalog_db.get('currency_list');
             const currency_default = currency_doc['currency_default'];
             const new_sku_value = $('#new_sku').val();

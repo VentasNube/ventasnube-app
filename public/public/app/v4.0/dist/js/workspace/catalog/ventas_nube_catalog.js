@@ -725,8 +725,13 @@ async function catalog_new_item(element) {
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
-        var tax_doc = await L_catalog_db.get('tax_list');
+        var tax_list = await L_box_db.get('tax_list');
+
+        var payment_type_list = await L_box_db.get('payment_type_list');
+        
         var currency_doc = await L_catalog_db.get('currency_list');
+
+        //var currency_doc = await L_catalog_db.get('tax_list');
         var attributes = await L_catalog_db.get('attributes');
 
         var user_roles_permisions = user_Ctx.userCtx.roles;
@@ -734,7 +739,7 @@ async function catalog_new_item(element) {
 
         var product_doc_array = {
             price_list: price_doc.price_list,
-            tax_list: tax_doc,
+            tax_list: tax_list['tax_list'],
             currency_list: currency_doc.currency_list,
             currency: currency_doc['currency_default'],
             ws_lang_data: ws_lang_data,
@@ -2845,12 +2850,12 @@ async function new_payment_type(element) {
 
         $("#edit_panel_config_paymet_type").first().fadeIn("slow"); // Muestro el div con efecto
 
-       // new_name_tax_input
+        // new_name_tax_input
         $('#new_paymet_type_list_name_value').focus(); // Llevo el foco al input 
-       // $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); // Grabo el valor en un attr en el input
-      //  $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); // Grabo el valor en un attr en el input
-       // $('#new_value_tax_edit').attr('type', 'number'); // Grabo el valor en un attr en el input
-      //  $('#new_name_tax_input').attr('placeholder', 'Nombre'); // Grabo el valor en un attr en el input
+        // $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); // Grabo el valor en un attr en el input
+        //  $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); // Grabo el valor en un attr en el input
+        // $('#new_value_tax_edit').attr('type', 'number'); // Grabo el valor en un attr en el input
+        //  $('#new_name_tax_input').attr('placeholder', 'Nombre'); // Grabo el valor en un attr en el input
         $(element).hide();
     } catch (err) {
         console.log(err);

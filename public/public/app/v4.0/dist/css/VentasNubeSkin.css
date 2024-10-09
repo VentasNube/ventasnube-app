@@ -12967,7 +12967,8 @@ board-item-content
     height: 100%;
     right: 0;
     position: fixed;
-    top: 63px;
+    top: 0px;
+     /*top: 63px;*/
     transition: all 0.1s ease-in-out;
     /*width: 500px;
      top: 0px;*/
@@ -12981,8 +12982,8 @@ board-item-content
     .right_main {
         height: 100%;
         position: fixed;
-        /*  top: 0px;*/
-        top: 63px;
+         top: 0px;
+        /*top: 63px;*/
         right: 0;
         transition: all 0.1s ease-in-out;
         width: 500px;
