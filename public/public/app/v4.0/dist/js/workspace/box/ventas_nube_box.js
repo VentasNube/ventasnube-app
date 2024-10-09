@@ -574,6 +574,7 @@ async function setting_box() {
         //      const colaboration_list = await  L_board_db.get('colaborator_list');
         /// NEW 2024
         var payment_type_list = await L_box_db.get('payment_type_list');
+        
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
         var tax_list = await L_catalog_db.get('tax_list');

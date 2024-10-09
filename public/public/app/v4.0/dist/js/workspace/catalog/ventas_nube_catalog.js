@@ -7,6 +7,7 @@ var search_fuse = null;
 //userCtx
 //CONCETO CON LA DB
 var ws_catalog_db = 'ws_collections_' + ws_id;
+//// VARIABLES GLOBALES 
 
 //console.log('userCtx DATA CATALOGO:',userCtx);
 //CREO LA DB
@@ -14,6 +15,9 @@ var ws_catalog_db = 'ws_collections_' + ws_id;
 
 //CREO LA DB CATALOGO
 L_catalog_db = new PouchDB(ws_catalog_db, { skip_setup: true });
+
+
+
 // SYNC LOCAL CON REMOTO
 
 /*
@@ -44,6 +48,9 @@ sync.on('change', function (info) {
     // Se captura algún error en la sincronización
     console.error("Error de sincronización:", err);
 });
+
+
+
 
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_all_catalog_intems(ws_id, filter) {
@@ -720,26 +727,23 @@ async function put_catalog(doc_id, my_doc) {
 
 // TRAE EL FORMULARIO
 async function catalog_new_item(element) {
+// Creando la base de datos local
     try {
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
         var price_doc = await L_catalog_db.get('price_list');
-        var tax_list = await L_box_db.get('tax_list');
-
-        var payment_type_list = await L_box_db.get('payment_type_list');
-        
+        var tax_list = await L_catalog_db.get('tax_list');
         var currency_doc = await L_catalog_db.get('currency_list');
-
-        //var currency_doc = await L_catalog_db.get('tax_list');
         var attributes = await L_catalog_db.get('attributes');
 
         var user_roles_permisions = user_Ctx.userCtx.roles;
-        console.log('user_roles_permisions', user_roles_permisions);
+       // console.log('user_roles_permisions', user_roles_permisions);
+      //  console.log('tax_list NEW PROD', tax_list);
 
         var product_doc_array = {
             price_list: price_doc.price_list,
-            tax_list: tax_list['tax_list'],
+            tax_list: tax_list.tax,
             currency_list: currency_doc.currency_list,
             currency: currency_doc['currency_default'],
             ws_lang_data: ws_lang_data,
@@ -750,8 +754,8 @@ async function catalog_new_item(element) {
             attributes_list: attributes
         }
 
-        console.log('tax_doc CCCCC', product_doc_array);
-        console.log('tax_doc currency_doc currency_doc', currency_doc);
+      //  console.log('tax_doc CCCCC', product_doc_array);
+      //  console.log('tax_doc currency_doc currency_doc', currency_doc);
 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/create/catalog_create_product.hbs', '#right_main', product_doc_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
