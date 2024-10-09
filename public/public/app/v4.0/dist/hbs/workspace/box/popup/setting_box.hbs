@@ -155,9 +155,7 @@
                                             {{/each}}
                                         </div>
                                         <!-- EDITAR TAX --->
-                                        <div id="edit_panel_config_tax"
-                                        hidden=""
-                                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div id="edit_panel_config_tax"  hidden=""     class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
                                                 <div
                                                     class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -246,6 +244,17 @@
                                                 Cuotas = {{pay_quantity}}
                                                 Tasa Interes= {{ tasa_int}}%
 
+                                                     Impuestos = 
+
+                                                     {{#each tax_list }}
+
+                                                       <span class="label padding-10 bg-gray">
+                                                   {{name }} % {{value}}
+                                                </span>
+                                                                   
+                                                    {{/each}}
+                                               
+
                                                 <span class="material-icons" data-toggle="tooltip"
                                                     data-placement="bottom" title=""
                                                     data-original-title="Actualizado:{{updateDate}} Por: {{updateUser}}">
@@ -321,23 +330,24 @@
                                                 <div class="text-left margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <button onclick="new_payment_type(this)" doc_id="" type="button"
                                                         class="btn btn-primary">
-                                                        Nuevo medio de pago
+                                                        Nuevo metodo de pago
                                                     </button>
                                                 </div>
                                         </div>
 
-                                        <!-- EDIT  NAME PRICE LIST  edit_panel_config_name_price_list --->
+                                        <!-- FORMULARIO AGREGAR NUEVO METODODO DE PAGO --->
                                         <div id="edit_panel_config_paymet_type" hidden=""
                                             class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
                                                 <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                        <label> {{#with ws_lang_data}} Medio de pago {{/with}} </label>
+                                                    <div class="padding-0 margin-0  col-xs-6 col-sm-4 col-md-3 col-lg-3">
+                                                        <label> {{#with ws_lang_data}}Nuevo medio de pago {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <span class="material-icons">
                                                                     {{#with ws_lang_data}}
-                                                                    {{m_config_catalog_list_icon}} {{/with}}
+                                                                        add_card
+                                                                    {{/with}}
                                                                 </span>
                                                             </span>
                                                             <input class="form-control" autocomplete="off" type="text"
@@ -347,7 +357,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div class="padding-0 margin-0  col-xs-6 col-sm-4 col-md-3 col-lg-3">
                                                         <label> {{#with ws_lang_data}} Cuotas {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -363,7 +373,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="padding-0 margin-0  col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div class="padding-0 margin-0  col-xs-6 col-sm-4 col-md-3 col-lg-3">
                                                         <label> {{#with ws_lang_data}} Interes {{/with}} </label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -377,7 +387,7 @@
                                                                 placeholder="Tasa de interes..">
                                                         </div>
                                                     </div>
-                                                    <div class="padding-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div class="padding-0 col-xs-6 col-sm-4 col-md-3 col-lg-3">
 
                                                         <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
                                                             {{ws_catalog_settings_money}} {{/with}} </label>
@@ -389,10 +399,79 @@
                                                                 <option value="{{{id}}}"> {{value}} </option>
                                                                 {{/each}}
                                                             </select>
-                                                            <span class="input-group-addon">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                   
+
+
+                                                    <div class="padding-t-10 margin-t-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                            
+                                                        <div class="chips_main">
+
+                                                            <div class="padding-t-10 margin-t-6 col-xs-6 col-sm-42 col-md-4 col-lg-4">
+
+                                                            
+                                                            <div class="input-group">
+                                                                <span class="icon material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title=" Etiquetas ">
+                                                                corporate_fare
+                                                                </span>
+                                                                <span class="chips_items_main"> Seleccionar Impuestos:</span>  
+                                                                    <select onchange="select_add_new_tax_paytment(this)" id="payment_type_taxt_value_add"
+                                                                        class="form-control md">
+                                                                        {{#each tax_list }}
+                                                                        <option  input_value="{{value}}" input_id="{{id}}" class="chips_input form-control"  value="{{{name}}}"> {{name}} %{{value}} </option>
+                                                                        {{/each}}
+                                                                    </select>
+                                                                
+                                                            </div>
+                                                           </div>
+                                                            <div class="padding-t-10 margin-t-6 col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                                                <span class="icon material-icons" data-toggle="tooltip" data-placement="bottom" title="" data-original-title=" Etiquetas ">
+                                                                arrow_forward
+                                                                </span>
+                                                                <span class="chips_items_main">:</span>    
+                                                                <div id="new_tax_tag_main" class="chips_items_main">
+
+                                                                <div class="catalog_new_tag_item_input_IVA 21 catalog_new_tag_item  s-card-cat pull-left" val_text="IVA 21"> 
+                                                                    <a new_tag="IVA 21" input_id="tags" val_text="IVA 21" href="#" onclick="catolog_dell_new_tag(this)">
+                                                                        <span class="button material-icons text-s lh-n">  highlight_off</span> </a>
+                                                                        <span class="chips_text">IVA 21</span>
+                                                                </div>
+                                                                    <div class="catalog_new_tag_item_input_IVA 10 catalog_new_tag_item  s-card-cat pull-left" val_text="IVA 10"> 
+                                                                        <a new_tag="IVA 10" input_id="tags" val_text="IVA 10" href="#" onclick="catolog_dell_new_tag(this)">
+                                                                        <span class="button material-icons text-s lh-n">  highlight_off</span> </a>
+                                                                        <span class="chips_text">IVA 10</span>
+                                                                    </div>
+                                                                        
+                                                                    <div class="catalog_new_tag_item_input_ARBA catalog_new_tag_item  s-card-cat pull-left" val_text="ARBA"> 
+                                                                            <a new_tag="ARBA" input_id="tags" val_text="ARBA" href="#" onclick="catolog_dell_new_tag(this)">
+                                                                                <span class="button material-icons text-s lh-n">  highlight_off</span> 
+                                                                            </a>
+                                                                            <span class="chips_text">ARBA</span>
+                                                                    </div>
+
+
+                                                                </div>
+                                                           </div>
+                                                            <!---input doc_id="" input_id="tags" class="chips_input form-control" placeholder=" Etiquetas " name="keywords" type="text" onkeypress="catalog_add_new_tag_press(event,this)" style=""-->
+                                                        
+                                                           
+
+                                                            
+
+                                                          
+
+                                                        </div>
+                                                      
+                                                                
+                                                          
+                                                    </div>
+                                                        <div class="padding-t-5 margin-t-4 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                                 <button type="button"
                                                                     onclick="payment_type_list_new(this)"
-                                                                    class="margin-5 btn xl btn-primary pull-right">
+                                                                    class="margin-0 btn xl btn-primary pull-right">
                                                                     <span class="material-icons"> 
                                                                         {{#with ws_lang_data}}
                                                                         {{ws_catalog_settings_add_icon}} 
@@ -402,9 +481,8 @@
                                                                         {{ws_catalog_settings_add}} 
                                                                         {{/with}}
                                                                 </button>
-                                                            </span>
-                                                        </div>
                                                     </div>
+                                                    
                                                 </div>
                                             </form>
                                         </div>

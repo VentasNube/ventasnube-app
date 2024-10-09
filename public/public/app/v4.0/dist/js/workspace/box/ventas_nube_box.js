@@ -166,7 +166,7 @@ async function payment_type_list_save_edit(element) {
 }
 
 // CEAR NUEVA FORMA DE PAGO 
-async function payment_type_list_new(element) {
+async function payment_type_list_newOLD(element) {
     try {
         let new_name = $('#new_paymet_type_list_name_value').val(),
             new_money_id = $('#payment_type_list_money_value').val(),
@@ -220,6 +220,7 @@ async function payment_type_list_new(element) {
                 name: new_name_n, 
               //  tasa_value: tasa_value, 
                 currency: { id: new_money_id_n, value: currency_value }, 
+              //  tax_list: { id: tax_id_n, value: value }, 
                 status: status, 
                 delete: false, 
                 updateDate: newDate, 
@@ -242,6 +243,146 @@ async function payment_type_list_new(element) {
         console.log(err);
     }
 }
+async function payment_type_list_new(element) {
+    try {
+        let new_name = $('#new_paymet_type_list_name_value').val(),
+            new_money_id = $('#payment_type_list_money_value').val(),
+            tasa_value = $('#new_paymet_type_list_tasa_value').val(),
+            new_paymet_type_list_cuote_value = $('#new_paymet_type_list_cuote_value').val(),
+            new_paymet_type_list_cuote_value_n = String(new_paymet_type_list_cuote_value),
+            new_name_n = String(new_name),
+            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
+            newDate = new Date(),
+            userName = userCtx.userCtx.name;
+
+        // Intentar obtener el documento payment_type_list
+        let doc;
+        try {
+            doc = await L_box_db.get('payment_type_list');
+        } catch (err) {
+            if (err.status === 404) {
+                // Si el documento no existe, crearlo
+                doc = {
+                    _id: 'payment_type_list',
+                    payment_type_list: []
+                };
+            } else {
+                throw err; // Si es otro tipo de error, lanzarlo
+            }
+        }
+
+        let payment_type_array = doc.payment_type_list.find(response => response.value == new_name_n);
+
+        console.log('doc.payment_type_list', doc.payment_type_list);
+        console.log('payment_type_array', payment_type_array);
+
+        if (!payment_type_array) {
+            // Generar un nuevo id aleatorio y único
+            let payment_type_id_n;
+            do {
+                payment_type_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
+            } while (doc.payment_type_list.some(response => response.id === payment_type_id_n));
+
+            // Obtener el valor de la moneda desde el select
+            let currency_value = $('#payment_type_list_money_value option:selected').text();
+
+            
+
+            // Recuperar los datos de los impuestos desde el DOM
+            let tax_elements = $('#new_tax_tag_main .catalog_new_tag_item');
+            let tax_list = [];
+            tax_elements.each(function() {
+                let tax_id = $(this).attr('val_text');
+                let tax_value = $(this).find('.chips_text').text(); // Solo guardar el texto del chip
+                tax_list.push({ id: tax_id, value: tax_value });
+            });
+
+
+            
+
+            // Datos adicionales
+            let icon = 'credit_card'; // Puedes cambiar esto según sea necesario
+            let pay_quantity = new_paymet_type_list_cuote_value_n; // Puedes cambiar esto según sea necesario
+            let tasa_int = tasa_value; // Puedes cambiar esto según sea necesario
+            let status = true; // Puedes cambiar esto según sea necesario
+
+            let new_payment_type = { 
+                id: payment_type_id_n, 
+                name: new_name_n, 
+                currency: { id: new_money_id_n, value: currency_value }, 
+                tax_list: tax_list, // Agregar la lista de impuestos
+                status: status, 
+                delete: false, 
+                updateDate: newDate, 
+                updateUser: userName,
+                icon: icon,
+                pay_quantity: pay_quantity,
+                tasa_int: tasa_int
+            };
+            doc.payment_type_list.push(new_payment_type);
+            let response = await L_box_db.put(doc);
+
+            console.log('payment_type_list', response);
+            setting_box();
+            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+            if (response.ok) await catalog_config();
+        } else {
+            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+/// ADD IMPUESTOS AL METODO
+
+
+// AGREGO TAX
+async function select_add_new_tax_paytment(element) {
+    console.log('CLIC 1');
+    try {
+        console.log('Try ok');
+        let new_tag_val = $(element).val();
+        if (!new_tag_val) {
+            $(element).css("color", "red");
+            return;
+        }
+
+        let new_tag = String(new_tag_val);
+        console.log('new_tag_val', new_tag_val);
+        console.log('new_tag', new_tag);
+
+        let catalog_new_tag_item = $('.catalog_new_tag_item_input_' + new_tag);
+        let tag_item_count = $(".catalog_new_tag_item").length;
+
+        if (tag_item_count >= 3) {
+            Snackbar.show({
+                text: 'No puedes agregar más de 3 categorías!',
+                actionText: 'ok',
+                pos: 'bottom-right',
+                actionTextColor: "#0575e6",
+            });
+        } else if (catalog_new_tag_item.length === 0) {
+            $('#new_tax_tag_main').append(
+                `<div class="catalog_new_tag_item_input_${new_tag} catalog_new_tag_item s-card-cat pull-left" val_text="${new_tag}">
+                    <a new_tag="${new_tag}" input_id="tags" val_text="${new_tag}" href="#" onclick="catolog_dell_new_tag(this)">
+                        <span class="button material-icons text-s lh-n">highlight_off</span>
+                    </a>
+                    <span class="chips_text">${new_tag}</span>
+                </div>`
+            );
+        } else {
+            $('.catalog_new_tag_item_input_' + new_tag).css("color", "red");
+        }
+    } catch (err) {
+        console.log(err);
+        $(element).css("color", "red");
+    }
+}
+
+
+
 
 // ELIMINO FORMA DE PAGO
 async function dell_payment_type(element) {
