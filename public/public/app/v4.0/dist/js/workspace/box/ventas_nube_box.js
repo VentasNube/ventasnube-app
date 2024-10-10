@@ -166,83 +166,6 @@ async function payment_type_list_save_edit(element) {
 }
 
 // CEAR NUEVA FORMA DE PAGO 
-async function payment_type_list_newOLD(element) {
-    try {
-        let new_name = $('#new_paymet_type_list_name_value').val(),
-            new_money_id = $('#payment_type_list_money_value').val(),
-            tasa_value = $('#new_paymet_type_list_tasa_value').val(),
-            new_paymet_type_list_cuote_value = $('#new_paymet_type_list_cuote_value').val(),
-            new_paymet_type_list_cuote_value_n = String(new_paymet_type_list_cuote_value),
-            new_name_n = String(new_name),
-            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
-            newDate = new Date(),
-            userName = userCtx.userCtx.name;
-
-        // Intentar obtener el documento payment_type_list
-        let doc;
-        try {
-            doc = await L_box_db.get('payment_type_list');
-        } catch (err) {
-            if (err.status === 404) {
-                // Si el documento no existe, crearlo
-                doc = {
-                    _id: 'payment_type_list',
-                    payment_type_list: []
-                };
-            } else {
-                throw err; // Si es otro tipo de error, lanzarlo
-            }
-        }
-
-        let payment_type_array = doc.payment_type_list.find(response => response.value == new_name_n);
-
-        console.log('doc.payment_type_list', doc.payment_type_list);
-        console.log('payment_type_array', payment_type_array);
-
-        if (!payment_type_array) {
-            // Generar un nuevo id aleatorio y único
-            let payment_type_id_n;
-            do {
-                payment_type_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
-            } while (doc.payment_type_list.some(response => response.id === payment_type_id_n));
-
-            // Obtener el valor de la moneda desde el select
-            let currency_value = $('#payment_type_list_money_value option:selected').text();
-
-            // Datos adicionales
-            let icon = 'credit_card'; // Puedes cambiar esto según sea necesario
-            let pay_quantity = new_paymet_type_list_cuote_value_n; // Puedes cambiar esto según sea necesario
-            let tasa_int = tasa_value; // Puedes cambiar esto según sea necesario
-            let status = true; // Puedes cambiar esto según sea necesario
-
-            let new_payment_type = { 
-                id: payment_type_id_n, 
-                name: new_name_n, 
-              //  tasa_value: tasa_value, 
-                currency: { id: new_money_id_n, value: currency_value }, 
-              //  tax_list: { id: tax_id_n, value: value }, 
-                status: status, 
-                delete: false, 
-                updateDate: newDate, 
-                updateUser: userName,
-                icon: icon,
-                pay_quantity: pay_quantity,
-                tasa_int: tasa_int
-            };
-            doc.payment_type_list.push(new_payment_type);
-            let response = await L_box_db.put(doc);
-
-            console.log('payment_type_list', response);
-            setting_box();
-            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
-            if (response.ok) await catalog_config();
-        } else {
-            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}
 async function payment_type_list_new(element) {
     try {
         let new_name = $('#new_paymet_type_list_name_value').val(),
@@ -334,10 +257,7 @@ async function payment_type_list_new(element) {
     }
 }
 
-
 /// ADD IMPUESTOS AL METODO
-
-
 // AGREGO TAX
 async function select_add_new_tax_paytment(element) {
     console.log('CLIC 1');
@@ -380,9 +300,6 @@ async function select_add_new_tax_paytment(element) {
         $(element).css("color", "red");
     }
 }
-
-
-
 
 // ELIMINO FORMA DE PAGO
 async function dell_payment_type(element) {
@@ -434,7 +351,7 @@ async function dell_payment_type(element) {
     }
 }
 
-
+//Bloqueo y desbloqueo el tipo de pago
 async function payment_type_list_save_block(element) {
     try {
         // Traigo los valores
@@ -508,6 +425,179 @@ async function payment_type_list_save_block(element) {
 }
 
 new_payment_type_list_doc();
+
+// CEAR NUEVO DOC PRICE LIST
+
+/// ABRO EL EDITOR DE NUEVA LISTA DE PRECIOS
+// ABRE EDITAR
+async function price_list_show_edit(element) {
+    try {
+        //Traigo los valores
+        let price_id = $(element).attr('price_id');
+        let new_value = $(element).attr('price_value');
+        let new_currency_id = $(element).attr('price_currency_id');
+        //Filtro los resultados
+        const price_id_n = Number(price_id);
+        var new_value_n = Number(new_value);
+        var new_currency_id_n = Number(new_currency_id);
+        //Modifico el dom
+        $('#payment_type_list_name_value').val(new_value); //Tomo el valor de input
+        $('#payment_type_list_name_value').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
+        $("#payment_type_list_money_value option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
+
+        $("#edit_panel_config_paymet_type").first().fadeIn("slow");// Muestro el div con efecto
+        $('#new_paymet_type_list_name_value').focus(); //llevo el foco al input 
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+// CEAR NUEVA FORMA DE PAGO 
+// CREAR NUEVA LISTA DE PRECIOS
+async function add_price_list(element) {
+    try {
+        let new_name = $('#new_price_list_name_value').val(),
+            new_money_id = $('#new_price_list_money_value').val(),
+            tasa_value = $('#new_price_list_tasa_value').val(),
+            new_price_list_cuote_value = $('#new_price_list_cuote_value').val(),
+            new_price_list_cuote_value_n = String(new_price_list_cuote_value),
+            new_name_n = String(new_name),
+            new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
+            newDate = new Date(),
+            userName = userCtx.userCtx.name;
+
+        // Intentar obtener el documento price_list
+        let doc;
+        try {
+            doc = await L_catalog_db.get('price_list');
+        } catch (err) {
+            if (err.status === 404) {
+                // Si el documento no existe, crearlo
+                doc = {
+                    _id: 'price_list',
+                    price_list: []
+                };
+            } else {
+                throw err; // Si es otro tipo de error, lanzarlo
+            }
+        }
+
+        let price_list_array = doc.price_list.find(response => response.name == new_name_n);
+
+        console.log('price_list_array', price_list_array);
+
+        if (!price_list_array) {
+            // Generar un nuevo id aleatorio y único
+            let price_list_id_n;
+            do {
+                price_list_id_n = Math.floor(Math.random() * 1000000); // Generar un id aleatorio de 6 cifras
+            } while (doc.price_list.some(response => response.id === price_list_id_n));
+
+            // Obtener el valor de la moneda desde el select
+            let currency_value = $('#new_price_list_money_value option:selected').text();
+
+            // Recuperar los datos de los impuestos desde el DOM
+            let tax_elements = $('#new_tax_tag_main .catalog_new_tag_item');
+            let tax_list = [];
+            tax_elements.each(function() {
+                let tax_id = $(this).attr('val_text');
+                let tax_value = $(this).find('.chips_text').text(); // Solo guardar el texto del chip
+                tax_list.push({ id: tax_id, value: tax_value });
+            });
+
+            // Datos adicionales
+            let status = true; // Puedes cambiar esto según sea necesario
+
+            let new_price_list = { 
+                id: price_list_id_n, 
+                name: new_name_n, 
+                currency: { id: new_money_id_n, value: currency_value }, 
+                tax_list: tax_list, // Agregar la lista de impuestos
+                status: status, 
+                delete: false, 
+                updateDate: newDate, 
+                updateUser: userName,
+                tasa_int: tasa_value,
+                cuote_value: new_price_list_cuote_value_n
+            };
+            doc.price_list.push(new_price_list);
+            let response = await L_catalog_db.put(doc);
+
+            console.log('price_list', response);
+            setting_box();
+            Snackbar.show({ text: response.ok ? 'Se creó con éxito!!' : 'Error al crear el ítem!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+            if (response.ok) await catalog_config();
+        } else {
+            Snackbar.show({ text: 'El ítem ya existe!', actionText: 'ok', pos: 'bottom-right', actionTextColor: "#0575e6" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+// ELIMINO LISTA DE PRECIOS
+async function dell_price_list(element) {
+    event.preventDefault(element);
+    try {
+        // Datos del documento y el id 
+        let doc_id = $(element).attr('id');
+        let value = $(element).attr('value');
+        Snackbar.show({
+            text: '<span class="material-icons">delete</span> Quieres eliminar tipo de pago? ' + value + ' ?',
+            width: '475px',
+            pos: 'bottom-right',
+            actionText: 'Eliminar',
+            actionTextColor: "#dd4b39",
+            onActionClick: async function () {
+                // Efecto y verificación del tag
+                let doc_id_s = String(doc_id);
+                // Traigo el documento actualizado
+                console.log(doc_id_s);
+                var doc = await L_catalog_db.get('price_list');
+                //var price_array = doc.price_list.find(response => response.id == price_id_n);// Traigo el elemento por la id variant
+                //let doc = await L_box_db.get('price_list');
+                console.log('DOC', doc);
+                // Filtro los resultados del array menos el que quiero eliminar
+                const price_list = doc.price_list.filter(word => word.id != doc_id_s);
+                // Reemplazo el array por el filtrado
+                console.log('price_list', price_list);
+                doc.price_list = price_list;
+
+                console.log(doc.price_list);
+                // Guardo los cambios
+                if (doc) {
+                    var response = await L_catalog_db.put({
+                        _id: doc._id,
+                        _rev: doc._rev,
+                        ...doc, // trae todos los datos del doc y los pega en la raíz
+                    });
+                    if (response.ok) {
+
+                        Snackbar.show({
+                            text: 'Se eliminó con éxito!!',
+                            actionText: 'Ok',
+                            actionTextColor: '#0575e6',
+                            pos: 'bottom-left',
+                            duration: 50000
+                        });
+                        // Limpio el item de la pantalla
+                        setting_box();
+                        // box_edit_item_url(doc_id, 1);
+                        // $(element).parent('li').remove();
+                    } else {
+                        // Si no se grabó, tira un error en pantalla
+                        $(element).parent('li').css("color", "red");
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // Welcome BOX configuracion inicial del box
 async function box_welcome() {
@@ -590,9 +680,9 @@ async function setting_box() {
         }
 
         console.log('price_list', price_list);
-        console.log('currency_list', currency_list);
-        console.log('tax_list', tax_list);
-        console.log('box_config', box_config);
+       // console.log('currency_list', currency_list);
+      //  console.log('tax_list', tax_list);
+       // console.log('box_config', box_config);
         /* var data = {
              //board_type_name: board_type_name,
           //   ws_info: ws_info,
@@ -617,160 +707,6 @@ async function setting_box() {
     }
 }
 
-/*
-async function add_payment_type_list(){
-
-}
-async function edit_payment_type_list(){
-
-}
-// SELECCIONO
-async function select_payment_type_list(element, new_item) {
-
-    var item_value_id = $(element).attr('item_value_id');
-    var new_item = new_item;
-    if (new_item) {
-        var item_value = new_item;
-    } else {
-        var item_value = $(element).attr('item_value');
-    }
-    try {
-        // console.log('id',item_value_id);
-        //  console.log('value',item_value);
-        //alert('item_value_id',item_value_id);
-        $('#catalog_select_trade_value').attr('catalog_select_trade_value', item_value_id);
-        $('#catalog_select_trade_value').html(item_value);
-        $('#catalog_select_trade_tittle').html(item_value);
-        $('#catalog_select_trade_tittle').attr('item_value_id', item_value_id);
-
-
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-// AGREGO
-async function add_payment_type_list(element) {
-    event.preventDefault(element);
-    try {
-        var doc_id = $(element).attr('doc_id');
-        var new_trade_val = $('#catalog_new_trade_input').val();
-        var new_trade = String(new_trade_val);
-        // .toLowerCase()
-        // Filtro si el input esta bacio
-        if (new_trade) {
-            let doc_id_s = String('trade_list');  // Me aseguro q sea un string
-            let doc = await L_catalog_db.get(doc_id_s);
-            const tag_index = doc.trade_list.find((objeto) => objeto.value == new_trade);  // Verigico q el item a agregar ya no este repetido
-            if (tag_index) {
-                Snackbar.show({
-                    text: ' <span class="material-icons">category</span> La marca ' + new_trade_val + ' ya existe!',
-                    width: '475px',
-                    pos: 'bottom-right',
-                    actionTextColor: "#4CAF50",
-                });
-            }
-            else {
-                var arr_number_id = Math.floor(Math.random() * (+'10000000' - +'1')) + +'1'; // Creo el id aleatorio
-                var arr_number_id_valid = doc.trade_list.find(response => response.id == arr_number_id);// Compruebo q el id no exista
-                if (!arr_number_id_valid) {
-                    var new_item = {
-                        id: arr_number_id,
-                        value: new_trade,
-                        sub_category: []
-                    }
-                }
-                //doc[input_id] = {'id':input_value,'value':new_value} ;//BUSCO EL OBJETO Y LO EDITO
-                var new_doc = doc.trade_list.unshift(new_item);  //Envio los datos editados al documento
-
-                var response = await L_catalog_db.put({
-                    _id: doc._id,
-                    _rev: doc._rev,
-                    ...doc,// (Los 3 puntitos lleva el scope a la raiz del documento y no dentro de un objeto doc)
-                });
-                if (response) {
-                    // load_all_cat(doc_id,arr_number_id );
-                    // catalog_edit_item_url(doc_id, 1);
-                    $('#catalog_select_trade_value').html(new_trade);
-                    $('#catalog_select_trade_value').attr('catalog_select_trade_value', arr_number_id);
-
-                    Snackbar.show({
-                        text: 'La marca ' + new_trade_val + ' se agrego!',
-                        actionText: 'ok',
-                        pos: 'bottom-right',
-                        actionTextColor: "#0575e6",
-                    });
-                    catalog_select_new_trade(element, new_trade);
-                    //catalog_search_trade(e, element);
-                    //  catalog_edit_item_url(doc_id, 1);
-                } else {
-                    alert("no se actualizo");
-                }
-            }
-        }
-        else {
-            Snackbar.show({
-                text: ' La categoria no puede estar bacia',
-                width: '475px',
-                pos: 'bottom-right',
-                actionTextColor: "#4CAF50"
-            });
-        }
-    } catch (err) {
-
-    }
-}
-
-// ELIMINO
-async function edit_payment_type_list(element) {
-    event.preventDefault(element);
-    try {
-        //Datos del cocumento y el id 
-        let doc_id = $(element).attr('doc_id');
-        let value = $(element).attr('value');
-        Snackbar.show({
-            text: '<span class="material-icons">delete</span> Quieres eliminar la Marca ' + value + ' ?',
-            width: '475px',
-            pos: 'bottom-right',
-            actionText: 'Eliminar',
-            actionTextColor: "#dd4b39",
-            onActionClick: async function (element) {
-                //Efecto y verificacion del tag
-                let doc_id_s = String(doc_id);
-                //Traigo el documento actualizado
-                console.log(doc_id_s);
-                let doc = await L_catalog_db.get('trade_list');
-                console.log(doc);
-                //Filtro los resultados del array menos el que quiero eliminar
-                const new_trade_list = doc.trade_list.filter(word => word.value !== value);
-                //Reemplazo el array por el filtrado
-                console.log(new_trade_list);
-                doc.trade_list = new_trade_list;
-
-                console.log(doc.trade);
-                //Guardo los cambios
-                if (doc) {
-                    var response = await L_catalog_db.put({
-                        _id: doc._id,
-                        _rev: doc._rev,
-                        ...doc,// trae todos los datos del doc y los pega en la raiz
-                    });
-                    if (response) {
-                        //Limpio el item de la pantalla
-                        //catalog_edit_item_url(doc_id, 1);
-                        $(element).parent('li').remove();
-                    } else {
-                        //Si no se grabo tira un error en pantalla
-                        $(element).parent('li').css("color", "red");
-                    }
-                }
-            }
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
-*/
 
 
 // Welcome BOX configuracion inicial del box
