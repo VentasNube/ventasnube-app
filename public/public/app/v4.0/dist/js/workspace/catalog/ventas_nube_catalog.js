@@ -2345,6 +2345,8 @@ async function catalog_config_save_edit(element) {
             });
             if (response) {
                 var print_item = await catalog_config(); //Refrezco la pantalla
+                console.log('response',response)
+                console.log('error',err)
                 Snackbar.show({
                     text: 'Se actualizo con exito!!',
                     actionText: 'ok',
@@ -2352,6 +2354,7 @@ async function catalog_config_save_edit(element) {
                     actionTextColor: "#0575e6",
                 });
             } else {
+                console.log('error',err)
                 Snackbar.show({
                     text: 'NO actualizo!!',
                     actionText: 'ok',
@@ -2361,6 +2364,7 @@ async function catalog_config_save_edit(element) {
             }
 
         } else {
+            console.log('error',err)
             Snackbar.show({
                 text: 'NO actualizo!!',
                 actionText: 'ok',

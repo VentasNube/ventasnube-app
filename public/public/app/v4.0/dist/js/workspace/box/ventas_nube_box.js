@@ -430,7 +430,7 @@ new_payment_type_list_doc();
 
 /// ABRO EL EDITOR DE NUEVA LISTA DE PRECIOS
 // ABRE EDITAR
-async function price_list_show_edit(element) {
+async function new_price_list(element) {
     try {
         //Traigo los valores
         let price_id = $(element).attr('price_id');
@@ -440,12 +440,19 @@ async function price_list_show_edit(element) {
         const price_id_n = Number(price_id);
         var new_value_n = Number(new_value);
         var new_currency_id_n = Number(new_currency_id);
-        //Modifico el dom
-        $('#payment_type_list_name_value').val(new_value); //Tomo el valor de input
-        $('#payment_type_list_name_value').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
-        $("#payment_type_list_money_value option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
 
-        $("#edit_panel_config_paymet_type").first().fadeIn("slow");// Muestro el div con efecto
+
+
+        
+       
+
+        //Modifico el dom
+        $('#payment_type_list_name').val(new_value); //Tomo el valor de input
+        $('#payment_type_list_name').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
+        $("#new_price_list_money option[value='" + new_currency_id_n + "']").attr("selected", true); // cambio el valor del select
+
+        $("#edit_panel_config_name_price_list").first().fadeIn("slow");// Muestro el div con efecto
+        $("#edit_panel_config_name_price_list").first().fadeIn("slow");// Muestro el div con efecto
         $('#new_paymet_type_list_name_value').focus(); //llevo el foco al input 
 
     } catch (err) {
@@ -456,10 +463,13 @@ async function price_list_show_edit(element) {
 
 // CEAR NUEVA FORMA DE PAGO 
 // CREAR NUEVA LISTA DE PRECIOS
-async function add_price_list(element) {
+async function add_new_price_list(element) {
     try {
-        let new_name = $('#new_price_list_name_value').val(),
-            new_money_id = $('#new_price_list_money_value').val(),
+
+       // $('#new_price_list_name_value').val(new_value); 
+
+            new_name = $('#new_price_list_name').val(),
+            new_money_id = $('#new_price_list_money').val(),
             tasa_value = $('#new_price_list_tasa_value').val(),
             new_price_list_cuote_value = $('#new_price_list_cuote_value').val(),
             new_price_list_cuote_value_n = String(new_price_list_cuote_value),
@@ -467,7 +477,7 @@ async function add_price_list(element) {
             new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
             newDate = new Date(),
             userName = userCtx.userCtx.name;
-
+            console.log('new_name', new_name);
         // Intentar obtener el documento price_list
         let doc;
         try {
@@ -496,7 +506,7 @@ async function add_price_list(element) {
             } while (doc.price_list.some(response => response.id === price_list_id_n));
 
             // Obtener el valor de la moneda desde el select
-            let currency_value = $('#new_price_list_money_value option:selected').text();
+            let currency_value = $('#new_price_list_money option:selected').text();
 
             // Recuperar los datos de los impuestos desde el DOM
             let tax_elements = $('#new_tax_tag_main .catalog_new_tag_item');
@@ -512,7 +522,7 @@ async function add_price_list(element) {
 
             let new_price_list = { 
                 id: price_list_id_n, 
-                name: new_name_n, 
+                value: new_name_n, 
                 currency: { id: new_money_id_n, value: currency_value }, 
                 tax_list: tax_list, // Agregar la lista de impuestos
                 status: status, 

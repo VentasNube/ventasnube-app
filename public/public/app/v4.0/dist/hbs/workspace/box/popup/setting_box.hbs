@@ -585,11 +585,9 @@
                                         </div>
 
                                         <!-- EDIT  PRICE LIST--->
-                                        <div id="edit_panel_config_name_price_list" hidden=""
-                                            class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div id="edit_panel_config_name_price_list" hidden="" class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <form class="" role="">
-                                                <div
-                                                    class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="bg-gray-light padding-10 margin-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <div
                                                         class="padding-0 margin-0  col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                         <label> {{#with ws_lang_data}} {{ws_catalog_settings_edit}}
@@ -602,7 +600,7 @@
                                                                 </span>
                                                             </span>
                                                             <input class="form-control" autocomplete="off" type="text"
-                                                                id="new_price_list_name_value" name="new_list_price"
+                                                                id="new_price_list_name" name="new_list_price"
                                                                 placeholder="Buscar..">
                                                         </div>
                                                     </div>
@@ -612,27 +610,41 @@
                                                             {{ws_catalog_settings_money}} {{/with}} </label>
 
                                                         <div class="input-group">
-                                                            <select id="new_price_list_money_value"
+                                                            <select id="new_price_list_money"
                                                                 class="form-control md">
                                                                 {{#each currency_list }}
                                                                 <option value="{{{id}}}"> {{value}} </option>
                                                                 {{/each}}
                                                             </select>
+
                                                             <span class="input-group-addon">
-                                                                <button type="button"
-                                                                    onclick="catalog_config_save_edit(this)"
-                                                                    class="round padding-0  margin-5 dropdown-toggle dropdown-toggle-split btn btn-primary pull-right ">
-                                                                    <span class="material-icons"> {{#with
-                                                                        ws_lang_data}}
-                                                                        {{ws_catalog_settings_add_icon}} {{/with}}
+                                                                <button id="catalog_config_tax_money_send" type="button" tax_id=""    onclick="add_new_price_list(this)" class="margin-5 btn xl btn-primary pull-right">
+                                                                    <span class="material-icons">
+                                                                        check_circle 
+                                                                    </span>
+                                                                    <span>
+                                                                         Guardar 
                                                                     </span>
                                                                 </button>
                                                             </span>
+
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>
                                             </form>
+
+                                             
+
                                         </div>
+
+
+<div class="text-left margin-t-10 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <button onclick="new_price_list(this)" doc_id="" type="button"
+                                                        class="btn btn-primary">
+                                                        Nueva lista
+                                                    </button>
+                                                </div>
 
                                     </div>
                                     <!--tab-content--->
