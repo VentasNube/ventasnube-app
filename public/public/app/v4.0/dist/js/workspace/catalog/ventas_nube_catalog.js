@@ -2045,6 +2045,7 @@ async function catalog_select_new_model(element, new_model) {
     }
 
 }
+
 // AGREGO
 async function catalog_add_new_model(element) {
     event.preventDefault(element);
@@ -2213,6 +2214,8 @@ async function cat_edit_product(element) {
     }
 
 }
+
+
 /////////////////////////////////
 ///// DELETE PRODUCTO ////////
 
@@ -2261,7 +2264,6 @@ async function catalog_product_delete(element) {
 // CONFIGURACION ( CATALOGO ) 2023 //
 /////////////////////////////////////
 
-
 // ABRE CONFIGURACION
 async function catalog_config(tab_id) {
     try {
@@ -2288,6 +2290,7 @@ async function catalog_config(tab_id) {
         console.log(err);
     }
 }
+
 // LISTAS DE PRECIOS
 // ABRE EDITAR
 async function catalog_config_show_edit(element) {
@@ -2311,6 +2314,7 @@ async function catalog_config_show_edit(element) {
         console.log(err);
     }
 }
+
 // EDITAR
 async function catalog_config_save_edit(element) {
     try {
@@ -2376,6 +2380,7 @@ async function catalog_config_save_edit(element) {
         console.log(err);
     }
 }
+
 // BLOCKEAR LISTA
 async function catalog_config_save_block(element) {
     try {
@@ -2444,6 +2449,7 @@ async function catalog_config_save_block(element) {
         console.log(err);
     }
 }
+
 // MONEDAS BLOCKEA
 async function catalog_config_money_block(element) {
     try {
@@ -2512,6 +2518,7 @@ async function catalog_config_money_block(element) {
         console.log(err);
     }
 }
+
 // EDITAR MONEDAS
 async function catalog_config_show_money_edit(element) {
     try {
@@ -2540,7 +2547,6 @@ async function catalog_config_show_money_edit(element) {
         console.log(err);
     }
 }
-
 
 ///// CONFIG MONEDAS
 // TRAE LOS DATOS
@@ -2708,7 +2714,9 @@ async function catalog_config_tax_new(element) {
         console.log(err);
     }
 }
+
 // NEW AGREGAR NUEVO TAX 
+
 
 // Agregar nuevo impuesto 2024
 async function catalog_config_new_tax(element) {
@@ -2758,6 +2766,7 @@ async function catalog_config_new_tax(element) {
     }
 }
 
+
 // EDITAR 
 async function catalog_config_new_tax_old(element) {
     try {
@@ -2805,6 +2814,7 @@ async function catalog_config_new_tax_old(element) {
     }
 }
 
+
 // ELIMINO
 async function catalog_config_tax_delete(element) {
     try {
@@ -2844,11 +2854,69 @@ async function catalog_config_tax_delete(element) {
     }
 }
 
+
+
+//// NUEVO 2024 CONFIGURACION DE IMPRESION DE FORMULARIOS 
+
+
+// Selecciono el tipo de comprobante a editar completo el formulario para editar uno por uno2024 
+async function setting_box_print_sell(element) {
+    try {
+        // Traigo los valores
+        var edit_panel_config_tax = $('#edit_panel_config_tax');
+        var id = $(element).attr('id');
+        let new_value = $(element).attr('value');
+        let new_name = $(element).attr('name');
+        // Ocultar el botón que fue presionado
+ /*
+        //$(element).attr('hidden=""');
+       
+        // Filtro los resultados
+        var id_n = Number(id);
+        var value_n = Number(new_value);
+        var name_n = Number(new_name);
+
+        // Modifico el DOM
+        var doc = await L_catalog_db.get('box_print_list');
+
+        if (id) {
+            var tax_array = doc.tax.find(response => response.id == id_n); // Traigo el elemento por la id variant
+            var final_id_tax = doc.tax[doc.tax.length - 1]; // Traigo el último id tax
+            alert(final_id_tax);
+        } else {
+            var final_id_tax = 1;
+            var id = 0;
+        }
+
+       
+
+        $('#new_value_tax_edit').val(''); // Limpio el valor del input
+        $('#new_value_tax_edit').attr('tax_id', id); // Grabo el valor en un attr en el input
+        $("#new_name_tax_input").val(new_name); // Cambio el valor del select
+        $("#edit_panel_config_tax").first().fadeIn("slow"); // Muestro el div con efecto
+
+       // new_name_tax_input
+        $('#new_name_tax_input').focus(); // Llevo el foco al input 
+
+
+        $('#catalog_config_tax_money_send').attr('onclick', 'catalog_config_tax_new(this)'); // Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('placeholder', 'Porcentaje'); // Grabo el valor en un attr en el input
+        $('#new_value_tax_edit').attr('type', 'number'); // Grabo el valor en un attr en el input
+        $('#new_name_tax_input').attr('placeholder', 'Nombre'); // Grabo el valor en un attr en el input
+
+        */
+        $(element).hide();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
+
+
 /*** FIN CONFIGURACION DE CATALOGO  ****/
-
-
 /// INICIO FUNCIONES FORMAS DE PAGO 
-
 // Agregar nuevo impuesto 2024
 async function new_payment_type(element) {
     try {
@@ -2869,7 +2937,6 @@ async function new_payment_type(element) {
         console.log(err);
     }
 }
-
 
 
 async function new_price_list(element) {
@@ -2942,6 +3009,7 @@ async function new_price_list(element) {
     }
 
 }
+
 
 // AGREGO
 async function new_price_var(element) {
@@ -3030,10 +3098,10 @@ async function new_price_var(element) {
 
 }
 
-// Actualizo el listado de dentro del menu
-
+//  Actualizo el listado de dentro del menu
 //  2024 UPDATES
-// Imprimo los precios
+
+//  Imprimo los precios
 async function catalog_get_item_price(doc_id, variant_id) {
     try {
         //const doc_id = $(element).attr('doc_id');
@@ -3069,6 +3137,7 @@ async function catalog_get_item_price(doc_id, variant_id) {
         console.log(err);
     }
 }
+
 
 // AGREGO
 async function edit_price_var(element) {
@@ -3149,6 +3218,7 @@ async function edit_price_var(element) {
     }
 
 }
+
 
 // ELIMINO
 async function dell_price_var(element) {
@@ -3284,6 +3354,7 @@ async function stock_status_edit_checkbox(element) {
     }
 }
 
+
 async function stock_status_lote_edit_checkbox(element) {
     try {
         const doc_id = $(element).attr('doc_id');
@@ -3413,6 +3484,7 @@ async function edit_stock_var(element) {
         console.log(err);
     }
 }
+
 async function edit_cost_price(element) {
 
     /// Edit Stok imput
