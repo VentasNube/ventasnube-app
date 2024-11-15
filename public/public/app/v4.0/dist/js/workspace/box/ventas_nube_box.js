@@ -496,7 +496,7 @@ async function add_new_price_list(element) {
 
         let price_list_array = doc.price_list.find(response => response.name == new_name_n);
 
-        console.log('price_list_array', price_list_array);
+        console.log('add_new_price_list', price_list_array);
 
         if (!price_list_array) {
             // Generar un nuevo id aleatorio y único
