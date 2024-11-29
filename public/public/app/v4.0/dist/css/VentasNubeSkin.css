@@ -7444,6 +7444,10 @@ label:focus {
 }
 
 @media (min-width: 768px) {
+
+    .modal-full {
+        width: 95%;
+    }
     .modal-xl {
         width: 1024px;
     }
