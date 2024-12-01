@@ -690,8 +690,10 @@
                                     <div id="new-board-step-1" class=" margin-20 ">
                                         <div class="form-group   col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <label>
-                                                <strong>Editar Comprobantes</strong>
+                                                <strong>Editar cabeceras de comprobantes</strong>
                                             </label>
+                                            <!--
+                                    
                                             <button type="button" class="dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="true">
                                                 <span bg-color="" id="tp-select-color" class="btn btn-default">
@@ -703,7 +705,6 @@
                                                 </span>
                                             </button>
                                             <ul class="dropdown-menu open-right  m">
-                                                <!--ul class="dropdown-menu m pull-right"></ul-->
                                                 <li class="header">
                                                     <span class="material-icons">account_balance_wallet </span> Comprobantes
                                                     <span class="material-icons">arrow_right</span>
@@ -779,6 +780,8 @@
                                                 </div>
                                             </ul>
 
+
+-->
                                         </div>
 
                                         <div class=" col-xs-12">
@@ -828,33 +831,47 @@
 
                                             </h4>
                                         </div>
-                                         <div class=" col-xs-12">
-                                            
-                                        <div class="form-group   col-lg-6  col-md-6 col-sm-6 col-xs-6"></div>
-                                            <input type="text" class="form-control" id="" name="" placeholder="Nombre">
-                                        </div>
-                                        <div class="form-group   col-lg-6  col-md-6 col-sm-6 col-xs-6">
-                                            <input type="text" class="form-control" id="" name="" placeholder="Nombre">
-                                        </div>
+                                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                         </div>
+                                            <div class="form-group  col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Nombre">
+                                            </div>
 
+                                            <div class="form-group  col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Telefono">
+                                            </div>
+
+                                            <div class="form-group  col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Direccion">
+                                            </div>
+
+                                            <div class="form-group  col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                                                <input type="text" class="form-control" id="" name=""
+                                                    placeholder="Sitio Web">
+                                            </div>
+
+
+                                        </div>
+                                        <button type="submit" class="margin-20 btn btn-primary pull-right">Guardar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
+
                 </div>
-
-
             </div>
         </div>
+        {{#with ws_lang_data}}
+        <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
+        </div>
+        {{/with}}
     </div>
-    {{#with ws_lang_data}}
-    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
-    </div>
-    {{/with}}
-</div>
 </div>
 <link href="/public/app/v4.0/plugins/iCheck/square/blue.css" rel="stylesheet">
 <script src="/public/app/v4.0/plugins/iCheck/icheck.min.js"></script>
