@@ -674,10 +674,12 @@ async function setting_box() {
         //      const colaboration_list = await  L_board_db.get('colaborator_list');
         /// NEW 2024
         var payment_type_list = await L_box_db.get('payment_type_list');
-        
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
         var tax_list = await L_catalog_db.get('tax_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+        var box_config_print_url = 'ws_' + ws_id + '_box_config_print';
+        var box_config_print = await L_catalog_db.get(box_config_print_url);
 
         var box_config = {
             ws_info: ws_info,
@@ -687,12 +689,13 @@ async function setting_box() {
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
             payment_type_list: payment_type_list.payment_type_list,
+            box_config_print:box_config_print,
         }
 
         console.log('price_list', price_list);
-       // console.log('currency_list', currency_list);
-      //  console.log('tax_list', tax_list);
-       // console.log('box_config', box_config);
+        // console.log('currency_list', currency_list);
+        //  console.log('tax_list', tax_list);
+       console.log('NEWWW box_config', box_config);
         /* var data = {
              //board_type_name: board_type_name,
           //   ws_info: ws_info,
