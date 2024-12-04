@@ -1,16 +1,16 @@
-
 <!-- CATALOG VIEW PRODUCT TEMPLATE -->
 <div class="righ_nav_header">
-            <button type="button" class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
-                <span class="material-icons">
-                    arrow_back
-                </span>
-            </button>
-  <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_workspace}}{{/with}} </h3>
+    <button type="button"
+        class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
+        <span class="material-icons">
+            arrow_back
+        </span>
+    </button>
+    <h3 class=" margin-0 padding-t-20"> {{#with ws_lang_data}}{{m_config_workspace}}{{/with}} </h3>
 </div>
 <div class="righ_nav_content">
     <div class="righ_nav_content_scroll">
-   <div class="tabs-main margin-t-10 default padding-0">
+        <div class="tabs-main margin-t-10 default padding-0">
             <ul class="nav nav-tabs">
                 <li class="ripple  active">
                     <a data-toggle="tab" href="#ws_general_setting">
@@ -46,6 +46,42 @@
                         <!--IDIOMA--->
                         </br>
                         {{#with ws_lang_data}}
+                         <div class="form-group  col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <button bg-color="" id="bg-select-color" type="button" class="btn btn-primary line"
+                                data-toggle="dropdown" aria-expanded="true">
+                                <span id="bg-select-color" class="material-icons">
+                                    palette
+                                </span>
+                                <span id="bg-select-text"> Cambiar paleta de colores</span>
+                                <div class="ripple-container"></div>
+                            </button>
+
+                            <ul class="dropdown-menu mini " x-placement="bottom-start" style="">
+                                <li ws_color="bg-primary" bg-color="btn-primary"
+                                    class="bg-color btn-status btn btn-primary "> <span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-secondary" bg-color="btn-secondary"
+                                    class="bg-color btn-status btn btn-secondary"> <span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-dark" bg-color="btn-dark" class="bg-color btn-status btn btn-dark">
+                                    <span class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-success" bg-color="btn-success"
+                                    class="bg-color btn-status btn btn-success "><span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-danger" bg-color="btn-danger"
+                                    class="bg-color btn-status btn btn-danger"> <span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-warning" bg-color="btn-warning"
+                                    class="bg-color btn-status btn btn-warning "> <span
+                                        class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-white" bg-color="btn-white" class="bg-color btn-status btn btn-white">
+                                    <span class="material-icons">panorama_fish_eye</span></li>
+                                <li ws_color="bg-info" bg-color="btn-info" class="bg-color btn-status btn btn-info">
+                                    <span class="material-icons">panorama_fish_eye</span></li>
+                            </ul>
+
+                        </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <label> {{{ws_panel_settings_lang_label}}} </label>
                             <div class="input-group">
@@ -71,8 +107,17 @@
                                 </select>
                             </div>
                         </div>
+
+
+
                         {{/with}}
+
+
                         </br>
+
+                       
+
+
                     </div>
                 </div>
                 <div id="ws_users_setting" class="tab-pane fade in">
@@ -97,8 +142,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div id="" class="s-card-activ-cont gray">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label>{{#with ws_lang_data}} {{{ws_panel_settings_compact_btn}}}{{/with}} </label>
@@ -126,6 +169,5 @@
             <!--tabs-main--->
         </div>
 
-   </div>
+    </div>
 </div>
-

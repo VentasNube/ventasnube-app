@@ -2420,7 +2420,21 @@ class Workspace extends BaseController
                     ];
 
 
-                      $category_list = [
+                    
+                    // Documento de configuración de impresión de caja
+                    $ws_box_config_print = [
+                        '_id' => 'ws_' . $workspace_id_hex . '_box_config_print',
+                        'nombre' => 'ME VOY ahora',
+                        'telefono' => '011-54777098',
+                        'direccion' => 'LOMAS 18',
+                        'sitio_web' => 'SIVERNET',
+                        'createDate' => date('c'),
+                        'updateDate' => date('c'),
+                        'updateUser' => $user_email
+                    ];
+    
+
+                    $category_list = [
                         '_id'=> 'category_list',
                         'type'=> 'category_list',
                         'status'=> 'active',
@@ -2457,7 +2471,8 @@ class Workspace extends BaseController
 
                           ];                    
                    
-                $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
+                    
+                    $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
 
                      if ($result) {
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
@@ -2467,6 +2482,8 @@ class Workspace extends BaseController
 
                         $this->WorkspaceModel->curl_put($db_name . '/payment_type_list', $payment_type_list);
                         $this->WorkspaceModel->curl_put($db_name . '/operation_type_list', $operation_type_list); 
+                        $this->WorkspaceModel->curl_put($db_name . '/box_config_print',  $ws_box_config_print); 
+                       
                     //    $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); 
                     }
                     

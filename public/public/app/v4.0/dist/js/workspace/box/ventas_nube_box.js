@@ -440,12 +440,6 @@ async function new_price_list(element) {
         const price_id_n = Number(price_id);
         var new_value_n = Number(new_value);
         var new_currency_id_n = Number(new_currency_id);
-
-
-
-        
-       
-
         //Modifico el dom
         $('#payment_type_list_name').val(new_value); //Tomo el valor de input
         $('#payment_type_list_name').attr('price_id', price_id_n); //Grabo el valor en un attr en el input
@@ -661,25 +655,25 @@ async function box_welcome() {
 }
 
 // Welcome BOX configuracion inicial del box
-async function setting_box() {
+async function setting_boxOLD() {
     try {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
         console.log(ws_lang_data, 'ws_lang_data');
-        // Intentar obtener el documento de filtros de la base de datos local
+
+        //      Intentar obtener el documento de filtros de la base de datos local
         //      const filters = await box_local_db.get('filtros');
         //      const category_list = await  L_box_db.get('category_list');
-        //       const payment_type_list = await  L_box_db.get('payment_type_list');
+        //      const payment_type_list = await  L_box_db.get('payment_type_list');
         //      const operation_type_list = await  L_box_db.get('operation_type_list');
         //      const colaboration_list = await  L_board_db.get('colaborator_list');
-        /// NEW 2024
+        ///     NEW 2024
+
         var payment_type_list = await L_box_db.get('payment_type_list');
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
         var tax_list = await L_catalog_db.get('tax_list');
-        var currency_list = await L_catalog_db.get('currency_list');
-        var box_config_print_url = 'ws_' + ws_id + '_box_config_print';
-        var box_config_print = await L_catalog_db.get(box_config_print_url);
+        var box_config_print = await L_catalog_db.get('box_config_print');
 
         var box_config = {
             ws_info: ws_info,
@@ -694,15 +688,8 @@ async function setting_box() {
 
         console.log('price_list', price_list);
         // console.log('currency_list', currency_list);
-        //  console.log('tax_list', tax_list);
-       console.log('NEWWW box_config', box_config);
-        /* var data = {
-             //board_type_name: board_type_name,
-          //   ws_info: ws_info,
-          ws_lang_data: ws_lang_data,
-            // ws_lang_data: ws_lang_data,
-            // user_roles: user_Ctx.userCtx.roles
-         }*/
+        // console.log('tax_list', tax_list);
+        console.log('NEWWW box_config', box_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
     } catch (err) {
 
@@ -720,7 +707,163 @@ async function setting_box() {
     }
 }
 
+// Welcome BOX configuracion inicial del box
+async function setting_box() {
+    try {
+        const modal = document.getElementById('master_popup');
+        $(modal).modal('show');
 
+        const box_config_print_id = 'ws_' + ws_id + '_box_config_print';
+
+        let payment_type_list, price_list, currency_list, tax_list, box_config_print;
+        let payment_type_list_exists = false, price_list_exists = false, currency_list_exists = false, tax_list_exists = false, box_config_print_exists = false;
+
+        // Obtener payment_type_list
+        try {
+            payment_type_list = await L_box_db.get('payment_type_list');
+            payment_type_list_exists = true;
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento payment_type_list no existe.');
+                payment_type_list = { payment_type_list: [] };
+            } else {
+                throw error;
+            }
+        }
+
+        // Obtener price_list
+        try {
+            price_list = await L_catalog_db.get('price_list');
+            price_list_exists = true;
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento price_list no existe.');
+                price_list = { price_list: [] };
+            } else {
+                throw error;
+            }
+        }
+
+        // Obtener currency_list
+        try {
+            currency_list = await L_catalog_db.get('currency_list');
+            currency_list_exists = true;
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento currency_list no existe.');
+                currency_list = { currency_list: [] };
+            } else {
+                throw error;
+            }
+        }
+
+        // Obtener tax_list
+        try {
+            tax_list = await L_catalog_db.get('tax_list');
+            tax_list_exists = true;
+            console.log('El documento tax_list existe.',tax_list,tax_list_exists);
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento tax_list no existe.');
+                tax_list = { tax_list: [] };
+            } else {
+                throw error;
+            }
+        }
+
+        // Obtener box_config_print
+        try {
+            box_config_print = await L_catalog_db.get(box_config_print_id);
+            box_config_print_exists = true;
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento box_config_print no existe.');
+                box_config_print = {
+                    nombre: '',
+                    telefono: '',
+                    direccion: '',
+                    sitio_web: ''
+                };
+            } else {
+                throw error;
+            }
+        }
+
+        var box_config = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            tax_list: tax_list.tax,
+            payment_type_list: payment_type_list.payment_type_list,
+            box_config_print: box_config_print,
+
+            payment_type_list_exists: payment_type_list_exists,
+            price_list_exists: price_list_exists,
+            currency_list_exists: currency_list_exists,
+            tax_list_exists: tax_list_exists,
+            box_config_print_exists: box_config_print_exists
+        };
+
+        // Renderizar la plantilla
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
+
+    } catch (err) {
+        console.error('ERROR EN BOX WELCOME', err);
+        Snackbar.show({
+            text: err.message || err,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
+
+
+// Verificar si los documentos existen
+async function check_document(documents_check_array) {
+    try {
+        // Crear un objeto para almacenar el estado de los documentos
+        let documents_status = {};
+        const db = L_catalog_db; // Asumiendo que estás usando esta instancia de PouchDB
+
+        // Recorrer el arreglo de nombres de documentos
+        for (let docName of documents_check_array) {
+            try {
+                // Intentar obtener el documento
+                let doc = await db.get(docName);
+                // Si se obtiene, el documento existe
+                documents_status[docName] = true;
+            } catch (error) {
+                if (error.status === 404) {
+                    // Si el error es 404, el documento no existe
+                    documents_status[docName] = false;
+                } else {
+                    // Otros errores
+                    throw error;
+                }
+            }
+        }
+
+        // Mostrar el estado de los documentos
+        console.log('Estado de los documentos:', documents_status);
+
+        // Puedes retornar este objeto si lo necesitas
+        return documents_status;
+
+    } catch (err) {
+        Snackbar.show({
+            text: err.message || err,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+    }
+}
 
 // Welcome BOX configuracion inicial del box
 async function box_facturar_mov(element) {
