@@ -1033,14 +1033,16 @@ async function updateOrCreateDocument(params) {
 }
 
 // ARMO Y Traigo el box filtrado
-async function get_box(pageNumber = 1, limit = 10) {
+async function get_box_ORIGINAL(pageNumber = 1, limit = 10) {
     try {
 
-        box_welcome();
+      //  box_welcome();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
         let username = 'smartmobile.com.ar@gmail.com';  // Puedes cambiarlo según el usuario actual
+
+        console.log('filters 1', filters);
 
         let startDate = filters.startDate;
         let endDate = filters.endDate;
@@ -1084,8 +1086,12 @@ async function get_box(pageNumber = 1, limit = 10) {
         let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
             startkey: startKey,
             endkey: endKey,
-            inclusive_end: true
+            inclusive_end: true,
         });
+
+
+        console.log('box_mov_get/by_user_date_and_client 2', countResponse);
+
 
         // Total de documentos filtrados
         const totalFilterItems = countResponse.rows.length;
@@ -1098,6 +1104,11 @@ async function get_box(pageNumber = 1, limit = 10) {
             skip: skip,
             include_docs: true
         });
+
+
+        console.log('box_mov_get/by_user_date_and_client 3', response);
+
+        console.log('box_mov_get/by_user_date_and_client rows', response.rows);
 
         // MAPEO LOS ITEMS A IMPRIMIR
         const all_items_array = response.rows.map(({ doc }) => ({
@@ -1146,6 +1157,8 @@ async function get_box(pageNumber = 1, limit = 10) {
             limit: limit
         };
 
+        console.log('mov_content 4', mov_content);
+
         // Renderizar el contenido
         await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
         await get_nav_box();
@@ -1162,12 +1175,195 @@ async function get_box(pageNumber = 1, limit = 10) {
         console.log('ERROR EN BOX SETTING', err);
         if (err.msj == 'missing' || err.msj == 'deleted' || err.msj == 'not_found') {
 
-
-            box_welcome();
             new_payment_type_list_doc();
         }
         Snackbar.show({
             text: err.msj,
+            actionText: 'Ok',
+            actionTextColor: '#0575e6',
+            pos: 'bottom-left',
+            duration: 50000
+        });
+
+        // console.error('Error al obtener los datos de la caja:', error);
+    }
+}
+
+// ARMO Y Traigo el box filtrado
+async function get_box(pageNumber = 1, limit = 10) {
+    try {
+        // box_welcome();
+
+        // Intentar obtener el documento de filtros
+        let filters;
+        try {
+            filters = await box_local_db.get('filtros');
+        } catch (error) {
+            if (error.status === 404) {
+                console.log('El documento filtros no existe. Creando filtros por defecto.');
+                // Crear filtros por defecto
+                filters = {
+                    _id: 'filtros',
+                    startDate: null,
+                    endDate: null,
+                    limit: 10,
+                    clients: [],
+                    categories: [],
+                    paymentTypes: []
+                };
+                // Guardar el documento de filtros por defecto en la base de datos
+                await box_local_db.put(filters);
+            } else {
+                throw error;
+            }
+        }
+
+        let username = 'smartmobile.com.ar@gmail.com';  // Puedes cambiarlo según el usuario actual
+
+        let startDate = filters.startDate;
+        let endDate = filters.endDate;
+        limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
+        var skip = (pageNumber - 1) * limit;
+
+        // Definir listas de filtros
+        let clientList = filters.clients || [];
+        let categoryList = filters.categories || [];
+        let paymentTypeList = filters.paymentTypes || [];
+
+        let startKey = ["box_mov", username];
+        let endKey = ["box_mov", username, {}];
+
+        // Agregar las fechas a las claves de inicio y fin si están definidas
+        if (startDate) {
+            startKey.push(startDate);
+        } else {
+            startKey.push(null);
+        }
+
+        if (endDate) {
+            endKey.push(endDate + "\ufff0");
+        } else {
+            endKey.push({});
+        }
+
+        // Agregar los filtros adicionales a las claves de inicio y fin
+        if (clientList.length > 0) {
+            startKey.push(clientList[0]);
+            endKey.push(clientList[clientList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+
+        if (categoryList.length > 0) {
+            startKey.push(categoryList[0]);
+            endKey.push(categoryList[categoryList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+
+        if (paymentTypeList.length > 0) {
+            startKey.push(paymentTypeList[0]);
+            endKey.push(paymentTypeList[paymentTypeList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+
+        console.log('startKey:', JSON.stringify(startKey));
+        console.log('endKey:', JSON.stringify(endKey));
+
+        // Realizar una consulta para contar todos los documentos filtrados
+        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+            startkey: startKey,
+            endkey: endKey,
+            inclusive_end: true
+        });
+
+        console.log('countResponse:', countResponse);
+
+        // Total de documentos filtrados
+        const totalFilterItems = countResponse.rows.length;
+
+        // Realizar la consulta paginada
+        let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+            startkey: startKey,
+            endkey: endKey,
+            limit: limit,
+            skip: skip,
+            include_docs: true
+        });
+
+        console.log('response:', response);
+
+        // MAPEO LOS ITEMS A IMPRIMIR
+        const all_items_array = response.rows.map(({ doc }) => ({
+            _id: doc._id,
+            _rev: doc._rev,
+            type: doc.type,
+            order_id: doc.order_id,
+            mov_id: doc.mov_id,
+            user_name: doc.user_name,
+            entry_date: doc.entry_date,
+            client_id: doc.client_id,
+            client: doc.client,
+            total_service: doc.total_service,
+            total_products: doc.total_products,
+            total_tax: doc.total_tax,
+            total_discount: doc.total_discount,
+            total: doc.total,
+            first_name: doc.client.first_name,
+            last_name: doc.client.last_name,
+            category: doc.category,
+            payment_type: doc.payment_type,
+            payment_type_id: doc.payment_type_id,
+            payment_status: doc.payment_status,
+            order_status: doc.order_status,
+            status: doc.status,
+        }));
+
+        console.log('all_items_array:', all_items_array);
+
+        // Calcular el número total de páginas
+        const totalPages = Math.ceil(totalFilterItems / limit);
+        const pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push({
+                pageNumber: i,
+                active: i === pageNumber
+            });
+        }
+
+        let nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
+        let lastPage = totalPages;
+
+        const mov_content = {
+            pages: pages,
+            nextPage: nextPage,
+            lastPage: lastPage,
+            totalItems: totalFilterItems,
+            limit: limit
+        };
+
+        // Renderizar el contenido
+        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
+        await get_nav_box();
+        await print_mov_item(all_items_array);
+
+        console.log('client_id:', clientList);
+        console.log('startKey:', startKey, 'endKey:', endKey);
+        console.log('RESULTADO DE CONSULTA:', all_items_array);
+        console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems:', totalFilterItems);
+
+    } catch (error) {
+        console.log('ERROR EN BOX SETTING', error);
+        if (error.msj == 'missing' || error.msj == 'deleted' || error.msj == 'not_found') {
+            box_welcome();
+            new_payment_type_list_doc();
+        }
+        Snackbar.show({
+            text: error.msj || error.message,
             actionText: 'Ok',
             actionTextColor: '#0575e6',
             pos: 'bottom-left',
