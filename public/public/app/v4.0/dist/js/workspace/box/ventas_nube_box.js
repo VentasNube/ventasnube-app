@@ -453,8 +453,6 @@ async function new_price_list(element) {
         console.log(err);
     }
 }
-
-
 // CEAR NUEVA FORMA DE PAGO 
 // CREAR NUEVA LISTA DE PRECIOS
 async function add_new_price_list(element) {
@@ -540,8 +538,6 @@ async function add_new_price_list(element) {
         console.log(err);
     }
 }
-
-
 // ELIMINO LISTA DE PRECIOS
 async function dell_price_list(element) {
     event.preventDefault(element);
@@ -602,7 +598,6 @@ async function dell_price_list(element) {
         console.log(err);
     }
 }
-
 // Welcome BOX configuracion inicial del box
 async function box_welcome() {
     try {
@@ -653,7 +648,6 @@ async function box_welcome() {
         });
     }
 }
-
 // Welcome BOX configuracion inicial del box
 async function setting_boxOLD() {
     try {
@@ -706,7 +700,6 @@ async function setting_boxOLD() {
         });
     }
 }
-
 // Welcome BOX configuracion inicial del box
 async function setting_box() {
     try {
@@ -821,8 +814,6 @@ async function setting_box() {
         });
     }
 }
-
-
 // Verificar si los documentos existen
 async function check_document(documents_check_array) {
     try {
@@ -864,7 +855,6 @@ async function check_document(documents_check_array) {
         });
     }
 }
-
 // Welcome BOX configuracion inicial del box
 async function box_facturar_mov(element) {
     try {
@@ -925,9 +915,9 @@ async function check_filters() {
         }
     }
 }
+
 //CHEKETO O CREO LOS FILTROS POR DEFECTO DE LA SESION
 check_filters();
-
 // TRAIGO LA BARRA
 async function get_nav_box() {
     try {
@@ -962,7 +952,6 @@ async function get_nav_box() {
         }
     }
 }
-
 // IMPRIMO MOV
 async function print_mov_item(all_items_array) {
     // let total_items = all_items_array.length;
@@ -1555,7 +1544,6 @@ async function box_search_cat(e, element) {
     }
 
 }
-
 ///  LISTADO EN FORM NUEVO PRODUCTO
 async function box_search_new_prod_cat(e, element) {
     //traigo el resultado mas parecido con find
@@ -1605,7 +1593,6 @@ async function box_search_new_prod_cat(e, element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/list/box_new_item_cat_list.hbs', select_div_id, cat_list_search);
     }
 }
-
 // ELIMINO
 async function box_dell_cat(element) {
     event.preventDefault(element);
