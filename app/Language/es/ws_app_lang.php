@@ -392,6 +392,9 @@ return [
          'm_box_tittle' => 'Movimientos finacieros',
          'm_box_tittle_icon' => 'app_settings_alt',
          'm_box_tittle_buy' => '',
+         'm_box_tittle_new_mov' => 'Agregar movimiento',
+         'm_box_tittle_new_mov_title' => '',
+         'm_box_phone' => 'Telefono',
          'm_box_edit_b' => 'Modificar datos',
          'm_box_save_b' => 'Guardar cambios',
          'm_box_edit_pic_b' => 'Modificar datos',
@@ -399,6 +402,7 @@ return [
          'm_box_surname' => 'Apellido',
          'm_box_document' => 'Documento',
          'm_box_phone' => 'Telefono',
+
 
          'ws_box_settings_title' => ' Bienvenido a movimientos, informes y facturación.',
          'ws_box_settings_title_sub' => 'En esta sección vas a encontrar toda la información que necesitás <br> para llevar el control de los movimientos de tu dinero.',

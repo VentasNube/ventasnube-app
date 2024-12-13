@@ -122,7 +122,7 @@ async function payment_type_list_save_edit(element) {
             price.value = new_name_n; //Edito el valor del value por el valor nuevo
 
             price.tasa_value = tasa_value; //Edito el valor del value por el valor nuevo
-            
+
             price.id = price_id_n;//Edito el valor del value por el valor nuevo
             price.currency_id = new_money_id;//Edito el valor del value por el valor nuevo
             price.status = 'active';//Edito el valor del value por el valor nuevo
@@ -209,19 +209,19 @@ async function payment_type_list_new(element) {
             // Obtener el valor de la moneda desde el select
             let currency_value = $('#payment_type_list_money_value option:selected').text();
 
-            
+
 
             // Recuperar los datos de los impuestos desde el DOM
             let tax_elements = $('#new_tax_tag_main .catalog_new_tag_item');
             let tax_list = [];
-            tax_elements.each(function() {
+            tax_elements.each(function () {
                 let tax_id = $(this).attr('val_text');
                 let tax_value = $(this).find('.chips_text').text(); // Solo guardar el texto del chip
                 tax_list.push({ id: tax_id, value: tax_value });
             });
 
 
-            
+
 
             // Datos adicionales
             let icon = 'credit_card'; // Puedes cambiar esto según sea necesario
@@ -229,14 +229,14 @@ async function payment_type_list_new(element) {
             let tasa_int = tasa_value; // Puedes cambiar esto según sea necesario
             let status = true; // Puedes cambiar esto según sea necesario
 
-            let new_payment_type = { 
-                id: payment_type_id_n, 
-                name: new_name_n, 
-                currency: { id: new_money_id_n, value: currency_value }, 
+            let new_payment_type = {
+                id: payment_type_id_n,
+                name: new_name_n,
+                currency: { id: new_money_id_n, value: currency_value },
                 tax_list: tax_list, // Agregar la lista de impuestos
-                status: status, 
-                delete: false, 
-                updateDate: newDate, 
+                status: status,
+                delete: false,
+                updateDate: newDate,
                 updateUser: userName,
                 icon: icon,
                 pay_quantity: pay_quantity,
@@ -458,9 +458,9 @@ async function new_price_list(element) {
 async function add_new_price_list(element) {
     try {
 
-       // $('#new_price_list_name_value').val(new_value); 
+        // $('#new_price_list_name_value').val(new_value); 
 
-            new_name = $('#new_price_list_name').val(),
+        new_name = $('#new_price_list_name').val(),
             new_money_id = $('#new_price_list_money').val(),
             tasa_value = $('#new_price_list_tasa_value').val(),
             new_price_list_cuote_value = $('#new_price_list_cuote_value').val(),
@@ -469,7 +469,7 @@ async function add_new_price_list(element) {
             new_money_id_n = String(new_money_id), // Asegurarse de que el id de la moneda sea una cadena
             newDate = new Date(),
             userName = userCtx.userCtx.name;
-            console.log('new_name', new_name);
+        console.log('new_name', new_name);
         // Intentar obtener el documento price_list
         let doc;
         try {
@@ -503,7 +503,7 @@ async function add_new_price_list(element) {
             // Recuperar los datos de los impuestos desde el DOM
             let tax_elements = $('#new_tax_tag_main .catalog_new_tag_item');
             let tax_list = [];
-            tax_elements.each(function() {
+            tax_elements.each(function () {
                 let tax_id = $(this).attr('val_text');
                 let tax_value = $(this).find('.chips_text').text(); // Solo guardar el texto del chip
                 tax_list.push({ id: tax_id, value: tax_value });
@@ -512,14 +512,14 @@ async function add_new_price_list(element) {
             // Datos adicionales
             let status = true; // Puedes cambiar esto según sea necesario
 
-            let new_price_list = { 
-                id: price_list_id_n, 
-                value: new_name_n, 
-                currency: { id: new_money_id_n, value: currency_value }, 
+            let new_price_list = {
+                id: price_list_id_n,
+                value: new_name_n,
+                currency: { id: new_money_id_n, value: currency_value },
                 tax_list: tax_list, // Agregar la lista de impuestos
-                status: status, 
-                delete: false, 
-                updateDate: newDate, 
+                status: status,
+                delete: false,
+                updateDate: newDate,
                 updateUser: userName,
                 tasa_int: tasa_value,
                 cuote_value: new_price_list_cuote_value_n
@@ -677,7 +677,7 @@ async function setting_boxOLD() {
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
             payment_type_list: payment_type_list.payment_type_list,
-            box_config_print:box_config_print,
+            box_config_print: box_config_print,
         }
 
         console.log('price_list', price_list);
@@ -754,7 +754,7 @@ async function setting_box() {
         try {
             tax_list = await L_catalog_db.get('tax_list');
             tax_list_exists = true;
-            console.log('El documento tax_list existe.',tax_list,tax_list_exists);
+            console.log('El documento tax_list existe.', tax_list, tax_list_exists);
         } catch (error) {
             if (error.status === 404) {
                 console.error('El documento tax_list no existe.');
@@ -926,7 +926,7 @@ async function get_nav_box() {
         const category_list = await L_box_db.get('category_list');
         const payment_type_list = await L_box_db.get('payment_type_list');
         //  const operation_type_list = await  L_box_db.get('operation_type_list');
-       // const colaboration_list = await L_board_db.get('colaborator_list');
+        // const colaboration_list = await L_board_db.get('colaborator_list');
 
         // Si se encuentra el documento, devolver los filtros
         // Preparar los datos para la plantilla
@@ -935,7 +935,7 @@ async function get_nav_box() {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-        //    colaborator_list: colaboration_list,
+            //    colaborator_list: colaboration_list,
             category_list: category_list,
             payment_type_list: payment_type_list,
             // operation_type_list:operation_type_list,
@@ -1025,7 +1025,7 @@ async function updateOrCreateDocument(params) {
 async function get_box_ORIGINAL(pageNumber = 1, limit = 10) {
     try {
 
-      //  box_welcome();
+        //  box_welcome();
         // Obtener el documento de filtros
         const filters = await box_local_db.get('filtros');
         // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
@@ -1334,12 +1334,12 @@ async function get_box(pageNumber = 1, limit = 10) {
             totalItems: totalFilterItems,
             limit: limit
         };
-        
-      //  const filters = await box_local_db.get('filtros');
+
+        //  const filters = await box_local_db.get('filtros');
         //const category_list = await L_box_db.get('category_list');
         const payment_type_list = await L_box_db.get('payment_type_list');
         //  const operation_type_list = await  L_box_db.get('operation_type_list');
-       // const colaboration_list = await L_board_db.get('colaborator_list');
+        // const colaboration_list = await L_board_db.get('colaborator_list');
 
         // Si se encuentra el documento, devolver los filtros
         // Preparar los datos para la plantilla
@@ -1349,7 +1349,7 @@ async function get_box(pageNumber = 1, limit = 10) {
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             // colaborator_list: colaboration_list,
-          //  category_list: category_list,
+            //  category_list: category_list,
             payment_type_list: payment_type_list,
             // operation_type_list:operation_type_list,
             // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
@@ -1359,7 +1359,7 @@ async function get_box(pageNumber = 1, limit = 10) {
         // Renderizar el contenido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
         await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
-     //   await get_nav_box();
+        //   await get_nav_box();
         await print_mov_item(all_items_array);
 
         console.log('client_id:', clientList);
@@ -1956,15 +1956,30 @@ async function mov_edit_put(formData, doc_id) {
 async function add_new_mov(element) {
     try {
         const modal = document.getElementById('master_popup');
+
+        const box_config_print_id = 'ws_' + ws_id + '_box_config_print';
         // Listas de precio ws_collections_333433/
         ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+        tax_list = await L_catalog_db.get('tax_list');
+        payment_type_list = await L_box_db.get('payment_type_list');
+        price_list = await L_catalog_db.get('price_list');
+        currency_list = await L_catalog_db.get('currency_list');
+        box_config_print = await L_catalog_db.get(box_config_print_id);
+
+
         const data = {
             ws_price_list: ws_price_list,
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
+            payment_type_list:payment_type_list.payment_type_list,
+            tax_list: tax_list.tax_list,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            box_config_print: box_config_print,
         }
-        // console.log(ws_price_list);
+
+       console.log('data POPUP ',data);
         $(modal).modal('show');
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/new_mov.hbs', '#master_popup', data);
         // save_new_conctact();

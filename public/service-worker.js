@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 1122521223331221222218122222212211221121245111221222112122227422;
+const version = 11225862222112122227422;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -191,7 +191,7 @@ workbox.precaching.precacheAndRoute([
    { url: '/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/box.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/card_mov.hbs', revision: version },
-
+   { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/new_mov.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/list_mov.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/welcome_box.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', revision: version },

@@ -4372,6 +4372,10 @@ option {
     padding: 10px 0;
 }
 
+.form-group .dropdown-toggle.xl {
+    padding: 10px!important;
+}
+
 .form-control .fileinput-filename {
     vertical-align: bottom;
     padding: 0px;
