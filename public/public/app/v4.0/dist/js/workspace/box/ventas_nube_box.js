@@ -1956,17 +1956,13 @@ async function mov_edit_put(formData, doc_id) {
 async function add_new_mov(element) {
     try {
         const modal = document.getElementById('master_popup');
-
-        const box_config_print_id = 'ws_' + ws_id + '_box_config_print';
         // Listas de precio ws_collections_333433/
         ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
         tax_list = await L_catalog_db.get('tax_list');
         payment_type_list = await L_box_db.get('payment_type_list');
         price_list = await L_catalog_db.get('price_list');
         currency_list = await L_catalog_db.get('currency_list');
-        box_config_print = await L_catalog_db.get(box_config_print_id);
-
-
+     //   box_config_print = await L_catalog_db.get(box_config_print_id);
         const data = {
             ws_price_list: ws_price_list,
             ws_info: ws_info,
@@ -1976,7 +1972,7 @@ async function add_new_mov(element) {
             tax_list: tax_list.tax_list,
             price_list: price_list.price_list,
             currency_list: currency_list.currency_list,
-            box_config_print: box_config_print,
+        //    box_config_print: box_config_print,
         }
 
        console.log('data POPUP ',data);

@@ -476,7 +476,16 @@
         {{#with ws_lang_data }}
         <div class="nav-link col-xs-3 col-sm-4 col-md-4 col-lg-3 pull-right text-right">
 
-            <div class="btn-group ">
+
+
+            
+             <button type="button" onclick="add_new_mov(this)"  class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown"
+                    aria-expanded="true">
+                    <span class="material-icons">add_circle_outline</span> <span
+                        class="hidden-xs hidden-sm">{{b_new}}</span>
+                </button>
+
+            <!-- div class="btn-group ">
                 <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown"
                     aria-expanded="true">
                     <span class="material-icons">add_circle_outline</span> <span
@@ -498,7 +507,7 @@
                             title="{{address_title}}"><i class="material-icons">add</i>Cierre de CAJA</a>
                     </li>
                 </ul>
-            </div>
+            </div --->
 
             <div class="btn-group ">
                 <button type="button" class="btn btn-round xl dropdown-toggle" data-toggle="dropdown"
