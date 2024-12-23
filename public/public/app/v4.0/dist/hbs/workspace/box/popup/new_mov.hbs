@@ -19,42 +19,41 @@
                     <div id="">
                         <div class="form-group text-center col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="btn-group">
-                                <button type="button" id="movimiento-btn"
+                                <button type="button" id="type-mov-btn"
                                     class="btn xl btn-more btn-primary line dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
-                                    <span id="movimiento-icon" class="material-icons">add_circle_outline</span>
-                                    <span id="movimiento-text" class="hidden-xs hidden-sm">Tipo de movimiento</span>
+                                    <span id="type-mov-btn-icon" class="material-icons">add_circle_outline</span>
+                                    <span id="type-mov-btn-text" class="hidden-xs hidden-sm">Tipo de movimiento</span>
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li role="separator" class="divider"></li>
-                                    <li><a onclick="add_new_mov_select_type(this)" href="#" data-icon="money_off"
-                                            data-text="Gasto"><i class="material-icons">money_off</i>Gasto</a></li>
-                                    <li><a onclick="add_new_mov_select_type(this)" href="#" data-icon="attach_money"
-                                            data-text="Ingreso"><i class="material-icons">attach_money</i>Ingreso</a>
+                                    <li>
+                                        <a onclick="add_new_mov_select_type(this)" href="#" data-value="mov_out" data-icon="money_off" data-text="Gasto">
+                                        <i class="material-icons">money_off</i> Gasto</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="add_new_mov_select_type(this)" href="#" data-value="mov_in" data-icon="attach_money"
+                                            data-text="Ingreso"><i class="material-icons">attach_money</i> Ingreso</a>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a onclick="add_new_mov_select_type(this)" href="#" data-icon="money"
-                                            data-text="Retiro efectivo"><i class="material-icons">money</i>Retiro
-                                            efectivo</a></li>
-                                    <li><a onclick="add_new_mov_select_type(this)" href="#" data-icon="point_of_sale"
-                                            data-text="Efectivo al cierre"><i
-                                                class="material-icons">point_of_sale</i>Cierre de CAJA</a></li>
+                                    <li><a onclick="add_new_mov_select_type(this)" href="#" data-value="cash_out" data-icon="money" data-text="Retiro efectivo"><i class="material-icons">money</i>Retiro
+                                            efectivo</a></li>                                  
                                 </ul>
                             </div>
                         </div>
                         <div class="form-group text-center col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="btn-group">
-                                <button type="button" id="movimiento-btn"
+                                <button type="button" id="type-mov-payment-btn"
                                     class="btn xl btn-more btn-primary line dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="true">
-                                    <span id="movimiento-icon_payment" class="material-icons">account_balance_wallet
+                                    <span id="type-mov-payment-icon" class="material-icons">account_balance_wallet
                                     </span>
-                                    <span id="movimiento-text_payment" class="hidden-xs hidden-sm">Medio de pago</span>
+                                    <span id="type-mov-payment-text" class="hidden-xs hidden-sm">Medio de pago</span>
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li role="separator" class="divider"></li>
                                     {{#each ../payment_type_list as | pl |}}
-                                    <li><a onclick="add_new_mov_select_type_payment(this)" href="#" data-icon="{{icon}}"
+                                    <li><a onclick="add_new_mov_select_type_payment(this)"  data-value="{{id}}" href="#" data-icon="{{icon}}"
                                             data-text="{{name}}"><i class="material-icons">{{icon}}</i>{{name}}</a></li>
                                     {{/each}}
                                     <li role="separator" class="divider"></li>
@@ -82,8 +81,7 @@
                                         <strong style="font-size: 30px; font-style: normal;">$</strong>
                                     </i>
                                 </div>
-                                <input class="form-control maxi money round-r" type="number" id="new_mov_value" value=""
-                                    name="valor">
+                                <input class="form-control maxi money round-r" type="number" id="new_mov_value" value="" name="valor">
                             </div>
                         </div>
                        
@@ -163,12 +161,19 @@
     }
 
     function add_new_mov_select_type(element) {
+        
         // Obtener el icono y el texto de la opción seleccionada
         var icon = element.getAttribute('data-icon');
         var text = element.getAttribute('data-text');
+        var value = element.getAttribute('data-value');
+
         // Actualizar el contenido del botón
-        document.getElementById('movimiento-icon').textContent = icon;
-        document.getElementById('movimiento-text').textContent = text;
+        document.getElementById('type-mov-btn-icon').textContent = icon;
+        document.getElementById('type-mov-btn-text').textContent = text;
+        document.getElementById('type-mov-btn-text').textContent = text;
+        document.getElementById('type-mov-btn').setAttribute('data-type-mov', value);
+
+
     }
 
 
@@ -176,9 +181,13 @@
         // Obtener el icono y el texto de la opción seleccionada
         var icon = element.getAttribute('data-icon');
         var text = element.getAttribute('data-text');
+         var value = element.getAttribute('data-value');
         // Actualizar el contenido del botón
-        document.getElementById('movimiento-icon_payment').textContent = icon;
-        document.getElementById('movimiento-text_payment').textContent = text;
+        document.getElementById('type-mov-payment-icon').textContent = icon;
+        document.getElementById('type-mov-payment-text').textContent = text;
+
+        document.getElementById('type-mov-payment-btn').setAttribute('data-type-payment', value);
+    
         document.getElementById('new_mov_description').focus();
         // document.getElementById('new_mov_value').focus();
 

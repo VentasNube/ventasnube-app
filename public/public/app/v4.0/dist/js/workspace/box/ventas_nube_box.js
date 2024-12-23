@@ -1992,144 +1992,39 @@ async function add_new_mov(element) {
 }
 
 
-///PAGO CREA MOVIMIENTO
-
-async function new_mov_payNO(element) {
-    const doc_id = $(element).attr('doc_id'); //Id del documento a edita
-    const doc_id_s = String(doc_id); // Convierto el id del doc en un string
-    const doc = await L_board_db.get(doc_id_s); // Traigo el documento
-    let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
-    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
-    const mov_id_new = letters + '-' + timestamp + '-mov';
-    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${doc.category_id}`;
-    //const { ws_id, hour, minutes } = doc;
-    const entry_date = { hour, minutes } = await getDateTimeMinutes();
-
-    ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-    // Mapeo el contenido del objeto ws_left_nav M
-    ws_left_nav_data = ws_left_nav['ws_left_nav'];
-     user_Ctx = ws_left_nav.userCtx;
-    // Mapeo el contenido del objeto userCtx
-    userCtx = user_Ctx.userCtx;
-    try {
-        // Map the order document to an array
-     let response = await L_box_db.put({
-            _id: 'mov_' + new_doc_id, // Unique ID for the order
-            type:'box_mov',
-            order_id: doc_id,
-            mov_id: mov_id_new ,
-            status: 'Close',
-            entry_date: new Date(), //fecha actual del navegador
-            user_name: userCtx.name ,
-            client_id: doc.customer.id,
-            client: doc.customer,
-            total_service: doc.total_service,
-            total_products: doc.total_products,
-            total_tax: doc.total_tax,
-            total_discount: doc.total_discount,
-            total: doc.total,
-            category:doc.category_id,
-            payment_type:'efectivo',
-            payment_type_id:'1',
-            payment_status:'saldado',
-            order_status:'close',
-        });
-
-        if (response) {
-            Snackbar.show({
-                text: 'Realizo el pago '+ '#mov_' + new_doc_id+' con exito!',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
-            });
-        } else {
-            Snackbar.show({
-                text: 'No se pudo realizar el pago!',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
-            });
-        }
-
-       // console.log('Order processed and saved successfully in the local database.');
-    } catch (error) {
-        Snackbar.show({
-            text: 'No se pudo realizar el pago!',
-            actionText: 'OK',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-right',
-            duration: 5000
-        });
-        console.error('Error processing and saving the order in the local database:', error);
-    }
-}
-
-
-///PAGO CREA MOVIMIENTO
-
-async function new_mov_payNO(event) {
-    // Prevenir el comportamiento por defecto del formulario
-   // event.preventDefault();
-
-    // Obtener los datos del formulario
-   // const tipoMovimiento = document.querySelector('input[name="payment_type"]:checked').value;
-    const descripcion = document.getElementById('new_mov_description').value;
-    const monto = document.getElementById('new_mov_value').value;
-    const tipoMovimiento = document.getElementById('movimiento-text_payment').value; 
-
-    // Generar un ID único para el movimiento
-    let timestamp = Date.now().toString().slice(-5);  // Obtener los últimos 5 dígitos del timestamp Unix
-    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generar 2 letras aleatorias
-    const mov_id_new = letters + '-' + timestamp + '-mov';
-    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_mov`;
-
-    // Obtener la hora y los minutos actuales
-    const { hour, minutes } = await getDateTimeMinutes();
-
-    // Obtener el contexto del usuario
-    const ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-    const userCtx = ws_left_nav.userCtx.userCtx;
-
-    try {
-        // Crear el nuevo documento de movimiento
-        let response = await L_box_db.put({
-            _id: 'mov_' + new_doc_id, // ID único para el movimiento
-            type: 'box_mov',
-            mov_id: mov_id_new,
-            status: 'Close',
-            entry_date: { hour, minutes },
-            ws_id: ws_id,
-            userCtx: userCtx,
-            amount: monto, // Usar el monto del formulario
-            description: descripcion, // Usar la descripción del formulario
-            payment_type: tipoMovimiento // Usar el tipo de movimiento del formulario
-        });
-
-        if (response.ok) {
-            console.log('Movimiento creado exitosamente:', response);
-            alert('Movimiento creado exitosamente');
-        } else {
-            console.error('Error al crear el movimiento:', response);
-            alert('Error al crear el movimiento');
-        }
-    } catch (error) {
-        console.error('Error al crear el movimiento:', error);
-        alert('Error al crear el movimiento');
-    }
-}
-
 ///PAGO DE ORDEN CREA MOVIMIENTO
 
 async function new_mov_pay(element) {
-    //const doc_id = $(element).attr('doc_id'); //Id del documento a edita
-   // const doc_id_s = String(doc_id); // Convierto el id del doc en un string
-    //const doc = await L_board_db.get(doc_id_s); // Traigo el documento
 
+    //const doc_id = $(element).attr('doc_id'); //Id del documento a edita
+    // const doc_id_s = String(doc_id); // Convierto el id del doc en un string
+    // const doc = await L_board_db.get(doc_id_s); // Traigo el documento
 
     const category_id = $(element).attr('category_id'); 
+
+    const formData = {};
+    const inputs = document.querySelectorAll('#new_mov_form input, #new_mov_form select, #new_mov_form textarea');
+    inputs.forEach(input => {
+        formData[input.id] = input.value;
+    });
+
+        // Obtener los valores de los atributos de datos
+
+        
+    formData.mov_value = $('#new_mov_value').val();
+    formData.type_mov_payment = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
+
+    formData.type_mov = document.getElementById('type-mov-btn').getAttribute('data-type-mov');
+
+   // formData.type_mov = document.getElementById('type-mov-btn').getAttribute('data-value');
+    
+   // data-value
+
+   // formData.tipo_pago = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
+    
+    //document.getElementById('type-mov-payment-btn').setAttribute('data-type-payment', text);
+
+    console.log('formData formData. formData', formData);
 
     let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
     let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
@@ -2145,31 +2040,44 @@ async function new_mov_pay(element) {
     user_Ctx = ws_left_nav.userCtx;
     // Mapeo el contenido del objeto userCtx
     userCtx = user_Ctx.userCtx;
+
     try {
         // Map the order document to an array
      let response = await L_box_db.put({
             _id: 'mov_' + new_doc_id, // Unique ID for the order
-            type:'box_mov',
-            order_id: 'doc_id',
+            type:formData.tipo_movimiento,
+            category:formData.tipo_movimiento,
+            order_id: false,
             mov_id: mov_id_new ,
-            status: 'Close',
+
             entry_date: new Date(), //fecha actual del navegador
             user_name: userCtx.name ,
-            client_id: 'customer.id',
-            client: 'customer',
+
+            status: 'close',
+            order_status:false,
+            
+            //Datos clientes
+            client_id: false,
+            client: false,
+
+            //Datos comprobante
             total_service: 'total_service',
             total_products: 'total_products',
             total_tax: 'total_tax',
             total_discount: 'doc.total_discount',
+
             total: 'doc.total',
-            category:'doc.category_id',
-            payment_type:'efectivo',
+
+            //Datos pago
+            payment_type:formData.tipo_pago,
             payment_type_id:'1',
-            payment_status:'saldado',
-            order_status:'close',
+            payment_status:true,
+
+           
         });
 
         if (response) {
+            console.log('Order processed and saved successfully in the local database.', response,);
             Snackbar.show({
                 text: 'Realizo el pago '+ '#mov_' + new_doc_id+' con exito!',
                 actionText: 'OK',
