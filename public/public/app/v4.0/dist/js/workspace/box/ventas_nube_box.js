@@ -1206,9 +1206,19 @@ async function get_box(pageNumber = 1, limit = 10) {
                 throw error;
             }
         }
+        //Traigo los datos del usuario
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        // Mapeo el contenido del objeto ws_left_nav M
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];
 
-        let username = 'smartmobile.com.ar@gmail.com';  // Puedes cambiarlo según el usuario actual
+        user_info = ws_left_nav.ws_left_nav;
+        user_Ctx = ws_left_nav.userCtx;
 
+        // Mapeo el contenido del objeto userCtx
+        console.log('user_info user_info user_info', user_info);
+
+        
+        let username = user_info.user_email;  // Puedes cambiarlo según el usuario actual
         let startDate = filters.startDate;
         let endDate = filters.endDate;
         limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
@@ -1306,10 +1316,13 @@ async function get_box(pageNumber = 1, limit = 10) {
             last_name: doc.client.last_name,
             category: doc.category,
             payment_type: doc.payment_type,
+            payment_type_icon: doc.payment_type_icon,
             payment_type_id: doc.payment_type_id,
             payment_status: doc.payment_status,
             order_status: doc.order_status,
             status: doc.status,
+            description: doc.description,
+
         }));
 
         console.log('all_items_array:', all_items_array);
@@ -2002,82 +2015,75 @@ async function new_mov_pay(element) {
 
     const category_id = $(element).attr('category_id'); 
 
-    const formData = {};
-    const inputs = document.querySelectorAll('#new_mov_form input, #new_mov_form select, #new_mov_form textarea');
-    inputs.forEach(input => {
-        formData[input.id] = input.value;
-    });
+    // Obtener los valores de los atributos de datos
+    var new_mov_description = $('#new_mov_description').val();
+    var mov_value = $('#new_mov_value').val();
+    var type_mov_payment = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
+    //var type_mov_payment_text = document.getElementById('type-mov-payment-text').getAttribute('data-text');
+    var type_mov = document.getElementById('type-mov-btn').getAttribute('data-type-mov');
+    var type_mov_payment_text = document.getElementById('type-mov-payment-btn').getAttribute('data-text');
+    var type_mov_payment_icon = document.getElementById('type-mov-payment-btn').getAttribute('data-icon');
+    //document.getElementById('type-mov-payment-btn').setAttribute('data-icon', icon);
 
-        // Obtener los valores de los atributos de datos
-
-        
-    formData.mov_value = $('#new_mov_value').val();
-    formData.type_mov_payment = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
-
-    formData.type_mov = document.getElementById('type-mov-btn').getAttribute('data-type-mov');
-
-   // formData.type_mov = document.getElementById('type-mov-btn').getAttribute('data-value');
-    
-   // data-value
-
-   // formData.tipo_pago = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
-    
-    //document.getElementById('type-mov-payment-btn').setAttribute('data-type-payment', text);
-
-    console.log('formData formData. formData', formData);
+   // console.log('formData formData. formData', formData);
 
     let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
     let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
     const mov_id_new = letters + '-' + timestamp + '-mov';
-    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${category_id}`;
-    //const { ws_id, hour, minutes } = doc;
-    const entry_date = { hour, minutes } = await getDateTimeMinutes();
+    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_${category_id}`;
 
+    // Const { ws_id, hour, minutes } = doc;
+    const entry_date = { hour, minutes } = await getDateTimeMinutes();
     ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
 
     // Mapeo el contenido del objeto ws_left_nav M
     ws_left_nav_data = ws_left_nav['ws_left_nav'];
     user_Ctx = ws_left_nav.userCtx;
+    user_info = ws_left_nav.ws_left_nav;
+
     // Mapeo el contenido del objeto userCtx
     userCtx = user_Ctx.userCtx;
-
+    console.log('userCtx userCtx userCtx userCtx',user_Ctx,' type_mov_payment_text', type_mov_payment_text,'type_mov',type_mov,'new_mov_description',new_mov_description);
     try {
-        // Map the order document to an array
-     let response = await L_box_db.put({
-            _id: 'mov_' + new_doc_id, // Unique ID for the order
-            type:formData.tipo_movimiento,
-            category:formData.tipo_movimiento,
-            order_id: false,
-            mov_id: mov_id_new ,
 
-            entry_date: new Date(), //fecha actual del navegador
-            user_name: userCtx.name ,
+    // Map the order document to an array
+let response = await L_box_db.put({
+    _id: 'mov_' + new_doc_id, // Unique ID for the order
+    type: 'box_mov',
+    category: type_mov,
+    order_id: false,
+    mov_id: mov_id_new,
+    entry_date: new Date(), // Fecha actual del navegador
+    description:new_mov_description,
+    user_name: user_info.user_name,
+    client_id: user_info.user_id,
+    client: {
+        id: user_info.user_id,
+        first_name: user_info.user_name,
+        last_name:user_info.user_name,
+        address: null,
+        phone: null,
+        email: user_info.user_email,
+        price_list: null
+    },
+    status: 'close',
+    order_status: 'close',
+    // Datos comprobante
+    total_service: false,
+    total_products: false,
+    total_tax: false,
+    total_discount: false,
+    total: mov_value,
 
-            status: 'close',
-            order_status:false,
-            
-            //Datos clientes
-            client_id: false,
-            client: false,
-
-            //Datos comprobante
-            total_service: 'total_service',
-            total_products: 'total_products',
-            total_tax: 'total_tax',
-            total_discount: 'doc.total_discount',
-
-            total: 'doc.total',
-
-            //Datos pago
-            payment_type:formData.tipo_pago,
-            payment_type_id:'1',
-            payment_status:true,
-
-           
-        });
+    // Datos pago
+    payment_type: type_mov_payment_text,
+    payment_type_icon: type_mov_payment_icon,
+    payment_type_id: type_mov_payment,
+    payment_status: true
+});    
 
         if (response) {
-            console.log('Order processed and saved successfully in the local database.', response,);
+            console.log('Order processed and saved successfully in the local database.', response);
             Snackbar.show({
                 text: 'Realizo el pago '+ '#mov_' + new_doc_id+' con exito!',
                 actionText: 'OK',

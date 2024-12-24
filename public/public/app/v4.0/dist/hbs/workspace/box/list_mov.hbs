@@ -34,6 +34,15 @@
                                         {{#ifCond category 'service_turn'}}
                                         <span class="material-icons">group_add</span>
                                         {{/ifCond}}
+                                        {{#ifCond category 'mov_out'}}
+                                        <span class="material-icons">payments</span>
+                                        {{/ifCond}}
+                                         {{#ifCond category 'mov_in'}}
+                                        <span class="material-icons">payments</span>
+                                        {{/ifCond}}
+                                        {{#ifCond category 'cash_out'}}
+                                        <span class="material-icons">payments</span>
+                                        {{/ifCond}}
                                     </div>
                                 </button>
                             </div>
@@ -42,13 +51,13 @@
                         <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="padding-0 col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                 <h5><span class="text-uppercase margin-r-5 margin-top label bg-blue">{{mov_id}}</span>
-                                    <span
-                                        class="text-uppercase margin-r-5 margin-top label bg-gray">{{payment_type}}</span>
+                                    <spanclass="text-uppercase margin-r-5 margin-top label bg-gray"> <i class="material-icons">{{payment_type_icon}}</i> {{payment_type}}</span>
                                 </h5>
                                 <h6>
-                                    {{{client.first_name}}} {{{client.last_name}}}
+                                  <strong style="font-size: 10px; font-style: normal;"><i class="material-icons">request_quote</i> </strong> {{{client.first_name}}} {{{client.last_name}}} - {{{description}}} 
 
                                 </h6>
+                              
                             </div>
                             <div class="padding-t-10  col-xs-12 col-sm-12 col-md-8 col-lg-8">
 
@@ -66,11 +75,44 @@
                                                 <div class="round-icon pr bg-red">
                                                     -
                                                 </div>
-                                                {{else}}
+                                                {{/ifCond}}
+
+                                                {{#ifCond category 'mov_out'}}
+                                                <div class="round-icon pr bg-red">
+                                                    -
+                                                </div>
+                                                {{/ifCond}}
+
+                                                {{#ifCond category 'sell'}}
                                                 <div class="round-icon pr bg-green">
                                                     +
                                                 </div>
                                                 {{/ifCond}}
+
+                                                {{#ifCond category 'service_order'}}
+                                                <div class="round-icon pr bg-green">
+                                                    +
+                                                </div>
+                                                {{/ifCond}}
+
+                                                {{#ifCond category 'service_turn'}}
+                                                <div class="round-icon pr bg-green">
+                                                    +
+                                                </div>
+                                                {{/ifCond}}
+
+                                                {{#ifCond category 'mov_in'}}
+                                                <div class="round-icon pr bg-green">
+                                                    +
+                                                </div>
+                                                {{/ifCond}}
+                                                                         
+                                                {{#ifCond category 'cash_out'}}
+                                                <div class="round-icon pr bg-blue">
+                                                    -
+                                                </div>
+                                                {{/ifCond}}
+
                                                 <label class="counter">
                                                     <span>
                                                         $
