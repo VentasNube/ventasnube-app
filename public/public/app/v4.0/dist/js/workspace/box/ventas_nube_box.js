@@ -2055,7 +2055,7 @@ let response = await L_box_db.put({
     mov_id: mov_id_new,
     entry_date: new Date(), // Fecha actual del navegador
     description:new_mov_description,
-    user_name: user_info.user_name,
+    user_name: user_info.user_email,
     client_id: user_info.user_id,
     client: {
         id: user_info.user_id,
