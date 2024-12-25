@@ -54,7 +54,13 @@
                                     <spanclass="text-uppercase margin-r-5 margin-top label bg-gray"> <i class="material-icons">{{payment_type_icon}}</i> {{payment_type}}</span>
                                 </h5>
                                 <h6>
-                                  <strong style="font-size: 10px; font-style: normal;"><i class="material-icons">request_quote</i> </strong> {{{client.first_name}}} {{{client.last_name}}} - {{{description}}} 
+                                  <strong style="font-size: 10px; font-style: normal;"><i class="material-icons"> account_circle </i> </strong> {{{client.first_name}}} {{{client.last_name}}} - <a href="#"><i class="material-icons">request_quote</i>  
+                                        {{#ifCond category 'mov_in'}}
+                                            {{{description}}} 
+                                        {{else}}
+                                            Ver comprobante
+                                        {{/ifCond}}
+                                         </a>
 
                                 </h6>
                               
@@ -73,43 +79,57 @@
                                                 class="card_item_selected_price btn btn-transparent">
                                                 {{#ifCond category 'purcharse'}}
                                                 <div class="round-icon pr bg-red">
-                                                    -
+                                                    <span class="material-icons">
+                                                    arrow_outward
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 
                                                 {{#ifCond category 'mov_out'}}
                                                 <div class="round-icon pr bg-red">
-                                                    -
+                                                    <span class="material-icons">
+                                                    arrow_outward
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 
                                                 {{#ifCond category 'sell'}}
-                                                <div class="round-icon pr bg-green">
-                                                    +
+                                                <div class="round-icon pr bg-green">  
+                                                    <span class="material-icons">
+                                                    arrow_outward
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 
                                                 {{#ifCond category 'service_order'}}
                                                 <div class="round-icon pr bg-green">
-                                                    +
+                                                    <span class="material-icons">
+                                                    call_received
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 
                                                 {{#ifCond category 'service_turn'}}
                                                 <div class="round-icon pr bg-green">
-                                                    +
+                                                    <span class="material-icons">
+                                                    call_received
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 
                                                 {{#ifCond category 'mov_in'}}
                                                 <div class="round-icon pr bg-green">
-                                                    +
+                                                     <span class="material-icons">
+                                                    call_received
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
                                                                          
                                                 {{#ifCond category 'cash_out'}}
                                                 <div class="round-icon pr bg-blue">
-                                                    -
+                                                     <span class="material-icons">
+                                                     arrow_outward
+                                                    </span>
                                                 </div>
                                                 {{/ifCond}}
 

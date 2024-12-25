@@ -2114,3 +2114,29 @@ let response = await L_box_db.put({
     }
 }
 
+// ABRE CONFIGURACION
+async function get_box_stats(tab_id) {
+    try {
+        var price_list = await L_catalog_db.get('price_list');
+        var currency_list = await L_catalog_db.get('currency_list');
+
+        var tax_list = await L_catalog_db.get('tax_list');
+        var catalog_config = {
+            ws_info: ws_info,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            tax_list: tax_list.tax,
+        }
+        console.log('catalog_config',catalog_config);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', catalog_config);
+        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        $('#right_main').removeClass('move-right');
+        var m_url = '?type=catalog&?t=config';
+        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+        return;
+    } catch (err) {
+        console.log(err);
+    }
+}
