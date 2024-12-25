@@ -110,56 +110,6 @@
 
 <script>
 
-    function save_new_mov() {
-        // Recoge los mensajes desde los atributos de los campos
-        const first_name_msj = $("#first_name").attr('data-msg-required');
-        const last_name_msj = $("#last_name").attr('data-msg-required');
-        const document_number_msj = $("#document_number").attr('data-msg-required');
-        const email_msj = $("#email").attr('data-msg-required');
-        const phone_msj = $("#phone").attr('data-msg-required');
-        const phone_min_msj = $("#phone").attr('data-msg-minlength');
-
-        // Define las reglas y mensajes de validación en una sola llamada a validate
-        $("#new_mov_form").validate({
-            ignore: [],
-            rules: {
-                first_name: {
-                    required: true
-                },
-                last_name: {
-                    required: true
-                }
-            },
-            messages: {
-                first_name: {
-                    required: first_name_msj
-                },
-                last_name: {
-                    required: last_name_msj
-                }
-            }
-        });
-
-        // Solo si el formulario es válido, recoger los datos y enviarlos
-        if ($("#new_mov_form").valid()) {
-            // Obtener todos los elementos de entrada y select dentro del formulario
-            const inputs = document.querySelectorAll('#new_mov_form input, #new_mov_form select');
-            let formData = {};
-            // Recorrer todos los elementos
-            for (let i = 0; i < inputs.length; i++) {
-                const input = inputs[i];
-                // Agregar el valor del elemento al objeto formData utilizando su id como clave
-                formData[input.id] = input.value;
-            }
-            // Convertir el objeto formData en una cadena JSON y devolverla
-            console.log('save_new_mov', formData);
-            new_contact_put(formData);
-            return true
-        } else {
-            return false;
-        }
-    }
-
     function add_new_mov_select_type(element) {
         
         // Obtener el icono y el texto de la opción seleccionada

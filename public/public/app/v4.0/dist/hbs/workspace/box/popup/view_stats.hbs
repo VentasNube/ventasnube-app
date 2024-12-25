@@ -1,4 +1,6 @@
 <!-- CATALOG VIEW PRODUCT TEMPLATE -->
+
+
 <div class="righ_nav_header">
     <button type="button"
         class="left_nav_close right_nav_close margin-10 round btn btn-transparent btn-default pull-left ">
@@ -30,6 +32,8 @@
                                         </h2>
                                     </div>
                                 </div>
+
+                                <div id="chart-spark1"> </div>
                             </div>
                         </div>
                         <div class="s-card col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -49,6 +53,7 @@
                                         </h2>
                                     </div>
                                 </div>
+                                  <div id="chart-spark2"> </div>
                             </div>
                         </div>
                        
@@ -70,7 +75,8 @@
                                         </h2>
                                     </div>
                                 </div>
-                                </div>
+                                  <div id="chart-spark3"> </div>
+                            </div>
                         </div>
 
                           <div class="s-card col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -101,3 +107,28 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+var options = {
+  chart: {
+    type: 'bar'
+  },
+  series: [{
+    name: 'sales',
+    data: [30,40,45,50,49,60,70,91,125]
+  }],
+  xaxis: {
+    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+  }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart-spark1"), options);
+
+chart.render();
+
+
+
+</script>
+

@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 112258622122331111122222222121111111212222227422;
+const version = 1122582262212233111112222222212111111121222222227422;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -81,6 +81,8 @@ workbox.precaching.precacheAndRoute([
   { url: '/public/app/v4.0/plugins/validate/jquery.validate.js', revision: version },
   { url: 'https://cdn.jsdelivr.net/npm/muuri@0.9.5/dist/muuri.min.js', revision: version },
   { url: 'https://cdn.jsdelivr.net/npm/fuse.js@6.4.3', revision: version },
+  { url: 'https://cdn.jsdelivr.net/npm/apexcharts', revision: version },
+  
 
   //Funciones Compilador y maqueta
   { url: '/public/app/v4.0/dist/js/workspace/app/ventas_nube_compilator.js', revision: version },
