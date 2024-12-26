@@ -21,21 +21,22 @@
                                         <div class="round-icon line green bg-green">
                                             <span class="material-icons text-white">arrow_outward</span>
                                         </div>
-                                        Total ingresos
+                                      $534534
                                     </h2>
                                 </div>
 
                                 <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <div class="s-card-content">
-                                        <h2>
-                                            $534534
-                                        </h2>
+                                        <h4>
+                                              Total ingresos
+                                        </h4>
                                     </div>
                                 </div>
 
-                                <div id="chart-spark1"> </div>
+                                <div id="chart-spark1"  class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12"> </div>
                             </div>
                         </div>
+
                         <div class="s-card col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="s-card-body col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -43,17 +44,17 @@
                                         <div class="round-icon line green bg-danger">
                                             <span class="material-icons text-white">call_received</span>
                                         </div>
-                                        Total egresos
+                                          $1324231312
                                     </h2>
                                 </div>
                                 <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <div class="s-card-content">
-                                        <h2>
-                                            $1324231312
-                                        </h2>
+                                        <h4>
+                                          Total egresos
+                                        </h4>
                                     </div>
                                 </div>
-                                  <div id="chart-spark2"> </div>
+                                <div id="chart-spark2" class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12"> </div>
                             </div>
                         </div>
                        
@@ -64,18 +65,18 @@
                                         <div class="round-icon line green bg-blue">
                                             <span class="material-icons text-white">inventory_2</span>
                                         </div>
-                                       Unidades vendidas
+                                      12234
                                     </h2>
                                 </div>
 
                                 <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <div class="s-card-content">
-                                        <h2>
-                                            123123
-                                        </h2>
+                                        <h4>
+                                            Unidades vendidas
+                                        </h4>
                                     </div>
                                 </div>
-                                  <div id="chart-spark3"> </div>
+                                  <div id="chart-spark3"  class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12"> </div>
                             </div>
                         </div>
 
@@ -86,17 +87,18 @@
                                         <div class="round-icon line green bg-purple">
                                             <span class="material-icons text-white">people_alt</span>
                                         </div>
-                                       Nuevos clientes
+                                      132
                                     </h2>
                                 </div>
 
                                 <div class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <div class="s-card-content">
-                                        <h2>
-                                           132
-                                        </h2>
+                                        <h4>
+                                            Nuevos clientes
+                                        </h4>
                                     </div>
                                 </div>
+                                   <div id="chart-spark4"  class="s-card-main col-xs-12 col-sm-12 col-md-12 col-lg-12"> </div>
                                 </div>
                         </div>
                         {{/with}}
@@ -126,7 +128,18 @@ var options = {
 
 var chart = new ApexCharts(document.querySelector("#chart-spark1"), options);
 
+var chart2 = new ApexCharts(document.querySelector("#chart-spark2"), options);
+
+var chart3 = new ApexCharts(document.querySelector("#chart-spark3"), options);
+
+var chart4 = new ApexCharts(document.querySelector("#chart-spark4"), options);
+
+
+
 chart.render();
+chart2.render();
+chart3.render();
+chart4.render();
 
 
 
