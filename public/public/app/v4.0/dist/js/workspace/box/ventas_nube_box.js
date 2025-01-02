@@ -2114,13 +2114,12 @@ let response = await L_box_db.put({
     }
 }
 
-// ABRE CONFIGURACION
-async function get_box_stats(tab_id) {
+async function get_box_stats(button) {
     try {
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
-
         var tax_list = await L_catalog_db.get('tax_list');
+
         var catalog_config = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
@@ -2128,15 +2127,285 @@ async function get_box_stats(tab_id) {
             price_list: price_list.price_list,
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
-        }
-        console.log('catalog_config',catalog_config);
+        };
+        console.log('catalog_config', catalog_config);
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', catalog_config);
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+        createCookie('left_nav_open_ws_' + ws_id, false), 30; // seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=catalog&?t=config';
-        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return;
+        history.replaceState(null, null, m_url); //Cargo la nueva url en la barra de navegacion
+
+        // Obtener el filtro seleccionado
+        var selectedFilter = document.querySelector('#box_date_filter_btn_tittle').textContent.trim();
+        var { startDate, endDate } = getStartAndEndDate(selectedFilter);
+
+        // Llamar a la función para actualizar los datos con el filtro seleccionado
+        renderStats(startDate.toISOString().split('T')[0], endDate.toISOString().split('T')[0]);
     } catch (err) {
         console.log(err);
+    }
+}
+
+function getStartAndEndDate(value) {
+    var startDate, endDate;
+    switch (value) {
+        case "Hoy":
+            startDate = getCurrentDateWithTime(0, 0);
+            endDate = getCurrentDateWithTime(23, 59);
+            break;
+        case "Ayer":
+            var today = new Date();
+            var yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0);
+            endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59, 999);
+            break;
+        case "Última Semana":
+            endDate = getCurrentDateWithTime(23, 59);
+            startDate = new Date(endDate);
+            startDate.setDate(startDate.getDate() - 6);
+            startDate.setHours(0, 0, 0, 0);
+            break;
+        case "Último Mes":
+            endDate = getCurrentDateWithTime(23, 59);
+            startDate = new Date(endDate);
+            startDate.setMonth(startDate.getMonth() - 1);
+            startDate.setDate(1);
+            startDate.setHours(0, 0, 0, 0);
+            break;
+        case "Mes Pasado":
+            var today = new Date();
+            var firstDayOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            var lastDayOfLastMonth = new Date(firstDayOfThisMonth);
+            lastDayOfLastMonth.setDate(0);
+            startDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), 1, 0, 0, 0, 0);
+            endDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), lastDayOfLastMonth.getDate(), 23, 59, 59, 999);
+            break;
+        case "Personalizado":
+            // Aquí puedes agregar tu lógica para el período personalizado
+            break;
+        default:
+            break;
+    }
+    return { startDate, endDate };
+}
+
+function getCurrentDateWithTime(hour, minute) {
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth();
+    var day = currentDate.getDate();
+    return new Date(year, month, day, hour, minute);
+}
+
+async function getStatsData(startDate, endDate) {
+    try {
+        // Realizar la consulta a la base de datos para obtener los datos de ingresos y egresos
+        let ingresosResponse = await L_box_db.query('box_mov_get/by_date_and_type', {
+            startkey: ['ingreso', startDate],
+            endkey: ['ingreso', endDate + "\ufff0"],
+            include_docs: true
+        });
+
+        let egresosResponse = await L_box_db.query('box_mov_get/by_date_and_type', {
+            startkey: ['egreso', startDate],
+            endkey: ['egreso', endDate + "\ufff0"],
+            include_docs: true
+        });
+
+        // Procesar los datos obtenidos
+        let totalIngresos = 0;
+        let totalEgresos = 0;
+        let ingresosPorTipo = {};
+        let egresosPorTipo = {};
+        let ingresosPorPago = {};
+        let egresosPorPago = {};
+
+        console.log('DATOS FILTRADOS egresosResponse',egresosResponse);
+        console.log('DATOS FILTRADOS ingresosResponse',ingresosResponse);
+
+        ingresosResponse.rows.forEach(row => {
+            let ingreso = row.doc;
+            totalIngresos += ingreso.total;
+
+            // Sumar por tipo de ingreso
+            if (!ingresosPorTipo[ingreso.category]) {
+                ingresosPorTipo[ingreso.category] = 0;
+            }
+            ingresosPorTipo[ingreso.category] += ingreso.total;
+
+            // Sumar por tipo de pago
+            if (!ingresosPorPago[ingreso.payment_type]) {
+                ingresosPorPago[ingreso.payment_type] = 0;
+            }
+            ingresosPorPago[ingreso.payment_type] += ingreso.total;
+        });
+
+        egresosResponse.rows.forEach(row => {
+            let egreso = row.doc;
+            totalEgresos += egreso.total;
+
+            // Sumar por tipo de egreso
+            if (!egresosPorTipo[egreso.category]) {
+                egresosPorTipo[egreso.category] = 0;
+            }
+            egresosPorTipo[egreso.category] += egreso.total;
+
+            // Sumar por tipo de pago
+            if (!egresosPorPago[egreso.payment_type]) {
+                egresosPorPago[egreso.payment_type] = 0;
+            }
+            egresosPorPago[egreso.payment_type] += egreso.total;
+        });
+
+        return {
+            totalIngresos,
+            totalEgresos,
+            ingresosPorTipo,
+            egresosPorTipo,
+            ingresosPorPago,
+            egresosPorPago
+        };
+    } catch (error) {
+        console.error('Error al obtener los datos de la base de datos:', error);
+        return {
+            totalIngresos: 0,
+            totalEgresos: 0,
+            ingresosPorTipo: {},
+            egresosPorTipo: {},
+            ingresosPorPago: {},
+            egresosPorPago: {}
+        };
+    }
+}
+
+async function renderStats(startDate, endDate) {
+    const statsData = await getStatsData(startDate, endDate);
+
+    console.log('DATOS FILTRADOS statsData endDat',startDate, endDate);
+    console.log('DATOS FILTRADOS statsData',statsData);
+
+    // Asegurarse de que los elementos HTML existen antes de intentar actualizar su contenido
+    const totalIngresosElement = document.getElementById('total-ingresos');
+    const totalEgresosElement = document.getElementById('total-egresos');
+    const chartIngresosTipoElement = document.getElementById('chart-ingresos-tipo');
+    const chartIngresosPagoElement = document.getElementById('chart-ingresos-pago');
+    const chartEgresosTipoElement = document.getElementById('chart-egresos-tipo');
+    const chartEgresosPagoElement = document.getElementById('chart-egresos-pago');
+
+    if (totalIngresosElement) {
+        totalIngresosElement.textContent = `$${statsData.totalIngresos}`;
+    }
+
+    if (totalEgresosElement) {
+        totalEgresosElement.textContent = `$${statsData.totalEgresos}`;
+    }
+
+    if (chartIngresosTipoElement) {
+        var optionsIngresosTipo = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Ingresos por Tipo',
+                data: Object.values(statsData.ingresosPorTipo)
+            }],
+            xaxis: {
+                categories: Object.keys(statsData.ingresosPorTipo),
+                title: {
+                    text: 'Tipo de Ingreso'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Monto'
+                }
+            }
+        };
+
+        var chartIngresosTipo = new ApexCharts(chartIngresosTipoElement, optionsIngresosTipo);
+        chartIngresosTipo.render();
+    }
+
+    if (chartIngresosPagoElement) {
+        var optionsIngresosPago = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Ingresos por Tipo de Pago',
+                data: Object.values(statsData.ingresosPorPago)
+            }],
+            xaxis: {
+                categories: Object.keys(statsData.ingresosPorPago),
+                title: {
+                    text: 'Tipo de Pago'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Monto'
+                }
+            }
+        };
+
+        var chartIngresosPago = new ApexCharts(chartIngresosPagoElement, optionsIngresosPago);
+        chartIngresosPago.render();
+    }
+
+    if (chartEgresosTipoElement) {
+        var optionsEgresosTipo = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Egresos por Tipo',
+                data: Object.values(statsData.egresosPorTipo)
+            }],
+            xaxis: {
+                categories: Object.keys(statsData.egresosPorTipo),
+                title: {
+                    text: 'Tipo de Egreso'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Monto'
+                }
+            }
+        };
+
+        var chartEgresosTipo = new ApexCharts(chartEgresosTipoElement, optionsEgresosTipo);
+        chartEgresosTipo.render();
+    }
+
+    if (chartEgresosPagoElement) {
+        var optionsEgresosPago = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Egresos por Tipo de Pago',
+                data: Object.values(statsData.egresosPorPago)
+            }],
+            xaxis: {
+                categories: Object.keys(statsData.egresosPorPago),
+                title: {
+                    text: 'Tipo de Pago'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Monto'
+                }
+            }
+        };
+
+        var chartEgresosPago = new ApexCharts(chartEgresosPagoElement, optionsEgresosPago);
+        chartEgresosPago.render();
     }
 }

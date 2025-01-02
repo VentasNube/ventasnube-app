@@ -17,6 +17,7 @@
                             </span>
                         </div>
 
+
                         <!-- FILTRO POR FECHA -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
@@ -31,6 +32,135 @@
                                 </button>
                                 <ul class="dropdown-menu open-right m">
                                     {{#with ws_lang_data}}
+                                    <li class="header">
+                                        <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                            data-original-title=" Categoria ">
+                                            date_range
+                                        </span>
+                                        {{box_bt_filter_mov_date_sub_tille}}
+                                        <span class="material-icons">arrow_right</span>
+                                        <span id="box_date_filter_btn_tittle"> {{../filters.name_date}} </span>
+                                    </li>
+                                    <div id="catalog_select_new_cat_list">
+                                        <li onclick="box_filter_select_date(this)" value="date_1">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Today}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond box_bt_filter_mov_date_Today
+                                                            ../filters.name_date}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li onclick="box_filter_select_date(this)" value="date_2">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Yesterday}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond box_bt_filter_mov_date_Yesterday
+                                                            ../filters.name_date}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li onclick="box_filter_select_date(this)" value="date_3">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Last_Week}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond box_bt_filter_mov_date_Last_Week
+                                                            ../filters.name_date}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li onclick="box_filter_select_date(this)" value="date_4">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Last_Month}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Last_Month}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li onclick="box_filter_select_date(this)" value="date_5">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Past_Month}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Past_Month}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li onclick="box_filter_select_date(this)" value="date_6">
+                                            <div class="dropdown-item">
+                                                <a href="#">{{box_bt_filter_mov_date_Custom}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond ../filters.name_date
+                                                            box_bt_filter_mov_date_Custom}}
+                                                            radio_button_checked
+                                                            {{else}}
+                                                            radio_button_unchecked
+                                                            {{/ifCond}}
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </div>
+                                    {{/with}}
+                                </ul>
+
+                            </div>
+                        </div>
+
+
+                        <!-- FILTRO POR FECHA -->
+                        <div class="input-group flex">
+                            <div class="btn-group dropright">
+                                <button id="" type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
+                                        data-original-title=" Categoria ">
+                                        date_range
+                                    </span>
+                                    <span id="box_date_filter_btn"> {{filters.name_date}}</span>
+                                </button>
+                                <ul class="dropdown-menu open-right m">
+                                    {{#with ws_lang_data}}
+
                                     <li class="header">
                                         <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
                                             data-original-title=" Categoria ">
@@ -234,7 +364,8 @@
                         <!-- FILTRO POR COLABORADOR -->
                         <div class="input-group flex">
                             <div class="btn-group dropright">
-                                <button type="button" class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
+                                <button type="button"
+                                    class=" margin-5 dropdown-toggle dropdown-toggle-split btn btn-default pull-right "
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="material-icons">
                                         account_circle
@@ -261,32 +392,32 @@
 
                                     <div id="box_select_new_cat_list">
                                         {{#each colaborator_list/colaborator_list}}
-                                            <li onclick="box_filter_select_colaborator(this)" item_value_id="{{id}}"
-                                                item_value="{{first_name}} {{ last_name}}" item_id="{{id}}">
-                                                <div class="dropdown-item">
-                                                    <a href="#"> {{first_name}} {{ last_name}}
-                                                        <span class="pull-right margin-r-10">
-                                                            <span class="material-icons">
-                                                                {{#ifCond colaborator_list.id ../filters.colaborator.id }}
-                                                                check_box
-                                                                {{else}}
-                                                                check_box_outline_blank
-                                                                {{/ifCond}}
-                                                            </span>
+                                        <li onclick="box_filter_select_colaborator(this)" item_value_id="{{id}}"
+                                            item_value="{{first_name}} {{ last_name}}" item_id="{{id}}">
+                                            <div class="dropdown-item">
+                                                <a href="#"> {{first_name}} {{ last_name}}
+                                                    <span class="pull-right margin-r-10">
+                                                        <span class="material-icons">
+                                                            {{#ifCond colaborator_list.id ../filters.colaborator.id }}
+                                                            check_box
+                                                            {{else}}
+                                                            check_box_outline_blank
+                                                            {{/ifCond}}
                                                         </span>
-                                                    </a>
-                                                </div>
-                                            </li>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </li>
                                         {{/each}}
-                                      
+
                                     </div>
-                                      <div class="dropdown-menu-footer">
-                                            <button class="btn btn-primary btn-full-with md">
-                                                Guardar
-                                            </button>
-                                        </div>
+                                    <div class="dropdown-menu-footer">
+                                        <button class="btn btn-primary btn-full-with md">
+                                            Guardar
+                                        </button>
+                                    </div>
                                 </ul>
-                               
+
                             </div>
                         </div>
 
@@ -316,7 +447,7 @@
                                         <span class="material-icons">arrow_right</span>
                                         <span id="box_select_cat_value"></span>
                                     </li>
-                                      <li>
+                                    <li>
                                         <div>
                                             <input input_id="catalog_cat_input" id="catalog_new_cat_input"
                                                 class="form-control"
@@ -331,24 +462,22 @@
                                             item_value="  {{value}}" item_id="{{id}}">
                                             <div class="dropdown-item">
                                                 <a href="#">
-                                                     {{value}}
+                                                    {{value}}
                                                 </a>
                                                 <button>
                                                     <input {{#ifCond category_list.id ../filters.category_list.id }}
-                                                                checked
-                                                                {{else}}
-                                                            {{/ifCond}}
-                                                     type="checkbox" doc_id="{{id}}"onclick="box_filter_select_category(this)">
+                                                        checked {{else}} {{/ifCond}} type="checkbox" doc_id="{{id}}"
+                                                        onclick="box_filter_select_category(this)">
                                                 </button>
                                             </div>
                                         </li>
                                         {{/each}}
                                     </div>
                                     <div class="dropdown-menu-footer">
-                                            <button class="btn btn-primary btn-full-with md">
-                                                Guardar
-                                            </button>
-                                        </div>
+                                        <button class="btn btn-primary btn-full-with md">
+                                            Guardar
+                                        </button>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -477,11 +606,11 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="material-icons" data-toggle="tooltip" data-placement="bottom"
                                         data-original-title="{{#with ws_lang_data}} {{{m_catalog_edit_category}}} {{/with}}">
-                                       analytics
+                                        analytics
                                     </span>
 
                                     <span id="box_filter_select_stats_tittle"> {{#with ws_lang_data}}
-                                       Ver graficos {{/with}} <span>
+                                        Ver graficos {{/with}} <span>
                                 </button>
                             </div>
                         </div>
@@ -494,12 +623,12 @@
 
 
 
-            
-             <button type="button" onclick="add_new_mov(this)"  class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown"
-                    aria-expanded="true">
-                    <span class="material-icons">add_circle_outline</span> <span
-                        class="hidden-xs hidden-sm">{{b_new}}</span>
-                </button>
+
+            <button type="button" onclick="add_new_mov(this)" class="btn xl btn-more  btn-primary line dropdown-toggle "
+                data-toggle="dropdown" aria-expanded="true">
+                <span class="material-icons">add_circle_outline</span> <span
+                    class="hidden-xs hidden-sm">{{b_new}}</span>
+            </button>
 
             <!-- div class="btn-group ">
                 <button type="button" class="btn xl btn-more  btn-primary line dropdown-toggle " data-toggle="dropdown"
@@ -533,8 +662,10 @@
                 <ul class="dropdown-menu pull-right">
                     <li class="divider"></li>
 
-                    <li><a onclick="add_new_contact(this)"><span class="material-icons">group_add</span>{{m_add_board_group_collaborator}}</a></li>
-                    <li> <a onclick="box_welcome(this)" data-toggle="modal" role="button"><span class="material-icons">settings</span> Configuracion</a> </li>
+                    <li><a onclick="add_new_contact(this)"><span
+                                class="material-icons">group_add</span>{{m_add_board_group_collaborator}}</a></li>
+                    <li> <a onclick="box_welcome(this)" data-toggle="modal" role="button"><span
+                                class="material-icons">settings</span> Configuracion</a> </li>
                 </ul>
             </div>
 
