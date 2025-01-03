@@ -2132,7 +2132,7 @@ async function get_box_stats(button) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', catalog_config);
         createCookie('left_nav_open_ws_' + ws_id, false), 30; // seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=config';
+        var m_url = '?type=box&?t=stats';
         history.replaceState(null, null, m_url); //Cargo la nueva url en la barra de navegacion
 
         // Obtener el filtro seleccionado
