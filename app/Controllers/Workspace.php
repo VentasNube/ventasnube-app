@@ -2285,6 +2285,19 @@ class Workspace extends BaseController
                 // Control de caja  
                 if ($ws_mov_box) {
 
+                
+                    $ws_mov_box_get_filter = [
+                        '_id' => '_design/filters',
+                        'views' => [
+                                'by_combined_filters' => [
+                                    'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.user_name && doc.entry_date) {\n   emit([doc.type, doc.user_name,  doc.entry_date], doc);\n    }\n}"
+                                ],
+                                'by_date_and_type' => [
+                                    "map"=>  "function(doc) {\n if (doc.type === 'box_mov' && doc.entry_date && doc.mov_type) {\n emit([doc.mov_type, doc.entry_date], doc);\n}\n}"
+                                ],                 
+                            ]
+                    ];
+
                     $ws_mov_box_get = [
                                 '_id' => '_design/box_mov_get',
                                 'views' => [
@@ -2304,7 +2317,7 @@ class Workspace extends BaseController
                                             'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n        emit(doc.entry_date, doc);\n    }\n}"  
                                         ],                          
                                     ]
-                                ];
+                    ];
 
                     $db_name = "ws_mov_box_" . $workspace_id_hex;
                    
@@ -2478,6 +2491,8 @@ class Workspace extends BaseController
                         $this->WorkspaceModel->curl_put($db_name); //Creo la base de dato
                         $this->WorkspaceModel->curl_put($db_name . '/_security', $ws_security_doc); //Creo la base de datos de seguridad con los roles
                         $this->WorkspaceModel->curl_put($db_name . '/_design/box_mov_get', $ws_mov_box_get); //Creo el documento de diseno par filtrar documentos por tipo
+                        $this->WorkspaceModel->curl_put($db_name . '/_design/filters', $ws_mov_box_get_filter); //Creo el documento de diseno par filtrar documentos por tipo
+                     
                         $this->WorkspaceModel->curl_put($db_name . '/ws_module_config', $ws_module_config); //Creo un doc con la informacion del workspace
 
                         $this->WorkspaceModel->curl_put($db_name . '/payment_type_list', $payment_type_list);

@@ -390,6 +390,7 @@ return [
         'm_myorders' => 'Mis compras',
          //MI CUENTA
          'm_box_tittle' => 'Movimientos finacieros',
+         'm_box_tittle_sub' => 'Transaciones',
          'm_box_tittle_icon' => 'app_settings_alt',
          'm_box_tittle_buy' => '',
          'm_box_tittle_new_mov' => 'Agregar movimiento',

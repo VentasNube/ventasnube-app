@@ -1022,7 +1022,7 @@ async function updateOrCreateDocument(params) {
 }
 
 // ARMO Y Traigo el box filtrado
-async function get_box_ORIGINAL(pageNumber = 1, limit = 10) {
+async function get_box_Original(pageNumber = 1, limit = 10) {
     try {
 
         //  box_welcome();
@@ -2138,7 +2138,6 @@ async function get_box_stats(button) {
         // Obtener el filtro seleccionado
         var selectedFilter = document.querySelector('#box_date_filter_btn_tittle').textContent.trim();
         var { startDate, endDate } = getStartAndEndDate(selectedFilter);
-
         // Llamar a la función para actualizar los datos con el filtro seleccionado
         renderStats(startDate.toISOString().split('T')[0], endDate.toISOString().split('T')[0]);
     } catch (err) {
@@ -2280,8 +2279,12 @@ async function getStatsData(startDate, endDate) {
 }
 
 async function renderStats(startDate, endDate) {
-    const statsData = await getStatsData(startDate, endDate);
+   const statsData = await getStatsData(startDate, endDate);
 
+    //const statsData = await filterDocuments('user_name',startDate, endDate, 'desired_payment_method', 'desired_operation_type');
+   
+
+    console.log('Filtered documents statsData :', statsData );
     console.log('DATOS FILTRADOS statsData endDat',startDate, endDate);
     console.log('DATOS FILTRADOS statsData',statsData);
 
@@ -2409,3 +2412,32 @@ async function renderStats(startDate, endDate) {
         chartEgresosPago.render();
     }
 }
+
+
+/// FILTROS PERSONALIZADO 
+
+// Asumiendo que ya tienes la base de datos PouchDB inicializada en ventas_nube_box.js
+// Función asíncrona para filtrar documentos por múltiples criterios combinados
+async function filterDocuments(userName, startDate, endDate, paymentMethod, operationType) {
+    try {
+        const result = await L_box_db.query('filters/by_combined_filters', {
+            startkey: [userName, startDate, paymentMethod, operationType],
+            endkey: [userName, endDate, paymentMethod, operationType, {}]
+        });
+        console.log(result.rows);
+        return result.rows;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+// Ejemplo de uso de la función
+(async () => {
+    try {
+        const filteredDocuments = await filterDocuments('user_name', '2023-01-01', '2023-12-31', 'desired_payment_method', 'desired_operation_type');
+        console.log('Filtered documents:', filteredDocuments);
+    } catch (err) {
+        console.error('Error filtering documents:', err);
+    }
+})();
