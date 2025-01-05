@@ -866,17 +866,17 @@
         <!-- Botones Ordenes --->
         {{#ifEquals order_doc.category_id 'sell' }}
         {{#with order_doc}}
-        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
-            type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
-            <span class="material-icons">monetization_on</span>
-            {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
-        </button>
+            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_receive_order(this)" category_id="{{category_id}}"
+                type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+                <span class="material-icons">monetization_on</span>
+                {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
+            </button>
         {{/with}}
         {{/ifEquals}}
 
         {{#ifEquals order_doc.category_id 'purcharse' }}
         {{#with order_doc}}
-        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_pay_order(this)" category_id="{{category_id}}"
             type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
             <span class="material-icons">monetization_on</span>
             {{#with ../ws_lang_data}}{{m_board_pay}}{{/with}}

@@ -1023,354 +1023,6 @@ async function updateOrCreateDocument(params) {
     }
 }
 
-// ARMO Y Traigo el box filtrado
-async function get_box_Original(pageNumber = 1, limit = 10) {
-    try {
-
-        //  box_welcome();
-        // Obtener el documento de filtros
-        const filters = await box_local_db.get('filtros');
-        // let username = 'marianomarchesi@hotmail.com';  // Puedes cambiarlo según el usuario actual
-        let username = 'smartmobile.com.ar@gmail.com';  // Puedes cambiarlo según el usuario actual
-
-        console.log('filters 1', filters);
-
-        let startDate = filters.startDate;
-        let endDate = filters.endDate;
-        let limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
-        var skip = (pageNumber - 1) * limit;
-
-        // Definir listas de filtros
-        let clientList = filters.clients || [];
-        let categoryList = filters.categories || [];
-        let paymentTypeList = filters.paymentTypes || [];
-
-        let startKey = ["box_mov", username, startDate];
-        let endKey = ["box_mov", username, endDate + "\ufff0"];
-
-        // Agregar los filtros adicionales a las claves de inicio y fin
-        if (clientList.length > 0) {
-            startKey.push(clientList[0]);
-            endKey.push(clientList[clientList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-
-        if (categoryList.length > 0) {
-            startKey.push(categoryList[0]);
-            endKey.push(categoryList[categoryList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-
-        if (paymentTypeList.length > 0) {
-            startKey.push(paymentTypeList[0]);
-            endKey.push(paymentTypeList[paymentTypeList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-
-        // Realizar una consulta para contar todos los documentos filtrados
-        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            startkey: startKey,
-            endkey: endKey,
-            inclusive_end: true,
-        });
-
-
-        console.log('box_mov_get/by_user_date_and_client 2', countResponse);
-
-
-        // Total de documentos filtrados
-        const totalFilterItems = countResponse.rows.length;
-
-        // Realizar la consulta paginada
-        let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            startkey: startKey,
-            endkey: endKey,
-            limit: limit,
-            skip: skip,
-            include_docs: true
-        });
-
-
-        console.log('box_mov_get/by_user_date_and_client 3', response);
-
-        console.log('box_mov_get/by_user_date_and_client rows', response.rows);
-
-        // MAPEO LOS ITEMS A IMPRIMIR
-        const all_items_array = response.rows.map(({ doc }) => ({
-            _id: doc._id,
-            _rev: doc._rev,
-            type: doc.type,
-            order_id: doc.order_id,
-            mov_id: doc.mov_id,
-            user_name: doc.user_name,
-            entry_date: doc.entry_date,
-            client_id: doc.client_id,
-            client: doc.client,
-            total_service: doc.total_service,
-            total_products: doc.total_products,
-            total_tax: doc.total_tax,
-            total_discount: doc.total_discount,
-            total: doc.total,
-            first_name: doc.client.first_name,
-            last_name: doc.client.last_name,
-            category: doc.category,
-            payment_type: doc.payment_type,
-            payment_type_id: doc.payment_type_id,
-            payment_status: doc.payment_status,
-            order_status: doc.order_status,
-            status: doc.status,
-        }));
-
-        // Calcular el número total de páginas
-        const totalPages = Math.ceil(totalFilterItems / limit);
-        const pages = [];
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push({
-                pageNumber: i,
-                active: i === pageNumber
-            });
-        }
-
-        let nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
-        let lastPage = totalPages;
-
-        const mov_content = {
-            pages: pages,
-            nextPage: nextPage,
-            lastPage: lastPage,
-            totalItems: totalFilterItems,
-            limit: limit
-        };
-
-        console.log('mov_content 4', mov_content);
-
-        // Renderizar el contenido
-        await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
-        await get_nav_box();
-        await print_mov_item(all_items_array);
-
-        console.log('client_id:', clientList);
-        console.log('startKey:', startKey, 'endKey:', endKey);
-        console.log('RESULTADO DE CONSULTA:', all_items_array);
-        console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems:', totalFilterItems);
-
-    } catch (error) {
-
-
-        console.log('ERROR EN BOX SETTING', err);
-        if (err.msj == 'missing' || err.msj == 'deleted' || err.msj == 'not_found') {
-
-            new_payment_type_list_doc();
-        }
-        Snackbar.show({
-            text: err.msj,
-            actionText: 'Ok',
-            actionTextColor: '#0575e6',
-            pos: 'bottom-left',
-            duration: 50000
-        });
-
-        // console.error('Error al obtener los datos de la caja:', error);
-    }
-}
-
-
-async function get_filter_mov4(pageNumber = 1, limit = 10) {
-    try { 
-        let filters;
-        try {
-            filters = await box_local_db.get('filtros');
-        } catch (error) {
-            if (error.status === 404) {
-                console.log('El documento filtros no existe. Creando filtros por defecto.');
-                // Crear filtros por defecto
-                filters = {
-                    _id: 'filtros',
-                    startDate: null,
-                    endDate: null,
-                    limit: 10,
-                    clients: [],
-                    categories: [],
-                    paymentTypes: []
-                };
-                // Guardar el documento de filtros por defecto en la base de datos
-                await box_local_db.put(filters);
-            } else {
-                throw error;
-            }
-        }
-        //Traigo los datos del usuario
-        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-        ws_left_nav_data = ws_left_nav['ws_left_nav'];      // Mapeo USERCTX
-        user_info = ws_left_nav.ws_left_nav;
-        user_Ctx = ws_left_nav.userCtx;
-        let username = user_info.user_email;  // Puedes cambiarlo según el usuario actual
-        let startDate = filters.startDate;  // TRAER LOS DATOS DE LOS FILTROS
-        let endDate = filters.endDate; //TRAER LOS DATOS DE LOS FILTROS
-        limit = filters.limit || 10;    // Asignar un valor predeterminado si no está definido
-        var skip = (pageNumber - 1) * limit;
-
-        // Definir listas de filtros
-        let clientList = filters.clients || [];
-        let categoryList = filters.categories || [];
-        let paymentTypeList = filters.paymentTypes || [];
-        //ARMO LAS KEYS DE BUSQUEDA     
-        let startKey = ["box_mov", username];
-        let endKey = ["box_mov", username, {}]; 
-
-        // Agregar las fechas a las claves de inicio y fin si están definidas
-        if (startDate) {
-            startKey.push(startDate);
-        } else {
-            startKey.push(null);
-        }
-        if (endDate) {
-            endKey.push(endDate + "\ufff0");
-        } else {
-            endKey.push({});
-        }
-        // Agregar los filtros adicionales a las claves de inicio y fin
-        if (clientList.length > 0) {
-            startKey.push(clientList[0]);
-            endKey.push(clientList[clientList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-        if (categoryList.length > 0) {
-            startKey.push(categoryList[0]);
-            endKey.push(categoryList[categoryList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-        if (paymentTypeList.length > 0) {
-            startKey.push(paymentTypeList[0]);
-            endKey.push(paymentTypeList[paymentTypeList.length - 1]);
-        } else {
-            startKey.push(null);
-            endKey.push({});
-        }
-
-       console.log('startKey:', JSON.stringify(startKey));
-       console.log('endKey:', JSON.stringify(endKey));
-        // Realizar una consulta para contar todos los documentos filtrados
-        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            startkey: startKey,
-            endkey: endKey,
-            inclusive_end: true
-        });
-
-        console.log(' COUNT RESULT FITLRADOS  sin el doc:', countResponse);
-
-        // Total de documentos filtrados
-        const totalFilterItems = countResponse.rows.length;
-        // Realizar la consulta paginada
-        let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
-            startkey: startKey,
-            endkey: endKey,
-            limit: limit,
-            skip: skip,
-            include_docs: true
-        });
-        
-        console.log(' TOTAL RESULT FITLRADOS con el doc: ', response);
-
-        // MAPEO LOS ITEMS A IMPRIMIR
-        const all_items_array = response.rows.map(({ doc }) => ({
-            _id: doc._id,
-            _rev: doc._rev,
-            type: doc.type,
-            order_id: doc.order_id,
-            mov_id: doc.mov_id,
-            user_name: doc.user_name,
-            entry_date: doc.entry_date,
-            client_id: doc.client_id,
-            client: doc.client,
-            total_service: doc.total_service,
-            total_products: doc.total_products,
-            total_tax: doc.total_tax,
-            total_discount: doc.total_discount,
-            total: doc.total,
-            first_name: doc.client.first_name,
-            last_name: doc.client.last_name,
-            category: doc.category,
-            payment_type: doc.payment_type,
-            payment_type_icon: doc.payment_type_icon,
-            payment_type_id: doc.payment_type_id,
-            payment_status: doc.payment_status,
-            order_status: doc.order_status,
-            status: doc.status,
-            description: doc.description,
-
-        }));
-
-         // MAPEO LOS ITEMS A IMPRIMIR
-         const all_items_array_total = response.rows.map(({ doc }) => ({
-            _id: doc._id,
-            _rev: doc._rev,
-            type: doc.type,
-            order_id: doc.order_id,
-            mov_id: doc.mov_id,
-            user_name: doc.user_name,
-            entry_date: doc.entry_date,
-            client_id: doc.client_id,
-            client: doc.client,
-            total_service: doc.total_service,
-            total_products: doc.total_products,
-            total_tax: doc.total_tax,
-            total_discount: doc.total_discount,
-            total: doc.total,
-            first_name: doc.client.first_name,
-            last_name: doc.client.last_name,
-            category: doc.category,
-            payment_type: doc.payment_type,
-            payment_type_icon: doc.payment_type_icon,
-            payment_type_id: doc.payment_type_id,
-            payment_status: doc.payment_status,
-            order_status: doc.order_status,
-            status: doc.status,
-            description: doc.description,
-
-        })); 
-        
-        //?como hago para que me traiga el total de todos los items y no solo los que se muestran en la pagina actual
-
-        console.log('RESULTADO FILTRADO Y MAPEADO', all_items_array);
-      //  console.log('** response:', response);
-
-        return all_items_array 
-
-      }
-    catch (error) {
-        if (error.status === 404) {
-            console.log('El documento filtros no existe. Creando filtros por defecto.');
-            // Crear filtros por defecto
-            filters = {
-                _id: 'filtros',
-                startDate: null,
-                endDate: null,
-                limit: 10,
-                user_name: userCtx.userCtx.name, 
-                clients: [],
-                categories: [],
-                paymentTypes: []
-            };
-            // Guardar el documento de filtros por defecto en la base de datos
-            await box_local_db.put(filters);
-        } else {
-            throw error;
-        }
-    }
-}
-
-
 // Función para obtener los movimientos filtrados con paginación
 async function get_filter_mov(pageNumber = 1, limit = 10) {
     try {
@@ -2224,7 +1876,7 @@ async function add_new_mov(element) {
 ///PAGO DE ORDEN CREA MOVIMIENTO
 async function new_mov_pay(element) {
 
-    //const doc_id = $(element).attr('doc_id'); //Id del documento a edita
+    // const doc_id = $(element).attr('doc_id'); //Id del documento a edita
     // const doc_id_s = String(doc_id); // Convierto el id del doc en un string
     // const doc = await L_board_db.get(doc_id_s); // Traigo el documento
 
@@ -2237,7 +1889,11 @@ async function new_mov_pay(element) {
     var total_products = $('#total_products').val();
     var total_tax = $('#total_tax').val();
     var total_discount = $('#total_discount').val();
-    
+
+    var total_service_cost = $('#total_service_cost').val();
+    var total_product_cost = $('#total_products_cost').val();
+
+
     var total = $('#new_mov_value').val();
 
     var type_mov_payment = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
@@ -2291,12 +1947,14 @@ let response = await L_box_db.put({
     status: 'close',
     order_status: 'close',
     // Datos comprobante
+
+    total_service_cost: parseFloat(total_service_cost),
+    total_product_cost: parseFloat(total_product_cost),
     total_service: parseFloat(total_service),
     total_products: parseFloat(total_products),
     total_tax: parseFloat(total_tax),
     total_discount: parseFloat(total_discount),
     total: parseFloat(total),
-
     // Datos pago
     payment_type: type_mov_payment_text,
     payment_type_icon: type_mov_payment_icon,
@@ -2340,14 +1998,11 @@ let response = await L_box_db.put({
 async function getTotalItems() {
     try {
         const filters = await box_local_db.get('filtros');
-       // console.log('Filtros:', filters); // Imprimir los filtros para verificar
-
+        // console.log('Filtros:', filters); // Imprimir los filtros para verificar
         const startkey = ['box_mov', filters.user_name, filters.startDate];
         const endkey = ['box_mov', filters.user_name, filters.endDate + "\ufff0"];
-
-      //  console.log('Startkey:', startkey); // Imprimir startkey para verificar
-     //  console.log('Endkey:', endkey); // Imprimir endkey para verificar
-
+        //  console.log('Startkey:', startkey); // Imprimir startkey para verificar
+        //  console.log('Endkey:', endkey); // Imprimir endkey para verificar
         // Realizar la consulta a la base de datos para obtener todos los ítems sin paginación
         let response = await L_box_db.query('box_mov_get/totals_by_user_and_date', {
             startkey: startkey,
@@ -2359,23 +2014,24 @@ async function getTotalItems() {
 
         // Procesar los datos obtenidos
         let totals = {
-            mov_in: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
-            mov_out: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
-            sell: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
-            purchase: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
-            service_turn: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
-            service_order: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 }
+            mov_in: { total: 0, total_tax: 0, total_discount: 0, total_service: 0,total_service_cost:0,total_products_cost:0 },
+            mov_out: { total: 0, total_tax: 0, total_discount: 0, total_service: 0,total_service_cost:0,total_products_cost:0 },
+            sell: { total: 0, total_tax: 0, total_discount: 0, total_service: 0,total_service_cost:0,total_products_cost:0 },
+            purchase: { total: 0, total_tax: 0, total_discount: 0, total_service: 0,total_service_cost:0,total_products_cost:0 },
+            service_turn: { total: 0, total_tax: 0, total_discount: 0, total_service: 0,total_service_cost:0,total_products_cost:0 },
+            service_order: { total: 0, total_tax: 0, total_discount: 0, total_service: 0, total_service_cost:0,total_products_cost:0 }
         };
 
         response.rows.forEach(row => {
             let values = row.value;
             let category = values.category;
-
             if (totals[category]) {
                 totals[category].total += values.total;
                 totals[category].total_tax += values.total_tax;
                 totals[category].total_discount += values.total_discount;
                 totals[category].total_service += values.total_service;
+                totals[category].total_service_cost += values.total_service_cost;
+                totals[category].total_products_cost += values.total_products_cost;
             }
         });
 
@@ -2406,17 +2062,14 @@ async function get_box_stats(button) {
         };
 
         var mov_filtered =  await getTotalItems();
-        //  var mov_filtered_total = await getMovementTotals();
-
-        console.log('RESULTADO TOTAL FILTRADO: ', mov_filtered ); 
+        console.log('RESULTADO TOTAL FILTRADO getTotalItems: ', mov_filtered ); 
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', data_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30; // seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=box&?t=stats';
         history.replaceState(null, null, m_url); //Cargo la nueva url en la barra de navegacion
-
-
-       return  renderStats();
+        var mov_render = await renderStats();
+        return  mov_render; 
 
     } catch (err) {
         console.log(err);
