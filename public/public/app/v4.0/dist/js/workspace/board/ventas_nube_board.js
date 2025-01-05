@@ -1740,22 +1740,28 @@ async function add_new_pay_order(element) {
     try {
         const modal = document.getElementById('master_popup');
         // Listas de precio ws_collections_333433/
+        const order_id = $(element).attr('order_id');
+        const doc_id = $(element).attr('doc_id');
         ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
         tax_list = await L_catalog_db.get('tax_list');
         payment_type_list = await L_box_db.get('payment_type_list');
         price_list = await L_catalog_db.get('price_list');
         currency_list = await L_catalog_db.get('currency_list');
-     //   box_config_print = await L_catalog_db.get(box_config_print_id);
+        box_config_print = await L_catalog_db.get('box_config_print');
+        order_doc = await L_board_db.get(doc_id);
+
         const data = {
+            order_doc:order_doc,
             ws_price_list: ws_price_list,
-            ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             payment_type_list:payment_type_list.payment_type_list,
             tax_list: tax_list.tax_list,
             price_list: price_list.price_list,
             currency_list: currency_list.currency_list,
-        //    box_config_print: box_config_print,
+            box_config_print: box_config_print,
+            ws_left_nav_data:ws_left_nav_data,
+            currency_default: currency_list.currency_default,
         }
 
         console.log('data POPUP ',data);
@@ -1763,7 +1769,7 @@ async function add_new_pay_order(element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_pay.hbs', '#master_popup', data);
         // save_new_conctact();
     } catch (err) {
-        console.log('ERROR add_new_contact', err)
+        console.log('ERROR add_new_pay_order', err)
         Snackbar.show({
             text: err.reason,
             actionText: '<span class="material-icons">refresh</span> Refresh ',
@@ -1779,28 +1785,28 @@ async function add_new_receive_order(element) {
     try {
         const modal = document.getElementById('master_popup');
         // Listas de precio ws_collections_333433/
-
         const order_id = $(element).attr('order_id');
         const doc_id = $(element).attr('doc_id');
-
         ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
         tax_list = await L_catalog_db.get('tax_list');
         payment_type_list = await L_box_db.get('payment_type_list');
         price_list = await L_catalog_db.get('price_list');
         currency_list = await L_catalog_db.get('currency_list');
-      //  box_config_print = await L_catalog_db.get(box_config_print_id);
+        box_config_print = await L_catalog_db.get('box_config_print');
+        order_doc = await L_board_db.get(doc_id);
 
         const data = {
-            order_id:order_id,
+            order_doc:order_doc,
             ws_price_list: ws_price_list,
-            ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
             payment_type_list:payment_type_list.payment_type_list,
             tax_list: tax_list.tax_list,
             price_list: price_list.price_list,
             currency_list: currency_list.currency_list,
-         //   box_config_print: box_config_print,
+            currency_default: currency_list.currency_default,
+            box_config_print: box_config_print,
+            ws_left_nav_data:ws_left_nav_data,
         }
 
         console.log('data POPUP ',data);
@@ -1837,7 +1843,7 @@ async function new_order_pay(element) {
     const { hour, minutes } = entry_date;
 
     // Obtener datos del usuario
-    const ws_id = doc.ws_id;
+   // const ws_id = ws_id;
     const ws_left_nav = await user_db.get(`ws_left_nav_${ws_id}`, { include_docs: true, descending: true });
     const ws_left_nav_data = ws_left_nav['ws_left_nav'];
     const userCtx = ws_left_nav.userCtx.userCtx;

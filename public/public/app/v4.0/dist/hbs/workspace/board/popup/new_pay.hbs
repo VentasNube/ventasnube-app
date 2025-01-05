@@ -5,81 +5,103 @@
         <form id="new_mov_form" class="">
             <div class="modal-header">
                 <div class="modal-nav">
-                    <span class="back-arrow btn-previus">
-                        <span class="material-icons">arrow_back</span>
-                    </span>
-                    <span class="modal-title">
-                       Pagar <small>compra</small>
+                        <span class="modal-title">
+                            {{#each ../ws_left_nav_data.m_t}} 
+                                {{#ifEquals m_t_url  ../../order_doc.category_id}}
+                                    <small class="material-icons lg">{{m_t_icon}}</small>
+                                   {{#with ../../ws_lang_data}}{{m_board_pay}}{{/with}}
+                                    {{m_t_name}}
+                                {{/ifEquals}}
+                            {{/each}}
+                        </span>
+
+                    <span class="back-arrow btn-previus pull-right">
+                        <small>
+                            <span class="xl btn-more btn btn-default">
+                                <span class="material-icons">qr_code</span>
+                                {{../order_doc.order_id}}
+                            </span>
+                        </small>
+                        <button id="" data-dismiss="modal" aria-label="Close" type="button"
+                            class=" btn btn-default text round xs">
+                            <span class="material-icons">close</span>
+                        </button>
                     </span>
                 </div>
             </div>
-            <div id="modal-body" class="">
-                <div class="modal-body padding-10 text-left col-sm-12 col-md-12 col-xs-12">
+             <div id="modal-body" class="">
+                <div class="modal-body padding-0 text-left col-sm-12 col-md-12 col-xs-12">
+                        <div id="new_pay_order_tot" class="text-center  margin-t-10 form-group col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                             <label>
+                                <strong style="font-size: 25px; font-style: normal;" >
+                                     Total a abonar
+                                 </strong>
+                               </label>
+                            <strong style="font-size: 40px; font-style: normal;" >
+                                    {{#with ../currency_default}}{{value}}{{/with}}
+                            <span>  {{#with ../order_doc}}{{total}}{{/with}}</span>
+                            </strong>
+                        </div>
 
-                    <div >
-                        <div class="form-group text-center col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="padding-t-20 form-group text-center col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="btn-group">
-                                <button type="button" id="type-mov-payment-btn"
-                                    class="btn xl btn-more btn-primary line dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="true">
-                                    <span id="type-mov-payment-icon" class="material-icons">account_balance_wallet
+                                <button type="button" id="type-mov-payment-btn" class="btn xl btn-more btn-primary line dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <span id="type-mov-payment-icon" class="material-icons">
+                                        account_balance_wallet
                                     </span>
-                                    <span id="type-mov-payment-text" data-text="" class="hidden-xs hidden-sm">Medio de pago</span>
+                                    <span id="type-mov-payment-text" data-text="" class="hidden-xs hidden-sm">
+                                        Medio de pago
+                                    </span>
                                 </button>
                                 <ul class="dropdown-menu pull-right">
                                     <li role="separator" class="divider"></li>
                                     {{#each ../payment_type_list as | pl |}}
-                                    <li><a onclick="add_new_mov_select_type_payment(this)"  data-value="{{id}}" href="#" data-icon="{{icon}}"
-                                            data-text="{{name}}"><i class="material-icons">{{icon}}</i>{{name}}</a></li>
+                                    <li><a onclick="add_new_mov_select_type_payment(this)" data-value="{{id}}" href="#"
+                                            data-icon="{{icon}}" data-text="{{name}}"><i
+                                                class="material-icons">{{icon}}</i>{{name}}</a></li>
                                     {{/each}}
                                     <li role="separator" class="divider"></li>
                                 </ul>
                             </div>
                         </div>
-                       
-                        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Valor</label>
+
+                        <div id="new_pay_order_input" style="display: none;" class=" text-center form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label>
+                                 <strong style="font-size: 16px; font-style: normal;" >
+                                        {{box_incoming_receive_value}}
+                                 </strong>
+                              </label>
+                            
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="maxi" aria-hidden="true">
-                                        <strong style="font-size: 30px; font-style: normal;">$</strong>
+                                        <strong style="font-size: 30px; font-style: normal;">
+                                        {{#with ../currency_default}}{{value}}{{/with}}
+                                        </strong>
                                     </i>
                                 </div>
-                                <input class="form-control maxi money round-r" type="number" id="new_mov_value" value="" name="valor">
+                                <input  id="new_pay_mov_value"  class="form-control maxi money round-r" placeholder="{{#with ../order_doc}}{{total}}{{/with}}" type="number"value="" name="valor">
                             </div>
                         </div>
-                        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <label>Descripcion <small></small></label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="maxi" aria-hidden="true">
-                                        <strong style="font-size: 30px; font-style: normal;"><i
-                                                class="material-icons">request_quote</i> </strong>
-                                    </i>
-                                </div>
-                                <input class="form-control maxi money round-r" id="new_mov_description"
-                                    name="new_mov_description" name="valor">
-                            </div>
-                        </div>
-                       
-
-
-                    </div>
-
                 </div>
             </div>
     </div>
 
     <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
-        <button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
+        <!--button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
             <span class="">{{b_cancel}}</span>
-        </button>
+        </button-->
+       
+        
+       
+        {{#with ../order_doc}}
+                <button id="new_oreder_pay_btn" disabled=""  doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+                    type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+                    <span class="material-icons">monetization_on</span>
+                    {{#with ../../ws_lang_data}}{{m_board_pay}}{{/with}}
+                </button>
+        {{/with}}
 
-
-        <button payment_type_id="" payment_type="" id="" onclick="new_order_pay(this)" category_id="new_mov" type="button"
-            class="btn btn-primary ">
-            <span class="">{{b_save}}</span>
-        </button>
     </div>
     </form>
 </div>
@@ -120,10 +142,17 @@
         document.getElementById('type-mov-payment-btn').setAttribute('data-text', text);
          document.getElementById('type-mov-payment-btn').setAttribute('data-icon', icon);
     
-        document.getElementById('new_mov_description').focus();
+       // document.getElementById('new_mov_description').focus();
         // document.getElementById('new_mov_value').focus();
+         $('#new_pay_order_input').show();
+        document.getElementById('new_pay_mov_value').focus();
+        $('#add_new_receive_order').show();
+        $('#new_oreder_pay_btn').removeAttr('disabled');
 
 
     }
+
+
+    
 
 </script>

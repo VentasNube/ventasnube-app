@@ -110,6 +110,9 @@ return [
 
 
         //BOX BOTONES y TEXTOS
+
+        'box_incoming_pay_value'=> 'Ingresar total a pagar',
+        'box_incoming_receive_value'=> 'Ingresar total a cobrar',
         
         'box_bt_filter_mov_date_name'=> 'Periodo',
         

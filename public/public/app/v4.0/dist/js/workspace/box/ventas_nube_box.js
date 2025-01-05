@@ -649,58 +649,6 @@ async function box_welcome() {
     }
 }
 // Welcome BOX configuracion inicial del box
-async function setting_boxOLD() {
-    try {
-        const modal = document.getElementById('master_popup');
-        $(modal).modal('show');
-        console.log(ws_lang_data, 'ws_lang_data');
-
-        //      Intentar obtener el documento de filtros de la base de datos local
-        //      const filters = await box_local_db.get('filtros');
-        //      const category_list = await  L_box_db.get('category_list');
-        //      const payment_type_list = await  L_box_db.get('payment_type_list');
-        //      const operation_type_list = await  L_box_db.get('operation_type_list');
-        //      const colaboration_list = await  L_board_db.get('colaborator_list');
-        ///     NEW 2024
-
-        var payment_type_list = await L_box_db.get('payment_type_list');
-        var price_list = await L_catalog_db.get('price_list');
-        var currency_list = await L_catalog_db.get('currency_list');
-        var tax_list = await L_catalog_db.get('tax_list');
-        var box_config_print = await L_catalog_db.get('box_config_print');
-
-        var box_config = {
-            ws_info: ws_info,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            price_list: price_list.price_list,
-            currency_list: currency_list.currency_list,
-            tax_list: tax_list.tax,
-            payment_type_list: payment_type_list.payment_type_list,
-            box_config_print: box_config_print,
-        }
-
-        console.log('price_list', price_list);
-        // console.log('currency_list', currency_list);
-        // console.log('tax_list', tax_list);
-        console.log('NEWWW box_config', box_config);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
-    } catch (err) {
-
-        console.log('ERROR EN BOX SETTING', err);
-        if (err.msj == 'missing' || err.msj == 'deleted' || err.msj == 'not_found') {
-            new_payment_type_list_doc()
-        }
-        Snackbar.show({
-            text: err.msj,
-            actionText: 'Ok',
-            actionTextColor: '#0575e6',
-            pos: 'bottom-left',
-            duration: 50000
-        });
-    }
-}
-// Welcome BOX configuracion inicial del box
 async function setting_box() {
     try {
         const modal = document.getElementById('master_popup');

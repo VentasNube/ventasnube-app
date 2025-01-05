@@ -1215,7 +1215,6 @@ button.round:hover {
     -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
-    */
     /* -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.133);
     -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.133);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.133);*/
@@ -1241,8 +1240,8 @@ button.round.s {
 }
 
 button.round.s:hover {
-    width: 3.0rem;
-    height: 3.0rem;
+    width: 2.9rem;
+    height: 2.9rem;
 }
 
 button.round.xs {
@@ -1252,8 +1251,8 @@ button.round.xs {
 }
 
 button.round.xs:hover {
-    width: 2.9rem;
-    height: 2.9rem;
+    width: 2.4rem;
+    height: 2.4rem;
 }
 
 button.success {
@@ -9175,6 +9174,16 @@ label:focus {
 .text-xxl {
     font-weight: 400;
     font-size: 65px !important;
+}
+
+.text-left {
+    text-align: left!important;
+}
+.text-center {
+   text-align: center!important;
+}
+.text-right {
+    text-align: right!important;
 }
 
 

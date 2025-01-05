@@ -16,21 +16,22 @@
                     {{#with order_doc}} {{order_id}} {{/with}}
                 </span-->
 
-                        {{#each ws_left_nav_data.m_t}}
-                        {{#ifEquals m_t_url ../order_doc.category_id}}
-                        <span title="" class="material-icons lg">{{m_t_icon}}</span>
-                        {{/ifEquals}}
-                        {{/each}}
+                {{#each ws_left_nav_data.m_t}}
+                {{#ifEquals m_t_url ../order_doc.category_id}}
+                <span title="" class="material-icons lg">{{m_t_icon}}</span>
+                {{/ifEquals}}
+                {{/each}}
 
                 {{#each board_group_doc.board_group}}
                 {{#ifEquals id ../group_id }}
                 <div class="btn-group dopdown">
-                    <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown" aria-expanded="true">
+                    <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default"
+                        data-toggle="dropdown" aria-expanded="true">
                         <div class="round-icon pr md {{color}}">
                             <span class="material-icons">
-                             
-                            qr_code
-                        
+
+                                qr_code
+
                             </span>
                         </div>
                         <!--li bg-color="{{color}}" class="bg-color btn-status btn btn-primary {{color}}"><span class="material-icons">check_circle</span></li-->
@@ -39,7 +40,7 @@
                     </button>
                     <ul class="dropdown-menu pull-left">
                         <li class="header">
-                         Cambiar estado..
+                            Cambiar estado..
                         </li>
                         {{#each ../board_group_doc.board_group}}
                         <li class="margin-5">
@@ -128,7 +129,7 @@
                 </ul>
 
             </div>
-         
+
 
         </h2>
 
@@ -866,11 +867,11 @@
         <!-- Botones Ordenes --->
         {{#ifEquals order_doc.category_id 'sell' }}
         {{#with order_doc}}
-            <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_receive_order(this)" category_id="{{category_id}}"
-                type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                <span class="material-icons">monetization_on</span>
-                {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
-            </button>
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_receive_order(this)"
+            category_id="{{category_id}}" type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+            <span class="material-icons">monetization_on</span>
+            {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
+        </button>
         {{/with}}
         {{/ifEquals}}
 
@@ -886,7 +887,7 @@
 
         {{#ifEquals order_doc.category_id 'service_order' }}
         {{#with order_doc}}
-        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_receive_order(this)" category_id="{{category_id}}"
             type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
             <span class="material-icons">monetization_on</span>
             {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
@@ -896,7 +897,7 @@
 
         {{#ifEquals order_doc.category_id 'service_turn' }}
         {{#with order_doc}}
-        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
+        <button doc_id="{{_id}}" order_id="{{order_id}}" onclick="add_new_receive_order(this)" category_id="{{category_id}}"
             type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
             <span class="material-icons">monetization_on</span>
             {{#with ../ws_lang_data}}{{m_board_receive}}{{/with}}
