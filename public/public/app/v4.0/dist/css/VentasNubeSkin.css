@@ -4972,8 +4972,42 @@ textarea.form-control {
 .margin-l-50 {
     margin: 0 0 0 50px !important;
 }
+/**/
+.margin-60 {
+    margin: 60px !important;
+}
 
+.margin-t-60 {
+    margin: 60px 0 0 0 !important;
+}
 
+.margin-r-60 {
+    margin: 0 60px 0 0 !important;
+}
+
+.margin-b-60 {
+    margin: 0 0 60px 0 !important;
+}
+/**/
+.margin-70 {
+    margin: 70px !important;
+}
+
+.margin-t-70 {
+    margin: 70px 0 0 0 !important;
+}
+
+.margin-r-70 {
+    margin: 0 70px 0 0 !important;
+}
+
+.margin-b-70 {
+    margin: 0 0 70px 0 !important;
+}
+
+.margin-l-70 {
+    margin: 0 0 0 70px !important;
+}
 /**/
 .margin-80 {
     margin: 80px !important;

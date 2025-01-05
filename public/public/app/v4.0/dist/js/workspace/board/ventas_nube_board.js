@@ -878,9 +878,7 @@ async function new_order(element) {
 
             var products = await get_cart_products(ws_id);
 
-
-
-            console.log('AAAHUUUUUU  products', products);
+            //console.log('AAAHUUUUUU  products', products);
 
             const contact_doc = await L_contact_db.get(contact_id, { include_docs: true, descending: true });
             const customer = {
@@ -920,11 +918,11 @@ async function new_order(element) {
                         role: userCtx.role
                     }
                 ],
-                total_service: total_service,
-                total_product: total_product,
-                total_tax: total_tax,
-                total_discount: total_discount,
-                total: total_neto,
+                total_service: parseFloat(total_service),
+                total_product: parseFloat(total_product),
+                total_tax: parseFloat(total_tax),
+                total_discount: parseFloat(total_discount),
+                total: parseFloat(total_neto),
                 payment_history: [
                     {
                         id: 123,
@@ -932,9 +930,9 @@ async function new_order(element) {
                         payment_method: 'Credit Card',
                         update_datetime: '18/3/2021 18:45:10',
                         user: userCtx.email,
-                        total_tax: 21.00,
-                        total_discount: 12.95,
-                        total: 339.95,
+                        total_tax:  parseFloat(21.00),
+                        total_discount:  parseFloat(12.95),
+                        total:  parseFloat(339.95),
                         currency: {
                             id: 'ARS',
                             value: '$'
@@ -1766,19 +1764,23 @@ async function new_order_pay(element) {
             type:'box_mov',
             order_id: doc_id,
             mov_id: mov_id_new ,
-            status: 'Close',
+            status: 'close',
             entry_date: new Date(), //fecha actual del navegador
             user_name: userCtx.name ,
-            client_id: doc.customer.id,
+            client_id:  doc.customer.id,
             client: doc.customer,
-            total_service: doc.total_service,
-            total_products: doc.total_products,
-            total_tax: doc.total_tax,
-            total_discount: doc.total_discount,
-            total: doc.total,
+            total_service: parseFloat(doc.total_service) ,
+            total_service_profit: parseFloat(doc.total_service_profit),
+            total_products: parseFloat(doc.total_products),
+            total_products_profit: parseFloat(doc.total_products_profit),
+            total_tax: parseFloat(doc.total_tax),
+            total_discount: parseFloat(doc.total_discount),
+            total: parseFloat(doc.total),
             category:doc.category_id,
-            payment_type:'efectivo',
+
+            payment_type:'efectivo', 
             payment_type_id:'1',
+
             payment_status:'saldado',
             order_status:'close',
         });

@@ -906,6 +906,7 @@ async function check_filters() {
                 name_date: ws_lang_data.box_bt_filter_mov_date_Today,
                 startDate: startDate,
                 endDate: endDate,
+                user_name:userCtx.userCtx.name,
                 pageNumber: 1,
                 skip: 0,
                 limit: 10,
@@ -1003,6 +1004,7 @@ async function updateOrCreateDocument(params) {
             name_date: name_date,
             startDate: startDate,
             endDate: endDate,
+            user_name:userCtx.userCtx.name,
             pageNumber: 1,
             limit: 5,
 
@@ -1178,12 +1180,9 @@ async function get_box_Original(pageNumber = 1, limit = 10) {
     }
 }
 
-// ARMO Y Traigo el box filtrado
-async function get_box(pageNumber = 1, limit = 10) {
-    try {
-        // box_welcome();
 
-        // Intentar obtener el documento de filtros
+async function get_filter_mov4(pageNumber = 1, limit = 10) {
+    try { 
         let filters;
         try {
             filters = await box_local_db.get('filtros');
@@ -1208,29 +1207,22 @@ async function get_box(pageNumber = 1, limit = 10) {
         }
         //Traigo los datos del usuario
         ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-        // Mapeo el contenido del objeto ws_left_nav M
-        ws_left_nav_data = ws_left_nav['ws_left_nav'];
-
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];      // Mapeo USERCTX
         user_info = ws_left_nav.ws_left_nav;
         user_Ctx = ws_left_nav.userCtx;
-
-        // Mapeo el contenido del objeto userCtx
-        console.log('user_info user_info user_info', user_info);
-
-        
         let username = user_info.user_email;  // Puedes cambiarlo según el usuario actual
-        let startDate = filters.startDate;
-        let endDate = filters.endDate;
-        limit = filters.limit || 10;  // Asignar un valor predeterminado si no está definido
+        let startDate = filters.startDate;  // TRAER LOS DATOS DE LOS FILTROS
+        let endDate = filters.endDate; //TRAER LOS DATOS DE LOS FILTROS
+        limit = filters.limit || 10;    // Asignar un valor predeterminado si no está definido
         var skip = (pageNumber - 1) * limit;
 
         // Definir listas de filtros
         let clientList = filters.clients || [];
         let categoryList = filters.categories || [];
         let paymentTypeList = filters.paymentTypes || [];
-
+        //ARMO LAS KEYS DE BUSQUEDA     
         let startKey = ["box_mov", username];
-        let endKey = ["box_mov", username, {}];
+        let endKey = ["box_mov", username, {}]; 
 
         // Agregar las fechas a las claves de inicio y fin si están definidas
         if (startDate) {
@@ -1238,13 +1230,11 @@ async function get_box(pageNumber = 1, limit = 10) {
         } else {
             startKey.push(null);
         }
-
         if (endDate) {
             endKey.push(endDate + "\ufff0");
         } else {
             endKey.push({});
         }
-
         // Agregar los filtros adicionales a las claves de inicio y fin
         if (clientList.length > 0) {
             startKey.push(clientList[0]);
@@ -1253,7 +1243,6 @@ async function get_box(pageNumber = 1, limit = 10) {
             startKey.push(null);
             endKey.push({});
         }
-
         if (categoryList.length > 0) {
             startKey.push(categoryList[0]);
             endKey.push(categoryList[categoryList.length - 1]);
@@ -1261,7 +1250,6 @@ async function get_box(pageNumber = 1, limit = 10) {
             startKey.push(null);
             endKey.push({});
         }
-
         if (paymentTypeList.length > 0) {
             startKey.push(paymentTypeList[0]);
             endKey.push(paymentTypeList[paymentTypeList.length - 1]);
@@ -1270,9 +1258,8 @@ async function get_box(pageNumber = 1, limit = 10) {
             endKey.push({});
         }
 
-        console.log('startKey:', JSON.stringify(startKey));
-        console.log('endKey:', JSON.stringify(endKey));
-
+       console.log('startKey:', JSON.stringify(startKey));
+       console.log('endKey:', JSON.stringify(endKey));
         // Realizar una consulta para contar todos los documentos filtrados
         let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
             startkey: startKey,
@@ -1280,11 +1267,10 @@ async function get_box(pageNumber = 1, limit = 10) {
             inclusive_end: true
         });
 
-        console.log('countResponse:', countResponse);
+        console.log(' COUNT RESULT FITLRADOS  sin el doc:', countResponse);
 
         // Total de documentos filtrados
         const totalFilterItems = countResponse.rows.length;
-
         // Realizar la consulta paginada
         let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
             startkey: startKey,
@@ -1293,8 +1279,8 @@ async function get_box(pageNumber = 1, limit = 10) {
             skip: skip,
             include_docs: true
         });
-
-        console.log('response:', response);
+        
+        console.log(' TOTAL RESULT FITLRADOS con el doc: ', response);
 
         // MAPEO LOS ITEMS A IMPRIMIR
         const all_items_array = response.rows.map(({ doc }) => ({
@@ -1325,8 +1311,229 @@ async function get_box(pageNumber = 1, limit = 10) {
 
         }));
 
-        console.log('all_items_array:', all_items_array);
+         // MAPEO LOS ITEMS A IMPRIMIR
+         const all_items_array_total = response.rows.map(({ doc }) => ({
+            _id: doc._id,
+            _rev: doc._rev,
+            type: doc.type,
+            order_id: doc.order_id,
+            mov_id: doc.mov_id,
+            user_name: doc.user_name,
+            entry_date: doc.entry_date,
+            client_id: doc.client_id,
+            client: doc.client,
+            total_service: doc.total_service,
+            total_products: doc.total_products,
+            total_tax: doc.total_tax,
+            total_discount: doc.total_discount,
+            total: doc.total,
+            first_name: doc.client.first_name,
+            last_name: doc.client.last_name,
+            category: doc.category,
+            payment_type: doc.payment_type,
+            payment_type_icon: doc.payment_type_icon,
+            payment_type_id: doc.payment_type_id,
+            payment_status: doc.payment_status,
+            order_status: doc.order_status,
+            status: doc.status,
+            description: doc.description,
 
+        })); 
+        
+        //?como hago para que me traiga el total de todos los items y no solo los que se muestran en la pagina actual
+
+        console.log('RESULTADO FILTRADO Y MAPEADO', all_items_array);
+      //  console.log('** response:', response);
+
+        return all_items_array 
+
+      }
+    catch (error) {
+        if (error.status === 404) {
+            console.log('El documento filtros no existe. Creando filtros por defecto.');
+            // Crear filtros por defecto
+            filters = {
+                _id: 'filtros',
+                startDate: null,
+                endDate: null,
+                limit: 10,
+                user_name: userCtx.userCtx.name, 
+                clients: [],
+                categories: [],
+                paymentTypes: []
+            };
+            // Guardar el documento de filtros por defecto en la base de datos
+            await box_local_db.put(filters);
+        } else {
+            throw error;
+        }
+    }
+}
+
+
+// Función para obtener los movimientos filtrados con paginación
+async function get_filter_mov(pageNumber = 1, limit = 10) {
+    try {
+        const filters = await box_local_db.get('filtros');
+        console.log('Filtros:', filters); // Imprimir los filtros para verificar
+
+        const startkey = ['box_mov', filters.user_name, filters.startDate];
+        const endkey = ['box_mov', filters.user_name, filters.endDate + "\ufff0"];
+        const skip = (pageNumber - 1) * limit;
+
+        console.log('Startkey:', startkey); // Imprimir startkey para verificar
+        console.log('Endkey:', endkey); // Imprimir endkey para verificar
+
+        // Realizar la consulta a la base de datos para obtener los movimientos filtrados con paginación
+        let response = await L_box_db.query('box_mov_get/by_date_and_type', {
+            startkey: startkey,
+            endkey: endkey,
+            include_docs: true,
+            limit: limit,
+            skip: skip
+        });
+
+        console.log('Response:', response); // Imprimir la respuesta para verificar
+
+        return response.rows.map(row => row.doc);
+    } catch (err) {
+        console.error('Error al obtener los movimientos filtrados:', err);
+        throw err;
+    }
+}
+
+// ARMO Y Traigo el box filtrado
+async function get_box(pageNumber = 1, limit = 10) {
+    try {
+        // box_welcome();
+        // Intentar obtener el documento de filtros LOCAL
+        let filters;
+        try {
+            filters = await box_local_db.get('filtros');
+        } catch (error) {
+            if (error.status === 404) {
+                console.log('El documento filtros no existe. Creando filtros por defecto.');
+                // Crear filtros por defecto
+                filters = {
+                    _id: 'filtros',
+                    startDate: null,
+                    endDate: null,
+                    limit: 10,
+                    clients: [],
+                    categories: [],
+                    paymentTypes: []
+                };
+                // Guardar el documento de filtros por defecto en la base de datos
+                await box_local_db.put(filters);
+            } else {
+                throw error;
+            }
+        }
+        //Traigo los datos del usuario
+        ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+        ws_left_nav_data = ws_left_nav['ws_left_nav'];      // Mapeo USERCTX
+        user_info = ws_left_nav.ws_left_nav;
+        user_Ctx = ws_left_nav.userCtx;
+        let username = user_info.user_email;  // Puedes cambiarlo según el usuario actual
+        let startDate = filters.startDate;  // TRAER LOS DATOS DE LOS FILTROS
+        let endDate = filters.endDate; //TRAER LOS DATOS DE LOS FILTROS
+        limit = filters.limit || 10;    // Asignar un valor predeterminado si no está definido
+        var skip = (pageNumber - 1) * limit;
+
+        // Definir listas de filtros
+        let clientList = filters.clients || [];
+        let categoryList = filters.categories || [];
+        let paymentTypeList = filters.paymentTypes || [];
+        //ARMO LAS KEYS DE BUSQUEDA     
+        let startKey = ["box_mov", username];
+        let endKey = ["box_mov", username, {}]; 
+        // Agregar las fechas a las claves de inicio y fin si están definidas
+        if (startDate) {
+            startKey.push(startDate);
+        } else {
+            startKey.push(null);
+        }
+        if (endDate) {
+            endKey.push(endDate + "\ufff0");
+        } else {
+            endKey.push({});
+        }
+        // Agregar los filtros adicionales a las claves de inicio y fin
+        if (clientList.length > 0) {
+            startKey.push(clientList[0]);
+            endKey.push(clientList[clientList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+        if (categoryList.length > 0) {
+            startKey.push(categoryList[0]);
+            endKey.push(categoryList[categoryList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+        if (paymentTypeList.length > 0) {
+            startKey.push(paymentTypeList[0]);
+            endKey.push(paymentTypeList[paymentTypeList.length - 1]);
+        } else {
+            startKey.push(null);
+            endKey.push({});
+        }
+
+        console.log('startKey:', JSON.stringify(startKey));
+        console.log('endKey:', JSON.stringify(endKey));
+        // Realizar una consulta para contar todos los documentos filtrados
+        let countResponse = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+            startkey: startKey,
+            endkey: endKey,
+            inclusive_end: true
+        });
+        console.log(' ** ORDENES by_user_date_and_client :', countResponse);
+
+        // Total de documentos filtrados
+        const totalFilterItems = countResponse.rows.length;
+
+        // Realizar la consulta paginada
+        let response = await L_box_db.query('box_mov_get/by_user_date_and_client', {
+            startkey: startKey,
+            endkey: endKey,
+            limit: limit,
+            skip: skip,
+            include_docs: true
+        });
+
+        console.log(' ** RESPONSE ROWS response:', response);
+
+        // MAPEO LOS ITEMS A IMPRIMIR
+        const all_items_array = response.rows.map(({ doc }) => ({
+            _id: doc._id,
+            _rev: doc._rev,
+            type: doc.type,
+            order_id: doc.order_id,
+            mov_id: doc.mov_id,
+            user_name: doc.user_name,
+            entry_date: doc.entry_date,
+            client_id: doc.client_id,
+            client: doc.client,
+            total_service: doc.total_service,
+            total_products: doc.total_products,
+            total_tax: doc.total_tax,
+            total_discount: doc.total_discount,
+            total: doc.total,
+            first_name: doc.client.first_name,
+            last_name: doc.client.last_name,
+            category: doc.category,
+            payment_type: doc.payment_type,
+            payment_type_icon: doc.payment_type_icon,
+            payment_type_id: doc.payment_type_id,
+            payment_status: doc.payment_status,
+            order_status: doc.order_status,
+            status: doc.status,
+            description: doc.description,
+
+        }));
+        console.log('** all_items_array:', all_items_array);
         // Calcular el número total de páginas
         const totalPages = Math.ceil(totalFilterItems / limit);
         const pages = [];
@@ -1349,39 +1556,35 @@ async function get_box(pageNumber = 1, limit = 10) {
         };
 
         //  const filters = await box_local_db.get('filtros');
-        //const category_list = await L_box_db.get('category_list');
+        //  const category_list = await L_box_db.get('category_list');
         const payment_type_list = await L_box_db.get('payment_type_list');
         //  const operation_type_list = await  L_box_db.get('operation_type_list');
-        // const colaboration_list = await L_board_db.get('colaborator_list');
+        //  const colaboration_list = await L_board_db.get('colaborator_list');
 
-        // Si se encuentra el documento, devolver los filtros
-        // Preparar los datos para la plantilla
+        //  Si se encuentra el documento, devolver los filtros
+        //  Preparar los datos para la plantilla
         var ws_box_data_nav = {
             filters: filters,
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
-            // colaborator_list: colaboration_list,
-            //  category_list: category_list,
             payment_type_list: payment_type_list,
+            // colaborator_list: colaboration_list,
+            // category_list: category_list,
             // operation_type_list:operation_type_list,
             // result: result.docs // Agregar los documentos resultantes a los datos de la plantilla
         }
-        console.log('FILTROS ws_box_data_nav', ws_box_data_nav);
 
+        console.log('FILTROS ws_box_data_nav', ws_box_data_nav);
         // Renderizar el contenido
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/box.hbs', '#content_compiled', mov_content);
         await renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/nav_bar.hbs', '#nav_bar_compiled', ws_box_data_nav);
-        //   await get_nav_box();
         await print_mov_item(all_items_array);
 
-        console.log('client_id:', clientList);
-        console.log('startKey:', startKey, 'endKey:', endKey);
-        console.log('RESULTADO DE CONSULTA:', all_items_array);
-        console.log('LIMIT:', limit, 'skip:', skip, 'pageNumber:', pageNumber, 'totalFilterItems:', totalFilterItems);
+        console.log('** RESULTADO DE CONSULTA:', all_items_array);
 
     } catch (error) {
-        console.log('ERROR EN BOX SETTING', error);
+        console.log('ERROR EN BOX', error);
         if (error.msj == 'missing' || error.msj == 'deleted' || error.msj == 'not_found') {
             box_welcome();
             new_payment_type_list_doc();
@@ -1400,6 +1603,15 @@ async function get_box(pageNumber = 1, limit = 10) {
 
 // Selecciono filtro de fecha
 async function box_filter_select_date(element) {
+
+    ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
+    // Mapeo el contenido del objeto ws_left_nav M
+    ws_left_nav_data = ws_left_nav['ws_left_nav'];
+    user_Ctx = ws_left_nav.userCtx;
+    user_info = ws_left_nav.ws_left_nav;
+    // Mapeo el contenido del objeto userCtx
+    userCtx = user_Ctx.userCtx;
+   // console.log('WWWWWWWWW userCtx',userCtx)
     var dateValue = element.getAttribute("value");
     var startDate, endDate;
     var button = document.getElementById("box_date_filter_btn");
@@ -1482,6 +1694,7 @@ async function box_filter_select_date(element) {
         pageNumber: pageNumber,
         limit: limit,
         skip: skip,
+        user_name:userCtx.name,
     };
     // Llamar a la función para actualizar o crear el documento
     response = await updateOrCreateDocument(updateFields);
@@ -1726,6 +1939,7 @@ async function box_add_new_cat(element) {
 
     }
 }
+
 // SELECCIONO
 async function box_select_new_cat(element, new_cat) {
     let item_value_id = $(element).attr('item_value_id');
@@ -1745,6 +1959,7 @@ async function box_select_new_cat(element, new_cat) {
     }
 
 }
+
 /// PUT NUEVO BOARD 
 async function put_new_box(b) {
     try {
@@ -1924,6 +2139,7 @@ async function put_new_box(b) {
         });
     }
 }
+
 /// COSAS Q FALTAN 24
 async function mov_edit_put(formData, doc_id) {
     try {
@@ -1965,6 +2181,7 @@ async function mov_edit_put(formData, doc_id) {
     }
     // catalog_edit_item_url(doc_id, 1);
 }
+
 //Nuevo Movimiento
 async function add_new_mov(element) {
     try {
@@ -2004,9 +2221,7 @@ async function add_new_mov(element) {
     }
 }
 
-
 ///PAGO DE ORDEN CREA MOVIMIENTO
-
 async function new_mov_pay(element) {
 
     //const doc_id = $(element).attr('doc_id'); //Id del documento a edita
@@ -2014,10 +2229,17 @@ async function new_mov_pay(element) {
     // const doc = await L_board_db.get(doc_id_s); // Traigo el documento
 
     const category_id = $(element).attr('category_id'); 
-
-    // Obtener los valores de los atributos de datos
+    //TRAIGO DATOS DEL POPUP PAGAR
     var new_mov_description = $('#new_mov_description').val();
     var mov_value = $('#new_mov_value').val();
+
+    var total_service = $('#total_service_order_input').val();
+    var total_products = $('#total_products').val();
+    var total_tax = $('#total_tax').val();
+    var total_discount = $('#total_discount').val();
+    
+    var total = $('#new_mov_value').val();
+
     var type_mov_payment = document.getElementById('type-mov-payment-btn').getAttribute('data-type-payment');
     //var type_mov_payment_text = document.getElementById('type-mov-payment-text').getAttribute('data-text');
     var type_mov = document.getElementById('type-mov-btn').getAttribute('data-type-mov');
@@ -2043,7 +2265,7 @@ async function new_mov_pay(element) {
 
     // Mapeo el contenido del objeto userCtx
     userCtx = user_Ctx.userCtx;
-    console.log('userCtx userCtx userCtx userCtx',user_Ctx,' type_mov_payment_text', type_mov_payment_text,'type_mov',type_mov,'new_mov_description',new_mov_description);
+    //console.log('userCtx userCtx userCtx userCtx',user_Ctx,' type_mov_payment_text', type_mov_payment_text,'type_mov',type_mov,'new_mov_description',new_mov_description);
     try {
 
     // Map the order document to an array
@@ -2069,11 +2291,11 @@ let response = await L_box_db.put({
     status: 'close',
     order_status: 'close',
     // Datos comprobante
-    total_service: false,
-    total_products: false,
-    total_tax: false,
-    total_discount: false,
-    total: mov_value,
+    total_service: parseFloat(total_service),
+    total_products: parseFloat(total_products),
+    total_tax: parseFloat(total_tax),
+    total_discount: parseFloat(total_discount),
+    total: parseFloat(total),
 
     // Datos pago
     payment_type: type_mov_payment_text,
@@ -2114,13 +2336,67 @@ let response = await L_box_db.put({
     }
 }
 
+// Función para obtener los totales de todos los ítems sin paginación
+async function getTotalItems() {
+    try {
+        const filters = await box_local_db.get('filtros');
+       // console.log('Filtros:', filters); // Imprimir los filtros para verificar
+
+        const startkey = ['box_mov', filters.user_name, filters.startDate];
+        const endkey = ['box_mov', filters.user_name, filters.endDate + "\ufff0"];
+
+      //  console.log('Startkey:', startkey); // Imprimir startkey para verificar
+     //  console.log('Endkey:', endkey); // Imprimir endkey para verificar
+
+        // Realizar la consulta a la base de datos para obtener todos los ítems sin paginación
+        let response = await L_box_db.query('box_mov_get/totals_by_user_and_date', {
+            startkey: startkey,
+            endkey: endkey,
+            group: true
+        });
+
+ 
+
+        // Procesar los datos obtenidos
+        let totals = {
+            mov_in: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
+            mov_out: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
+            sell: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
+            purchase: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
+            service_turn: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 },
+            service_order: { total: 0, total_tax: 0, total_discount: 0, total_service: 0 }
+        };
+
+        response.rows.forEach(row => {
+            let values = row.value;
+            let category = values.category;
+
+            if (totals[category]) {
+                totals[category].total += values.total;
+                totals[category].total_tax += values.total_tax;
+                totals[category].total_discount += values.total_discount;
+                totals[category].total_service += values.total_service;
+            }
+        });
+
+        console.log('RESPONSE MOV:', response); // Imprimir la respuesta para verificar
+        console.log('Totales:', totals);
+
+        return totals;
+    } catch (err) {
+        console.error('Error al obtener los totales de todos los ítems:', err);
+        throw err;
+    }
+}
+
+// Traigo los totales de los movimientos de la DB
 async function get_box_stats(button) {
     try {
         var price_list = await L_catalog_db.get('price_list');
         var currency_list = await L_catalog_db.get('currency_list');
         var tax_list = await L_catalog_db.get('tax_list');
 
-        var catalog_config = {
+        var data_array = {
             ws_info: ws_info,
             ws_lang_data: ws_lang_data,
             user_roles: user_Ctx.userCtx.roles,
@@ -2128,23 +2404,26 @@ async function get_box_stats(button) {
             currency_list: currency_list.currency_list,
             tax_list: tax_list.tax,
         };
-        console.log('catalog_config', catalog_config);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', catalog_config);
+
+        var mov_filtered =  await getTotalItems();
+        //  var mov_filtered_total = await getMovementTotals();
+
+        console.log('RESULTADO TOTAL FILTRADO: ', mov_filtered ); 
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/view_stats.hbs', '#right_main', data_array);
         createCookie('left_nav_open_ws_' + ws_id, false), 30; // seteo la ventana abierta en la cockie
         $('#right_main').removeClass('move-right');
         var m_url = '?type=box&?t=stats';
         history.replaceState(null, null, m_url); //Cargo la nueva url en la barra de navegacion
 
-        // Obtener el filtro seleccionado
-        var selectedFilter = document.querySelector('#box_date_filter_btn_tittle').textContent.trim();
-        var { startDate, endDate } = getStartAndEndDate(selectedFilter);
-        // Llamar a la función para actualizar los datos con el filtro seleccionado
-        renderStats(startDate.toISOString().split('T')[0], endDate.toISOString().split('T')[0]);
+
+       return  renderStats();
+
     } catch (err) {
         console.log(err);
     }
 }
 
+//Filtro de fechas
 function getStartAndEndDate(value) {
     var startDate, endDate;
     switch (value) {
@@ -2189,6 +2468,7 @@ function getStartAndEndDate(value) {
     return { startDate, endDate };
 }
 
+
 function getCurrentDateWithTime(hour, minute) {
     var currentDate = new Date();
     var year = currentDate.getFullYear();
@@ -2197,98 +2477,11 @@ function getCurrentDateWithTime(hour, minute) {
     return new Date(year, month, day, hour, minute);
 }
 
-async function getStatsData(startDate, endDate) {
-    try {
-        // Realizar la consulta a la base de datos para obtener los datos de ingresos y egresos
-        let ingresosResponse = await L_box_db.query('box_mov_get/by_date_and_type', {
-            startkey: ['ingreso', startDate],
-            endkey: ['ingreso', endDate + "\ufff0"],
-            include_docs: true
-        });
+// Imprimo graficos
+async function renderStats() {
+    const statsData = await getTotalItems();
+    console.log('GET TOTAL DATA MOV : statsData', statsData);
 
-        let egresosResponse = await L_box_db.query('box_mov_get/by_date_and_type', {
-            startkey: ['egreso', startDate],
-            endkey: ['egreso', endDate + "\ufff0"],
-            include_docs: true
-        });
-
-        // Procesar los datos obtenidos
-        let totalIngresos = 0;
-        let totalEgresos = 0;
-        let ingresosPorTipo = {};
-        let egresosPorTipo = {};
-        let ingresosPorPago = {};
-        let egresosPorPago = {};
-
-        console.log('DATOS FILTRADOS egresosResponse',egresosResponse);
-        console.log('DATOS FILTRADOS ingresosResponse',ingresosResponse);
-
-        ingresosResponse.rows.forEach(row => {
-            let ingreso = row.doc;
-            totalIngresos += ingreso.total;
-
-            // Sumar por tipo de ingreso
-            if (!ingresosPorTipo[ingreso.category]) {
-                ingresosPorTipo[ingreso.category] = 0;
-            }
-            ingresosPorTipo[ingreso.category] += ingreso.total;
-
-            // Sumar por tipo de pago
-            if (!ingresosPorPago[ingreso.payment_type]) {
-                ingresosPorPago[ingreso.payment_type] = 0;
-            }
-            ingresosPorPago[ingreso.payment_type] += ingreso.total;
-        });
-
-        egresosResponse.rows.forEach(row => {
-            let egreso = row.doc;
-            totalEgresos += egreso.total;
-
-            // Sumar por tipo de egreso
-            if (!egresosPorTipo[egreso.category]) {
-                egresosPorTipo[egreso.category] = 0;
-            }
-            egresosPorTipo[egreso.category] += egreso.total;
-
-            // Sumar por tipo de pago
-            if (!egresosPorPago[egreso.payment_type]) {
-                egresosPorPago[egreso.payment_type] = 0;
-            }
-            egresosPorPago[egreso.payment_type] += egreso.total;
-        });
-
-        return {
-            totalIngresos,
-            totalEgresos,
-            ingresosPorTipo,
-            egresosPorTipo,
-            ingresosPorPago,
-            egresosPorPago
-        };
-    } catch (error) {
-        console.error('Error al obtener los datos de la base de datos:', error);
-        return {
-            totalIngresos: 0,
-            totalEgresos: 0,
-            ingresosPorTipo: {},
-            egresosPorTipo: {},
-            ingresosPorPago: {},
-            egresosPorPago: {}
-        };
-    }
-}
-
-async function renderStats(startDate, endDate) {
-   const statsData = await getStatsData(startDate, endDate);
-
-    //const statsData = await filterDocuments('user_name',startDate, endDate, 'desired_payment_method', 'desired_operation_type');
-   
-
-    console.log('Filtered documents statsData :', statsData );
-    console.log('DATOS FILTRADOS statsData endDat',startDate, endDate);
-    console.log('DATOS FILTRADOS statsData',statsData);
-
-    // Asegurarse de que los elementos HTML existen antes de intentar actualizar su contenido
     const totalIngresosElement = document.getElementById('total-ingresos');
     const totalEgresosElement = document.getElementById('total-egresos');
     const chartIngresosTipoElement = document.getElementById('chart-ingresos-tipo');
@@ -2296,14 +2489,16 @@ async function renderStats(startDate, endDate) {
     const chartEgresosTipoElement = document.getElementById('chart-egresos-tipo');
     const chartEgresosPagoElement = document.getElementById('chart-egresos-pago');
 
+    // Actualizar los elementos HTML con los totales
     if (totalIngresosElement) {
-        totalIngresosElement.textContent = `$${statsData.totalIngresos}`;
+        totalIngresosElement.textContent = `$${statsData.mov_in.total.toFixed(2)}`;
     }
 
     if (totalEgresosElement) {
-        totalEgresosElement.textContent = `$${statsData.totalEgresos}`;
+        totalEgresosElement.textContent = `$${statsData.mov_out.total.toFixed(2)}`;
     }
 
+    // Configurar y renderizar los gráficos
     if (chartIngresosTipoElement) {
         var optionsIngresosTipo = {
             chart: {
@@ -2312,10 +2507,15 @@ async function renderStats(startDate, endDate) {
             },
             series: [{
                 name: 'Ingresos por Tipo',
-                data: Object.values(statsData.ingresosPorTipo)
+                data: [
+                    statsData.sell.total,
+                    statsData.purchase.total,
+                    statsData.service_turn.total,
+                    statsData.service_order.total
+                ]
             }],
             xaxis: {
-                categories: Object.keys(statsData.ingresosPorTipo),
+                categories: ['Sell', 'Purchase', 'Service Turn', 'Service Order'],
                 title: {
                     text: 'Tipo de Ingreso'
                 }
@@ -2339,10 +2539,14 @@ async function renderStats(startDate, endDate) {
             },
             series: [{
                 name: 'Ingresos por Tipo de Pago',
-                data: Object.values(statsData.ingresosPorPago)
+                data: [
+                    statsData.mov_in.total_tax,
+                    statsData.mov_in.total_discount,
+                    statsData.mov_in.total_service
+                ]
             }],
             xaxis: {
-                categories: Object.keys(statsData.ingresosPorPago),
+                categories: ['Tax', 'Discount', 'Service'],
                 title: {
                     text: 'Tipo de Pago'
                 }
@@ -2366,10 +2570,15 @@ async function renderStats(startDate, endDate) {
             },
             series: [{
                 name: 'Egresos por Tipo',
-                data: Object.values(statsData.egresosPorTipo)
+                data: [
+                    statsData.sell.total,
+                    statsData.purchase.total,
+                    statsData.service_turn.total,
+                    statsData.service_order.total
+                ]
             }],
             xaxis: {
-                categories: Object.keys(statsData.egresosPorTipo),
+                categories: ['Sell', 'Purchase', 'Service Turn', 'Service Order'],
                 title: {
                     text: 'Tipo de Egreso'
                 }
@@ -2393,10 +2602,14 @@ async function renderStats(startDate, endDate) {
             },
             series: [{
                 name: 'Egresos por Tipo de Pago',
-                data: Object.values(statsData.egresosPorPago)
+                data: [
+                    statsData.mov_out.total_tax,
+                    statsData.mov_out.total_discount,
+                    statsData.mov_out.total_service
+                ]
             }],
             xaxis: {
-                categories: Object.keys(statsData.egresosPorPago),
+                categories: ['Tax', 'Discount', 'Service'],
                 title: {
                     text: 'Tipo de Pago'
                 }
@@ -2412,32 +2625,32 @@ async function renderStats(startDate, endDate) {
         chartEgresosPago.render();
     }
 }
+// Boton de ver graficos
+async function get_filtered_stats_button(filters) {
+        try {
+            filters = await box_local_db.get('filtros');
+            await get_box_stats();
 
+        } catch (error) {
+            if (error.status === 404) {
+                console.log('El documento filtros no existe. Creando filtros por defecto.');
+                // Crear filtros por defecto
+                filters = {
+                    _id: 'filtros',
+                    startDate: null,
+                    endDate: null,
+                    limit: 10,
+                    clients: [],
+                    categories: [],
+                    paymentTypes: []
+                };
+                // Guardar el documento de filtros por defecto en la base de datos
+                await box_local_db.put(filters);
+            } else {
+                console.error('Error al obtener los datos filtrados:', err);
+                throw error;
+            }
+        }
 
-/// FILTROS PERSONALIZADO 
-
-// Asumiendo que ya tienes la base de datos PouchDB inicializada en ventas_nube_box.js
-// Función asíncrona para filtrar documentos por múltiples criterios combinados
-async function filterDocuments(userName, startDate, endDate, paymentMethod, operationType) {
-    try {
-        const result = await L_box_db.query('filters/by_combined_filters', {
-            startkey: [userName, startDate, paymentMethod, operationType],
-            endkey: [userName, endDate, paymentMethod, operationType, {}]
-        });
-        console.log(result.rows);
-        return result.rows;
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
 }
 
-// Ejemplo de uso de la función
-(async () => {
-    try {
-        const filteredDocuments = await filterDocuments('user_name', '2023-01-01', '2023-12-31', 'desired_payment_method', 'desired_operation_type');
-        console.log('Filtered documents:', filteredDocuments);
-    } catch (err) {
-        console.error('Error filtering documents:', err);
-    }
-})();

@@ -2314,8 +2314,16 @@ class Workspace extends BaseController
                                             'map' =>  "function(doc) {\n    if (doc.type === 'box_mov') {\n        emit([doc.type, doc.user_data], doc);\n    }\n}"  
                                         ],
                                         'by_dat' => [
-                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n        emit(doc.entry_date, doc);\n    }\n}"  
-                                        ],                          
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date) {\n  emit(doc.entry_date, doc);\n    }\n}"  
+                                        ],       
+                                        'by_date_and_type' => [
+                                            'map' =>  "function(doc) {\n    if (doc.type === 'box_mov' && doc.entry_date && doc.mov_type) {\n emit([doc.mov_type, doc.entry_date], doc);\n    }\n}"  
+                                        ], 
+                                       'totals_by_user_and_date' => [
+                                            'map' => "function(doc) {\n if (doc.type === 'box_mov' && doc.user_name && doc.entry_date) {\n  emit([doc.type, doc.user_name, doc.entry_date, doc.category], {\n    total: parseFloat(doc.total),\n    total_tax: parseFloat(doc.total_tax),\n    total_discount: parseFloat(doc.total_discount),\n    total_service: parseFloat(doc.total_service),\n    category: doc.category\n  });\n}\n}",
+                                            'reduce' => "function(keys, values, rereduce) {\n  if (rereduce) {\n    return values.reduce((acc, curr) => {\n      return {\n        total: acc.total + curr.total,\n        total_tax: acc.total_tax + curr.total_tax,\n        total_discount: acc.total_discount + curr.total_discount,\n        total_service: acc.total_service + curr.total_service,\n        category: curr.category\n      };\n    }, { total: 0, total_tax: 0, total_discount: 0, total_service: 0, category: '' });\n  } else {\n    return values.reduce((acc, curr) => {\n      return {\n        total: acc.total + curr.total,\n        total_tax: acc.total_tax + curr.total_tax,\n        total_discount: acc.total_discount + curr.total_discount,\n        total_service: acc.total_service + curr.total_service,\n        category: curr.category\n      };\n    }, { total: 0, total_tax: 0, total_discount: 0, total_service: 0, category: '' });\n  }\n}"
+                                        ],
+
                                     ]
                     ];
 

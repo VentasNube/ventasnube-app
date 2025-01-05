@@ -153,12 +153,7 @@ async function get_module_function(ws_module_select, m_t_id, m_id, m_var_id) {
 async function put_left_nav_doc() {
     // DOC DE NAVEGACION
     try {
-        // Código que puede generar errores en PouchDB
-        // ...
     ws_left_nav = user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-
-    console.log('userCtx',userCtx)
-    // Verificar si el documento ya existe y tiene una revisión (_rev)
     if (ws_left_nav && ws_left_nav._rev) {
         // El documento ya existe, mostrar una alerta o realizar alguna acción apropiada
         alert('El documento ws_left_nav ya ha sido editado. Se encontró un conflicto de documentos.');
@@ -175,15 +170,9 @@ async function put_left_nav_doc() {
     .then(response => response.json())
     .then(data => {
         if (data.result === true) {
-           // console.log('SE BUSCAN CAMBIOS EN EL DOCUMENTO LEFT_NAV:');
-           // console.log(userCtx);
-          //  console.log(data);
-           // console.log('ws_left_nav');
-
             user_db.get('ws_left_nav_' + ws_id, function (err, doc) {
                 if (err) {
                     msj_alert(err);
-                   // alert('Falta el archivo ws_left_nav');
                     user_db.put({
                         _id: 'ws_left_nav_' + ws_id,
                         ws_left_nav: data,
@@ -226,10 +215,6 @@ async function put_left_nav_doc() {
                             });
                             console.log(err);
                         }
-                       // console.log('SE ACTUALIZO EL LEFT NAV');
-                       // console.log(userCtx);
-                       // console.log(data);
-                       // console.log(response);
                     });
                 }
             });

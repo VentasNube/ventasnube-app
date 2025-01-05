@@ -6,38 +6,31 @@
 
     <div class="margin-b-10 padding-0 ">
 
-        <h2 class="margin-0 padding-10">
-            <button type="button"
-                class="padding-5 left_nav_close right_nav_close margin-10 btn btn-transparent margin-0 pull-left">
-                <span class="material-icons">
-                    arrow_back
-                </span>
-            </button>
-            <span class="padding-t-20">
-                {{#each ws_left_nav_data.m_t}}
-                {{#ifEquals m_t_url ../order_doc.category_id}}
-                <span class="material-icons lg">{{m_t_icon}}</span>
-                {{/ifEquals}}
-                {{/each}}
 
+        <h2 class="margin-0 padding-10">
+
+            <span class="padding-t-20 text-white">
 
                 <!--span class="material-icons lg"> qr_code </span>
-
-
                 <span class="">
                     {{#with order_doc}} {{order_id}} {{/with}}
                 </span-->
 
-
+                        {{#each ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../order_doc.category_id}}
+                        <span title="" class="material-icons lg">{{m_t_icon}}</span>
+                        {{/ifEquals}}
+                        {{/each}}
 
                 {{#each board_group_doc.board_group}}
                 {{#ifEquals id ../group_id }}
                 <div class="btn-group dopdown">
-                    <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default"
-                        data-toggle="dropdown" aria-expanded="true">
+                    <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown" aria-expanded="true">
                         <div class="round-icon pr md {{color}}">
                             <span class="material-icons">
-                                radio_button_unchecked
+                             
+                            qr_code
+                        
                             </span>
                         </div>
                         <!--li bg-color="{{color}}" class="bg-color btn-status btn btn-primary {{color}}"><span class="material-icons">check_circle</span></li-->
@@ -46,14 +39,14 @@
                     </button>
                     <ul class="dropdown-menu pull-left">
                         <li class="header">
-                            Cambiar estado...
+                         Cambiar estado..
                         </li>
                         {{#each ../board_group_doc.board_group}}
                         <li class="margin-5">
                             <a class="" onclick="order_edit_group_select(this)" order_id="{{{../../order_id}}}"
                                 group_id="{{{id}}}" href="#">
-                                <div class="round-icon xd {{color}}">
-                                    <span class="material-icons">radio_button_unchecked</span>
+                                <div class="round-icon pr md {{color}}">
+                                    <span class="material-icons"> radio_button_checked</span>
                                 </div>
                                 <span class="this_m_t_name">{{name}}</span>
                             </a>
@@ -64,9 +57,12 @@
                 {{/ifEquals}}
                 {{/each}}
 
-
-
             </span>
+            <div class="btn-group dopdown pull-right margin-l-20 ">
+                <button id="" type="button" class="left_nav_close btn btn-default right_nav_close pull-right ">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
             <div class="btn-group dopdown pull-right">
                 <!-- Prometido -->
                 <!-- Con dopdown baja el poper-->
@@ -130,7 +126,10 @@
                     <li><a href="#" class=""><span class="material-icons">bug_report</span>
                             <small>Garantia</small></a></li>
                 </ul>
+
             </div>
+         
+
         </h2>
 
 
@@ -209,10 +208,8 @@
 
             <button type="button" class="dropdown-toggle select-btn xl btn-more btn btn-default" data-toggle="dropdown"
                 aria-expanded="true">
-
                 <span class="material-icons">devices_other</span>
-
-                <span class="">{{type}}</span>
+                <!--span class="">{{type}}</span-->
                 <i class="material-icons">expand_more</i>
             </button>
             <ul class="dropdown-menu pull-left padding-10">
@@ -261,42 +258,25 @@
         </div>
         {{/each}}
 
-
         <div class="btn-group dopdown padding-t-0 margin-r-10">
             <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default"
                 data-toggle="dropdown" aria-expanded="true">
                 <span class="material-icons">comment</span>
                 <!--span class="">
                     Informe
-                </span>
-                <i class="material-icons">expand_more</i-->
+                </span-->
             </button>
             <ul class="dropdown-menu pull-right padding-10 xl">
                 <li class="header">
                     Informe al cliente
                 </li>
                 <div class="col-md-12 padding-0 ">
-                    {{#with order_doc.comments}}
-                    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <span class="material-icons">
-                                    edit
-                                </span>
-                            </span>
-                            <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
-                                input_id="comments" onfocusout="order_edit(this)" class="form-control" type="textarea"
-                                placeholder="Comentarios" value="{{value}}" rows="10" cols="50">
-                            <!--- ATRIBUTOS DE LA VARIABLE -->
-                        </div>
-                    </div>
-                    {{/with}}
                     {{#with order_doc.failure}}
                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span class="material-icons">
-                                    edit
+                                    comment
                                 </span>
 
                             </span>
@@ -307,12 +287,28 @@
                         </div>
                     </div>
                     {{/with}}
+                    {{#with order_doc.comments}}
+                    <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="material-icons">
+                                    sms_failed
+                                </span>
+                            </span>
+                            <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
+                                input_id="comments" onfocusout="order_edit(this)" class="form-control" type="textarea"
+                                placeholder="Comentarios" value="{{value}}" rows="10" cols="50">
+                            <!--- ATRIBUTOS DE LA VARIABLE -->
+                        </div>
+                    </div>
+                    {{/with}}
+
                     {{#with order_doc.solutions}}
                     <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span class="material-icons">
-                                    edit
+                                    support_agent
                                 </span>
                             </span>
                             <input doc_id="{{../order_doc._id}}" order_id="{{../ order_doc.order_id}}"
@@ -321,46 +317,56 @@
                             <!--- ATRIBUTOS DE LA VARIABLE -->
                         </div>
                     </div>
+                    {{/with}}
                 </div>
-                {{/with}}
+
             </ul>
 
         </div>
-
-
-        <!--
-        'm_board_shipping_address': 'Direccion de envio',
-        'm_board_shipping_city': 'Ciudad',
-        'm_board_shipping_postal_code': 'Codigo postal',
-        'm_board_shipping_shipping_date': 'Fecha y hora de entrega',
-        'm_board_shipping_shipping_status': 'Estado de envio',
-        'm_board_shipping_carrier_name': 'Nombre del chofer',
-        'm_board_shipping_carrier_phone': 'Numero de Celular',
-        'm_board_shipping_carrier_vehicle': 'Tipo de transporte'
--->
-
-
-
-
-
-
-
-
-
-        <!--
-  " shipping": { "address" : "Shipping Address" , "city" : "Shipping City" , "postal_code" : "Postal Code"
-                                , "shipping_date" : "2023-05-15" , "shipping_status" : "pending" , "carrier" : { "name"
-                                : "Carrier Name" , "phone" : "Carrier Phone" , "vehicle" : "Carrier Vehicle" } }, -->
 
         {{#with order_doc.shipping}}
         <div class="btn-group dopdown padding-t-0 margin-r-10">
             <button type="button" class="dropdown-toggle select-btn xl  btn-round  btn btn-default"
                 data-toggle="dropdown" aria-expanded="true">
-                <span class="material-icons">location_on</span>
+                <span class="material-icons">delivery_dining</span>
+
+                <!--- 
+                in preparation, 
+                already prepared, 
+                sent, received, not found, cancelled
+                -->
+                <span class="material-icons">
+                    {{#ifCond ../shipping_status 'pending'}}
+                    pending_actions
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'preparation'}}
+                    orders
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'prepared'}}
+                    package_2
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'sent'}}
+                    local_shipping
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'delayed'}}
+                    deployed_code_history
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'received'}}
+                    inventory
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'not found'}}
+                    deployed_code_history
+                    {{/ifCond}}
+                    {{#ifCond ../shipping_status 'cancelled'}}
+                    disabled_by_default
+                    {{else}}
+                    pending_actions
+                    {{/ifCond}}
+                </span>
 
 
-                {{shipping_status}}
                 <!--span class="">
+                  {{shipping_status}}
                                         Envio
                                     </span>
                 <i class="material-icons">expand_more</i-->
@@ -433,10 +439,27 @@
                                         location_on
                                     </span>
                                 </span>
-                                <input name="shipping_status" class="form-control" type="textarea"
-                                    placeholder="{{#with ../ws_lang_data}}{{m_board_shipping_status}}{{/with}}"
-                                    value="{{shipping_status}}" rows=" 10" cols="50">
-                                <!--- ATRIBUTOS DE LA VARIABLE -->
+
+                                <select name="shipping_status" class="form-control" id="shipping_status_select">
+                                    <option value="" selected>Seleccionar estado </option>
+                                    <option value="pending" {{#ifCond ../shipping_status 'pending'
+                                        }}selected{{/ifCond}}>Pendiente</option>
+                                    <option value="preparation" {{#ifCond ../shipping_status 'preparation'
+                                        }}selected{{/ifCond}}>En preparación</option>
+                                    <option value="prepared" {{#ifCond ../shipping_status 'prepared'
+                                        }}selected{{/ifCond}}>Preparado</option>
+                                    <option value="sent" {{#ifCond ../shipping_status 'sent' }}selected{{/ifCond}}>
+                                        Enviado</option>
+                                    <option value="delayed" {{#ifCond ../shipping_status 'delayed'
+                                        }}selected{{/ifCond}}>Retrasado</option>
+                                    <option value="received" {{#ifCond ../shipping_status 'received'
+                                        }}selected{{/ifCond}}>Recibido</option>
+                                    <option value="not found" {{#ifCond ../shipping_status 'not found'
+                                        }}selected{{/ifCond}}>No encontrado</option>
+                                    <option value="cancelled" {{#ifCond ../shipping_status 'cancelled'
+                                        }}selected{{/ifCond}}>Cancelado</option>
+                                </select>
+
                             </div>
                         </div>
                         <div class="padding-0 col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -500,7 +523,7 @@
 
 <div class=" righ_nav_content padding-0">
     <!-- Cart main module -->
-    <div class="tabs-main margin-t-110 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
+    <div class="tabs-main margin-t-70 default col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-t-30">
         <ul class="nav nav-tabs">
 
             <li id="product_order_item_tab_icon" class="ripple  active">
@@ -529,10 +552,10 @@
             </li>
             <li id="_item_tab_icon" class="ripple">
                 <a data-toggle="tab" href="#activity_item_tab">
-                    <span class="material-icons"> {{#with ws_lang_data}}
-                        {{b_order_activity_icon}} {{/with}} </span>
-                    <span class="activity_items_n fav_count">{{#counter_items
-                        order_doc.update_history}}{{this}}{{/counter_items}}</span>
+                    <span class="material-icons"> published_with_changes </span>
+                    <span class="activity_items_n fav_count">
+                        {{#counter_items order_doc.update_history}}{{this}}{{/counter_items}}
+                    </span>
                     <span class="hidden-xs">
                         {{#with ws_lang_data}} {{b_order_activity_items}} {{/with}}
                     </span>
