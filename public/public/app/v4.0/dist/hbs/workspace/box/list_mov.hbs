@@ -55,7 +55,9 @@
                                     <spanclass="text-uppercase margin-r-5 margin-top label bg-gray"> <i class="material-icons">{{payment_type_icon}}</i> {{payment_type}}</span>
                                 </h5>
                                 <h6>
-                                  <strong style="font-size: 10px; font-style: normal;"><i class="material-icons"> account_circle </i> </strong> {{{client.first_name}}} {{{client.last_name}}} - <a href="#"><i class="material-icons">request_quote</i>  
+                                  <strong  style="font-size: 10px; font-style: normal;">
+                                    <i class="material-icons"> account_circle </i> </strong> {{{client.first_name}}} {{{client.last_name}}} - 
+                                  <a onclick="add_new_print_order(this)" doc_id="{{_id}}" id="{{doc_id}}"   href="#"><i class="material-icons">request_quote</i>  
                                         {{#ifCond category 'mov_in'}}
                                             {{{description}}} 
                                         {{else}}
@@ -147,7 +149,7 @@
                                         </button>
                                         <ul class="dropdown-menu l pull-right">
                                               <li>
-                                                <a onclick="box_facturar_mov(this)" doc_id="" id="" href="#">
+                                                <a onclick="box_facturar_mov(this)"doc_id="{{_id}}" id="{{doc_id}}" href="#">
                                                     <span class="material-icons">
                                                         request_quote
                                                     </span>
@@ -155,7 +157,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a onclick="catalog_edit_item(this)" doc_id="" id="" href="#">
+                                                <a onclick="add_new_print_order(this)" doc_id="{{_id}}" id="{{doc_id}}" href="#">
                                                     <span class="material-icons">
                                                         description
                                                     </span>

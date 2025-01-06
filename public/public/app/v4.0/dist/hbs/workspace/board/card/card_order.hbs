@@ -52,18 +52,25 @@
                 </div>
                 <!--s-card-content--->
                 <div class="s-card-content col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    {{#with equipment}}
-                    <div or-id="1" class="equip-btn margin-b-5" data-toggle="tooltip" data-placement="bottom">
-                        <span class="btn btn-default md">
-                            {{type}} {{trade}}
-                        </span>
-                    </div>
-                    {{/with}}
+                    {{#each equipment}}
+                        <div or-id="1" class="equip-btn margin-b-5" data-toggle="tooltip" data-placement="bottom">
+                            <span class="btn btn-default md">
+                                {{type}} {{trade}}
+                            </span>
+                        </div>
+                    {{/each}}
                     <div data-toggle="tooltip" data-placement="bottom">
                         <button or-id="1" class="presu-btn btn btn-primary md s-card-number" type="button">
                             $ {{total}}
                         </button>
                     </div>
+                    
+                    <div class="equip-btn margin-b-5" data-toggle="tooltip" data-placement="bottom">
+                        <span class="btn btn-default md">
+                            Adeuda: $ 12230{{balance}}
+                        </span>
+                    </div>
+                  
                 </div>
                 <!-- s-card-main--->
             </div>

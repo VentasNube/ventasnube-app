@@ -10,7 +10,11 @@
                             {{#each ../ws_left_nav_data.m_t}} 
                                 {{#ifEquals m_t_url  ../../order_doc.category_id}}
                                     <small class="material-icons lg">{{m_t_icon}}</small>
+
+                            {{#ifEquals 'purchase'  ../../order_doc.category_id}}
                                    {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
+                            {{/ifEquals}}
+
                                     {{m_t_name}}
                                 {{/ifEquals}}
                             {{/each}}
@@ -135,7 +139,7 @@
         document.getElementById('type-mov-payment-btn').setAttribute('data-text', text);
         document.getElementById('type-mov-payment-btn').setAttribute('data-icon', icon);
         $('#new_receive_order_input').show();
-       // document.getElementById('new_mov_receive_value').focus();
+        document.getElementById('new_mov_receive_value').focus();
         $('#add_new_receive_order').show();
         $('#new_oreder_receive_btn').removeAttr('disabled');
 

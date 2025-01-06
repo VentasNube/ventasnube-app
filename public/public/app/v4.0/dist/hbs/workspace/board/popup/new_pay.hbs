@@ -34,7 +34,7 @@
                         <div id="new_pay_order_tot" class="text-center  margin-t-10 form-group col-lg-6 col-md-6 col-sm-6 col-xs-6">
                              <label>
                                 <strong style="font-size: 25px; font-style: normal;" >
-                                     Total a abonar
+                                    {{box_incoming_receive_value}}
                                  </strong>
                                </label>
                             <strong style="font-size: 40px; font-style: normal;" >
@@ -91,8 +91,6 @@
         <!--button type="button" class="btn-previus btn btn-default" data-dismiss="modal" aria-label="Close">
             <span class="">{{b_cancel}}</span>
         </button-->
-       
-        
        
         {{#with ../order_doc}}
                 <button id="new_oreder_pay_btn" disabled=""  doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"

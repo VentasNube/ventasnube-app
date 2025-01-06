@@ -1735,52 +1735,7 @@ async function dell_order_item(element) {
 }
 
 
-//Nuevo Movimiento
-async function add_new_pay_order(element) {
-    try {
-        const modal = document.getElementById('master_popup');
-        // Listas de precio ws_collections_333433/
-        const order_id = $(element).attr('order_id');
-        const doc_id = $(element).attr('doc_id');
-        ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
-        tax_list = await L_catalog_db.get('tax_list');
-        payment_type_list = await L_box_db.get('payment_type_list');
-        price_list = await L_catalog_db.get('price_list');
-        currency_list = await L_catalog_db.get('currency_list');
-        box_config_print = await L_catalog_db.get('box_config_print');
-        order_doc = await L_board_db.get(doc_id);
-
-        const data = {
-            order_doc:order_doc,
-            ws_price_list: ws_price_list,
-            ws_lang_data: ws_lang_data,
-            user_roles: user_Ctx.userCtx.roles,
-            payment_type_list:payment_type_list.payment_type_list,
-            tax_list: tax_list.tax_list,
-            price_list: price_list.price_list,
-            currency_list: currency_list.currency_list,
-            box_config_print: box_config_print,
-            ws_left_nav_data:ws_left_nav_data,
-            currency_default: currency_list.currency_default,
-        }
-
-        console.log('data POPUP ',data);
-        $(modal).modal('show');
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_pay.hbs', '#master_popup', data);
-        // save_new_conctact();
-    } catch (err) {
-        console.log('ERROR add_new_pay_order', err)
-        Snackbar.show({
-            text: err.reason,
-            actionText: '<span class="material-icons">refresh</span> Refresh ',
-            actionTextColor: "#0575e6",
-            duration: Snackbar.LENGTH_INDEFINITE,
-            action: () => { updateDocuments() }
-        });
-    }
-}
-
-//Nuevo Movimiento
+//FUNCION UNICA QUE ES EL POPUP DE COBRAR O PAGAR UNA ORDEN
 async function add_new_receive_order(element) {
     try {
         const modal = document.getElementById('master_popup');
@@ -1812,6 +1767,52 @@ async function add_new_receive_order(element) {
         console.log('data POPUP ',data);
         $(modal).modal('show');
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_receive.hbs', '#master_popup', data);
+        // save_new_conctact();
+    } catch (err) {
+        console.log('ERROR add_new_contact', err)
+        Snackbar.show({
+            text: err.reason,
+            actionText: '<span class="material-icons">refresh</span> Refresh ',
+            actionTextColor: "#0575e6",
+            duration: Snackbar.LENGTH_INDEFINITE,
+            action: () => { updateDocuments() }
+        });
+    }
+}
+
+
+//ABRO EL POPUP DE IMPRIMIR ORDEN
+async function add_new_print_order(element) {
+    try {
+        const modal = document.getElementById('master_popup');
+        // Listas de precio ws_collections_333433/
+        const order_id = $(element).attr('order_id');
+        const doc_id = $(element).attr('doc_id');
+        ws_price_list = await L_catalog_db.get('price_list', { include_docs: true, descending: true });
+        tax_list = await L_catalog_db.get('tax_list');
+        payment_type_list = await L_box_db.get('payment_type_list');
+        price_list = await L_catalog_db.get('price_list');
+        currency_list = await L_catalog_db.get('currency_list');
+        box_config_print = await L_catalog_db.get('box_config_print');
+        order_doc = await L_board_db.get(doc_id);
+
+        const data = {
+            order_doc:order_doc,
+            ws_price_list: ws_price_list,
+            ws_lang_data: ws_lang_data,
+            user_roles: user_Ctx.userCtx.roles,
+            payment_type_list:payment_type_list.payment_type_list,
+            tax_list: tax_list.tax_list,
+            price_list: price_list.price_list,
+            currency_list: currency_list.currency_list,
+            currency_default: currency_list.currency_default,
+            box_config_print: box_config_print,
+            ws_left_nav_data:ws_left_nav_data,
+        }
+
+        console.log('data POPUP ',data);
+        $(modal).modal('show');
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_print_receive.hbs', '#master_popup', data);
         // save_new_conctact();
     } catch (err) {
         console.log('ERROR add_new_contact', err)
@@ -1890,118 +1891,26 @@ async function new_order_pay(element) {
             payment_status: payment_status,
             order_status: order_status,
         });
-        console.log('PUT NUEVA ORDEN response',response);
+      //  console.log('PUT NUEVA ORDEN response',response);
         if (response) {
             Snackbar.show({
                 text: `Realizo el pago #mov_${new_doc_id} con exito!`,
                 actionText: 'OK',
                 actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
+                pos: 'bottom-left',
+                duration: 2000
             });
+            // Cerrar el modal de pago
+             $('#master_popup').modal('hide');
         } else {
             Snackbar.show({
                 text: 'No se pudo realizar el pago!',
                 actionText: 'OK',
                 actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
+                pos: 'bottom-left',
+                duration: 2000
             });
         }
-    } catch (error) {
-        Snackbar.show({
-            text: 'No se pudo realizar el pago!',
-            actionText: 'OK',
-            actionTextColor: "#0575e6",
-            pos: 'bottom-right',
-            duration: 5000
-        });
-        console.error('Error processing and saving the order in the local database:', error);
-    }
-}
-
-
-async function new_order_payOLD(element) {
-    const doc_id = $(element).attr('doc_id'); //Id del documento a edita
-    const doc_id_s = String(doc_id); // Convierto el id del doc en un string
-    const doc = await L_board_db.get(doc_id_s); // Traigo el documento
-    let timestamp = Date.now().toString().slice(-5);  // Get the last 5 digits of the Unix timestamp
-    let letters = Array(2).fill(1).map(() => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');  // Generate 2 random letters
-    const mov_id_new = letters + '-' + timestamp + '-mov';
-    const new_doc_id = `${Date.now().toString()}_${Math.random().toString(36).substring(2, 15)}_order_${doc.category_id}`;
-    //const { ws_id, hour, minutes } = doc;
-    const entry_date = { hour, minutes } = await getDateTimeMinutes();
-    ws_left_nav = await user_db.get('ws_left_nav_' + ws_id, { include_docs: true, descending: true });
-    // Mapeo el contenido del objeto ws_left_nav M
-    ws_left_nav_data = ws_left_nav['ws_left_nav'];
-     user_Ctx = ws_left_nav.userCtx;
-    // Mapeo el contenido del objeto userCtx
-    userCtx = user_Ctx.userCtx;
-    //DATOS DE LA ORDEN
-
-    const payment_type = $(element).attr('payment_type'); //Id del documento a edita
-    const payment_type_id = $(element).attr('payment_type_id'); //Id del documento a edita
-    const payment_status = $(element).attr('payment_status'); //Id del documento a edita
-    const order_status = $(element).attr('order_status'); //Id del documento a edita
-    const user_name = userCtx.name; 
-    const client_id = doc.customer.id;
-    const client = doc.customer;
-    const total_service = parseFloat(doc.total_service);
-    const total_service_cost = parseFloat(doc.total_service_cost);
-    const total_products = parseFloat(doc.total_products);
-    const total_products_cost = parseFloat(doc.total_products_cost);
-    const total_tax = parseFloat(doc.total_tax);
-    const total_discount = parseFloat(doc.total_discount);
-    const total = parseFloat(doc.total);
-    const category = doc.category_id;
-    try {
-        // Map the order document to an array
-     let response = await L_box_db.put({
-            _id: 'mov_' + new_doc_id, // Unique ID for the order
-            type:'box_mov',
-            order_id: doc_id,
-            mov_id: mov_id_new ,
-            status: 'close',
-            entry_date: new Date(), //fecha actual del navegador
-            user_name: userCtx.name ,
-            client_id:  doc.customer.id,
-            client: doc.customer,
-            total_service: parseFloat(doc.total_service) ,
-            total_service_cost: parseFloat(doc.total_service_cost),
-            total_products: parseFloat(doc.total_products),
-            total_products_cost: parseFloat(doc.total_products_cost),
-            
-            total_tax: parseFloat(doc.total_tax),
-            total_discount: parseFloat(doc.total_discount),
-            total: parseFloat(doc.total),
-            category:doc.category_id,
-
-            payment_type:'efectivo', 
-            payment_type_id:'1',
-
-            payment_status:'saldado',
-            order_status:'close',
-        });
-
-        if (response) {
-            Snackbar.show({
-                text: 'Realizo el pago '+ '#mov_' + new_doc_id+' con exito!',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
-            });
-        } else {
-            Snackbar.show({
-                text: 'No se pudo realizar el pago!',
-                actionText: 'OK',
-                actionTextColor: "#0575e6",
-                pos: 'bottom-right',
-                duration: 5000
-            });
-        }
-
-       // console.log('Order processed and saved successfully in the local database.');
     } catch (error) {
         Snackbar.show({
             text: 'No se pudo realizar el pago!',
