@@ -321,7 +321,6 @@ class Workspace extends BaseController
             $ws_float = $this->request->getPost('ws_float');
             $ws_cp = $this->request->getPost("ws_cp");
             
-
             // 
             $ws_data = [
                 'workspace_name' => $ws_name,
@@ -1851,9 +1850,20 @@ class Workspace extends BaseController
                         ]
                     ];
 
-
-
-                   
+                           // Crear la variable $box_config_print utilizando las variables existentes
+                    $box_config_print = [
+                            '_id' => 'box_config_print',
+                            'nombre' => $ws_name,
+                            'telefono' => $ws_whatsaap,
+                            'direccion' => $ws_street.', ' .$ws_number.', ' . $ws_state . ', ' . $ws_city . ', ' . $ws_country,
+                            'sitio_web' => $ws_web,
+                            'email' => $ws_email,
+                            'cuit' => '0000000',
+                            'createDate' => date('Y-m-d\TH:i:sP'),
+                            'updateDate' => date('Y-m-d\TH:i:sP'),
+                            'updateUser' => $user_email,
+                            'ws_avatar_img'=> $ws_avatar_img
+                    ];
 
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
@@ -1876,6 +1886,7 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/trade_list', $trade_list); //Creo un doc con la informacion las listas de marcas
                     $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
                     $this->WorkspaceModel->curl_put($db_name . '/tax_list', $tax_list); //Creo un doc con la informacion las listas de modelos
+                    $this->WorkspaceModel->curl_put($db_name . '/box_config_print', $box_config_print); 
                     //DOC EJEMPLO PRODUCTOS
                     // $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                     // $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
@@ -2441,20 +2452,6 @@ class Workspace extends BaseController
                     ];
 
 
-                    
-                    // Documento de configuración de impresión de caja
-                    $ws_box_config_print = [
-                        '_id' => 'ws_' . $workspace_id_hex . '_box_config_print',
-                        'nombre' => 'ME VOY ahora',
-                        'telefono' => '011-54777098',
-                        'direccion' => 'LOMAS 18',
-                        'sitio_web' => 'SIVERNET',
-                        'createDate' => date('c'),
-                        'updateDate' => date('c'),
-                        'updateUser' => $user_email
-                    ];
-    
-
                     $category_list = [
                         '_id'=> 'category_list',
                         'type'=> 'category_list',
@@ -2505,7 +2502,7 @@ class Workspace extends BaseController
 
                         $this->WorkspaceModel->curl_put($db_name . '/payment_type_list', $payment_type_list);
                         $this->WorkspaceModel->curl_put($db_name . '/operation_type_list', $operation_type_list); 
-                        $this->WorkspaceModel->curl_put($db_name . '/box_config_print',  $ws_box_config_print); 
+                 
                        
                     //    $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); 
                     }
