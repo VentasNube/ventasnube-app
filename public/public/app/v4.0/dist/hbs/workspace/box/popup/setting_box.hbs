@@ -736,12 +736,12 @@
                                 <div id="ws_box_config_print" class="tab-pane fade bg-white">
                                     <div class="bg-white col-lg-6 col-md-6  col-sm-12 col-xs-12">
                                         <div class="bg-white form-group col-xs-12">
-                                            <label><strong>Cabecera de comprobantes</strong></label>
+                                            <label><strong>Editar cabecera de comprobantes</strong></label>
                                         </div>
                                         <div class="col-xs-12 body_invoice">
                                             <div class="invoice">
                                                 <h4 class="page-header">
-                                                    <img style="" id="ws_logo" class="logoDoc"
+                                                    <img  id="ws_logo_print_img" class="logoDoc"
                                                         src="{{#with ws_info}} {{{workspace_img }}}{{/with}}">
 
                                                     <label style="vertical-align: middle;" class="">
@@ -1052,11 +1052,10 @@
         // $("#input-select-3").val(bgColor);    
     });
 
-    document.getElementById('editButton').addEventListener('click', function () {
+        document.getElementById('editButton').addEventListener('click', function () {
         //  document.getElementById('ws_box_config_print').style.display = 'none';
         document.getElementById('editButton').style.display = 'none';
         document.getElementById('edit_form').style.display = 'block';
-
         //document.getElementById('editButton').style.display = 'block';
         // Rellenar el formulario con los datos actuales
         document.getElementById('nombre').value = document.getElementById('nombre_display').innerText;
@@ -1076,6 +1075,7 @@
             const telefono = document.getElementById('telefono').value;
             const direccion = document.getElementById('direccion').value;
             const sitio_web = document.getElementById('sitio_web').value;
+            const ws_logo_print_img = document.getElementById('ws_logo_print_img').src;
             let doc;
             try {
                 // Intentar obtener el documento actual de CouchDB
@@ -1085,6 +1085,7 @@
                 doc.telefono = telefono;
                 doc.direccion = direccion;
                 doc.sitio_web = sitio_web;
+                doc.ws_logo_print_img = ws_logo_print_img;
                 doc.updateDate = new Date();
                 doc.updateUser = userCtx.userCtx.name;
             } catch (error) {
@@ -1096,6 +1097,7 @@
                         telefono: telefono,
                         direccion: direccion,
                         sitio_web: sitio_web,
+                        ws_logo_print_img: ws_logo_print_img,
                         createDate: new Date(),
                         updateDate: new Date(),
                         updateUser: userCtx.userCtx.name
@@ -1123,7 +1125,6 @@
                 document.getElementById('sitio_web_display').innerText = sitio_web;
                 document.getElementById('sitio_web_display_2').innerText = sitio_web;
                 document.getElementById('direccion_display_2').innerText = direccion;
-
                 // Mostrar el div ws_box_config_print y ocultar el formulario
                 // document.getElementById('ws_box_config_print').style.display = 'block';
                 document.getElementById('edit_form').style.display = 'none';

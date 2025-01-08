@@ -1782,7 +1782,7 @@ async function add_new_receive_order(element) {
 
 
 //ABRO EL POPUP DE IMPRIMIR ORDEN
-async function add_new_print_order(element) {
+async function print_receive_order(element) {
     try {
         const modal = document.getElementById('master_popup');
         // Listas de precio ws_collections_333433/
@@ -1815,7 +1815,7 @@ async function add_new_print_order(element) {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/board/popup/new_print_receive.hbs', '#master_popup', data);
         // save_new_conctact();
     } catch (err) {
-        console.log('ERROR add_new_contact', err)
+        console.log('print_receive_order', err)
         Snackbar.show({
             text: err.reason,
             actionText: '<span class="material-icons">refresh</span> Refresh ',
@@ -1893,6 +1893,8 @@ async function new_order_pay(element) {
         });
       //  console.log('PUT NUEVA ORDEN response',response);
         if (response) {
+           // $('#master_popup').modal('hide');
+           print_receive_order(element);
             Snackbar.show({
                 text: `Realizo el pago #mov_${new_doc_id} con exito!`,
                 actionText: 'OK',
@@ -1901,7 +1903,7 @@ async function new_order_pay(element) {
                 duration: 2000
             });
             // Cerrar el modal de pago
-             $('#master_popup').modal('hide');
+            
         } else {
             Snackbar.show({
                 text: 'No se pudo realizar el pago!',

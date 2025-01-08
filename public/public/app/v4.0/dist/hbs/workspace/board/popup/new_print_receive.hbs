@@ -1,24 +1,25 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 
 {{#with ws_lang_data }}
-<div class="modal-dialog modal-xs" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <form id="new_mov_form" class="">
             <div class="modal-header">
                 <div class="modal-nav">
-                        <span class="modal-title">
-                            {{#each ../ws_left_nav_data.m_t}} 
-                                {{#ifEquals m_t_url  ../../order_doc.category_id}}
-                                    <small class="material-icons lg">{{m_t_icon}}</small>
+                    <span class="modal-title">
+                        {{#each ../ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../../order_doc.category_id}}
+                        <small class="material-icons lg">{{m_t_icon}}</small>
 
-                            {{#ifEquals 'purchase'  ../../order_doc.category_id}}
-                                   {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
-                            {{/ifEquals}}
+                        {{#ifEquals 'purchase' ../../order_doc.category_id}}
+                        {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
+                        {{/ifEquals}}
 
-                                    {{m_t_name}}
-                                {{/ifEquals}}
-                            {{/each}}
-                        </span>
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+
+                    </span>
 
                     <span class="back-arrow btn-previus pull-right">
                         <small>
@@ -37,71 +38,161 @@
             </div>
             <div id="modal-body" class="">
                 <div class="modal-body padding-0 text-left col-sm-12 col-md-12 col-xs-12">
-                        <div id="new_print_order_tot" class="text-center  margin-t-10 form-group col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                             <label>
-                                <strong style="font-size: 25px; font-style: normal;" >
-                                     {{box_incoming_pay_value}}
-                                 </strong>
-                               </label>
-                            <strong style="font-size: 40px; font-style: normal;" >
-                                    {{#with ../currency_default}}{{value}}{{/with}}
-                            <span>  {{#with ../order_doc}}{{total}}{{/with}}</span>
-                            </strong>
+                    <div class="bg-white col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="bg-white form-group col-xs-12">
+                            <label><strong>{{m_box_print_pay}}</strong></label>
                         </div>
 
-                        <div class="padding-t-20 form-group text-center col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="btn-group">
-                                <button type="button" id="type-mov-payment-btn" class="btn xl btn-more btn-primary line dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span id="type-mov-payment-icon" class="material-icons">
-                                        account_balance_wallet
-                                    </span>
-                                    <span id="type-mov-payment-text" data-text="" class="hidden-xs hidden-sm">
-                                        Medio de pago
-                                    </span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li role="separator" class="divider"></li>
-                                    {{#each ../payment_type_list as | pl |}}
-                                    <li><a onclick="add_new_mov_select_type_payment(this)" data-value="{{id}}" href="#"
-                                            data-icon="{{icon}}" data-text="{{name}}"><i
-                                                class="material-icons">{{icon}}</i>{{name}}</a></li>
-                                    {{/each}}
-                                    <li role="separator" class="divider"></li>
-                                </ul>
+
+
+                        <div class="col-xs-12 body_invoice">
+                            <div class="invoice">
+                                <h4 class="page-header">
+                                    <img style="" id="ws_logo_print_img" class="logoDoc"
+                                        src="{{#with ../box_config_print}} {{{ws_logo_print_img}}} {{/with}}">
+
+                                    <label style="vertical-align: middle;" class="">
+                                        <h4 class="margin-bottom-none padding-0">
+                                            <b><i class="fa fa-whatsapp"></i> </b>
+                                            <span id="nombre_display"> {{#with ../box_config_print}} {{{nombre }}}
+                                                {{/with}}</span><br>
+                                        </h4>
+                                        <h4 class="margin-bottom-none padding-0">
+                                            <b><i class="fa fa-whatsapp"></i> </b>
+                                            <span id="telefono_display">{{#with ../box_config_print}} {{{telefono
+                                                }}}{{/with}}</span><br>
+                                        </h4>
+                                        <h5 class="margin-top-none padding-0">
+                                            <b><i class="fa fa-chrome"></i> </b>
+                                            <span id="sitio_web_display">{{#with ../box_config_print}}
+                                                {{{sitio_web }}}{{/with}}</span><br>
+                                            <b><i class="fa fa-map-marker"></i> </b>
+                                            <span id="direccion_display">{{#with ../box_config_print}}
+                                                {{{direccion }}}{{/with}}</span><br>
+                                        </h5>
+                                    </label>
+
+                                    <small style="border-left:#616161 solid 3px; padding: 5px;"
+                                        class="pull-right text-right">
+                                        <h4>
+                                            <b><strong>
+                                                    {{#each ../ws_left_nav_data.m_t}}
+                                                    {{#ifEquals m_t_url ../../order_doc.category_id}}
+
+                                                    {{#ifEquals 'purchase' ../../order_doc.category_id}}
+                                                    {{m_t_name}}
+                                                    {{/ifEquals}}
+                                                    {{m_t_name}}
+                                                    {{/ifEquals}}
+                                                    {{/each}}
+
+                                                    {{#with ../order_doc}} <br>
+                                                    Nº </strong>{{order_id}}</b><br>
+                                        </h4>
+                                        <h5>
+                                            <b><strong>Fecha: </strong>xx/xx/xxxx</b><br>
+                                            <b><strong>Vendedor: </strong> Usuario</b><br>
+                                        </h5>
+                                    </small>
+
+                                    <small style="padding:5px; vertical-align: middle;" class="pull-right">
+                                        <h4 class="margin-bottom-none padding-0">
+                                            <b><i class="fa fa-whatsapp"></i> </b> <span>Nombre del cliente</span><br>
+                                        </h4>
+                                        <h5 class="margin-top-none padding-0">
+                                            <b><i class="fa fa-chrome"></i> </b> <span id="sitio_web_display_2">Telefono
+                                                del cliente:</span><br>
+                                            <b><i class="fa fa-map-marker"></i> </b> <span
+                                                id="direccion_display_2">Direccion delcliente</span><br>
+                                        </h5>
+                                    </small>
+                                </h4>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ARTICULO</th>
+                                            <th>CANTIDAD</th>
+                                            <th>PRECIO UNIT</th>
+                                            <th>IMPUESTOS</th>
+                                            <th>IMPORTE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each products}}
+                                        <tr>
+                                            <td>{{doc.variant.name}}</td>
+                                            <td>{{doc.variant.quantity}}</td>
+                                            <td>{{doc.variant.currency}}{{doc.variant.price}}</td>
+                                            <td>{{#each doc.variant.taxes}}{{name}}{{value}}{{/each}}</td>
+                                            <td>{{doc.variant.currency}}{{doc.variant.price}}</td>
+                                        </tr>
+                                        {{/each}}
+                                        <!-- Más filas según sea necesario -->
+                                    </tbody>
+                                </table>
+                                <footer>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>
+                                                <h4>
+                                                    <stron></stron>
+                                            <td>Sub total:</td>
+                                            <td>$20.00</td>
+                                            </stron>
+                                            </h4>
+                                            </th>
+                                            <th>
+                                                <h4>
+                                                    <stron></stron>
+                                            <td>Impuestos:</td>
+                                            <td>$20.00</td>
+                                            </stron>
+                                            </h4>
+                                            </th>
+                                            <th>
+                                                <h3>
+                                                    <stron></stron>
+                                            <td>Total:</td>
+                                            <td>$25.00</td>
+                                            </stron>
+                                            </h3>
+                                            </th>
+                                        </tr>
+
+                                </footer>
                             </div>
                         </div>
 
-                        <!--div id="new_receive_order_input" style="display: none;" class=" text-center form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label>
-                                 <strong style="font-size: 16px; font-style: normal;" >
-                                        {{box_incoming_receive_value}}
-                                 </strong>
-                              </label>
-                            
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="maxi" aria-hidden="true">
-                                        <strong style="font-size: 30px; font-style: normal;">
-                                        {{#with ../currency_default}}{{value}}{{/with}}
-                                        </strong>
-                                    </i>
-                                </div>
-                                <input id="new_mov_receive_value" class="form-control maxi money round-r" placeholder="{{#with ../order_doc}}{{total}}{{/with}}" type="number" value="" name="valor">
-                            </div>
-                        </div-->
+                        {{/with}}
+
+                    </div>
                 </div>
             </div>
     </div>
 
-    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">]
+    <div class="modal-footer col-sm-12 col-md-12 col-xs-12">
         {{#with ../order_doc}}
-                <button disabled="" id="new_oreder_receive_btn" doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)" category_id="{{category_id}}"
-                    type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
-                    <span class="material-icons">monetization_on</span>
-                    {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
-                </button>
-        {{/with}}
-       
+        <div class="bg-white col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+            <button id="new_oreder_receive_btn" doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
+                category_id="{{category_id}}" type="button" class="margin-top cobrar-btn btn btn-primary btn-full-with">
+                <span class="material-icons">print</span>
+                {{#with ../../ws_lang_data}}{{b_print}}{{/with}}
+            </button>
+
+        </div>
+
+        <div class="bg-white col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <button id="new_oreder_receive_btn" doc_id="{{_id}}" order_id="{{order_id}}" onclick="new_order_pay(this)"
+                category_id="{{category_id}}" type="button"
+                class="margin-top cobrar-btn btn btn-green-dark btn-full-with">
+                <span class="material-icons">share</span>
+                {{#with ../../ws_lang_data}}{{b_share}}{{/with}}
+            </button>
+            {{/with}}
+        </div>
     </div>
     </form>
 </div>

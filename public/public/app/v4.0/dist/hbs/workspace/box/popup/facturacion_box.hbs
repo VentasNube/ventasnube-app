@@ -1,22 +1,39 @@
 <div class="modal-dialog modal-xl" role="document">
     {{#with ws_lang_data }}
     <div class="modal-content">
-            <div class="modal-header">
+           <div class="modal-header">
                 <div class="modal-nav">
-                    <span class="back-arrow btn-previus">
-                        <span class="material-icons">arrow_back</span>
-                    </span>
                     <span class="modal-title">
-                       Crear comprobante electronico Afip
+                        {{#each ../ws_left_nav_data.m_t}}
+                        {{#ifEquals m_t_url ../../order_doc.category_id}}
+                        <small class="material-icons lg">{{m_t_icon}}</small>
+
+                        {{#ifEquals 'purchase' ../../order_doc.category_id}}
+                        {{#with ../../ws_lang_data}}{{m_board_receive}}{{/with}}
+                        {{/ifEquals}}
+
+                        {{m_t_name}}
+                        {{/ifEquals}}
+                        {{/each}}
+
+                    </span>
+
+                    <span class="back-arrow btn-previus pull-right">
+                        <small>
+                            <span class="xl btn-more btn btn-default">
+                                <span class="material-icons">qr_code</span>
+                                {{../order_doc.order_id}}
+                            </span>
+                        </small>
+                        <button id="" data-dismiss="modal" aria-label="Close" type="button"
+                            class=" btn btn-default text round xs">
+                            <span class="material-icons">close</span>
+                        </button>
                     </span>
                 </div>
             </div>
             <div id="modal-body" class="">
-                <div id="step-1" class="modal-body text-left col-sm-12 col-md-12 col-xs-12" style="
-    background-image: url('/public/app/v4.0/dist/img/tuto/welcome_box_ventasnube.svg')!important;
-    background-repeat: no-repeat!important;
-    background-size: 230px 230px!important;
-    background-position: 94% 15% !important;">
+                <div id="step-1" class="modal-body text-left col-sm-12 col-md-12 col-xs-12">
                     <div class="text-left">
                         <!--h2 class="margin-20"></h2-->
                         <h3 class="margin-20">Ingresa los datos para hacer el documento fiscal</h3>
@@ -51,17 +68,6 @@
                         </div>
                     </div>
                 </div>
-                <!--div class="modal-footer col-sm-12 col-md-12 col-xs-12">
-                    <button id="btn-previus" type="button" step="1" class="btn-previus btn btn-default"
-                        data-dismiss="modal" aria-label="Close">
-                        <span class="">{{b_cancelar}}</span>
-                    </button>
-                    <button onclick="btn_next_new_board(this)" disabled="" id="btn-next" step="1" type="button"
-                        class="btn btn-primary ">
-                        <span class="">{{b_next}}</span>
-                    </button>
-                </div-->
-      
     </div>
     {{/with}}
 </div>

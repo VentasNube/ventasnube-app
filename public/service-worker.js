@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 112227245333221182222221122228822333669993333332;
+const version = 112281113332;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -10,14 +10,14 @@ self.addEventListener('install', event => {
  
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
+    caches.keys().then(keys => Promise.all(   // Obtenemos todas las caches
       keys.map(key => {
-        if (!expectedCaches.includes(key)) {
-          return caches.delete(key);
+        if (!expectedCaches.includes(key)) { // Si un cache no es de la versión actual, lo borramos 
+          return caches.delete(key);  // y lo borramos
         }
       })
     )).then(() => {
-      console.log('V-' + version + ' Se actualizo con exito!');
+      console.log('V-' + version + ' Se actualizo con exito!');   // Mostramos un mensaje de actualización exitosa
     })
   );
 });

@@ -18,6 +18,8 @@ return [
         'b_prev' => 'Atras',
         'b_cancel' => 'Cancelar',
         'b_save' => 'Guardar',
+        'b_print' => 'Imprimir',
+        'b_share' => 'Compartir',
         //CONFIRMACION GENERALES
         'a_add_confirm' => 'Agregado con exito!',
         'a_add_conflict' => 'No se pudo agregar!',
@@ -406,8 +408,12 @@ return [
          'm_box_surname' => 'Apellido',
          'm_box_document' => 'Documento',
          'm_box_phone' => 'Telefono',
-
-
+         'm_box_print_pay' => 'Imprimir comprobante de pago',
+         'm_box_print_btn_reed_tittle' => 'Ver comprobante',
+         'm_box_print_btn_tittle' => 'Imprimir comprobante',
+         'm_box_print_btn_share_tittle' => 'Compartir comprobante',
+         'm_box_print_btn_taxt_documente_tittle' => 'Generar comprobante fiscal',
+         'm_box_print_btn_delete_documente_tittle' => 'Anular movimiento',
          'ws_box_settings_title' => ' Bienvenido a movimientos, informes y facturación.',
          'ws_box_settings_title_sub' => 'En esta sección vas a encontrar toda la información que necesitás <br> para llevar el control de los movimientos de tu dinero.',
          'ws_box_settings_title_sub_2' => 'Ver estadisticas, Imprimir listados, reportes y hacer facturas.',

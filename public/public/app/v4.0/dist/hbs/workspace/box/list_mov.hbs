@@ -57,7 +57,7 @@
                                 <h6>
                                   <strong  style="font-size: 10px; font-style: normal;">
                                     <i class="material-icons"> account_circle </i> </strong> {{{client.first_name}}} {{{client.last_name}}} - 
-                                  <a onclick="add_new_print_order(this)" doc_id="{{_id}}" id="{{doc_id}}"   href="#"><i class="material-icons">request_quote</i>  
+                                  <a onclick="print_receive_order(this)" doc_id="{{_id}}" id="{{doc_id}}"   href="#"><i class="material-icons">request_quote</i>  
                                         {{#ifCond category 'mov_in'}}
                                             {{{description}}} 
                                         {{else}}
@@ -73,10 +73,7 @@
                                 <div class="padding-0  padding-b-5 col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
                                     <div class="btn-group dropright">
-                                        <button onclick="box_get_order_info(this)" doc_id="{{{doc._id}}}"
-                                            id="variations_set_{{{doc._id}}}" product_id="{{{doc._id}}}"
-                                            variant_id="{{doc.variant_id}}" id="catalog_get_menu_price" type="button"
-                                            class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                                             <span id="bg-select-color"
                                                 class="card_item_selected_price btn btn-transparent">
@@ -148,28 +145,29 @@
 
                                         </button>
                                         <ul class="dropdown-menu l pull-right">
+                                              <li>                            
+                                                <a onclick="print_receive_order(this)" order_id="{{doc_id}}" doc_id="{{order_id}}" id="{{_id}}" href="#">
+                                                    <span class="material-icons">
+                                                        print
+                                                    </span>
+                                                    <span>{{#with ../ws_lang_data}}{{m_box_print_btn_tittle}}{{/with}}</span>
+                                                </a>
+                                            </li>
                                               <li>
                                                 <a onclick="box_facturar_mov(this)"doc_id="{{_id}}" id="{{doc_id}}" href="#">
                                                     <span class="material-icons">
                                                         request_quote
                                                     </span>
-                                                    <span>Facturar</span>
+                                                    <span> {{#with ../ws_lang_data}}{{m_box_print_btn_taxt_documente_tittle}}{{/with}}</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a onclick="add_new_print_order(this)" doc_id="{{_id}}" id="{{doc_id}}" href="#">
-                                                    <span class="material-icons">
-                                                        description
-                                                    </span>
-                                                    <span>Ver comprobante</span>
-                                                </a>
-                                            </li>
+                                          
                                             <li>
                                                 <a onclick="catalog_product_delete(this)" doc_id="" href="#">
                                                     <span class="material-icons">
                                                        hide_source
                                                     </span>
-                                                    <span>Anular</span>
+                                                    <span> {{#with ../ws_lang_data}}{{m_box_print_btn_delete_documente_tittle}}{{/with}}</span>
                                                 </a>
                                             </li>
                                         </ul>
