@@ -873,6 +873,9 @@ async function new_order(element) {
             const group_id = board_group_first.id;
             const entry_date = { hour, minutes } = await getDateTimeMinutes();
             const due_date = { hour, minutes } = await getDateTimeMinutes();
+
+            const newDate = new Date();
+
             var comments = '';
             //  const products = await get_cart_product();
 
@@ -918,6 +921,14 @@ async function new_order(element) {
                         role: userCtx.role
                     }
                 ],
+                activity: [
+                    {
+                        update_datetime: newDate ,
+                        user:userCtx.email,
+                        type: 'msj',
+                        content: 'Creo la orden con exito!'
+                    }
+                ],
                 total_service: parseFloat(total_service),
                 total_product: parseFloat(total_product),
                 total_tax: parseFloat(total_tax),
@@ -941,8 +952,8 @@ async function new_order(element) {
                 ],
                 equipment: [
                     {
-                        update_datetime: '18/3/2021 18:45:10',
-                        user: 'smartmobile.com@gmail.com',
+                        update_datetime: newDate ,
+                        user:userCtx.email,
                         type: 'Notebook',
                         trade: 'Samsung',
                         model: 'np300',
@@ -953,57 +964,24 @@ async function new_order(element) {
 
                 failure: [
                     {
-                        update_datetime: '18/3/2021 18:45:10',
-                        user: 'smartmobile.com@gmail.com',
+                        update_datetime: newDate ,
+                        user:userCtx.email,
                         name: 'No enciende no carga',
                     }
                 ],
 
                 solutions: [
                     {
-                        update_datetime: '18/3/2021 18:45:10',
-                        user: 'smartmobile.com@gmail.com',
+                        update_datetime: newDate ,
+                        user:userCtx.email,
                         name: 'Hay que reparar la palaca madre',
                     }
                 ],
-                activity: [
-                    {
-                        update_datetime: '18/3/2021 18:45:10',
-                        user: 'smartmobile.com@gmail.com',
-                        type: 'msj',
-                        content: 'El cliente dejo una contrasena 123421'
-                    }
-                ],
-
+               
                 update_history: [
                     {
-                        update_datetime: '18/3/2021 18:45:10',
-                        user: 'smartmobile.com@gmail.com',
-                    }
-                ],
-
-                service: [
-                    {
-                        product_id: 'Product 1',
-                        name: 'Product 1',
-                        variation_id: 'Product 1',
-                        product_img: 'Product 1',
-                        price: 10.99,
-                        tax: 21.00,
-                        quantity: 2,
-                        discount: 10,
-                        subtotal: 21.98
-                    },
-                    {
-                        service_id: 'Service 2',
-                        name: 'Service 2',
-                        variation_id: '1',
-                        product_img: 'http:.//',
-                        price: 100.99,
-                        tax: 21.00,
-                        quantity: 2,
-                        discount: 10,
-                        subtotal: 210.98
+                        update_datetime: newDate ,
+                        user:userCtx.email,
                     }
                 ],
                 shipping: {
@@ -1099,36 +1077,9 @@ async function get_board_onscroll(board_name) {
 ///NUEVAS ORDENES 2023
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN
-async function get_board_onscrollOLDOK() {
-    window.onscroll = async function () {
-        if (isLoading) return;
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-            isLoading = true;
-            try {
-                let paginationData = await add_new_item_DOM(L_board_db, nextStartkey, nextStartkeyDocid, columnGrids);
-                if (paginationData) {
-                    nextStartkey = paginationData.nextStartkey;
-                    nextStartkeyDocid = paginationData.nextStartkeyDocid;
-                    if (!nextStartkey) {
-                        window.onscroll = null;
-                    }
-                } else {
-                    console.error("No se pudo obtener los siguientes elementos.");
-                    window.onscroll = null;
-                }
-            } catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                isLoading = false;
-            }
-        }
-    };
-}
-/*
 async function get_total_orders_group() {
     let result = await L_board_db.query('order_view/by_type_category_status', options);
 }
-*/
 // Cuento los items totales en cada grupo
 async function coun_items_broup(board_type_name) {
     try {
@@ -1221,48 +1172,6 @@ async function get_board(board_name) {
 
 ////// CREAR ORDEN ///////
 // CART PRODUCT RECORRO EL CART Y ARMO LA LISTA DE PRODUCTOS
-async function get_cart_productNOOLD() {
-    const productItems = document.querySelectorAll('#product_cart_items .s-card-actv-item');
-    const products = [];
-
-    for (const item of productItems) {
-        //  const div_id = item.querySelector('.s-card-actv-item');
-        const _id = item.getAttribute('id');
-        const productImg = item.querySelector('.s-card-mini-img img').getAttribute('src');
-        const productName = item.querySelector('.s-card-actv-item-name').childNodes[0].nodeValue.trim();
-        const cost_price = item.getAttribute('cost_price');
-        const priceText = item.querySelector('.s-card-actv-item-price-right small').textContent.trim();
-        const quantity = parseInt(item.querySelector('.card_product_quantity').textContent.trim());
-        const priceMatch = priceText.match(/\$(\d+(\.\d+)?)/);
-        const price = priceMatch ? parseFloat(priceMatch[1]) : null;
-        const taxMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/IVA\(([^%]+)%\)/);
-        const tax = taxMatch ? parseFloat(taxMatch[1]) : null;
-        const discountMatch = item.querySelector('.s-card-actv-item-price-left').textContent.match(/Des:\(([^%]+)%\)=\(\$(-?\d+(\.\d+)?)\)/);
-        const discount = discountMatch ? {
-            percentage: parseFloat(discountMatch[1]),
-            amount: parseFloat(discountMatch[2])
-        } : null;
-        const subtotal = price * quantity;
-        const product = {
-            _id: _id,
-            product_id: productName,
-            name: productName,
-            variation_id: productName,
-            product_img: productImg,
-            price: price,
-            cost_price: cost_price,
-            tax: tax,
-            quantity: quantity,
-            discount: discount,
-            subtotal: subtotal
-        };
-        products.push(product);
-    }
-
-    return products;
-}
-
-
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart_products(ws_id, board_name) {
     board_name = readCookie('board-now-' + ws_id);
