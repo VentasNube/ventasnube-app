@@ -654,11 +654,20 @@ async function setting_box() {
         const modal = document.getElementById('master_popup');
         $(modal).modal('show');
 
-        const box_config_print_id = 'ws_' + ws_id + '_box_config_print';
+       // const box_config_print_id = 'box_config_print';
+/*
+        let payment_type_list,
+         price_list,
+        currency_list,
+         tax_list,
+        box_config_print;
 
-        let payment_type_list, price_list, currency_list, tax_list, box_config_print;
-        let payment_type_list_exists = false, price_list_exists = false, currency_list_exists = false, tax_list_exists = false, box_config_print_exists = false;
-
+            payment_type_list_exists = false;
+            price_list_exists = false;
+            currency_list_exists = false;
+            tax_list_exists = false;
+        //   let   box_config_print_exists = false;
+        
         // Obtener payment_type_list
         try {
             payment_type_list = await L_box_db.get('payment_type_list');
@@ -714,7 +723,7 @@ async function setting_box() {
 
         // Obtener box_config_print
         try {
-            box_config_print = await L_catalog_db.get(box_config_print_id);
+            box_config_print = await L_catalog_db.get(box_config_print);
             box_config_print_exists = true;
         } catch (error) {
             if (error.status === 404) {
@@ -729,6 +738,20 @@ async function setting_box() {
                 throw error;
             }
         }
+       // Obtener   box_category_li
+       try {
+        box_category_lis = await L_box_db.get('box_categories_list');
+        box_category_lis_exists = true;
+        } catch (error) {
+            if (error.status === 404) {
+                console.error('El documento box_config_print no existe.');
+            } else {
+                throw error;
+            }
+        }
+
+        */
+
 
         var box_config = {
             ws_info: ws_info,
@@ -1316,6 +1339,7 @@ async function change_page_limit(element) {
     get_box(page, limit);
 }
 
+
 /// CRUD CATEGORIAS 2024
 // CRUD CATEG0RIAS CREAR PRODUCTO #TAGS 2023
 // BUSCO
@@ -1561,7 +1585,7 @@ async function box_select_new_cat(element, new_cat) {
 }
 
 /// PUT NUEVO BOARD 
-async function put_new_box(b) {
+async function put_new_box() {
     try {
         const ws_id = ws_id; // Asegúrate de definir tu workspace_id
 
@@ -1693,12 +1717,13 @@ async function put_new_box(b) {
             }
         ];
 
+
         // Crear/actualizar documentos específicos en la base de datos
         const lists = {
             filtros,
             category_list,
             payment_type_list,
-            colaborator_list
+            colaborator_list,
         };
 
         for (const [list_name, list] of Object.entries(lists)) {
@@ -1739,6 +1764,8 @@ async function put_new_box(b) {
         });
     }
 }
+
+put_new_box();
 
 /// COSAS Q FALTAN 24
 async function mov_edit_put(formData, doc_id) {
@@ -2069,7 +2096,6 @@ function getStartAndEndDate(value) {
     return { startDate, endDate };
 }
 
-
 function getCurrentDateWithTime(hour, minute) {
     var currentDate = new Date();
     var year = currentDate.getFullYear();
@@ -2226,6 +2252,7 @@ async function renderStats() {
         chartEgresosPago.render();
     }
 }
+
 // Boton de ver graficos
 async function get_filtered_stats_button(filters) {
         try {

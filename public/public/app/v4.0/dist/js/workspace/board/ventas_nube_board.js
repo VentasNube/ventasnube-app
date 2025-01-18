@@ -1045,7 +1045,6 @@ async function new_order(element) {
 }
 
 
-
 ///NUEVAS ORDENES 2023
 // CREAR NUEVA ORDEN EN LA DB
 /// NEW ORDER CREO EL ARRAY COMPLETO DE LA ORDEN

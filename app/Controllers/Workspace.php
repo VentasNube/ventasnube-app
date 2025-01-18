@@ -1850,21 +1850,7 @@ class Workspace extends BaseController
                         ]
                     ];
 
-                           // Crear la variable $box_config_print utilizando las variables existentes
-                    $box_config_print = [
-                            '_id' => 'box_config_print',
-                            'nombre' => $ws_name,
-                            'telefono' => $ws_whatsaap,
-                            'direccion' => $ws_street.', ' .$ws_number.', ' . $ws_state . ', ' . $ws_city . ', ' . $ws_country,
-                            'sitio_web' => $ws_web,
-                            'email' => $ws_email,
-                            'cuit' => '0000000',
-                            'createDate' => date('Y-m-d\TH:i:sP'),
-                            'updateDate' => date('Y-m-d\TH:i:sP'),
-                            'updateUser' => $user_email,
-                            'ws_avatar_img'=> $ws_avatar_img
-                    ];
-
+                  
                     //$ws_module_name = "catalog";
                     $this->WorkspaceModel->add_rol($workspace_id_hex, 'catalog', 'admin', $user_email); //AGREGO EL ROL NUEVO DE ESE MODULO AL DOC DEL USUARIO
 
@@ -1886,7 +1872,7 @@ class Workspace extends BaseController
                     $this->WorkspaceModel->curl_put($db_name . '/trade_list', $trade_list); //Creo un doc con la informacion las listas de marcas
                     $this->WorkspaceModel->curl_put($db_name . '/model_list', $model_list); //Creo un doc con la informacion las listas de modelos
                     $this->WorkspaceModel->curl_put($db_name . '/tax_list', $tax_list); //Creo un doc con la informacion las listas de modelos
-                    $this->WorkspaceModel->curl_put($db_name . '/box_config_print', $box_config_print); 
+             
                     //DOC EJEMPLO PRODUCTOS
                     // $this->WorkspaceModel->curl_put($db_name . '/product_01', $product_01); //Creo un doc con la informacion del workspace
                     // $this->WorkspaceModel->curl_put($db_name . '/product_02', $product_02); //Creo un doc con la informacion del workspace
@@ -2451,44 +2437,80 @@ class Workspace extends BaseController
 
                     ];
 
-
-                    $category_list = [
-                        '_id'=> 'category_list',
-                        'type'=> 'category_list',
-                        'status'=> 'active',
-                        'category_list'=> [
-                          [
-                            'id'=> '1',
-                            'value'=> 'Gastos'
-                          ],
-                          [
-                            'id'=> '2',
-                            'value'=> 'Ingresos'
-                          ],
-                          [
-                            'id'=> '3',
-                            'value'=> 'Servicios generales'
-                          ],
-                          [
-                            'id'=> '4',
-                            'value'=> 'Gastos diarios'
-                          ],
-                          [
-                            'id'=> '5',
-                            'value'=> 'Servicio de limpieza'
-                          ],
-                          [
-                            'id'=> '6',
-                            'value'=> 'Agua mineral'
-                          ],
-                          [
-                            'id'=> '7',
-                            'value'=> 'Compras Almacen'
-                          ]
+                    $box_categories_list = [
+                        '_id' => 'box_category_list',
+                        'type' => 'box_category_list',
+                        'status' => 'active',
+                        'category_list' => [
+                            [
+                                'id' => '1',
+                                'name' => 'Gastos',
+                                'description' => 'Gastos en general',
+                                'icon' => 'money',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '2',
+                                'name' => 'Ingresos',
+                                'description' => 'Ingresos en general',
+                                'icon' => 'attach_money',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '3',
+                                'name' => 'Servicios generales',
+                                'description' => 'Servicios generales',
+                                'icon' => 'build',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '4',
+                                'name' => 'Gastos diarios',
+                                'description' => 'Gastos diarios',
+                                'icon' => 'calendar_today',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '5',
+                                'name' => 'Servicio de limpieza',
+                                'description' => 'Servicio de limpieza',
+                                'icon' => 'cleaning_services',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '6',
+                                'name' => 'Agua mineral',
+                                'description' => 'Agua mineral',
+                                'icon' => 'local_drink',
+                                'status' => 'active'
+                            ],
+                            [
+                                'id' => '7',
+                                'name' => 'Compras Almacen',
+                                'description' => 'Compras de almacén',
+                                'icon' => 'store',
+                                'status' => 'active'
+                            ]
                         ]
+                    ];
 
-                          ];                    
-                   
+                    $box_config_print = [
+                        '_id' => 'box_config_print',
+                        '_rev' => '1-fbb808f43efcaf71a0ce5b6799a61f6e',
+                        'nombre' => $ws_name,
+                        'telefono' => $ws_phone,
+                        'direccion' => $ws_street . ' ' . $ws_number . ', ' . $ws_cp . ', ' . $ws_city . ', ' . $ws_state . ', ' . $ws_country,
+                        'sitio_web' => $ws_web,
+                        'email' => $ws_email,
+                        'cuit' => '0000000', // Asigna el valor correspondiente si está disponible
+                        'createDate' => date('Y-m-d\TH:i:sP'), // Fecha actual en formato ISO
+                        'updateDate' => date('Y-m-d\TH:i:sP'), // Fecha actual en formato ISO
+                        'updateUser' =>  $ws_email, // Asigna el valor correspondiente si está disponible
+                        'ws_avatar_img' => $ws_avatar_img
+                    ];
+
+
+                                
                     
                     $result = $this->WorkspaceModel->insert('users_workspace_permission', $ws_user_workspace_permission);
 
@@ -2502,9 +2524,8 @@ class Workspace extends BaseController
 
                         $this->WorkspaceModel->curl_put($db_name . '/payment_type_list', $payment_type_list);
                         $this->WorkspaceModel->curl_put($db_name . '/operation_type_list', $operation_type_list); 
-                 
-                       
-                    //    $this->WorkspaceModel->curl_put($db_name . '/category_list', $category_list); 
+                        $this->WorkspaceModel->curl_put($db_name . '/box_categories_list', $box_categories_list); 
+                        $this->WorkspaceModel->curl_put($db_name . '/box_config_print', $box_config_print); 
                     }
                     
                 }
