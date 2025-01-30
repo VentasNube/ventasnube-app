@@ -524,7 +524,7 @@ async function catalog_edit_item(element) {
         }
 
         console.log('product_doc_array NEWW', product_doc_array);
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array, function () {
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_product.hbs', '#right_main', product_doc_array, function () {
 
             let parentElement_nav = document.querySelector('#edit_variations_main');
             let id_compiled_nav = '#' + parentElement_nav.id;
@@ -767,6 +767,8 @@ async function catalog_new_item(element) {
         console.log(err);
     }
 }
+
+
 
 // BOTON CREAR PRODUCTO
 // TRAE EL FORMULARIO

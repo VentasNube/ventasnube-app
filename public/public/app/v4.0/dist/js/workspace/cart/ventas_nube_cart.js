@@ -40,6 +40,7 @@ async function get_user_Ctx_now(){
         return user_Ctx;
 }
 
+
 async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_name) {
     try {
       /*  if (!board_name) {
@@ -89,6 +90,7 @@ async function get_right_cart(ws_info, ws_lang_data, ws_left_nav_data, board_nam
     }
 };
 
+
 // Trae los datos de la local user DB filtrado por tipo cart-items
 async function get_cart(ws_id, board_name) {
 
@@ -125,6 +127,7 @@ if (!board_name) {
 }
 
 
+
 // Traigo los datos del cart actual
 async function get_cart_now(elemnt) {
     try {
@@ -147,6 +150,8 @@ async function get_cart_now(elemnt) {
         console.error("Ocurrió un error al procesar el carrito: ", error);
     }
 }
+
+
 
 
 async function get_price_cost(doc_id,variant_id){
@@ -214,6 +219,7 @@ async function get_price_cost(doc_id,variant_id){
     }
   
 }
+
 
 
 // Creo los arrays con los datos de la BD
@@ -328,8 +334,133 @@ async function all_cart_item(todos) {
     }
 }
 
+
+
 // Traer los item leyendo de la pounchDB
 //Nueva funcion de agregar al producto al carrito
+
+
+///NEW 2025 FUNCIONES ACTUALIZADAS
+async function variations_add_cartNO(element) {
+    event.preventDefault();
+    try {
+        let product_id = $(element).attr('product_id'); // ID del producto seleccionado
+        let variant_id = $(element).attr('variant_id'); // ID de la variante seleccionada
+        var this_card_id = '#card_id_' + product_id; // ID del producto seleccionado
+        let variant_price = $('#card_var_id_' + product_id).find('.card_product_val').val(); // Tomo el valor del formulario
+        let variant_discount = $('#card_var_id_' + product_id).find('.card_product_discount').val(); // Tomo el valor del formulario
+        let variant_quantity = $('#card_var_id_' + product_id).find('.card_product_quantity').val(); // Tomo el valor del formulario
+        let variant_price_id = $('#card_var_id_' + product_id).attr('price_id'); // Tomo el valor del formulario
+
+        // Obtener el documento del producto del catálogo
+        let doc = await L_catalog_db.get(product_id);
+        // Obtener la variante del producto
+        const var_doc = doc.variations.find(element => element.id == variant_id);
+        if (!var_doc) {
+            throw new Error('No se encontró la variante del producto');
+        }
+        // Obtener la lista de precios de la variante
+        const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+        if (!price_list) {
+            throw new Error('No se encontró la lista de precios de la variante');
+        }
+        // Obtener los impuestos de la variante del producto
+        const tax_arr = var_doc.tax || [];
+
+        // Calcular el subtotal, descuento y total de impuestos
+        let subtotal = variant_quantity * variant_price;
+        let discount_total = (subtotal * variant_discount) / 100;
+        let total = subtotal - discount_total;
+        let total_taxes = 0;
+        let tax_details = {};
+
+        tax_arr.forEach(tax => {
+            let tax_value = parseFloat(tax.value);
+            let tax_amount = (subtotal * tax_value) / 100;
+            total_taxes += tax_amount;
+            if (!tax_details[tax.name]) {
+                tax_details[tax.name] = 0;
+            }
+            tax_details[tax.name] += tax_amount;
+        });
+
+        total += total_taxes;
+
+        // Crear el documento del carrito
+        let cart_item = {
+            _id: `cart-item-${product_id}-${new Date().toISOString()}`,
+            type: 'cart-item',
+            ws_id: ws_id, // ID del workspace, ajusta según sea necesario
+            update: new Date().toISOString(),
+            variant: {
+                product_id: product_id,
+                product_rev: doc._rev,
+                type: 'product',
+                sku: var_doc.sku || '',
+                pictures: var_doc.pictures || [],
+                name: var_doc.name,
+                attribute_combinations: var_doc.attribute_combinations || [],
+                price: variant_price,
+                discount: variant_discount,
+                quantity: variant_quantity,
+                sub_tot_dis: total,
+                discount_tot: discount_total,
+                tax_total: total_taxes,
+                tax_details: tax_details,
+                currency: var_doc.currency.value || '$'
+            }
+        };
+
+        // Verificar que el campo _id es una cadena de texto
+      /*  if (typeof cart_item._id !== 'string') {
+            throw new Error('_id field must contain a string');
+        }
+*/
+        // Guardar el documento en la base de datos del carrito
+        let response = await user_db.put(cart_item);
+
+        if (response.ok) {
+            console.log('Producto agregado al carrito con éxito:', response);
+            updateCurrencyTotals();
+        }
+    } catch (err) {
+        // Manejar errores
+        console.log('Error al agregar el producto al carrito:', err);
+    }
+}
+
+async function updateCurrencyTotalsNO() {
+    let subtotals = document.querySelectorAll('.sub_tot_cart');
+    let currencyTotals = {};
+
+    for (let subtotal of subtotals) {
+        let product_id = subtotal.getAttribute('item_cart_id');
+        let doc = await user_db.get(product_id);
+
+        if (doc) {
+            let variant_doc = doc.variant;
+            let subtotalValue = parseFloat(subtotal.innerText);
+            let currency = variant_doc.currency || '$';
+
+            if (!currencyTotals[currency]) {
+                currencyTotals[currency] = 0;
+            }
+            currencyTotals[currency] += subtotalValue;
+        }
+    }
+
+    // Actualiza los totales por moneda en la interfaz de usuario
+    for (let currency in currencyTotals) {
+        let totalElement = document.getElementById(`total_cart_neto_${currency}`);
+        if (totalElement) {
+            totalElement.innerText = `${currency} ${currencyTotals[currency].toFixed(2)}`;
+        } else {
+            console.warn(`No se encontró el elemento para la moneda ${currency}`);
+        }
+    }
+}
+
+
 async function variations_add_cart(element) {
 
     event.preventDefault();
@@ -352,17 +483,25 @@ async function variations_add_cart(element) {
         //  const tax_product = tax_arr.find(element => element.id == variant_price_id);
         //  TAX CONFIGURACION GENERAL
         const tax_list = await L_catalog_db.get("tax_list");
+        const tax_item =  var_doc.tax;
         //RELACIONO CON EL ID Q ESTA GUARDADO EN EL PRODUCTO 
         //   const tax_list_config = tax_list.tax.find(element => element.id == variant_id);
         const price_list = var_doc.price_list.find(element => element.id == variant_price_id);
         // let price_cost = await get_price_cost(product_id,variant_id)
-        const tax_price_list = var_doc.price_list.find(element => element.id == variant_price_id);
+
+
+       // const tax_price_list = var_doc.tax.find(element => element.id == variant_price_id);
+
+
         //TAX DEL PRODUCTO
         console.log("TAXESS variant_price_id",variant_price_id)
-        console.log(" tax_price_list", tax_price_list)
+        console.log(" tax_price_list",tax_item)
        // console.log("TAXESS",tax_price_list)
-        const tax_arr = tax_price_list.taxes
+        const tax_arr = var_doc.tax;
+
         console.log("tax_arr taxes",tax_arr)
+
+
         // Ya tienes la lista de impuestos para la variante del producto
         //const tax_arr = var_doc.tax;
         // Aquí calculamos el precio final con impuestos
@@ -1089,7 +1228,7 @@ async function variations_cart_sum_uni(button) {
 */
 
 
-async function variations_cart_res_uni(button) {
+async function variations_cart_res_uni_OLD(button) {
     let quantityElement = button.parentElement.querySelector('.card_product_quantity');
     let quantity = parseInt(quantityElement.innerText);
     if (quantity > 0) {
@@ -1100,7 +1239,7 @@ async function variations_cart_res_uni(button) {
     }
 }
 
-async function variations_cart_sum_uni(button) {
+async function variations_cart_sum_uni_OLD(button) {
     let quantityElement = button.parentElement.querySelector('.card_product_quantity');
     let quantity = parseInt(quantityElement.innerText);
     quantity++;
@@ -1113,13 +1252,13 @@ async function variations_cart_sum_uni(button) {
    // console.log('quantityElement', quantityElement)
    // console.log('quantity', quantity)
 
-    // get_cart_now(elemnt);
+    // get_cart_now(elemnt); 
     updateTotal(button.parentElement, product_id,  product_rev );
 }
 
 
 
-async function updateTotal(button, product_id,  product_rev ) {
+async function updateTotal_OLD(button, product_id,  product_rev ) {
     let parentElement = button.closest('.s-card-actv-item-body');
 
    // let product_id = $(button).attr('item_cart_id'); //Id del producto selccionado
@@ -1217,5 +1356,95 @@ async function updateTotal(button, product_id,  product_rev ) {
 }
 
 
+/// NEW 2025 CON CHAT FUNCIONES DE SUMAR RESTAR ACTUALIZAR CATALOGO
+async function variations_cart_res_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    if (!quantityElement) {
+        console.error('No se encontró el elemento .card_product_quantity');
+        return;
+    }
 
+    let quantity = parseInt(quantityElement.innerText);
+    if (quantity > 0) {
+        quantity--;
+        quantityElement.innerText = quantity;
 
+        let product_id = $(button).attr('item_cart_id'); // ID del producto seleccionado
+        let product_rev = $(button).attr('item_cart_rev'); // Revisión del producto seleccionado
+        let priceElement = button.parentElement.querySelector('.card_product_price');
+        if (!priceElement) {
+            console.error('No se encontró el elemento .card_product_price');
+            return;
+        }
+        let price = parseFloat(priceElement.innerText.replace('$', ''));
+
+        updateTotal(-price, product_id, product_rev, quantity, price);
+    }
+}
+
+async function variations_cart_sum_uni(button) {
+    let quantityElement = button.parentElement.querySelector('.card_product_quantity');
+    if (!quantityElement) {
+        console.error('No se encontró el elemento .card_product_quantity');
+        return;
+    }
+
+    let quantity = parseInt(quantityElement.innerText);
+    quantity++;
+    quantityElement.innerText = quantity;
+
+    let product_id = $(button).attr('item_cart_id'); // ID del producto seleccionado
+    let product_rev = $(button).attr('item_cart_rev'); // Revisión del producto seleccionado
+    let priceElement = button.parentElement.querySelector('.card_product_price');
+    if (!priceElement) {
+        console.error('No se encontró el elemento .card_product_price');
+        return;
+    }
+    let price = parseFloat(priceElement.innerText.replace('$', ''));
+
+    updateTotal(price, product_id, product_rev, quantity, price);
+}
+
+async function updateTotal(priceChange, product_id, product_rev, quantity, price) {
+    let totalElement = document.querySelector('#cart_total');
+    if (!totalElement) {
+        console.error('No se encontró el elemento #cart_total');
+        return;
+    }
+
+    let currentTotal = parseFloat(totalElement.innerText.replace('$', ''));
+    let newTotal = currentTotal + priceChange;
+    totalElement.innerText = `$${newTotal.toFixed(2)}`;
+
+    try {
+        // Obtener el documento actual del producto del usuario de la base de datos
+        let doc = await user_db.get(product_id);
+
+        // Verificar si el documento existe
+        if (doc) {
+            let variant_doc = doc.variant;
+            // Actualizar los campos necesarios en el objeto de variante
+            variant_doc.quantity = quantity;
+            variant_doc.price = price;
+            variant_doc.sub_tot_dis = newTotal;
+
+            // Actualizar el documento en la base de datos
+            let response = await user_db.put({
+                _id: doc._id, // Mantener el mismo ID del documento
+                _rev: doc._rev, // Mantener la misma revisión del documento
+                type: doc.type,
+                ws_id: doc.ws_id,
+                update: new Date().toISOString(), // Actualizar la marca de tiempo de la última actualización
+                variant: variant_doc // Actualizar el objeto de variante con los campos actualizados
+            });
+
+            // Realizar acciones adicionales si la actualización es exitosa
+            if (response) {
+                console.log('Documento actualizado con éxito:', response);
+            }
+        }
+    } catch (err) {
+        // Manejar errores
+        console.log('Error al actualizar el documento:', err);
+    }
+}

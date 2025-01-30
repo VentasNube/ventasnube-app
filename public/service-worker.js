@@ -1,7 +1,7 @@
 
 importScripts('/public/app/v4.0/plugins/workbox-cdn/releases/6.1.5/workbox-sw.js');
 
-const version = 11228111113332;
+const version = 1122811231112112434141113332;
 const expectedCaches = ['ventasnube-v-' + version];
 
 self.addEventListener('install', event => {
@@ -202,6 +202,7 @@ workbox.precaching.precacheAndRoute([
 
    { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_pay.hbs', revision: version },
    { url: '/public/app/v4.0/dist/hbs/workspace/board/popup/new_print_receive.hbs', revision: version },
+   { url: '/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_product.hbs', revision: version },
   
    
  

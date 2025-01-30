@@ -655,7 +655,7 @@ async function setting_box() {
         $(modal).modal('show');
 
        // const box_config_print_id = 'box_config_print';
-/*
+
         let payment_type_list,
          price_list,
         currency_list,
@@ -666,7 +666,7 @@ async function setting_box() {
             price_list_exists = false;
             currency_list_exists = false;
             tax_list_exists = false;
-        //   let   box_config_print_exists = false;
+            box_config_print_exists = false;
         
         // Obtener payment_type_list
         try {
@@ -723,7 +723,7 @@ async function setting_box() {
 
         // Obtener box_config_print
         try {
-            box_config_print = await L_catalog_db.get(box_config_print);
+            box_config_print = await L_box_db.get('box_config_print');
             box_config_print_exists = true;
         } catch (error) {
             if (error.status === 404) {
@@ -738,6 +738,8 @@ async function setting_box() {
                 throw error;
             }
         }
+
+
        // Obtener   box_category_li
        try {
         box_category_lis = await L_box_db.get('box_categories_list');
@@ -750,7 +752,7 @@ async function setting_box() {
             }
         }
 
-        */
+
 
 
         var box_config = {
@@ -775,7 +777,7 @@ async function setting_box() {
         renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/box/popup/setting_box.hbs', '#master_popup', box_config);
 
     } catch (err) {
-        console.error('ERROR EN BOX WELCOME', err);
+     //   console.error('ERROR EN BOX WELCOME', err);
         Snackbar.show({
             text: err.message || err,
             actionText: 'Ok',
