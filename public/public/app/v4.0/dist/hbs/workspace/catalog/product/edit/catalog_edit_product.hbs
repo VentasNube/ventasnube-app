@@ -8,8 +8,7 @@
             class="dropdown-toggle  select-btn btn xl btn-more  dropdown-toggle btn-primary text" data-toggle="dropdown"
             aria-expanded="true">
             <span id="new_type_icon_select" class="material-icons">home_repair_service</span>
-            <span id="new_type_value_select" type_order="product"> {{#with ws_lang_data}} {{t_new_product}}
-                {{/with}}</span>
+            <span id="new_type_value_select" type_order="product"> {{#with ws_lang_data}} {{t_new_product}}{{/with}}</span>
             <i class="material-icons">expand_more</i>
         </button>
         <ul class="dropdown-menu pull-left">
@@ -41,10 +40,11 @@
                             <div class=" mini-carrousel-new-img ">
                                 <div class="mini-card-img-s">
                                     <div class="img">
-                                        <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)"
-                                            img-charge="" href="#">
+                                        <a id="minicard_new_product_img" onclick="product_upload_img_pop(this)" img-charge="" href="#">
                                             <div id="new_img_product_content">
-                                                <img src="{{../name}}">
+                                                {{#each ../product_variant/pictures}}
+                                                    <img src="{{min}}">
+                                                 {{/each}}
                                             </div>
 
                                             <span class="material-icons">

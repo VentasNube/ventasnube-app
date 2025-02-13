@@ -535,7 +535,7 @@ async function catalog_edit_item(element) {
                     $('#right_main').removeClass('move-right');
                     var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
                     history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-                    coun_items_cart();
+                   // coun_items_cart();
                     //  createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
                     //    coun_items_broup(board_name);
                     //   scrollerMove();
@@ -580,6 +580,7 @@ async function catalog_edit_item_url(product_id, variant_id) {
         var new_category_list = await L_catalog_db.get('category_list');
         var new_trade_list = await L_catalog_db.get('trade_list');
         var new_model_list = await L_catalog_db.get('model_list');
+
         var price_doc = await L_catalog_db.get('price_list');
         var currency_doc = await L_catalog_db.get('currency_list');
         var attributes = await L_catalog_db.get('attributes');
@@ -599,14 +600,30 @@ async function catalog_edit_item_url(product_id, variant_id) {
             category_list: new_category_list,
             trade_list: new_trade_list,
             model_list: new_model_list,
-            attributes_list: attributes
+            attributes_list: attributes,
         }
-        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_item.hbs', '#right_main', product_doc_array);
-        createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
-        $('#right_main').removeClass('move-right');
-        var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
-        history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
-        return item_print;
+
+        console.log('product_doc_array NEWW', product_doc_array);
+        renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_edit_product.hbs', '#right_main', product_doc_array, function () {
+
+            let parentElement_nav = document.querySelector('#edit_variations_main');
+            let id_compiled_nav = '#' + parentElement_nav.id;
+            console.log('id_compiled_nav UUUAAAAAA', id_compiled_nav);
+            if (id_compiled_nav) {
+                renderHandlebarsTemplate('/public/app/v4.0/dist/hbs/workspace/catalog/product/edit/catalog_new_variation.hbs', id_compiled_nav, product_doc_array, function () {
+                    createCookie('left_nav_open_ws_' + ws_id, false), 30;// seteo la ventana abierta en la cockie
+                    $('#right_main').removeClass('move-right');
+                    var m_url = '?type=catalog&?t=edit&?id=' + product_id + '&?v=' + variant_id;
+                    history.replaceState(null, null, m_url) //Cargo la nueva url en la barra de navegacion     
+                //    coun_items_cart();
+                    //  createCookie('board-now-' + ws_id, board_name, 30);//CREO UNA COKIE CON EL ULTIMO NOMBRE DE LA BOARD
+                    //    coun_items_broup(board_name);
+                    //   scrollerMove();
+                    //   get_board_onscroll(board_name);//activa el evento scroll para graer mas ordenes
+                });
+            }
+
+        })
     } catch (err) {
         return false;
         console.log(err);
